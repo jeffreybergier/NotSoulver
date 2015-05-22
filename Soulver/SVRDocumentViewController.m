@@ -74,7 +74,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   [textView setMinSize:NSMakeSize(0, 0)];
   [textView setMaxSize:NSMakeSize(FLT_MAX, FLT_MAX)];
   [textView setVerticallyResizable:YES];
-  [textView setHorizontallyResizable:YES];
+  [textView setHorizontallyResizable:NO];
   [textView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
   [textView XP_setAllowsUndo:YES];
   
