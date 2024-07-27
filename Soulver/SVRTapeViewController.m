@@ -9,9 +9,7 @@
 
 -(void)awakeFromNib; 
 {
-  NSLog(@"Hello World");
-  NSLog(@"%@", [self textField]);
-  NSLog(@"%@", [self model]);
+  NSLog(@"%@", self);
 }
 
 @end
