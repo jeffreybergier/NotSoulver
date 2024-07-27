@@ -1,0 +1,3 @@
+"FirstResponder" = {ACTIONS = {}; OUTLETS = {}; SUPERCLASS = NSObject; };
+"SVRKeypadViewController" = {ACTIONS = {"append:" = id; }; OUTLETS = {}; SUPERCLASS = NSObject; };
+"SVRTapeViewController" = {ACTIONS = {}; OUTLETS = {textField = id; }; SUPERCLASS = NSObject; };
