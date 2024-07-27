@@ -2,9 +2,19 @@
     APPCLASS = NSApplication; 
     DYNAMIC_CODE_GEN = YES; 
     FILESTABLE = {
-        CLASSES = (SVRKeypadViewController.m, SVRTapeModel.m, SVRTapeViewController.m); 
+        CLASSES = (
+            SVRKeypadViewController.m, 
+            SVRTapeModel.m, 
+            SVRTapeViewController.m, 
+            SVRTapeModelOperation.m
+        ); 
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
-        H_FILES = (SVRKeypadViewController.h, SVRTapeModel.h, SVRTapeViewController.h); 
+        H_FILES = (
+            SVRKeypadViewController.h, 
+            SVRTapeModel.h, 
+            SVRTapeViewController.h, 
+            SVRTapeModelOperation.h
+        ); 
         INTERFACES = (NEXTSTEP_Soulver.nib, WINDOWS_Soulver.nib); 
         OTHER_LINKED = (Soulver_main.m); 
         OTHER_SOURCES = (Makefile.preamble, Makefile, Makefile.postamble, m.template, h.template); 
