@@ -12,7 +12,7 @@
 
 - (void)append:(NSButton *)sender
 {
-  NSLog(@"Clicked: %@", [sender title]);
+  [[self model] appendKeyStroke: [sender title]];
 }
 
 @end
