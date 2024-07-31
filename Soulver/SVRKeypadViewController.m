@@ -12,7 +12,8 @@
 
 - (void)append:(NSButton *)sender
 {
-  [[self model] appendKeyStroke: [sender title]];
+  SVRMathNode *node = [SVRMathNode nodeWithValue:[sender title]];
+  [[self model] append:node];
 }
 
 @end
