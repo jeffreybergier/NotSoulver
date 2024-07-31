@@ -6,14 +6,16 @@
             SVRKeypadViewController.m, 
             SVRTapeModel.m, 
             SVRTapeViewController.m, 
-            SVRTapeModelOperation.m
+            "SVRMathNode+Rendering.m", 
+            SVRMathNode.m
         ); 
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
         H_FILES = (
             SVRKeypadViewController.h, 
             SVRTapeModel.h, 
             SVRTapeViewController.h, 
-            SVRTapeModelOperation.h
+            "SVRMathNode+Rendering.h", 
+            SVRMathNode.h
         ); 
         INTERFACES = (NEXTSTEP_Soulver.nib, WINDOWS_Soulver.nib); 
         OTHER_LINKED = (Soulver_main.m); 

@@ -6,5 +6,6 @@
     id textField;
 }
 
+-(void)modelRenderDidChangeNotification:(NSNotification*)aNotification;
 
 @end
