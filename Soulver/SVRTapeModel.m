@@ -1,41 +1,62 @@
 #import "SVRTapeModel.h"
-#import "SVRTapeModelOperation.h"
+#import "SVRMathNode+Rendering.h"
 
 @implementation SVRTapeModel
 
 // MARK: Properties
--(void)initializeProperties;
-{
-  operations = [[[NSMutableArray alloc] init] retain];
-  strokeInput = [[[NSMutableString alloc] init] retain];
-}
 
--(void)strokeInputReset;
+-(SVRMathNode*)mathNode;
 {
-  [strokeInput release];
-  strokeInput = [[[NSMutableString alloc] init] retain];
+  return _mathNode;
+}
+-(void)setMathNode:(SVRMathNode*)aNode;
+{
+  [_mathNode release];
+  _mathNode = [aNode retain];
+  [self setLatestRender:[_mathNode render]];
+}
+-(NSString*)latestRender;
+{
+  return _latestRender;
+}
+-(void)setLatestRender:(NSString*)aString;
+{
+  [_latestRender release];
+  _latestRender = [aString retain];
+  [[NSNotificationCenter defaultCenter] postNotificationName:[SVRTapeModel renderDidChangeNotificationName] 
+                                                      object:_latestRender];
+}
++(NSString*)renderDidChangeNotificationName;
+{
+  return [NSString stringWithFormat:@"RenderDidChange"];
 }
 
 // MARK: Interface Builder
 -(void)awakeFromNib;
 {
   NSLog(@"%@", self);
-  [self initializeProperties];
 }
 
 // MARK: Handle Input
 
--(void)appendKeyStroke:(NSString *)aStroke;
+-(void)append:(SVRMathNode*)aNode;
 {
-  SVRTapeModelOperator operator = [SVRTapeModelOperation operatorForString:aStroke];
-  if (operator == SVRTapeModelOperatorUnknown) {
-    [strokeInput appendString: aStroke];
-    NSLog(@"%@", strokeInput);
+  if ([self mathNode]) {
+    [[self mathNode] appendNode:aNode];
   } else {
-    float value = [strokeInput floatValue]; 
-    [operations addObject:[[SVRTapeModelOperation alloc] initWithValue:value operator:operator]];
-    NSLog(@"%@", operations);
+    [self setMathNode:aNode];
   }
+  [self setLatestRender:[[self mathNode] render]];
 }
+
+
+
+
+
+
+
+
+
+
 
 @end
