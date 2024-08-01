@@ -4,8 +4,8 @@
 @implementation SVRTapeViewController
 
 // MARK: Properties
--(NSTextField *)textField; { return textField; }
--(SVRTapeModel *)model;    { return model; }
+-(NSTextView*)textView; { return textView; }
+-(SVRTapeModel*)model;   { return model; }
 
 -(void)awakeFromNib; 
 {
@@ -19,7 +19,16 @@
 
 -(void)modelRenderDidChangeNotification:(NSNotification*)aNotification;
 {
-  [[self textField] setStringValue:[aNotification object]];
+  [self replaceTapeWithString:[aNotification object]];
+}
+
+-(void)replaceTapeWithString:(NSString*)aString;
+{
+  NSTextStorage *storage = [[self textView] textStorage];
+  [storage beginEditing];
+  [[storage mutableString] setString:aString];
+  [storage endEditing];
+  [[self textView] didChangeText];
 }
 
 -(void)dealloc;

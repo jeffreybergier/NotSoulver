@@ -3,9 +3,10 @@
 @interface SVRTapeViewController : NSObject
 {
     id model;
-    id textField;
+    id textView;
 }
 
 -(void)modelRenderDidChangeNotification:(NSNotification*)aNotification;
+-(void)replaceTapeWithString:(NSString*)aString;
 
 @end
