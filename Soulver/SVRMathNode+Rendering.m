@@ -47,14 +47,15 @@
   return YES;
 }
 
--(NSString*)render;
+-(NSAttributedString*)render;
 {
+  return [self __PRIVATE_renderNaive];
   return [self isStructureValid]
        ? [self __PRIVATE_renderValid]
        : [self __PRIVATE_renderNaive];
 }
 
--(NSString*)__PRIVATE_renderValid;
+-(NSAttributedString*)__PRIVATE_renderValid;
 {
   NSSet *operators;
   NSSet *numerals;
@@ -124,16 +125,17 @@
   }
   return [[output copy] autorelease];
 }
--(NSString*)__PRIVATE_renderNaive;
+
+-(NSAttributedString*)__PRIVATE_renderNaive;
 {
-  // If Structure is Invalid, just print everything in a dumb way
-  NSMutableString *output = [[self value] mutableCopy];
-  SVRMathNode *next = [[self nextNode] retain];
+  NSMutableAttributedString *output = [[[NSMutableAttributedString alloc] initWithString:[self value]] autorelease];
+  SVRMathNode *next = [self nextNode];
   while (next) {
-    [output appendString:[next value]];
-    next = [[[next autorelease] nextNode] retain];
+    [output appendAttributedString:[[[NSAttributedString alloc] initWithString:[next value]] autorelease]];
+    next = [next nextNode];
   }
-  return [NSString stringWithFormat:@"%@<Invalid>", [output autorelease]];
+  [output appendAttributedString: [self __NSASErrorForString:@"<Invalid>"]];
+  return [[output copy] autorelease];
 }
 
 -(double)__PRIVATE_doMathWithOperator:(NSString*)operator lhs:(NSString*)lhs rhs:(NSString*)rhs;
@@ -150,6 +152,23 @@
     NSAssert(NO, @"The else statement should never be hit");
     return -1;
   }
+}
+
+// MARK: NSAttributedString Helpers
+-(NSAttributedString*)__NSASErrorForString:(NSString*)aString;
+{
+  NSArray *keys = [NSArray arrayWithObjects:NSBackgroundColorAttributeName, nil];
+  NSArray *vals = [NSArray arrayWithObjects:[NSColor orangeColor], nil];
+  NSDictionary *attribs = [NSDictionary dictionaryWithObjects:vals forKeys:keys];
+  return [[[NSAttributedString alloc] initWithString:aString attributes:attribs] autorelease];
+}
+
+-(NSAttributedString*)__NSASAnswerForString:(NSString*)aString;
+{
+  NSArray *keys = [NSArray arrayWithObjects:NSBackgroundColorAttributeName, nil];
+  NSArray *vals = [NSArray arrayWithObjects:[NSColor cyanColor], nil];
+  NSDictionary *attribs = [NSDictionary dictionaryWithObjects:vals forKeys:keys];
+  return [[[NSAttributedString alloc] initWithString:aString attributes:attribs] autorelease];
 }
 
 // MARK: Rendering Checks

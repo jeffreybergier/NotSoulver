@@ -7,6 +7,6 @@
 }
 
 -(void)modelRenderDidChangeNotification:(NSNotification*)aNotification;
--(void)replaceTapeWithString:(NSString*)aString;
+-(void)replaceTapeWithString:(NSAttributedString*)aString;
 
 @end
