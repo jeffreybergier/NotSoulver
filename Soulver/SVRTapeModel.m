@@ -15,11 +15,11 @@
   _mathNode = [aNode retain];
   [self setLatestRender:[_mathNode render]];
 }
--(NSString*)latestRender;
+-(NSAttributedString*)latestRender;
 {
   return _latestRender;
 }
--(void)setLatestRender:(NSString*)aString;
+-(void)setLatestRender:(NSAttributedString*)aString;
 {
   [_latestRender release];
   _latestRender = [aString retain];

@@ -4,14 +4,14 @@
 @interface SVRTapeModel: NSObject
 {
   SVRMathNode *_mathNode;
-  NSString *_latestRender;
+  NSAttributedString *_latestRender;
 }
 
 // MARK: Properties
 -(SVRMathNode*)mathNode;
 -(void)setMathNode:(SVRMathNode*)aNode;
--(NSString*)latestRender;
--(void)setLatestRender:(NSString*)aString;
+-(NSAttributedString*)latestRender;
+-(void)setLatestRender:(NSAttributedString*)aString;
 +(NSString*)renderDidChangeNotificationName;
 
 // MARK: Usage

@@ -22,11 +22,11 @@
   [self replaceTapeWithString:[aNotification object]];
 }
 
--(void)replaceTapeWithString:(NSString*)aString;
+-(void)replaceTapeWithString:(NSAttributedString*)aString;
 {
   NSTextStorage *storage = [[self textView] textStorage];
   [storage beginEditing];
-  [[storage mutableString] setString:aString];
+  [storage setAttributedString:aString];
   [storage endEditing];
   [[self textView] didChangeText];
 }
