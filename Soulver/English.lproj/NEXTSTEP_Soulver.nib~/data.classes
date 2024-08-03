@@ -7,6 +7,6 @@
 "SVRTapeModel" = {ACTIONS = {}; OUTLETS = {}; SUPERCLASS = NSObject; };
 "SVRTapeViewController" = {
     ACTIONS = {}; 
-    OUTLETS = {model = id; textField = id; }; 
+    OUTLETS = {model = id; textView = id; }; 
     SUPERCLASS = NSObject; 
 };
