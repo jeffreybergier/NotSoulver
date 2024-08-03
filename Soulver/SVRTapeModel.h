@@ -1,20 +1,21 @@
 #import <AppKit/AppKit.h>
-#import "SVRMathNode.h"
+#import "SVRMathString.h"
 
 @interface SVRTapeModel: NSObject
 {
-  SVRMathNode *_mathNode;
+  SVRMathString *_mathString;
   NSAttributedString *_latestRender;
 }
 
 // MARK: Properties
--(SVRMathNode*)mathNode;
--(void)setMathNode:(SVRMathNode*)aNode;
+-(SVRMathString*)mathString;
+-(void)setMathString:(SVRMathString*)aString;
 -(NSAttributedString*)latestRender;
 -(void)setLatestRender:(NSAttributedString*)aString;
 +(NSString*)renderDidChangeNotificationName;
 
 // MARK: Usage
--(void)append:(SVRMathNode*)aNode;
+-(void)appendString:(NSString*)aString;
+-(void)backspace;
 
 @end

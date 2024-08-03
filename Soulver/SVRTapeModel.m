@@ -1,19 +1,19 @@
 #import "SVRTapeModel.h"
-#import "SVRMathNode+Rendering.h"
+#import "SVRMathString+Rendering.h"
 
 @implementation SVRTapeModel
 
 // MARK: Properties
 
--(SVRMathNode*)mathNode;
+-(SVRMathString*)mathString;
 {
-  return _mathNode;
+  return _mathString;
 }
--(void)setMathNode:(SVRMathNode*)aNode;
+-(void)setMathString:(SVRMathString*)aString;
 {
-  [_mathNode release];
-  _mathNode = [aNode retain];
-  [self setLatestRender:[_mathNode render]];
+  [_mathString release];
+  _mathString = [aString retain];
+  [self setLatestRender:[_mathString render]];
 }
 -(NSAttributedString*)latestRender;
 {
@@ -35,22 +35,20 @@
 -(void)awakeFromNib;
 {
   NSLog(@"%@", self);
+  _mathString = [[SVRMathString alloc] init];
 }
 
-// MARK: Handle Input
-
--(void)append:(SVRMathNode*)aNode;
+// MARK: Usage
+-(void)appendString:(NSString*)aString;
 {
-  if ([self mathNode]) {
-    [[self mathNode] appendNode:aNode];
-  } else {
-    [self setMathNode:aNode];
-  }
-  [self setLatestRender:[[self mathNode] render]];
+  [[self mathString] appendString:aString];
+  [self setLatestRender:[[self mathString] render]];
 }
-
-
-
+-(void)backspace;
+{
+  [[self mathString] backspace];
+  [self setLatestRender:[[self mathString] render]];
+}
 
 
 

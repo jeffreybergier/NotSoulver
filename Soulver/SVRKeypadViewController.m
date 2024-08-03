@@ -12,8 +12,12 @@
 
 - (void)append:(NSButton *)sender
 {
-  SVRMathNode *node = [SVRMathNode nodeWithValue:[sender title]];
-  [[self model] append:node];
+  NSString *title = [sender title];
+  if ([title isEqualToString:@"<"]) {
+    [[self model] backspace];
+  } else {
+    [[self model] appendString:[sender title]];
+  }
 }
 
 @end
