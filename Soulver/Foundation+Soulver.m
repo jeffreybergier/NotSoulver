@@ -20,7 +20,7 @@
   NSFont       *font;
   NSDictionary *attr;
 
-  font = [NSFont fontWithName:@"Ohlfs" size:14];
+  font = [NSFont userFixedPitchFontOfSize:14];
  
   if (aColor) {
     keys = [NSArray arrayWithObjects:NSBackgroundColorAttributeName, NSFontAttributeName, nil];
@@ -48,7 +48,7 @@
   NSFont       *font;
   NSDictionary *attr;
 
-  font = [NSFont fontWithName:@"Ohlfs" size:14];
+  font = [NSFont userFixedPitchFontOfSize:14];
 
   if (aColor) {
     keys = [NSArray arrayWithObjects:NSBackgroundColorAttributeName, NSFontAttributeName, nil];
