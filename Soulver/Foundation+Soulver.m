@@ -15,13 +15,23 @@
 }
 +(id)withString:(NSString*)aString andColor:(NSColor*)aColor;
 {
+  NSArray      *keys;
+  NSArray      *vals;
+  NSFont       *font;
+  NSDictionary *attr;
+
+  font = [NSFont fontWithName:@"Ohlfs" size:14];
+ 
   if (aColor) {
-    NSArray *keys = [NSArray arrayWithObjects:NSBackgroundColorAttributeName, nil];
-    NSArray *vals = [NSArray arrayWithObjects:aColor, nil];
-    NSDictionary *attribs = [NSDictionary dictionaryWithObjects:vals forKeys:keys];
-    return [[[NSAttributedString alloc] initWithString:aString attributes:attribs] autorelease];
+    keys = [NSArray arrayWithObjects:NSBackgroundColorAttributeName, NSFontAttributeName, nil];
+    vals = [NSArray arrayWithObjects:aColor, font, nil];
+    attr = [NSDictionary dictionaryWithObjects:vals forKeys:keys];
+    return [[[NSAttributedString alloc] initWithString:aString attributes:attr] autorelease];
   } else {
-    return [[[NSAttributedString alloc] initWithString:aString] autorelease];
+    keys = [NSArray arrayWithObjects:NSFontAttributeName, nil];
+    vals = [NSArray arrayWithObjects:font, nil];
+    attr = [NSDictionary dictionaryWithObjects:vals forKeys:keys];
+    return [[[NSAttributedString alloc] initWithString:aString attributes:attr] autorelease];
   }
 }
 @end
@@ -33,13 +43,23 @@
 }
 +(id)withString:(NSString*)aString andColor:(NSColor*)aColor;
 {
+  NSArray      *keys;
+  NSArray      *vals;
+  NSFont       *font;
+  NSDictionary *attr;
+
+  font = [NSFont fontWithName:@"Ohlfs" size:14];
+
   if (aColor) {
-    NSArray *keys = [NSArray arrayWithObjects:NSBackgroundColorAttributeName, nil];
-    NSArray *vals = [NSArray arrayWithObjects:aColor, nil];
-    NSDictionary *attribs = [NSDictionary dictionaryWithObjects:vals forKeys:keys];
-    return [[[NSMutableAttributedString alloc] initWithString:aString attributes:attribs] autorelease];
+    keys = [NSArray arrayWithObjects:NSBackgroundColorAttributeName, NSFontAttributeName, nil];
+    vals = [NSArray arrayWithObjects:aColor, font, nil];
+    attr = [NSDictionary dictionaryWithObjects:vals forKeys:keys];
+    return [[[NSMutableAttributedString alloc] initWithString:aString attributes:attr] autorelease];
   } else {
-    return [[[NSMutableAttributedString alloc] initWithString:aString] autorelease];
+    keys = [NSArray arrayWithObjects:NSFontAttributeName, nil];
+    vals = [NSArray arrayWithObjects:font, nil];
+    attr = [NSDictionary dictionaryWithObjects:vals forKeys:keys];
+    return [[[NSMutableAttributedString alloc] initWithString:aString attributes:attr] autorelease];
   }
 }
 @end

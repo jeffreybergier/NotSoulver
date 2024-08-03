@@ -13,7 +13,7 @@
 - (void)append:(NSButton *)sender
 {
   NSString *title = [sender title];
-  if ([title isEqualToString:@"<"]) {
+  if ([title isEqualToString:@"<-"]) {
     [[self model] backspace];
   } else {
     [[self model] appendString:[sender title]];
