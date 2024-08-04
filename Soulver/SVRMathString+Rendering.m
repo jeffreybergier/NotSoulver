@@ -102,7 +102,7 @@
   // Exponents
   mathRange = [output mathRangeByMonitoringSet:[self __exponent] ignoringSet:[self __operators]];
   while (mathRange) {
-    analyzedSolution = [NSString stringWithFormat:@"%f", [self __performCalculationWithRange:mathRange]];
+    analyzedSolution = [NSString stringWithFormat:@"%g", [self __performCalculationWithRange:mathRange]];
     [output replaceCharactersInRange:[mathRange range] withString:analyzedSolution];
     NSLog(@"Patch ^^: %@", output);
     mathRange = [output mathRangeByMonitoringSet:[self __exponent] ignoringSet:[self __operators]];
@@ -111,7 +111,7 @@
   // Multiply and Divide
   mathRange = [output mathRangeByMonitoringSet:[self __multdiv] ignoringSet:[self __operators]];
   while (mathRange) {
-    analyzedSolution = [NSString stringWithFormat:@"%f", [self __performCalculationWithRange:mathRange]];
+    analyzedSolution = [NSString stringWithFormat:@"%g", [self __performCalculationWithRange:mathRange]];
     [output replaceCharactersInRange:[mathRange range] withString:analyzedSolution];
     NSLog(@"Patch */: %@", output);
     mathRange = [output mathRangeByMonitoringSet:[self __multdiv] ignoringSet:[self __operators]];
@@ -120,7 +120,7 @@
   // Add and Subtract
   mathRange = [output mathRangeByMonitoringSet:[self __plusminus] ignoringSet:[self __operators]];
   while (mathRange) {
-    analyzedSolution = [NSString stringWithFormat:@"%f", [self __performCalculationWithRange:mathRange]];
+    analyzedSolution = [NSString stringWithFormat:@"%g", [self __performCalculationWithRange:mathRange]];
     [output replaceCharactersInRange:[mathRange range] withString:analyzedSolution];
     NSLog(@"Patch +-: %@", output);
     mathRange = [output mathRangeByMonitoringSet:[self __plusminus] ignoringSet:[self __operators]];
