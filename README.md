@@ -21,10 +21,17 @@ Use the keypad to type in a mathematical formula. When you click on the `=` key,
 As the user clicks keys, a string ([`SVRMathString`](Soulver/SVRMathString.h)) is created character by character. The string is always stored as raw user input, but every time there is new user input, a custom `render` method ([`SVRMathString+Rendering`](Soulver/SVRMathString+Rendering.h)) is called on the String. From there, the raw user input is broken into lines by the `=` signs and each line is sent to a PEMDAS solving method which recursively calls itself until there is only a number (no mathematical operations) left in the string. That is then appended after the equals sign in the rendered output. The rendering uses `NSAttributedString` to do the coloring.
 
 ### Technical Features
-- Manual Reference Counting 😅
-- Only uses Foundation methods that were available in Mac OS X 10.0 🥵
-- NSMutableString-based string manipulation 😵
-- Original user input is always preserved (not mixed with rendering)
+- Ancient Objective-C
+    - ❌ No Automatic Reference Counting
+    - ❌ No Property Synthesization
+    - ❌ No Blocks
+    - ❌ No Fast Enumeration → Use `NSEnumerator`
+    - ❌ No Collection Literals → Use `nil` terminated initializers
+- Ancient Foundation: Only uses Foundation API that were available in Mac OS X 10.0 🥵
+    - e.g. [`[NSFont userFixedPitchFontOfSize:]`](https://developer.apple.com/documentation/appkit/nsfont/1531381-userfixedpitchfontofsize?language=objc#)
+    - e.g. [`[NSSet member:]`](https://developer.apple.com/documentation/foundation/nsset/1412896-member?language=objc#)
+- NSMutableString-based string manipulation 😵 
+    - including a custom NSEnumerator subclass to traverse NSString 😫
 
 ### Known Problems
 - The PEMDAS solver could be made more resilient
