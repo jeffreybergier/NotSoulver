@@ -72,7 +72,7 @@
 # the top-level:
 #OPTIMIZATION_CFLAG = -O
 #DEBUG_SYMBOLS_CFLAG = -g
-#WARNING_CFLAGS = -Wmost
+WARNING_CFLAGS = -Wall
 #DEBUG_BUILD_CFLAGS = -DDEBUG
 #PROFILE_BUILD_CFLAGS = -pg -DPROFILE
 
@@ -91,11 +91,11 @@
 #DYLIB_INSTALL_DIR = $(INSTALLDIR)
 
 # Ownership and permissions of files installed by 'install' target
-#INSTALL_AS_USER = root
+INSTALL_AS_USER = me
         # User/group ownership 
-#INSTALL_AS_GROUP = wheel
+INSTALL_AS_GROUP = wheel
         # (probably want to set both of these) 
-#INSTALL_PERMISSIONS =
+INSTALL_PERMISSIONS = 755
         # If set, 'install' chmod's executable to this
 
 # Options to strip for various project types. Note: -S strips debugging symbols
