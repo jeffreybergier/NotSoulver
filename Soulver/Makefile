@@ -13,15 +13,19 @@ PROJECTVERSION = 2.6
 PROJECT_TYPE = Application
 LANGUAGE = English
 
+NEXTSTEP_DOCICONS = 
+
 ICONSECTIONS =	-sectcreate __ICON app /NextLibrary/Frameworks/AppKit.framework/Resources/NSDefaultApplicationIcon.tiff
 
-LOCAL_RESOURCES = NEXTSTEP_Soulver.nib WINDOWS_Soulver.nib
+LOCAL_RESOURCES = NEXTSTEP_Soulver.nib NEXTSTEP_SVRDocument.nib
 
-CLASSES = Foundation+Soulver.m SVRKeypadViewController.m\
+CLASSES = Foundation+Soulver.m SVRDocsController.m\
+          SVRDocumentController.m SVRKeypadViewController.m\
           SVRMathString+Rendering.m SVRMathString.m SVRTapeModel.m\
           SVRTapeViewController.m
 
-HFILES = Foundation+Soulver.h SVRKeypadViewController.h\
+HFILES = Foundation+Soulver.h SVRDocsController.h\
+         SVRDocumentController.h SVRKeypadViewController.h\
          SVRMathString+Rendering.h SVRMathString.h SVRTapeModel.h\
          SVRTapeViewController.h
 

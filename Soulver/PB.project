@@ -4,6 +4,8 @@
     FILESTABLE = {
         CLASSES = (
             "Foundation+Soulver.m", 
+            SVRDocsController.m, 
+            SVRDocumentController.m, 
             SVRKeypadViewController.m, 
             "SVRMathString+Rendering.m", 
             SVRMathString.m, 
@@ -13,30 +15,35 @@
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
         H_FILES = (
             "Foundation+Soulver.h", 
+            SVRDocsController.h, 
+            SVRDocumentController.h, 
             SVRKeypadViewController.h, 
             "SVRMathString+Rendering.h", 
             SVRMathString.h, 
             SVRTapeModel.h, 
             SVRTapeViewController.h
         ); 
-        INTERFACES = (NEXTSTEP_Soulver.nib, WINDOWS_Soulver.nib); 
+        INTERFACES = (NEXTSTEP_Soulver.nib, NEXTSTEP_SVRDocument.nib); 
         OTHER_LINKED = (Soulver_main.m); 
         OTHER_SOURCES = (Makefile.preamble, Makefile, Makefile.postamble, m.template, h.template); 
     }; 
     LANGUAGE = English; 
     LOCALIZABLE_FILES = {
+        NEXTSTEP_SVRDocument.nib = NEXTSTEP_SVRDocument.nib; 
         NEXTSTEP_Soulver.nib = NEXTSTEP_Soulver.nib; 
-        WINDOWS_Soulver.nib = WINDOWS_Soulver.nib; 
     }; 
     MAKEFILEDIR = "$(NEXT_ROOT)/NextDeveloper/Makefiles/pb_makefiles"; 
     NEXTSTEP_BUILDTOOL = /bin/gnumake; 
+    NEXTSTEP_DOCUMENTEXTENSIONS = ({Extension = solv; Image = ""; }); 
     NEXTSTEP_INSTALLDIR = "$(HOME)/Apps"; 
     NEXTSTEP_MAINNIB = NEXTSTEP_Soulver.nib; 
     PDO_UNIX_BUILDTOOL = $NEXT_ROOT/NextDeveloper/bin/make; 
     PROJECTNAME = Soulver; 
     PROJECTTYPE = Application; 
     PROJECTVERSION = 2.6; 
+    SYSTEMEXTENSIONS = (); 
     WINDOWS_BUILDTOOL = $NEXT_ROOT/NextDeveloper/Executables/make; 
+    WINDOWS_DOCUMENTEXTENSIONS = (); 
     WINDOWS_INSTALLDIR = /MyApps; 
     WINDOWS_MAINNIB = WINDOWS_Soulver.nib; 
 }

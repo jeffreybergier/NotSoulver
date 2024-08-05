@@ -1,0 +1,17 @@
+"FirstResponder" = {ACTIONS = {}; OUTLETS = {}; SUPERCLASS = NSObject; };
+"SVRDocumentController" = {
+    ACTIONS = {}; 
+    OUTLETS = {_model = id; _window = id; }; 
+    SUPERCLASS = NSObject; 
+};
+"SVRKeypadViewController" = {
+    ACTIONS = {"append:" = id; }; 
+    OUTLETS = {model = id; }; 
+    SUPERCLASS = NSObject; 
+};
+"SVRTapeModel" = {ACTIONS = {}; OUTLETS = {}; SUPERCLASS = NSObject; };
+"SVRTapeViewController" = {
+    ACTIONS = {}; 
+    OUTLETS = {model = id; textView = id; }; 
+    SUPERCLASS = NSObject; 
+};
