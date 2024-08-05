@@ -4,8 +4,14 @@
 @implementation SVRTapeViewController
 
 // MARK: Properties
--(NSTextView*)textView; { return textView; }
--(SVRTapeModel*)model;   { return model; }
+-(NSTextView*)textView; 
+{ 
+  return textView; 
+}
+-(SVRTapeModel*)model;
+{ 
+  return model;
+}
 
 -(void)awakeFromNib; 
 {

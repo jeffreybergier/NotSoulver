@@ -50,7 +50,12 @@
   [self setLatestRender:[[self mathString] render]];
 }
 
-
+-(void)dealloc;
+{
+  [_mathString release];
+  [_latestRender release];
+  [super dealloc];
+}
 
 
 
