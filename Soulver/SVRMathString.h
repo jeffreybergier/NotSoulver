@@ -11,10 +11,21 @@
 {
   NSMutableString *_string;
 }
+// MARK: Main Business Logic
 -(void)appendString:(NSString*)aString;
 -(void)backspace;
+// MARK: Debugging
 -(NSString*)description;
+// MARK: Init
 -(id)init;
+-(id)initWithString:(NSString*)aString;
+// MARK: Validation
 +(BOOL)isValidInput:(NSString*)input;
 
+@end
+
+@interface SVRMathString (Coding) <NSCopying, NSCoding>
+-(void)encodeWithCoder:(NSCoder*)coder;
+-(id)initWithCoder:(NSCoder*)coder;
+-(id)copyWithZone:(NSZone*)zone;
 @end

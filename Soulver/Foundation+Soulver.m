@@ -245,6 +245,10 @@
   SVRStringEnumeratorObject *output;
   NSString *substring;
   
+  if ([_string length] == 0) {
+    return nil;
+  }
+  
   if (_range.location > [_string length] - _range.length) {
     return nil;
   }
