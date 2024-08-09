@@ -24,7 +24,7 @@
   [_latestRender release];
   _latestRender = [aString retain];
   [[NSNotificationCenter defaultCenter] postNotificationName:[SVRTapeModel renderDidChangeNotificationName] 
-                                                      object:_latestRender];
+                                                      object:self];
 }
 +(NSString*)renderDidChangeNotificationName;
 {

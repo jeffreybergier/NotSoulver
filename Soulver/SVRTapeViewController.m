@@ -19,13 +19,13 @@
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(modelRenderDidChangeNotification:) 
                                                name:[SVRTapeModel renderDidChangeNotificationName] 
-                                             object:nil];
+                                             object:[self model]];
 
 }
 
 -(void)modelRenderDidChangeNotification:(NSNotification*)aNotification;
 {
-  [self replaceTapeWithString:[aNotification object]];
+  [self replaceTapeWithString:[[self model] latestRender]];
 }
 
 -(void)replaceTapeWithString:(NSAttributedString*)aString;
