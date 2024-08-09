@@ -29,3 +29,9 @@
 -(id)initWithCoder:(NSCoder*)coder;
 -(id)copyWithZone:(NSZone*)zone;
 @end
+
+@interface SVRMathString (Archiving)
+-(BOOL)writeToFilename:(NSString*)filename;
++(id)mathStringFromFilename:(NSString*)filename;
+@end
+
