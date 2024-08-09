@@ -3,14 +3,14 @@
 @implementation SVRDocumentController
 
 // MARK: Properties
--(NSString*)filePath;
+-(NSString*)filename;
 {
-  return _filePath;
+  return _filename;
 }
--(void)setFilePath:(NSString*)aPath;
+-(void)setFilename:(NSString*)filename;
 {
-  [_filePath release];
-  _filePath = [aPath retain];
+  [_filename release];
+  _filename = [filename retain];
   [self __updateWindowState];
 }
 -(NSWindow*)window;
@@ -23,31 +23,41 @@
 }
 
 // MARK: INIT
--(id)initWithFilePath:(NSString*)aPath;
+-(id)initWithFilename:(NSString*)filename;
 {
   self = [super init];
+  _filename = [filename retain];
   [NSBundle loadNibNamed:@"NEXTSTEP_SVRDocument.nib" owner:self];
-  _filePath = [aPath retain];
   return self;
 }
 
-+(id)controllerWithFilePath:(NSString*)aPath;
++(id)controllerWithFilename:(NSString*)filename;
 {
-  return [[[SVRDocumentController alloc] initWithFilePath:aPath] autorelease];
+  return [[[SVRDocumentController alloc] initWithFilename:filename] autorelease];
 }
 
 -(void)awakeFromNib;
 {
+  SVRMathString *document;
+  NSString *filename;
   NSLog(@"%@", self);
   [self __updateWindowState];
+  filename = [self filename];
+  if (filename) {
+    NSLog(@"Opening File: %@", filename);
+    document = [NSUnarchiver unarchiveObjectWithFile:filename];
+    if (!document) { NSLog(@"Open File Failed: %@", filename); return; }
+    //[[self model] setMathString:document];
+  }
 }
 
 -(void)__updateWindowState;
 {
-  if ([self filePath]) {
+  NSString *filename = [self filename];
+  if (filename) {
     [[self window] setDocumentEdited:NO];
-    [[self window] setTitle:@""];
-    [[self window] setRepresentedFilename:[self filePath]];
+    [[self window] setTitle:filename];
+    [[self window] setRepresentedFilename:filename];
   } else {
     [[self window] setDocumentEdited:YES];
     [[self window] setTitle:@"UNTITLED.solv"];

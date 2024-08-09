@@ -5,18 +5,18 @@
 {
     SVRTapeModel *_model;
     NSWindow *_window;
-    NSString *_filePath;
+    NSString *_filename;
 }
 
 // MARK: Properties
--(NSString*)filePath;
--(void)setFilePath:(NSString*)aPath;
+-(NSString*)filename;
+-(void)setFilename:(NSString*)filename;
 -(NSWindow*)window;
 -(SVRTapeModel*)model;
 
 // MARK: INIT
--(id)initWithFilePath:(NSString*)aPath;
-+(id)controllerWithFilePath:(NSString*)aPath;
+-(id)initWithFilename:(NSString*)filename;
++(id)controllerWithFilename:(NSString*)filename;
 
 // PRIVATE
 -(void)__updateWindowState;

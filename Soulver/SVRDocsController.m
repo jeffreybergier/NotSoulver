@@ -21,17 +21,48 @@
 
 - (void)newDoc:(id)sender
 {
-  [[self openUnsaved] addObject:[SVRDocumentController controllerWithFilePath:nil]];
+  [[self openUnsaved] addObject:[SVRDocumentController controllerWithFilename:nil]];
 }
 
 - (void)openDoc:(id)sender
 {
-  NSOpenPanel *panel = [NSOpenPanel openPanel];
-  [panel runModalForTypes:[NSArray arrayWithObjects:@"solv", nil]];
+  NSOpenPanel *panel;
+  NSString *file;
+  SVRDocumentController *controller;
+
+  panel = [NSOpenPanel openPanel];
+  [panel setRequiredFileType:@"solv"];
+  [panel runModal];
+  file = [panel filename];
+  if (!file) { NSLog(@"Open Cancelled"); return; }
+  controller = [[self openFiles] objectForKey:file];
+  if (!controller) {
+    controller = [SVRDocumentController controllerWithFilename:file];
+    [[self openFiles] setObject:controller forKey:file];
+  }
+  // TODO: Implement this functionality
+  // [controller bringFront];
 }
+
+  //[panel runModalForTypes:[NSArray arrayWithObjects:@"solv", nil]];
 
 - (void)saveDoc:(id)sender
 {
+  SVRMathString *document;
+  NSSavePanel *panel;
+  NSString *file;
+  BOOL result;
+
+  panel = [NSSavePanel savePanel];
+  [panel setRequiredFileType:@"solv"];
+  [panel runModal];
+  file = [panel filename];
+  if (!file) { NSLog(@"Save Cancelled"); return; }
+
+  document = [[[SVRMathString alloc] initWithString:@"2+2=-4="] autorelease];
+  result = [NSArchiver archiveRootObject:document toFile:file];
+  if (result) { NSLog(@"Saved: %@", file); }
+  else { NSLog(@"Failed: %@", file); }
 }
 
 -(void)awakeFromNib;
