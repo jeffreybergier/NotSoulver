@@ -8,7 +8,7 @@
 {
   return _openFiles;
 }
--(NSMutableArray*)openUnsaved;
+-(NSMutableDictionary*)openUnsaved;
 {
   return _openUnsaved;
 }
@@ -21,7 +21,16 @@
 
 - (void)newDoc:(id)sender
 {
-  [[self openUnsaved] addObject:[SVRDocumentController controllerWithFilename:nil]];
+  SVRDocumentController *controller;
+  NSWindow *window;
+  NSNumber *windowNumber;
+
+  controller = [SVRDocumentController controllerWithFilename:nil];
+  window = [controller window];
+  windowNumber = [NSNumber numberWithInt:[window windowNumber]];
+  
+  [[self openUnsaved] setObject:controller forKey:windowNumber];
+  [window makeKeyAndOrderFront:self];
 }
 
 - (void)openDoc:(id)sender
@@ -48,28 +57,43 @@
 
 - (void)saveDoc:(id)sender
 {
-  SVRMathString *document;
-  NSSavePanel *panel;
-  NSString *file;
+  NSWindow *window;
+  NSNumber *windowNumber;
+  SVRDocumentController *documentLHS;
+  SVRDocumentController *documentRHS;
   BOOL result;
 
-  panel = [NSSavePanel savePanel];
-  [panel setRequiredFileType:@"solv"];
-  [panel runModal];
-  file = [panel filename];
-  if (!file) { NSLog(@"Save Cancelled"); return; }
-
-  document = [SVRMathString mathStringWithString:@"2+2=-4="];
-  result = [document writeToFilename:file];
-  if (result) { NSLog(@"Saved: %@", file); }
-  else { NSLog(@"Failed: %@", file); }
+  window = [[NSApplication sharedApplication] mainWindow];
+  windowNumber = [NSNumber numberWithInt:[window windowNumber]];
+  documentLHS = [window delegate];
+  if ([documentLHS isKindOfClass:[SVRDocumentController class]]) {
+    result = [documentLHS saveDocument];
+  } else {
+    result = NO;
+  }
+  NSLog(@"Document Save Successful: %d", result);
+  if (result) {
+    documentRHS = [[self openUnsaved] objectForKey:windowNumber];
+    if (documentRHS) {
+      NSAssert(documentLHS == documentRHS, @"Open Document Management Error");
+      NSAssert([documentRHS filename], @"Open Document Management Error");
+      [[self openFiles] setObject:documentRHS forKey: [documentRHS filename]];
+      [[self openUnsaved] removeObjectForKey:windowNumber];
+      NSLog(@"Confirmed: Moved document from openUnsaved to openFiles");
+    } else {
+      documentRHS = [[self openFiles] objectForKey:[documentLHS filename]];
+      NSAssert(documentLHS == documentRHS, @"Open Document Management Error");
+      NSAssert([documentRHS filename], @"Open Document Management Error");
+      NSLog(@"Confirmed: Document in saveFiles dictionary");
+    }
+  }
 }
 
 -(void)awakeFromNib;
 {
   NSLog(@"%@", self);
   _openFiles = [NSMutableDictionary new];
-  _openUnsaved = [NSMutableArray new];
+  _openUnsaved = [NSMutableDictionary new];
 }
 
 -(void)dealloc;

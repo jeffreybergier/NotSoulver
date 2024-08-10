@@ -18,8 +18,12 @@
 -(id)initWithFilename:(NSString*)filename;
 +(id)controllerWithFilename:(NSString*)filename;
 
+// MARK: Saving
+-(BOOL)saveDocument;
+
 // PRIVATE
 -(void)__updateWindowState;
+-(void)__modelRenderDidChangeNotification:(NSNotification*)aNotification;
 
 
 @end

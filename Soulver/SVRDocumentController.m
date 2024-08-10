@@ -50,7 +50,35 @@
     if (!document) { NSLog(@"Open File Failed: %@", filename); return; }
     [[self model] setMathString:document];
   }
+
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(__modelRenderDidChangeNotification:)
+                                               name:[SVRTapeModel renderDidChangeNotificationName]
+                                             object:[self model]];
 }
+
+// MARK: Saving
+-(BOOL)saveDocument;
+{
+  NSString *filename;
+  NSSavePanel *panel;
+  BOOL result;
+
+  filename = [self filename];
+  if (!filename) {
+    panel = [NSSavePanel savePanel];
+    [panel setRequiredFileType:@"solv"];
+    [panel runModal];
+    filename = [panel filename];
+    [self setFilename:filename];
+  }
+  if (!filename) { return NO; }
+  result = [[[self model] mathString] writeToFilename:filename];
+  if (result) { [[self window] setDocumentEdited:NO]; }
+  return result;
+}
+
+// MARK: Private
 
 -(void)__updateWindowState;
 {
@@ -64,6 +92,18 @@
     [[self window] setTitle:@"UNTITLED.solv"];
     [[self window] setRepresentedFilename:@""];
   }
+}
+
+-(void)__modelRenderDidChangeNotification:(NSNotification*)aNotification;
+{
+  [[self window] setDocumentEdited:YES];
+}
+
+-(void)dealloc;
+{
+  [_filename release];
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [super dealloc];
 }
 
 @end

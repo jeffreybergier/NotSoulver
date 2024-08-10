@@ -3,12 +3,12 @@
 @interface SVRDocsController : NSObject
 {
   NSMutableDictionary *_openFiles;
-  NSMutableArray *_openUnsaved;
+  NSMutableDictionary *_openUnsaved;
 }
 
 // MARK: Properties
 -(NSMutableDictionary*)openFiles;
--(NSMutableArray*)openUnsaved;
+-(NSMutableDictionary*)openUnsaved;
 
 // MARK: IBActions
 - (void)closeDoc:(id)sender;
