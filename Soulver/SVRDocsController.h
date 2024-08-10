@@ -11,8 +11,11 @@
 -(NSMutableDictionary*)openUnsaved;
 
 // MARK: IBActions
-- (void)closeDoc:(id)sender;
-- (void)newDoc:(id)sender;
-- (void)openDoc:(id)sender;
-- (void)saveDoc:(id)sender;
+-(void)newDoc:(id)sender;
+-(void)openDoc:(id)sender;
+-(void)saveDoc:(id)sender;
+
+// MARK: Notifications
+-(void)closeDoc:(NSNotification*)aNotification;
+
 @end

@@ -78,6 +78,11 @@
   return result;
 }
 
++(NSString*)windowDidCloseNotification;
+{
+  return @"SVRDocumentControllerWindowDidCloseNotification";
+}
+
 // MARK: Private
 
 -(void)__updateWindowState;
@@ -101,9 +106,50 @@
 
 -(void)dealloc;
 {
+  NSLog(@"DEALLOC: %@", self);
   [_filename release];
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
 }
 
+@end
+
+@implementation SVRDocumentController (NSWindowDelegate)
+-(BOOL)windowShouldClose:(id)sender;
+{
+  BOOL alertResult;
+  NSDictionary *userInfo;
+  NSArray *infoObjects;
+  NSArray *infoKeys;
+  NSNotificationCenter *center;
+  BOOL result = YES;
+  if ([[self window] isDocumentEdited]) {
+    alertResult = NSRunAlertPanel(@"Close Document", @"Save changes before closing?", @"Save", @"Cancel", @"Don't Save");
+    switch (alertResult) {
+      case -1:
+        result = YES;
+        break;
+      case 1:
+        result = [self saveDocument];
+        break;
+      default:
+        result = NO;
+        break;
+    }
+  }
+  if (result) {
+    infoObjects = [NSArray arrayWithObjects:[NSNumber numberWithInt:[[self window] windowNumber]],
+                                            [self filename],
+                                            nil];
+    infoKeys = [NSArray arrayWithObjects:@"windowNumber", [self filename] ? @"filename" : nil, nil];
+
+    userInfo = [NSDictionary dictionaryWithObjects:infoObjects
+                                           forKeys:infoKeys];
+    center = [NSNotificationCenter defaultCenter]; 
+    [center postNotificationName:[SVRDocumentController windowDidCloseNotification]
+                          object:self
+                        userInfo:userInfo];
+  }
+  return result;
+}
 @end

@@ -15,10 +15,6 @@
 
 // MARK: IBActions
 
-- (void)closeDoc:(id)sender
-{
-}
-
 - (void)newDoc:(id)sender
 {
   SVRDocumentController *controller;
@@ -30,7 +26,7 @@
   windowNumber = [NSNumber numberWithInt:[window windowNumber]];
   
   [[self openUnsaved] setObject:controller forKey:windowNumber];
-  [window makeKeyAndOrderFront:self];
+  [window makeKeyAndOrderFront:sender];
 }
 
 - (void)openDoc:(id)sender
@@ -49,11 +45,9 @@
     controller = [SVRDocumentController controllerWithFilename:file];
     [[self openFiles] setObject:controller forKey:file];
   }
-  // TODO: Implement this functionality
-  // [controller bringFront];
-}
 
-  //[panel runModalForTypes:[NSArray arrayWithObjects:@"solv", nil]];
+  [[controller window] makeKeyAndOrderFront:sender];
+}
 
 - (void)saveDoc:(id)sender
 {
@@ -89,17 +83,39 @@
   }
 }
 
+// MARK: Notifications
+-(void)closeDoc:(NSNotification*)aNotification;
+{
+  NSNumber *windowNumber;
+  NSString *filename;
+  NSDictionary *userInfo = [aNotification userInfo];
+  windowNumber = [userInfo objectForKey:@"windowNumber"];
+  filename = [userInfo objectForKey:@"filename"];
+
+  if (filename)     { [[self openFiles] removeObjectForKey:filename]; }
+  if (windowNumber) { [[self openUnsaved] removeObjectForKey:windowNumber]; }
+  
+  NSLog(@"Closed Windows: %@", userInfo);
+}
+
 -(void)awakeFromNib;
 {
   NSLog(@"%@", self);
   _openFiles = [NSMutableDictionary new];
   _openUnsaved = [NSMutableDictionary new];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(closeDoc:)
+                                               name:[SVRDocumentController windowDidCloseNotification]
+                                             object:nil];
 }
 
 -(void)dealloc;
 {
+  NSLog(@"DEALLOC: %@", self);
   [_openFiles release];
   [_openUnsaved release];
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [super dealloc];
 }
 
 @end

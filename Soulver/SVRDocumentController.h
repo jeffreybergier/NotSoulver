@@ -1,7 +1,7 @@
 #import <AppKit/AppKit.h>
 #import "SVRTapeModel.h"
 
-@interface SVRDocumentController : NSObject
+@interface SVRDocumentController: NSObject
 {
     SVRTapeModel *_model;
     NSWindow *_window;
@@ -20,10 +20,14 @@
 
 // MARK: Saving
 -(BOOL)saveDocument;
++(NSString*)windowDidCloseNotification;
 
 // PRIVATE
 -(void)__updateWindowState;
 -(void)__modelRenderDidChangeNotification:(NSNotification*)aNotification;
 
+@end
 
+@interface SVRDocumentController (NSWindowDelegate)
+-(BOOL)windowShouldClose:(id)sender;
 @end
