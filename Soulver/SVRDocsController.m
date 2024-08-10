@@ -119,3 +119,59 @@
 }
 
 @end
+
+
+@implementation SVRDocsController (NSApplicationDelegate)
+-(BOOL)applicationShouldTerminate:(NSApplication *)sender;
+{
+  NSEnumerator *e1;
+  NSEnumerator *e2;
+  SVRDocumentController *value;
+  BOOL alertResult;
+  BOOL result = YES;
+
+  e1 = [[self openUnsaved] objectEnumerator];
+  e2 = [[self openFiles] objectEnumerator];
+  value = [e1 nextObject];
+  while (value && result) {
+    result = ![[value window] isDocumentEdited];
+    value = [e1 nextObject] ? [e1 nextObject] : [e2 nextObject];
+  }
+
+  if (!result) {
+    alertResult = NSRunAlertPanel(@"Quit Application",
+                                  @"There are documents with unsaved changes.",
+                                  @"Review Unsaved Changes", @"Quit Anyway",
+                                  nil);
+    switch (alertResult) {
+      case 1: // Review Unsaved
+        result = NO;
+        break;
+      default: // Quit Immediately
+        result = YES;
+        break;
+    }
+  }
+  return result;
+}
+-(BOOL)application:(NSApplication *)sender openFile:(NSString *)filename;
+{
+  NSLog(@"OpenFile: %@", filename);
+  return YES;
+}
+-(BOOL)application:(NSApplication *)sender openTempFile:(NSString *)filename;
+{
+  NSLog(@"OpenTempFile: %@", filename);
+  return YES;
+}
+-(BOOL)applicationOpenUntitledFile:(NSApplication *)sender;
+{
+  [self newDoc:sender];
+  return YES;
+}
+-(BOOL)application:(id)sender openFileWithoutUI:(NSString *)filename;
+{
+  NSLog(@"openFileWithoutUI: %@", filename);
+  return YES;
+}
+@end

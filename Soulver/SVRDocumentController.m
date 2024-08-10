@@ -93,7 +93,7 @@
     [[self window] setTitle:filename];
     [[self window] setRepresentedFilename:filename];
   } else {
-    [[self window] setDocumentEdited:YES];
+    [[self window] setDocumentEdited:NO];
     [[self window] setTitle:@"UNTITLED.solv"];
     [[self window] setRepresentedFilename:@""];
   }
@@ -124,7 +124,11 @@
   NSNotificationCenter *center;
   BOOL result = YES;
   if ([[self window] isDocumentEdited]) {
-    alertResult = NSRunAlertPanel(@"Close Document", @"Save changes before closing?", @"Save", @"Cancel", @"Don't Save");
+    alertResult = NSRunAlertPanel(@"Close Document",
+                                  @"Save changes before closing?",
+                                  @"Save",
+                                  @"Cancel",
+                                  @"Don't Save");
     switch (alertResult) {
       case -1:
         result = YES;
