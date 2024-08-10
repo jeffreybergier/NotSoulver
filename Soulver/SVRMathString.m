@@ -56,21 +56,6 @@
   return [[super description] stringByAppendingString:_string];
 }
 
-// MARK: Init
--(id)init;
-{
-  self = [super init];
-  _string = [NSMutableString new];
-  return self;
-}
-
--(id)initWithString:(NSString*)aString;
-{
-  self = [super init];
-  _string = [aString mutableCopy];
-  return self;
-}
-
 // MARK: Validation
 +(BOOL)isValidInput:(NSString*)input;
 {
@@ -88,26 +73,48 @@
 
 @end
 
-@implementation SVRMathString (Coding)
--(void)encodeWithCoder:(NSCoder*)coder;
+// MARK: Init
+@implementation SVRMathString (Creating)
+-(id)init;
 {
-  [coder encodeObject:_string];
+ self = [super init];
+ _string = [NSMutableString new];
+ return self;
 }
--(id)initWithCoder:(NSCoder*)coder;
+
+-(id)initWithString:(NSString*)aString;
 {
-  id string;
-  self = [super init];
-  string = [coder decodeObject];
-  if ([string isKindOfClass:[NSString class]]) {
-    _string = string;
-    return self;
-  } else {
-    [self release];
-    return nil;
-  }
+ self = [super init];
+ _string = [aString mutableCopy];
+ return self;
 }
++(id)mathStringWithString:(NSString*)aString;
+{
+  return [[[SVRMathString alloc] initWithString:aString] autorelease];
+}
+@end
+
+@implementation SVRMathString (Copying)
 -(id)copyWithZone:(NSZone*)zone;
 {
   return [[SVRMathString alloc] initWithString:_string];
+}
+@end
+
+@implementation SVRMathString (Archiving)
+-(BOOL)writeToFilename:(NSString*)filename;
+{
+  NSData *data = [_string dataUsingEncoding:NSUTF8StringEncoding];
+  if (!data) { return NO; }
+  return [data writeToFile:filename atomically:YES];
+}
++(id)mathStringWithFilename:(NSString*)filename;
+{
+  NSString *string;
+  NSData *data = [NSData dataWithContentsOfFile:filename];
+  if (!data) { return nil; }
+  string = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+  if (!string) { return nil; }
+  return [SVRMathString mathStringWithString:string];
 }
 @end

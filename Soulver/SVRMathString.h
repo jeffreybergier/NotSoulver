@@ -16,22 +16,23 @@
 -(void)backspace;
 // MARK: Debugging
 -(NSString*)description;
-// MARK: Init
--(id)init;
--(id)initWithString:(NSString*)aString;
 // MARK: Validation
 +(BOOL)isValidInput:(NSString*)input;
-
 @end
 
-@interface SVRMathString (Coding) <NSCopying, NSCoding>
--(void)encodeWithCoder:(NSCoder*)coder;
--(id)initWithCoder:(NSCoder*)coder;
+// MARK: Init
+@interface SVRMathString (Creating)
+-(id)init;
+-(id)initWithString:(NSString*)aString;
++(id)mathStringWithString:(NSString*)aString;
+@end
+
+@interface SVRMathString (Copying) <NSCopying>
 -(id)copyWithZone:(NSZone*)zone;
 @end
 
 @interface SVRMathString (Archiving)
 -(BOOL)writeToFilename:(NSString*)filename;
-+(id)mathStringFromFilename:(NSString*)filename;
++(id)mathStringWithFilename:(NSString*)filename;
 @end
 

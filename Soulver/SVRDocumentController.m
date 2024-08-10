@@ -41,13 +41,14 @@
   SVRMathString *document;
   NSString *filename;
   NSLog(@"%@", self);
+  
   [self __updateWindowState];
   filename = [self filename];
   if (filename) {
     NSLog(@"Opening File: %@", filename);
-    document = [NSUnarchiver unarchiveObjectWithFile:filename];
+    document = [SVRMathString mathStringWithFilename:filename];
     if (!document) { NSLog(@"Open File Failed: %@", filename); return; }
-    //[[self model] setMathString:document];
+    [[self model] setMathString:document];
   }
 }
 

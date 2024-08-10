@@ -59,8 +59,8 @@
   file = [panel filename];
   if (!file) { NSLog(@"Save Cancelled"); return; }
 
-  document = [[[SVRMathString alloc] initWithString:@"2+2=-4="] autorelease];
-  result = [NSArchiver archiveRootObject:document toFile:file];
+  document = [SVRMathString mathStringWithString:@"2+2=-4="];
+  result = [document writeToFilename:file];
   if (result) { NSLog(@"Saved: %@", file); }
   else { NSLog(@"Failed: %@", file); }
 }
