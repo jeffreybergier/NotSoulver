@@ -14,6 +14,7 @@
 // MARK: Main Business Logic
 -(void)appendString:(NSString*)aString;
 -(void)backspace;
+-(BOOL)isEmpty;
 // MARK: Debugging
 -(NSString*)description;
 // MARK: Validation
@@ -34,5 +35,10 @@
 @interface SVRMathString (Archiving)
 -(BOOL)writeToFilename:(NSString*)filename;
 +(id)mathStringWithFilename:(NSString*)filename;
+@end
+
+@interface SVRMathString (NSObjectProtocol)
+-(BOOL)isEqual:(id)object;
+-(unsigned)hash;
 @end
 

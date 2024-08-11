@@ -50,6 +50,11 @@
   }
 }
 
+-(BOOL)isEmpty;
+{
+  return [_string length] == 0;
+}
+
 // MARK: Debugging
 -(NSString*)description;
 {
@@ -116,5 +121,25 @@
   string = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
   if (!string) { return nil; }
   return [SVRMathString mathStringWithString:string];
+}
+@end
+
+@implementation SVRMathString (NSObjectProtocol)
+-(BOOL)isEqual:(id)object;
+{
+  SVRMathString *rhs = nil;
+  SVRMathString *lhs = self;
+  if ([object isKindOfClass:[SVRMathString class]]) {
+    rhs = object;
+  }
+  if (rhs) {
+    return [lhs->_string isEqualToString:rhs->_string];
+  } else {
+    return NO;
+  }
+}
+-(unsigned)hash;
+{
+  return [_string hash];
 }
 @end

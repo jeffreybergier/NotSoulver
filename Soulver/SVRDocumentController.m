@@ -72,10 +72,14 @@
     filename = [panel filename];
     [self setFilename:filename];
   }
-  if (!filename) { return NO; }
-  result = [[[self model] mathString] writeToFilename:filename];
-  if (result) { [[self window] setDocumentEdited:NO]; }
-  return result;
+  if (!filename) {
+    [self __updateWindowState];
+    return NO;
+  } else {
+    result = [[[self model] mathString] writeToFilename:filename];
+    [self __updateWindowState];
+    return result;
+  }
 }
 
 +(NSString*)windowDidCloseNotification;
@@ -87,21 +91,29 @@
 
 -(void)__updateWindowState;
 {
+  SVRMathString *rhs;
+  SVRMathString *lhs = [[self model] mathString];
   NSString *filename = [self filename];
+  // Update Title
   if (filename) {
-    [[self window] setDocumentEdited:NO];
     [[self window] setTitle:filename];
     [[self window] setRepresentedFilename:filename];
   } else {
-    [[self window] setDocumentEdited:NO];
     [[self window] setTitle:@"UNTITLED.solv"];
     [[self window] setRepresentedFilename:@""];
+  }
+  // Update document edited
+  if (filename) {
+    rhs = [SVRMathString mathStringWithFilename:filename];
+    [[self window] setDocumentEdited:![lhs isEqual:rhs]];
+  } else {
+    [[self window] setDocumentEdited:![lhs isEmpty]];
   }
 }
 
 -(void)__modelRenderDidChangeNotification:(NSNotification*)aNotification;
 {
-  [[self window] setDocumentEdited:YES];
+  [self __updateWindowState];
 }
 
 -(void)dealloc;
