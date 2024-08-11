@@ -154,24 +154,22 @@
   }
   return result;
 }
+
 -(BOOL)application:(NSApplication *)sender openFile:(NSString *)filename;
 {
-  NSLog(@"OpenFile: %@", filename);
+  SVRDocumentController *controller;
+  controller = [[self openFiles] objectForKey:filename];
+  if (!controller) {
+    controller = [SVRDocumentController controllerWithFilename:filename];
+    [[self openFiles] setObject:controller forKey:filename];
+  }
+  [[controller window] makeKeyAndOrderFront:sender];
   return YES;
 }
--(BOOL)application:(NSApplication *)sender openTempFile:(NSString *)filename;
-{
-  NSLog(@"OpenTempFile: %@", filename);
-  return YES;
-}
+
 -(BOOL)applicationOpenUntitledFile:(NSApplication *)sender;
 {
   [self newDoc:sender];
-  return YES;
-}
--(BOOL)application:(id)sender openFileWithoutUI:(NSString *)filename;
-{
-  NSLog(@"openFileWithoutUI: %@", filename);
   return YES;
 }
 @end

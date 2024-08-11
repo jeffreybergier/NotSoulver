@@ -23,7 +23,5 @@
 @interface SVRDocsController (NSApplicationDelegate)
 -(BOOL)applicationShouldTerminate:(NSApplication *)sender;
 -(BOOL)application:(NSApplication *)sender openFile:(NSString *)filename;
--(BOOL)application:(NSApplication *)sender openTempFile:(NSString *)filename;
 -(BOOL)applicationOpenUntitledFile:(NSApplication *)sender;
--(BOOL)application:(id)sender openFileWithoutUI:(NSString *)filename;
 @end
