@@ -48,8 +48,12 @@
 
 // MARK: NSString Custom Range Search
 @interface NSString (Searching)
--(SVRBoundingRange*)boundingRangeWithLHS:(NSString*)lhs andRHS:(NSString*)rhs;
--(SVRMathRange*)mathRangeByMonitoringSet:(NSSet*)monitorSet ignoringSet:(NSSet*)ignoreSet;
+-(SVRBoundingRange*)boundingRangeWithLHS:(NSString*)lhs
+                                  andRHS:(NSString*)rhs
+                                   error:(NSNumber**)error;
+-(SVRMathRange*)mathRangeByMonitoringSet:(NSSet*)monitorSet
+                             ignoringSet:(NSSet*)ignoreSet;
+-(BOOL)containsOnlyCharactersInSet:(NSSet*)aSet;
 @end
 
 @interface SVRStringEnumeratorObject: NSObject
@@ -59,6 +63,7 @@
 }
 -(NSRange)range;
 -(NSString*)substring;
+-(NSString*)description;
 -(id)initWithRange:(NSRange)range substring:(NSString*)substring;
 +(id)objectWithRange:(NSRange)range substring:(NSString*)substring;
 @end
@@ -72,4 +77,22 @@
 -(SVRStringEnumeratorObject*)nextObject;
 -(id)initWithString:(NSString*)string;
 +(id)enumeratorWithString:(NSString*)string;
+@end
+
+// MARK: NSError
+// OPENSTEP does not have NSError so I am just using NSNumber
+@interface NSNumber (NSError)
++(NSNumber*)errorOperatorUnsupported;
++(NSNumber*)errorInvalidCharacter;
++(NSNumber*)errorMismatchedBrackets;
++(NSNumber*)errorMissingNumberBeforeOrAfterOperator;
+@end
+
+// MARK: NSSetHelper
+@interface NSSet (Soulver)
++(NSSet*)SVROperators;
++(NSSet*)SVRPlusMinus;
++(NSSet*)SVRMultDiv;
++(NSSet*)SVRExponent;
++(NSSet*)SVRNumerals;
 @end

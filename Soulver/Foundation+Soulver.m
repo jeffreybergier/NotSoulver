@@ -138,7 +138,9 @@
 // MARK: NSString Custom Range Search
 @implementation NSString (Searching)
 
--(SVRBoundingRange*)boundingRangeWithLHS:(NSString*)lhs andRHS:(NSString*)rhs;
+-(SVRBoundingRange*)boundingRangeWithLHS:(NSString*)lhs
+                                  andRHS:(NSString*)rhs
+                                   error:(NSNumber**)error;
 {
   SVRStringEnumerator *e;
   SVRStringEnumeratorObject *next;
@@ -169,7 +171,8 @@
   return nil;
 }
 
--(SVRMathRange*)mathRangeByMonitoringSet:(NSSet*)monitorSet ignoringSet:(NSSet*)ignoreSet;
+-(SVRMathRange*)mathRangeByMonitoringSet:(NSSet*)monitorSet
+                             ignoringSet:(NSSet*)ignoreSet;
 {
   SVRStringEnumerator *e;
   SVRStringEnumeratorObject *next;
@@ -207,8 +210,26 @@
   if ([lhs length] > 0 && [rhs length] > 0 && [operator length] > 0) {
     outputRange.length = [self length] - outputRange.location;
     return [SVRMathRange rangeWithRange:outputRange lhs:lhs rhs:rhs operator:operator];
+  } else {
+    return nil;
   }
-  return nil;
+}
+-(BOOL)containsOnlyCharactersInSet:(NSSet*)aSet;
+{
+  SVRStringEnumerator *e;
+  SVRStringEnumeratorObject *next;
+  
+  e = [SVRStringEnumerator enumeratorWithString:self];
+  next = [e nextObject];
+  
+  while (next) {
+    if (![aSet member:[next substring]]) {
+      return NO;
+    }
+    next = [e nextObject];
+  }
+  
+  return YES;
 }
 @end
 
@@ -220,6 +241,16 @@
 -(NSString*)substring;
 {
   return _substring;
+}
+-(NSString*)description;
+{
+  return [
+    NSString stringWithFormat:
+      @"SVRStringEnumeratorObject: Range<location: %d, lenght: %d>: Substring:<%@>",
+    [self range].location,
+    [self range].length,
+    [self substring]
+  ];
 }
 -(id)initWithRange:(NSRange)range substring:(NSString*)substring;
 {
@@ -274,5 +305,50 @@
 {
   [_string release];
   [super dealloc];
+}
+@end
+
+// MARK: NSError
+// OPENSTEP does not have NSError so I am just using NSNumber
+@implementation NSNumber (NSError)
++(NSNumber*)errorOperatorUnsupported;
+{
+  return [NSNumber numberWithInt:-1001];
+}
++(NSNumber*)errorInvalidCharacter;
+{
+  return [NSNumber numberWithInt:-1002];
+}
++(NSNumber*)errorMismatchedBrackets;
+{
+  return [NSNumber numberWithInt:-1003];
+}
++(NSNumber*)errorMissingNumberBeforeOrAfterOperator;
+{
+  return [NSNumber numberWithInt:-1004];
+}
+@end
+
+// MARK: NSSetHelper
+@implementation NSSet (Soulver)
++(NSSet*)SVROperators;
+{
+  return [NSSet setWithObjects:@"/", @"*", @"+", @"-", @"^", nil];
+}
++(NSSet*)SVRPlusMinus;
+{
+  return [NSSet setWithObjects:@"+", @"-", nil];
+}
++(NSSet*)SVRMultDiv;
+{
+  return [NSSet setWithObjects:@"/", @"*", nil];
+}
++(NSSet*)SVRExponent;
+{
+  return [NSSet setWithObjects:@"^", nil];
+}
++(NSSet*)SVRNumerals;
+{
+  return [NSSet setWithObjects:@"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", nil];
 }
 @end
