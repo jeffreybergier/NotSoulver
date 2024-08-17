@@ -92,8 +92,12 @@
   windowNumber = [userInfo objectForKey:@"windowNumber"];
   filename = [userInfo objectForKey:@"filename"];
 
-  if (filename)     { [[self openFiles] removeObjectForKey:filename]; }
-  if (windowNumber) { [[self openUnsaved] removeObjectForKey:windowNumber]; }
+  if (filename) {
+    [[self openFiles] removeObjectForKey:filename];
+  }
+  if (windowNumber != nil) {
+    [[self openUnsaved] removeObjectForKey:windowNumber];
+  }
   
   NSLog(@"Closed Windows: %@", userInfo);
 }
@@ -127,7 +131,7 @@
   NSEnumerator *e1;
   NSEnumerator *e2;
   SVRDocumentController *value;
-  BOOL alertResult;
+  int alertResult;
   BOOL result = YES;
 
   e1 = [[self openUnsaved] objectEnumerator];

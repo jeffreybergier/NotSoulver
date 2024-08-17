@@ -129,7 +129,7 @@
 @implementation SVRDocumentController (NSWindowDelegate)
 -(BOOL)windowShouldClose:(id)sender;
 {
-  BOOL alertResult;
+  int alertResult;
   NSDictionary *userInfo;
   NSArray *infoObjects;
   NSArray *infoKeys;
