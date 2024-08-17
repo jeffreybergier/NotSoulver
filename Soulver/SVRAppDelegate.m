@@ -1,7 +1,7 @@
-#import "SVRDocsController.h"
+#import "SVRAppDelegate.h"
 #import "SVRDocumentController.h"
 
-@implementation SVRDocsController
+@implementation SVRAppDelegate
 
 // MARK: Properties
 -(NSMutableDictionary*)openFiles;
@@ -13,7 +13,7 @@
   return _openUnsaved;
 }
 
-// MARK: IBActions
+// MARK: Document Management
 
 - (void)newDoc:(id)sender
 {
@@ -121,7 +121,7 @@
 @end
 
 
-@implementation SVRDocsController (NSApplicationDelegate)
+@implementation SVRAppDelegate (NSApplicationDelegate)
 -(BOOL)applicationShouldTerminate:(NSApplication *)sender;
 {
   NSEnumerator *e1;

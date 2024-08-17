@@ -1,5 +1,5 @@
 "FirstResponder" = {ACTIONS = {}; OUTLETS = {}; SUPERCLASS = NSObject; };
-"SVRDocsController" = {
+"SVRAppDelegate" = {
     ACTIONS = {"closeDoc:" = id; "newDoc:" = id; "openDoc:" = id; "saveDoc:" = id; }; 
     OUTLETS = {}; 
     SUPERCLASS = NSObject; 

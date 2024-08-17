@@ -4,28 +4,31 @@
     FILESTABLE = {
         CLASSES = (
             "Foundation+Soulver.m", 
-            SVRDocsController.m, 
             SVRDocumentController.m, 
             SVRKeypadViewController.m, 
             "SVRMathString+Rendering.m", 
             SVRMathString.m, 
             SVRTapeModel.m, 
-            SVRTapeViewController.m
+            SVRTapeViewController.m, 
+            SVRAppDelegate.m
         ); 
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
         H_FILES = (
             "Foundation+Soulver.h", 
-            SVRDocsController.h, 
             SVRDocumentController.h, 
             SVRKeypadViewController.h, 
             "SVRMathString+Rendering.h", 
             SVRMathString.h, 
             SVRTapeModel.h, 
-            SVRTapeViewController.h
+            SVRTapeViewController.h, 
+            SVRAppDelegate.h
         ); 
         INTERFACES = (NEXTSTEP_Soulver.nib, NEXTSTEP_SVRDocument.nib); 
         OTHER_LINKED = (Soulver_main.m); 
         OTHER_SOURCES = (Makefile.preamble, Makefile, Makefile.postamble, m.template, h.template); 
+        PRECOMPILED_HEADERS = (); 
+        PROJECT_HEADERS = (); 
+        PUBLIC_HEADERS = (); 
     }; 
     LANGUAGE = English; 
     LOCALIZABLE_FILES = {

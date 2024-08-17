@@ -10,7 +10,7 @@
   NSLog(@"%@", self);
 }
 
-- (void)append:(NSButton *)sender
+- (void)append:(NSButton*)sender
 {
   NSString *title = [sender title];
   if ([title isEqualToString:@"<-"]) {

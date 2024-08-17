@@ -4,5 +4,5 @@
 {
     id model;
 }
-- (void)append:(id)sender;
+- (void)append:(NSButton*)sender;
 @end

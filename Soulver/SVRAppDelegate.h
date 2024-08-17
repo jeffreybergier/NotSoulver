@@ -1,6 +1,6 @@
 #import <AppKit/AppKit.h>
 
-@interface SVRDocsController : NSObject
+@interface SVRAppDelegate: NSObject
 {
   NSMutableDictionary *_openFiles;
   NSMutableDictionary *_openUnsaved;
@@ -10,7 +10,7 @@
 -(NSMutableDictionary*)openFiles;
 -(NSMutableDictionary*)openUnsaved;
 
-// MARK: IBActions
+// MARK: Document Management
 -(void)newDoc:(id)sender;
 -(void)openDoc:(id)sender;
 -(void)saveDoc:(id)sender;
@@ -20,7 +20,7 @@
 
 @end
 
-@interface SVRDocsController (NSApplicationDelegate)
+@interface SVRAppDelegate (NSApplicationDelegate)
 -(BOOL)applicationShouldTerminate:(NSApplication *)sender;
 -(BOOL)application:(NSApplication *)sender openFile:(NSString *)filename;
 -(BOOL)applicationOpenUntitledFile:(NSApplication *)sender;

@@ -19,15 +19,15 @@ ICONSECTIONS =	-sectcreate __ICON app /NextLibrary/Frameworks/AppKit.framework/R
 
 LOCAL_RESOURCES = NEXTSTEP_Soulver.nib NEXTSTEP_SVRDocument.nib
 
-CLASSES = Foundation+Soulver.m SVRDocsController.m\
-          SVRDocumentController.m SVRKeypadViewController.m\
-          SVRMathString+Rendering.m SVRMathString.m SVRTapeModel.m\
-          SVRTapeViewController.m
+CLASSES = Foundation+Soulver.m SVRDocumentController.m\
+          SVRKeypadViewController.m SVRMathString+Rendering.m\
+          SVRMathString.m SVRTapeModel.m SVRTapeViewController.m\
+          SVRAppDelegate.m
 
-HFILES = Foundation+Soulver.h SVRDocsController.h\
-         SVRDocumentController.h SVRKeypadViewController.h\
-         SVRMathString+Rendering.h SVRMathString.h SVRTapeModel.h\
-         SVRTapeViewController.h
+HFILES = Foundation+Soulver.h SVRDocumentController.h\
+         SVRKeypadViewController.h SVRMathString+Rendering.h\
+         SVRMathString.h SVRTapeModel.h SVRTapeViewController.h\
+         SVRAppDelegate.h
 
 MFILES = Soulver_main.m
 
