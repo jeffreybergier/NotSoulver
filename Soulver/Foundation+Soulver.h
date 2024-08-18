@@ -82,7 +82,6 @@
 // MARK: NSError
 // OPENSTEP does not have NSError so I am just using NSNumber
 @interface NSNumber (NSError)
-+(NSNumber*)errorOperatorUnsupported;
 +(NSNumber*)errorInvalidCharacter;
 +(NSNumber*)errorMismatchedBrackets;
 +(NSNumber*)errorMissingNumberBeforeOrAfterOperator;

@@ -334,10 +334,6 @@
 // MARK: NSError
 // OPENSTEP does not have NSError so I am just using NSNumber
 @implementation NSNumber (NSError)
-+(NSNumber*)errorOperatorUnsupported;
-{
-  return [NSNumber numberWithInt:-1001];
-}
 +(NSNumber*)errorInvalidCharacter;
 {
   return [NSNumber numberWithInt:-1002];

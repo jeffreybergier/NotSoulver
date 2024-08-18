@@ -34,22 +34,25 @@
                      __testAssertEqual:@"5=5\n"];
   
   [[SVRMathString mathStringWithString:@"+5="]
-                     __testAssertEqual:@"+5=<Error:-1004>"];
+                     __testAssertEqual:@"+5=<Error:-1004>\n"];
   
   [[SVRMathString mathStringWithString:@"5+="]
-                     __testAssertEqual:@"5+=<Error:-1004>"];
+                     __testAssertEqual:@"5+=<Error:-1004>\n"];
   
   [[SVRMathString mathStringWithString:@"(5*((10+3)*10+2)^2)="]
                      __testAssertEqual:@"(5*((10+3)*10+2)^2)=87120\n"];
   
   [[SVRMathString mathStringWithString:@"(5*((10+3)*10+2)^2="]
-                     __testAssertEqual:@"(5*((10+3)*10+2)^2=<Error:-1003>"];
+                     __testAssertEqual:@"(5*((10+3)*10+2)^2=<Error:-1003>\n"];
   
   [[SVRMathString mathStringWithString:@"5(10)="]
-                     __testAssertEqual:@"5(10)=<Error:-1005>"];
+                     __testAssertEqual:@"5(10)=<Error:-1005>\n"];
   
   [[SVRMathString mathStringWithString:@"(10)5="]
-                     __testAssertEqual:@"(10)5=<Error:-1005>"];
+                     __testAssertEqual:@"(10)5=<Error:-1005>\n"];
+  
+  [[SVRMathString mathStringWithString:@"5+5+5b+6+6+6="]
+                     __testAssertEqual:@"5+5+5b+6+6+6=<Error:-1002>\n"];
 }
 
 -(void)__testAssertEqual:(NSString*)rhs;
