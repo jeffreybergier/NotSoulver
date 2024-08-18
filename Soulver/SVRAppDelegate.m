@@ -1,5 +1,6 @@
 #import "SVRAppDelegate.h"
 #import "SVRDocumentController.h"
+#import "SVRMathString+Tests.h"
 
 @implementation SVRAppDelegate
 
@@ -103,10 +104,18 @@
 }
 
 -(void)awakeFromNib;
-{
+{  
+  // Execute Tests
+  [SVRMathString executeTests];
+
+  // Announce 
   NSLog(@"%@", self);
+  
+  // Initialize Properties
   _openFiles = [NSMutableDictionary new];
   _openUnsaved = [NSMutableDictionary new];
+  
+  // Register for Notifications
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(closeDoc:)
                                                name:[SVRDocumentController windowDidCloseNotification]
