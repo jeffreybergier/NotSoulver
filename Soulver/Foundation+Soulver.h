@@ -53,7 +53,7 @@
                                    error:(NSNumber**)error;
 -(SVRMathRange*)mathRangeByMonitoringSet:(NSSet*)monitorSet
                              ignoringSet:(NSSet*)ignoreSet;
--(BOOL)containsOnlyCharactersInSet:(NSSet*)aSet;
+-(BOOL)isValidDouble;
 @end
 
 @interface SVRStringEnumeratorObject: NSObject

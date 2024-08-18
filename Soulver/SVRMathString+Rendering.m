@@ -57,6 +57,7 @@
     [output appendAttributedString:[NSAttributedString withString:[next substring]]];
     if ([[next substring] isEqualToString:@"="]) {
       NSString *_solution = [self __solvePEMDASLine:[[lineBuilder copy] autorelease] error:error];
+      if (_solution == nil) { return nil; }
       NSAttributedString *toAppend = [NSAttributedString withString:[NSString stringWithFormat:@"%@", _solution]
                                                            andColor:[NSColor cyanColor]];
       [output appendAttributedString:toAppend];
@@ -153,7 +154,7 @@
   
   // If we get to the end here, and the result is not just a simple number,
   // then we have a mismatch between numbers and operators
-  if (![output containsOnlyCharactersInSet:[NSSet SVRNumerals]]) {
+  if (![output isValidDouble]) {
     *error = [NSNumber errorMissingNumberBeforeOrAfterOperator];
     return nil;
   }
