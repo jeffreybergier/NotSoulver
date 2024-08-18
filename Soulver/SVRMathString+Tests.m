@@ -60,7 +60,7 @@
   NSString *lhs = [[self render] string];
   NSString *message = [NSString stringWithFormat:@"SVRMathStringTest: FAIL: %@ != %@", lhs, rhs];
   NSAssert([lhs isEqualToString:rhs], message);
-  NSLog(@"SVRMathStringTest: PASS: %@", lhs);
+  [[NSString stringWithFormat:@"SVRMathStringTest: PASS: %@", lhs] SVRLog];
 }
 
 @end

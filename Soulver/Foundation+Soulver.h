@@ -98,3 +98,9 @@
 +(NSSet*)SVRPatchCheck;
 +(NSSet*)SVRAllowedCharacters;
 @end
+
+// MARK: Logging
+@interface NSString (SVRLog)
+/// Replaces newlines from logged strings with \n
+-(void)SVRLog;
+@end
