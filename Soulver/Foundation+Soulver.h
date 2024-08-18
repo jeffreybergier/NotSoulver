@@ -97,4 +97,5 @@
 +(NSSet*)SVRExponent;
 +(NSSet*)SVRNumerals;
 +(NSSet*)SVRPatchCheck;
++(NSSet*)SVRAllowedCharacters;
 @end

@@ -360,7 +360,11 @@
 @implementation NSSet (Soulver)
 +(NSSet*)SVROperators;
 {
-  return [NSSet setWithObjects:@"/", @"*", @"+", @"-", @"^", nil];
+  NSMutableSet *output = [[NSMutableSet new] autorelease];
+  [output unionSet:[NSSet SVRPlusMinus]];
+  [output unionSet:[NSSet SVRMultDiv]];
+  [output unionSet:[NSSet SVRExponent]];
+  return [[output copy] autorelease];
 }
 +(NSSet*)SVRPlusMinus;
 {
@@ -380,6 +384,16 @@
 }
 +(NSSet*)SVRPatchCheck;
 {
-  return [NSSet setWithObjects:@"/", @"*", @"+", @"-", @"^", @"(", @")", @"=", nil];
+  NSMutableSet *output = [[NSMutableSet new] autorelease];
+  [output unionSet:[NSSet SVROperators]];
+  [output unionSet:[NSSet setWithObjects:@"(", @")", @"=", nil]];
+  return [[output copy] autorelease];
+}
++(NSSet*)SVRAllowedCharacters;
+{
+  NSMutableSet *output = [[NSMutableSet new] autorelease];
+  [output unionSet:[NSSet SVRPatchCheck]];
+  [output unionSet:[NSSet SVRNumerals]];
+  return [[output copy] autorelease];
 }
 @end

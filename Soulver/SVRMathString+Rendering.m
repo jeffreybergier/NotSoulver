@@ -16,30 +16,19 @@
   NSNumber *error = nil;
   output = [self __preparePEMDASLinesWithError:&error];
   if (output == nil) {
-    NSLog(@"Error: %@", error);
-    output = [self renderRaw];
+    output = [self renderError:error];
   }
   return output;
 }
 
--(NSAttributedString*)renderRaw;
+-(NSAttributedString*)renderError:(NSNumber*)error;
 {
-  NSRange scanRange;
-  unsigned int scanMax;
   NSMutableAttributedString *output;
-  NSString *scanString;
   
-  scanRange = NSMakeRange(0,1);
-  scanMax = [_string length];
   output = [[NSMutableAttributedString new] autorelease];
-  
-  while (scanRange.location < scanMax) {
-    scanString = [_string substringWithRange:scanRange];
-    [output appendAttributedString:[NSAttributedString withString:scanString]];
-    scanRange.location += 1;
-  }
-  [output appendAttributedString: [NSAttributedString withString:@"<ERROR>"
-                                                        andColor: [NSColor orangeColor]]];
+  [output appendAttributedString:[NSAttributedString withString:_string]];
+  [output appendAttributedString:[NSAttributedString withString:[NSString stringWithFormat:@"<Error:%@>", error]
+                                                       andColor:[NSColor orangeColor]]];
   return [[output copy] autorelease];
 }
 
@@ -159,14 +148,14 @@
                                      ignoringSet:[NSSet SVROperators]];
   }
   
+  if (*error != NULL) {
+    return nil;
+  }
+  
   // If we get to the end here, and the result is not just a simple number,
   // then we have a mismatch between numbers and operators
   if (![output containsOnlyCharactersInSet:[NSSet SVRNumerals]]) {
     *error = [NSNumber errorMissingNumberBeforeOrAfterOperator];
-  }
-  
-  if (*error != NULL) {
-    return nil;
   }
   
   NSLog(@"Finished: %@", output);

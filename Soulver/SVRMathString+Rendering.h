@@ -13,7 +13,7 @@
 
 // MARK: Render
 -(NSAttributedString*)render;
--(NSAttributedString*)renderRaw;
+-(NSAttributedString*)renderError:(NSNumber*)error;
 
 // MARK: Private
 -(NSAttributedString*)__preparePEMDASLinesWithError:(NSNumber**)error;
