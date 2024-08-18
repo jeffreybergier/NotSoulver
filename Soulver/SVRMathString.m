@@ -6,28 +6,58 @@
 //
 
 #import "SVRMathString.h"
+#import "Foundation+Soulver.h"
 
 @implementation SVRMathString
 
 // MARK: Main Business Logic
--(void)appendString:(NSString*)aString;
+
++(NSString*)encodeOperator:(NSString*)anOp;
 {
-  NSRange scanRange;
-  unsigned int scanRangeMax;
-  NSString *scanString;
-  
-  scanRange = NSMakeRange(0, 1);
-  scanRangeMax = [aString length];
-  
-  while (scanRange.location < scanRangeMax) {
-    scanString = [aString substringWithRange:scanRange];
-    if (![SVRMathString isValidInput:scanString]) {
-      NSLog(@"Invalid Input: %@", scanString);
-      return;
-    }
-    scanRange.location += 1;
+  if ([anOp isEqualToString:@"+"]) {
+    return @"a";
+  } else if ([anOp isEqualToString:@"-"]) {
+    return @"s";
+  } else if ([anOp isEqualToString:@"/"]) {
+    return @"d";
+  } else if ([anOp isEqualToString:@"*"]) {
+    return @"m";
+  } else if ([anOp isEqualToString:@"^"]) {
+    return @"e";
+  } else {
+    return nil;
   }
-  [_string appendString:aString];
+}
++(NSString*)decodeOperator:(NSString*)anOp;
+{
+  if ([anOp isEqualToString:@"a"]) {
+    return @"+";
+  } else if ([anOp isEqualToString:@"s"]) {
+    return @"-";
+  } else if ([anOp isEqualToString:@"d"]) {
+    return @"/";
+  } else if ([anOp isEqualToString:@"m"]) {
+    return @"*";
+  } else if ([anOp isEqualToString:@"e"]) {
+    return @"^";
+  } else {
+    return nil;
+  }
+}
+
+-(int)appendCharacter:(NSString*)aString error:(NSNumber**)error;
+{
+  NSString *operator = [SVRMathString encodeOperator:aString];
+  if (operator) {
+    [_string appendString:operator];
+    return 0;
+  } else if ([[NSSet SVRAllowedCharacters] member:aString]) {
+    [_string appendString:aString];
+    return 0;
+  } else {
+    *error = [NSNumber errorInvalidCharacter];
+    return -1;
+  }
 }
 
 -(void)backspace;
@@ -59,14 +89,6 @@
 -(NSString*)description;
 {
   return [[super description] stringByAppendingString:_string];
-}
-
-// MARK: Validation
-+(BOOL)isValidInput:(NSString*)input;
-{
-  NSSet *valid = [NSSet setWithObjects:@".", @"/", @"*", @"+", @"-", @"=", @"^", @"(", @")",
-                  @"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", nil];
-  return [valid member:input] != nil;
 }
 
 // MARK: Dealloc

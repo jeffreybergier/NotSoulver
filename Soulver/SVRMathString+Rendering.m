@@ -38,6 +38,7 @@
   SVRStringEnumeratorObject *next;
   NSMutableString *lineBuilder;
   NSMutableAttributedString *output;
+  NSString *_decodedOperator;
 
   if (_string == nil || [_string length] == 0) {
     return [[NSAttributedString new] autorelease];
@@ -54,7 +55,9 @@
       *error = [NSNumber errorInvalidCharacter];
       return nil;
     }
-    [output appendAttributedString:[NSAttributedString withString:[next substring]]];
+    _decodedOperator = [SVRMathString decodeOperator:[next substring]];
+    [output appendAttributedString:[NSAttributedString withString:_decodedOperator ? _decodedOperator : [next substring]]];
+    _decodedOperator = nil;
     if ([[next substring] isEqualToString:@"="]) {
       NSString *_solution = [self __solvePEMDASLine:[[lineBuilder copy] autorelease] error:error];
       if (_solution == nil) { return nil; }
@@ -168,15 +171,15 @@
   NSString *rhs = [range rhs];
   NSString *operator = [range operator];
   
-  if ([operator isEqualToString:@"/"]) {
+  if ([operator isEqualToString:@"d"]) {
     return [NSNumber numberWithDouble:[lhs doubleValue] / [rhs doubleValue]];
-  } else if ([operator isEqualToString:@"*"]) {
+  } else if ([operator isEqualToString:@"m"]) {
     return [NSNumber numberWithDouble:[lhs doubleValue] * [rhs doubleValue]];
-  } else if ([operator isEqualToString:@"+"]) {
+  } else if ([operator isEqualToString:@"a"]) {
     return [NSNumber numberWithDouble:[lhs doubleValue] + [rhs doubleValue]];
-  } else if ([operator isEqualToString:@"-"]) {
+  } else if ([operator isEqualToString:@"s"]) {
     return [NSNumber numberWithDouble:[lhs doubleValue] - [rhs doubleValue]];
-  } else if ([operator isEqualToString:@"^"]) {
+  } else if ([operator isEqualToString:@"e"]) {
     return [NSNumber numberWithDouble:pow([lhs doubleValue],[rhs doubleValue])];
   } else {
     [NSException raise:@"InvalidArgumentException" format:@"Unsupported Operator: %@", operator];

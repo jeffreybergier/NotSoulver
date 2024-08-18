@@ -351,19 +351,19 @@
 }
 +(NSSet*)SVRPlusMinus;
 {
-  return [NSSet setWithObjects:@"+", @"-", nil];
+  return [NSSet setWithObjects:@"a", @"s", nil];
 }
 +(NSSet*)SVRMultDiv;
 {
-  return [NSSet setWithObjects:@"/", @"*", nil];
+  return [NSSet setWithObjects:@"d", @"m", nil];
 }
 +(NSSet*)SVRExponent;
 {
-  return [NSSet setWithObjects:@"^", nil];
+  return [NSSet setWithObjects:@"e", nil];
 }
 +(NSSet*)SVRNumerals;
 {
-  return [NSSet setWithObjects:@"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"." @"-", nil];
+  return [NSSet setWithObjects:@"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @".", @"-", nil];
 }
 +(NSSet*)SVRPatchCheck;
 {

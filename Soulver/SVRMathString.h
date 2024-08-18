@@ -12,13 +12,17 @@
   NSMutableString *_string;
 }
 // MARK: Main Business Logic
--(void)appendString:(NSString*)aString;
+/// Encodes the raw string operator. Returns nil if the operator is not supported
++(NSString*)encodeOperator:(NSString*)anOp;
+/// Decodes the operator back to raw. Returns nil if the operator is not supported
++(NSString*)decodeOperator:(NSString*)anOp;
+/// Appends the string and automatically encodes the operator. Use `initWithString` to skip encoding
+/// Return 0 if successful, anything other than 0, check the error
+-(int)appendCharacter:(NSString*)aString error:(NSNumber**)error;
 -(void)backspace;
 -(BOOL)isEmpty;
 // MARK: Debugging
 -(NSString*)description;
-// MARK: Validation
-+(BOOL)isValidInput:(NSString*)input;
 @end
 
 // MARK: Init
