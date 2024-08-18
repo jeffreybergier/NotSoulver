@@ -86,6 +86,7 @@
 +(NSNumber*)errorInvalidCharacter;
 +(NSNumber*)errorMismatchedBrackets;
 +(NSNumber*)errorMissingNumberBeforeOrAfterOperator;
++(NSNumber*)errorPatching;
 @end
 
 // MARK: NSSetHelper
@@ -95,4 +96,5 @@
 +(NSSet*)SVRMultDiv;
 +(NSSet*)SVRExponent;
 +(NSSet*)SVRNumerals;
++(NSSet*)SVRPatchCheck;
 @end

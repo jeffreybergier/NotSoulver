@@ -21,3 +21,9 @@
 -(NSNumber*)__performCalculationWithRange:(SVRMathRange*)range error:(NSNumber**)error;
 
 @end
+
+@interface NSMutableString (SVRMathStringRendering)
+-(void)SVR_replaceCharactersInRange:(NSRange)range
+                         withString:(NSString*)patch
+                              error:(NSNumber**)error;
+@end

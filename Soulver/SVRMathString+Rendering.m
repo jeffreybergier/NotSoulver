@@ -110,7 +110,9 @@
   parenRange = [output boundingRangeWithLHS:@"(" andRHS:@")" error:error];
   while (parenRange && *error == NULL) {
     solutionString = [self __solvePEMDASLine:[parenRange contents] error:error];
-    [output replaceCharactersInRange:[parenRange range] withString:solutionString];
+    [output SVR_replaceCharactersInRange:[parenRange range]
+                              withString:solutionString
+                                   error:error];
     NSLog(@"Patch (): %@", output);
     parenRange = [output boundingRangeWithLHS:@"(" andRHS:@")" error:error];
   }
@@ -121,7 +123,9 @@
   while (mathRange && *error == NULL) {
     solutionNumber = [self __performCalculationWithRange:mathRange error:error];
     solutionString = [NSString stringWithFormat:@"%g", [solutionNumber doubleValue]];
-    [output replaceCharactersInRange:[mathRange range] withString:solutionString];
+    [output SVR_replaceCharactersInRange:[mathRange range]
+                              withString:solutionString
+                                   error:error];
     NSLog(@"Patch ^^: %@", output);
     mathRange = [output mathRangeByMonitoringSet:[NSSet SVRExponent]
                                      ignoringSet:[NSSet SVROperators]];
@@ -133,7 +137,9 @@
   while (mathRange && *error == NULL) {
     solutionNumber = [self __performCalculationWithRange:mathRange error:error];
     solutionString = [NSString stringWithFormat:@"%g", [solutionNumber doubleValue]];
-    [output replaceCharactersInRange:[mathRange range] withString:solutionString];
+    [output SVR_replaceCharactersInRange:[mathRange range]
+                              withString:solutionString
+                                   error:error];
     NSLog(@"Patch */: %@", output);
     mathRange = [output mathRangeByMonitoringSet:[NSSet SVRMultDiv]
                                      ignoringSet:[NSSet SVROperators]];
@@ -145,7 +151,9 @@
   while (mathRange && *error == NULL) {
     solutionNumber = [self __performCalculationWithRange:mathRange error:error];
     solutionString = [NSString stringWithFormat:@"%g", [solutionNumber doubleValue]];
-    [output replaceCharactersInRange:[mathRange range] withString:solutionString];
+    [output SVR_replaceCharactersInRange:[mathRange range]
+                              withString:solutionString
+                                   error:error];
     NSLog(@"Patch +-: %@", output);
     mathRange = [output mathRangeByMonitoringSet:[NSSet SVRPlusMinus]
                                      ignoringSet:[NSSet SVROperators]];
@@ -187,4 +195,50 @@
   }
 }
 
+@end
+
+@implementation NSMutableString (SVRMathStringRendering)
+-(void)SVR_replaceCharactersInRange:(NSRange)range
+                         withString:(NSString*)patch
+                              error:(NSNumber**)error;
+{
+  BOOL issueFound = NO;
+  BOOL canCheckLeft = NO;
+  BOOL canCheckRight = NO;
+  NSRange checkRange = NSMakeRange(0,0);
+  
+  if (*error != NULL) {
+    return;
+  }
+  
+  canCheckLeft = range.location > 0;
+  canCheckRight = range.location + range.length < [self length];
+  
+  // Perform Checks to the left and right to make sure
+  // there are operators outside of where we are patching.
+  if (canCheckLeft) {
+    checkRange.location = range.location - 1;
+    checkRange.length = 1;
+    issueFound = [[NSSet SVRPatchCheck] member:[self substringWithRange:checkRange]] == nil;
+  }
+  
+  if (issueFound) {
+    *error = [NSNumber errorPatching];
+    return;
+  }
+  
+  if (canCheckRight) {
+    checkRange.location = range.location + range.length;
+    checkRange.length = 1;
+    issueFound = [[NSSet SVRPatchCheck] member:[self substringWithRange:checkRange]] == nil;
+  }
+  
+  if (issueFound) {
+    *error = [NSNumber errorPatching];
+    return;
+  }
+  
+  [self replaceCharactersInRange:range withString:patch];
+  return;
+}
 @end
