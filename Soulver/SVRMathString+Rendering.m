@@ -60,7 +60,7 @@
   lineBuilder = [[NSMutableString new] autorelease];
   output = [[NSMutableAttributedString new] autorelease];
   
-  while (next && *error == nil) {
+  while (next && *error == NULL) {
     [output appendAttributedString:[NSAttributedString withString:[next substring]]];
     if ([[next substring] isEqualToString:@"="]) {
       NSString *_solution = [self __solvePEMDASLine:[[lineBuilder copy] autorelease] error:error];
@@ -81,7 +81,7 @@
     }
   }
   
-  if (*error) {
+  if (*error != NULL) {
     return nil;
   }
   
@@ -96,7 +96,7 @@
   NSNumber *solutionNumber;
   NSMutableString *output;
   
-  if (*error) {
+  if (*error != NULL) {
     return nil;
   }
 
@@ -157,7 +157,7 @@
     *error = [NSNumber errorMissingNumberBeforeOrAfterOperator];
   }
   
-  if (*error) {
+  if (*error != NULL) {
     return nil;
   }
   

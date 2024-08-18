@@ -144,31 +144,54 @@
 {
   SVRStringEnumerator *e;
   SVRStringEnumeratorObject *next;
+  NSMutableArray *foundLHS;
+  SVRStringEnumeratorObject *foundRHS;
   NSRange outputRange;
   NSString *outputContents;
+  int balanceCounter;
   
+  if (*error != NULL) {
+    return nil;
+  }
+  
+  foundLHS = [[NSMutableArray new] autorelease];
+  foundRHS = nil;
   e = [SVRStringEnumerator enumeratorWithString:self];
   next = [e nextObject];
-  outputRange = NSMakeRange(0, 0);
+  balanceCounter = 0;
   
-  // TODO: have to make this keep track of how many nestings there are
   while (next) {
     if ([[next substring] isEqualToString:lhs]) {
-      outputRange.location = [next range].location;
+      balanceCounter = balanceCounter + 1;
+      if (foundRHS == nil) {
+        [foundLHS addObject:next];
+      }
     } else if ([[next substring] isEqualToString:rhs]) {
-      outputRange.length = [next range].location - outputRange.location + [next range].length;
-    }
-    if (outputRange.length >= 1) {
-      if (outputRange.length >= 3) {
-        outputContents = [self substringWithRange:NSMakeRange(outputRange.location + 1, outputRange.length - 2)];
-        return [SVRBoundingRange rangeWithRange:outputRange contents:outputContents];
-      } else {
-        return [SVRBoundingRange rangeWithRange:outputRange contents:nil];
+      balanceCounter = balanceCounter - 1;
+      if (foundRHS == nil) {
+        foundRHS = next;
       }
     }
     next = [e nextObject];
   }
-  return nil;
+  
+  if (balanceCounter != 0) {
+    *error = [NSNumber errorMismatchedBrackets];
+    return nil;
+  } else if ([foundLHS count] == 0 && foundRHS == nil) {
+    return nil;
+  } else {
+    outputRange = NSMakeRange(0, 0);
+    outputRange.location = [[foundLHS lastObject]  range].location;
+    outputRange.length   = [foundRHS               range].location
+                         - [[foundLHS lastObject]  range].location
+                         + 1;
+    outputContents = [self substringWithRange:
+                        NSMakeRange(outputRange.location + 1,
+                                    outputRange.length - 2)
+                     ];
+    return [SVRBoundingRange rangeWithRange:outputRange contents:outputContents];
+  }
 }
 
 -(SVRMathRange*)mathRangeByMonitoringSet:(NSSet*)monitorSet
