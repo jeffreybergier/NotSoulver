@@ -12,9 +12,27 @@
 
 +(void)executeTests;
 {
-  // not working
-  // [[SVRMathString mathStringWithString:@"1m2=s3=aa4=6a7="]
-  //                    __testAssertEqual:@"1*2=-3=++4=6+7=<Error:-1004>\n"];
+  // Not working
+  // [[SVRMathString mathStringWithString:@"(5m((10a3)m10a2)e2)="]
+  //                    __testAssertEqual:@"(5*((10+3)*10+2)^2)=87120\n"];
+  
+  [[SVRMathString mathStringWithString:@"1m2=s3=aa4=6a7="]
+                     __testAssertEqual:@"1m2=s3=aa4=6a7=<Error:-1004>\n"];
+  
+  [[SVRMathString mathStringWithString:@"5aa="]
+                     __testAssertEqual:@"5aa=<Error:-1004>\n"];
+  
+  [[SVRMathString mathStringWithString:@"aa5="]
+                     __testAssertEqual:@"aa5=<Error:-1004>\n"];
+  
+  [[SVRMathString mathStringWithString:@"5="]
+                     __testAssertEqual:@"5=5\n"];
+  
+  [[SVRMathString mathStringWithString:@"a5="]
+                     __testAssertEqual:@"a5=<Error:-1004>\n"];
+  
+  [[SVRMathString mathStringWithString:@"5a="]
+                     __testAssertEqual:@"5a=<Error:-1004>\n"];
   
   [[SVRMathString mathStringWithString:@"1m2=s3=4a=6a7="]
                      __testAssertEqual:@"1m2=s3=4a=6a7=<Error:-1004>\n"];
@@ -45,19 +63,7 @@
   
   [[SVRMathString mathStringWithString:@"(10a2)a(8s7)m5="]
                      __testAssertEqual:@"(10+2)+(8-7)*5=17\n"];
-  
-  [[SVRMathString mathStringWithString:@"5="]
-                     __testAssertEqual:@"5=5\n"];
-  
-  [[SVRMathString mathStringWithString:@"a5="]
-                     __testAssertEqual:@"a5=<Error:-1004>\n"];
-  
-  [[SVRMathString mathStringWithString:@"5a="]
-                     __testAssertEqual:@"5a=<Error:-1004>\n"];
-  
-  [[SVRMathString mathStringWithString:@"(5m((10a3)m10a2)e2)="]
-                     __testAssertEqual:@"(5*((10+3)*10+2)^2)=87120\n"];
-  
+    
   [[SVRMathString mathStringWithString:@"(5m((10a3)m10a2)e2="]
                      __testAssertEqual:@"(5m((10a3)m10a2)e2=<Error:-1003>\n"];
   

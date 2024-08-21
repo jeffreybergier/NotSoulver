@@ -215,7 +215,7 @@
   while (next) {
     if (operator && [ignoreSet member:[next substring]]) {
       outputRange.length = [next range].location - 1 - outputRange.location + [next range].length;
-      return [SVRMathRange rangeWithRange:outputRange lhs:lhs rhs:rhs operator:operator];
+      break;
     } else if (operator == nil && [ignoreSet member:[next substring]] && [monitorSet member:[next substring]]) {
       operator = [next substring];
     } else if (operator == nil && [ignoreSet member:[next substring]]) {
