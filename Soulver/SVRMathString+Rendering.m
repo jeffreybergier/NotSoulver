@@ -107,48 +107,50 @@
   while (parenRange && *error == NULL) {
     solutionString = [self __solvePEMDASLine:[parenRange contents] error:error];
     [output SVR_replaceCharactersInRange:[parenRange range]
-                              withString:solutionString
-                                   error:error];
+                              withString:solutionString];
     parenRange = [output boundingRangeWithLHS:@"(" andRHS:@")" error:error];
   }
   
   // Exponents
-  mathRange = [output mathRangeByMonitoringSet:[NSSet SVRExponent]
-                                   ignoringSet:[NSSet SVROperators]];
+  mathRange = [output mathRangeWithOperators:[NSSet SVRExponent]
+                           ignoringOperators:[NSSet SVROperators]
+                               validNumerals:[NSSet SVRNumerals]];
   while (mathRange && *error == NULL) {
     solutionNumber = [self __performCalculationWithRange:mathRange];
     solutionString = [NSString stringWithFormat:@"%g", [solutionNumber doubleValue]];
     [output SVR_replaceCharactersInRange:[mathRange range]
-                              withString:solutionString
-                                   error:error];
-    mathRange = [output mathRangeByMonitoringSet:[NSSet SVRExponent]
-                                     ignoringSet:[NSSet SVROperators]];
+                              withString:solutionString];
+    mathRange = [output mathRangeWithOperators:[NSSet SVRExponent]
+                             ignoringOperators:[NSSet SVROperators]
+                                 validNumerals:[NSSet SVRNumerals]];
   }
   
   // Multiply and Divide
-  mathRange = [output mathRangeByMonitoringSet:[NSSet SVRMultDiv]
-                                   ignoringSet:[NSSet SVROperators]];
+  mathRange = [output mathRangeWithOperators:[NSSet SVRMultDiv]
+                           ignoringOperators:[NSSet SVROperators]
+                               validNumerals:[NSSet SVRNumerals]];
   while (mathRange && *error == NULL) {
     solutionNumber = [self __performCalculationWithRange:mathRange];
     solutionString = [NSString stringWithFormat:@"%g", [solutionNumber doubleValue]];
     [output SVR_replaceCharactersInRange:[mathRange range]
-                              withString:solutionString
-                                   error:error];
-    mathRange = [output mathRangeByMonitoringSet:[NSSet SVRMultDiv]
-                                     ignoringSet:[NSSet SVROperators]];
+                              withString:solutionString];
+    mathRange = [output mathRangeWithOperators:[NSSet SVRMultDiv]
+                             ignoringOperators:[NSSet SVROperators]
+                                 validNumerals:[NSSet SVRNumerals]];
   }
   
   // Add and Subtract
-  mathRange = [output mathRangeByMonitoringSet:[NSSet SVRPlusMinus]
-                                   ignoringSet:[NSSet SVROperators]];
+  mathRange = [output mathRangeWithOperators:[NSSet SVRPlusMinus]
+                           ignoringOperators:[NSSet SVROperators]
+                               validNumerals:[NSSet SVRNumerals]];
   while (mathRange && *error == NULL) {
     solutionNumber = [self __performCalculationWithRange:mathRange];
     solutionString = [NSString stringWithFormat:@"%g", [solutionNumber doubleValue]];
     [output SVR_replaceCharactersInRange:[mathRange range]
-                              withString:solutionString
-                                   error:error];
-    mathRange = [output mathRangeByMonitoringSet:[NSSet SVRPlusMinus]
-                                     ignoringSet:[NSSet SVROperators]];
+                              withString:solutionString];
+    mathRange = [output mathRangeWithOperators:[NSSet SVRPlusMinus]
+                             ignoringOperators:[NSSet SVROperators]
+                                 validNumerals:[NSSet SVRNumerals]];
   }
   
   if (*error != NULL) {
@@ -161,7 +163,6 @@
     *error = [NSNumber errorMissingNumberBeforeOrAfterOperator];
     return nil;
   }
-  
   return [[output copy] autorelease];
 }
 
@@ -191,17 +192,12 @@
 
 @implementation NSMutableString (SVRMathStringRendering)
 -(void)SVR_replaceCharactersInRange:(NSRange)range
-                         withString:(NSString*)patch
-                              error:(NSNumber**)error;
+                         withString:(NSString*)patch;
 {
   BOOL issueFound = NO;
   BOOL canCheckLeft = NO;
   BOOL canCheckRight = NO;
   NSRange checkRange = NSMakeRange(0,0);
-  
-  if (*error != NULL) {
-    return;
-  }
   
   canCheckLeft = range.location > 0;
   canCheckRight = range.location + range.length < [self length];
@@ -214,11 +210,6 @@
     issueFound = [[NSSet SVRPatchCheck] member:[self substringWithRange:checkRange]] == nil;
   }
   
-  if (issueFound) {
-    *error = [NSNumber errorPatching];
-    return;
-  }
-  
   if (canCheckRight) {
     checkRange.location = range.location + range.length;
     checkRange.length = 1;
@@ -226,8 +217,9 @@
   }
   
   if (issueFound) {
-    *error = [NSNumber errorPatching];
-    return;
+    [NSException raise:@"InvalidRangeException"
+                format:@"Cannot insert '%@' into '%@' at range {%d, %d}",
+                       patch, self, range.length, range.length];
   }
   
   [self replaceCharactersInRange:range withString:patch];

@@ -86,6 +86,11 @@
   return [[[SVRBoundingRange alloc] initWithRange:range
                                             contents:contents] autorelease];
 }
+-(NSString*)description;
+{
+  return [NSString stringWithFormat: @"SVRBoundingRange: \"%@\" {%d, %d}",
+                                     _contents, _range.location, _range.length];
+}
 - (void)dealloc
 {
   [_contents release];
@@ -125,6 +130,11 @@
                                           lhs:lhs
                                           rhs:rhs
                                      operator:operator] autorelease];
+}
+-(NSString*)description;
+{
+  return [NSString stringWithFormat: @"SVRMathRange: <%@><%@><%@> {%d, %d}",
+                                     _lhs, _operator, _rhs, _range.location, _range.length];
 }
 - (void)dealloc
 {
@@ -194,8 +204,9 @@
   }
 }
 
--(SVRMathRange*)mathRangeByMonitoringSet:(NSSet*)monitorSet
-                             ignoringSet:(NSSet*)ignoreSet;
+-(SVRMathRange*)mathRangeWithOperators:(NSSet*)including
+                     ignoringOperators:(NSSet*)ignoring
+                         validNumerals:(NSSet*)numerals;
 {
   SVRStringEnumerator *e;
   SVRStringEnumeratorObject *next;
@@ -207,31 +218,34 @@
   e = [SVRStringEnumerator enumeratorWithString:self];
   next = [e nextObject];
   
-  outputRange = NSMakeRange(0, 1);
+  outputRange = NSMakeRange(0, 0);
   lhs = [[NSMutableString new] autorelease];
   rhs = [[NSMutableString new] autorelease];
   operator = nil;
-  
+    
   while (next) {
-    if (operator && [ignoreSet member:[next substring]]) {
-      outputRange.length = [next range].location - 1 - outputRange.location + [next range].length;
-      break;
-    } else if (operator == nil && [ignoreSet member:[next substring]] && [monitorSet member:[next substring]]) {
-      operator = [next substring];
-    } else if (operator == nil && [ignoreSet member:[next substring]]) {
-      lhs = [[NSMutableString new] autorelease];
-      outputRange.location = [next range].location + 1;
-    } else if (operator == nil) {
+    if        (operator == nil && [numerals  member:[next substring]]) {
       [lhs appendString:[next substring]];
-    } else {
+      outputRange.length += 1;
+    } else if (operator != nil && [numerals  member:[next substring]]) {
       [rhs appendString:[next substring]];
+      outputRange.length += 1;
+    } else if (operator == nil && [including member:[next substring]]) {
+      operator = [next substring];
+      outputRange.length += 1;
+    } else if (operator == nil && [ignoring  member:[next substring]]) {
+      lhs = [[NSMutableString new] autorelease];
+      outputRange.location = [next range].location;
+      outputRange.length = 1;
+    } else if (operator != nil && [ignoring  member:[next substring]]) {
+      break;
+    } else {
+      [NSException raise:@"InvalidArgumentException" format:@"Unsupported Character: %@", [next substring]];
     }
     next = [e nextObject];
   }
-  // If we made it this far we finished the string
-  // but there could still be valid data to return
+  
   if ([lhs length] > 0 && [rhs length] > 0 && [operator length] > 0) {
-    outputRange.length = [self length] - outputRange.location;
     return [SVRMathRange rangeWithRange:outputRange lhs:lhs rhs:rhs operator:operator];
   } else {
     return nil;
@@ -255,12 +269,8 @@
 -(NSString*)description;
 {
   return [
-    NSString stringWithFormat:
-      @"SVRStringEnumeratorObject: Range<location: %d, lenght: %d>: Substring:<%@>",
-    [self range].location,
-    [self range].length,
-    [self substring]
-  ];
+    NSString stringWithFormat:@"SVRStringEnumeratorObject: Range<location: %d, lenght: %d>: Substring:<%@>",
+                              _range.location, _range.length, _substring];
 }
 -(id)initWithRange:(NSRange)range substring:(NSString*)substring;
 {
@@ -332,10 +342,6 @@
 +(NSNumber*)errorMissingNumberBeforeOrAfterOperator;
 {
   return [NSNumber numberWithInt:-1004];
-}
-+(NSNumber*)errorPatching;
-{
-  return [NSNumber numberWithInt:-1005];
 }
 @end
 
