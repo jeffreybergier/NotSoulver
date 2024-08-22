@@ -235,8 +235,8 @@
       outputRange.length += 1;
     } else if (operator == nil && [ignoring  member:[next substring]]) {
       lhs = [[NSMutableString new] autorelease];
-      outputRange.location = [next range].location;
-      outputRange.length = 1;
+      outputRange.location = [next range].location + 1;
+      outputRange.length = 0;
     } else if (operator != nil && [ignoring  member:[next substring]]) {
       break;
     } else { // invalid character, bail

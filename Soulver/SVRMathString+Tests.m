@@ -13,13 +13,15 @@
 +(void)executeTests;
 {
   
-  /*
   [[SVRMathString mathStringWithString:@"(5m((10a3)m10a2)e2)="]
                      __testAssertEqual:@"(5*((10+3)*10+2)^2)=87120\n"];
   
   [[SVRMathString mathStringWithString:@"(10a2)a(8s7)m5="]
                      __testAssertEqual:@"(10+2)+(8-7)*5=17\n"];
-  */
+  
+  [[SVRMathString mathStringWithString:@"12a1m5="]
+                     __testAssertEqual:@"12+1*5=17\n"];
+
   [[SVRMathString mathStringWithString:@"1111a(222)a1111="]
                      __testAssertEqual:@"1111+(222)+1111=2444\n"];
   
@@ -76,9 +78,10 @@
   
   [[SVRMathString mathStringWithString:@"(10)5="]
                      __testAssertEqual:@"(10)5=<Error:-1005>\n"];
-
+  
   [[SVRMathString mathStringWithString:@"5a5a5Xa6a6a6="]
                      __testAssertEqual:@"5a5a5Xa6a6a6=<Error:-1002>\n"];
+  
 }
 
 -(void)__testAssertEqual:(NSString*)rhs;
