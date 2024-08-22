@@ -8,18 +8,19 @@
 #import <Foundation/Foundation.h>
 #import <AppKit/AppKit.h>
 
+// MARK: Logging
+@interface NSString (SVRLog)
+/// Replaces newlines from logged strings with \n
+-(void)SVRLog;
+@end
+
 // MARK: NSAttributedString
 @interface NSAttributedString (Soulver)
-+(id)withString:(NSString*)aString;
-+(id)withString:(NSString*)aString andColor:(NSColor*)aColor;
++(id)SVR_stringWithString:(NSString*)aString;
++(id)SVR_stringWithString:(NSString*)aString color:(NSColor*)aColor;
 @end
 
-@interface NSMutableAttributedString (Soulver)
-+(id)withString:(NSString*)aString;
-+(id)withString:(NSString*)aString andColor:(NSColor*)aColor;
-@end
-
-@interface SVRStringEnumeratorObject: NSObject
+@interface SVRStringEnumeratorRange: NSObject
 {
   NSRange _range;
   NSString *_substring;
@@ -28,7 +29,7 @@
 -(NSString*)substring;
 -(NSString*)description;
 -(id)initWithRange:(NSRange)range substring:(NSString*)substring;
-+(id)objectWithRange:(NSRange)range substring:(NSString*)substring;
++(id)rangeWithRange:(NSRange)range substring:(NSString*)substring;
 @end
 
 // MARK: Custom Enumerator
@@ -37,7 +38,7 @@
   NSString *_string;
   NSRange _range;
 }
--(SVRStringEnumeratorObject*)nextObject;
+-(SVRStringEnumeratorRange*)nextObject;
 -(id)initWithString:(NSString*)string;
 +(id)enumeratorWithString:(NSString*)string;
 @end
@@ -60,10 +61,4 @@
 +(NSSet*)SVRNumerals;
 +(NSSet*)SVRPatchCheck;
 +(NSSet*)SVRAllowedCharacters;
-@end
-
-// MARK: Logging
-@interface NSString (SVRLog)
-/// Replaces newlines from logged strings with \n
--(void)SVRLog;
 @end

@@ -26,20 +26,20 @@
   NSMutableAttributedString *output;
   
   output = [[NSMutableAttributedString new] autorelease];
-  [output appendAttributedString:[NSAttributedString withString:_string]];
-  [output appendAttributedString:[NSAttributedString withString:[NSString stringWithFormat:@"<Error:%@>\n", error]
-                                                       andColor:[NSColor orangeColor]]];
+  [output appendAttributedString:[NSAttributedString SVR_stringWithString:_string]];
+  [output appendAttributedString:[NSAttributedString SVR_stringWithString:[NSString stringWithFormat:@"<Error:%@>\n", error]
+                                                                    color:[NSColor orangeColor]]];
   return [[output copy] autorelease];
 }
 
 -(NSAttributedString*)__preparePEMDASLinesWithError:(NSNumber**)error;
 {
   SVRStringEnumerator *e;
-  SVRStringEnumeratorObject *next;
+  SVRStringEnumeratorRange *next;
   NSMutableString *lineBuilder;
   NSMutableAttributedString *output;
   NSString *_decodedOperator;
-
+  
   if (_string == nil || [_string length] == 0) {
     return [[NSAttributedString new] autorelease];
   }
@@ -56,15 +56,15 @@
       return nil;
     }
     _decodedOperator = [SVRMathString decodeOperator:[next substring]];
-    [output appendAttributedString:[NSAttributedString withString:_decodedOperator ? _decodedOperator : [next substring]]];
+    [output appendAttributedString:[NSAttributedString SVR_stringWithString:_decodedOperator ? _decodedOperator : [next substring]]];
     _decodedOperator = nil;
     if ([[next substring] isEqualToString:@"="]) {
       NSString *_solution = [self __solvePEMDASLine:[[lineBuilder copy] autorelease] error:error];
       if (_solution == nil) { return nil; }
-      NSAttributedString *toAppend = [NSAttributedString withString:[NSString stringWithFormat:@"%@", _solution]
-                                                           andColor:[NSColor cyanColor]];
+      NSAttributedString *toAppend = [NSAttributedString SVR_stringWithString:[NSString stringWithFormat:@"%@", _solution]
+                                                                        color:[NSColor cyanColor]];
       [output appendAttributedString:toAppend];
-      [output appendAttributedString:[NSAttributedString withString:@"\n"]];
+      [output appendAttributedString:[NSAttributedString SVR_stringWithString:@"\n"]];
       lineBuilder = [[NSMutableString new] autorelease];
       next = [e nextObject];
       if ([[NSSet SVROperators] member:[next substring]]) {
@@ -96,7 +96,7 @@
   if (*error != NULL) {
     return nil;
   }
-
+  
   if (input == nil || [input length] == 0) { 
     return @""; 
   }

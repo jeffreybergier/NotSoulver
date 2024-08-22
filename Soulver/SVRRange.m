@@ -97,9 +97,9 @@
                                    error:(NSNumber**)error;
 {
   SVRStringEnumerator *e;
-  SVRStringEnumeratorObject *next;
+  SVRStringEnumeratorRange *next;
   NSMutableArray *foundLHS;
-  SVRStringEnumeratorObject *foundRHS;
+  SVRStringEnumeratorRange *foundRHS;
   NSRange outputRange;
   NSString *outputContents;
   int balanceCounter;
@@ -153,7 +153,7 @@
                          validNumerals:(NSSet*)numerals;
 {
   SVRStringEnumerator *e;
-  SVRStringEnumeratorObject *next;
+  SVRStringEnumeratorRange *next;
   NSRange outputRange;
   NSMutableString *lhs;
   NSMutableString *rhs;

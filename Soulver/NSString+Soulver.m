@@ -7,13 +7,35 @@
 
 #import "NSString+Soulver.h"
 
+// MARK: Logging
+@implementation NSString (SVRLog)
+/// Replaces newlines from logged strings with \n
+-(void)SVRLog;
+{
+  NSMutableString *output = [[NSMutableString new] autorelease];
+  NSArray *components = [self componentsSeparatedByString:@"\n"];
+  NSEnumerator *e = [components objectEnumerator];
+  NSString *current = [e nextObject];
+  NSString *next;
+  while (current) {
+    [output appendString:current];
+    next = [e nextObject];
+    if (next) {
+      [output appendString:@"\\n"];
+    }
+    current = next;
+  }
+  NSLog(@"%@", output);
+}
+@end
+
 // MARK: NSAttributedString
 @implementation NSAttributedString (Soulver)
-+(id)withString:(NSString*)aString;
++(id)SVR_stringWithString:(NSString*)aString;
 {
-  return [self withString:aString andColor:nil];
+  return [self SVR_stringWithString:aString color:nil];
 }
-+(id)withString:(NSString*)aString andColor:(NSColor*)aColor;
++(id)SVR_stringWithString:(NSString*)aString color:(NSColor*)aColor;
 {
   NSArray      *keys;
   NSArray      *vals;
@@ -36,35 +58,7 @@
 }
 @end
 
-@implementation NSMutableAttributedString (Soulver)
-+(id)withString:(NSString*)aString;
-{
-  return [self withString:aString andColor:nil];
-}
-+(id)withString:(NSString*)aString andColor:(NSColor*)aColor;
-{
-  NSArray      *keys;
-  NSArray      *vals;
-  NSFont       *font;
-  NSDictionary *attr;
-
-  font = [NSFont userFixedPitchFontOfSize:14];
-
-  if (aColor) {
-    keys = [NSArray arrayWithObjects:NSBackgroundColorAttributeName, NSFontAttributeName, nil];
-    vals = [NSArray arrayWithObjects:aColor, font, nil];
-    attr = [NSDictionary dictionaryWithObjects:vals forKeys:keys];
-    return [[[NSMutableAttributedString alloc] initWithString:aString attributes:attr] autorelease];
-  } else {
-    keys = [NSArray arrayWithObjects:NSFontAttributeName, nil];
-    vals = [NSArray arrayWithObjects:font, nil];
-    attr = [NSDictionary dictionaryWithObjects:vals forKeys:keys];
-    return [[[NSMutableAttributedString alloc] initWithString:aString attributes:attr] autorelease];
-  }
-}
-@end
-
-@implementation SVRStringEnumeratorObject
+@implementation SVRStringEnumeratorRange
 -(NSRange)range;
 {
   return _range;
@@ -76,8 +70,8 @@
 -(NSString*)description;
 {
   return [
-    NSString stringWithFormat:@"SVRStringEnumeratorObject: Range<location: %d, lenght: %d>: Substring:<%@>",
-                              _range.location, _range.length, _substring];
+    NSString stringWithFormat:@"SVREnumeratorRange: '%@' {%d, %d}",
+                              _substring, _range.location, _range.length];
 }
 -(id)initWithRange:(NSRange)range substring:(NSString*)substring;
 {
@@ -86,9 +80,9 @@
   _substring = [substring retain];
   return self;
 }
-+(id)objectWithRange:(NSRange)range substring:(NSString*)substring;
++(id)rangeWithRange:(NSRange)range substring:(NSString*)substring;
 {
-  return [[[SVRStringEnumeratorObject alloc] initWithRange:range substring:substring] autorelease];
+  return [[[SVRStringEnumeratorRange alloc] initWithRange:range substring:substring] autorelease];
 }
 - (void)dealloc
 {
@@ -98,9 +92,9 @@
 @end
 
 @implementation SVRStringEnumerator
--(SVRStringEnumeratorObject*)nextObject;
+-(SVRStringEnumeratorRange*)nextObject;
 {
-  SVRStringEnumeratorObject *output;
+  SVRStringEnumeratorRange *output;
   NSString *substring;
   
   if ([_string length] == 0) {
@@ -112,7 +106,7 @@
   }
   
   substring = [_string substringWithRange:_range];
-  output = [SVRStringEnumeratorObject objectWithRange:_range substring:substring];
+  output = [SVRStringEnumeratorRange rangeWithRange:_range substring:substring];
   
   _range.location += 1;
   return output;
@@ -195,27 +189,5 @@
   [output unionSet:[NSSet SVRPatchCheck]];
   [output unionSet:[NSSet SVRNumerals]];
   return [[output copy] autorelease];
-}
-@end
-
-// MARK: Logging
-@implementation NSString (SVRLog)
-/// Replaces newlines from logged strings with \n
--(void)SVRLog;
-{
-  NSMutableString *output = [[NSMutableString new] autorelease];
-  NSArray *components = [self componentsSeparatedByString:@"\n"];
-  NSEnumerator *e = [components objectEnumerator];
-  NSString *current = [e nextObject];
-  NSString *next;
-  while (current) {
-    [output appendString:current];
-    next = [e nextObject];
-    if (next) {
-      [output appendString:@"\\n"];
-    }
-    current = next;
-  }
-  NSLog(@"%@", output);
 }
 @end
