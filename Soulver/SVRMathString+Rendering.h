@@ -24,5 +24,6 @@
 
 @interface NSMutableString (SVRMathStringRendering)
 -(void)SVR_replaceCharactersInRange:(NSRange)range
-                         withString:(NSString*)patch;
+                         withString:(NSString*)patch
+                              error:(NSNumber**)error;
 @end

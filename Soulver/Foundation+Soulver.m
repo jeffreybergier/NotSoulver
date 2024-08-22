@@ -239,8 +239,8 @@
       outputRange.length = 1;
     } else if (operator != nil && [ignoring  member:[next substring]]) {
       break;
-    } else {
-      [NSException raise:@"InvalidArgumentException" format:@"Unsupported Character: %@", [next substring]];
+    } else { // invalid character, bail
+      return nil;
     }
     next = [e nextObject];
   }
@@ -342,6 +342,10 @@
 +(NSNumber*)errorMissingNumberBeforeOrAfterOperator;
 {
   return [NSNumber numberWithInt:-1004];
+}
++(NSNumber*)errorPatching;
+{
+  return [NSNumber numberWithInt:-1005];
 }
 @end
 
