@@ -7,7 +7,7 @@
 
 #import <AppKit/AppKit.h>
 #import "SVRMathString.h"
-#import "Foundation+Soulver.h"
+#import "SVRRange.h"
 
 @interface SVRMathString (Rendering)
 

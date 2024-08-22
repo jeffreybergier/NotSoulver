@@ -6,7 +6,7 @@
 //
 
 #import "SVRMathString.h"
-#import "Foundation+Soulver.h"
+#import "NSString+Soulver.h"
 
 @implementation SVRMathString
 
