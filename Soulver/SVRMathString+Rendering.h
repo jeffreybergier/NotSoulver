@@ -16,9 +16,8 @@
 -(NSAttributedString*)renderError:(NSNumber*)error;
 
 // MARK: Private
--(NSAttributedString*)__preparePEMDASLinesWithError:(NSNumber**)error;
--(NSString*)__solvePEMDASLine:(NSString*)input error:(NSNumber**)error;
--(NSNumber*)__performCalculationWithRange:(SVRMathRange*)range;
+-(NSAttributedString*)__renderWithError:(NSNumber**)error;
+-(NSString*)__solveLine:(NSString*)input error:(NSNumber**)error;
 
 @end
 

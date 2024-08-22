@@ -75,6 +75,27 @@
                                           rhs:rhs
                                      operator:operator] autorelease];
 }
+-(double)evaluate;
+{
+  NSString *lhs = [self lhs];
+  NSString *rhs = [self rhs];
+  NSString *operator = [self operator];
+  
+  if ([operator isEqualToString:@"d"]) {
+    return [lhs doubleValue] / [rhs doubleValue];
+  } else if ([operator isEqualToString:@"m"]) {
+    return [lhs doubleValue] * [rhs doubleValue];
+  } else if ([operator isEqualToString:@"a"]) {
+    return [lhs doubleValue] + [rhs doubleValue];
+  } else if ([operator isEqualToString:@"s"]) {
+    return [lhs doubleValue] - [rhs doubleValue];
+  } else if ([operator isEqualToString:@"e"]) {
+    return pow([lhs doubleValue],[rhs doubleValue]);
+  } else {
+    [NSException raise:@"InvalidArgumentException" format:@"Unsupported Operator: %@", operator];
+    exit(-1);
+  }
+}
 -(NSString*)description;
 {
   return [NSString stringWithFormat: @"SVRMathRange: <%@><%@><%@> {%d, %d}",
@@ -92,9 +113,9 @@
 // MARK: NSString Custom Range Search
 @implementation NSString (Searching)
 
--(SVRBoundingRange*)boundingRangeWithLHS:(NSString*)lhs
-                                  andRHS:(NSString*)rhs
-                                   error:(NSNumber**)error;
+-(SVRBoundingRange*)SVR_searchRangeBoundedByLHS:(NSString*)lhs
+                                            rhs:(NSString*)rhs
+                                          error:(NSNumber**)error;
 {
   SVRStringEnumerator *e;
   SVRStringEnumeratorRange *next;
@@ -148,9 +169,9 @@
   }
 }
 
--(SVRMathRange*)mathRangeWithOperators:(NSSet*)including
-                     ignoringOperators:(NSSet*)ignoring
-                         validNumerals:(NSSet*)numerals;
+-(SVRMathRange*)SVR_searchMathRangeForOperators:(NSSet*)including
+                     allPossibleOperators:(NSSet*)ignoring
+                      allPossibleNumerals:(NSSet*)numerals;
 {
   SVRStringEnumerator *e;
   SVRStringEnumeratorRange *next;

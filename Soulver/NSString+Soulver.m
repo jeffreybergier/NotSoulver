@@ -7,28 +7,6 @@
 
 #import "NSString+Soulver.h"
 
-// MARK: Logging
-@implementation NSString (SVRLog)
-/// Replaces newlines from logged strings with \n
--(void)SVRLog;
-{
-  NSMutableString *output = [[NSMutableString new] autorelease];
-  NSArray *components = [self componentsSeparatedByString:@"\n"];
-  NSEnumerator *e = [components objectEnumerator];
-  NSString *current = [e nextObject];
-  NSString *next;
-  while (current) {
-    [output appendString:current];
-    next = [e nextObject];
-    if (next) {
-      [output appendString:@"\\n"];
-    }
-    current = next;
-  }
-  NSLog(@"%@", output);
-}
-@end
-
 // MARK: NSAttributedString
 @implementation NSAttributedString (Soulver)
 +(id)SVR_stringWithString:(NSString*)aString;

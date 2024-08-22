@@ -33,16 +33,17 @@
 -(NSString*)operator;
 -(id)initWithRange:(NSRange)range lhs:(NSString*)lhs rhs:(NSString*)rhs operator:(NSString*)operator;
 +(id)rangeWithRange:(NSRange)range lhs:(NSString*)lhs rhs:(NSString*)rhs operator:(NSString*)operator;
+-(double)evaluate;
 -(NSString*)description;
 @end
 
 // MARK: NSString Custom Range Search
 @interface NSString (Searching)
--(SVRBoundingRange*)boundingRangeWithLHS:(NSString*)lhs
-                                  andRHS:(NSString*)rhs
-                                   error:(NSNumber**)error;
--(SVRMathRange*)mathRangeWithOperators:(NSSet*)including
-                     ignoringOperators:(NSSet*)ignoring
-                         validNumerals:(NSSet*)numerals;
+-(SVRBoundingRange*)SVR_searchRangeBoundedByLHS:(NSString*)lhs
+                                            rhs:(NSString*)rhs
+                                          error:(NSNumber**)error;
+-(SVRMathRange*)SVR_searchMathRangeForOperators:(NSSet*)including
+                           allPossibleOperators:(NSSet*)ignoring
+                            allPossibleNumerals:(NSSet*)numerals;
 -(BOOL)isValidDouble;
 @end

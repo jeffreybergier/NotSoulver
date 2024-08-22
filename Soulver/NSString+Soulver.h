@@ -8,12 +8,6 @@
 #import <Foundation/Foundation.h>
 #import <AppKit/AppKit.h>
 
-// MARK: Logging
-@interface NSString (SVRLog)
-/// Replaces newlines from logged strings with \n
--(void)SVRLog;
-@end
-
 // MARK: NSAttributedString
 @interface NSAttributedString (Soulver)
 +(id)SVR_stringWithString:(NSString*)aString;

@@ -89,7 +89,29 @@
   NSString *lhs = [[self render] string];
   NSString *message = [NSString stringWithFormat:@"SVRMathStringTest: FAIL: %@ != %@", lhs, rhs];
   NSAssert([lhs isEqualToString:rhs], message);
-  [[NSString stringWithFormat:@"SVRMathStringTest: PASS: %@", lhs] SVRLog];
+  [[NSString stringWithFormat:@"SVRMathStringTest: PASS: %@", lhs] SVR_debugLOG];
 }
 
+@end
+
+// MARK: Logging
+@implementation NSString (SVRLog)
+/// Replaces newlines from logged strings with \n
+-(void)SVR_debugLOG;
+{
+  NSMutableString *output = [[NSMutableString new] autorelease];
+  NSArray *components = [self componentsSeparatedByString:@"\n"];
+  NSEnumerator *e = [components objectEnumerator];
+  NSString *current = [e nextObject];
+  NSString *next;
+  while (current) {
+    [output appendString:current];
+    next = [e nextObject];
+    if (next) {
+      [output appendString:@"\\n"];
+    }
+    current = next;
+  }
+  NSLog(@"%@", output);
+}
 @end
