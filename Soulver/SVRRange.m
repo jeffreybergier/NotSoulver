@@ -133,10 +133,9 @@
   foundLHS = [[NSMutableArray new] autorelease];
   foundRHS = nil;
   e = [SVRStringEnumerator enumeratorWithString:self];
-  next = [e nextObject];
   balanceCounter = 0;
   
-  while (next) {
+  while ((next = [e nextObject])) {
     if ([[next substring] isEqualToString:lhs]) {
       balanceCounter = balanceCounter + 1;
       if (foundRHS == nil) {
@@ -148,7 +147,6 @@
         foundRHS = next;
       }
     }
-    next = [e nextObject];
   }
   
   if (balanceCounter != 0) {
@@ -182,14 +180,13 @@
   NSString *operator;
   
   e = [SVRStringEnumerator enumeratorWithString:self];
-  next = [e nextObject];
   
   outputRange = NSMakeRange(0, 0);
   lhs = [[NSMutableString new] autorelease];
   rhs = [[NSMutableString new] autorelease];
   operator = nil;
-  
-  while (next) {
+
+  while ((next = [e nextObject])) {
     if        (operator == nil && [numerals  member:[next substring]]) {
       [lhs appendString:[next substring]];
       outputRange.length += 1;
@@ -208,7 +205,6 @@
     } else { // invalid character, bail
       return nil;
     }
-    next = [e nextObject];
   }
   
   if ([lhs length] > 0 && [rhs length] > 0 && [operator length] > 0) {

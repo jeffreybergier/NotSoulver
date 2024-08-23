@@ -44,7 +44,7 @@
   SVRStringEnumeratorRange *next;
   NSEnumerator *e = [SVRStringEnumerator enumeratorWithString:self];
   
-  while (next = [e nextObject]) {
+  while ((next = [e nextObject])) {
     if ([set member:[next substring]]) { continue; }
     return NO;
   }
@@ -53,9 +53,10 @@
 }
 -(BOOL)SVR_beginsWithCharacterInSet:(NSSet*)set;
 {
+  NSString *check;
   if ([self length] == 0) { return NO; }
-  NSString *check = [self substringWithRange:NSMakeRange(0, 1)];
-  return [set member:check];
+  check = [self substringWithRange:NSMakeRange(0, 1)];
+  return [set member:check] != nil;
 }
 -(NSString*)SVR_stringByMappingCharactersInDictionary:(NSDictionary*)map;
 {
@@ -63,7 +64,7 @@
   NSEnumerator *e = [SVRStringEnumerator enumeratorWithString:self];
   NSMutableString *output = [[NSMutableString new] autorelease];
   NSString *toAppend = nil;
-  while (next = [e nextObject]) {
+  while ((next = [e nextObject])) {
     toAppend = [map objectForKey:[next substring]];
     if (!toAppend) { toAppend = [next substring]; }
     [output appendString:toAppend];
