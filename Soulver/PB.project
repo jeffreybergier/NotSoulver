@@ -3,7 +3,6 @@
     DYNAMIC_CODE_GEN = YES; 
     FILESTABLE = {
         CLASSES = (
-            "Foundation+Soulver.m", 
             SVRDocumentController.m, 
             SVRKeypadViewController.m, 
             "SVRMathString+Rendering.m", 
@@ -11,11 +10,13 @@
             SVRTapeModel.m, 
             SVRTapeViewController.m, 
             SVRAppDelegate.m, 
-            "SVRMathString+Tests.m"
+            "SVRMathString+Tests.m", 
+            "NSString+Soulver.m", 
+            SVRConstants.m, 
+            SVRRange.m
         ); 
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
         H_FILES = (
-            "Foundation+Soulver.h", 
             SVRDocumentController.h, 
             SVRKeypadViewController.h, 
             "SVRMathString+Rendering.h", 
@@ -23,7 +24,10 @@
             SVRTapeModel.h, 
             SVRTapeViewController.h, 
             SVRAppDelegate.h, 
-            "SVRMathString+Tests.h"
+            "SVRMathString+Tests.h", 
+            "NSString+Soulver.h", 
+            SVRConstants.h, 
+            SVRRange.h
         ); 
         INTERFACES = (NEXTSTEP_Soulver.nib, NEXTSTEP_SVRDocument.nib); 
         OTHER_LINKED = (Soulver_main.m); 
