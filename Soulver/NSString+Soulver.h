@@ -21,6 +21,13 @@
 -(NSString*)SVR_stringByMappingCharactersInDictionary:(NSDictionary*)map;
 @end
 
+// MARK: NSMutableString
+@interface NSMutableString (Soulver)
+-(void)SVR_insertSolution:(NSString*)solution
+                  atRange:(NSRange)range
+                    error:(NSNumber**)error;
+@end
+
 // MARK: NSStringEnumerator
 @interface SVRStringEnumeratorRange: NSObject
 {
@@ -60,7 +67,7 @@
 +(NSSet*)SVRMultDiv;
 +(NSSet*)SVRExponent;
 +(NSSet*)SVRNumerals;
-+(NSSet*)SVRPatchCheck;
++(NSSet*)SVRSolutionInsertCheck;
 +(NSSet*)SVRAllowedCharacters;
 @end
 

@@ -71,6 +71,54 @@
 }
 @end
 
+// MARK: NSMutableString
+@implementation NSMutableString (Soulver)
+-(void)SVR_insertSolution:(NSString*)solution
+                  atRange:(NSRange)range
+                    error:(NSNumber**)error;
+{
+  BOOL issueFound = NO;
+  BOOL canCheckLeft = NO;
+  BOOL canCheckRight = NO;
+  NSRange checkRange = NSMakeRange(0,0);
+  
+  if (*error != NULL) {
+    return;
+  }
+  
+  canCheckLeft = range.location > 0;
+  canCheckRight = range.location + range.length < [self length];
+  
+  // Perform Checks to the left and right to make sure
+  // there are operators outside of where we are patching.
+  if (canCheckLeft) {
+    checkRange.location = range.location - 1;
+    checkRange.length = 1;
+    issueFound = [[NSSet SVRSolutionInsertCheck] member:[self substringWithRange:checkRange]] == nil;
+  }
+  
+  if (issueFound) {
+    *error = [NSNumber errorPatching];
+    return;
+  }
+  
+  if (canCheckRight) {
+    checkRange.location = range.location + range.length;
+    checkRange.length = 1;
+    issueFound = [[NSSet SVRSolutionInsertCheck] member:[self substringWithRange:checkRange]] == nil;
+  }
+  
+  if (issueFound) {
+    *error = [NSNumber errorPatching];
+    return;
+  }
+  
+  [self replaceCharactersInRange:range withString:solution];
+  return;
+}
+@end
+
+
 @implementation SVRStringEnumeratorRange
 -(NSRange)range;
 {
@@ -189,7 +237,7 @@
 {
   return [NSSet setWithObjects:@"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @".", @"-", nil];
 }
-+(NSSet*)SVRPatchCheck;
++(NSSet*)SVRSolutionInsertCheck;
 {
   NSMutableSet *output = [[NSMutableSet new] autorelease];
   [output unionSet:[NSSet SVROperators]];
@@ -199,7 +247,7 @@
 +(NSSet*)SVRAllowedCharacters;
 {
   NSMutableSet *output = [[NSMutableSet new] autorelease];
-  [output unionSet:[NSSet SVRPatchCheck]];
+  [output unionSet:[NSSet SVRSolutionInsertCheck]];
   [output unionSet:[NSSet SVRNumerals]];
   return [[output copy] autorelease];
 }

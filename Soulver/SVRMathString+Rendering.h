@@ -20,11 +20,6 @@
 -(NSString*)          render_solveEncodedLine:(NSString*)input error:(NSNumber**)error;
 -(NSAttributedString*)render_decodeEncodedLine:(NSString*)line;
 -(NSAttributedString*)render_colorSolution:(NSString*)solution;
-
-@end
-
-@interface NSMutableString (SVRMathStringRendering)
--(void)SVR_replaceCharactersInRange:(NSRange)range
-                         withString:(NSString*)patch
-                              error:(NSNumber**)error;
+-(SVRMathRange*)      render_rangeBySearching:(NSString*)string
+                                 forOperators:(NSSet*)operators;
 @end
