@@ -36,6 +36,41 @@
 }
 @end
 
+// MARK: NSString
+@implementation NSString (Soulver)
+-(BOOL)SVR_containsOnlyCharactersInSet:(NSSet*)set;
+{
+  SVRStringEnumeratorRange *next;
+  NSEnumerator *e = [SVRStringEnumerator enumeratorWithString:self];
+  
+  while (next = [e nextObject]) {
+    if ([set member:[next substring]]) { continue; }
+    return NO;
+  }
+  
+  return YES;
+}
+-(BOOL)SVR_beginsWithCharacterInSet:(NSSet*)set;
+{
+  if ([self length] == 0) { return NO; }
+  NSString *check = [self substringWithRange:NSMakeRange(0, 1)];
+  return [set member:check];
+}
+-(NSString*)SVR_stringByMappingCharactersInDictionary:(NSDictionary*)map;
+{
+  SVRStringEnumeratorRange *next = nil;
+  NSEnumerator *e = [SVRStringEnumerator enumeratorWithString:self];
+  NSMutableString *output = [[NSMutableString new] autorelease];
+  NSString *toAppend = nil;
+  while (next = [e nextObject]) {
+    toAppend = [map objectForKey:[next substring]];
+    if (!toAppend) { toAppend = [next substring]; }
+    [output appendString:toAppend];
+  }
+  return [[output copy] autorelease];
+}
+@end
+
 @implementation SVRStringEnumeratorRange
 -(NSRange)range;
 {
@@ -167,5 +202,21 @@
   [output unionSet:[NSSet SVRPatchCheck]];
   [output unionSet:[NSSet SVRNumerals]];
   return [[output copy] autorelease];
+}
+@end
+
+// MARK: NSDictionaryHelper
+@implementation NSDictionary (Soulver)
++(NSDictionary*)SVROperatorDecodeMap;
+{
+  NSArray *keys   = [NSArray arrayWithObjects:@"a", @"s", @"d", @"m", @"e", nil];
+  NSArray *values = [NSArray arrayWithObjects:@"+", @"-", @"/", @"*", @"^", nil];
+  return [NSDictionary dictionaryWithObjects:values forKeys:keys];
+}
++(NSDictionary*)SVROperatorEncodeMap;
+{
+  NSArray *keys   = [NSArray arrayWithObjects:@"+", @"-", @"/", @"*", @"^", nil];
+  NSArray *values = [NSArray arrayWithObjects:@"a", @"s", @"d", @"m", @"e", nil];
+  return [NSDictionary dictionaryWithObjects:values forKeys:keys];
 }
 @end

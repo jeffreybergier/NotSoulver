@@ -14,7 +14,7 @@
 {
   NSAttributedString *output;
   NSNumber *error = nil;
-  output = [self __renderWithError:&error];
+  output = [self render_encodedStringWithError:&error];
   if (output == nil) {
     output = [self renderError:error];
   }
@@ -32,60 +32,44 @@
   return [[output copy] autorelease];
 }
 
--(NSAttributedString*)__renderWithError:(NSNumber**)error;
+-(NSAttributedString*)render_encodedStringWithError:(NSNumber**)error;
 {
-  SVRStringEnumerator *e;
-  SVRStringEnumeratorRange *next;
-  NSMutableString *lineBuilder;
-  NSMutableAttributedString *output;
-  NSString *_decodedOperator;
+  NSMutableAttributedString *decodedOutput;
+  NSEnumerator *e;
+  NSString *_encodedLine;
+  NSString *encodedLine;
+  NSString *lastSolution;
   
-  if (_string == nil || [_string length] == 0) {
-    return [[NSAttributedString new] autorelease];
-  }
-  
-  e = [SVRStringEnumerator enumeratorWithString:_string];
-  next = [e nextObject];
-  
-  lineBuilder = [[NSMutableString new] autorelease];
-  output = [[NSMutableAttributedString new] autorelease];
-  
-  while (next && *error == NULL) {
-    if ([[NSSet SVRAllowedCharacters] member:[next substring]] == nil) {
-      *error = [NSNumber errorInvalidCharacter];
-      return nil;
-    }
-    _decodedOperator = [SVRMathString decodeOperator:[next substring]];
-    [output appendAttributedString:[NSAttributedString SVR_stringWithString:_decodedOperator ? _decodedOperator : [next substring]]];
-    _decodedOperator = nil;
-    if ([[next substring] isEqualToString:@"="]) {
-      NSString *_solution = [self __solveLine:[[lineBuilder copy] autorelease] error:error];
-      if (_solution == nil) { return nil; }
-      NSAttributedString *toAppend = [NSAttributedString SVR_stringWithString:[NSString stringWithFormat:@"%@", _solution]
-                                                                        color:[NSColor cyanColor]];
-      [output appendAttributedString:toAppend];
-      [output appendAttributedString:[NSAttributedString SVR_stringWithString:@"\n"]];
-      lineBuilder = [[NSMutableString new] autorelease];
-      next = [e nextObject];
-      if ([[NSSet SVROperators] member:[next substring]]) {
-        // The next line starts with an operator so I need to put this line's answer first
-        [lineBuilder appendString:_solution];
-        [output appendAttributedString:toAppend];
-      }
-    } else {
-      [lineBuilder appendString:[next substring]];
-      next = [e nextObject];
-    }
-  }
-  
-  if (*error != NULL) {
+  if (![_string SVR_containsOnlyCharactersInSet:[NSSet SVRAllowedCharacters]]) {
+    *error = [NSNumber errorInvalidCharacter];
     return nil;
   }
   
-  return [[output copy] autorelease];
+  decodedOutput = [[NSMutableAttributedString new] autorelease];
+  e = [[_string componentsSeparatedByString:@"="] objectEnumerator];
+  encodedLine = nil;
+  lastSolution = nil;
+  
+  while (_encodedLine = [e nextObject]) {
+    if ([_encodedLine length] == 0) { continue; }                                                     // If the line is empty, skip
+    encodedLine = _encodedLine;                                                                       // Set the baseline for doing math operations later
+    if ([_encodedLine SVR_beginsWithCharacterInSet:[NSSet SVROperators]]) {                           // If the line begins with an operator we need to prepend the last solution
+      if (!lastSolution) { *error = [NSNumber errorMissingNumberBeforeOrAfterOperator]; return nil; } // If no previous solution AND the line begins with an operator we need to bail
+      encodedLine = [lastSolution stringByAppendingString:_encodedLine];                              // Prepend the encoded line with the last solution
+    }
+    lastSolution = [self render_solveEncodedLine:encodedLine error:error];                            // Solve the problem
+    if (lastSolution == nil) { return nil; }                                                          // If the solution is nil, there was an error
+    [decodedOutput appendAttributedString:[self render_decodeEncodedLine:encodedLine]];               // Decode the encodedLine and append it to the output
+    [decodedOutput appendAttributedString:[NSAttributedString SVR_stringWithString:@"="]];            // Append an equal sign
+    [decodedOutput appendAttributedString:[self render_colorSolution:lastSolution]];                  // Append the solution
+    [decodedOutput appendAttributedString:[NSAttributedString SVR_stringWithString:@"\n"]];           // Append a newline
+    encodedLine = nil;                                                                                // Clean up
+  }
+  
+  return [[decodedOutput copy] autorelease];
 }
 
--(NSString*)__solveLine:(NSString*)input error:(NSNumber**)error;
+-(NSString*)render_solveEncodedLine:(NSString*)input error:(NSNumber**)error;
 {
   SVRBoundingRange *parenRange;
   SVRMathRange *mathRange;
@@ -105,7 +89,7 @@
   // Parantheses
   parenRange = [output SVR_searchRangeBoundedByLHS:@"(" rhs:@")" error:error];
   while (parenRange && *error == NULL) {
-    solutionString = [self __solveLine:[parenRange contents] error:error];
+    solutionString = [self render_solveEncodedLine:[parenRange contents] error:error];
     [output SVR_replaceCharactersInRange:[parenRange range]
                               withString:solutionString
                                    error:error];
@@ -168,6 +152,19 @@
     return nil;
   }
   return [[output copy] autorelease];
+}
+
+-(NSAttributedString*)render_decodeEncodedLine:(NSString*)line;
+{
+  return [NSAttributedString SVR_stringWithString:
+            [line SVR_stringByMappingCharactersInDictionary:
+               [SVRMathString operatorDecodeMap]
+            ]
+  ];
+}
+-(NSAttributedString*)render_colorSolution:(NSString*)solution;
+{
+  return [NSAttributedString SVR_stringWithString:solution color:[NSColor cyanColor]];
 }
 
 @end

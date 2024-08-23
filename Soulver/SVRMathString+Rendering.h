@@ -16,8 +16,10 @@
 -(NSAttributedString*)renderError:(NSNumber*)error;
 
 // MARK: Private
--(NSAttributedString*)__renderWithError:(NSNumber**)error;
--(NSString*)__solveLine:(NSString*)input error:(NSNumber**)error;
+-(NSAttributedString*)render_encodedStringWithError:(NSNumber**)error;
+-(NSString*)          render_solveEncodedLine:(NSString*)input error:(NSNumber**)error;
+-(NSAttributedString*)render_decodeEncodedLine:(NSString*)line;
+-(NSAttributedString*)render_colorSolution:(NSString*)solution;
 
 @end
 

@@ -12,10 +12,10 @@
   NSMutableString *_string;
 }
 // MARK: Main Business Logic
-/// Encodes the raw string operator. Returns nil if the operator is not supported
-+(NSString*)encodeOperator:(NSString*)anOp;
-/// Decodes the operator back to raw. Returns nil if the operator is not supported
-+(NSString*)decodeOperator:(NSString*)anOp;
+/// Dictionary containing the map for encoding
++(NSDictionary*)operatorEncodeMap;
+/// Dictionary containing the map for decoding
++(NSDictionary*)operatorDecodeMap;
 /// Appends the string and automatically encodes the operator. Use `initWithString` to skip encoding
 /// Return 0 if successful, anything other than 0, check the error
 -(int)appendCharacter:(NSString*)aString error:(NSNumber**)error;

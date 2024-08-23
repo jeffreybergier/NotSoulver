@@ -14,6 +14,14 @@
 +(id)SVR_stringWithString:(NSString*)aString color:(NSColor*)aColor;
 @end
 
+// MARK: NSString
+@interface NSString (Soulver)
+-(BOOL)SVR_containsOnlyCharactersInSet:(NSSet*)set;
+-(BOOL)SVR_beginsWithCharacterInSet:(NSSet*)set;
+-(NSString*)SVR_stringByMappingCharactersInDictionary:(NSDictionary*)map;
+@end
+
+// MARK: NSStringEnumerator
 @interface SVRStringEnumeratorRange: NSObject
 {
   NSRange _range;
@@ -26,7 +34,6 @@
 +(id)rangeWithRange:(NSRange)range substring:(NSString*)substring;
 @end
 
-// MARK: Custom Enumerator
 @interface SVRStringEnumerator: NSEnumerator
 {
   NSString *_string;
@@ -55,4 +62,10 @@
 +(NSSet*)SVRNumerals;
 +(NSSet*)SVRPatchCheck;
 +(NSSet*)SVRAllowedCharacters;
+@end
+
+// MARK: NSDictionaryHelper
+@interface NSDictionary (Soulver)
++(NSDictionary*)SVROperatorDecodeMap;
++(NSDictionary*)SVROperatorEncodeMap;
 @end

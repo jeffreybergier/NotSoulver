@@ -12,42 +12,18 @@
 
 // MARK: Main Business Logic
 
-+(NSString*)encodeOperator:(NSString*)anOp;
++(NSDictionary*)operatorEncodeMap;
 {
-  if ([anOp isEqualToString:@"+"]) {
-    return @"a";
-  } else if ([anOp isEqualToString:@"-"]) {
-    return @"s";
-  } else if ([anOp isEqualToString:@"/"]) {
-    return @"d";
-  } else if ([anOp isEqualToString:@"*"]) {
-    return @"m";
-  } else if ([anOp isEqualToString:@"^"]) {
-    return @"e";
-  } else {
-    return nil;
-  }
+  return [NSDictionary SVROperatorEncodeMap];
 }
-+(NSString*)decodeOperator:(NSString*)anOp;
++(NSDictionary*)operatorDecodeMap;
 {
-  if ([anOp isEqualToString:@"a"]) {
-    return @"+";
-  } else if ([anOp isEqualToString:@"s"]) {
-    return @"-";
-  } else if ([anOp isEqualToString:@"d"]) {
-    return @"/";
-  } else if ([anOp isEqualToString:@"m"]) {
-    return @"*";
-  } else if ([anOp isEqualToString:@"e"]) {
-    return @"^";
-  } else {
-    return nil;
-  }
+  return [NSDictionary SVROperatorDecodeMap];
 }
 
 -(int)appendCharacter:(NSString*)aString error:(NSNumber**)error;
 {
-  NSString *operator = [SVRMathString encodeOperator:aString];
+  NSString *operator = [[SVRMathString operatorEncodeMap] objectForKey:aString];
   if (operator) {
     [_string appendString:operator];
     return 0;
