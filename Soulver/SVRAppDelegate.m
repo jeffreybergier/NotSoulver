@@ -37,9 +37,12 @@
   SVRDocumentController *controller;
 
   panel = [NSOpenPanel openPanel];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
   [panel setRequiredFileType:@"solv"];
   [panel runModal];
   file = [panel filename];
+#pragma clang diagnostic pop
   if (!file) { NSLog(@"Open Cancelled"); return; }
   controller = [[self openFiles] objectForKey:file];
   if (!controller) {
