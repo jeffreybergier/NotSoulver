@@ -6,6 +6,7 @@
 //
 
 #import "SVRRange.h"
+#import "SVRConstants.h"
 #import "NSString+Soulver.h"
 
 // MARK: Custom Ranges
@@ -28,12 +29,12 @@
 +(id)rangeWithRange:(NSRange)range contents:(NSString*)contents;
 {
   return [[[SVRBoundingRange alloc] initWithRange:range
-                                            contents:contents] autorelease];
+                                         contents:contents] autorelease];
 }
 -(NSString*)description;
 {
-  return [NSString stringWithFormat: @"SVRBoundingRange: \"%@\" {%d, %d}",
-                                     _contents, _range.location, _range.length];
+  return [NSString stringWithFormat:@"SVRBoundingRange: \"%@\" {%d, %d}",
+                                    _contents, _range.location, _range.length];
 }
 - (void)dealloc
 {
@@ -98,8 +99,8 @@
 }
 -(NSString*)description;
 {
-  return [NSString stringWithFormat: @"SVRMathRange: <%@><%@><%@> {%d, %d}",
-                                     _lhs, _operator, _rhs, _range.location, _range.length];
+  return [NSString stringWithFormat:@"SVRMathRange: <%@><%@><%@> {%d, %d}",
+                                    _lhs, _operator, _rhs, _range.location, _range.length];
 }
 - (void)dealloc
 {
@@ -151,7 +152,7 @@
   }
   
   if (balanceCounter != 0) {
-    *error = [NSNumber errorMismatchedBrackets];
+    *error = [NSNumber SVR_errorMismatchedBrackets];
     return nil;
   } else if ([foundLHS count] == 0 && foundRHS == nil) {
     return nil;
@@ -159,19 +160,19 @@
     outputRange = NSMakeRange(0, 0);
     outputRange.location = [[foundLHS lastObject]  range].location;
     outputRange.length   = [foundRHS               range].location
-                         - [[foundLHS lastObject]  range].location
-                         + 1;
+    - [[foundLHS lastObject]  range].location
+    + 1;
     outputContents = [self substringWithRange:
                         NSMakeRange(outputRange.location + 1,
                                     outputRange.length - 2)
-                     ];
+    ];
     return [SVRBoundingRange rangeWithRange:outputRange contents:outputContents];
   }
 }
 
 -(SVRMathRange*)SVR_searchMathRangeForOperators:(NSSet*)including
-                     allPossibleOperators:(NSSet*)ignoring
-                      allPossibleNumerals:(NSSet*)numerals;
+                           allPossibleOperators:(NSSet*)ignoring
+                            allPossibleNumerals:(NSSet*)numerals;
 {
   SVRStringEnumerator *e;
   SVRStringEnumeratorRange *next;
@@ -187,7 +188,7 @@
   lhs = [[NSMutableString new] autorelease];
   rhs = [[NSMutableString new] autorelease];
   operator = nil;
-    
+  
   while (next) {
     if        (operator == nil && [numerals  member:[next substring]]) {
       [lhs appendString:[next substring]];

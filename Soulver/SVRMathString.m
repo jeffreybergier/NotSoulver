@@ -6,7 +6,7 @@
 //
 
 #import "SVRMathString.h"
-#import "NSString+Soulver.h"
+#import "SVRConstants.h"
 
 @implementation SVRMathString
 
@@ -14,11 +14,11 @@
 
 +(NSDictionary*)operatorEncodeMap;
 {
-  return [NSDictionary SVROperatorEncodeMap];
+  return [NSDictionary SVR_operatorEncodeMap];
 }
 +(NSDictionary*)operatorDecodeMap;
 {
-  return [NSDictionary SVROperatorDecodeMap];
+  return [NSDictionary SVR_operatorDecodeMap];
 }
 
 -(int)appendCharacter:(NSString*)aString error:(NSNumber**)error;
@@ -27,11 +27,11 @@
   if (operator) {
     [_string appendString:operator];
     return 0;
-  } else if ([[NSSet SVRAllowedCharacters] member:aString]) {
+  } else if ([[NSSet SVR_allowedCharacters] member:aString]) {
     [_string appendString:aString];
     return 0;
   } else {
-    *error = [NSNumber errorInvalidCharacter];
+    *error = [NSNumber SVR_errorInvalidCharacter];
     return -1;
   }
 }

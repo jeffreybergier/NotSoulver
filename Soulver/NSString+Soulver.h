@@ -50,29 +50,3 @@
 -(id)initWithString:(NSString*)string;
 +(id)enumeratorWithString:(NSString*)string;
 @end
-
-// MARK: NSError
-// OPENSTEP does not have NSError so I am just using NSNumber
-@interface NSNumber (NSError)
-+(NSNumber*)errorInvalidCharacter;
-+(NSNumber*)errorMismatchedBrackets;
-+(NSNumber*)errorMissingNumberBeforeOrAfterOperator;
-+(NSNumber*)errorPatching;
-@end
-
-// MARK: NSSetHelper
-@interface NSSet (Soulver)
-+(NSSet*)SVROperators;
-+(NSSet*)SVRPlusMinus;
-+(NSSet*)SVRMultDiv;
-+(NSSet*)SVRExponent;
-+(NSSet*)SVRNumerals;
-+(NSSet*)SVRSolutionInsertCheck;
-+(NSSet*)SVRAllowedCharacters;
-@end
-
-// MARK: NSDictionaryHelper
-@interface NSDictionary (Soulver)
-+(NSDictionary*)SVROperatorDecodeMap;
-+(NSDictionary*)SVROperatorEncodeMap;
-@end

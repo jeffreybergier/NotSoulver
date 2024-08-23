@@ -6,6 +6,7 @@
 //
 
 #import "NSString+Soulver.h"
+#import "SVRConstants.h"
 
 // MARK: NSAttributedString
 @implementation NSAttributedString (Soulver)
@@ -19,9 +20,9 @@
   NSArray      *vals;
   NSFont       *font;
   NSDictionary *attr;
-
+  
   font = [NSFont userFixedPitchFontOfSize:14];
- 
+  
   if (aColor) {
     keys = [NSArray arrayWithObjects:NSBackgroundColorAttributeName, NSFontAttributeName, nil];
     vals = [NSArray arrayWithObjects:aColor, font, nil];
@@ -94,22 +95,22 @@
   if (canCheckLeft) {
     checkRange.location = range.location - 1;
     checkRange.length = 1;
-    issueFound = [[NSSet SVRSolutionInsertCheck] member:[self substringWithRange:checkRange]] == nil;
+    issueFound = [[NSSet SVR_solutionInsertCheck] member:[self substringWithRange:checkRange]] == nil;
   }
   
   if (issueFound) {
-    *error = [NSNumber errorPatching];
+    *error = [NSNumber SVR_errorPatching];
     return;
   }
   
   if (canCheckRight) {
     checkRange.location = range.location + range.length;
     checkRange.length = 1;
-    issueFound = [[NSSet SVRSolutionInsertCheck] member:[self substringWithRange:checkRange]] == nil;
+    issueFound = [[NSSet SVR_solutionInsertCheck] member:[self substringWithRange:checkRange]] == nil;
   }
   
   if (issueFound) {
-    *error = [NSNumber errorPatching];
+    *error = [NSNumber SVR_errorPatching];
     return;
   }
   
@@ -187,84 +188,5 @@
 {
   [_string release];
   [super dealloc];
-}
-@end
-
-// MARK: NSError
-// OPENSTEP does not have NSError so I am just using NSNumber
-@implementation NSNumber (NSError)
-+(NSNumber*)errorInvalidCharacter;
-{
-  return [NSNumber numberWithInt:-1002];
-}
-+(NSNumber*)errorMismatchedBrackets;
-{
-  return [NSNumber numberWithInt:-1003];
-}
-+(NSNumber*)errorMissingNumberBeforeOrAfterOperator;
-{
-  return [NSNumber numberWithInt:-1004];
-}
-+(NSNumber*)errorPatching;
-{
-  return [NSNumber numberWithInt:-1005];
-}
-@end
-
-// MARK: NSSetHelper
-@implementation NSSet (Soulver)
-+(NSSet*)SVROperators;
-{
-  NSMutableSet *output = [[NSMutableSet new] autorelease];
-  [output unionSet:[NSSet SVRPlusMinus]];
-  [output unionSet:[NSSet SVRMultDiv]];
-  [output unionSet:[NSSet SVRExponent]];
-  return [[output copy] autorelease];
-}
-+(NSSet*)SVRPlusMinus;
-{
-  return [NSSet setWithObjects:@"a", @"s", nil];
-}
-+(NSSet*)SVRMultDiv;
-{
-  return [NSSet setWithObjects:@"d", @"m", nil];
-}
-+(NSSet*)SVRExponent;
-{
-  return [NSSet setWithObjects:@"e", nil];
-}
-+(NSSet*)SVRNumerals;
-{
-  return [NSSet setWithObjects:@"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @".", @"-", nil];
-}
-+(NSSet*)SVRSolutionInsertCheck;
-{
-  NSMutableSet *output = [[NSMutableSet new] autorelease];
-  [output unionSet:[NSSet SVROperators]];
-  [output unionSet:[NSSet setWithObjects:@"(", @")", @"=", nil]];
-  return [[output copy] autorelease];
-}
-+(NSSet*)SVRAllowedCharacters;
-{
-  NSMutableSet *output = [[NSMutableSet new] autorelease];
-  [output unionSet:[NSSet SVRSolutionInsertCheck]];
-  [output unionSet:[NSSet SVRNumerals]];
-  return [[output copy] autorelease];
-}
-@end
-
-// MARK: NSDictionaryHelper
-@implementation NSDictionary (Soulver)
-+(NSDictionary*)SVROperatorDecodeMap;
-{
-  NSArray *keys   = [NSArray arrayWithObjects:@"a", @"s", @"d", @"m", @"e", nil];
-  NSArray *values = [NSArray arrayWithObjects:@"+", @"-", @"/", @"*", @"^", nil];
-  return [NSDictionary dictionaryWithObjects:values forKeys:keys];
-}
-+(NSDictionary*)SVROperatorEncodeMap;
-{
-  NSArray *keys   = [NSArray arrayWithObjects:@"+", @"-", @"/", @"*", @"^", nil];
-  NSArray *values = [NSArray arrayWithObjects:@"a", @"s", @"d", @"m", @"e", nil];
-  return [NSDictionary dictionaryWithObjects:values forKeys:keys];
 }
 @end
