@@ -15,7 +15,7 @@
 +(NSString*)renderDidChangeNotificationName;
 
 // MARK: Usage
--(void)appendString:(NSString*)aString;
+-(int)appendCharacter:(NSString*)aString error:(NSNumber**)error;
 -(void)backspace;
 
 @end

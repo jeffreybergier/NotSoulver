@@ -39,10 +39,11 @@
 }
 
 // MARK: Usage
--(void)appendString:(NSString*)aString;
+-(int)appendCharacter:(NSString*)aString error:(NSNumber**)error;
 {
-  [[self mathString] appendString:aString];
+  int result = [[self mathString] appendCharacter:aString error:error];
   [self setLatestRender:[[self mathString] render]];
+  return result;
 }
 -(void)backspace;
 {

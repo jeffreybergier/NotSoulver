@@ -16,7 +16,7 @@
   if ([title isEqualToString:@"<-"]) {
     [[self model] backspace];
   } else {
-    [[self model] appendString:[sender title]];
+    [[self model] appendCharacter:[sender title] error:nil];
   }
 }
 
