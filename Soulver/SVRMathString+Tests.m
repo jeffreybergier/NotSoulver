@@ -13,6 +13,34 @@
 
 +(void)executeTests;
 {
+  // MARK: Test Interactive
+  
+  SVRMathString *model = [[[SVRMathString alloc] init] autorelease];
+  NSNumber *error = nil;
+  [model __testAssertEqual:@""];
+  [model appendCharacter:@"H" error:&error];
+  NSAssert([error isEqualToNumber:[NSNumber SVR_errorInvalidCharacter]], @"");
+  error = nil;
+  [model appendCharacter:@"5" error:&error];
+  [model __testAssertEqual:@"5"];
+  [model appendCharacter:@"+" error:&error];
+  [model __testAssertEqual:@"5+"];
+  [model appendCharacter:@"5" error:&error];
+  [model __testAssertEqual:@"5+5"];
+  [model appendCharacter:@"=" error:&error];
+  [model __testAssertEqual:@"5+5=10\n"];
+  [model appendCharacter:@"=" error:&error];
+  [model appendCharacter:@"=" error:&error];
+  [model __testAssertEqual:@"5+5=10\n"];
+  [model appendCharacter:@"*" error:&error];
+  [model __testAssertEqual:@"5+5=10\n10*"];
+  [model appendCharacter:@"9" error:&error];
+  [model __testAssertEqual:@"5+5=10\n10*9"];
+  [model appendCharacter:@"=" error:&error];
+  [model __testAssertEqual:@"5+5=10\n10*9=90\n"];
+  NSAssert(error == nil, @"");
+  model = nil;
+  
   // MARK: Test Errors
   
   [[SVRMathString mathStringWithString:@"5a5a5Xa6a6a6="]
@@ -85,33 +113,7 @@
   
   [[SVRMathString mathStringWithString:@"(10a2)m5="]
                      __testAssertEqual:@"(10+2)*5=60\n"];
-  
-  // MARK: Test Interactive
-  
-  SVRMathString *model = [[[SVRMathString alloc] init] autorelease];
-  NSNumber *error = nil;
-  [model __testAssertEqual:@""];
-  [model appendCharacter:@"H" error:&error];
-  NSAssert([error isEqualToNumber:[NSNumber SVR_errorInvalidCharacter]], @"");
-  error = nil;
-  [model appendCharacter:@"5" error:&error];
-  [model __testAssertEqual:@"5"];
-  [model appendCharacter:@"+" error:&error];
-  [model __testAssertEqual:@"5+"];
-  [model appendCharacter:@"5" error:&error];
-  [model __testAssertEqual:@"5+5"];
-  [model appendCharacter:@"=" error:&error];
-  [model __testAssertEqual:@"5+5=10\n"];
-  [model appendCharacter:@"=" error:&error];
-  [model appendCharacter:@"=" error:&error];
-  [model __testAssertEqual:@"5+5=10\n"];
-  [model appendCharacter:@"*" error:&error];
-  [model __testAssertEqual:@"5+5=10\n10*"];
-  [model appendCharacter:@"9" error:&error];
-  [model __testAssertEqual:@"5+5=10\n10*9"];
-  [model appendCharacter:@"=" error:&error];
-  [model __testAssertEqual:@"5+5=10\n10*9=90\n"];
-  NSAssert(error == nil, @"");
+
 }
 
 -(void)__testAssertEqual:(NSString*)rhs;
