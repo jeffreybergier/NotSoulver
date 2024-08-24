@@ -53,13 +53,14 @@
   
   while (_encodedLine = [e nextObject]) {
     if ([_encodedLine length] == 0) { continue; }                                           // If the line is empty, skip
-    encodedLine = _encodedLine;                                                             // Set the baseline for doing math operations later
     if ([_encodedLine SVR_beginsWithCharacterInSet:[NSSet SVR_operatorsAll]]) {             // If the line begins with an operator we need to prepend the last solution
       if (!lastSolution) {
         *error = [NSNumber SVR_errorMissingNumberBeforeOrAfterOperator];                    // If no previous solution AND the line begins with an operator we need to bail
         return nil;
       }
       encodedLine = [lastSolution stringByAppendingString:_encodedLine];                    // Prepend the encoded line with the last solution
+    } else {
+      encodedLine = _encodedLine;                                                           // Set the baseline for doing math operations later
     }
     lastSolution = [self render_solveEncodedLine:encodedLine error:error];                  // Solve the problem
     if (lastSolution == nil) { return nil; }                                                // If the solution is nil, there was an error
@@ -67,7 +68,6 @@
     [decodedOutput appendAttributedString:[NSAttributedString SVR_stringWithString:@"="]];  // Append an equal sign
     [decodedOutput appendAttributedString:[self render_colorSolution:lastSolution]];        // Append the solution
     [decodedOutput appendAttributedString:[NSAttributedString SVR_stringWithString:@"\n"]]; // Append a newline
-    encodedLine = nil;                                                                      // Clean up
   }
   
   return [[decodedOutput copy] autorelease];
