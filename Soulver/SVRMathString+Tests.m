@@ -102,6 +102,15 @@
   [model __testAssertEqual:@"5+5"];
   [model appendCharacter:@"=" error:&error];
   [model __testAssertEqual:@"5+5=10\n"];
+  [model appendCharacter:@"=" error:&error];
+  [model appendCharacter:@"=" error:&error];
+  [model __testAssertEqual:@"5+5=10\n"];
+  [model appendCharacter:@"*" error:&error];
+  [model __testAssertEqual:@"5+5=10\n10*"];
+  [model appendCharacter:@"9" error:&error];
+  [model __testAssertEqual:@"5+5=10\n10*9"];
+  [model appendCharacter:@"=" error:&error];
+  [model __testAssertEqual:@"5+5=10\n10*9=90\n"];
   NSAssert(error == nil, @"");
 }
 

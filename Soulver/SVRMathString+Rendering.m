@@ -35,6 +35,7 @@
 
 -(NSAttributedString*)render_encodedStringWithError:(NSNumber**)error;
 {
+  SVRMathLineModel *model;
   NSMutableAttributedString *decodedOutput;
   NSEnumerator *e;
   NSString *_encodedLine;
@@ -46,13 +47,20 @@
     return nil;
   }
   
+  model = [SVRMathLineModel modelWithEncodedString:_string];
   decodedOutput = [[NSMutableAttributedString new] autorelease];
-  e = [[_string componentsSeparatedByString:@"="] objectEnumerator];
+  e = [[model completeLines] objectEnumerator];
   encodedLine = nil;
   lastSolution = nil;
   
+  // TODO: Enhance into 1 while loop
+  // Instead of separating the incomplete line into a separate property,
+  // just have a BOOL for lastLineIncomplete.
+  // Then make a custom array enumerator that has the -(int)index and -(BOOL)lastLine properties.
+  // Then this loop can all happen in one without the need for the separate check for the last line
+  // which is mostly copy and paste code
   while (_encodedLine = [e nextObject]) {
-    if ([_encodedLine length] == 0) { continue; }                                           // If the line is empty, skip
+    if ([_encodedLine length] == 0) { continue; }
     if ([_encodedLine SVR_beginsWithCharacterInSet:[NSSet SVR_operatorsAll]]) {             // If the line begins with an operator we need to prepend the last solution
       if (!lastSolution) {
         *error = [NSNumber SVR_errorMissingNumberBeforeOrAfterOperator];                    // If no previous solution AND the line begins with an operator we need to bail
@@ -68,6 +76,20 @@
     [decodedOutput appendAttributedString:[NSAttributedString SVR_stringWithString:@"="]];  // Append an equal sign
     [decodedOutput appendAttributedString:[self render_colorSolution:lastSolution]];        // Append the solution
     [decodedOutput appendAttributedString:[NSAttributedString SVR_stringWithString:@"\n"]]; // Append a newline
+  }
+  
+  _encodedLine = [model incompleteLine];
+  if (_encodedLine) {
+    if ([_encodedLine SVR_beginsWithCharacterInSet:[NSSet SVR_operatorsAll]]) {             // If the line begins with an operator we need to prepend the last solution
+      if (!lastSolution) {
+        *error = [NSNumber SVR_errorMissingNumberBeforeOrAfterOperator];                    // If no previous solution AND the line begins with an operator we need to bail
+        return nil;
+      }
+      encodedLine = [lastSolution stringByAppendingString:_encodedLine];                    // Prepend the encoded line with the last solution
+    } else {
+      encodedLine = _encodedLine;                                                           // Set the baseline for doing math operations later
+    }
+    [decodedOutput appendAttributedString:[self render_decodeEncodedLine:encodedLine]];     // Decode the encodedLine and append it to the output
   }
   
   return [[decodedOutput copy] autorelease];
@@ -150,4 +172,58 @@
                              allPossibleNumerals:[NSSet SVR_numeralsAll]];
 }
 
+@end
+
+@implementation SVRMathLineModel
+-(NSArray*)completeLines;
+{
+  return _completeLines;
+}
+-(NSString*)incompleteLine;
+{
+  return _incompleteLine;
+}
+
+-(id)initWithEncodedString:(NSString*)input;
+{
+  self = [super init];
+  [self __initProperties:input];
+  return self;
+}
++(id)modelWithEncodedString:(NSString*)input;
+{
+  return [[[SVRMathLineModel alloc] initWithEncodedString:input] autorelease];
+}
+
+-(void)__initProperties:(NSString*)input;
+{
+  NSMutableArray *tempLines;
+  if ([input SVR_endsWithCharacterInSet:[NSSet setWithObject:@"="]]) {
+    _completeLines = [[input componentsSeparatedByString:@"="] retain];
+    _incompleteLine = nil;
+  } else {
+    tempLines = [[[input componentsSeparatedByString:@"="] mutableCopy] autorelease];
+    _incompleteLine = [tempLines lastObject];
+    [tempLines removeLastObject];
+    _completeLines = [tempLines copy];
+  }
+  if ([_completeLines count] == 0) {
+    [_completeLines release];
+    _completeLines = nil;
+  }
+  if ([_incompleteLine length] == 0) {
+    [_incompleteLine release];
+    _incompleteLine = nil;
+  }
+  return;
+}
+
+- (void)dealloc
+{
+  [_completeLines release];
+  [_incompleteLine release];
+  _completeLines = nil;
+  _incompleteLine = nil;
+  [super dealloc];
+}
 @end

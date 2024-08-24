@@ -18,6 +18,7 @@
 @interface NSString (Soulver)
 -(BOOL)SVR_containsOnlyCharactersInSet:(NSSet*)set;
 -(BOOL)SVR_beginsWithCharacterInSet:(NSSet*)set;
+-(BOOL)SVR_endsWithCharacterInSet:(NSSet*)set;
 -(NSString*)SVR_stringByMappingCharactersInDictionary:(NSDictionary*)map;
 @end
 

@@ -53,10 +53,13 @@
 }
 -(BOOL)SVR_beginsWithCharacterInSet:(NSSet*)set;
 {
-  NSString *check;
   if ([self length] == 0) { return NO; }
-  check = [self substringWithRange:NSMakeRange(0, 1)];
-  return [set member:check] != nil;
+  return [set member:[self substringWithRange:NSMakeRange(0, 1)]] != nil;
+}
+-(BOOL)SVR_endsWithCharacterInSet:(NSSet*)set;
+{
+  if ([self length] == 0) { return NO; }
+  return [set member:[self substringWithRange:NSMakeRange([self length] - 1, 1)]] != nil;
 }
 -(NSString*)SVR_stringByMappingCharactersInDictionary:(NSDictionary*)map;
 {
