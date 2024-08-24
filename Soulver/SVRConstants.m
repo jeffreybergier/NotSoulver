@@ -134,11 +134,11 @@ NSDictionary *NSDictionary_SVR_operatorEncodeMap;
 }
 +(NSDictionary*)SVR_operatorEncodeMap;
 {
-  if (!NSDictionary_SVR_operatorDecodeMap) {
+  if (!NSDictionary_SVR_operatorEncodeMap) {
     NSArray *keys   = [NSArray arrayWithObjects:@"+", @"-", @"/", @"*", @"^", nil];
     NSArray *values = [NSArray arrayWithObjects:@"a", @"s", @"d", @"m", @"e", nil];
-    NSDictionary_SVR_operatorDecodeMap = [[NSDictionary alloc] initWithObjects:values forKeys:keys];
+    NSDictionary_SVR_operatorEncodeMap = [[NSDictionary alloc] initWithObjects:values forKeys:keys];
   }
-  return NSDictionary_SVR_operatorDecodeMap;
+  return NSDictionary_SVR_operatorEncodeMap;
 }
 @end

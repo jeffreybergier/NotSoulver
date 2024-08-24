@@ -7,11 +7,45 @@
 
 #import "SVRMathString+Rendering.h"
 #import "SVRMathString+Tests.h"
+#import "SVRConstants.h"
 
 @implementation SVRMathString (Tests)
 
 +(void)executeTests;
 {
+  // MARK: Test Errors
+  
+  [[SVRMathString mathStringWithString:@"5a5a5Xa6a6a6="]
+                     __testAssertEqual:@"5a5a5Xa6a6a6=<Error:-1002>\n"];
+  
+  [[SVRMathString mathStringWithString:@"(5m((10a3)m10a2)e2="]
+                     __testAssertEqual:@"(5m((10a3)m10a2)e2=<Error:-1003>\n"];
+  
+  [[SVRMathString mathStringWithString:@"1m2=s3=aa4=6a7="]
+                     __testAssertEqual:@"1m2=s3=aa4=6a7=<Error:-1004>\n"];
+  
+  [[SVRMathString mathStringWithString:@"5aa="]
+                     __testAssertEqual:@"5aa=<Error:-1004>\n"];
+  
+  [[SVRMathString mathStringWithString:@"aa5="]
+                     __testAssertEqual:@"aa5=<Error:-1004>\n"];
+  
+  [[SVRMathString mathStringWithString:@"a5="]
+                     __testAssertEqual:@"a5=<Error:-1004>\n"];
+  
+  [[SVRMathString mathStringWithString:@"5a="]
+                     __testAssertEqual:@"5a=<Error:-1004>\n"];
+  
+  [[SVRMathString mathStringWithString:@"1m2=s3=4a=6a7="]
+                     __testAssertEqual:@"1m2=s3=4a=6a7=<Error:-1004>\n"];
+  
+  [[SVRMathString mathStringWithString:@"5(10)="]
+                     __testAssertEqual:@"5(10)=<Error:-1005>\n"];
+  
+  [[SVRMathString mathStringWithString:@"(10)5="]
+                     __testAssertEqual:@"(10)5=<Error:-1005>\n"];
+  
+  // MARK: Test Normal Math
   
   [[SVRMathString mathStringWithString:@"(5m((10a3)m10a2)e2)="]
                      __testAssertEqual:@"(5*((10+3)*10+2)^2)=87120\n"];
@@ -25,26 +59,8 @@
   [[SVRMathString mathStringWithString:@"1111a(222)a1111="]
                      __testAssertEqual:@"1111+(222)+1111=2444\n"];
   
-  [[SVRMathString mathStringWithString:@"1m2=s3=aa4=6a7="]
-                     __testAssertEqual:@"1m2=s3=aa4=6a7=<Error:-1004>\n"];
-  
-  [[SVRMathString mathStringWithString:@"5aa="]
-                     __testAssertEqual:@"5aa=<Error:-1004>\n"];
-  
-  [[SVRMathString mathStringWithString:@"aa5="]
-                     __testAssertEqual:@"aa5=<Error:-1004>\n"];
-  
   [[SVRMathString mathStringWithString:@"5="]
                      __testAssertEqual:@"5=5\n"];
-  
-  [[SVRMathString mathStringWithString:@"a5="]
-                     __testAssertEqual:@"a5=<Error:-1004>\n"];
-  
-  [[SVRMathString mathStringWithString:@"5a="]
-                     __testAssertEqual:@"5a=<Error:-1004>\n"];
-  
-  [[SVRMathString mathStringWithString:@"1m2=s3=4a=6a7="]
-                     __testAssertEqual:@"1m2=s3=4a=6a7=<Error:-1004>\n"];
   
   [[SVRMathString mathStringWithString:@"2.0a2.0="]
                      __testAssertEqual:@"2.0+2.0=4\n"];
@@ -70,18 +86,23 @@
   [[SVRMathString mathStringWithString:@"(10a2)m5="]
                      __testAssertEqual:@"(10+2)*5=60\n"];
   
-  [[SVRMathString mathStringWithString:@"(5m((10a3)m10a2)e2="]
-                     __testAssertEqual:@"(5m((10a3)m10a2)e2=<Error:-1003>\n"];
+  // MARK: Test Interactive
   
-  [[SVRMathString mathStringWithString:@"5(10)="]
-                     __testAssertEqual:@"5(10)=<Error:-1005>\n"];
-  
-  [[SVRMathString mathStringWithString:@"(10)5="]
-                     __testAssertEqual:@"(10)5=<Error:-1005>\n"];
-  
-  [[SVRMathString mathStringWithString:@"5a5a5Xa6a6a6="]
-                     __testAssertEqual:@"5a5a5Xa6a6a6=<Error:-1002>\n"];
-  
+  SVRMathString *model = [[[SVRMathString alloc] init] autorelease];
+  NSNumber *error = nil;
+  [model __testAssertEqual:@""];
+  [model appendCharacter:@"H" error:&error];
+  NSAssert([error isEqualToNumber:[NSNumber SVR_errorInvalidCharacter]], @"");
+  error = nil;
+  [model appendCharacter:@"5" error:&error];
+  [model __testAssertEqual:@"5"];
+  [model appendCharacter:@"+" error:&error];
+  [model __testAssertEqual:@"5+"];
+  [model appendCharacter:@"5" error:&error];
+  [model __testAssertEqual:@"5+5"];
+  [model appendCharacter:@"=" error:&error];
+  [model __testAssertEqual:@"5+5=10\n"];
+  NSAssert(error == nil, @"");
 }
 
 -(void)__testAssertEqual:(NSString*)rhs;
