@@ -148,7 +148,7 @@ NSDictionary *NSDictionary_SVR_numberLocale;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     NSArray *keys   = [NSArray arrayWithObjects:
-                       (NSString *)kCFLocaleDecimalSeparator,
+                       @"kCFLocaleDecimalSeparator",
                        NSDecimalSeparator,
                        nil];
 #pragma clang diagnostic pop

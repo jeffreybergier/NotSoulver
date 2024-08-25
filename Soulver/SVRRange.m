@@ -95,7 +95,7 @@
   } else if ([operator isEqualToString:@"s"]) {
     return [lhs decimalNumberBySubtracting:rhs];
   } else if ([operator isEqualToString:@"e"]) {
-    if ([rhs integerValue] < 0) {
+    if ([rhs intValue] < 0) {
       return [[NSDecimalNumber decimalNumberWithString:@"1"]
               decimalNumberByDividingBy:
                 [lhs decimalNumberByRaisingToPower:labs([rhs longValue])]];
