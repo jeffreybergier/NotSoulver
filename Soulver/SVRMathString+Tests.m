@@ -105,9 +105,6 @@
   [[SVRMathString mathStringWithString:@"5m5=s5="]
                      __testAssertEqual:@"5*5=25\n25-5=20\n"];
   
-  [[SVRMathString mathStringWithString:@"1m2=3e4=5d6=7s8=9a10=(11a12)=((13a14))="]
-                     __testAssertEqual:@"1*2=2\n3^4=81\n5/6=0.83333333333333333333333333333333333333\n7-8=-1\n9+10=19\n(11+12)=23\n((13+14))=27\n"];
-  
   [[SVRMathString mathStringWithString:@"5m5=5s5="]
                      __testAssertEqual:@"5*5=25\n5-5=0\n"];
   
@@ -122,6 +119,9 @@
   
   [[SVRMathString mathStringWithString:@"2e-2="]
                      __testAssertEqual:@"2^-2=0.25\n"];
+  
+  [[SVRMathString mathStringWithString:@"1m2=3e4=5d6=7s8=9a10=(11a12)=((13a14))="]
+                     __testAssertEqual:@"1*2=2\n3^4=81\n5/6=0.83333333333333333333333333333333333333\n7-8=-1\n9+10=19\n(11+12)=23\n((13+14))=27\n"];
   
 }
 

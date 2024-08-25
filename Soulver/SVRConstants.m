@@ -24,8 +24,7 @@ NSSet *NSSet_SVR_solutionInsertCheck;
 
 NSDictionary *NSDictionary_SVR_operatorDecodeMap;
 NSDictionary *NSDictionary_SVR_operatorEncodeMap;
-
-NSLocale *NSLocale_SVR_numberLocale;
+NSDictionary *NSDictionary_SVR_numberLocale;
 
 // MARK: NSError
 // OPENSTEP does not have NSError so I am just using NSNumber
@@ -143,15 +142,20 @@ NSLocale *NSLocale_SVR_numberLocale;
   }
   return NSDictionary_SVR_operatorEncodeMap;
 }
-@end
-
-// MARK: NSLocale
-@implementation NSLocale (Soulver)
-+(NSLocale*)SVR_numberLocale;
++(NSDictionary*)SVR_numberLocale;
 {
-  if (!NSLocale_SVR_numberLocale) {
-    NSLocale_SVR_numberLocale = [NSLocale localeWithLocaleIdentifier:@"en_US"];
+  if (!NSDictionary_SVR_numberLocale) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    NSArray *keys   = [NSArray arrayWithObjects:
+                       (NSString *)kCFLocaleDecimalSeparator,
+                       NSDecimalSeparator,
+                       nil];
+#pragma clang diagnostic pop
+    NSArray *values = [NSArray arrayWithObjects:@".", @".", nil];
+    NSDictionary_SVR_numberLocale = [[NSDictionary alloc] initWithObjects:values forKeys:keys];
   }
-  return NSLocale_SVR_numberLocale;
+  return NSDictionary_SVR_numberLocale;
 }
 @end
+

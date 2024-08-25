@@ -80,10 +80,10 @@
 {
   NSDecimalNumber *lhs = [NSDecimalNumber
                           decimalNumberWithString:[self lhs]
-                          locale:[NSLocale SVR_numberLocale]];
+                          locale:[NSDictionary SVR_numberLocale]];
   NSDecimalNumber *rhs = [NSDecimalNumber
                           decimalNumberWithString:[self rhs]
-                          locale:[NSLocale SVR_numberLocale]];
+                          locale:[NSDictionary SVR_numberLocale]];
   NSString *operator = [self operator];
   
   if ([operator isEqualToString:@"d"]) {

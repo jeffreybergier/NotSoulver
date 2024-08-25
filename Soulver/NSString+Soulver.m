@@ -85,15 +85,15 @@
   NSString *solutionString;
   BOOL problem = NO;
   
-  if (*error != NULL) { return; }
+  if (*error) { return; }
   if (![self __canInsertSolutionAtRange:range]) { *error = [NSNumber SVR_errorPatching]; return; }
   
   if ([solution isKindOfClass:[NSDecimalNumber class]]) {
     problem = [solution isEqualToNumber:[NSDecimalNumber notANumber]];
-    solutionString = [solution descriptionWithLocale:[NSLocale SVR_numberLocale]];
+    solutionString = [solution descriptionWithLocale:[NSDictionary SVR_numberLocale]];
   } else if ([solution isKindOfClass:[NSString class]]) {
     problem = [[NSDecimalNumber decimalNumberWithString:solution
-                                                 locale:[NSLocale SVR_numberLocale]]
+                                                 locale:[NSDictionary SVR_numberLocale]]
                                         isEqualToNumber:[NSDecimalNumber notANumber]];
     solutionString = solution;
   } else {
