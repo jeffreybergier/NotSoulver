@@ -47,7 +47,7 @@
     return nil;
   }
   
-  model = [SVRMathLineModel modelWithEncodedString:_string];
+  model = [SVRMathLineModel modelWithEncodedString:[[_string copy] autorelease]];
   decodedOutput = [[NSMutableAttributedString new] autorelease];
   e = [[model completeLines] objectEnumerator];
   encodedLine = nil;
@@ -203,7 +203,7 @@
     _incompleteLine = nil;
   } else {
     tempLines = [[[input componentsSeparatedByString:@"="] mutableCopy] autorelease];
-    _incompleteLine = [tempLines lastObject];
+    _incompleteLine = [[tempLines lastObject] retain];
     [tempLines removeLastObject];
     _completeLines = [tempLines copy];
   }
