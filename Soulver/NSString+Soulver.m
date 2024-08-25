@@ -87,21 +87,25 @@
   
   if (*error) { return; }
   if (![self __canInsertSolutionAtRange:range]) { *error = [NSNumber SVR_errorPatching]; return; }
-  
+
+  // TODO: Figure out why isEqualToNumber is returning YES in OPENSTEP only
   if ([solution isKindOfClass:[NSDecimalNumber class]]) {
-    problem = [solution isEqualToNumber:[NSDecimalNumber notANumber]];
+    //problem = [solution isEqualToNumber:[NSDecimalNumber notANumber]];
     solutionString = [solution descriptionWithLocale:[NSDictionary SVR_numberLocale]];
   } else if ([solution isKindOfClass:[NSString class]]) {
-    problem = [[NSDecimalNumber decimalNumberWithString:solution
-                                                 locale:[NSDictionary SVR_numberLocale]]
-                                        isEqualToNumber:[NSDecimalNumber notANumber]];
+    //problem = [[NSDecimalNumber decimalNumberWithString:solution
+    //                                             locale:[NSDictionary SVR_numberLocale]]
+    //                                    isEqualToNumber:[NSDecimalNumber notANumber]];
     solutionString = solution;
   } else {
     [NSException raise:@"UnexpectedTypeException" format:@"Expected NSDecimalNumber or NSString: Got %@", solution];
     solutionString = nil;
   }
   
-  if (problem) { *error = [NSNumber SVR_errorInvalidCharacter]; return; }
+  if (problem) {
+    *error = [NSNumber SVR_errorInvalidCharacter];
+    return;
+  }
   
   [self replaceCharactersInRange:range withString:solutionString];
   return;
