@@ -213,8 +213,4 @@
     return nil;
   }
 }
--(BOOL)isValidDouble;
-{
-  return [self isEqualToString:[NSString stringWithFormat:@"%g", [self doubleValue]]];
-}
 @end

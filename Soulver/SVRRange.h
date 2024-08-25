@@ -45,5 +45,4 @@
 -(SVRMathRange*)SVR_searchMathRangeForOperators:(NSSet*)including
                            allPossibleOperators:(NSSet*)ignoring
                             allPossibleNumerals:(NSSet*)numerals;
--(BOOL)isValidDouble;
 @end

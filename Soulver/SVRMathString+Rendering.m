@@ -144,7 +144,7 @@
   
   // If we get to the end here, and the result is not just a simple number,
   // then we have a mismatch between numbers and operators
-  if (![output isValidDouble]) {
+  if (![output SVR_containsOnlyCharactersInSet:[NSSet SVR_numeralsAll]]) {
     *error = [NSNumber SVR_errorMissingNumberBeforeOrAfterOperator];
     return nil;
   }
