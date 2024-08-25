@@ -24,9 +24,10 @@
 
 // MARK: NSMutableString
 @interface NSMutableString (Soulver)
--(void)SVR_insertSolution:(NSString*)solution
+-(void)SVR_insertSolution:(id)solution
                   atRange:(NSRange)range
                     error:(NSNumber**)error;
+-(BOOL)__canInsertSolutionAtRange:(NSRange)range;
 @end
 
 // MARK: NSStringEnumerator

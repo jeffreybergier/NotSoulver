@@ -78,18 +78,40 @@
 
 // MARK: NSMutableString
 @implementation NSMutableString (Soulver)
--(void)SVR_insertSolution:(NSString*)solution
+-(void)SVR_insertSolution:(id)solution
                   atRange:(NSRange)range
                     error:(NSNumber**)error;
+{
+  NSString *solutionString;
+  BOOL problem = NO;
+  
+  if (*error != NULL) { return; }
+  if (![self __canInsertSolutionAtRange:range]) { *error = [NSNumber SVR_errorPatching]; return; }
+  
+  if ([solution isKindOfClass:[NSDecimalNumber class]]) {
+    problem = [solution isEqualToNumber:[NSDecimalNumber notANumber]];
+    solutionString = [solution descriptionWithLocale:[NSLocale SVR_numberLocale]];
+  } else if ([solution isKindOfClass:[NSString class]]) {
+    problem = [[NSDecimalNumber decimalNumberWithString:solution
+                                                 locale:[NSLocale SVR_numberLocale]]
+                                        isEqualToNumber:[NSDecimalNumber notANumber]];
+    solutionString = solution;
+  } else {
+    [NSException raise:@"UnexpectedTypeException" format:@"Expected NSDecimalNumber or NSString: Got %@", solution];
+    solutionString = nil;
+  }
+  
+  if (problem) { *error = [NSNumber SVR_errorInvalidCharacter]; return; }
+  
+  [self replaceCharactersInRange:range withString:solutionString];
+  return;
+}
+-(BOOL)__canInsertSolutionAtRange:(NSRange)range;
 {
   BOOL issueFound = NO;
   BOOL canCheckLeft = NO;
   BOOL canCheckRight = NO;
   NSRange checkRange = NSMakeRange(0,0);
-  
-  if (*error != NULL) {
-    return;
-  }
   
   canCheckLeft = range.location > 0;
   canCheckRight = range.location + range.length < [self length];
@@ -103,8 +125,7 @@
   }
   
   if (issueFound) {
-    *error = [NSNumber SVR_errorPatching];
-    return;
+    return NO;
   }
   
   if (canCheckRight) {
@@ -114,12 +135,10 @@
   }
   
   if (issueFound) {
-    *error = [NSNumber SVR_errorPatching];
-    return;
+    return NO;
   }
   
-  [self replaceCharactersInRange:range withString:solution];
-  return;
+  return YES;
 }
 @end
 

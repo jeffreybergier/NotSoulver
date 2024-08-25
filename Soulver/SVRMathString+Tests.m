@@ -73,6 +73,9 @@
   [[SVRMathString mathStringWithString:@"(10)5="]
                      __testAssertEqual:@"(10)5=<Error:-1005>\n"];
   
+  [[SVRMathString mathStringWithString:@"8e8=d8e5="]
+                     __testAssertEqual:@"8^8=16777216\n16777216/8^5=512\n"];
+  
   // MARK: Test Normal Math
   
   [[SVRMathString mathStringWithString:@"(5m((10a3)m10a2)e2)="]
@@ -103,7 +106,7 @@
                      __testAssertEqual:@"5*5=25\n25-5=20\n"];
   
   [[SVRMathString mathStringWithString:@"1m2=3e4=5d6=7s8=9a10=(11a12)=((13a14))="]
-                     __testAssertEqual:@"1*2=2\n3^4=81\n5/6=0.833333\n7-8=-1\n9+10=19\n(11+12)=23\n((13+14))=27\n"];
+                     __testAssertEqual:@"1*2=2\n3^4=81\n5/6=0.83333333333333333333333333333333333333\n7-8=-1\n9+10=19\n(11+12)=23\n((13+14))=27\n"];
   
   [[SVRMathString mathStringWithString:@"5m5=5s5="]
                      __testAssertEqual:@"5*5=25\n5-5=0\n"];
@@ -113,7 +116,12 @@
   
   [[SVRMathString mathStringWithString:@"(10a2)m5="]
                      __testAssertEqual:@"(10+2)*5=60\n"];
-
+  
+  [[SVRMathString mathStringWithString:@"8e8="]
+                     __testAssertEqual:@"8^8=16777216\n"];
+  
+  [[SVRMathString mathStringWithString:@"2e-2="]
+                     __testAssertEqual:@"2^-2=0.25\n"];
 }
 
 -(void)__testAssertEqual:(NSString*)rhs;

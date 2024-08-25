@@ -25,6 +25,8 @@ NSSet *NSSet_SVR_solutionInsertCheck;
 NSDictionary *NSDictionary_SVR_operatorDecodeMap;
 NSDictionary *NSDictionary_SVR_operatorEncodeMap;
 
+NSLocale *NSLocale_SVR_numberLocale;
+
 // MARK: NSError
 // OPENSTEP does not have NSError so I am just using NSNumber
 @implementation NSNumber (NSError)
@@ -140,5 +142,16 @@ NSDictionary *NSDictionary_SVR_operatorEncodeMap;
     NSDictionary_SVR_operatorEncodeMap = [[NSDictionary alloc] initWithObjects:values forKeys:keys];
   }
   return NSDictionary_SVR_operatorEncodeMap;
+}
+@end
+
+// MARK: NSLocale
+@implementation NSLocale (Soulver)
++(NSLocale*)SVR_numberLocale;
+{
+  if (!NSLocale_SVR_numberLocale) {
+    NSLocale_SVR_numberLocale = [NSLocale localeWithLocaleIdentifier:@"en_US"];
+  }
+  return NSLocale_SVR_numberLocale;
 }
 @end

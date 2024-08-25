@@ -33,7 +33,7 @@
 -(NSString*)operator;
 -(id)initWithRange:(NSRange)range lhs:(NSString*)lhs rhs:(NSString*)rhs operator:(NSString*)operator;
 +(id)rangeWithRange:(NSRange)range lhs:(NSString*)lhs rhs:(NSString*)rhs operator:(NSString*)operator;
--(double)evaluate;
+-(NSDecimalNumber*)evaluate;
 -(NSString*)description;
 @end
 

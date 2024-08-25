@@ -32,3 +32,9 @@
 +(NSDictionary*)SVR_operatorDecodeMap;
 +(NSDictionary*)SVR_operatorEncodeMap;
 @end
+
+// MARK: NSLocale
+@interface NSLocale (Soulver)
++(NSLocale*)SVR_numberLocale;
+@end
+

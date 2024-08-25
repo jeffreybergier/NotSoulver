@@ -116,24 +116,27 @@
                          error:error];
   }
   // Exponents
-  while ((mathRange = [self render_rangeBySearching:output forOperators:[NSSet SVR_operatorsExponent]]))
+  while ((mathRange = [self render_rangeBySearching:output
+                                       forOperators:[NSSet SVR_operatorsExponent]]))
   {
-    [output SVR_insertSolution:[NSString stringWithFormat:@"%g", [mathRange evaluate]]
+    [output SVR_insertSolution:[mathRange evaluate]
                        atRange:[mathRange range]
                          error:error];
   }
   // Multiply and Divide
-  while ((mathRange = [self render_rangeBySearching:output forOperators:[NSSet SVR_operatorsMultDiv]]))
+  while ((mathRange = [self render_rangeBySearching:output
+                                       forOperators:[NSSet SVR_operatorsMultDiv]]))
   {
-    [output SVR_insertSolution:[NSString stringWithFormat:@"%g", [mathRange evaluate]]
+    [output SVR_insertSolution:[mathRange evaluate]
                        atRange:[mathRange range]
                          error:error];
   }
   
   // Add and Subtract
-  while ((mathRange = [self render_rangeBySearching:output forOperators:[NSSet SVR_operatorsPlusMinus]]))
+  while ((mathRange = [self render_rangeBySearching:output
+                                       forOperators:[NSSet SVR_operatorsPlusMinus]]))
   {
-    [output SVR_insertSolution:[NSString stringWithFormat:@"%g", [mathRange evaluate]]
+    [output SVR_insertSolution:[mathRange evaluate]
                        atRange:[mathRange range]
                          error:error];
   }

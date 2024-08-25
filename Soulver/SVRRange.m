@@ -76,25 +76,35 @@
                                           rhs:rhs
                                      operator:operator] autorelease];
 }
--(double)evaluate;
+-(NSDecimalNumber*)evaluate;
 {
-  NSString *lhs = [self lhs];
-  NSString *rhs = [self rhs];
+  NSDecimalNumber *lhs = [NSDecimalNumber
+                          decimalNumberWithString:[self lhs]
+                          locale:[NSLocale SVR_numberLocale]];
+  NSDecimalNumber *rhs = [NSDecimalNumber
+                          decimalNumberWithString:[self rhs]
+                          locale:[NSLocale SVR_numberLocale]];
   NSString *operator = [self operator];
   
   if ([operator isEqualToString:@"d"]) {
-    return [lhs doubleValue] / [rhs doubleValue];
+    return [lhs decimalNumberByDividingBy:rhs];
   } else if ([operator isEqualToString:@"m"]) {
-    return [lhs doubleValue] * [rhs doubleValue];
+    return [lhs decimalNumberByMultiplyingBy:rhs];
   } else if ([operator isEqualToString:@"a"]) {
-    return [lhs doubleValue] + [rhs doubleValue];
+    return [lhs decimalNumberByAdding:rhs];
   } else if ([operator isEqualToString:@"s"]) {
-    return [lhs doubleValue] - [rhs doubleValue];
+    return [lhs decimalNumberBySubtracting:rhs];
   } else if ([operator isEqualToString:@"e"]) {
-    return pow([lhs doubleValue],[rhs doubleValue]);
+    if ([rhs integerValue] < 0) {
+      return [[NSDecimalNumber decimalNumberWithString:@"1"]
+              decimalNumberByDividingBy:
+                [lhs decimalNumberByRaisingToPower:labs([rhs longValue])]];
+    } else {
+      return [lhs decimalNumberByRaisingToPower:[rhs unsignedIntValue]];
+    }
   } else {
     [NSException raise:@"InvalidArgumentException" format:@"Unsupported Operator: %@", operator];
-    exit(-1);
+    return nil;
   }
 }
 -(NSString*)description;
