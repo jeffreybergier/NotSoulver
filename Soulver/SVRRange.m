@@ -33,7 +33,7 @@
 }
 -(NSString*)description;
 {
-  return [NSString stringWithFormat:@"SVRBoundingRange: \"%@\" {%d, %d}",
+  return [NSString stringWithFormat:@"SVRBoundingRange: \"%@\" {%lu, %lu}",
                                     _contents, _range.location, _range.length];
 }
 - (void)dealloc
@@ -99,7 +99,7 @@
 }
 -(NSString*)description;
 {
-  return [NSString stringWithFormat:@"SVRMathRange: <%@><%@><%@> {%d, %d}",
+  return [NSString stringWithFormat:@"SVRMathRange: <%@><%@><%@> {%lu, %lu}",
                                     _lhs, _operator, _rhs, _range.location, _range.length];
 }
 - (void)dealloc

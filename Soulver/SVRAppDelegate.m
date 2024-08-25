@@ -24,7 +24,7 @@
 
   controller = [SVRDocumentController controllerWithFilename:nil];
   window = [controller window];
-  windowNumber = [NSNumber numberWithInt:[window windowNumber]];
+  windowNumber = [NSNumber numberWithLong:[window windowNumber]];
   
   [[self openUnsaved] setObject:controller forKey:windowNumber];
   [window makeKeyAndOrderFront:sender];
@@ -62,7 +62,7 @@
   BOOL result;
 
   window = [[NSApplication sharedApplication] mainWindow];
-  windowNumber = [NSNumber numberWithInt:[window windowNumber]];
+  windowNumber = [NSNumber numberWithLong:[window windowNumber]];
   documentLHS = [window delegate];
   if ([documentLHS isKindOfClass:[SVRDocumentController class]]) {
     result = [documentLHS saveDocument];
@@ -143,7 +143,7 @@
   NSEnumerator *e1;
   NSEnumerator *e2;
   SVRDocumentController *value;
-  int alertResult;
+  long alertResult;
   BOOL result = YES;
 
   e1 = [[self openUnsaved] objectEnumerator];
@@ -155,10 +155,13 @@
   }
 
   if (!result) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     alertResult = NSRunAlertPanel(@"Quit Application",
                                   @"There are documents with unsaved changes.",
                                   @"Review Unsaved Changes", @"Quit Anyway",
                                   nil);
+#pragma clang diagnostic pop
     switch (alertResult) {
       case 1: // Review Unsaved
         result = NO;

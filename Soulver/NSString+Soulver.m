@@ -136,7 +136,7 @@
 -(NSString*)description;
 {
   return [
-    NSString stringWithFormat:@"SVREnumeratorRange: '%@' {%d, %d}",
+    NSString stringWithFormat:@"SVREnumeratorRange: '%@' {%lu, %lu}",
                               _substring, _range.location, _range.length];
 }
 -(id)initWithRange:(NSRange)range substring:(NSString*)substring;

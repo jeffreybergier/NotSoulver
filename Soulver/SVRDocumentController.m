@@ -27,7 +27,11 @@
 {
   self = [super init];
   _filename = [filename retain];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
   [NSBundle loadNibNamed:@"NEXTSTEP_SVRDocument.nib" owner:self];
+#pragma clang diagnostic pop
+
   return self;
 }
 
@@ -67,9 +71,12 @@
   filename = [self filename];
   if (!filename) {
     panel = [NSSavePanel savePanel];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [panel setRequiredFileType:@"solv"];
     [panel runModal];
     filename = [panel filename];
+#pragma clang diagnostic pop
     [self setFilename:filename];
   }
   if (!filename) {
@@ -129,18 +136,21 @@
 @implementation SVRDocumentController (NSWindowDelegate)
 -(BOOL)windowShouldClose:(id)sender;
 {
-  int alertResult;
+  long alertResult;
   NSDictionary *userInfo;
   NSArray *infoObjects;
   NSArray *infoKeys;
   NSNotificationCenter *center;
   BOOL result = YES;
   if ([[self window] isDocumentEdited]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     alertResult = NSRunAlertPanel(@"Close Document",
                                   @"Save changes before closing?",
                                   @"Save",
                                   @"Cancel",
                                   @"Don't Save");
+#pragma clang diagnostic pop
     switch (alertResult) {
       case -1:
         result = YES;
@@ -154,7 +164,7 @@
     }
   }
   if (result) {
-    infoObjects = [NSArray arrayWithObjects:[NSNumber numberWithInt:[[self window] windowNumber]],
+    infoObjects = [NSArray arrayWithObjects:[NSNumber numberWithLong:[[self window] windowNumber]],
                                             [self filename],
                                             nil];
     infoKeys = [NSArray arrayWithObjects:@"windowNumber", [self filename] ? @"filename" : nil, nil];

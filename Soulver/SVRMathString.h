@@ -43,6 +43,6 @@
 
 @interface SVRMathString (NSObjectProtocol)
 -(BOOL)isEqual:(id)object;
--(unsigned)hash;
+-(unsigned long)hash;
 @end
 

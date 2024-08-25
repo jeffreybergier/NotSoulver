@@ -59,7 +59,7 @@
   // Then make a custom array enumerator that has the -(int)index and -(BOOL)lastLine properties.
   // Then this loop can all happen in one without the need for the separate check for the last line
   // which is mostly copy and paste code
-  while (_encodedLine = [e nextObject]) {
+  while ((_encodedLine = [e nextObject])) {
     if ([_encodedLine length] == 0) { continue; }
     if ([_encodedLine SVR_beginsWithCharacterInSet:[NSSet SVR_operatorsAll]]) {             // If the line begins with an operator we need to prepend the last solution
       if (!lastSolution) {

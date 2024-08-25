@@ -39,18 +39,14 @@
 -(void)backspace;
 {
   NSRange range;
-  unsigned int length;
-  
-  length = [_string length];
-  
-  switch (length) {
+  switch ([_string length]) {
     case 0:
       return;
     case 1:
       [_string setString:@""];
       return;
     default:
-      range = NSMakeRange(length - 1, 1);
+      range = NSMakeRange([_string length] - 1, 1);
       [_string deleteCharactersInRange:range];
       return;
   }
@@ -136,7 +132,7 @@
     return NO;
   }
 }
--(unsigned)hash;
+-(unsigned long)hash;
 {
   return [_string hash];
 }
