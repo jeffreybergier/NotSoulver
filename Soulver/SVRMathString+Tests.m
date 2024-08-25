@@ -122,6 +122,7 @@
   
   [[SVRMathString mathStringWithString:@"2e-2="]
                      __testAssertEqual:@"2^-2=0.25\n"];
+  
 }
 
 -(void)__testAssertEqual:(NSString*)rhs;

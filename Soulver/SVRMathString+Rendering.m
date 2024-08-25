@@ -101,19 +101,16 @@
   SVRMathRange *mathRange = nil;
   NSMutableString *output = [[input mutableCopy] autorelease];
   
-  if (*error != NULL) {
-    return nil;
-  }
+  if (*error) { return nil; }
+  if (input == nil || [input length] == 0) { return @""; }
   
-  if (input == nil || [input length] == 0) {
-    return @"";
-  }
   // PEMDAS
   // Parantheses
   while ((parenRange = [output SVR_searchRangeBoundedByLHS:@"(" rhs:@")" error:error])) {
     [output SVR_insertSolution:[self render_solveEncodedLine:[parenRange contents] error:error]
                        atRange:[parenRange range]
                          error:error];
+    if (*error) { return nil; }
   }
   // Exponents
   while ((mathRange = [self render_rangeBySearching:output
@@ -122,6 +119,7 @@
     [output SVR_insertSolution:[mathRange evaluate]
                        atRange:[mathRange range]
                          error:error];
+    if (*error) { return nil; }
   }
   // Multiply and Divide
   while ((mathRange = [self render_rangeBySearching:output
@@ -130,6 +128,7 @@
     [output SVR_insertSolution:[mathRange evaluate]
                        atRange:[mathRange range]
                          error:error];
+    if (*error) { return nil; }
   }
   
   // Add and Subtract
@@ -139,12 +138,11 @@
     [output SVR_insertSolution:[mathRange evaluate]
                        atRange:[mathRange range]
                          error:error];
+    if (*error) { return nil; }
   }
   
-  if (*error != NULL) {
-    return nil;
-  }
-  
+  if (*error) { return nil; }
+
   // If we get to the end here, and the result is not just a simple number,
   // then we have a mismatch between numbers and operators
   if (![output SVR_containsOnlyCharactersInSet:[NSSet SVR_numeralsAll]]) {
