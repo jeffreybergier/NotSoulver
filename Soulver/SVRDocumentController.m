@@ -17,7 +17,7 @@
 {
   return _window;
 }
--(SVRTapeModel*)model;
+-(SVRMathStringModelController*)model;
 {
   return _model;
 }
@@ -55,10 +55,11 @@
     [[self model] setMathString:document];
   }
 
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(__modelRenderDidChangeNotification:)
-                                               name:[SVRTapeModel renderDidChangeNotificationName]
-                                             object:[self model]];
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self
+       selector:@selector(__modelRenderDidChangeNotification:)
+           name:[SVRMathStringModelController renderDidChangeNotificationName]
+         object:[self model]];
 }
 
 // MARK: Saving

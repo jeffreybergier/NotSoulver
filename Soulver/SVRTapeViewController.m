@@ -1,5 +1,5 @@
 #import "SVRTapeViewController.h"
-#import "SVRTapeModel.h"
+#import "SVRMathStringModelController.h"
 
 @implementation SVRTapeViewController
 
@@ -8,7 +8,7 @@
 { 
   return textView; 
 }
--(SVRTapeModel*)model;
+-(SVRMathStringModelController*)model;
 { 
   return model;
 }
@@ -16,10 +16,11 @@
 -(void)awakeFromNib; 
 {
   NSLog(@"%@", self);
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(modelRenderDidChangeNotification:) 
-                                               name:[SVRTapeModel renderDidChangeNotificationName] 
-                                             object:[self model]];
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self
+       selector:@selector(modelRenderDidChangeNotification:)
+           name:[SVRMathStringModelController renderDidChangeNotificationName] 
+         object:[self model]];
 
 }
 
@@ -39,6 +40,7 @@
 
 -(void)dealloc;
 {
+  NSLog(@"DEALLOC: %@", self);
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
 }

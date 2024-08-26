@@ -7,13 +7,13 @@
             SVRKeypadViewController.m, 
             "SVRMathString+Rendering.m", 
             SVRMathString.m, 
-            SVRTapeModel.m, 
             SVRTapeViewController.m, 
             SVRAppDelegate.m, 
             "SVRMathString+Tests.m", 
             "NSString+Soulver.m", 
             SVRConstants.m, 
-            SVRRange.m
+            SVRRange.m, 
+            SVRMathStringModelController.m
         ); 
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
         H_FILES = (
@@ -21,13 +21,13 @@
             SVRKeypadViewController.h, 
             "SVRMathString+Rendering.h", 
             SVRMathString.h, 
-            SVRTapeModel.h, 
             SVRTapeViewController.h, 
             SVRAppDelegate.h, 
             "SVRMathString+Tests.h", 
             "NSString+Soulver.h", 
             SVRConstants.h, 
-            SVRRange.h
+            SVRRange.h, 
+            SVRMathStringModelController.h
         ); 
         INTERFACES = (NEXTSTEP_Soulver.nib, NEXTSTEP_SVRDocument.nib); 
         OTHER_LINKED = (Soulver_main.m); 

@@ -1,9 +1,9 @@
 #import <AppKit/AppKit.h>
-#import "SVRTapeModel.h"
+#import "SVRMathStringModelController.h"
 
 @interface SVRDocumentController: NSObject
 {
-    SVRTapeModel *_model;
+    SVRMathStringModelController *_model;
     NSWindow *_window;
     NSString *_filename;
 }
@@ -12,7 +12,7 @@
 -(NSString*)filename;
 -(void)setFilename:(NSString*)filename;
 -(NSWindow*)window;
--(SVRTapeModel*)model;
+-(SVRMathStringModelController*)model;
 
 // MARK: INIT
 -(id)initWithFilename:(NSString*)filename;

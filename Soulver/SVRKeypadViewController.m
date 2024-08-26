@@ -1,9 +1,9 @@
 #import "SVRKeypadViewController.h"
-#import "SVRTapeModel.h"
+#import "SVRMathStringModelController.h"
 
 @implementation SVRKeypadViewController
 
--(SVRTapeModel *)model; { return model; }
+-(SVRMathStringModelController*)model; { return model; }
 
 -(void)awakeFromNib;
 {
@@ -18,6 +18,12 @@
   } else {
     [[self model] appendCharacter:[sender title] error:NULL];
   }
+}
+
+-(void)dealloc;
+{
+  NSLog(@"DEALLOC: %@", self);
+  [super dealloc];
 }
 
 @end

@@ -1,7 +1,7 @@
-#import "SVRTapeModel.h"
+#import "SVRMathStringModelController.h"
 #import "SVRMathString+Rendering.h"
 
-@implementation SVRTapeModel
+@implementation SVRMathStringModelController
 
 // MARK: Properties
 
@@ -23,8 +23,10 @@
 {
   [_latestRender release];
   _latestRender = [aString retain];
-  [[NSNotificationCenter defaultCenter] postNotificationName:[SVRTapeModel renderDidChangeNotificationName] 
-                                                      object:self];
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:[SVRMathStringModelController
+                          renderDidChangeNotificationName] 
+                  object:self];
 }
 +(NSString*)renderDidChangeNotificationName;
 {
@@ -53,6 +55,7 @@
 
 -(void)dealloc;
 {
+  NSLog(@"DEALLOC: %@", self);
   [_mathString release];
   [_latestRender release];
   [super dealloc];

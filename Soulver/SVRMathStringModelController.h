@@ -1,7 +1,7 @@
 #import <AppKit/AppKit.h>
 #import "SVRMathString.h"
 
-@interface SVRTapeModel: NSObject
+@interface SVRMathStringModelController: NSObject
 {
   SVRMathString *_mathString;
   NSAttributedString *_latestRender;
