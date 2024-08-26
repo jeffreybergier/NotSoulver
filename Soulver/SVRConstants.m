@@ -142,20 +142,28 @@ NSDictionary *NSDictionary_SVR_numberLocale;
   }
   return NSDictionary_SVR_operatorEncodeMap;
 }
-+(NSDictionary*)SVR_numberLocale;
++(id)SVR_numberLocale;
 {
   if (!NSDictionary_SVR_numberLocale) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    NSArray *keys   = [NSArray arrayWithObjects:
-                       @"kCFLocaleDecimalSeparator",
-                       NSDecimalSeparator,
-                       nil];
-#pragma clang diagnostic pop
+    NSArray *keys   = [NSArray arrayWithObjects:@"kCFLocaleDecimalSeparatorKey", NSDecimalSeparator, nil];
     NSArray *values = [NSArray arrayWithObjects:@".", @".", nil];
     NSDictionary_SVR_numberLocale = [[NSDictionary alloc] initWithObjects:values forKeys:keys];
+#pragma clang diagnostic pop
   }
+  return [[[DEBUG_SVRLocale alloc] init] autorelease];
   return NSDictionary_SVR_numberLocale;
+}
+@end
+
+@implementation DEBUG_SVRLocale: NSObject
+-(id)objectForKey:(id)key;
+{
+  id value = [NSDictionary_SVR_numberLocale objectForKey:key];
+  if (value) { return value; }
+  NSLog(@"DEBUG_SVRLocale: value missing for key: %@", key);
+  return nil;
 }
 @end
 

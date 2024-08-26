@@ -31,5 +31,9 @@
 @interface NSDictionary (Soulver)
 +(NSDictionary*)SVR_operatorDecodeMap;
 +(NSDictionary*)SVR_operatorEncodeMap;
-+(NSDictionary*)SVR_numberLocale;
++(id)SVR_numberLocale;
+@end
+
+@interface DEBUG_SVRLocale: NSObject
+-(id)objectForKey:(id)key;
 @end
