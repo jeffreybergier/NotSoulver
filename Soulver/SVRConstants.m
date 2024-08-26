@@ -57,6 +57,20 @@ NSDictionary *NSDictionary_SVR_numberLocale;
   }
   return NSNumber_SVR_errorPatching;
 }
++(NSString*)SVR_descriptionForError:(NSNumber*)error;
+{
+  if ([error isEqualToNumber:[NSNumber SVR_errorInvalidCharacter]]) {
+    return [NSString stringWithFormat:@"<Error:%@> An incompatible character was found", error];
+  } else if ([error isEqualToNumber:[NSNumber SVR_errorMismatchedBrackets]]) {
+    return [NSString stringWithFormat:@"<Error:%@> Parentheses were unbalanced", error];
+  } else if ([error isEqualToNumber:[NSNumber SVR_errorMissingNumberBeforeOrAfterOperator]]) {
+    return [NSString stringWithFormat:@"<Error:%@> Operators around the numbers were unbalanced", error];
+  } else if ([error isEqualToNumber:[NSNumber SVR_errorPatching]]) {
+    return [NSString stringWithFormat:@"<Error:%@> Operators around the parentheses were missing", error];
+  } else {
+    return @"<Error> An Unknown Error Ocurred";
+  }
+}
 @end
 
 // MARK: NSSetHelper

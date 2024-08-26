@@ -14,6 +14,7 @@
 +(NSNumber*)SVR_errorMismatchedBrackets;
 +(NSNumber*)SVR_errorMissingNumberBeforeOrAfterOperator;
 +(NSNumber*)SVR_errorPatching;
++(NSString*)SVR_descriptionForError:(NSNumber*)error;
 @end
 
 // MARK: NSSetHelper

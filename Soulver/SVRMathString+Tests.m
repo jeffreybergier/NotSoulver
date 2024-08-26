@@ -44,39 +44,39 @@
   // MARK: Test Errors
   
   [[SVRMathString mathStringWithString:@"5a5a5Xa6a6a6="]
-                     __testAssertEqual:@"5+5+5X+6+6+6=\n<Error:-1002>"];
+                     __testAssertEqual:@"5+5+5X+6+6+6=\n<Error:-1002> An incompatible character was found"];
   
   [[SVRMathString mathStringWithString:@"(5m((10a3)m10a2)e2="]
-                     __testAssertEqual:@"(5*((10+3)*10+2)^2=\n<Error:-1003>"];
+                     __testAssertEqual:@"(5*((10+3)*10+2)^2=\n<Error:-1003> Parentheses were unbalanced"];
   
   [[SVRMathString mathStringWithString:@"1m2=s3=aa4=6a7="]
-                     __testAssertEqual:@"1*2=\n-3=\n++4=\n6+7=\n<Error:-1004>"];
+                     __testAssertEqual:@"1*2=\n-3=\n++4=\n6+7=\n<Error:-1004> Operators around the numbers were unbalanced"];
   
   [[SVRMathString mathStringWithString:@"5aa="]
-                     __testAssertEqual:@"5++=\n<Error:-1004>"];
+                     __testAssertEqual:@"5++=\n<Error:-1004> Operators around the numbers were unbalanced"];
   
   [[SVRMathString mathStringWithString:@"aa5="]
-                     __testAssertEqual:@"++5=\n<Error:-1004>"];
+                     __testAssertEqual:@"++5=\n<Error:-1004> Operators around the numbers were unbalanced"];
   
   [[SVRMathString mathStringWithString:@"a5="]
-                     __testAssertEqual:@"+5=\n<Error:-1004>"];
+                     __testAssertEqual:@"+5=\n<Error:-1004> Operators around the numbers were unbalanced"];
   
   [[SVRMathString mathStringWithString:@"5a="]
-                     __testAssertEqual:@"5+=\n<Error:-1004>"];
+                     __testAssertEqual:@"5+=\n<Error:-1004> Operators around the numbers were unbalanced"];
   
   [[SVRMathString mathStringWithString:@"1m2=s3=4a=6a7="]
-                     __testAssertEqual:@"1*2=\n-3=\n4+=\n6+7=\n<Error:-1004>"];
+                     __testAssertEqual:@"1*2=\n-3=\n4+=\n6+7=\n<Error:-1004> Operators around the numbers were unbalanced"];
   
   [[SVRMathString mathStringWithString:@"5(10)="]
-                     __testAssertEqual:@"5(10)=\n<Error:-1005>"];
+                     __testAssertEqual:@"5(10)=\n<Error:-1005> Operators around the parentheses were missing"];
   
   [[SVRMathString mathStringWithString:@"(10)5="]
-                     __testAssertEqual:@"(10)5=\n<Error:-1005>"];
-  
-  [[SVRMathString mathStringWithString:@"8e8=d8e5="]
-                     __testAssertEqual:@"8^8=16777216\n16777216/8^5=512\n"];
+                     __testAssertEqual:@"(10)5=\n<Error:-1005> Operators around the parentheses were missing"];
   
   // MARK: Test Normal Math
+  
+  [[SVRMathString mathStringWithString:@"8e8=d8e5="]
+   __testAssertEqual:@"8^8=16777216\n16777216/8^5=512\n"];
   
   [[SVRMathString mathStringWithString:@"(5m((10a3)m10a2)e2)="]
                      __testAssertEqual:@"(5*((10+3)*10+2)^2)=87120\n"];

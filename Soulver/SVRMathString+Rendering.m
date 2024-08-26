@@ -41,7 +41,7 @@
     [output appendAttributedString:[self render_decodeEncodedLine:[model incompleteLine]]];
     [output appendAttributedString:[NSAttributedString SVR_stringWithString:@"\n"]];
   }
-  [output appendAttributedString:[NSAttributedString SVR_stringWithString:[NSString stringWithFormat:@"<Error:%@>", error]
+  [output appendAttributedString:[NSAttributedString SVR_stringWithString:[NSNumber SVR_descriptionForError:error]
                                                                     color:[NSColor orangeColor]]];
   return [[output copy] autorelease];
 }
