@@ -52,3 +52,9 @@
 -(id)initWithString:(NSString*)string;
 +(id)enumeratorWithString:(NSString*)string;
 @end
+
+// MARK: NSDecimalNumber
+@interface NSDecimalNumber (Soulver)
+/// In OpenStep, NaN comparisons are weird, so this uses a string comparison
+-(BOOL)isNotANumber;
+@end

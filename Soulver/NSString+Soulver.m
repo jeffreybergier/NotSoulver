@@ -88,14 +88,11 @@
   if (*error) { return; }
   if (![self __canInsertSolutionAtRange:range]) { *error = [NSNumber SVR_errorPatching]; return; }
 
-  // TODO: Figure out why isEqualToNumber is returning YES in OPENSTEP only
   if ([solution isKindOfClass:[NSDecimalNumber class]]) {
-    //problem = [solution isEqualToNumber:[NSDecimalNumber notANumber]];
+    problem = [solution isNotANumber];
     solutionString = [solution descriptionWithLocale:[NSDictionary SVR_numberLocale]];
   } else if ([solution isKindOfClass:[NSString class]]) {
-    //problem = [[NSDecimalNumber decimalNumberWithString:solution
-    //                                             locale:[NSDictionary SVR_numberLocale]]
-    //                                    isEqualToNumber:[NSDecimalNumber notANumber]];
+    problem = [[NSDecimalNumber decimalNumberWithString:solution locale:[NSDictionary SVR_numberLocale]] isNotANumber];
     solutionString = solution;
   } else {
     [NSException raise:@"UnexpectedTypeException" format:@"Expected NSDecimalNumber or NSString: Got %@", solution];
@@ -215,5 +212,19 @@
 {
   [_string release];
   [super dealloc];
+}
+@end
+
+// MARK: NSDecimalNumber
+@implementation NSDecimalNumber (Soulver)
+-(BOOL)isNotANumber;
+{
+  NSString *lhsDescription;
+  NSString *rhsDescription;
+  
+  lhsDescription = [self descriptionWithLocale:[NSDictionary SVR_numberLocale]];
+  rhsDescription = [[NSDecimalNumber notANumber] descriptionWithLocale:[NSDictionary SVR_numberLocale]];
+  
+  return [lhsDescription isEqualToString:rhsDescription];
 }
 @end

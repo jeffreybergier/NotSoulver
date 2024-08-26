@@ -142,14 +142,20 @@
   }
   
   if (*error) { return nil; }
-
+  
   // If we get to the end here, and the result is not just a simple number,
-  // then we have a mismatch between numbers and operators
+  // then we have a mismatch between numbers and operators.
+  // The NSDecimalNumber check is surprisingly shitty,
+  // but it might help if the main check fails
   if (![output SVR_containsOnlyCharactersInSet:[NSSet SVR_numeralsAll]]) {
     *error = [NSNumber SVR_errorMissingNumberBeforeOrAfterOperator];
     return nil;
+  } else if ([[NSDecimalNumber decimalNumberWithString:output locale:[NSDictionary SVR_numberLocale]] isNotANumber]) {
+    *error = [NSNumber SVR_errorMissingNumberBeforeOrAfterOperator];
+    return nil;
+  } else {
+    return [[output copy] autorelease];
   }
-  return [[output copy] autorelease];
 }
 
 -(NSAttributedString*)render_decodeEncodedLine:(NSString*)line;
