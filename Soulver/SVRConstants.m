@@ -175,7 +175,7 @@ NSDictionary *NSDictionary_SVR_numberLocale;
 -(id)objectForKey:(id)key;
 {
   id value = [NSDictionary_SVR_numberLocale objectForKey:key];
-  NSAssert(value, @"DEBUG_SVRLocale: value missing for key: %@", key);
+  NSAssert1(value, @"DEBUG_SVRLocale: value missing for key: %@", key);
   return value;
 }
 @end
