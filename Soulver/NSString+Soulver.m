@@ -85,7 +85,7 @@
   NSString *solutionString;
   BOOL problem = NO;
   
-  if (*error) { return; }
+  if (*error != nil) { return; }
   if (![self __canInsertSolutionAtRange:range]) { *error = [NSNumber SVR_errorPatching]; return; }
 
   if ([solution isKindOfClass:[NSDecimalNumber class]]) {

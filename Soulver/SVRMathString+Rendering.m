@@ -114,7 +114,7 @@
   SVRMathRange *mathRange = nil;
   NSMutableString *output = [[input mutableCopy] autorelease];
   
-  if (*error) { return nil; }
+  if (*error != nil) { return nil; }
   if (input == nil || [input length] == 0) { return @""; }
   
   // PEMDAS
@@ -123,21 +123,21 @@
     [output SVR_insertSolution:[self render_solveEncodedLine:[parenRange contents] error:error]
                        atRange:[parenRange range]
                          error:error];
-    if (*error) { return nil; }
+    if (*error != nil) { return nil; }
   }
   // Exponents
   while ((mathRange = [self render_rangeBySearching:output
                                        forOperators:[NSSet SVR_operatorsExponent]]))
   {
     [output SVR_insertSolution:[mathRange evaluate] atRange:[mathRange range] error:error];
-    if (*error) { return nil; }
+    if (*error != nil) { return nil; }
   }
   // Multiply and Divide
   while ((mathRange = [self render_rangeBySearching:output
                                        forOperators:[NSSet SVR_operatorsMultDiv]]))
   {
     [output SVR_insertSolution:[mathRange evaluate] atRange:[mathRange range] error:error];
-    if (*error) { return nil; }
+    if (*error != nil) { return nil; }
   }
   
   // Add and Subtract
@@ -145,10 +145,10 @@
                                        forOperators:[NSSet SVR_operatorsPlusMinus]]))
   {
     [output SVR_insertSolution:[mathRange evaluate] atRange:[mathRange range] error:error];
-    if (*error) { return nil; }
+    if (*error != nil) { return nil; }
   }
   
-  if (*error) { return nil; }
+  if (*error != nil) { return nil; }
   
   // If we get to the end here, and the result is not just a simple number,
   // then we have a mismatch between numbers and operators.

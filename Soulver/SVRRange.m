@@ -131,7 +131,7 @@
   NSString *outputContents;
   int balanceCounter;
   
-  if (*error) { return nil; }
+  if (*error != nil) { return nil; }
   
   foundLHS = [[NSMutableArray new] autorelease];
   foundRHS = nil;
