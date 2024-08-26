@@ -89,10 +89,10 @@
   if (![self __canInsertSolutionAtRange:range]) { *error = [NSNumber SVR_errorPatching]; return; }
 
   if ([solution isKindOfClass:[NSDecimalNumber class]]) {
-    problem = [solution isNotANumber];
-    solutionString = [solution descriptionWithLocale:[NSDictionary SVR_numberLocale]];
+    problem = [solution SVR_isNotANumber];
+    solutionString = [solution SVR_description];
   } else if ([solution isKindOfClass:[NSString class]]) {
-    problem = [[NSDecimalNumber decimalNumberWithString:solution locale:[NSDictionary SVR_numberLocale]] isNotANumber];
+    problem = [[NSDecimalNumber SVR_decimalNumberWithString:solution] SVR_isNotANumber];
     solutionString = solution;
   } else {
     [NSException raise:@"UnexpectedTypeException" format:@"Expected NSDecimalNumber or NSString: Got %@", solution];
@@ -217,14 +217,22 @@
 
 // MARK: NSDecimalNumber
 @implementation NSDecimalNumber (Soulver)
--(BOOL)isNotANumber;
+-(BOOL)SVR_isNotANumber;
 {
   NSString *lhsDescription;
   NSString *rhsDescription;
   
-  lhsDescription = [self descriptionWithLocale:[NSDictionary SVR_numberLocale]];
-  rhsDescription = [[NSDecimalNumber notANumber] descriptionWithLocale:[NSDictionary SVR_numberLocale]];
+  lhsDescription = [self SVR_description];
+  rhsDescription = [[NSDecimalNumber notANumber] SVR_description];
   
   return [lhsDescription isEqualToString:rhsDescription];
+}
+-(NSString*)SVR_description;
+{
+  return [self descriptionWithLocale:[NSDictionary SVR_numberLocale]];
+}
++(id)SVR_decimalNumberWithString:(NSString*)string;
+{
+  return [NSDecimalNumber decimalNumberWithString:string locale:[NSDictionary SVR_numberLocale]];
 }
 @end

@@ -56,5 +56,7 @@
 // MARK: NSDecimalNumber
 @interface NSDecimalNumber (Soulver)
 /// In OpenStep, NaN comparisons are weird, so this uses a string comparison
--(BOOL)isNotANumber;
+-(BOOL)SVR_isNotANumber;
+-(NSString*)SVR_description;
++(id)SVR_decimalNumberWithString:(NSString*)string;
 @end

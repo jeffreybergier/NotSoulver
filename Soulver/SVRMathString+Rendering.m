@@ -116,18 +116,14 @@
   while ((mathRange = [self render_rangeBySearching:output
                                        forOperators:[NSSet SVR_operatorsExponent]]))
   {
-    [output SVR_insertSolution:[mathRange evaluate]
-                       atRange:[mathRange range]
-                         error:error];
+    [output SVR_insertSolution:[mathRange evaluate] atRange:[mathRange range] error:error];
     if (*error) { return nil; }
   }
   // Multiply and Divide
   while ((mathRange = [self render_rangeBySearching:output
                                        forOperators:[NSSet SVR_operatorsMultDiv]]))
   {
-    [output SVR_insertSolution:[mathRange evaluate]
-                       atRange:[mathRange range]
-                         error:error];
+    [output SVR_insertSolution:[mathRange evaluate] atRange:[mathRange range] error:error];
     if (*error) { return nil; }
   }
   
@@ -135,9 +131,7 @@
   while ((mathRange = [self render_rangeBySearching:output
                                        forOperators:[NSSet SVR_operatorsPlusMinus]]))
   {
-    [output SVR_insertSolution:[mathRange evaluate]
-                       atRange:[mathRange range]
-                         error:error];
+    [output SVR_insertSolution:[mathRange evaluate] atRange:[mathRange range] error:error];
     if (*error) { return nil; }
   }
   
@@ -150,7 +144,7 @@
   if (![output SVR_containsOnlyCharactersInSet:[NSSet SVR_numeralsAll]]) {
     *error = [NSNumber SVR_errorMissingNumberBeforeOrAfterOperator];
     return nil;
-  } else if ([[NSDecimalNumber decimalNumberWithString:output locale:[NSDictionary SVR_numberLocale]] isNotANumber]) {
+  } else if ([[NSDecimalNumber SVR_decimalNumberWithString:output] SVR_isNotANumber]) {
     *error = [NSNumber SVR_errorMissingNumberBeforeOrAfterOperator];
     return nil;
   } else {

@@ -78,12 +78,8 @@
 }
 -(NSDecimalNumber*)evaluate;
 {
-  NSDecimalNumber *lhs = [NSDecimalNumber
-                          decimalNumberWithString:[self lhs]
-                          locale:[NSDictionary SVR_numberLocale]];
-  NSDecimalNumber *rhs = [NSDecimalNumber
-                          decimalNumberWithString:[self rhs]
-                          locale:[NSDictionary SVR_numberLocale]];
+  NSDecimalNumber *lhs = [NSDecimalNumber SVR_decimalNumberWithString:[self lhs]];
+  NSDecimalNumber *rhs = [NSDecimalNumber SVR_decimalNumberWithString:[self rhs]];
   NSString *operator = [self operator];
   
   if ([operator isEqualToString:@"d"]) {
