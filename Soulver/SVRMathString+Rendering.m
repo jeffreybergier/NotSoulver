@@ -25,10 +25,23 @@
 -(NSAttributedString*)renderError:(NSNumber*)error;
 {
   NSMutableAttributedString *output;
+  SVRMathLineModel *model;
+  NSEnumerator *e;
+  NSString *line;
   
   output = [[NSMutableAttributedString new] autorelease];
-  [output appendAttributedString:[NSAttributedString SVR_stringWithString:_string]];
-  [output appendAttributedString:[NSAttributedString SVR_stringWithString:[NSString stringWithFormat:@"<Error:%@>\n", error]
+  model = [SVRMathLineModel modelWithEncodedString:[[_string copy] autorelease]];
+  e = [[model completeLines] objectEnumerator];
+  
+  while ((line = [e nextObject])) {
+    [output appendAttributedString:[self render_decodeEncodedLine:line]];
+    [output appendAttributedString:[NSAttributedString SVR_stringWithString:@"=\n"]];
+  }
+  if ([model incompleteLine]) {
+    [output appendAttributedString:[self render_decodeEncodedLine:[model incompleteLine]]];
+    [output appendAttributedString:[NSAttributedString SVR_stringWithString:@"\n"]];
+  }
+  [output appendAttributedString:[NSAttributedString SVR_stringWithString:[NSString stringWithFormat:@"<Error:%@>", error]
                                                                     color:[NSColor orangeColor]]];
   return [[output copy] autorelease];
 }
@@ -200,7 +213,9 @@
 {
   NSMutableArray *tempLines;
   if ([input SVR_endsWithCharacterInSet:[NSSet setWithObject:@"="]]) {
-    _completeLines = [[input componentsSeparatedByString:@"="] retain];
+    tempLines = [[[input componentsSeparatedByString:@"="] mutableCopy] autorelease];
+    if ([[tempLines lastObject] length] == 0) { [tempLines removeLastObject]; }
+    _completeLines = [tempLines copy];
     _incompleteLine = nil;
   } else {
     tempLines = [[[input componentsSeparatedByString:@"="] mutableCopy] autorelease];

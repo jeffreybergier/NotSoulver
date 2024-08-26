@@ -44,34 +44,34 @@
   // MARK: Test Errors
   
   [[SVRMathString mathStringWithString:@"5a5a5Xa6a6a6="]
-                     __testAssertEqual:@"5a5a5Xa6a6a6=<Error:-1002>\n"];
+                     __testAssertEqual:@"5+5+5X+6+6+6=\n<Error:-1002>"];
   
   [[SVRMathString mathStringWithString:@"(5m((10a3)m10a2)e2="]
-                     __testAssertEqual:@"(5m((10a3)m10a2)e2=<Error:-1003>\n"];
+                     __testAssertEqual:@"(5*((10+3)*10+2)^2=\n<Error:-1003>"];
   
   [[SVRMathString mathStringWithString:@"1m2=s3=aa4=6a7="]
-                     __testAssertEqual:@"1m2=s3=aa4=6a7=<Error:-1004>\n"];
+                     __testAssertEqual:@"1*2=\n-3=\n++4=\n6+7=\n<Error:-1004>"];
   
   [[SVRMathString mathStringWithString:@"5aa="]
-                     __testAssertEqual:@"5aa=<Error:-1004>\n"];
+                     __testAssertEqual:@"5++=\n<Error:-1004>"];
   
   [[SVRMathString mathStringWithString:@"aa5="]
-                     __testAssertEqual:@"aa5=<Error:-1004>\n"];
+                     __testAssertEqual:@"++5=\n<Error:-1004>"];
   
   [[SVRMathString mathStringWithString:@"a5="]
-                     __testAssertEqual:@"a5=<Error:-1004>\n"];
+                     __testAssertEqual:@"+5=\n<Error:-1004>"];
   
   [[SVRMathString mathStringWithString:@"5a="]
-                     __testAssertEqual:@"5a=<Error:-1004>\n"];
+                     __testAssertEqual:@"5+=\n<Error:-1004>"];
   
   [[SVRMathString mathStringWithString:@"1m2=s3=4a=6a7="]
-                     __testAssertEqual:@"1m2=s3=4a=6a7=<Error:-1004>\n"];
+                     __testAssertEqual:@"1*2=\n-3=\n4+=\n6+7=\n<Error:-1004>"];
   
   [[SVRMathString mathStringWithString:@"5(10)="]
-                     __testAssertEqual:@"5(10)=<Error:-1005>\n"];
+                     __testAssertEqual:@"5(10)=\n<Error:-1005>"];
   
   [[SVRMathString mathStringWithString:@"(10)5="]
-                     __testAssertEqual:@"(10)5=<Error:-1005>\n"];
+                     __testAssertEqual:@"(10)5=\n<Error:-1005>"];
   
   [[SVRMathString mathStringWithString:@"8e8=d8e5="]
                      __testAssertEqual:@"8^8=16777216\n16777216/8^5=512\n"];
