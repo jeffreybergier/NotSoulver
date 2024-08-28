@@ -3,7 +3,7 @@
     DYNAMIC_CODE_GEN = YES; 
     FILESTABLE = {
         CLASSES = (
-            SVRDocumentController.m, 
+            SVRDocumentWindowController.m, 
             SVRKeypadViewController.m, 
             "SVRMathString+Rendering.m", 
             SVRMathString.m, 
@@ -17,7 +17,7 @@
         ); 
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
         H_FILES = (
-            SVRDocumentController.h, 
+            SVRDocumentWindowController.h, 
             SVRKeypadViewController.h, 
             "SVRMathString+Rendering.h", 
             SVRMathString.h, 

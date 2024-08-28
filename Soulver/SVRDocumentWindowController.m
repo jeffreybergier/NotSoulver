@@ -1,6 +1,6 @@
-#import "SVRDocumentController.h"
+#import "SVRDocumentWindowController.h"
 
-@implementation SVRDocumentController
+@implementation SVRDocumentWindowController
 
 // MARK: Properties
 -(NSString*)filename;
@@ -37,7 +37,7 @@
 
 +(id)controllerWithFilename:(NSString*)filename;
 {
-  return [[[SVRDocumentController alloc] initWithFilename:filename] autorelease];
+  return [[[SVRDocumentWindowController alloc] initWithFilename:filename] autorelease];
 }
 
 -(void)awakeFromNib;
@@ -134,7 +134,7 @@
 
 @end
 
-@implementation SVRDocumentController (NSWindowDelegate)
+@implementation SVRDocumentWindowController (NSWindowDelegate)
 -(BOOL)windowShouldClose:(id)sender;
 {
   long alertResult;
@@ -173,7 +173,7 @@
     userInfo = [NSDictionary dictionaryWithObjects:infoObjects
                                            forKeys:infoKeys];
     center = [NSNotificationCenter defaultCenter]; 
-    [center postNotificationName:[SVRDocumentController windowDidCloseNotification]
+    [center postNotificationName:[SVRDocumentWindowController windowDidCloseNotification]
                           object:self
                         userInfo:userInfo];
   }

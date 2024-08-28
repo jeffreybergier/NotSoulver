@@ -1,5 +1,5 @@
 #import "SVRAppDelegate.h"
-#import "SVRDocumentController.h"
+#import "SVRDocumentWindowController.h"
 #import "SVRMathString+Tests.h"
 
 @implementation SVRAppDelegate
@@ -18,11 +18,11 @@
 
 - (void)newDoc:(id)sender
 {
-  SVRDocumentController *controller;
+  SVRDocumentWindowController *controller;
   NSWindow *window;
   NSNumber *windowNumber;
 
-  controller = [SVRDocumentController controllerWithFilename:nil];
+  controller = [SVRDocumentWindowController controllerWithFilename:nil];
   window = [controller window];
   windowNumber = [NSNumber numberWithLong:[window windowNumber]];
   
@@ -34,7 +34,7 @@
 {
   NSOpenPanel *panel;
   NSString *file;
-  SVRDocumentController *controller;
+  SVRDocumentWindowController *controller;
 
   panel = [NSOpenPanel openPanel];
 #pragma clang diagnostic push
@@ -46,7 +46,7 @@
   if (!file) { NSLog(@"Open Cancelled"); return; }
   controller = [[self openFiles] objectForKey:file];
   if (!controller) {
-    controller = [SVRDocumentController controllerWithFilename:file];
+    controller = [SVRDocumentWindowController controllerWithFilename:file];
     [[self openFiles] setObject:controller forKey:file];
   }
 
@@ -57,14 +57,14 @@
 {
   NSWindow *window;
   NSNumber *windowNumber;
-  SVRDocumentController *documentLHS;
-  SVRDocumentController *documentRHS;
+  SVRDocumentWindowController *documentLHS;
+  SVRDocumentWindowController *documentRHS;
   BOOL result;
 
   window = [[NSApplication sharedApplication] mainWindow];
   windowNumber = [NSNumber numberWithLong:[window windowNumber]];
   documentLHS = [window delegate];
-  if ([documentLHS isKindOfClass:[SVRDocumentController class]]) {
+  if ([documentLHS isKindOfClass:[SVRDocumentWindowController class]]) {
     result = [documentLHS saveDocument];
   } else {
     result = NO;
@@ -121,7 +121,7 @@
   // Register for Notifications
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(closeDoc:)
-                                               name:[SVRDocumentController windowDidCloseNotification]
+                                               name:[SVRDocumentWindowController windowDidCloseNotification]
                                              object:nil];
 }
 
@@ -142,7 +142,7 @@
 {
   NSEnumerator *e1;
   NSEnumerator *e2;
-  SVRDocumentController *value;
+  SVRDocumentWindowController *value;
   long alertResult;
   BOOL result = YES;
 
@@ -176,10 +176,10 @@
 
 -(BOOL)application:(NSApplication *)sender openFile:(NSString *)filename;
 {
-  SVRDocumentController *controller;
+  SVRDocumentWindowController *controller;
   controller = [[self openFiles] objectForKey:filename];
   if (!controller) {
-    controller = [SVRDocumentController controllerWithFilename:filename];
+    controller = [SVRDocumentWindowController controllerWithFilename:filename];
     [[self openFiles] setObject:controller forKey:filename];
   }
   [[controller window] makeKeyAndOrderFront:sender];

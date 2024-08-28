@@ -9,7 +9,7 @@
     OUTLETS = {model = id; }; 
     SUPERCLASS = NSObject; 
 };
-"SVRTapeModel" = {ACTIONS = {}; OUTLETS = {}; SUPERCLASS = NSObject; };
+"SVRMathStringModelController" = {ACTIONS = {}; OUTLETS = {}; SUPERCLASS = NSObject; };
 "SVRTapeViewController" = {
     ACTIONS = {}; 
     OUTLETS = {model = id; textView = id; }; 

@@ -19,13 +19,13 @@ ICONSECTIONS =	-sectcreate __ICON app /NextLibrary/Frameworks/AppKit.framework/R
 
 LOCAL_RESOURCES = NEXTSTEP_Soulver.nib NEXTSTEP_SVRDocument.nib
 
-CLASSES = SVRDocumentController.m SVRKeypadViewController.m\
+CLASSES = SVRDocumentWindowController.m SVRKeypadViewController.m\
           SVRMathString+Rendering.m SVRMathString.m\
           SVRTapeViewController.m SVRAppDelegate.m SVRMathString+Tests.m\
           NSString+Soulver.m SVRConstants.m SVRRange.m\
           SVRMathStringModelController.m
 
-HFILES = SVRDocumentController.h SVRKeypadViewController.h\
+HFILES = SVRDocumentWindowController.h SVRKeypadViewController.h\
          SVRMathString+Rendering.h SVRMathString.h\
          SVRTapeViewController.h SVRAppDelegate.h SVRMathString+Tests.h\
          NSString+Soulver.h SVRConstants.h SVRRange.h\

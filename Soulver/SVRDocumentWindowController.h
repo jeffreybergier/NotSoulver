@@ -1,7 +1,7 @@
 #import <AppKit/AppKit.h>
 #import "SVRMathStringModelController.h"
 
-@interface SVRDocumentController: NSObject
+@interface SVRDocumentWindowController: NSObject
 {
     SVRMathStringModelController *_model;
     NSWindow *_window;
@@ -28,6 +28,6 @@
 
 @end
 
-@interface SVRDocumentController (NSWindowDelegate)
+@interface SVRDocumentWindowController (NSWindowDelegate)
 -(BOOL)windowShouldClose:(id)sender;
 @end
