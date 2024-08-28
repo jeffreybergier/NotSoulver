@@ -9,8 +9,7 @@
             SVRMathString.m, 
             SVRAppDelegate.m, 
             "SVRMathString+Tests.m", 
-            "NSString+Soulver.m", 
-            SVRConstants.m, 
+            SVRConstants.m,
             SVRMathStringModelController.m
         ); 
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
@@ -21,7 +20,6 @@
             SVRMathString.h, 
             SVRAppDelegate.h, 
             "SVRMathString+Tests.h", 
-            "NSString+Soulver.h", 
             SVRConstants.h, 
             SVRMathStringModelController.h
         ); 
