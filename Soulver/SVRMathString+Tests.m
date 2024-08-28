@@ -7,7 +7,6 @@
 
 #import "SVRMathString+Rendering.h"
 #import "SVRMathString+Tests.h"
-#import "SVRConstants.h"
 
 @implementation SVRMathString (Tests)
 

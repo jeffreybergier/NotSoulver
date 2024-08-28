@@ -130,4 +130,14 @@
 -(BOOL)SVR_isNotANumber;
 -(NSString*)SVR_description;
 +(id)SVR_decimalNumberWithString:(NSString*)string;
++(id)SVR_numberLocale;
+@end
+
+// MARK: Error Handling
+@interface NSNumber (Rendering)
++(NSNumber*)SVR_errorInvalidCharacter;
++(NSNumber*)SVR_errorMismatchedBrackets;
++(NSNumber*)SVR_errorMissingNumberBeforeOrAfterOperator;
++(NSNumber*)SVR_errorPatching;
++(NSString*)SVR_descriptionForError:(NSNumber*)error;
 @end

@@ -11,11 +11,6 @@
 {
   NSMutableString *_string;
 }
-// MARK: Main Business Logic
-/// Dictionary containing the map for encoding
-+(NSDictionary*)operatorEncodeMap;
-/// Dictionary containing the map for decoding
-+(NSDictionary*)operatorDecodeMap;
 /// Appends the string and automatically encodes the operator. Use `initWithString` to skip encoding
 /// Return 0 if successful, anything other than 0, check the error
 -(int)appendCharacter:(NSString*)aString error:(NSNumber**)error;
@@ -46,3 +41,23 @@
 -(unsigned long)hash;
 @end
 
+// MARK: Constants
+
+@interface SVRMathString (SVRConstants)
++(NSDictionary*)operatorDecodeMap;
++(NSDictionary*)operatorEncodeMap;
+@end
+
+@interface NSSet (SVRConstants)
++(NSSet*)SVR_operatorsAll;
++(NSSet*)SVR_operatorsPlusMinus;
++(NSSet*)SVR_operatorsMultDiv;
++(NSSet*)SVR_operatorsExponent;
++(NSSet*)SVR_numeralsAll;
++(NSSet*)SVR_solutionInsertCheck;
++(NSSet*)SVR_allowedCharacters;
+@end
+
+@interface NSNumber (SVRError)
++(NSNumber*)SVR_errorInvalidCharacter;
+@end

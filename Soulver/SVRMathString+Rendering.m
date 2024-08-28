@@ -6,7 +6,6 @@
 //
 
 #import "SVRMathString+Rendering.h"
-#import "SVRConstants.h"
 
 // MARK: SVRMathString (Rendering)
 @implementation SVRMathString (Rendering)
@@ -697,6 +696,13 @@
 
 @end
 
+// MARK: Constant Storage
+
+NSDictionary *NSDecimalNumber_SVR_numberLocale;
+NSNumber *NSNumber_SVR_errorMismatchedBrackets;
+NSNumber *NSNumber_SVR_errorMissingNumberBeforeOrAfterOperator;
+NSNumber *NSNumber_SVR_errorPatching;
+
 // MARK: NSDecimalNumber
 @implementation NSDecimalNumber (Soulver)
 
@@ -713,12 +719,64 @@
 
 -(NSString*)SVR_description;
 {
-  return [self descriptionWithLocale:[NSDictionary SVR_numberLocale]];
+  return [self descriptionWithLocale:[NSDecimalNumber SVR_numberLocale]];
 }
 
 +(id)SVR_decimalNumberWithString:(NSString*)string;
 {
-  return [NSDecimalNumber decimalNumberWithString:string locale:[NSDictionary SVR_numberLocale]];
+  return [NSDecimalNumber decimalNumberWithString:string locale:[NSDecimalNumber SVR_numberLocale]];
 }
 
++(id)SVR_numberLocale;
+{
+  if (!NSDecimalNumber_SVR_numberLocale) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    NSArray *keys   = [NSArray arrayWithObjects:@"kCFLocaleDecimalSeparatorKey", NSDecimalSeparator, nil];
+    NSArray *values = [NSArray arrayWithObjects:@".", @".", nil];
+    NSDecimalNumber_SVR_numberLocale = [[NSDictionary alloc] initWithObjects:values forKeys:keys];
+#pragma clang diagnostic pop
+  }
+  return NSDecimalNumber_SVR_numberLocale;
+}
+@end
+
+// MARK: NSError
+// OPENSTEP does not have NSError so I am just using NSNumber
+@implementation NSNumber (NSError)
++(NSNumber*)SVR_errorMismatchedBrackets;
+{
+  if (NSNumber_SVR_errorMismatchedBrackets == nil) {
+    NSNumber_SVR_errorMismatchedBrackets = [[NSNumber alloc] initWithDouble:-1003];
+  }
+  return NSNumber_SVR_errorMismatchedBrackets;
+}
++(NSNumber*)SVR_errorMissingNumberBeforeOrAfterOperator;
+{
+  if (NSNumber_SVR_errorMissingNumberBeforeOrAfterOperator == nil) {
+    NSNumber_SVR_errorMissingNumberBeforeOrAfterOperator = [[NSNumber alloc] initWithDouble:-1004];
+  }
+  return NSNumber_SVR_errorMissingNumberBeforeOrAfterOperator;
+}
++(NSNumber*)SVR_errorPatching;
+{
+  if (NSNumber_SVR_errorPatching == nil) {
+    NSNumber_SVR_errorPatching = [[NSNumber alloc] initWithDouble:-1005];
+  }
+  return NSNumber_SVR_errorPatching;
+}
++(NSString*)SVR_descriptionForError:(NSNumber*)error;
+{
+  if ([error isEqualToNumber:[NSNumber SVR_errorInvalidCharacter]]) {
+    return [NSString stringWithFormat:@"<Error:%@> An incompatible character was found", error];
+  } else if ([error isEqualToNumber:[NSNumber SVR_errorMismatchedBrackets]]) {
+    return [NSString stringWithFormat:@"<Error:%@> Parentheses were unbalanced", error];
+  } else if ([error isEqualToNumber:[NSNumber SVR_errorMissingNumberBeforeOrAfterOperator]]) {
+    return [NSString stringWithFormat:@"<Error:%@> Operators around the numbers were unbalanced", error];
+  } else if ([error isEqualToNumber:[NSNumber SVR_errorPatching]]) {
+    return [NSString stringWithFormat:@"<Error:%@> Operators around the parentheses were missing", error];
+  } else {
+    return @"<Error> An Unknown Error Ocurred";
+  }
+}
 @end
