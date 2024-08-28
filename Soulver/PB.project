@@ -11,7 +11,6 @@
             "SVRMathString+Tests.m", 
             "NSString+Soulver.m", 
             SVRConstants.m, 
-            SVRRange.m, 
             SVRMathStringModelController.m
         ); 
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
@@ -24,7 +23,6 @@
             "SVRMathString+Tests.h", 
             "NSString+Soulver.h", 
             SVRConstants.h, 
-            SVRRange.h, 
             SVRMathStringModelController.h
         ); 
         INTERFACES = (NEXTSTEP_Soulver.nib, NEXTSTEP_SVRDocument.nib); 
