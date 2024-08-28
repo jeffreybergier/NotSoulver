@@ -4,10 +4,9 @@
     FILESTABLE = {
         CLASSES = (
             SVRDocumentWindowController.m, 
-            SVRKeypadViewController.m, 
+            SVRDocumentViewController.m, 
             "SVRMathString+Rendering.m", 
             SVRMathString.m, 
-            SVRTapeViewController.m, 
             SVRAppDelegate.m, 
             "SVRMathString+Tests.m", 
             "NSString+Soulver.m", 
@@ -18,10 +17,9 @@
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
         H_FILES = (
             SVRDocumentWindowController.h, 
-            SVRKeypadViewController.h, 
+            SVRDocumentViewController.h, 
             "SVRMathString+Rendering.h", 
             SVRMathString.h, 
-            SVRTapeViewController.h, 
             SVRAppDelegate.h, 
             "SVRMathString+Tests.h", 
             "NSString+Soulver.h", 
