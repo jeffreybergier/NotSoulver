@@ -1,7 +1,7 @@
-#import "SVRMathStringModelController.h"
+#import "SVRDocumentModelController.h"
 #import "SVRMathString+Rendering.h"
 
-@implementation SVRMathStringModelController
+@implementation SVRDocumentModelController
 
 // MARK: Properties
 
@@ -24,7 +24,7 @@
   [_latestRender release];
   _latestRender = [aString retain];
   [[NSNotificationCenter defaultCenter]
-    postNotificationName:[SVRMathStringModelController
+    postNotificationName:[SVRDocumentModelController
                           renderDidChangeNotificationName] 
                   object:self];
 }

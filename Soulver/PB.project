@@ -9,7 +9,7 @@
             SVRMathString.m, 
             SVRAppDelegate.m, 
             "SVRMathString+Tests.m", 
-            SVRMathStringModelController.m
+            SVRDocumentModelController.m
         ); 
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
         H_FILES = (
@@ -19,7 +19,7 @@
             SVRMathString.h, 
             SVRAppDelegate.h, 
             "SVRMathString+Tests.h", 
-            SVRMathStringModelController.h
+            SVRDocumentModelController.h
         ); 
         INTERFACES = (NEXTSTEP_Soulver.nib, NEXTSTEP_SVRDocument.nib); 
         OTHER_LINKED = (Soulver_main.m); 

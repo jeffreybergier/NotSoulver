@@ -7,7 +7,7 @@
 {
   return textView; 
 }
-/*@IBOutlet*/-(SVRMathStringModelController*)model;
+/*@IBOutlet*/-(SVRDocumentModelController*)model;
 {
   return model;
 }
@@ -43,7 +43,7 @@
   [[NSNotificationCenter defaultCenter]
     addObserver:self
        selector:@selector(modelRenderDidChangeNotification:)
-           name:[SVRMathStringModelController renderDidChangeNotificationName] 
+           name:[SVRDocumentModelController renderDidChangeNotificationName] 
          object:[self model]];
 
 }

@@ -17,7 +17,7 @@
 {
   return _window;
 }
--(SVRMathStringModelController*)model;
+-(SVRDocumentModelController*)model;
 {
   return _model;
 }
@@ -58,7 +58,7 @@
   [[NSNotificationCenter defaultCenter]
     addObserver:self
        selector:@selector(__modelRenderDidChangeNotification:)
-           name:[SVRMathStringModelController renderDidChangeNotificationName]
+           name:[SVRDocumentModelController renderDidChangeNotificationName]
          object:[self model]];
 }
 

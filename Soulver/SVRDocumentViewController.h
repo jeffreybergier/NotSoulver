@@ -1,5 +1,5 @@
 #import <AppKit/AppKit.h>
-#import "SVRMathStringModelController.h"
+#import "SVRDocumentModelController.h"
 
 @interface SVRDocumentViewController : NSObject
 {
@@ -9,7 +9,7 @@
 
 // MARK: Interface Builder
 /*@IBOutlet*/-(NSTextView*)textView;
-/*@IBOutlet*/-(SVRMathStringModelController*)model;
+/*@IBOutlet*/-(SVRDocumentModelController*)model;
 /*@IBAction*/-(void)append:(NSButton*)sender;
 
 // MARK: Respond to Notifications
