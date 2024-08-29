@@ -10,14 +10,15 @@
 // MARK: SVRMathString (Rendering)
 @implementation SVRMathString (Rendering)
 
--(NSAttributedString*)render;
+-(NSAttributedString*)renderWithError:(NSNumber**)errorPointer;
 {
   NSAttributedString *output;
-  NSNumber *error = nil;
+  NSNumber *error = errorPointer ? *errorPointer : nil;
   output = [self render_encodedStringWithError:&error];
   if (output == nil) {
     output = [self renderError:error];
   }
+  if (errorPointer) { *errorPointer = error; }
   return output;
 }
 
@@ -45,7 +46,7 @@
   return [[output copy] autorelease];
 }
 
--(NSAttributedString*)render_encodedStringWithError:(NSNumber**)error;
+-(NSAttributedString*)render_encodedStringWithError:(NSNumber**)errorPointer;
 {
   SVRMathLineModel *model;
   NSMutableAttributedString *decodedOutput;
@@ -53,9 +54,11 @@
   NSString *_encodedLine;
   NSString *encodedLine;
   NSString *lastSolution;
+  NSNumber *error = nil;
   
   if (![_string SVR_containsOnlyCharactersInSet:[NSSet SVR_allowedCharacters]]) {
-    *error = [NSNumber SVR_errorInvalidCharacter];
+    error = [NSNumber SVR_errorInvalidCharacter];
+    if (errorPointer) { *errorPointer = error; }
     return nil;
   }
   
@@ -75,15 +78,16 @@
     if ([_encodedLine length] == 0) { continue; }
     if ([_encodedLine SVR_beginsWithCharacterInSet:[NSSet SVR_operatorsAll]]) {             // If the line begins with an operator we need to prepend the last solution
       if (!lastSolution) {
-        *error = [NSNumber SVR_errorMissingNumberBeforeOrAfterOperator];                    // If no previous solution AND the line begins with an operator we need to bail
+        error = [NSNumber SVR_errorMissingNumberBeforeOrAfterOperator];                     // If no previous solution AND the line begins with an operator we need to bail
+        if (errorPointer) { *errorPointer = error; }
         return nil;
       }
       encodedLine = [lastSolution stringByAppendingString:_encodedLine];                    // Prepend the encoded line with the last solution
     } else {
       encodedLine = _encodedLine;                                                           // Set the baseline for doing math operations later
     }
-    lastSolution = [self render_solveEncodedLine:encodedLine error:error];                  // Solve the problem
-    if (lastSolution == nil) { return nil; }                                                // If the solution is nil, there was an error
+    lastSolution = [self render_solveEncodedLine:encodedLine error:&error];                 // Solve the problem
+    if (lastSolution == nil) { if (errorPointer) { *errorPointer = error; } return nil; }   // If the solution is nil, there was an error
     [decodedOutput appendAttributedString:[self render_decodeEncodedLine:encodedLine]];     // Decode the encodedLine and append it to the output
     [decodedOutput appendAttributedString:[NSAttributedString SVR_stringWithString:@"="]];  // Append an equal sign
     [decodedOutput appendAttributedString:[self render_colorSolution:lastSolution]];        // Append the solution
@@ -94,7 +98,8 @@
   if (_encodedLine) {
     if ([_encodedLine SVR_beginsWithCharacterInSet:[NSSet SVR_operatorsAll]]) {             // If the line begins with an operator we need to prepend the last solution
       if (!lastSolution) {
-        *error = [NSNumber SVR_errorMissingNumberBeforeOrAfterOperator];                    // If no previous solution AND the line begins with an operator we need to bail
+        error = [NSNumber SVR_errorMissingNumberBeforeOrAfterOperator];                     // If no previous solution AND the line begins with an operator we need to bail
+        if (errorPointer) { *errorPointer = error; }
         return nil;
       }
       encodedLine = [lastSolution stringByAppendingString:_encodedLine];                    // Prepend the encoded line with the last solution
@@ -107,61 +112,62 @@
   return [[decodedOutput copy] autorelease];
 }
 
--(NSString*)render_solveEncodedLine:(NSString*)input error:(NSNumber**)error;
+-(NSString*)render_solveEncodedLine:(NSString*)input error:(NSNumber**)errorPointer;
 {
+  NSNumber *error = errorPointer ? *errorPointer : nil;
   SVRBoundingRange *parenRange = nil;
   SVRMathRange *mathRange = nil;
   NSMutableString *output = [[input mutableCopy] autorelease];
-  
-  if (*error != nil) { return nil; }
+    
+  if (error != nil) { return nil; }
   if (input == nil || [input length] == 0) { return @""; }
   
   // PEMDAS
   // Parantheses
-  while ((parenRange = [output SVR_searchRangeBoundedByLHS:@"(" rhs:@")" error:error])) {
-    [output SVR_insertSolution:[self render_solveEncodedLine:[parenRange contents] error:error]
+  while ((parenRange = [output SVR_searchRangeBoundedByLHS:@"(" rhs:@")" error:&error])) {
+    [output SVR_insertSolution:[self render_solveEncodedLine:[parenRange contents] error:&error]
                        atRange:[parenRange range]
-                         error:error];
-    if (*error != nil) { return nil; }
+                         error:&error];
+    if (error != nil) { if (errorPointer) { *errorPointer = error; } return nil; }
   }
   // Exponents
   while ((mathRange = [self render_rangeBySearching:output
                                        forOperators:[NSSet SVR_operatorsExponent]]))
   {
-    [output SVR_insertSolution:[mathRange evaluate] atRange:[mathRange range] error:error];
-    if (*error != nil) { return nil; }
+    [output SVR_insertSolution:[mathRange evaluate] atRange:[mathRange range] error:&error];
+    if (error != nil) { if (errorPointer) { *errorPointer = error; } return nil; }
   }
   // Multiply and Divide
   while ((mathRange = [self render_rangeBySearching:output
                                        forOperators:[NSSet SVR_operatorsMultDiv]]))
   {
-    [output SVR_insertSolution:[mathRange evaluate] atRange:[mathRange range] error:error];
-    if (*error != nil) { return nil; }
+    [output SVR_insertSolution:[mathRange evaluate] atRange:[mathRange range] error:&error];
+    if (error != nil) { if (errorPointer) { *errorPointer = error; } return nil; }
   }
   
   // Add and Subtract
   while ((mathRange = [self render_rangeBySearching:output
                                        forOperators:[NSSet SVR_operatorsPlusMinus]]))
   {
-    [output SVR_insertSolution:[mathRange evaluate] atRange:[mathRange range] error:error];
-    if (*error != nil) { return nil; }
+    [output SVR_insertSolution:[mathRange evaluate] atRange:[mathRange range] error:&error];
+    if (error != nil) { if (errorPointer) { *errorPointer = error; } return nil; }
   }
   
-  if (*error != nil) { return nil; }
-  
+  if (error != nil) { if (errorPointer) { *errorPointer = error; } return nil; }
+
   // If we get to the end here, and the result is not just a simple number,
   // then we have a mismatch between numbers and operators.
   // The NSDecimalNumber check is surprisingly shitty,
   // but it might help if the main check fails
   if (![output SVR_containsOnlyCharactersInSet:[NSSet SVR_numeralsAll]]) {
-    *error = [NSNumber SVR_errorMissingNumberBeforeOrAfterOperator];
-    return nil;
+    error = [NSNumber SVR_errorMissingNumberBeforeOrAfterOperator];
   } else if ([[NSDecimalNumber SVR_decimalNumberWithString:output] SVR_isNotANumber]) {
-    *error = [NSNumber SVR_errorMissingNumberBeforeOrAfterOperator];
-    return nil;
-  } else {
-    return [[output copy] autorelease];
+    error = [NSNumber SVR_errorMissingNumberBeforeOrAfterOperator];
   }
+  
+  if (error != nil) { if (errorPointer) { *errorPointer = error; } return nil; }
+  
+  return [[output copy] autorelease];
 }
 
 -(NSAttributedString*)render_decodeEncodedLine:(NSString*)line;
@@ -375,7 +381,7 @@
 
 -(SVRBoundingRange*)SVR_searchRangeBoundedByLHS:(NSString*)lhs
                                             rhs:(NSString*)rhs
-                                          error:(NSNumber**)error;
+                                          error:(NSNumber**)errorPointer;
 {
   SVRStringEnumerator *e;
   SVRStringEnumeratorRange *next;
@@ -384,8 +390,9 @@
   NSRange outputRange;
   NSString *outputContents;
   int balanceCounter;
+  NSNumber *error = errorPointer ? *errorPointer : nil;
   
-  if (*error != nil) { return nil; }
+  if (error != nil) { return nil; }
   
   foundLHS = [[NSMutableArray new] autorelease];
   foundRHS = nil;
@@ -407,7 +414,8 @@
   }
   
   if (balanceCounter != 0) {
-    *error = [NSNumber SVR_errorMismatchedBrackets];
+    error = [NSNumber SVR_errorMismatchedBrackets];
+    if (errorPointer) { *errorPointer = error; }
     return nil;
   } else if ([foundLHS count] == 0 && foundRHS == nil) {
     return nil;
@@ -517,13 +525,18 @@
 
 -(void)SVR_insertSolution:(id)solution
                   atRange:(NSRange)range
-                    error:(NSNumber**)error;
+                    error:(NSNumber**)errorPointer;
 {
   NSString *solutionString;
+  NSNumber *error = errorPointer ? *errorPointer : nil;
   BOOL problem = NO;
   
-  if (*error != nil) { return; }
-  if (![self __canInsertSolutionAtRange:range]) { *error = [NSNumber SVR_errorPatching]; return; }
+  if (error != nil) { return; }
+  if (![self __canInsertSolutionAtRange:range]) {
+    error = [NSNumber SVR_errorPatching];
+    if (errorPointer) { *errorPointer = error; }
+    return;
+  }
 
   if ([solution isKindOfClass:[NSDecimalNumber class]]) {
     problem = [solution SVR_isNotANumber];
@@ -537,7 +550,8 @@
   }
   
   if (problem) {
-    *error = [NSNumber SVR_errorInvalidCharacter];
+    error = [NSNumber SVR_errorInvalidCharacter];
+    if (errorPointer) { *errorPointer = error; }
     return;
   }
   

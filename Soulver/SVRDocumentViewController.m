@@ -15,10 +15,14 @@
 -(void)append:(NSButton*)sender
 {
   NSString *title = [sender title];
+  NSNumber *error = nil;
   if ([title isEqualToString:@"<-"]) {
-    [[self model] backspace];
+    [[self model] backspaceWithError:&error];
   } else {
-    [[self model] appendCharacter:[sender title] error:NULL];
+    [[self model] appendCharacter:[sender title] error:&error];
+  }
+  if (error != nil) {
+    NSLog(@"%@: appendError: %@", self, error);
   }
 }
 

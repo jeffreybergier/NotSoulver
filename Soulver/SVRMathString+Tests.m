@@ -60,34 +60,44 @@
   // MARK: Test Errors
   
   [[SVRMathString mathStringWithString:@"5a5a5Xa6a6a6="]
-                     __testAssertEqual:@"5+5+5X+6+6+6=\n<Error:-1002> An incompatible character was found"];
+                     __testAssertEqual:@"5+5+5X+6+6+6=\n<Error:-1002> An incompatible character was found"
+                           expectError:[NSNumber SVR_errorInvalidCharacter]];
   
   [[SVRMathString mathStringWithString:@"(5m((10a3)m10a2)e2="]
-                     __testAssertEqual:@"(5*((10+3)*10+2)^2=\n<Error:-1003> Parentheses were unbalanced"];
+                     __testAssertEqual:@"(5*((10+3)*10+2)^2=\n<Error:-1003> Parentheses were unbalanced"
+                           expectError:[NSNumber SVR_errorMismatchedBrackets]];
   
   [[SVRMathString mathStringWithString:@"1m2=s3=aa4=6a7="]
-                     __testAssertEqual:@"1*2=\n-3=\n++4=\n6+7=\n<Error:-1004> Operators around the numbers were unbalanced"];
+                     __testAssertEqual:@"1*2=\n-3=\n++4=\n6+7=\n<Error:-1004> Operators around the numbers were unbalanced"
+                           expectError:[NSNumber SVR_errorMissingNumberBeforeOrAfterOperator]];
   
   [[SVRMathString mathStringWithString:@"5aa="]
-                     __testAssertEqual:@"5++=\n<Error:-1004> Operators around the numbers were unbalanced"];
+                     __testAssertEqual:@"5++=\n<Error:-1004> Operators around the numbers were unbalanced"
+                           expectError:[NSNumber SVR_errorMissingNumberBeforeOrAfterOperator]];
   
   [[SVRMathString mathStringWithString:@"aa5="]
-                     __testAssertEqual:@"++5=\n<Error:-1004> Operators around the numbers were unbalanced"];
+                     __testAssertEqual:@"++5=\n<Error:-1004> Operators around the numbers were unbalanced"
+                           expectError:[NSNumber SVR_errorMissingNumberBeforeOrAfterOperator]];
   
   [[SVRMathString mathStringWithString:@"a5="]
-                     __testAssertEqual:@"+5=\n<Error:-1004> Operators around the numbers were unbalanced"];
+                     __testAssertEqual:@"+5=\n<Error:-1004> Operators around the numbers were unbalanced"
+                           expectError:[NSNumber SVR_errorMissingNumberBeforeOrAfterOperator]];
   
   [[SVRMathString mathStringWithString:@"5a="]
-                     __testAssertEqual:@"5+=\n<Error:-1004> Operators around the numbers were unbalanced"];
+                     __testAssertEqual:@"5+=\n<Error:-1004> Operators around the numbers were unbalanced"
+                           expectError:[NSNumber SVR_errorMissingNumberBeforeOrAfterOperator]];
   
   [[SVRMathString mathStringWithString:@"1m2=s3=4a=6a7="]
-                     __testAssertEqual:@"1*2=\n-3=\n4+=\n6+7=\n<Error:-1004> Operators around the numbers were unbalanced"];
+                     __testAssertEqual:@"1*2=\n-3=\n4+=\n6+7=\n<Error:-1004> Operators around the numbers were unbalanced"
+                           expectError:[NSNumber SVR_errorMissingNumberBeforeOrAfterOperator]];
   
   [[SVRMathString mathStringWithString:@"5(10)="]
-                     __testAssertEqual:@"5(10)=\n<Error:-1005> Operators around the parentheses were missing"];
+                     __testAssertEqual:@"5(10)=\n<Error:-1005> Operators around the parentheses were missing"
+                           expectError:[NSNumber SVR_errorPatching]];
   
   [[SVRMathString mathStringWithString:@"(10)5="]
-                     __testAssertEqual:@"(10)5=\n<Error:-1005> Operators around the parentheses were missing"];
+                     __testAssertEqual:@"(10)5=\n<Error:-1005> Operators around the parentheses were missing"
+                           expectError:[NSNumber SVR_errorPatching]];
   
   // MARK: Test Normal Math
   
@@ -143,9 +153,29 @@
 
 -(void)__testAssertEqual:(NSString*)rhs;
 {
-  NSString *lhs = [[self render] string];
-  NSString *message = [NSString stringWithFormat:@"SVRMathStringTest: FAIL: %@ != %@", lhs, rhs];
+  NSString *lhs = nil;
+  NSString *message = nil;
+  
+  lhs = [[self renderWithError:NULL] string];
+  message = [NSString stringWithFormat:@"SVRMathStringTest: FAIL: %@ != %@", lhs, rhs];
   NSAssert([lhs isEqualToString:rhs], message);
+  
+  [[NSString stringWithFormat:@"SVRMathStringTest: PASS: %@", lhs] SVR_debugLOG];
+}
+
+-(void)__testAssertEqual:(NSString*)rhs expectError:(NSNumber*)expectedError;
+{
+  NSNumber *error = nil;
+  NSString *lhs = nil;
+  NSString *message1 = nil;
+  NSString *message2 = nil;
+
+  lhs = [[self renderWithError:&error] string];
+  message1 = [NSString stringWithFormat:@"SVRMathStringTest: FAIL: %@ NOT %@", lhs, rhs];
+  NSAssert([lhs isEqualToString:rhs], message1);
+  message2 = [NSString stringWithFormat:@"SVRMathStringTest: FAIL: %@ NOT %@", expectedError, error];
+  NSAssert([error isEqualToNumber:expectedError], message2);
+  
   [[NSString stringWithFormat:@"SVRMathStringTest: PASS: %@", lhs] SVR_debugLOG];
 }
 

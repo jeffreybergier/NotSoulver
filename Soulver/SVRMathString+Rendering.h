@@ -15,12 +15,12 @@
 @interface SVRMathString (Rendering)
 
 // MARK: Render
--(NSAttributedString*)render;
--(NSAttributedString*)renderError:(NSNumber*)error;
+-(NSAttributedString*)renderWithError:(NSNumber**)errorPointer;
+-(NSAttributedString*)renderError:(NSNumber*)errorPointer;
 
 // MARK: Private
--(NSAttributedString*)render_encodedStringWithError:(NSNumber**)error;
--(NSString*)          render_solveEncodedLine:(NSString*)input error:(NSNumber**)error;
+-(NSAttributedString*)render_encodedStringWithError:(NSNumber**)errorPointer;
+-(NSString*)          render_solveEncodedLine:(NSString*)input error:(NSNumber**)errorPointer;
 -(NSAttributedString*)render_decodeEncodedLine:(NSString*)line;
 -(NSAttributedString*)render_colorSolution:(NSString*)solution;
 -(SVRMathRange*)      render_rangeBySearching:(NSString*)string
@@ -77,7 +77,7 @@
 @interface NSString (Soulver)
 -(SVRBoundingRange*)SVR_searchRangeBoundedByLHS:(NSString*)lhs
                                             rhs:(NSString*)rhs
-                                          error:(NSNumber**)error;
+                                          error:(NSNumber**)errorPointer;
 -(SVRMathRange*)SVR_searchMathRangeForOperators:(NSSet*)including
                            allPossibleOperators:(NSSet*)ignoring
                             allPossibleNumerals:(NSSet*)numerals;
@@ -91,7 +91,7 @@
 @interface NSMutableString (Soulver)
 -(void)SVR_insertSolution:(id)solution
                   atRange:(NSRange)range
-                    error:(NSNumber**)error;
+                    error:(NSNumber**)errorPointer;
 -(BOOL)__canInsertSolutionAtRange:(NSRange)range;
 @end
 

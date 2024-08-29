@@ -11,9 +11,11 @@
 }
 -(void)setMathString:(SVRMathString*)aString;
 {
+  NSNumber *error;
   [_mathString release];
   _mathString = [aString retain];
-  [self setLatestRender:[_mathString render]];
+  [self setLatestRender:[_mathString renderWithError:&error]];
+  if (error != nil) { NSLog(@"%@: setMathString: %@: Error: %@", self, aString, error); }
 }
 -(NSAttributedString*)latestRender;
 {
@@ -41,16 +43,25 @@
 }
 
 // MARK: Usage
--(int)appendCharacter:(NSString*)aString error:(NSNumber**)error;
+-(int)appendCharacter:(NSString*)aString error:(NSNumber**)errorPointer;
 {
-  int result = [[self mathString] appendEncodedString:aString :error];
-  [self setLatestRender:[[self mathString] render]];
+  NSNumber *error = errorPointer ? *errorPointer : nil;
+  int result = 0;
+  if (error != nil) { return -1; }
+  [[self mathString] appendEncodedString:aString];
+  [self setLatestRender:[[self mathString] renderWithError:&error]];
+  if (error != nil) { if (errorPointer) { *errorPointer = error; } return -1; }
   return result;
 }
--(void)backspace;
+-(int)backspaceWithError:(NSNumber**)errorPointer;
 {
+  NSNumber *error = errorPointer ? *errorPointer : nil;
+  int result = 0;
+  if (error != nil) { return -1; }
   [[self mathString] backspace];
-  [self setLatestRender:[[self mathString] render]];
+  [self setLatestRender:[[self mathString] renderWithError:&error]];
+  if (error != nil) { if (errorPointer) { *errorPointer = error; } return -1; }
+  return result;
 }
 
 -(void)dealloc;

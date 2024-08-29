@@ -10,6 +10,7 @@
 @interface SVRMathString (Tests)
 +(void)executeTests;
 -(void)__testAssertEqual:(NSString*)rhs;
+-(void)__testAssertEqual:(NSString*)rhs expectError:(NSNumber*)expectedError;
 @end
 
 // MARK: Debug Logging
