@@ -9,6 +9,12 @@
 
 @implementation SVRMathString
 
+// MARK: Properties
+-(NSString*)stringValue;
+{
+  return [[_string copy] autorelease];
+}
+
 // MARK: Main Business Logic
 
 -(void)appendEncodedString:(NSString*)aString;

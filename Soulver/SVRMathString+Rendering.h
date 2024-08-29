@@ -57,6 +57,7 @@
 -(NSString*)description;
 @end
 
+// MARK: KILL MEEEEEEE
 // MARK: Convert String to Array
 @interface SVRMathLineModel: NSObject
 {
@@ -71,6 +72,7 @@
 +(id)modelWithEncodedString:(NSString*)input;
 -(void)__initProperties:(NSString*)input;
 @end
+// MARK: END KILL MEEEE
 
 // MARK: NSString
 
@@ -122,6 +124,33 @@
 -(SVRStringEnumeratorRange*)nextObject;
 -(id)initWithString:(NSString*)string;
 +(id)enumeratorWithString:(NSString*)string;
+@end
+
+// MARK: SVRMathStringEnumerator
+@interface SVRMathStringEnumeratorLine: NSObject
+{
+  NSString *_line;
+  BOOL _isComplete;
+  int _index;
+}
+-(NSString*)line;
+-(BOOL)isComplete;
+-(int)index;
+-(NSString*)description;
+-(id)initWithLine:(NSString*)line isComplete:(BOOL)isComplete index:(int)index;
++(id)lineWithLine:(NSString*)line isComplete:(BOOL)isComplete index:(int)index;
+@end
+
+@interface SVRMathStringEnumerator: NSEnumerator
+{
+  NSArray *_allObjects;
+  int _nextIndex;
+  BOOL _lastLineComplete;
+}
+-(NSArray*)allObjects;
+-(SVRMathStringEnumeratorLine*)nextObject;
+-(id)initWithMathString:(SVRMathString*)mathString;
++(id)enumeratorWithMathString:(SVRMathString*)mathString;
 @end
 
 // MARK: NSDecimalNumber

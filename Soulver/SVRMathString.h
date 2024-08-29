@@ -11,6 +11,9 @@
 {
   NSMutableString *_string;
 }
+// MARK: Properties
+-(NSString*)stringValue;
+// MARK: Main Business Logic
 -(void)appendEncodedString:(NSString*)aString;
 -(void)backspace;
 -(BOOL)isEmpty;

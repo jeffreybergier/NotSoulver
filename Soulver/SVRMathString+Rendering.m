@@ -25,21 +25,17 @@
 -(NSAttributedString*)renderError:(NSNumber*)error;
 {
   NSMutableAttributedString *output;
-  SVRMathLineModel *model;
   NSEnumerator *e;
-  NSString *line;
+  SVRMathStringEnumeratorLine *line;
   
   output = [[NSMutableAttributedString new] autorelease];
-  model = [SVRMathLineModel modelWithEncodedString:[[_string copy] autorelease]];
-  e = [[model completeLines] objectEnumerator];
+  e = [SVRMathStringEnumerator enumeratorWithMathString:self];
   
   while ((line = [e nextObject])) {
-    [output appendAttributedString:[self render_decodeEncodedLine:line]];
-    [output appendAttributedString:[NSAttributedString SVR_stringWithString:@"=\n"]];
-  }
-  if ([model incompleteLine]) {
-    [output appendAttributedString:[self render_decodeEncodedLine:[model incompleteLine]]];
-    [output appendAttributedString:[NSAttributedString SVR_stringWithString:@"\n"]];
+    [output appendAttributedString:[self render_decodeEncodedLine:[line line]]];
+    [output appendAttributedString:
+     [NSAttributedString SVR_stringWithString:[line isComplete] ? @"=\n" : @"\n"]
+    ];
   }
   [output appendAttributedString:[NSAttributedString SVR_stringWithString:[NSNumber SVR_descriptionForError:error]
                                                                     color:[NSColor orangeColor]]];
@@ -317,6 +313,7 @@
 
 @end
 
+// MARK: KILL MEEEEEEE
 @implementation SVRMathLineModel
 
 -(NSArray*)completeLines;
@@ -375,6 +372,8 @@
 }
 
 @end
+// MARK: END KILL MEEEE
+
 
 // MARK: NSString
 @implementation NSString (Soulver)
@@ -708,6 +707,104 @@
   [super dealloc];
 }
 
+@end
+
+// MARK: SVRMathStringEnumerator
+@implementation SVRMathStringEnumeratorLine
+-(NSString*)line;
+{
+  return _line;
+}
+
+-(BOOL)isComplete;
+{
+  return _isComplete;
+}
+
+-(int)index;
+{
+  return _index;
+}
+
+-(NSString*)description;
+{
+  return [NSString stringWithFormat:@"<%@> Line: '%@' isComplete: %d, Index: %d",
+          [super description], _line, _isComplete, _index];
+}
+
+-(id)initWithLine:(NSString*)line isComplete:(BOOL)isComplete index:(int)index;
+{
+  self = [super init];
+  _line = [line retain];
+  _isComplete = isComplete;
+  _index = index;
+  return self;
+}
+
++(id)lineWithLine:(NSString*)line isComplete:(BOOL)isComplete index:(int)index;
+{
+  return [[[SVRMathStringEnumeratorLine alloc] initWithLine:line isComplete:isComplete index:index] autorelease];
+}
+
+- (void)dealloc
+{
+  [_line release];
+  _line = nil;
+  [super dealloc];
+}
+@end
+
+@implementation SVRMathStringEnumerator
+
+-(NSArray*)allObjects;
+{
+  return _allObjects;
+}
+
+-(SVRMathStringEnumeratorLine*)nextObject;
+{
+  NSString *outputString = nil;
+  unsigned long count = [_allObjects count];
+  unsigned long lastIndex = count - 1;
+  int index = _nextIndex;
+  _nextIndex += 1;
+  
+  if (count == 0) { return nil; }
+  
+  BOOL lineIsComplete = YES;
+  if (index == lastIndex && _lastLineComplete == NO) {
+    lineIsComplete = NO;
+  }
+  if (index > lastIndex) { return nil; }
+  
+  outputString = [_allObjects objectAtIndex:index];
+  if ([outputString length] == 0) { return [self nextObject]; }
+  return [SVRMathStringEnumeratorLine lineWithLine:outputString
+                                        isComplete:lineIsComplete
+                                             index:index];
+}
+
+-(id)initWithMathString:(SVRMathString*)mathString;
+{
+  NSString *mathStringRaw = [mathString stringValue];
+  self = [super init];
+  _allObjects = [[mathStringRaw componentsSeparatedByString:@"="] retain];
+  _lastLineComplete = [mathStringRaw SVR_endsWithCharacterInSet:[NSSet setWithObject:@"="]];
+  _nextIndex = 0;
+  return self;
+}
+
++(id)enumeratorWithMathString:(SVRMathString*)mathString;
+{
+  return [[[SVRMathStringEnumerator alloc] initWithMathString:mathString] autorelease];
+}
+
+- (void)dealloc
+{
+  [_allObjects release];
+  _allObjects = nil;
+  [super dealloc];
+}
 @end
 
 // MARK: Constant Storage
