@@ -69,27 +69,27 @@
   
   [[SVRMathString mathStringWithString:@"1m2=s3=aa4=6a7="]
                      __testAssertEqual:@"1*2=\n-3=\n++4=\n6+7=\n<Error:-1004> Operators around the numbers were unbalanced"
-                           expectError:[NSNumber SVR_errorMissingNumberBeforeOrAfterOperator]];
+                           expectError:[NSNumber SVR_errorMissingNumber]];
   
   [[SVRMathString mathStringWithString:@"5aa="]
                      __testAssertEqual:@"5++=\n<Error:-1004> Operators around the numbers were unbalanced"
-                           expectError:[NSNumber SVR_errorMissingNumberBeforeOrAfterOperator]];
+                           expectError:[NSNumber SVR_errorMissingNumber]];
   
   [[SVRMathString mathStringWithString:@"aa5="]
                      __testAssertEqual:@"++5=\n<Error:-1004> Operators around the numbers were unbalanced"
-                           expectError:[NSNumber SVR_errorMissingNumberBeforeOrAfterOperator]];
+                           expectError:[NSNumber SVR_errorMissingNumber]];
   
   [[SVRMathString mathStringWithString:@"a5="]
                      __testAssertEqual:@"+5=\n<Error:-1004> Operators around the numbers were unbalanced"
-                           expectError:[NSNumber SVR_errorMissingNumberBeforeOrAfterOperator]];
+                           expectError:[NSNumber SVR_errorMissingNumber]];
   
   [[SVRMathString mathStringWithString:@"5a="]
                      __testAssertEqual:@"5+=\n<Error:-1004> Operators around the numbers were unbalanced"
-                           expectError:[NSNumber SVR_errorMissingNumberBeforeOrAfterOperator]];
+                           expectError:[NSNumber SVR_errorMissingNumber]];
   
   [[SVRMathString mathStringWithString:@"1m2=s3=4a=6a7="]
                      __testAssertEqual:@"1*2=\n-3=\n4+=\n6+7=\n<Error:-1004> Operators around the numbers were unbalanced"
-                           expectError:[NSNumber SVR_errorMissingNumberBeforeOrAfterOperator]];
+                           expectError:[NSNumber SVR_errorMissingNumber]];
   
   [[SVRMathString mathStringWithString:@"5(10)="]
                      __testAssertEqual:@"5(10)=\n<Error:-1005> Operators around the parentheses were missing"

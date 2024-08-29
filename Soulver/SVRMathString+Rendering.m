@@ -44,10 +44,9 @@
 
 -(NSAttributedString*)__render_encodedStringWithError:(NSNumber**)errorPointer;
 {
-  SVRMathLineModel *model;
   NSMutableAttributedString *decodedOutput;
+  SVRMathStringEnumeratorLine *line;
   NSEnumerator *e;
-  NSString *_encodedLine;
   NSString *encodedLine;
   NSString *lastSolution;
   NSNumber *error = nil;
@@ -58,52 +57,28 @@
     return nil;
   }
   
-  model = [SVRMathLineModel modelWithEncodedString:[[_string copy] autorelease]];
   decodedOutput = [[NSMutableAttributedString new] autorelease];
-  e = [[model completeLines] objectEnumerator];
+  e = [SVRMathStringEnumerator enumeratorWithMathString:self];
   encodedLine = nil;
   lastSolution = nil;
   
-  // TODO: Enhance into 1 while loop
-  // Instead of separating the incomplete line into a separate property,
-  // just have a BOOL for lastLineIncomplete.
-  // Then make a custom array enumerator that has the -(int)index and -(BOOL)lastLine properties.
-  // Then this loop can all happen in one without the need for the separate check for the last line
-  // which is mostly copy and paste code
-  while ((_encodedLine = [e nextObject])) {
-    if ([_encodedLine length] == 0) { continue; }
-    if ([_encodedLine SVR_beginsWithCharacterInSet:[NSSet SVR_operatorsAll]]) {             // If the line begins with an operator we need to prepend the last solution
-      if (!lastSolution) {
-        error = [NSNumber SVR_errorMissingNumberBeforeOrAfterOperator];                     // If no previous solution AND the line begins with an operator we need to bail
-        if (errorPointer) { *errorPointer = error; }
-        return nil;
-      }
-      encodedLine = [lastSolution stringByAppendingString:_encodedLine];                    // Prepend the encoded line with the last solution
+  while ((line = [e nextObject])) {
+    if ([[line line] SVR_beginsWithCharacterInSet:[NSSet SVR_operatorsAll]]) {             // If the line begins with an operator we need to prepend the last solution
+      if (!lastSolution) { error = [NSNumber SVR_errorMissingNumber]; break; }             // If no previous solution AND the line begins with an operator we need to bail
+      encodedLine = [lastSolution stringByAppendingString:[line line]];                    // Prepend the encoded line with the last solution
     } else {
-      encodedLine = _encodedLine;                                                           // Set the baseline for doing math operations later
+      encodedLine = [line line];                                                           // Set the baseline for doing math operations later
     }
-    lastSolution = [self __render_solveEncodedLine:encodedLine error:&error];                 // Solve the problem
-    if (lastSolution == nil) { if (errorPointer) { *errorPointer = error; } return nil; }   // If the solution is nil, there was an error
-    [decodedOutput appendAttributedString:[self __render_decodeEncodedLine:encodedLine]];     // Decode the encodedLine and append it to the output
-    [decodedOutput appendAttributedString:[NSAttributedString SVR_stringWithString:@"="]];  // Append an equal sign
-    [decodedOutput appendAttributedString:[self __render_colorSolution:lastSolution]];        // Append the solution
-    [decodedOutput appendAttributedString:[NSAttributedString SVR_stringWithString:@"\n"]]; // Append a newline
+    [decodedOutput appendAttributedString:[self __render_decodeEncodedLine:encodedLine]];  // Decode the encodedLine and append it to the output
+    if (![line isComplete]) { continue; }                                                  // If the line is incomplete we can bail
+    lastSolution = [self __render_solveEncodedLine:encodedLine error:&error];              // Solve the problem
+    if (lastSolution == nil) { if (errorPointer) { *errorPointer = error; } return nil; }  // If the solution is nil, there was an error
+    [decodedOutput appendAttributedString:[NSAttributedString SVR_stringWithString:@"="]]; // Append an equal sign
+    [decodedOutput appendAttributedString:[self __render_colorSolution:lastSolution]];     // Append the solution
+    [decodedOutput appendAttributedString:[NSAttributedString SVR_stringWithString:@"\n"]];// Append a newline
   }
   
-  _encodedLine = [model incompleteLine];
-  if (_encodedLine) {
-    if ([_encodedLine SVR_beginsWithCharacterInSet:[NSSet SVR_operatorsAll]]) {             // If the line begins with an operator we need to prepend the last solution
-      if (!lastSolution) {
-        error = [NSNumber SVR_errorMissingNumberBeforeOrAfterOperator];                     // If no previous solution AND the line begins with an operator we need to bail
-        if (errorPointer) { *errorPointer = error; }
-        return nil;
-      }
-      encodedLine = [lastSolution stringByAppendingString:_encodedLine];                    // Prepend the encoded line with the last solution
-    } else {
-      encodedLine = _encodedLine;                                                           // Set the baseline for doing math operations later
-    }
-    [decodedOutput appendAttributedString:[self __render_decodeEncodedLine:encodedLine]];     // Decode the encodedLine and append it to the output
-  }
+  if (error) { if (errorPointer) { *errorPointer = error; } return nil; }
   
   return [[decodedOutput copy] autorelease];
 }
@@ -156,9 +131,9 @@
   // The NSDecimalNumber check is surprisingly shitty,
   // but it might help if the main check fails
   if (![output SVR_containsOnlyCharactersInSet:[NSSet SVR_numeralsAll]]) {
-    error = [NSNumber SVR_errorMissingNumberBeforeOrAfterOperator];
+    error = [NSNumber SVR_errorMissingNumber];
   } else if ([[NSDecimalNumber SVR_decimalNumberWithString:output] SVR_isNotANumber]) {
-    error = [NSNumber SVR_errorMissingNumberBeforeOrAfterOperator];
+    error = [NSNumber SVR_errorMissingNumber];
   }
   
   if (error != nil) { if (errorPointer) { *errorPointer = error; } return nil; }
@@ -811,7 +786,7 @@
 
 NSDictionary *NSDecimalNumber_SVR_numberLocale;
 NSNumber *NSNumber_SVR_errorMismatchedBrackets;
-NSNumber *NSNumber_SVR_errorMissingNumberBeforeOrAfterOperator;
+NSNumber *NSNumber_SVR_SVR_errorMissingNumber;
 NSNumber *NSNumber_SVR_errorPatching;
 
 // MARK: NSDecimalNumber
@@ -862,12 +837,12 @@ NSNumber *NSNumber_SVR_errorPatching;
   }
   return NSNumber_SVR_errorMismatchedBrackets;
 }
-+(NSNumber*)SVR_errorMissingNumberBeforeOrAfterOperator;
++(NSNumber*)SVR_errorMissingNumber;
 {
-  if (NSNumber_SVR_errorMissingNumberBeforeOrAfterOperator == nil) {
-    NSNumber_SVR_errorMissingNumberBeforeOrAfterOperator = [[NSNumber alloc] initWithDouble:-1004];
+  if (NSNumber_SVR_SVR_errorMissingNumber == nil) {
+    NSNumber_SVR_SVR_errorMissingNumber = [[NSNumber alloc] initWithDouble:-1004];
   }
-  return NSNumber_SVR_errorMissingNumberBeforeOrAfterOperator;
+  return NSNumber_SVR_SVR_errorMissingNumber;
 }
 +(NSNumber*)SVR_errorPatching;
 {
@@ -882,7 +857,7 @@ NSNumber *NSNumber_SVR_errorPatching;
     return [NSString stringWithFormat:@"<Error:%@> An incompatible character was found", error];
   } else if ([error isEqualToNumber:[NSNumber SVR_errorMismatchedBrackets]]) {
     return [NSString stringWithFormat:@"<Error:%@> Parentheses were unbalanced", error];
-  } else if ([error isEqualToNumber:[NSNumber SVR_errorMissingNumberBeforeOrAfterOperator]]) {
+  } else if ([error isEqualToNumber:[NSNumber SVR_errorMissingNumber]]) {
     return [NSString stringWithFormat:@"<Error:%@> Operators around the numbers were unbalanced", error];
   } else if ([error isEqualToNumber:[NSNumber SVR_errorPatching]]) {
     return [NSString stringWithFormat:@"<Error:%@> Operators around the parentheses were missing", error];

@@ -166,7 +166,7 @@
 @interface NSNumber (Rendering)
 +(NSNumber*)SVR_errorInvalidCharacter;
 +(NSNumber*)SVR_errorMismatchedBrackets;
-+(NSNumber*)SVR_errorMissingNumberBeforeOrAfterOperator;
++(NSNumber*)SVR_errorMissingNumber;
 +(NSNumber*)SVR_errorPatching;
 +(NSString*)SVR_descriptionForError:(NSNumber*)error;
 @end
