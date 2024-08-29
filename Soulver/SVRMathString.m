@@ -11,19 +11,9 @@
 
 // MARK: Main Business Logic
 
--(int)appendCharacter:(NSString*)aString error:(NSNumber**)error;
+-(void)appendEncodedString:(NSString*)aString;
 {
-  NSString *operator = [[SVRMathString operatorEncodeMap] objectForKey:aString];
-  if (operator) {
-    [_string appendString:operator];
-    return 0;
-  } else if ([[NSSet SVR_allowedCharacters] member:aString]) {
-    [_string appendString:aString];
-    return 0;
-  } else {
-    *error = [NSNumber SVR_errorInvalidCharacter];
-    return -1;
-  }
+  [_string appendString:aString];
 }
 
 -(void)backspace;

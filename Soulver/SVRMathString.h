@@ -11,9 +11,7 @@
 {
   NSMutableString *_string;
 }
-/// Appends the string and automatically encodes the operator. Use `initWithString` to skip encoding
-/// Return 0 if successful, anything other than 0, check the error
--(int)appendCharacter:(NSString*)aString error:(NSNumber**)error;
+-(void)appendEncodedString:(NSString*)aString;
 -(void)backspace;
 -(BOOL)isEmpty;
 // MARK: Debugging

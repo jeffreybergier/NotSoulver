@@ -43,7 +43,7 @@
 // MARK: Usage
 -(int)appendCharacter:(NSString*)aString error:(NSNumber**)error;
 {
-  int result = [[self mathString] appendCharacter:aString error:error];
+  int result = [[self mathString] appendEncodedString:aString :error];
   [self setLatestRender:[[self mathString] render]];
   return result;
 }
