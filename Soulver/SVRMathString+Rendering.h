@@ -57,23 +57,6 @@
 -(NSString*)description;
 @end
 
-// MARK: KILL MEEEEEEE
-// MARK: Convert String to Array
-@interface SVRMathLineModel: NSObject
-{
-  NSArray *_completeLines;
-  NSString *_incompleteLine;
-}
-/// If no lines found, set to nil
--(NSArray*)completeLines;
-/// If no last line found or empty, set to nil
--(NSString*)incompleteLine;
--(id)initWithEncodedString:(NSString*)input;
-+(id)modelWithEncodedString:(NSString*)input;
--(void)__initProperties:(NSString*)input;
-@end
-// MARK: END KILL MEEEE
-
 // MARK: NSString
 
 @interface NSString (Soulver)

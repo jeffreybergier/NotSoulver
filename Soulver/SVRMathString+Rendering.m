@@ -78,7 +78,7 @@
     [decodedOutput appendAttributedString:[NSAttributedString SVR_stringWithString:@"\n"]];// Append a newline
   }
   
-  if (error) { if (errorPointer) { *errorPointer = error; } return nil; }
+  if (error != nil) { if (errorPointer) { *errorPointer = error; } return nil; }
   
   return [[decodedOutput copy] autorelease];
 }
@@ -287,68 +287,6 @@
 }
 
 @end
-
-// MARK: KILL MEEEEEEE
-@implementation SVRMathLineModel
-
--(NSArray*)completeLines;
-{
-  return _completeLines;
-}
--(NSString*)incompleteLine;
-{
-  return _incompleteLine;
-}
-
--(id)initWithEncodedString:(NSString*)input;
-{
-  self = [super init];
-  [self __initProperties:input];
-  return self;
-}
-
-+(id)modelWithEncodedString:(NSString*)input;
-{
-  return [[[SVRMathLineModel alloc] initWithEncodedString:input] autorelease];
-}
-
--(void)__initProperties:(NSString*)input;
-{
-  NSMutableArray *tempLines;
-  if ([input SVR_endsWithCharacterInSet:[NSSet setWithObject:@"="]]) {
-    tempLines = [[[input componentsSeparatedByString:@"="] mutableCopy] autorelease];
-    if ([[tempLines lastObject] length] == 0) { [tempLines removeLastObject]; }
-    _completeLines = [tempLines copy];
-    _incompleteLine = nil;
-  } else {
-    tempLines = [[[input componentsSeparatedByString:@"="] mutableCopy] autorelease];
-    _incompleteLine = [[tempLines lastObject] retain];
-    [tempLines removeLastObject];
-    _completeLines = [tempLines copy];
-  }
-  if ([_completeLines count] == 0) {
-    [_completeLines release];
-    _completeLines = nil;
-  }
-  if ([_incompleteLine length] == 0) {
-    [_incompleteLine release];
-    _incompleteLine = nil;
-  }
-  return;
-}
-
-- (void)dealloc
-{
-  [_completeLines release];
-  [_incompleteLine release];
-  _completeLines = nil;
-  _incompleteLine = nil;
-  [super dealloc];
-}
-
-@end
-// MARK: END KILL MEEEE
-
 
 // MARK: NSString
 @implementation NSString (Soulver)
