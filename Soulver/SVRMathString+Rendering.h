@@ -19,12 +19,12 @@
 -(NSAttributedString*)renderError:(NSNumber*)errorPointer;
 
 // MARK: Private
--(NSAttributedString*)render_encodedStringWithError:(NSNumber**)errorPointer;
--(NSString*)          render_solveEncodedLine:(NSString*)input error:(NSNumber**)errorPointer;
--(NSAttributedString*)render_decodeEncodedLine:(NSString*)line;
--(NSAttributedString*)render_colorSolution:(NSString*)solution;
--(SVRMathRange*)      render_rangeBySearching:(NSString*)string
-                                 forOperators:(NSSet*)operators;
+-(NSAttributedString*)__render_encodedStringWithError:(NSNumber**)errorPointer;
+-(NSString*)          __render_solveEncodedLine:(NSString*)input error:(NSNumber**)errorPointer;
+-(NSAttributedString*)__render_decodeEncodedLine:(NSString*)line;
+-(NSAttributedString*)__render_colorSolution:(NSString*)solution;
+-(SVRMathRange*)      __render_rangeBySearching:(NSString*)string
+                                   forOperators:(NSSet*)operators;
 @end
 
 // MARK: Custom Ranges

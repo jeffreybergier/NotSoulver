@@ -14,7 +14,7 @@
 {
   NSAttributedString *output;
   NSNumber *error = errorPointer ? *errorPointer : nil;
-  output = [self render_encodedStringWithError:&error];
+  output = [self __render_encodedStringWithError:&error];
   if (output == nil) {
     output = [self renderError:error];
   }
@@ -32,7 +32,7 @@
   e = [SVRMathStringEnumerator enumeratorWithMathString:self];
   
   while ((line = [e nextObject])) {
-    [output appendAttributedString:[self render_decodeEncodedLine:[line line]]];
+    [output appendAttributedString:[self __render_decodeEncodedLine:[line line]]];
     [output appendAttributedString:
      [NSAttributedString SVR_stringWithString:[line isComplete] ? @"=\n" : @"\n"]
     ];
@@ -42,7 +42,7 @@
   return [[output copy] autorelease];
 }
 
--(NSAttributedString*)render_encodedStringWithError:(NSNumber**)errorPointer;
+-(NSAttributedString*)__render_encodedStringWithError:(NSNumber**)errorPointer;
 {
   SVRMathLineModel *model;
   NSMutableAttributedString *decodedOutput;
@@ -82,11 +82,11 @@
     } else {
       encodedLine = _encodedLine;                                                           // Set the baseline for doing math operations later
     }
-    lastSolution = [self render_solveEncodedLine:encodedLine error:&error];                 // Solve the problem
+    lastSolution = [self __render_solveEncodedLine:encodedLine error:&error];                 // Solve the problem
     if (lastSolution == nil) { if (errorPointer) { *errorPointer = error; } return nil; }   // If the solution is nil, there was an error
-    [decodedOutput appendAttributedString:[self render_decodeEncodedLine:encodedLine]];     // Decode the encodedLine and append it to the output
+    [decodedOutput appendAttributedString:[self __render_decodeEncodedLine:encodedLine]];     // Decode the encodedLine and append it to the output
     [decodedOutput appendAttributedString:[NSAttributedString SVR_stringWithString:@"="]];  // Append an equal sign
-    [decodedOutput appendAttributedString:[self render_colorSolution:lastSolution]];        // Append the solution
+    [decodedOutput appendAttributedString:[self __render_colorSolution:lastSolution]];        // Append the solution
     [decodedOutput appendAttributedString:[NSAttributedString SVR_stringWithString:@"\n"]]; // Append a newline
   }
   
@@ -102,13 +102,13 @@
     } else {
       encodedLine = _encodedLine;                                                           // Set the baseline for doing math operations later
     }
-    [decodedOutput appendAttributedString:[self render_decodeEncodedLine:encodedLine]];     // Decode the encodedLine and append it to the output
+    [decodedOutput appendAttributedString:[self __render_decodeEncodedLine:encodedLine]];     // Decode the encodedLine and append it to the output
   }
   
   return [[decodedOutput copy] autorelease];
 }
 
--(NSString*)render_solveEncodedLine:(NSString*)input error:(NSNumber**)errorPointer;
+-(NSString*)__render_solveEncodedLine:(NSString*)input error:(NSNumber**)errorPointer;
 {
   NSNumber *error = errorPointer ? *errorPointer : nil;
   SVRBoundingRange *parenRange = nil;
@@ -121,20 +121,20 @@
   // PEMDAS
   // Parantheses
   while ((parenRange = [output SVR_searchRangeBoundedByLHS:@"(" rhs:@")" error:&error])) {
-    [output SVR_insertSolution:[self render_solveEncodedLine:[parenRange contents] error:&error]
+    [output SVR_insertSolution:[self __render_solveEncodedLine:[parenRange contents] error:&error]
                        atRange:[parenRange range]
                          error:&error];
     if (error != nil) { if (errorPointer) { *errorPointer = error; } return nil; }
   }
   // Exponents
-  while ((mathRange = [self render_rangeBySearching:output
+  while ((mathRange = [self __render_rangeBySearching:output
                                        forOperators:[NSSet SVR_operatorsExponent]]))
   {
     [output SVR_insertSolution:[mathRange evaluate] atRange:[mathRange range] error:&error];
     if (error != nil) { if (errorPointer) { *errorPointer = error; } return nil; }
   }
   // Multiply and Divide
-  while ((mathRange = [self render_rangeBySearching:output
+  while ((mathRange = [self __render_rangeBySearching:output
                                        forOperators:[NSSet SVR_operatorsMultDiv]]))
   {
     [output SVR_insertSolution:[mathRange evaluate] atRange:[mathRange range] error:&error];
@@ -142,7 +142,7 @@
   }
   
   // Add and Subtract
-  while ((mathRange = [self render_rangeBySearching:output
+  while ((mathRange = [self __render_rangeBySearching:output
                                        forOperators:[NSSet SVR_operatorsPlusMinus]]))
   {
     [output SVR_insertSolution:[mathRange evaluate] atRange:[mathRange range] error:&error];
@@ -166,7 +166,7 @@
   return [[output copy] autorelease];
 }
 
--(NSAttributedString*)render_decodeEncodedLine:(NSString*)line;
+-(NSAttributedString*)__render_decodeEncodedLine:(NSString*)line;
 {
   return [NSAttributedString SVR_stringWithString:
             [line SVR_stringByMappingCharactersInDictionary:
@@ -175,13 +175,13 @@
   ];
 }
 
--(NSAttributedString*)render_colorSolution:(NSString*)solution;
+-(NSAttributedString*)__render_colorSolution:(NSString*)solution;
 {
   return [NSAttributedString SVR_stringWithString:solution color:[NSColor cyanColor]];
 }
 
--(SVRMathRange*)render_rangeBySearching:(NSString*)string
-                           forOperators:(NSSet*)operators;
+-(SVRMathRange*)__render_rangeBySearching:(NSString*)string
+                             forOperators:(NSSet*)operators;
 {
   return [string SVR_searchMathRangeForOperators:operators
                             allPossibleOperators:[NSSet SVR_operatorsAll]
