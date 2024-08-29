@@ -786,6 +786,7 @@
 
 NSDictionary *NSDecimalNumber_SVR_numberLocale;
 NSNumber *NSNumber_SVR_errorMismatchedBrackets;
+NSNumber *NSNumber_SVR_errorInvalidCharacter;
 NSNumber *NSNumber_SVR_SVR_errorMissingNumber;
 NSNumber *NSNumber_SVR_errorPatching;
 
@@ -829,13 +830,20 @@ NSNumber *NSNumber_SVR_errorPatching;
 
 // MARK: NSError
 // OPENSTEP does not have NSError so I am just using NSNumber
-@implementation NSNumber (NSError)
+@implementation NSNumber (SVRError)
 +(NSNumber*)SVR_errorMismatchedBrackets;
 {
   if (NSNumber_SVR_errorMismatchedBrackets == nil) {
     NSNumber_SVR_errorMismatchedBrackets = [[NSNumber alloc] initWithDouble:-1003];
   }
   return NSNumber_SVR_errorMismatchedBrackets;
+}
++(NSNumber*)SVR_errorInvalidCharacter;
+{
+  if (NSNumber_SVR_errorInvalidCharacter == nil) {
+    NSNumber_SVR_errorInvalidCharacter = [[NSNumber alloc] initWithDouble:-1002];
+  }
+  return NSNumber_SVR_errorInvalidCharacter;
 }
 +(NSNumber*)SVR_errorMissingNumber;
 {

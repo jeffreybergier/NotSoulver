@@ -163,7 +163,7 @@
 @end
 
 // MARK: Error Handling
-@interface NSNumber (Rendering)
+@interface NSNumber (SVRError)
 +(NSNumber*)SVR_errorInvalidCharacter;
 +(NSNumber*)SVR_errorMismatchedBrackets;
 +(NSNumber*)SVR_errorMissingNumber;

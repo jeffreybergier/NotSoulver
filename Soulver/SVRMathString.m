@@ -147,8 +147,6 @@ NSSet *NSSet_SVR_operatorsExponent;
 NSSet *NSSet_SVR_solutionInsertCheck;
 NSSet *NSSet_SVR_solutionInsertCheck;
 
-NSNumber *NSNumber_SVR_errorInvalidCharacter;
-
 // MARK: NSDictionaryHelper
 @implementation SVRMathString (Constants)
 +(NSDictionary*)operatorDecodeMap;
@@ -230,15 +228,5 @@ NSNumber *NSNumber_SVR_errorInvalidCharacter;
     NSSet_SVR_allowedCharacters = [output copy];
   }
   return NSSet_SVR_allowedCharacters;
-}
-@end
-
-@implementation NSNumber (SVRError)
-+(NSNumber*)SVR_errorInvalidCharacter;
-{
-  if (NSNumber_SVR_errorInvalidCharacter == nil) {
-    NSNumber_SVR_errorInvalidCharacter = [[NSNumber alloc] initWithDouble:-1002];
-  }
-  return NSNumber_SVR_errorInvalidCharacter;
 }
 @end

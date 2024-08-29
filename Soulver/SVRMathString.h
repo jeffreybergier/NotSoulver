@@ -58,7 +58,3 @@
 +(NSSet*)SVR_solutionInsertCheck;
 +(NSSet*)SVR_allowedCharacters;
 @end
-
-@interface NSNumber (SVRError)
-+(NSNumber*)SVR_errorInvalidCharacter;
-@end
