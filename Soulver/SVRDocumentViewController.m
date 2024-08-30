@@ -18,12 +18,12 @@
   NSString *toAppend = [self __mapKeyWithTag:[sender tag]];
   if (toAppend) {
     [[self model] appendCharacter:toAppend error:&error];
-    if (error) { NSLog(@"<%@> appendString:%@ forTag:%d error:%@",
-                       toAppend, [sender tag], error); }
+    if (error) { NSLog(@"%@ appendString:%@ forTag:%d error:%@",
+                       self, toAppend, [sender tag], error); }
   } else {
     [[self model] backspaceWithError:&error];
-    if (error) { NSLog(@"<%@> backspaceWithTag:%d error:%@",
-                       [sender tag], error); }
+    if (error) { NSLog(@"%@ backspaceWithTag:%d error:%@",
+                       self, [sender tag], error); }
   }
 }
 
