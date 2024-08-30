@@ -24,6 +24,8 @@
   if (error != nil) {
     NSLog(@"%@: appendError: %@", self, error);
   }
+
+  NSLog(@"Tag: %d", [sender tag]);
 }
 
 // MARK: Respond to Notifications
