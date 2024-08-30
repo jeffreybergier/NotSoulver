@@ -2,7 +2,7 @@
 "SVRDocumentModelController" = {ACTIONS = {}; OUTLETS = {}; SUPERCLASS = NSObject; };
 "SVRDocumentViewController" = {
     ACTIONS = {"append:" = id; }; 
-    OUTLETS = {model = id; textView = id; }; 
+    OUTLETS = {_model = id; _textView = id; }; 
     SUPERCLASS = NSObject; 
 };
 "SVRDocumentWindowController" = {

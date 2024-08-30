@@ -3,8 +3,8 @@
 
 @interface SVRDocumentViewController : NSObject
 {
-    id model;
-    id textView;
+    id _model;
+    id _textView;
 }
 
 // MARK: Interface Builder

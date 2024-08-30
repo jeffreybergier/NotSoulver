@@ -5,11 +5,11 @@
 // MARK: Interface Builder
 /*@IBOutlet*/-(NSTextView*)textView;
 {
-  return textView; 
+  return _textView; 
 }
 /*@IBOutlet*/-(SVRDocumentModelController*)model;
 {
-  return model;
+  return _model;
 }
 // @IBAction
 -(void)append:(NSButton*)sender
@@ -41,7 +41,7 @@
     case  7: return @"7";
     case  8: return @"8";
     case  9: return @"9";
-    case 10: return @"10";
+    case 10: return @"0";
     case 11: return @"-";
     case 12: return @".";
     case 13: return nil;
