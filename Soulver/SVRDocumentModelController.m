@@ -38,8 +38,8 @@
 // MARK: Interface Builder
 -(void)awakeFromNib;
 {
-  NSLog(@"%@", self);
   _mathString = [[SVRMathString alloc] init];
+  NSLog(@"%@", self);
 }
 
 // MARK: Usage

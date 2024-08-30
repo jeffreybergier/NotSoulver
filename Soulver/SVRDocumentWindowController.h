@@ -3,9 +3,10 @@
 
 @interface SVRDocumentWindowController: NSObject
 {
-    SVRDocumentModelController *_model;
-    NSWindow *_window;
-    NSString *_filename;
+  NSString *_filename;
+  SVRDocumentModelController *_model;
+  NSWindow *_window;
+  NSObject *_viewController;
 }
 
 // MARK: Properties
@@ -13,6 +14,7 @@
 -(void)setFilename:(NSString*)filename;
 -(NSWindow*)window;
 -(SVRDocumentModelController*)model;
+-(NSObject*)viewController;
 
 // MARK: INIT
 -(id)initWithFilename:(NSString*)filename;

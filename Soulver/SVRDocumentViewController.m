@@ -77,13 +77,13 @@
 
 -(void)awakeFromNib;
 {
-  NSLog(@"%@", self);
   [[NSNotificationCenter defaultCenter]
     addObserver:self
        selector:@selector(modelRenderDidChangeNotification:)
            name:[SVRDocumentModelController renderDidChangeNotificationName] 
          object:[self model]];
 
+  NSLog(@"%@", self);
 }
 
 // MARK: Dealloc

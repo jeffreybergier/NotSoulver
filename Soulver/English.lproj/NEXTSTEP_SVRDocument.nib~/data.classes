@@ -7,6 +7,6 @@
 };
 "SVRDocumentWindowController" = {
     ACTIONS = {}; 
-    OUTLETS = {_model = id; _window = id; }; 
+    OUTLETS = {_model = id; _viewController = id; _window = id; }; 
     SUPERCLASS = NSObject; 
 };

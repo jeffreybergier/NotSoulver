@@ -21,6 +21,10 @@
 {
   return _model;
 }
+-(NSObject*)viewController;
+{
+  return _viewController;
+}
 
 // MARK: INIT
 -(id)initWithFilename:(NSString*)filename;
@@ -44,7 +48,6 @@
 {
   SVRMathString *document;
   NSString *filename;
-  NSLog(@"%@", self);
   
   filename = [self filename];
   if (filename) {
@@ -60,6 +63,8 @@
        selector:@selector(__modelRenderDidChangeNotification:)
            name:[SVRDocumentModelController renderDidChangeNotificationName]
          object:[self model]];
+  
+  NSLog(@"%@", self);
 }
 
 // MARK: Saving
@@ -128,6 +133,8 @@
 {
   NSLog(@"DEALLOC: %@", self);
   [_filename release];
+  [_model release];
+  [_viewController release];
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
 }
