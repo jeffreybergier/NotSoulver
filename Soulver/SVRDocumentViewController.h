@@ -11,6 +11,7 @@
 /*@IBOutlet*/-(NSTextView*)textView;
 /*@IBOutlet*/-(SVRDocumentModelController*)model;
 /*@IBAction*/-(void)append:(NSButton*)sender;
+-(NSString*)__mapKeyWithTag:(int)tag;
 
 // MARK: Respond to Notifications
 -(void)replaceTapeWithString:(NSAttributedString*)aString;
