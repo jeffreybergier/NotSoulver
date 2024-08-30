@@ -679,19 +679,24 @@
   NSString *outputString = nil;
   unsigned long count = [_allObjects count];
   unsigned long lastIndex = count - 1;
+  BOOL lineIsComplete = YES;
   int index = _nextIndex;
   _nextIndex += 1;
-  
+
+  // Bail Conditions
   if (count == 0) { return nil; }
-  
-  BOOL lineIsComplete = YES;
+  if (index > lastIndex) { return nil; }
+
+  // Figure out if we're the last line
   if (index == lastIndex && _lastLineComplete == NO) {
     lineIsComplete = NO;
   }
-  if (index > lastIndex) { return nil; }
-  
+
+  // Get our string
   outputString = [_allObjects objectAtIndex:index];
+  // If its empty, get the next object
   if ([outputString length] == 0) { return [self nextObject]; }
+  // Success
   return [SVRMathStringEnumeratorLine lineWithLine:outputString
                                         isComplete:lineIsComplete
                                              index:index];
