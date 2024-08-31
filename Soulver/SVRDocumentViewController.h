@@ -11,7 +11,7 @@
 /*@IBOutlet*/-(NSTextView*)textView;
 /*@IBOutlet*/-(SVRDocumentModelController*)model;
 /*@IBAction*/-(void)append:(NSButton*)sender;
--(NSString*)__mapKeyWithTag:(int)tag;
+-(NSString*)__mapKeyWithTag:(long)tag;
 
 // MARK: Properties
 -(NSString*)description;

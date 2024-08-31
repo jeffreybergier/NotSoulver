@@ -21,12 +21,12 @@
   NSString *toAppend = [self __mapKeyWithTag:[sender tag]];
   if (toAppend) {
     [[self model] appendCharacter:toAppend error:&error];
-    if (error) { NSLog(@"%@ appendString:%@ forTag:%d error:%@",
-                       self, toAppend, [sender tag], error); }
+    if (error != nil) { NSLog(@"%@ appendString:%@ forTag:%ld error:%@",
+                                self, toAppend, [sender tag], error); }
   } else {
     [[self model] backspaceWithError:&error];
-    if (error) { NSLog(@"%@ backspaceWithTag:%d error:%@",
-                       self, [sender tag], error); }
+    if (error != nil) { NSLog(@"%@ backspaceWithTag:%ld error:%@",
+                                self, [sender tag], error); }
   }
 }
 
@@ -38,7 +38,7 @@
 
 // Returns NIL if backspace
 // NSAssert if unknown tag
--(NSString*)__mapKeyWithTag:(int)tag;
+-(NSString*)__mapKeyWithTag:(long)tag;
 {
   switch (tag) {
     case  1: return @"1";
@@ -65,7 +65,7 @@
     case 22: break;
     case 23: break;
   }
-  NSAssert2(NO, @"<%@> Button with unknown tag: %d", self, tag);
+  NSAssert2(NO, @"<%@> Button with unknown tag: %ld", self, tag);
   return nil;
 }
 

@@ -27,7 +27,7 @@
 }
 -(NSString*)description;
 {
-  return [NSString stringWithFormat:@"%@ <Window: %d> <File: %@>",
+  return [NSString stringWithFormat:@"%@ <Window: %ld> <File: %@>",
          [super description], [_window windowNumber], _filename];
 }
 
