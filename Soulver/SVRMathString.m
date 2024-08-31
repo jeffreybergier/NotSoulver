@@ -46,13 +46,16 @@
 // MARK: Debugging
 -(NSString*)description;
 {
-  return [[super description] stringByAppendingString:_string];
+  NSString *toAppend = [NSString stringWithFormat:@"'%@'", _string];
+  return [[super description] stringByAppendingString:toAppend];
 }
 
 // MARK: Dealloc
 - (void)dealloc
 {
+  NSLog(@"DEALLOC: %@", self);
   [_string release];
+  _string = nil;
   [super dealloc];
 }
 

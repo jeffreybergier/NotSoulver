@@ -25,6 +25,11 @@
 {
   return _viewController;
 }
+-(NSString*)description;
+{
+  return [NSString stringWithFormat:@"%@ <Window: %d> <File: %@>",
+         [super description], [_window windowNumber], _filename];
+}
 
 // MARK: INIT
 -(id)initWithFilename:(NSString*)filename;
@@ -135,6 +140,9 @@
   [_filename release];
   [_model release];
   [_viewController release];
+  _filename = nil;
+  _model = nil;
+  _viewController = nil;
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
 }

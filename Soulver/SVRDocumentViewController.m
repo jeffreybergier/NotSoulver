@@ -3,14 +3,17 @@
 @implementation SVRDocumentViewController
 
 // MARK: Interface Builder
+
 /*@IBOutlet*/-(NSTextView*)textView;
 {
   return _textView; 
 }
+
 /*@IBOutlet*/-(SVRDocumentModelController*)model;
 {
   return _model;
 }
+
 // @IBAction
 -(void)append:(NSButton*)sender
 {
@@ -25,6 +28,12 @@
     if (error) { NSLog(@"%@ backspaceWithTag:%d error:%@",
                        self, [sender tag], error); }
   }
+}
+
+// MARK: Properties
+-(NSString*)description;
+{
+  return [super description];
 }
 
 // Returns NIL if backspace

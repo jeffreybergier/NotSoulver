@@ -8,11 +8,12 @@
 }
 
 // MARK: Properties
++(NSString*)renderDidChangeNotificationName;
 -(SVRMathString*)mathString;
 -(void)setMathString:(SVRMathString*)aString;
 -(NSAttributedString*)latestRender;
 -(void)setLatestRender:(NSAttributedString*)aString;
-+(NSString*)renderDidChangeNotificationName;
+-(NSString*)description;
 
 // MARK: Usage
 -(int)appendCharacter:(NSString*)aString error:(NSNumber**)errorPointer;

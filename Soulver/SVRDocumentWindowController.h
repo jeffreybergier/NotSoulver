@@ -15,6 +15,7 @@
 -(NSWindow*)window;
 -(SVRDocumentModelController*)model;
 -(NSObject*)viewController;
+-(NSString*)description;
 
 // MARK: INIT
 -(id)initWithFilename:(NSString*)filename;

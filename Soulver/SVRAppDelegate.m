@@ -109,10 +109,7 @@
 -(void)awakeFromNib;
 {  
   // Execute Tests
-  [SVRMathString executeTests];
-
-  // Announce 
-  NSLog(@"%@", self);
+  // [SVRMathString executeTests];
   
   // Initialize Properties
   _openFiles = [NSMutableDictionary new];
@@ -123,6 +120,9 @@
                                            selector:@selector(closeDoc:)
                                                name:[SVRDocumentWindowController windowDidCloseNotification]
                                              object:nil];
+
+  // Announce
+  NSLog(@"%@", self);
 }
 
 -(void)dealloc;
@@ -130,6 +130,8 @@
   NSLog(@"DEALLOC: %@", self);
   [_openFiles release];
   [_openUnsaved release];
+  _openFiles = nil;
+  _openUnsaved = nil;
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
 }

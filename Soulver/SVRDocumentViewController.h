@@ -13,6 +13,9 @@
 /*@IBAction*/-(void)append:(NSButton*)sender;
 -(NSString*)__mapKeyWithTag:(int)tag;
 
+// MARK: Properties
+-(NSString*)description;
+
 // MARK: Respond to Notifications
 -(void)replaceTapeWithString:(NSAttributedString*)aString;
 -(void)modelRenderDidChangeNotification:(NSNotification*)aNotification;

@@ -4,11 +4,16 @@
 @implementation SVRDocumentModelController
 
 // MARK: Properties
++(NSString*)renderDidChangeNotificationName;
+{
+  return [NSString stringWithFormat:@"RenderDidChange"];
+}
 
 -(SVRMathString*)mathString;
 {
   return _mathString;
 }
+
 -(void)setMathString:(SVRMathString*)aString;
 {
   NSNumber *error;
@@ -17,10 +22,12 @@
   [self setLatestRender:[_mathString renderWithError:&error]];
   if (error != nil) { NSLog(@"%@: setMathString: %@: Error: %@", self, aString, error); }
 }
+
 -(NSAttributedString*)latestRender;
 {
   return _latestRender;
 }
+
 -(void)setLatestRender:(NSAttributedString*)aString;
 {
   [_latestRender release];
@@ -30,9 +37,11 @@
                           renderDidChangeNotificationName] 
                   object:self];
 }
-+(NSString*)renderDidChangeNotificationName;
+
+-(NSString*)description;
 {
-  return [NSString stringWithFormat:@"RenderDidChange"];
+  return [NSString stringWithFormat:@"%@: %@",
+         [super description], _mathString];
 }
 
 // MARK: Interface Builder
@@ -69,6 +78,8 @@
   NSLog(@"DEALLOC: %@", self);
   [_mathString release];
   [_latestRender release];
+  _mathString = nil;
+  _latestRender = nil;
   [super dealloc];
 }
 
