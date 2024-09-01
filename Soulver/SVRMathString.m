@@ -334,8 +334,6 @@ NSSet *NSSet_SVR_solutionInsertCheck;
 
   // Get our string
   outputString = [_allObjects objectAtIndex:index];
-  // If its empty, get the next object
-  if ([outputString length] == 0) { return [self nextObject]; }
   // Success
   return [SVRMathStringEnumeratorLine lineWithLine:outputString
                                         isComplete:lineIsComplete
@@ -344,9 +342,18 @@ NSSet *NSSet_SVR_solutionInsertCheck;
 
 -(id)initWithMathString:(SVRMathString*)mathString;
 {
+  NSMutableArray *allObjects;
+  NSEnumerator *allEnum;
+  NSString *allNext;
   NSString *mathStringRaw = [mathString stringValue];
   self = [super init];
-  _allObjects = [[mathStringRaw componentsSeparatedByString:@"="] retain];
+  allObjects = [[NSMutableArray new] autorelease];
+  allEnum = [[mathStringRaw componentsSeparatedByString:@"="] objectEnumerator];
+  while ((allNext = [allEnum nextObject])) {
+    if ([allNext length] == 0) { continue; }
+    [allObjects addObject:allNext];
+  }
+  _allObjects = [allObjects copy];
   _lastLineComplete = [mathStringRaw SVR_endsWithCharacterInSet:[NSSet setWithObject:@"="]];
   _nextIndex = 0;
   return self;
