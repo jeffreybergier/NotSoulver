@@ -12,7 +12,9 @@
 
 +(void)load;
 {
+  NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
   [SVRMathString executeTests];
+  [pool release];
 }
 
 +(void)executeTests;

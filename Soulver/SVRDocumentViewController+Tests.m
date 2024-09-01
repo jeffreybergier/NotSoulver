@@ -10,7 +10,9 @@
 @implementation SVRDocumentViewController (Tests)
 +(void)load;
 {
+  NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
   [self executeTests];
+  [pool release];
 }
 
 +(void)executeTests;

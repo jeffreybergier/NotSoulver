@@ -21,11 +21,13 @@ LOCAL_RESOURCES = NEXTSTEP_Soulver.nib NEXTSTEP_SVRDocument.nib
 
 CLASSES = SVRDocumentWindowController.m SVRDocumentViewController.m\
           SVRMathString+Rendering.m SVRMathString.m SVRAppDelegate.m\
-          SVRMathString+Tests.m SVRDocumentModelController.m
+          SVRMathString+Tests.m SVRDocumentModelController.m\
+          SVRDocumentViewController+Tests.m
 
 HFILES = SVRDocumentWindowController.h SVRDocumentViewController.h\
          SVRMathString+Rendering.h SVRMathString.h SVRAppDelegate.h\
-         SVRMathString+Tests.h SVRDocumentModelController.h
+         SVRMathString+Tests.h SVRDocumentModelController.h\
+         SVRDocumentViewController+Tests.h
 
 MFILES = Soulver_main.m
 
