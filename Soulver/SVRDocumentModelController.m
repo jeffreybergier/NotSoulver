@@ -48,6 +48,7 @@
 -(void)awakeFromNib;
 {
   _mathString = [[SVRMathString alloc] init];
+  _latestRender = [NSAttributedString new];
   NSLog(@"%@", self);
 }
 

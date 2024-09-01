@@ -16,6 +16,7 @@
 +(void)executeTests;
 {
   [self test_tagMap];
+  [self test_modelUpdate];
 }
 
 +(void)test_tagMap;
@@ -52,5 +53,65 @@
   NSAssert( [vc __mapKeyWithTag:23 control:&control] == nil, @"");
   NSAssert(control == -3, @"");
   NSLog(@"%@: PASS: test_tagMap", self);
+}
+
++(void)test_modelUpdate;
+{
+  SVRDocumentViewController *vc;
+  SVRDocumentModelController *model;
+  NSLog(@"%@: START: test_modelUpdate", self);
+  vc = [[[SVRDocumentViewController alloc] init] autorelease];
+  model = [[[SVRDocumentModelController alloc] init] autorelease];
+  [model awakeFromNib];
+  vc->_model = model;
+  [vc awakeFromNib];
+  NSAssert([[[[vc model] mathString] stringValue] isEqualToString:@""], @"");
+  [vc __append:1];
+  NSAssert([[[[vc model] mathString] stringValue] isEqualToString:@"1"], @"");
+  [vc __append:2];
+  NSAssert([[[[vc model] mathString] stringValue] isEqualToString:@"12"], @"");
+  [vc __append:3];
+  NSAssert([[[[vc model] mathString] stringValue] isEqualToString:@"123"], @"");
+  [vc __append:4];
+  NSAssert([[[[vc model] mathString] stringValue] isEqualToString:@"1234"], @"");
+  [vc __append:5];
+  NSAssert([[[[vc model] mathString] stringValue] isEqualToString:@"12345"], @"");
+  [vc __append:6];
+  NSAssert([[[[vc model] mathString] stringValue] isEqualToString:@"123456"], @"");
+  [vc __append:7];
+  NSAssert([[[[vc model] mathString] stringValue] isEqualToString:@"1234567"], @"");
+  [vc __append:8];
+  NSAssert([[[[vc model] mathString] stringValue] isEqualToString:@"12345678"], @"");
+  [vc __append:9];
+  NSAssert([[[[vc model] mathString] stringValue] isEqualToString:@"123456789"], @"");
+  [vc __append:10];
+  NSAssert([[[[vc model] mathString] stringValue] isEqualToString:@"1234567890"], @"");
+  [vc __append:11];
+  NSAssert([[[[vc model] mathString] stringValue] isEqualToString:@"1234567890-"], @"");
+  [vc __append:12];
+  NSAssert([[[[vc model] mathString] stringValue] isEqualToString:@"1234567890-."], @"");
+  [vc __append:13];
+  NSAssert([[[[vc model] mathString] stringValue] isEqualToString:@"1234567890-"], @"");
+  [vc __append:14];
+  NSAssert([[[[vc model] mathString] stringValue] isEqualToString:@"1234567890-="], @"");
+  [vc __append:15];
+  NSAssert([[[[vc model] mathString] stringValue] isEqualToString:@"1234567890-=a"], @"");
+  [vc __append:16];
+  NSAssert([[[[vc model] mathString] stringValue] isEqualToString:@"1234567890-=as"], @"");
+  [vc __append:17];
+  NSAssert([[[[vc model] mathString] stringValue] isEqualToString:@"1234567890-=as)"], @"");
+  [vc __append:18];
+  NSAssert([[[[vc model] mathString] stringValue] isEqualToString:@"1234567890-=as)m"], @"");
+  [vc __append:19];
+  NSAssert([[[[vc model] mathString] stringValue] isEqualToString:@"1234567890-=as)md"], @"");
+  [vc __append:20];
+  NSAssert([[[[vc model] mathString] stringValue] isEqualToString:@"1234567890-=as)md("], @"");
+  [vc __append:21];
+  NSAssert([[[[vc model] mathString] stringValue] isEqualToString:@"1234567890-=as)md(e"], @"");
+  [vc __append:22];
+  NSAssert([[[[vc model] mathString] stringValue] isEqualToString:@"1234567890-="], @"");
+  [vc __append:23];
+  NSAssert([[[[vc model] mathString] stringValue] isEqualToString:@""], @"");
+  NSLog(@"%@: PASS: test_modelUpdate", self);
 }
 @end

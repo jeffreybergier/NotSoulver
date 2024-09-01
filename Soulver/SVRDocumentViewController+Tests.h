@@ -11,4 +11,5 @@
 +(void)load;
 +(void)executeTests;
 +(void)test_tagMap;
++(void)test_modelUpdate;
 @end
