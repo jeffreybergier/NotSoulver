@@ -10,4 +10,5 @@
 @interface SVRDocumentViewController (Tests)
 +(void)load;
 +(void)executeTests;
++(void)test_tagMap;
 @end
