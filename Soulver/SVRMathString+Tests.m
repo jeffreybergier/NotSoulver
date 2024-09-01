@@ -10,6 +10,11 @@
 
 @implementation SVRMathString (Tests)
 
++(void)load;
+{
+  [SVRMathString executeTests];
+}
+
 +(void)executeTests;
 {
   // MARK: Test Interactive

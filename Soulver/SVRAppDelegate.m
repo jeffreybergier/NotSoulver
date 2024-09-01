@@ -107,10 +107,7 @@
 }
 
 -(void)awakeFromNib;
-{  
-  // Execute Tests
-  // [SVRMathString executeTests];
-  
+{
   // Initialize Properties
   _openFiles = [NSMutableDictionary new];
   _openUnsaved = [NSMutableDictionary new];
