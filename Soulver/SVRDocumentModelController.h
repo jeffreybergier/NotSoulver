@@ -17,6 +17,8 @@
 
 // MARK: Usage
 -(int)appendCharacter:(NSString*)aString error:(NSNumber**)errorPointer;
--(int)backspaceWithError:(NSNumber**)errorPointer;
+-(int)backspaceCharacterWithError:(NSNumber**)errorPointer;
+-(int)backspaceLineWithError:(NSNumber**)errorPointer;
+-(int)backspaceAllWithError:(NSNumber**)errorPointer;
 
 @end

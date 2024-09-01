@@ -15,7 +15,9 @@
 -(NSString*)stringValue;
 // MARK: Main Business Logic
 -(void)appendEncodedString:(NSString*)aString;
--(void)backspace;
+-(void)backspaceCharacter;
+-(void)backspaceLine;
+-(void)backspaceAll;
 -(BOOL)isEmpty;
 // MARK: Debugging
 -(NSString*)description;

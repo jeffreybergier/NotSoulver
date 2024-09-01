@@ -62,12 +62,34 @@
   if (error != nil) { if (errorPointer) { *errorPointer = error; } return -1; }
   return result;
 }
--(int)backspaceWithError:(NSNumber**)errorPointer;
+-(int)backspaceCharacterWithError:(NSNumber**)errorPointer;
 {
   NSNumber *error = errorPointer ? *errorPointer : nil;
   int result = 0;
   if (error != nil) { return -1; }
-  [[self mathString] backspace];
+  [[self mathString] backspaceCharacter];
+  [self setLatestRender:[[self mathString] renderWithError:&error]];
+  if (error != nil) { if (errorPointer) { *errorPointer = error; } return -1; }
+  return result;
+}
+
+-(int)backspaceLineWithError:(NSNumber**)errorPointer;
+{
+  NSNumber *error = errorPointer ? *errorPointer : nil;
+  int result = 0;
+  if (error != nil) { return -1; }
+  [[self mathString] backspaceLine];
+  [self setLatestRender:[[self mathString] renderWithError:&error]];
+  if (error != nil) { if (errorPointer) { *errorPointer = error; } return -1; }
+  return result;
+}
+
+-(int)backspaceAllWithError:(NSNumber**)errorPointer;
+{
+  NSNumber *error = errorPointer ? *errorPointer : nil;
+  int result = 0;
+  if (error != nil) { return -1; }
+  [[self mathString] backspaceAll];
   [self setLatestRender:[[self mathString] renderWithError:&error]];
   if (error != nil) { if (errorPointer) { *errorPointer = error; } return -1; }
   return result;

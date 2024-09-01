@@ -22,7 +22,7 @@
   [_string appendString:aString];
 }
 
--(void)backspace;
+-(void)backspaceCharacter;
 {
   NSRange range;
   switch ([_string length]) {
@@ -36,6 +36,16 @@
       [_string deleteCharactersInRange:range];
       return;
   }
+}
+
+-(void)backspaceLine;
+{
+  
+}
+
+-(void)backspaceAll;
+{
+  [_string setString:@""];
 }
 
 -(BOOL)isEmpty;

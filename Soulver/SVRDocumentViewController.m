@@ -24,7 +24,7 @@
     if (error != nil) { NSLog(@"%@ appendString:%@ forTag:%ld error:%@",
                                 self, toAppend, [sender tag], error); }
   } else {
-    [[self model] backspaceWithError:&error];
+    [[self model] backspaceCharacterWithError:&error];
     if (error != nil) { NSLog(@"%@ backspaceWithTag:%ld error:%@",
                                 self, [sender tag], error); }
   }
