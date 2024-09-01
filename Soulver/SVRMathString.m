@@ -47,6 +47,10 @@
   
   output = [[NSMutableString new] autorelease];
   lines = [[[[self lineEnumerator] allObjects] mutableCopy] autorelease];
+
+  // Bail if there are no lines to clear
+  if ([lines count] == 0) { [self backspaceAll]; return;}
+  // remove the last line and then rebuild
   [lines removeLastObject];
   e = [lines objectEnumerator];
   
