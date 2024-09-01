@@ -40,7 +40,22 @@
 
 -(void)backspaceLine;
 {
+  NSMutableString *output;
+  NSMutableArray *lines;
+  NSEnumerator *e;
+  NSString *line;
   
+  output = [[NSMutableString new] autorelease];
+  lines = [[[[self lineEnumerator] allObjects] mutableCopy] autorelease];
+  [lines removeLastObject];
+  e = [lines objectEnumerator];
+  
+  while ((line = [e nextObject])) {
+    [output appendString:line];
+    [output appendString:@"="];
+  }
+  
+  [_string setString:output];
 }
 
 -(void)backspaceAll;
