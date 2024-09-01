@@ -29,8 +29,8 @@
 // MARK: Private
 -(void)__append:(long)tag;
 {
-  NSNumber *error = nil;
   int control;
+  NSNumber *error = nil;
   NSString *toAppend = [self __mapKeyWithTag:tag control:&control];
   if (toAppend) {
     [[self model] appendCharacter:toAppend error:&error];

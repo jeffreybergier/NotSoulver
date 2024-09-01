@@ -10,7 +10,7 @@
 // MARK: Properties
 +(NSString*)renderDidChangeNotificationName;
 -(SVRMathString*)mathString;
--(void)setMathString:(SVRMathString*)aString;
+-(void)setMathString:(SVRMathString*)mathString;
 -(NSAttributedString*)latestRender;
 -(void)setLatestRender:(NSAttributedString*)aString;
 -(NSString*)description;

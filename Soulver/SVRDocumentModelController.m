@@ -14,13 +14,14 @@
   return _mathString;
 }
 
--(void)setMathString:(SVRMathString*)aString;
+-(void)setMathString:(SVRMathString*)mathString;
 {
-  NSNumber *error;
+  NSNumber *error = nil;
   [_mathString release];
-  _mathString = [aString retain];
-  [self setLatestRender:[_mathString renderWithError:&error]];
-  if (error != nil) { NSLog(@"%@: setMathString: %@: Error: %@", self, aString, error); }
+  _mathString = [mathString retain];
+  [self setLatestRender:[mathString renderWithError:&error]];
+  if (error != nil) { NSLog(@"%@: setMathString: %@: Error: %@",
+                            self, mathString, error); }
 }
 
 -(NSAttributedString*)latestRender;
