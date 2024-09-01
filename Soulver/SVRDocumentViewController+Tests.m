@@ -7,10 +7,17 @@
 
 #import "SVRDocumentViewController+Tests.h"
 
+int SVRDocumentViewController_Tests_loadedOnce = 0;
+
 @implementation SVRDocumentViewController (Tests)
 +(void)load;
 {
-  NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
+  NSAutoreleasePool *pool;
+  
+  if (SVRDocumentViewController_Tests_loadedOnce != 0) { return; }
+  SVRDocumentViewController_Tests_loadedOnce += 1;
+  
+  pool = [[NSAutoreleasePool allocWithZone:NULL] init];
   [self executeTests];
   [pool release];
 }

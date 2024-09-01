@@ -8,12 +8,19 @@
 #import "SVRMathString+Rendering.h"
 #import "SVRMathString+Tests.h"
 
+int SVRMathString_Tests_loadedOnce = 0;
+
 @implementation SVRMathString (Tests)
 
 +(void)load;
 {
-  NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
-  [SVRMathString executeTests];
+  NSAutoreleasePool *pool;
+  
+  if (SVRMathString_Tests_loadedOnce != 0) { return; }
+  SVRMathString_Tests_loadedOnce += 1;
+  
+  pool = [[NSAutoreleasePool allocWithZone:NULL] init];
+  [self executeTests];
   [pool release];
 }
 
