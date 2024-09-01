@@ -40,6 +40,19 @@
   NSAssert(error == nil, @"");
   model = nil;
   
+  // MARK: Test Backspace
+  model = [[[SVRMathString alloc] initWithString:@"1a2a3=a4a5a6=7a8a9"] autorelease];
+  [model __testAssertEqual:@"1+2+3=6\n6+4+5+6=21\n7+8+9"];
+  [model backspaceCharacter];
+  [model backspaceCharacter];
+  [model __testAssertEqual:@"1+2+3=6\n6+4+5+6=21\n7+8"];
+  [model backspaceLine];
+  [model __testAssertEqual:@"1+2+3=6\n6+4+5+6=21\n"];
+  [model backspaceLine];
+  [model __testAssertEqual:@"1+2+3=6\n"];
+  [model backspaceAll];
+  [model __testAssertEqual:@""];
+  
   // MARK: Test Maps
   
   NSAssert([[[SVRMathString operatorEncodeMap] objectForKey:@"*"] isEqualToString:@"m"], @"FAIL: Encode *");
