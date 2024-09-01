@@ -59,7 +59,7 @@
 
 // MARK: NSString
 
-@interface NSString (Soulver)
+@interface NSString (Rendering)
 -(SVRBoundingRange*)SVR_searchRangeBoundedByLHS:(NSString*)lhs
                                             rhs:(NSString*)rhs
                                           error:(NSNumber**)errorPointer;
@@ -67,8 +67,6 @@
                            allPossibleOperators:(NSSet*)ignoring
                             allPossibleNumerals:(NSSet*)numerals;
 -(BOOL)SVR_containsOnlyCharactersInSet:(NSSet*)set;
--(BOOL)SVR_beginsWithCharacterInSet:(NSSet*)set;
--(BOOL)SVR_endsWithCharacterInSet:(NSSet*)set;
 -(NSString*)SVR_stringByMappingCharactersInDictionary:(NSDictionary*)map;
 @end
 
@@ -107,33 +105,6 @@
 -(SVRStringEnumeratorRange*)nextObject;
 -(id)initWithString:(NSString*)string;
 +(id)enumeratorWithString:(NSString*)string;
-@end
-
-// MARK: SVRMathStringEnumerator
-@interface SVRMathStringEnumeratorLine: NSObject
-{
-  NSString *_line;
-  BOOL _isComplete;
-  int _index;
-}
--(NSString*)line;
--(BOOL)isComplete;
--(int)index;
--(NSString*)description;
--(id)initWithLine:(NSString*)line isComplete:(BOOL)isComplete index:(int)index;
-+(id)lineWithLine:(NSString*)line isComplete:(BOOL)isComplete index:(int)index;
-@end
-
-@interface SVRMathStringEnumerator: NSEnumerator
-{
-  NSArray *_allObjects;
-  int _nextIndex;
-  BOOL _lastLineComplete;
-}
--(NSArray*)allObjects;
--(SVRMathStringEnumeratorLine*)nextObject;
--(id)initWithMathString:(SVRMathString*)mathString;
-+(id)enumeratorWithMathString:(SVRMathString*)mathString;
 @end
 
 // MARK: NSDecimalNumber

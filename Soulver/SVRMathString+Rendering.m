@@ -289,7 +289,7 @@
 @end
 
 // MARK: NSString
-@implementation NSString (Soulver)
+@implementation NSString (Rendering)
 
 -(SVRBoundingRange*)SVR_searchRangeBoundedByLHS:(NSString*)lhs
                                             rhs:(NSString*)rhs
@@ -402,18 +402,6 @@
   }
   
   return YES;
-}
-
--(BOOL)SVR_beginsWithCharacterInSet:(NSSet*)set;
-{
-  if ([self length] == 0) { return NO; }
-  return [set member:[self substringWithRange:NSMakeRange(0, 1)]] != nil;
-}
-
--(BOOL)SVR_endsWithCharacterInSet:(NSSet*)set;
-{
-  if ([self length] == 0) { return NO; }
-  return [set member:[self substringWithRange:NSMakeRange([self length] - 1, 1)]] != nil;
 }
 
 -(NSString*)SVR_stringByMappingCharactersInDictionary:(NSDictionary*)map;
@@ -620,109 +608,6 @@
   [super dealloc];
 }
 
-@end
-
-// MARK: SVRMathStringEnumerator
-@implementation SVRMathStringEnumeratorLine
--(NSString*)line;
-{
-  return _line;
-}
-
--(BOOL)isComplete;
-{
-  return _isComplete;
-}
-
--(int)index;
-{
-  return _index;
-}
-
--(NSString*)description;
-{
-  return [NSString stringWithFormat:@"<%@> Line: '%@' isComplete: %d, Index: %d",
-          [super description], _line, _isComplete, _index];
-}
-
--(id)initWithLine:(NSString*)line isComplete:(BOOL)isComplete index:(int)index;
-{
-  self = [super init];
-  _line = [line retain];
-  _isComplete = isComplete;
-  _index = index;
-  return self;
-}
-
-+(id)lineWithLine:(NSString*)line isComplete:(BOOL)isComplete index:(int)index;
-{
-  return [[[SVRMathStringEnumeratorLine alloc] initWithLine:line isComplete:isComplete index:index] autorelease];
-}
-
-- (void)dealloc
-{
-  [_line release];
-  _line = nil;
-  [super dealloc];
-}
-@end
-
-@implementation SVRMathStringEnumerator
-
--(NSArray*)allObjects;
-{
-  return _allObjects;
-}
-
--(SVRMathStringEnumeratorLine*)nextObject;
-{
-  NSString *outputString = nil;
-  unsigned long count = [_allObjects count];
-  unsigned long lastIndex = count - 1;
-  BOOL lineIsComplete = YES;
-  int index = _nextIndex;
-  _nextIndex += 1;
-
-  // Bail Conditions
-  if (count == 0) { return nil; }
-  if (index > lastIndex) { return nil; }
-
-  // Figure out if we're the last line
-  if (index == lastIndex && _lastLineComplete == NO) {
-    lineIsComplete = NO;
-  }
-
-  // Get our string
-  outputString = [_allObjects objectAtIndex:index];
-  // If its empty, get the next object
-  if ([outputString length] == 0) { return [self nextObject]; }
-  // Success
-  return [SVRMathStringEnumeratorLine lineWithLine:outputString
-                                        isComplete:lineIsComplete
-                                             index:index];
-}
-
--(id)initWithMathString:(SVRMathString*)mathString;
-{
-  NSString *mathStringRaw = [mathString stringValue];
-  self = [super init];
-  _allObjects = [[mathStringRaw componentsSeparatedByString:@"="] retain];
-  _lastLineComplete = [mathStringRaw SVR_endsWithCharacterInSet:[NSSet setWithObject:@"="]];
-  _nextIndex = 0;
-  return self;
-}
-
-+(id)enumeratorWithMathString:(SVRMathString*)mathString;
-{
-  return [[[SVRMathStringEnumerator alloc] initWithMathString:mathString] autorelease];
-}
-
-- (void)dealloc
-{
-  [_allObjects release];
-  _allObjects = nil;
-  [super dealloc];
-}
 @end
 
 // MARK: Constant Storage

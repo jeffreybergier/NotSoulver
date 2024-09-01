@@ -19,8 +19,8 @@
 -(void)backspaceLine;
 -(void)backspaceAll;
 -(BOOL)isEmpty;
-// MARK: Debugging
 -(NSString*)description;
+-(NSEnumerator*)lineEnumerator;
 @end
 
 // MARK: Init
@@ -59,4 +59,38 @@
 +(NSSet*)SVR_numeralsAll;
 +(NSSet*)SVR_solutionInsertCheck;
 +(NSSet*)SVR_allowedCharacters;
+@end
+
+// MARK: NSString
+
+@interface NSString (Soulver)
+-(BOOL)SVR_beginsWithCharacterInSet:(NSSet*)set;
+-(BOOL)SVR_endsWithCharacterInSet:(NSSet*)set;
+@end
+
+// MARK: SVRMathStringEnumerator
+@interface SVRMathStringEnumeratorLine: NSObject
+{
+  NSString *_line;
+  BOOL _isComplete;
+  int _index;
+}
+-(NSString*)line;
+-(BOOL)isComplete;
+-(int)index;
+-(NSString*)description;
+-(id)initWithLine:(NSString*)line isComplete:(BOOL)isComplete index:(int)index;
++(id)lineWithLine:(NSString*)line isComplete:(BOOL)isComplete index:(int)index;
+@end
+
+@interface SVRMathStringEnumerator: NSEnumerator
+{
+  NSArray *_allObjects;
+  int _nextIndex;
+  BOOL _lastLineComplete;
+}
+-(NSArray*)allObjects;
+-(SVRMathStringEnumeratorLine*)nextObject;
+-(id)initWithMathString:(SVRMathString*)mathString;
++(id)enumeratorWithMathString:(SVRMathString*)mathString;
 @end
