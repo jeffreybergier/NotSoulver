@@ -17,17 +17,7 @@
 // @IBAction
 -(void)append:(NSButton*)sender
 {
-  NSNumber *error = nil;
-  NSString *toAppend = [self __mapKeyWithTag:[sender tag]];
-  if (toAppend) {
-    [[self model] appendCharacter:toAppend error:&error];
-    if (error != nil) { NSLog(@"%@ appendString:%@ forTag:%ld error:%@",
-                                self, toAppend, [sender tag], error); }
-  } else {
-    [[self model] backspaceCharacterWithError:&error];
-    if (error != nil) { NSLog(@"%@ backspaceWithTag:%ld error:%@",
-                                self, [sender tag], error); }
-  }
+  [self __append:[sender tag]];
 }
 
 // MARK: Properties
@@ -36,9 +26,32 @@
   return [super description];
 }
 
+// MARK: Private
+-(void)__append:(long)tag;
+{
+  NSNumber *error = nil;
+  int control;
+  NSString *toAppend = [self __mapKeyWithTag:tag control:&control];
+  if (toAppend) {
+    [[self model] appendCharacter:toAppend error:&error];
+    if (error != nil) { NSLog(@"%@ appendString:%@ forTag:%ld error:%@",
+                                self, toAppend, tag, error); }
+  } else {
+    switch (control) {
+      case -1: [[self model] backspaceCharacterWithError:&error]; break;
+      case -2: [[self model] backspaceLineWithError:&error]; break;
+      case -3: [[self model] backspaceAllWithError:&error]; break;
+      default: NSAssert2(NO, @"<%@> Button with unknown tag: %ld", self, tag);
+    }
+    
+    if (error != nil) { NSLog(@"%@ backspaceWithTag:%ld error:%@",
+                                self, tag, error); }
+  }
+}
+
 // Returns NIL if backspace
 // NSAssert if unknown tag
--(NSString*)__mapKeyWithTag:(long)tag;
+-(NSString*)__mapKeyWithTag:(long)tag control:(int*)control;
 {
   switch (tag) {
     case  1: return @"1";
@@ -53,7 +66,7 @@
     case 10: return @"0";
     case 11: return @"-";
     case 12: return @".";
-    case 13: return nil;
+    case 13: *control = -1; return nil;
     case 14: return @"=";
     case 15: return [[SVRMathString operatorEncodeMap] objectForKey:@"+"];
     case 16: return [[SVRMathString operatorEncodeMap] objectForKey:@"-"];
@@ -62,8 +75,8 @@
     case 19: return [[SVRMathString operatorEncodeMap] objectForKey:@"/"];
     case 20: return @"(";
     case 21: return [[SVRMathString operatorEncodeMap] objectForKey:@"^"];
-    case 22: break;
-    case 23: break;
+    case 22: *control = -2; return nil;
+    case 23: *control = -3; return nil;
   }
   NSAssert2(NO, @"<%@> Button with unknown tag: %ld", self, tag);
   return nil;

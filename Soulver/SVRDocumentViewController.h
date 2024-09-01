@@ -11,10 +11,13 @@
 /*@IBOutlet*/-(NSTextView*)textView;
 /*@IBOutlet*/-(SVRDocumentModelController*)model;
 /*@IBAction*/-(void)append:(NSButton*)sender;
--(NSString*)__mapKeyWithTag:(long)tag;
 
 // MARK: Properties
 -(NSString*)description;
+
+// MARK: Private
+-(void)__append:(long)tag;
+-(NSString*)__mapKeyWithTag:(long)tag control:(int*)control;
 
 // MARK: Respond to Notifications
 -(void)replaceTapeWithString:(NSAttributedString*)aString;
