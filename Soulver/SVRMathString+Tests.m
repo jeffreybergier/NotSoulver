@@ -8,7 +8,11 @@
 #import "SVRMathString+Rendering.h"
 #import "SVRMathString+Tests.h"
 
+#ifdef OS_OPENSTEP
+int SVRMathString_Tests_loadedOnce = 1;
+#else
 int SVRMathString_Tests_loadedOnce = 0;
+#endif
 
 @implementation SVRMathString (Tests)
 
@@ -16,8 +20,12 @@ int SVRMathString_Tests_loadedOnce = 0;
 {
   NSAutoreleasePool *pool;
   
-  if (SVRMathString_Tests_loadedOnce != 0) { return; }
+  if (SVRMathString_Tests_loadedOnce != 0) {
+    NSLog(@"%@: Skipping Tests", self);
+    return;
+  }
   SVRMathString_Tests_loadedOnce += 1;
+  NSLog(@"%@: Executing Tests", self);
   
   pool = [[NSAutoreleasePool allocWithZone:NULL] init];
   [self executeTests];
