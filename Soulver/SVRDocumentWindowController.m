@@ -25,6 +25,10 @@
 {
   return _viewController;
 }
+-(NSResponder*)lastResponder;
+{
+  return _lastResponder;
+}
 -(NSString*)description;
 {
   return [NSString stringWithFormat:@"%@ <Window: %ld> <File: %@>",
@@ -53,7 +57,8 @@
 {
   SVRMathString *document;
   NSString *filename;
-  
+
+  // Read the file if there is a filepath
   filename = [self filename];
   if (filename) {
     NSLog(@"Opening File: %@", filename);
@@ -63,11 +68,18 @@
   }
   [self __updateWindowState];
 
+  // Register for notifications from the model
   [[NSNotificationCenter defaultCenter]
     addObserver:self
        selector:@selector(__modelRenderDidChangeNotification:)
            name:[SVRDocumentModelController renderDidChangeNotificationName]
          object:[self model]];
+
+  // Check to make sure we are delegate
+  NSAssert1([[self window] delegate] == self, @"Incorrect Window Delegate: %@", [[self window] delegate]);
+
+  // Set up Last Responder
+  [[self window] setNextResponder:[self lastResponder]];
   
   NSLog(@"%@", self);
 }

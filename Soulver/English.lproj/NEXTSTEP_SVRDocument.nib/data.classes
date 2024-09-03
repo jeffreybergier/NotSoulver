@@ -1,4 +1,9 @@
 "FirstResponder" = {ACTIONS = {}; OUTLETS = {}; SUPERCLASS = NSObject; };
+"SVRDocumentLastResponder" = {
+    ACTIONS = {}; 
+    OUTLETS = {_windowController = id; }; 
+    SUPERCLASS = NSResponder; 
+};
 "SVRDocumentModelController" = {ACTIONS = {}; OUTLETS = {}; SUPERCLASS = NSObject; };
 "SVRDocumentViewController" = {
     ACTIONS = {"append:" = id; }; 
@@ -7,6 +12,6 @@
 };
 "SVRDocumentWindowController" = {
     ACTIONS = {}; 
-    OUTLETS = {_model = id; _viewController = id; _window = id; }; 
+    OUTLETS = {_lastResponder = id; _model = id; _viewController = id; _window = id; }; 
     SUPERCLASS = NSObject; 
 };

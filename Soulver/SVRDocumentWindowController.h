@@ -7,6 +7,7 @@
   SVRDocumentModelController *_model;
   NSWindow *_window;
   NSObject *_viewController;
+  NSResponder *_lastResponder;
 }
 
 // MARK: Properties
@@ -15,6 +16,7 @@
 -(NSWindow*)window;
 -(SVRDocumentModelController*)model;
 -(NSObject*)viewController;
+-(NSResponder*)lastResponder;
 -(NSString*)description;
 
 // MARK: INIT
