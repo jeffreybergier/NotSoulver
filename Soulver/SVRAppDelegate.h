@@ -13,7 +13,7 @@
 // MARK: Document Management
 -(void)newDoc:(id)sender;
 -(void)openDoc:(id)sender;
--(void)saveDoc:(id)sender;
+-(void)saveAll:(id)sender;
 
 // MARK: Notifications
 -(void)closeDoc:(NSNotification*)aNotification;

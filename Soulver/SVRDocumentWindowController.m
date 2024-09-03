@@ -213,40 +213,50 @@
 // MARK: NSMenuActionResponder
 @implementation SVRDocumentWindowController (NSMenuActionResponder)
 
+-(void)keyUp:(NSEvent*)theEvent;
+{
+  NSLog(@"keyUp: %@", theEvent);
+}
+
 -(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
 {
   NSLog(@"validateMenuItem: %@", menuItem);
   return YES;
 }
 
--(void)cut:(NSMenuItem*)menuItem;
+-(void)cut:(id)sender;
 {
-  NSLog(@"cut: %@", menuItem);
+  NSLog(@"%@ cut: %@", self, sender);
 }
 
--(void)copy:(NSMenuItem*)menuItem;
+-(void)copy:(id)sender;
 {
-  NSLog(@"copy: %@", menuItem);
+  NSLog(@"%@ copy: %@", self, sender);
 }
 
--(void)paste:(NSMenuItem*)menuItem;
+-(void)paste:(id)sender;
 {
-  NSLog(@"paste: %@", menuItem);
+  NSLog(@"%@ paste: %@", self, sender);
 }
 
--(void)save:(NSMenuItem*)menuItem;
+-(void)revertToSaved:(id)sender;
 {
-  NSLog(@"save: %@", menuItem);
+  NSLog(@"%@ revertToSaved: %@", self, sender);
 }
 
--(void)saveAs:(NSMenuItem*)menuItem;
+-(void)save:(id)sender;
 {
-  NSLog(@"saveAs: %@", menuItem);
+  NSLog(@"%@ save: %@", self, sender);
 }
 
--(void)keyUp:(NSEvent*)theEvent;
+-(void)saveAs:(id)sender;
 {
-  NSLog(@"keyUp: %@", theEvent);
+  NSLog(@"%@ saveAs: %@", self, sender);
+}
+
+-(void)saveTo:(id)sender;
+{
+  NSLog(@"%@ saveTo: %@", self, sender);
 }
 
 @end

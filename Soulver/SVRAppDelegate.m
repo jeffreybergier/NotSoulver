@@ -53,7 +53,11 @@
   [[controller window] makeKeyAndOrderFront:sender];
 }
 
-- (void)saveDoc:(id)sender
+-(void)saveAll:(id)sender;
+{
+  NSLog(@"%@ saveAll: %@", self, sender);
+}
+/*
 {
   NSWindow *window;
   NSNumber *windowNumber;
@@ -86,6 +90,7 @@
     }
   }
 }
+*/
 
 // MARK: Notifications
 -(void)closeDoc:(NSNotification*)aNotification;

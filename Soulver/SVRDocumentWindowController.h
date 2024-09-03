@@ -38,11 +38,13 @@
 
 // MARK: NSMenuActionResponder
 @interface SVRDocumentWindowController (NSMenuActionResponder)
+-(void)keyUp:(NSEvent*)theEvent; // delete in the future
 -(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
--(void)cut:(NSMenuItem*)menuItem;
--(void)copy:(NSMenuItem*)menuItem;
--(void)paste:(NSMenuItem*)menuItem;
--(void)save:(NSMenuItem*)menuItem;
--(void)saveAs:(NSMenuItem*)menuItem;
--(void)keyUp:(NSEvent*)theEvent;
+-(void)cut:(id)sender;
+-(void)copy:(id)sender;
+-(void)paste:(id)sender;
+-(void)revertToSaved:(id)sender;
+-(void)save:(id)sender;
+-(void)saveAs:(id)sender;
+-(void)saveTo:(id)sender;
 @end
