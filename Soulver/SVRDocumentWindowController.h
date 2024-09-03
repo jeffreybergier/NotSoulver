@@ -1,13 +1,12 @@
 #import <AppKit/AppKit.h>
 #import "SVRDocumentModelController.h"
 
-@interface SVRDocumentWindowController: NSObject
+@interface SVRDocumentWindowController: NSResponder
 {
   NSString *_filename;
   SVRDocumentModelController *_model;
   NSWindow *_window;
   NSObject *_viewController;
-  NSResponder *_lastResponder;
 }
 
 // MARK: Properties
@@ -16,7 +15,6 @@
 -(NSWindow*)window;
 -(SVRDocumentModelController*)model;
 -(NSObject*)viewController;
--(NSResponder*)lastResponder;
 -(NSString*)description;
 
 // MARK: INIT
@@ -33,6 +31,18 @@
 
 @end
 
+// MARK: SVRDocumentWindowController
 @interface SVRDocumentWindowController (NSWindowDelegate)
 -(BOOL)windowShouldClose:(id)sender;
+@end
+
+// MARK: NSMenuActionResponder
+@interface SVRDocumentWindowController (NSMenuActionResponder)
+-(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
+-(void)cut:(NSMenuItem*)menuItem;
+-(void)copy:(NSMenuItem*)menuItem;
+-(void)paste:(NSMenuItem*)menuItem;
+-(void)save:(NSMenuItem*)menuItem;
+-(void)saveAs:(NSMenuItem*)menuItem;
+-(void)keyUp:(NSEvent*)theEvent;
 @end

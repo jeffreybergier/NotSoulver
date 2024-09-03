@@ -7,28 +7,29 @@
 {
   return _filename;
 }
+
 -(void)setFilename:(NSString*)filename;
 {
   [_filename release];
   _filename = [filename retain];
   [self __updateWindowState];
 }
+
 -(NSWindow*)window;
 {
   return _window;
 }
+
 -(SVRDocumentModelController*)model;
 {
   return _model;
 }
+
 -(NSObject*)viewController;
 {
   return _viewController;
 }
--(NSResponder*)lastResponder;
-{
-  return _lastResponder;
-}
+
 -(NSString*)description;
 {
   return [NSString stringWithFormat:@"%@ <Window: %ld> <File: %@>",
@@ -79,7 +80,7 @@
   NSAssert1([[self window] delegate] == self, @"Incorrect Window Delegate: %@", [[self window] delegate]);
 
   // Set up Last Responder
-  [[self window] setNextResponder:[self lastResponder]];
+  [[self window] setNextResponder:self];
   
   NSLog(@"%@", self);
 }
@@ -161,6 +162,7 @@
 
 @end
 
+// MARK: SVRDocumentWindowController
 @implementation SVRDocumentWindowController (NSWindowDelegate)
 -(BOOL)windowShouldClose:(id)sender;
 {
@@ -206,4 +208,45 @@
   }
   return result;
 }
+@end
+
+// MARK: NSMenuActionResponder
+@implementation SVRDocumentWindowController (NSMenuActionResponder)
+
+-(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
+{
+  NSLog(@"validateMenuItem: %@", menuItem);
+  return YES;
+}
+
+-(void)cut:(NSMenuItem*)menuItem;
+{
+  NSLog(@"cut: %@", menuItem);
+}
+
+-(void)copy:(NSMenuItem*)menuItem;
+{
+  NSLog(@"copy: %@", menuItem);
+}
+
+-(void)paste:(NSMenuItem*)menuItem;
+{
+  NSLog(@"paste: %@", menuItem);
+}
+
+-(void)save:(NSMenuItem*)menuItem;
+{
+  NSLog(@"save: %@", menuItem);
+}
+
+-(void)saveAs:(NSMenuItem*)menuItem;
+{
+  NSLog(@"saveAs: %@", menuItem);
+}
+
+-(void)keyUp:(NSEvent*)theEvent;
+{
+  NSLog(@"keyUp: %@", theEvent);
+}
+
 @end
