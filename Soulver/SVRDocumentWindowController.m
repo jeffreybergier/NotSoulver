@@ -169,6 +169,13 @@
   return output;
 }
 
+-(void)__fireDidSaveNotification;
+{
+  [[NSNotificationCenter defaultCenter]
+   postNotificationName:[[self class] documentDidSaveAsNotification]
+                  object:self];
+}
+
 -(void)dealloc;
 {
   NSLog(@"DEALLOC: %@", self);
@@ -264,22 +271,47 @@
 
 -(void)revertToSaved:(id)sender;
 {
-  NSLog(@"%@ revertToSaved: %@", self, sender);
+  // TODO: Put in an alert here
+  SVRMathString *replacement = nil;
+  if (![self filename]) { NSLog(@"%@ revertToSaved: FAILED: No Filename", self); return; }
+  replacement = [SVRMathString mathStringWithFilename:[self filename]];
+  if (!replacement) { NSLog(@"%@ revertToSaved: FAILED: %@", self, [self filename]); return; }
+  [[self model] setMathString:replacement];
+  [self __updateWindowState];
+  NSLog(@"%@ revertToSaved: SUCCESS: %@", self, [self filename]);
+  [self __fireDidSaveNotification];
 }
 
 -(void)save:(id)sender;
 {
-  NSLog(@"%@ save: %@", self, sender);
+  if (![self filename]) { [self saveAs:sender]; return; }
+  if (![[[self model] mathString] writeToFilename:[self filename]])
+     { NSLog(@"%@ save: FAILED: %@", self, [self filename]); return; }
+  NSLog(@"%@ save: SUCCESS: %@", self, [self filename]);
+  [self __fireDidSaveNotification];
 }
 
 -(void)saveAs:(id)sender;
 {
-  NSLog(@"%@ saveAs: %@", self, sender);
+  NSString *newFilename = [self __runSavePanel];
+  if (!newFilename) { NSLog(@"%@ saveAs: CANCELLED", self); return; }
+  if (![[[self model] mathString] writeToFilename:newFilename])
+     { NSLog(@"%@ saveAs: FAILED: %@", self, newFilename); return; }
+  [self setFilename:newFilename];
+  [self __updateWindowState];
+  NSLog(@"%@ saveAs: SUCCESS: %@", self, newFilename);
+  [self __fireDidSaveNotification];
 }
 
 -(void)saveTo:(id)sender;
 {
-  NSLog(@"%@ saveTo: %@", self, sender);
+  NSString *newFilename = [self __runSavePanel];
+  if (!newFilename) { NSLog(@"%@ saveTo: CANCELLED", self); return; }
+  if ([[[self model] mathString] writeToFilename:newFilename])
+     { NSLog(@"%@ saveTo: FAILED: %@", self, newFilename); return; }
+  [self __updateWindowState];
+  NSLog(@"%@ saveTo: SUCCESS: %@", self, newFilename);
+  [self __fireDidSaveNotification];
 }
 
 @end
