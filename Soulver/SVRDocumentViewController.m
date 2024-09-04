@@ -112,6 +112,8 @@
 -(void)dealloc;
 {
   NSLog(@"DEALLOC: %@", self);
+  _model = nil;
+  _textView = nil;
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
 }

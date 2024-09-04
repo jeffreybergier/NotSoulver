@@ -42,7 +42,7 @@
 -(NSString*)description;
 {
   return [NSString stringWithFormat:@"%@: %@",
-         [super description], _mathString];
+          [super description], [self mathString]];
 }
 
 // MARK: Interface Builder

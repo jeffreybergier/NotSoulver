@@ -33,7 +33,7 @@
 -(NSString*)description;
 {
   return [NSString stringWithFormat:@"%@ <Window: %ld> <File: %@>",
-         [super description], [_window windowNumber], _filename];
+         [super description], [[self window] windowNumber], [self filename]];
 }
 
 // MARK: INIT
@@ -156,6 +156,7 @@
   _filename = nil;
   _model = nil;
   _viewController = nil;
+  _window = nil;
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
 }
