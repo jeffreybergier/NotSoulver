@@ -1,5 +1,13 @@
 #import "SVRDocumentWindowController.h"
 
+// TODO: Move to CrossPlatform File
+@implementation XPNull
++(id)null;
+{
+  return [[[XPNull alloc] init] autorelease];
+}
+@end
+
 @implementation SVRDocumentWindowController
 
 +(NSString*)documentDidChangeFilenameNotification;
@@ -8,8 +16,8 @@
 }
 -(NSDictionary*)__didChangeOldFilename:(NSString*)old toNewFilename:(NSString*)new;
 {
-  id oldFilename = (old) ? old : [NSNull null];
-  id newFilename = (new) ? new : [NSNull null];
+  id oldFilename = (old) ? old : [XPNull null];
+  id newFilename = (new) ? new : [XPNull null];
   NSArray *keys = [NSArray arrayWithObjects:@"oldFilename", @"newFilename", nil];
   NSArray *vals = [NSArray arrayWithObjects:  oldFilename,    newFilename,  nil];
   return [NSDictionary dictionaryWithObjects:vals forKeys:keys];
@@ -153,10 +161,11 @@
   [self __updateWindowState];
 }
 
--(unsigned long)__onDiskHash;
+-(unsigned)__onDiskHash;
 {
   SVRMathString *read;
-  unsigned long blankHash = [[SVRMathString mathStringWithString:@""] hash];
+  // TODO: Consider making this has smarter/lazier
+  unsigned blankHash = 0;
   if (![self filename]) { return blankHash; }
   read = [SVRMathString mathStringWithFilename:[self filename]];
   if (!read) { return blankHash; }

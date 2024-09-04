@@ -41,7 +41,7 @@
 
 @interface SVRMathString (NSObjectProtocol)
 -(BOOL)isEqual:(id)object;
--(unsigned long)hash;
+-(unsigned)hash;
 @end
 
 // MARK: Constants

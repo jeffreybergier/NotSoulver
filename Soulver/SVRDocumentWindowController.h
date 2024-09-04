@@ -1,6 +1,11 @@
 #import <AppKit/AppKit.h>
 #import "SVRDocumentModelController.h"
 
+// TODO: Move to CrossPlatform File
+@interface XPNull: NSObject
++(id)null;
+@end
+
 @interface SVRDocumentWindowController: NSResponder
 {
   NSString *_filename;
@@ -30,7 +35,7 @@
 // PRIVATE
 -(void)__updateWindowState;
 -(void)__modelRenderDidChangeNotification:(NSNotification*)aNotification;
--(unsigned long)__onDiskHash;
+-(unsigned)__onDiskHash;
 -(BOOL)__needsSaving;
 -(NSString*)__runSavePanel;
 

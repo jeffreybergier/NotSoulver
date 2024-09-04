@@ -164,7 +164,7 @@
   }
 }
 
--(unsigned long)hash;
+-(unsigned)hash;
 {
   return [_string hash];
 }

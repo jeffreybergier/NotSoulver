@@ -57,73 +57,18 @@
 {
   NSLog(@"%@ saveAll: %@", self, sender);
 }
-/*
-{
-  NSWindow *window;
-  NSNumber *windowNumber;
-  SVRDocumentWindowController *documentLHS;
-  SVRDocumentWindowController *documentRHS;
-  BOOL result;
-
-  window = [[NSApplication sharedApplication] mainWindow];
-  windowNumber = [NSNumber numberWithLong:[window windowNumber]];
-  documentLHS = [window delegate];
-  if ([documentLHS isKindOfClass:[SVRDocumentWindowController class]]) {
-    result = [documentLHS saveDocument];
-  } else {
-    result = NO;
-  }
-  NSLog(@"Document Save Successful: %d", result);
-  if (result) {
-    documentRHS = [[self openUnsaved] objectForKey:windowNumber];
-    if (documentRHS) {
-      NSAssert(documentLHS == documentRHS, @"Open Document Management Error");
-      NSAssert([documentRHS filename], @"Open Document Management Error");
-      [[self openFiles] setObject:documentRHS forKey: [documentRHS filename]];
-      [[self openUnsaved] removeObjectForKey:windowNumber];
-      NSLog(@"Confirmed: Moved document from openUnsaved to openFiles");
-    } else {
-      documentRHS = [[self openFiles] objectForKey:[documentLHS filename]];
-      NSAssert(documentLHS == documentRHS, @"Open Document Management Error");
-      NSAssert([documentRHS filename], @"Open Document Management Error");
-      NSLog(@"Confirmed: Document in saveFiles dictionary");
-    }
-  }
-}
-*/
-
-// MARK: Notifications
-/*
--(void)closeDoc:(NSNotification*)aNotification;
-{
-  NSNumber *windowNumber;
-  NSString *filename;
-  NSDictionary *userInfo = [aNotification userInfo];
-  windowNumber = [userInfo objectForKey:@"windowNumber"];
-  filename = [userInfo objectForKey:@"filename"];
-
-  if (filename) {
-    [[self openFiles] removeObjectForKey:filename];
-  }
-  if (windowNumber != nil) {
-    [[self openUnsaved] removeObjectForKey:windowNumber];
-  }
-  
-  NSLog(@"Closed Windows: %@", userInfo);
-}
- */
 
 -(void)__windowWillCloseNotification:(NSNotification*)aNotification;
 {
   SVRDocumentWindowController *controller = nil;
   NSWindow *window = [aNotification object];
   
-  NSAssert([window isKindOfClass:[NSWindow class]],
+  NSAssert2([window isKindOfClass:[NSWindow class]],
            @"%@ __windowWillCloseNotification: %@", self, aNotification);
   
   controller = (SVRDocumentWindowController*)[window delegate];
   
-  NSAssert([controller isKindOfClass:[SVRDocumentWindowController class]],
+  NSAssert2([controller isKindOfClass:[SVRDocumentWindowController class]],
            @"%@ __windowWillCloseNotification: %@", self, aNotification);
   
   [self __documentWillClose:controller];
@@ -137,7 +82,7 @@
   NSString *newFilename = ([_newFilename isKindOfClass:[NSString class]]) ? _newFilename : nil;
   SVRDocumentWindowController *controller = [aNotification object];
   
-  NSAssert([controller isKindOfClass:[SVRDocumentWindowController class]],
+  NSAssert2([controller isKindOfClass:[SVRDocumentWindowController class]],
            @"%@ __windowWillCloseNotification: %@", self, aNotification);
   
   [self   __document:controller
