@@ -48,8 +48,12 @@
 -(void)cut:(id)sender;
 -(void)copy:(id)sender;
 -(void)paste:(id)sender;
--(void)revertToSaved:(id)sender;
 -(void)save:(id)sender;
 -(void)saveAs:(id)sender;
 -(void)saveTo:(id)sender;
+-(void)revertToSaved:(id)sender;
+-(BOOL)__save;
+-(BOOL)__saveAs;
+-(BOOL)__saveTo;
+-(BOOL)__revertToSaved;
 @end

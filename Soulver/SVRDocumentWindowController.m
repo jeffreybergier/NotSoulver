@@ -197,46 +197,23 @@
 -(BOOL)windowShouldClose:(id)sender;
 {
   long alertResult;
-  NSDictionary *userInfo;
-  NSArray *infoObjects;
-  NSArray *infoKeys;
-  NSNotificationCenter *center;
-  BOOL result = YES;
-  if ([[self window] isDocumentEdited]) {
+  if (![self __needsSaving]) { return YES; }
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    alertResult = NSRunAlertPanel(@"Close Document",
-                                  @"Save changes before closing?",
-                                  @"Save",
-                                  @"Cancel",
-                                  @"Don't Save");
+  alertResult = NSRunAlertPanel(@"Close Document",
+                                @"Save changes before closing?",
+                                @"Save",
+                                @"Cancel",
+                                @"Don't Save");
 #pragma clang diagnostic pop
-    switch (alertResult) {
-      case -1:
-        result = YES;
-        break;
-      case 1:
-        result = [self saveDocument];
-        break;
-      default:
-        result = NO;
-        break;
-    }
+  switch (alertResult) {
+    case 1:
+      return [self __save];
+    case -1:
+      return YES;
+    default:
+      return NO;
   }
-  if (result) {
-    infoObjects = [NSArray arrayWithObjects:[NSNumber numberWithLong:[[self window] windowNumber]],
-                                            [self filename],
-                                            nil];
-    infoKeys = [NSArray arrayWithObjects:@"windowNumber", [self filename] ? @"filename" : nil, nil];
-
-    userInfo = [NSDictionary dictionaryWithObjects:infoObjects
-                                           forKeys:infoKeys];
-    center = [NSNotificationCenter defaultCenter]; 
-    [center postNotificationName:[SVRDocumentWindowController windowDidCloseNotification]
-                          object:self
-                        userInfo:userInfo];
-  }
-  return result;
 }
 @end
 
@@ -269,49 +246,68 @@
   NSLog(@"%@ paste: %@", self, sender);
 }
 
--(void)revertToSaved:(id)sender;
-{
-  // TODO: Put in an alert here
-  SVRMathString *replacement = nil;
-  if (![self filename]) { NSLog(@"%@ revertToSaved: FAILED: No Filename", self); return; }
-  replacement = [SVRMathString mathStringWithFilename:[self filename]];
-  if (!replacement) { NSLog(@"%@ revertToSaved: FAILED: %@", self, [self filename]); return; }
-  [[self model] setMathString:replacement];
-  [self __updateWindowState];
-  NSLog(@"%@ revertToSaved: SUCCESS: %@", self, [self filename]);
-  [self __fireDidSaveNotification];
-}
-
 -(void)save:(id)sender;
 {
-  if (![self filename]) { [self saveAs:sender]; return; }
-  if (![[[self model] mathString] writeToFilename:[self filename]])
-     { NSLog(@"%@ save: FAILED: %@", self, [self filename]); return; }
-  NSLog(@"%@ save: SUCCESS: %@", self, [self filename]);
-  [self __fireDidSaveNotification];
+  [self __save];
 }
 
 -(void)saveAs:(id)sender;
 {
-  NSString *newFilename = [self __runSavePanel];
-  if (!newFilename) { NSLog(@"%@ saveAs: CANCELLED", self); return; }
-  if (![[[self model] mathString] writeToFilename:newFilename])
-     { NSLog(@"%@ saveAs: FAILED: %@", self, newFilename); return; }
-  [self setFilename:newFilename];
-  [self __updateWindowState];
-  NSLog(@"%@ saveAs: SUCCESS: %@", self, newFilename);
-  [self __fireDidSaveNotification];
+  [self __saveAs];
 }
 
 -(void)saveTo:(id)sender;
 {
-  NSString *newFilename = [self __runSavePanel];
-  if (!newFilename) { NSLog(@"%@ saveTo: CANCELLED", self); return; }
-  if ([[[self model] mathString] writeToFilename:newFilename])
-     { NSLog(@"%@ saveTo: FAILED: %@", self, newFilename); return; }
+  [self __saveTo];
+}
+
+-(void)revertToSaved:(id)sender;
+{
+  [self __revertToSaved];
+}
+
+-(BOOL)__save;
+{
+  if (![self filename]) { return [self __saveAs]; }
+  if (![[[self model] mathString] writeToFilename:[self filename]])
+     { NSLog(@"%@ __save: FAILED: %@", self, [self filename]); return NO; }
+  NSLog(@"%@ __save: SUCCESS: %@", self, [self filename]);
   [self __updateWindowState];
-  NSLog(@"%@ saveTo: SUCCESS: %@", self, newFilename);
-  [self __fireDidSaveNotification];
+  return YES;
+}
+
+-(BOOL)__saveAs;
+{
+  NSString *newFilename = [self __runSavePanel];
+  if (!newFilename) { NSLog(@"%@ __saveAs: CANCELLED", self); return NO; }
+  if (![[[self model] mathString] writeToFilename:newFilename])
+     { NSLog(@"%@ __saveAs: FAILED: %@", self, newFilename); return NO; }
+  [self setFilename:newFilename];
+  NSLog(@"%@ __saveAs: SUCCESS: %@", self, newFilename);
+  return YES;
+}
+
+-(BOOL)__saveTo;
+{
+  NSString *newFilename = [self __runSavePanel];
+  if (!newFilename) { NSLog(@"%@ __saveTo: CANCELLED", self); return NO; }
+  if ([[[self model] mathString] writeToFilename:newFilename])
+     { NSLog(@"%@ __saveTo: FAILED: %@", self, newFilename); return NO; }
+  NSLog(@"%@ __saveTo: SUCCESS: %@", self, newFilename);
+  return YES;
+}
+
+-(BOOL)__revertToSaved;
+{
+  // TODO: Put in an alert here
+  SVRMathString *replacement = nil;
+  if (![self filename]) { NSLog(@"%@ revertToSaved: FAILED: No Filename", self); return NO; }
+  replacement = [SVRMathString mathStringWithFilename:[self filename]];
+  if (!replacement) { NSLog(@"%@ revertToSaved: FAILED: %@", self, [self filename]); return NO; }
+  [[self model] setMathString:replacement];
+  [self __updateWindowState];
+  NSLog(@"%@ revertToSaved: SUCCESS: %@", self, [self filename]);
+  return YES;
 }
 
 @end
