@@ -9,6 +9,9 @@
   NSObject *_viewController;
 }
 
+// MARK: Notifications
++(NSString*)documentDidSaveAsNotification;
+
 // MARK: Properties
 -(NSString*)filename;
 -(void)setFilename:(NSString*)filename;
@@ -22,12 +25,13 @@
 +(id)controllerWithFilename:(NSString*)filename;
 
 // MARK: Saving
--(BOOL)saveDocument;
-+(NSString*)windowDidCloseNotification;
 
 // PRIVATE
 -(void)__updateWindowState;
 -(void)__modelRenderDidChangeNotification:(NSNotification*)aNotification;
+-(unsigned long)__onDiskHash;
+-(BOOL)__needsSaving;
+-(NSString*)__runSavePanel;
 
 @end
 

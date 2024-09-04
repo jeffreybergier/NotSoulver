@@ -2,6 +2,11 @@
 
 @implementation SVRDocumentWindowController
 
++(NSString*)documentDidSaveAsNotification;
+{
+  return @"SVRDocumentControllerDocumentDidSaveAsNotification";
+}
+
 // MARK: Properties
 -(NSString*)filename;
 {
@@ -85,6 +90,7 @@
   NSLog(@"%@", self);
 }
 
+/*
 // MARK: Saving
 -(BOOL)saveDocument;
 {
@@ -112,39 +118,55 @@
     return result;
   }
 }
-
-+(NSString*)windowDidCloseNotification;
-{
-  return @"SVRDocumentControllerWindowDidCloseNotification";
-}
+ */
 
 // MARK: Private
 
 -(void)__updateWindowState;
 {
-  SVRMathString *rhs;
-  SVRMathString *lhs = [[self model] mathString];
-  NSString *filename = [self filename];
   // Update Title
-  if (filename) {
-    [[self window] setTitle:filename];
-    [[self window] setRepresentedFilename:filename];
+  if ([self filename]) {
+    [[self window] setTitle:[self filename]];
+    [[self window] setRepresentedFilename:[self filename]];
   } else {
     [[self window] setTitle:@"UNTITLED.solv"];
     [[self window] setRepresentedFilename:@""];
   }
-  // Update document edited
-  if (filename) {
-    rhs = [SVRMathString mathStringWithFilename:filename];
-    [[self window] setDocumentEdited:![lhs isEqual:rhs]];
-  } else {
-    [[self window] setDocumentEdited:![lhs isEmpty]];
-  }
+  [[self window] setDocumentEdited:[self __needsSaving]];
 }
 
 -(void)__modelRenderDidChangeNotification:(NSNotification*)aNotification;
 {
   [self __updateWindowState];
+}
+
+-(unsigned long)__onDiskHash;
+{
+  SVRMathString *read;
+  unsigned long blankHash = [[SVRMathString mathStringWithString:@""] hash];
+  if (![self filename]) { return blankHash; }
+  read = [SVRMathString mathStringWithFilename:[self filename]];
+  if (!read) { return blankHash; }
+  return [read hash];
+}
+-(BOOL)__needsSaving;
+{
+  unsigned long lhs = [[[self model] mathString] hash];
+  unsigned long rhs = [self __onDiskHash];
+  return lhs != rhs;
+}
+
+-(NSString*)__runSavePanel;
+{
+  NSString *output = nil;
+  NSSavePanel *panel = [NSSavePanel savePanel];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+  [panel setRequiredFileType:@"solv"];
+  [panel runModal];
+  output = [panel filename];
+#pragma clang diagnostic pop
+  return output;
 }
 
 -(void)dealloc;
