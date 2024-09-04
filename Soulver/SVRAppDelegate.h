@@ -19,12 +19,10 @@
 // MARK: Notifications
 -(void)__windowWillCloseNotification:(NSNotification*)aNotification;
 -(void)__documentDidChangeFilenameNotification:(NSNotification*)aNotification;
+-(void)__documentWillClose:(SVRDocumentWindowController*)document;
 -(void)   __document:(SVRDocumentWindowController*)document
 didChangeOldFilename:(NSString*)oldFilename
        toNewFilename:(NSString*)newFilename;
--(void)__documentWillClose:(SVRDocumentWindowController*)document
-         withWindowNumber:(unsigned long)windowNumber
-              andFilename:(NSString*)newFilename;
 
 @end
 
