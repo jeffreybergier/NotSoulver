@@ -10,7 +10,8 @@
 }
 
 // MARK: Notifications
-+(NSString*)documentDidSaveAsNotification;
++(NSString*)documentDidChangeFilenameNotification;
+-(NSDictionary*)__didChangeOldFilename:(NSString*)old toNewFilename:(NSString*)new;
 
 // MARK: Properties
 -(NSString*)filename;

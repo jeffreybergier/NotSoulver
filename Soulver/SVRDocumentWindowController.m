@@ -2,9 +2,17 @@
 
 @implementation SVRDocumentWindowController
 
-+(NSString*)documentDidSaveAsNotification;
++(NSString*)documentDidChangeFilenameNotification;
 {
-  return @"SVRDocumentControllerDocumentDidSaveAsNotification";
+  return @"SVRDocumentControllerDocumentDidChangeFilenameNotification";
+}
+-(NSDictionary*)__didChangeOldFilename:(NSString*)old toNewFilename:(NSString*)new;
+{
+  id oldFilename = (old) ? old : [NSNull null];
+  id newFilename = (new) ? new : [NSNull null];
+  NSArray *keys = [NSArray arrayWithObjects:@"oldFilename", @"newFilename", nil];
+  NSArray *vals = [NSArray arrayWithObjects:  oldFilename,    newFilename,  nil];
+  return [NSDictionary dictionaryWithObjects:vals forKeys:keys];
 }
 
 // MARK: Properties
@@ -13,11 +21,16 @@
   return _filename;
 }
 
--(void)setFilename:(NSString*)filename;
+-(void)setFilename:(NSString*)_newFilename;
 {
-  [_filename release];
-  _filename = [filename retain];
+  NSString *oldFileName = [_filename autorelease];
+  NSString *newFileName = [_newFilename copy];
+  _filename = newFileName;
   [self __updateWindowState];
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:[[self class] documentDidChangeFilenameNotification]
+    object:self
+    userInfo:[self __didChangeOldFilename:oldFileName toNewFilename:newFileName]];
 }
 
 -(NSWindow*)window;
