@@ -95,7 +95,7 @@
          object:[self model]];
 
   // Check to make sure we are delegate
-  NSAssert1([[self window] delegate] == self, @"Incorrect Window Delegate: %@", [[self window] delegate]);
+  NSAssert1((SVRDocumentWindowController*)[[self window] delegate] == self, @"Incorrect Window Delegate: %@", [[self window] delegate]);
 
   // Set up Last Responder
   [[self window] setNextResponder:self];
@@ -180,13 +180,6 @@
   output = [panel filename];
 #pragma clang diagnostic pop
   return output;
-}
-
--(void)__fireDidSaveNotification;
-{
-  [[NSNotificationCenter defaultCenter]
-   postNotificationName:[[self class] documentDidSaveAsNotification]
-                  object:self];
 }
 
 -(void)dealloc;

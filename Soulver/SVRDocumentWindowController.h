@@ -33,7 +33,6 @@
 -(unsigned long)__onDiskHash;
 -(BOOL)__needsSaving;
 -(NSString*)__runSavePanel;
--(void)__fireDidSaveNotification;
 
 @end
 

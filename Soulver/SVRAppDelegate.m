@@ -93,6 +93,7 @@
 */
 
 // MARK: Notifications
+/*
 -(void)closeDoc:(NSNotification*)aNotification;
 {
   NSNumber *windowNumber;
@@ -110,6 +111,60 @@
   
   NSLog(@"Closed Windows: %@", userInfo);
 }
+ */
+
+-(void)__windowWillCloseNotification:(NSNotification*)aNotification;
+{
+  unsigned long windowNumber;
+  NSString *filename = nil;
+  SVRDocumentWindowController *controller = nil;
+  NSWindow *window = [aNotification object];
+  
+  NSAssert([window isKindOfClass:[NSWindow class]],
+           @"%@ __windowWillCloseNotification: %@", self, aNotification);
+  
+  windowNumber = [window windowNumber];
+  controller = (SVRDocumentWindowController*)[window delegate];
+  
+  NSAssert([controller isKindOfClass:[SVRDocumentWindowController class]],
+           @"%@ __windowWillCloseNotification: %@", self, aNotification);
+  
+  filename = [controller filename];
+  
+  [self __documentWillClose:controller
+           withWindowNumber:windowNumber
+                andFilename:filename];
+}
+
+-(void)__documentDidChangeFilenameNotification:(NSNotification*)aNotification;
+{
+  id _oldFilename = [[aNotification userInfo] objectForKey:@"oldFilename"];
+  id _newFilename = [[aNotification userInfo] objectForKey:@"newFilename"];
+  NSString *oldFilename = ([_oldFilename isKindOfClass:[NSString class]]) ? _oldFilename : nil;
+  NSString *newFilename = ([_newFilename isKindOfClass:[NSString class]]) ? _newFilename : nil;
+  SVRDocumentWindowController *controller = [aNotification object];
+  
+  NSAssert([controller isKindOfClass:[SVRDocumentWindowController class]],
+           @"%@ __windowWillCloseNotification: %@", self, aNotification);
+  
+  [self   __document:controller
+didChangeOldFilename:oldFilename
+       toNewFilename:newFilename];
+}
+
+-(void)   __document:(SVRDocumentWindowController*)document
+didChangeOldFilename:(NSString*)oldFilename
+       toNewFilename:(NSString*)newFilename;
+{
+  
+}
+
+-(void)__documentWillClose:(SVRDocumentWindowController*)document
+         withWindowNumber:(unsigned long)windowNumber
+              andFilename:(NSString*)newFilename;
+{
+  
+}
 
 -(void)awakeFromNib;
 {
@@ -119,8 +174,13 @@
   
   // Register for Notifications
   [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(closeDoc:)
-                                               name:[SVRDocumentWindowController windowDidCloseNotification]
+                                           selector:@selector(__windowWillCloseNotification:)
+                                               name:NSWindowWillCloseNotification
+                                             object:nil];
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(__documentDidChangeFilenameNotification:)
+                                               name:[SVRDocumentWindowController documentDidChangeFilenameNotification]
                                              object:nil];
 
   // Announce
