@@ -8,8 +8,11 @@
 }
 -(NSDictionary*)__documentDidChangeFilenameNotificationInfo:(NSString*)oldFilename;
 {
-  NSArray *keys = [NSArray arrayWithObjects:@"oldFilename", nil];
-  NSArray *vals = [NSArray arrayWithObjects:  oldFilename,  nil];
+  NSArray *keys;
+  NSArray *vals;
+  if (!oldFilename) { return nil; }
+  keys = [NSArray arrayWithObjects:@"oldFilename", nil];
+  vals = [NSArray arrayWithObjects:  oldFilename,  nil];
   return [NSDictionary dictionaryWithObjects:vals forKeys:keys];
 }
 
@@ -93,43 +96,14 @@
          object:[self model]];
 
   // Check to make sure we are delegate
-  NSAssert1((SVRDocumentWindowController*)[[self window] delegate] == self, @"Incorrect Window Delegate: %@", [[self window] delegate]);
+  NSAssert1((SVRDocumentWindowController*)[[self window] delegate] == self,
+            @"Incorrect Window Delegate: %@", [[self window] delegate]);
 
   // Set up Last Responder
   [[self window] setNextResponder:self];
   
   NSLog(@"%@", self);
 }
-
-/*
-// MARK: Saving
--(BOOL)saveDocument;
-{
-  NSString *filename;
-  NSSavePanel *panel;
-  BOOL result;
-
-  filename = [self filename];
-  if (!filename) {
-    panel = [NSSavePanel savePanel];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    [panel setRequiredFileType:@"solv"];
-    [panel runModal];
-    filename = [panel filename];
-#pragma clang diagnostic pop
-    [self setFilename:filename];
-  }
-  if (!filename) {
-    [self __updateWindowState];
-    return NO;
-  } else {
-    result = [[[self model] mathString] writeToFilename:filename];
-    [self __updateWindowState];
-    return result;
-  }
-}
- */
 
 // MARK: Private
 
@@ -184,13 +158,16 @@
 -(void)dealloc;
 {
   NSLog(@"DEALLOC: %@", self);
+  [_viewController release];
+  [_window setDelegate:nil];
+  [_window setNextResponder:nil];
+  [_window autorelease];
   [_filename release];
   [_model release];
-  [_viewController release];
+  _window = nil;
   _filename = nil;
   _model = nil;
   _viewController = nil;
-  _window = nil;
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
 }

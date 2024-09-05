@@ -91,9 +91,19 @@ didChangeOldFilename:oldFilename];
 {
   unsigned long windowNumber = [[document window] windowNumber];
   NSString *filename = [document filename];
+  
+  // Not strictly necessary
+  // But might help the NSWindow closing process settle more gracefully
+  [document retain];
+  
   [[self openUnsaved] removeObjectForKey:[NSNumber numberWithLong:windowNumber]];
-  [[self openFiles] removeObjectForKey:filename];
+  if (filename) {
+    [[self openFiles] removeObjectForKey:filename];
+  }
+  
   NSLog(@"%@ __documentWillClose: removedWindowNumber: %lu removedFile: %@", self, windowNumber, filename);
+  
+  [document autorelease];
 }
 
 -(void)   __document:(SVRDocumentWindowController*)document
@@ -101,6 +111,9 @@ didChangeOldFilename:(NSString*)oldFilename;
 {
   NSString *newFilename = [document filename];
   unsigned long windowNumber = [[document window] windowNumber];
+
+  // Not strictly necessary as the Document should not be released by changing its filename
+  [document retain];
   
   [[self openUnsaved] removeObjectForKey:[NSNumber numberWithLong:windowNumber]];
   NSLog(@"%@ __documentChangedFilename: removedWindowNumber: %lu", self, windowNumber);
@@ -117,6 +130,8 @@ didChangeOldFilename:(NSString*)oldFilename;
     [[self openUnsaved] setObject:document forKey:[NSNumber numberWithLong:windowNumber]];
     NSLog(@"%@ __documentChangedFilename: addedWindowNumber: %lu", self, windowNumber);
   }
+
+  [document autorelease];
 }
 
 -(void)awakeFromNib;
