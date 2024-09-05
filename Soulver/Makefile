@@ -48,6 +48,8 @@ PROF_LIBS = $(LIBS)
 FRAMEWORKS = -framework AppKit -framework Foundation
 
 
+NEXTSTEP_BUILD_OUTPUT_DIR = $(HOME)/Library/DerivedData/Soulver
+
 include $(MAKEFILEDIR)/platform.make
 
 -include Makefile.preamble
