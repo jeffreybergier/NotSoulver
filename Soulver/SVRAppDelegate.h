@@ -21,8 +21,7 @@
 -(void)__documentDidChangeFilenameNotification:(NSNotification*)aNotification;
 -(void)__documentWillClose:(SVRDocumentWindowController*)document;
 -(void)   __document:(SVRDocumentWindowController*)document
-didChangeOldFilename:(NSString*)oldFilename
-       toNewFilename:(NSString*)newFilename;
+didChangeOldFilename:(NSString*)oldFilename;
 
 @end
 

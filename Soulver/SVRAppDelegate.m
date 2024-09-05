@@ -77,17 +77,14 @@
 -(void)__documentDidChangeFilenameNotification:(NSNotification*)aNotification;
 {
   id _oldFilename = [[aNotification userInfo] objectForKey:@"oldFilename"];
-  id _newFilename = [[aNotification userInfo] objectForKey:@"newFilename"];
   NSString *oldFilename = ([_oldFilename isKindOfClass:[NSString class]]) ? _oldFilename : nil;
-  NSString *newFilename = ([_newFilename isKindOfClass:[NSString class]]) ? _newFilename : nil;
   SVRDocumentWindowController *controller = [aNotification object];
   
   NSAssert2([controller isKindOfClass:[SVRDocumentWindowController class]],
            @"%@ __windowWillCloseNotification: %@", self, aNotification);
   
   [self   __document:controller
-didChangeOldFilename:oldFilename
-       toNewFilename:newFilename];
+didChangeOldFilename:oldFilename];
 }
 
 -(void)__documentWillClose:(SVRDocumentWindowController*)document;
@@ -96,22 +93,23 @@ didChangeOldFilename:oldFilename
   NSString *filename = [document filename];
   [[self openUnsaved] removeObjectForKey:[NSNumber numberWithLong:windowNumber]];
   [[self openFiles] removeObjectForKey:filename];
-  NSLog(@"%@ __documentWillClose: removedWindowNumber: %lu removedFile: %@",
-        self, windowNumber, filename);
+  NSLog(@"%@ __documentWillClose: removedWindowNumber: %lu removedFile: %@", self, windowNumber, filename);
 }
 
 -(void)   __document:(SVRDocumentWindowController*)document
-didChangeOldFilename:(NSString*)oldFilename
-       toNewFilename:(NSString*)newFilename;
+didChangeOldFilename:(NSString*)oldFilename;
 {
+  NSString *newFilename = [document filename];
   unsigned long windowNumber = [[document window] windowNumber];
+  
+  [[self openUnsaved] removeObjectForKey:[NSNumber numberWithLong:windowNumber]];
+  NSLog(@"%@ __documentChangedFilename: removedWindowNumber: %lu", self, windowNumber);
+  
   if (oldFilename) {
     [[self openFiles] removeObjectForKey:oldFilename];
     NSLog(@"%@ __documentChangedFilename: removedFilename: %@", self, oldFilename);
-  } else {
-    [[self openUnsaved] removeObjectForKey:[NSNumber numberWithLong:windowNumber]];
-    NSLog(@"%@ __documentChangedFilename: removedWindowNumber: %lu", self, windowNumber);
   }
+  
   if (newFilename) {
     [[self openFiles] setObject:document forKey:newFilename];
     NSLog(@"%@ __documentChangedFilename: addedFilename: %@", self, newFilename);

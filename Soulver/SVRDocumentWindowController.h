@@ -1,11 +1,6 @@
 #import <AppKit/AppKit.h>
 #import "SVRDocumentModelController.h"
 
-// TODO: Move to CrossPlatform File
-@interface XPNull: NSObject
-+(id)null;
-@end
-
 @interface SVRDocumentWindowController: NSResponder
 {
   NSString *_filename;
@@ -16,7 +11,7 @@
 
 // MARK: Notifications
 +(NSString*)documentDidChangeFilenameNotification;
--(NSDictionary*)__didChangeOldFilename:(NSString*)old toNewFilename:(NSString*)new;
+-(NSDictionary*)__documentDidChangeFilenameNotificationInfo:(NSString*)oldFilename;
 
 // MARK: Properties
 -(NSString*)filename;

@@ -1,25 +1,15 @@
 #import "SVRDocumentWindowController.h"
 
-// TODO: Move to CrossPlatform File
-@implementation XPNull
-+(id)null;
-{
-  return [[[XPNull alloc] init] autorelease];
-}
-@end
-
 @implementation SVRDocumentWindowController
 
 +(NSString*)documentDidChangeFilenameNotification;
 {
   return @"SVRDocumentControllerDocumentDidChangeFilenameNotification";
 }
--(NSDictionary*)__didChangeOldFilename:(NSString*)old toNewFilename:(NSString*)new;
+-(NSDictionary*)__documentDidChangeFilenameNotificationInfo:(NSString*)oldFilename;
 {
-  id oldFilename = (old) ? old : [XPNull null];
-  id newFilename = (new) ? new : [XPNull null];
-  NSArray *keys = [NSArray arrayWithObjects:@"oldFilename", @"newFilename", nil];
-  NSArray *vals = [NSArray arrayWithObjects:  oldFilename,    newFilename,  nil];
+  NSArray *keys = [NSArray arrayWithObjects:@"oldFilename", nil];
+  NSArray *vals = [NSArray arrayWithObjects:  oldFilename,  nil];
   return [NSDictionary dictionaryWithObjects:vals forKeys:keys];
 }
 
@@ -29,16 +19,16 @@
   return _filename;
 }
 
--(void)setFilename:(NSString*)_newFilename;
+-(void)setFilename:(NSString*)filename;
 {
   NSString *oldFileName = [_filename autorelease];
-  NSString *newFileName = [_newFilename copy];
+  NSString *newFileName = [filename copy];
   _filename = newFileName;
   [self __updateWindowState];
   [[NSNotificationCenter defaultCenter]
     postNotificationName:[[self class] documentDidChangeFilenameNotification]
     object:self
-    userInfo:[self __didChangeOldFilename:oldFileName toNewFilename:newFileName]];
+    userInfo:[self __documentDidChangeFilenameNotificationInfo:oldFileName]];
 }
 
 -(NSWindow*)window;
