@@ -2,6 +2,15 @@
 
 #import <AppKit/AppKit.h>
 
+/// MARK: Simple Typedefs
+#if OS_OPENSTEP
+typedef int XPInteger;
+typedef uint XPUInteger;
+#else
+typedef NSInteger XPInteger;
+typedef NSUInteger XPUInteger;
+#endif
+
 @interface XPLog: NSObject
 /// Always does an NSLog
 +(void)always:(NSString*)formatString, ...;
