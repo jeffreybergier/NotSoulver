@@ -247,7 +247,17 @@
 
 -(void)revertToSaved:(id)sender;
 {
-  [self __revertToSaved];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+  long alertResult = NSRunAlertPanel(@"Revert to Saved",
+                                     @"Any changes will be lost",
+                                     @"Revert to Saved",
+                                     @"Cancel", nil);
+#pragma clang diagnostic pop
+  switch (alertResult) {
+    case 1: [self __revertToSaved]; break;
+    default: break;
+  }
 }
 
 -(BOOL)__save;
@@ -283,7 +293,6 @@
 
 -(BOOL)__revertToSaved;
 {
-  // TODO: Put in an alert here
   SVRMathString *replacement = nil;
   if (![self filename]) { NSLog(@"%@ revertToSaved: FAILED: No Filename", self); return NO; }
   replacement = [SVRMathString mathStringWithFilename:[self filename]];
