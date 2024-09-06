@@ -211,8 +211,21 @@
 
 -(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
 {
-  NSLog(@"validateMenuItem: %@", menuItem);
-  return YES;
+  switch ([menuItem tag]) {
+      // Save
+    case 2003: return [self __needsSaving];
+      // Save As
+    case 2004: return [self filename] != nil;
+      // Save To
+    case 2005: return ([self filename] != nil) && [self __needsSaving];
+      // Revert to Saved
+      // TODO: Set KeyEquivalent to CMD+U
+    case 2007: return ([self filename] != nil) && [self __needsSaving];
+    default:
+      NSLog(@"%@ validateMenuItem: Unexpected: (%ld)%@",
+            self, [menuItem tag], [menuItem title]);
+      return NO;
+  }
 }
 
 -(void)cut:(id)sender;
