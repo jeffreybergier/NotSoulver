@@ -42,3 +42,14 @@
 #endif
 }
 @end
+
+@implementation NSNumber (CrossPlatform)
++(NSNumber*)XP_numberWithInteger:(XPInteger)integer;
+{
+#if OS_OPENSTEP
+  return [NSNumber numberWithInt:integer];
+#else
+  return [NSNumber numberWithInteger:integer];
+#endif
+}
+@end

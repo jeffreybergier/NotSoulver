@@ -30,7 +30,7 @@
 // PRIVATE
 -(void)__updateWindowState;
 -(void)__modelRenderDidChangeNotification:(NSNotification*)aNotification;
--(unsigned)__onDiskHash;
+-(XPUInteger)__onDiskHash;
 -(BOOL)__needsSaving;
 -(NSString*)__runSavePanel;
 

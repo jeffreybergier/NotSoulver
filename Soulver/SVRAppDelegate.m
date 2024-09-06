@@ -24,7 +24,7 @@
 
   controller = [SVRDocumentWindowController controllerWithFilename:nil];
   window = [controller window];
-  windowNumber = [NSNumber numberWithLong:[window windowNumber]];
+  windowNumber = [NSNumber XP_numberWithInteger:[window windowNumber]];
   
   [[self openUnsaved] setObject:controller forKey:windowNumber];
   [window makeKeyAndOrderFront:sender];
@@ -89,14 +89,14 @@ didChangeOldFilename:oldFilename];
 
 -(void)__documentWillClose:(SVRDocumentWindowController*)document;
 {
-  unsigned long windowNumber = [[document window] windowNumber];
+  XPUInteger windowNumber = [[document window] windowNumber];
   NSString *filename = [document filename];
   
   // Not strictly necessary
   // But might help the NSWindow closing process settle more gracefully
   [document retain];
   
-  [[self openUnsaved] removeObjectForKey:[NSNumber numberWithLong:windowNumber]];
+  [[self openUnsaved] removeObjectForKey:[NSNumber XP_numberWithInteger:windowNumber]];
   if (filename) {
     [[self openFiles] removeObjectForKey:filename];
   }
@@ -109,13 +109,13 @@ didChangeOldFilename:oldFilename];
 -(void)   __document:(SVRDocumentWindowController*)document
 didChangeOldFilename:(NSString*)oldFilename;
 {
+  XPUInteger windowNumber = [[document window] windowNumber];
   NSString *newFilename = [document filename];
-  unsigned long windowNumber = [[document window] windowNumber];
 
   // Not strictly necessary as the Document should not be released by changing its filename
   [document retain];
   
-  [[self openUnsaved] removeObjectForKey:[NSNumber numberWithLong:windowNumber]];
+  [[self openUnsaved] removeObjectForKey:[NSNumber XP_numberWithInteger:windowNumber]];
   NSLog(@"%@ __documentChangedFilename: removedWindowNumber: %lu", self, windowNumber);
   
   if (oldFilename) {
@@ -127,7 +127,7 @@ didChangeOldFilename:(NSString*)oldFilename;
     [[self openFiles] setObject:document forKey:newFilename];
     NSLog(@"%@ __documentChangedFilename: addedFilename: %@", self, newFilename);
   } else {
-    [[self openUnsaved] setObject:document forKey:[NSNumber numberWithLong:windowNumber]];
+    [[self openUnsaved] setObject:document forKey:[NSNumber XP_numberWithInteger:windowNumber]];
     NSLog(@"%@ __documentChangedFilename: addedWindowNumber: %lu", self, windowNumber);
   }
 
@@ -175,7 +175,7 @@ didChangeOldFilename:(NSString*)oldFilename;
   NSEnumerator *e1;
   NSEnumerator *e2;
   SVRDocumentWindowController *value;
-  long alertResult;
+  XPInteger alertResult;
   BOOL result = YES;
 
   e1 = [[self openUnsaved] objectEnumerator];

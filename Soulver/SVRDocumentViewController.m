@@ -27,7 +27,7 @@
 }
 
 // MARK: Private
--(void)__append:(long)tag;
+-(void)__append:(XPInteger)tag;
 {
   int control;
   NSNumber *error = nil;
@@ -51,7 +51,7 @@
 
 // Returns NIL if backspace
 // NSAssert if unknown tag
--(NSString*)__mapKeyWithTag:(long)tag control:(int*)control;
+-(NSString*)__mapKeyWithTag:(XPInteger)tag control:(int*)control;
 {
   switch (tag) {
     case  1: return @"1";

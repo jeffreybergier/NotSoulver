@@ -164,7 +164,7 @@
   }
 }
 
--(unsigned)hash;
+-(XPUInteger)hash;
 {
   return [_string hash];
 }
@@ -336,8 +336,8 @@ NSSet *NSSet_SVR_solutionInsertCheck;
 -(SVRMathStringEnumeratorLine*)nextObject;
 {
   NSString *outputString = nil;
-  unsigned long count = [_allObjects count];
-  unsigned long lastIndex = count - 1;
+  XPUInteger count = [_allObjects count];
+  XPUInteger lastIndex = count - 1;
   BOOL lineIsComplete = YES;
   int index = _nextIndex;
   _nextIndex += 1;

@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SVRCrossPlatform.h"
 
 @interface SVRMathString: NSObject
 {
@@ -41,7 +42,7 @@
 
 @interface SVRMathString (NSObjectProtocol)
 -(BOOL)isEqual:(id)object;
--(unsigned)hash;
+-(XPUInteger)hash;
 @end
 
 // MARK: Constants

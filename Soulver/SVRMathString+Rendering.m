@@ -262,7 +262,7 @@
   } else if ([operator isEqualToString:@"e"]) {
     if ([rhs intValue] < 0) {
       return [[NSDecimalNumber one] decimalNumberByDividingBy:
-             [lhs decimalNumberByRaisingToPower:labs([rhs longValue])]];
+             [lhs decimalNumberByRaisingToPower:labs([rhs intValue])]];
     } else {
       return [lhs decimalNumberByRaisingToPower:[rhs unsignedIntValue]];
     }

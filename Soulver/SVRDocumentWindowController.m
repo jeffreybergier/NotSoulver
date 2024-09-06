@@ -125,7 +125,7 @@
   [self __updateWindowState];
 }
 
--(unsigned)__onDiskHash;
+-(XPUInteger)__onDiskHash;
 {
   SVRMathString *read;
   // TODO: Consider making this has smarter/lazier
@@ -137,8 +137,8 @@
 }
 -(BOOL)__needsSaving;
 {
-  unsigned long lhs = [[[self model] mathString] hash];
-  unsigned long rhs = [self __onDiskHash];
+  XPUInteger lhs = [[[self model] mathString] hash];
+  XPUInteger rhs = [self __onDiskHash];
   return lhs != rhs;
 }
 
@@ -180,7 +180,7 @@
 @implementation SVRDocumentWindowController (NSWindowDelegate)
 -(BOOL)windowShouldClose:(id)sender;
 {
-  long alertResult;
+  XPInteger alertResult;
   if (![self __needsSaving]) { return YES; }
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
@@ -262,7 +262,7 @@
 {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-  long alertResult = NSRunAlertPanel(@"Revert to Saved",
+  XPInteger alertResult = NSRunAlertPanel(@"Revert to Saved",
                                      @"Any changes will be lost",
                                      @"Revert to Saved",
                                      @"Cancel", nil);

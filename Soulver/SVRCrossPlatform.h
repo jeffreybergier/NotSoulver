@@ -5,7 +5,7 @@
 /// MARK: Simple Typedefs
 #if OS_OPENSTEP
 typedef int XPInteger;
-typedef uint XPUInteger;
+typedef unsigned int XPUInteger;
 #else
 typedef NSInteger XPInteger;
 typedef NSUInteger XPUInteger;
@@ -22,4 +22,8 @@ typedef NSUInteger XPUInteger;
 /// NSLog only when DEBUG and EXCESS flag found
 /// Requires `-DEXCESS` CFLAG option in GCC
 +(void)excess:(NSString*)formatString, ...;
+@end
+
+@interface NSNumber (CrossPlatform)
++(NSNumber*)XP_numberWithInteger:(XPInteger)integer;
 @end

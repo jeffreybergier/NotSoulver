@@ -16,8 +16,8 @@
 -(NSString*)description;
 
 // MARK: Private
--(void)__append:(long)tag;
--(NSString*)__mapKeyWithTag:(long)tag control:(int*)control;
+-(void)__append:(XPInteger)tag;
+-(NSString*)__mapKeyWithTag:(XPInteger)tag control:(int*)control;
 
 // MARK: Respond to Notifications
 -(void)replaceTapeWithString:(NSAttributedString*)aString;
