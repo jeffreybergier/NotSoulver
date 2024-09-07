@@ -157,7 +157,7 @@
 
 -(void)dealloc;
 {
-  NSLog(@"DEALLOC: %@", self);
+  [XPLog extra:@"DEALLOC: %@", self];
   [_viewController release];
   [_window setDelegate:nil];
   [_window setNextResponder:nil];

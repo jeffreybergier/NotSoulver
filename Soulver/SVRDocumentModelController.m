@@ -99,7 +99,7 @@
 
 -(void)dealloc;
 {
-  NSLog(@"DEALLOC: %@", self);
+  [XPLog extra:@"DEALLOC: %@", self];
   [_mathString release];
   [_latestRender release];
   _mathString = nil;

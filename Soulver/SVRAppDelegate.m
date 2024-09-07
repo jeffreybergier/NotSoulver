@@ -157,7 +157,7 @@ didChangeOldFilename:(NSString*)oldFilename;
 
 -(void)dealloc;
 {
-  NSLog(@"DEALLOC: %@", self);
+  [XPLog extra:@"DEALLOC: %@", self];
   [_openFiles release];
   [_openUnsaved release];
   _openFiles = nil;

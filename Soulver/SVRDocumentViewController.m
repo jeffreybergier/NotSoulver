@@ -111,7 +111,7 @@
 // MARK: Dealloc
 -(void)dealloc;
 {
-  NSLog(@"DEALLOC: %@", self);
+  [XPLog extra:@"DEALLOC: %@", self];
   _model = nil;
   _textView = nil;
   [[NSNotificationCenter defaultCenter] removeObserver:self];
