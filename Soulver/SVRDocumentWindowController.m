@@ -161,8 +161,8 @@
   [_viewController release];
   [_window setDelegate:nil];
   [_window setNextResponder:nil];
-  // this autorelease (over release) is absolutely necessary
-  // to prevent crashes when window is closing
+  // this autorelease (instead of release) is necessary
+  // to prevent crashes when the window is closing
   [_window autorelease];
   [_filename release];
   [_model release];
