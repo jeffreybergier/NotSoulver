@@ -4,11 +4,17 @@
 
 @implementation XPLog
 
++(void)raise;
+{
+  [NSException raise:@"XPLogExceptionMissingFormatString" format:@""];
+}
+
 +(void)always:(NSString*)formatString, ...;
 {
   va_list args;
+  if (!formatString) { [self raise]; }
   va_start(args, formatString);
-  NSLog(formatString, args);
+  NSLogv(formatString, args);
   va_end(args);
 }
 
@@ -16,8 +22,9 @@
 {
 #if DEBUG
   va_list args;
+  if (!formatString) { [self raise]; }
   va_start(args, formatString);
-  NSLog(formatString, args);
+  NSLogv(formatString, args);
   va_end(args);
 #endif
 }
@@ -26,8 +33,9 @@
 {
 #if DEBUG
   va_list args;
+  if (!formatString) { [self raise]; }
   va_start(args, formatString);
-  NSLog(formatString, args);
+  NSLogv(formatString, args);
   va_end(args);
 #endif
 }
@@ -36,8 +44,9 @@
 {
 #if DEBUG && EXCESS
   va_list args;
+  if (!formatString) { [self raise]; }
   va_start(args, formatString);
-  NSLog(formatString, args);
+  NSLogv(formatString, args);
   va_end(args);
 #endif
 }
