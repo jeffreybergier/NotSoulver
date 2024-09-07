@@ -4,17 +4,24 @@
 
 @implementation XPLog
 
-+(void)raise;
++(void)load;
 {
-  [NSException raise:@"XPLogExceptionMissingFormatString" format:@""];
+  NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
+  [XPLog alwys:@"ALWYS"];
+  [XPLog debug:@"DEBUG"];
+  [XPLog extra:@"EXTRA"];
+  [XPLog pause:@"PAUSE"];
+  [pool release];
 }
 
-+(void)always:(NSString*)formatString, ...;
++(void)alwys:(NSString*)formatString, ...;
 {
   va_list args;
+  NSString *newFormat;
   if (!formatString) { [self raise]; }
   va_start(args, formatString);
-  NSLogv(formatString, args);
+  newFormat = [@"LOG-ALWYS: " stringByAppendingString:formatString];
+  NSLogv(newFormat, args);
   va_end(args);
 }
 
@@ -22,9 +29,24 @@
 {
 #if DEBUG
   va_list args;
+  NSString *newFormat;
   if (!formatString) { [self raise]; }
   va_start(args, formatString);
-  NSLogv(formatString, args);
+  newFormat = [@"LOG-DEBUG: " stringByAppendingString:formatString];
+  NSLogv(newFormat, args);
+  va_end(args);
+#endif
+}
+
++(void)extra:(NSString*)formatString, ...;
+{
+#if DEBUG && EXTRA
+  va_list args;
+  NSString *newFormat;
+  if (!formatString) { [self raise]; }
+  va_start(args, formatString);
+  newFormat = [@"LOG-EXTRA: " stringByAppendingString:formatString];
+  NSLogv(newFormat, args);
   va_end(args);
 #endif
 }
@@ -33,23 +55,20 @@
 {
 #if DEBUG
   va_list args;
+  NSString *newFormat;
   if (!formatString) { [self raise]; }
   va_start(args, formatString);
-  NSLogv(formatString, args);
+  newFormat = [@"LOG-PAUSE: " stringByAppendingString:formatString];
+  NSLogv(newFormat, args);
   va_end(args);
 #endif
 }
 
-+(void)excess:(NSString*)formatString, ...;
++(void)raise;
 {
-#if DEBUG && EXCESS
-  va_list args;
-  if (!formatString) { [self raise]; }
-  va_start(args, formatString);
-  NSLogv(formatString, args);
-  va_end(args);
-#endif
+  [NSException raise:@"XPLogExceptionMissingFormatString" format:@""];
 }
+
 @end
 
 @implementation NSNumber (CrossPlatform)

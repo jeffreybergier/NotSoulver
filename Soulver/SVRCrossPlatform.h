@@ -12,16 +12,19 @@ typedef NSUInteger XPUInteger;
 #endif
 
 @interface XPLog: NSObject
+/// When Loaded each type of message is tested
++(void)load;
 /// Always does an NSLog
-+(void)always:(NSString*)formatString, ...;
++(void)alwys:(NSString*)formatString, ...;
 /// NSLog when in DEBUG
 +(void)debug:(NSString*)formatString, ...;
-/// NSLog when in DEBUG and also pauses debugger
-/// Requires `fb [XPLog pause]` in GDB
-+(void)pause:(NSString*)formatString, ...;
 /// NSLog only when DEBUG and EXCESS flag found
-/// Requires `-DEXCESS` CFLAG option in GCC
-+(void)excess:(NSString*)formatString, ...;
+/// Requires `-DEXTRA` CFLAG option in GCC
++(void)extra:(NSString*)formatString, ...;
+/// NSLog when in DEBUG but also pauses debugger
+/// Requires `fb +[XPLog pause:]` in GDB
++(void)pause:(NSString*)formatString, ...;
++(void)raise;
 @end
 
 @interface NSNumber (CrossPlatform)
