@@ -12,8 +12,6 @@ typedef NSUInteger XPUInteger;
 #endif
 
 @interface XPLog: NSObject
-/// When Loaded each type of message is tested
-+(void)load;
 /// Always does an NSLog
 +(void)alwys:(NSString*)formatString, ...;
 /// NSLog when in DEBUG

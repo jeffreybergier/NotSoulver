@@ -7,28 +7,7 @@
 
 #import "SVRDocumentViewController+Tests.h"
 
-#ifdef OS_OPENSTEP
-  int SVRDocumentViewController_Tests_loadedOnce = 1;
-#else
-  int SVRDocumentViewController_Tests_loadedOnce = 0;
-#endif
-
 @implementation SVRDocumentViewController (Tests)
-+(void)load;
-{
-  NSAutoreleasePool *pool;
-  
-  if (SVRDocumentViewController_Tests_loadedOnce != 0) {
-    NSLog(@"%@: Skipping Tests", self);
-    return;
-  }
-  SVRDocumentViewController_Tests_loadedOnce += 1;
-  NSLog(@"%@: Executing Tests", self);
-  
-  pool = [[NSAutoreleasePool allocWithZone:NULL] init];
-  [self executeTests];
-  [pool release];
-}
 
 +(void)executeTests;
 {

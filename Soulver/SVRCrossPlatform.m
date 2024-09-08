@@ -4,16 +4,6 @@
 
 @implementation XPLog
 
-+(void)load;
-{
-  NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
-  [XPLog alwys:@"ALWYS"];
-  [XPLog debug:@"DEBUG"];
-  [XPLog extra:@"EXTRA"];
-  [XPLog pause:@"PAUSE"];
-  [pool release];
-}
-
 +(void)alwys:(NSString*)formatString, ...;
 {
   va_list args;

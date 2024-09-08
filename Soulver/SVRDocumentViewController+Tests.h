@@ -8,7 +8,6 @@
 #import "SVRDocumentViewController.h"
 
 @interface SVRDocumentViewController (Tests)
-+(void)load;
 +(void)executeTests;
 +(void)test_tagMap;
 +(void)test_modelUpdate;

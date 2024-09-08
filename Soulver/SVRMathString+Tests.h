@@ -8,7 +8,6 @@
 #import "SVRMathString.h"
 
 @interface SVRMathString (Tests)
-+(void)load;
 +(void)executeTests;
 -(void)__testAssertEqual:(NSString*)rhs;
 -(void)__testAssertEqual:(NSString*)rhs expectError:(NSNumber*)expectedError;
