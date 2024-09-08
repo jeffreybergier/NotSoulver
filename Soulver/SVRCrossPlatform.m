@@ -4,59 +4,59 @@
 
 @implementation XPLog
 
-+(void)alwys:(NSString*)formatString, ...;
++(void)alwys:(NSString*)_formatString, ...;
 {
   va_list args;
-  NSString *newFormat;
-  if (!formatString) { [self raise]; }
-  va_start(args, formatString);
-  newFormat = [@"LOG-ALWYS: " stringByAppendingString:formatString];
-  NSLogv(newFormat, args);
+  NSString *formatString = (_formatString) ? _formatString : @"NO MESSAGE PROVIDED";
+  va_start(args, _formatString);
+  formatString = [@"LOG-ALWYS: " stringByAppendingString:formatString];
+  NSLogv(formatString, args);
   va_end(args);
 }
 
-+(void)debug:(NSString*)formatString, ...;
++(void)debug:(NSString*)_formatString, ...;
 {
-#if DEBUG
+#if DEBUG || EXTRA
   va_list args;
-  NSString *newFormat;
-  if (!formatString) { [self raise]; }
-  va_start(args, formatString);
-  newFormat = [@"LOG-DEBUG: " stringByAppendingString:formatString];
-  NSLogv(newFormat, args);
+  NSString *formatString = (_formatString) ? _formatString : @"NO MESSAGE PROVIDED";
+  va_start(args, _formatString);
+  formatString = [@"LOG-DEBUG: " stringByAppendingString:formatString];
+  NSLogv(formatString, args);
   va_end(args);
 #endif
 }
 
-+(void)extra:(NSString*)formatString, ...;
++(void)extra:(NSString*)_formatString, ...;
 {
 #if DEBUG && EXTRA
   va_list args;
-  NSString *newFormat;
-  if (!formatString) { [self raise]; }
-  va_start(args, formatString);
-  newFormat = [@"LOG-EXTRA: " stringByAppendingString:formatString];
-  NSLogv(newFormat, args);
+  NSString *formatString = (_formatString) ? _formatString : @"NO MESSAGE PROVIDED";
+  va_start(args, _formatString);
+  formatString = [@"LOG-EXTRA: " stringByAppendingString:formatString];
+  NSLogv(formatString, args);
   va_end(args);
 #endif
 }
 
-+(void)pause:(NSString*)formatString, ...;
++(void)pause:(NSString*)_formatString, ...;
 {
-#if DEBUG
   va_list args;
-  NSString *newFormat;
-  if (!formatString) { [self raise]; }
-  va_start(args, formatString);
-  newFormat = [@"LOG-PAUSE: " stringByAppendingString:formatString];
-  NSLogv(newFormat, args);
+  NSString *formatString = (_formatString) ? _formatString : @"NO MESSAGE PROVIDED";
+  va_start(args, _formatString);
+  formatString = [@"LOG-PAUSE: " stringByAppendingString:formatString];
+  NSLogv(formatString, args);
   va_end(args);
-#endif
 }
 
-+(void)raise;
++(void)error:(NSString*)_formatString, ...;
 {
-  [NSException raise:@"XPLogExceptionMissingFormatString" format:@""];
+  va_list args;
+  NSString *formatString = (_formatString) ? _formatString : @"NO ERROR PROVIDED";
+  va_start(args, _formatString);
+  formatString = [@"LOG-ERROR: " stringByAppendingString:formatString];
+  NSLogv(formatString, args);
+  [NSException raise:@"SVRException" format:formatString arguments:args];
+  va_end(args);
 }
 
 @end

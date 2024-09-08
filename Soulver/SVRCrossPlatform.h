@@ -19,10 +19,10 @@ typedef NSUInteger XPUInteger;
 /// NSLog only when DEBUG and EXCESS flag found
 /// Requires `-DEXTRA` CFLAG option in GCC
 +(void)extra:(NSString*)formatString, ...;
-/// NSLog when in DEBUG but also pauses debugger
-/// Requires `fb +[XPLog pause:]` in GDB
+/// Requires `fb +[XPLog pause:]` in GDB to Pause Debugger
 +(void)pause:(NSString*)formatString, ...;
-+(void)raise;
+/// Raises an exception with format (crashes in production)
++(void)error:(NSString*)formatString, ...;
 @end
 
 @interface NSNumber (CrossPlatform)

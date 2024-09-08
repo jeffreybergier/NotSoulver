@@ -13,9 +13,10 @@ int main(int argc, const char *argv[]) {
   
   // 1. Check Basic Logging IFDEFS
   [XPLog alwys:@"ALWYS"];
-  [XPLog debug:@"DEBUG"]; // #DEBUG
+  [XPLog debug:@"DEBUG"]; // #DEBUG || EXTRA
   [XPLog extra:@"EXTRA"]; // #DEBUG && EXTRA
-  [XPLog pause:@"PAUSE"]; // #DEBUG
+//[XPLog pause:@"PAUSE"];
+//[XPLog error:@"ERROR"];
   
   // 2. Execute Unit Tests if Needed
 #ifdef TESTING
