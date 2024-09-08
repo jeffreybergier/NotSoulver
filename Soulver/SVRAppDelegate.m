@@ -43,7 +43,7 @@
   [panel runModal];
   file = [panel filename];
 #pragma clang diagnostic pop
-  if (!file) { NSLog(@"Open Cancelled"); return; }
+  if (!file) { [XPLog debug:@"%@ Open Cancelled", self]; return; }
   controller = [[self openFiles] objectForKey:file];
   if (!controller) {
     controller = [SVRDocumentWindowController controllerWithFilename:file];
@@ -55,7 +55,7 @@
 
 -(void)saveAll:(id)sender;
 {
-  NSLog(@"%@ saveAll: %@", self, sender);
+  [XPLog pause:@"%@ saveAll", self];
 }
 
 -(void)__windowWillCloseNotification:(NSNotification*)aNotification;
@@ -101,7 +101,7 @@ didChangeOldFilename:oldFilename];
     [[self openFiles] removeObjectForKey:filename];
   }
   
-  NSLog(@"%@ __documentWillClose: removedWindowNumber: %lu removedFile: %@", self, windowNumber, filename);
+  [XPLog debug:@"%@ closedWindow: %lu closedFile: %@", self, windowNumber, filename];
   
   [document autorelease];
 }
@@ -116,20 +116,18 @@ didChangeOldFilename:(NSString*)oldFilename;
   [document retain];
   
   [[self openUnsaved] removeObjectForKey:[NSNumber XP_numberWithInteger:windowNumber]];
-  NSLog(@"%@ __documentChangedFilename: removedWindowNumber: %lu", self, windowNumber);
   
   if (oldFilename) {
     [[self openFiles] removeObjectForKey:oldFilename];
-    NSLog(@"%@ __documentChangedFilename: removedFilename: %@", self, oldFilename);
   }
   
   if (newFilename) {
     [[self openFiles] setObject:document forKey:newFilename];
-    NSLog(@"%@ __documentChangedFilename: addedFilename: %@", self, newFilename);
   } else {
     [[self openUnsaved] setObject:document forKey:[NSNumber XP_numberWithInteger:windowNumber]];
-    NSLog(@"%@ __documentChangedFilename: addedWindowNumber: %lu", self, windowNumber);
   }
+  
+  [XPLog debug:@"%@ fileChanged: %@", newFilename];
 
   [document autorelease];
 }
@@ -152,7 +150,7 @@ didChangeOldFilename:(NSString*)oldFilename;
                                              object:nil];
 
   // Announce
-  NSLog(@"%@", self);
+  [XPLog debug:@"%@ awakeFromNib", self];
 }
 
 -(void)dealloc;
