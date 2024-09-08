@@ -29,23 +29,25 @@
 // MARK: Private
 -(void)__append:(XPInteger)tag;
 {
-  int control;
+  int control = 0;
   NSNumber *error = nil;
   NSString *toAppend = [self __mapKeyWithTag:tag control:&control];
   if (toAppend) {
     [[self model] appendCharacter:toAppend error:&error];
-    if (error != nil) { NSLog(@"%@ appendString:%@ forTag:%ld error:%@",
-                                self, toAppend, tag, error); }
+    if (error != nil) { [
+      XPLog pause:@"%@ appendString:%@ forTag:%ld error:%@", self, toAppend, tag, error];
+    }
   } else {
     switch (control) {
       case -1: [[self model] backspaceCharacterWithError:&error]; break;
       case -2: [[self model] backspaceLineWithError:&error]; break;
       case -3: [[self model] backspaceAllWithError:&error]; break;
-      default: NSAssert2(NO, @"<%@> Button with unknown tag: %ld", self, tag);
+      default: [XPLog error:@"%@ Button with unknown tag: %ld", self, tag];
     }
     
-    if (error != nil) { NSLog(@"%@ backspaceWithTag:%ld error:%@",
-                                self, tag, error); }
+    if (error != nil) {
+      [XPLog pause:@"%@ backspaceWithTag:%ld error:%@", self, tag, error];
+    }
   }
 }
 
@@ -105,7 +107,7 @@
            name:[SVRDocumentModelController renderDidChangeNotificationName] 
          object:[self model]];
 
-  NSLog(@"%@", self);
+  [XPLog debug:@"%@ awakeFromNib", self];
 }
 
 // MARK: Dealloc
