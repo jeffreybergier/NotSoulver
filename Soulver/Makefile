@@ -32,7 +32,7 @@ HFILES = SVRDocumentWindowController.h SVRDocumentViewController.h\
 MFILES = Soulver_main.m
 
 OTHERSRCS = Makefile.preamble Makefile Makefile.postamble m.template\
-            h.template
+            h.template .gdbinit
 
 
 MAKEFILEDIR = $(NEXT_ROOT)/NextDeveloper/Makefiles/pb_makefiles
