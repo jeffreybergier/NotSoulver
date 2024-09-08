@@ -5,6 +5,8 @@
 //  Created by Jeffrey Bergier on 2024/08/18.
 //
 
+#if TESTING
+
 #import "SVRMathString+Rendering.h"
 #import "SVRMathString+Tests.h"
 
@@ -219,3 +221,5 @@
   [XPLog alwys:@"%@", output];
 }
 @end
+
+#endif

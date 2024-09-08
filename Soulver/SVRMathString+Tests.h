@@ -5,6 +5,8 @@
 //  Created by Jeffrey Bergier on 2024/08/18.
 //
 
+#if TESTING
+
 #import "SVRMathString.h"
 
 @interface SVRMathString (Tests)
@@ -18,3 +20,5 @@
 /// Replaces newlines from logged strings with \n
 -(void)SVR_debugLOG;
 @end
+
+#endif

@@ -5,6 +5,8 @@
 //  Created by Jeffrey Bergier on 2024/09/01.
 //
 
+#if TESTING
+
 #import "SVRDocumentViewController+Tests.h"
 
 @implementation SVRDocumentViewController (Tests)
@@ -111,3 +113,5 @@
   NSLog(@"%@: PASS: test_modelUpdate", self);
 }
 @end
+
+#endif
