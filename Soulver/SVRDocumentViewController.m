@@ -52,7 +52,7 @@
 }
 
 // Returns NIL if backspace
-// NSAssert if unknown tag
+// Exception if unknown tag
 -(NSString*)__mapKeyWithTag:(XPInteger)tag control:(int*)control;
 {
   switch (tag) {
@@ -80,7 +80,7 @@
     case 22: *control = -2; return nil;
     case 23: *control = -3; return nil;
   }
-  NSAssert2(NO, @"<%@> Button with unknown tag: %ld", self, tag);
+  [XPLog error:@"<%@> Button with unknown tag: %ld", self, tag];
   return nil;
 }
 

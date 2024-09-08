@@ -63,13 +63,15 @@
   SVRDocumentWindowController *controller = nil;
   NSWindow *window = [aNotification object];
   
-  NSAssert2([window isKindOfClass:[NSWindow class]],
-           @"%@ __windowWillCloseNotification: %@", self, aNotification);
+  if (![window isKindOfClass:[NSWindow class]]) {
+    [XPLog error:@"%@ __windowWillCloseNotification: %@", self, aNotification];
+  }
   
   controller = (SVRDocumentWindowController*)[window delegate];
   
-  NSAssert2([controller isKindOfClass:[SVRDocumentWindowController class]],
-           @"%@ __windowWillCloseNotification: %@", self, aNotification);
+  if (![controller isKindOfClass:[SVRDocumentWindowController class]]) {
+    [XPLog error:@"%@ __windowWillCloseNotification: %@", self, aNotification];
+  }
   
   [self __documentWillClose:controller];
 }
@@ -80,11 +82,11 @@
   NSString *oldFilename = ([_oldFilename isKindOfClass:[NSString class]]) ? _oldFilename : nil;
   SVRDocumentWindowController *controller = [aNotification object];
   
-  NSAssert2([controller isKindOfClass:[SVRDocumentWindowController class]],
-           @"%@ __windowWillCloseNotification: %@", self, aNotification);
+  if (![controller isKindOfClass:[SVRDocumentWindowController class]]) {
+    [XPLog error:@"%@ __documentDidChangeFilenameNotification: %@", self, aNotification];
+  }
   
-  [self   __document:controller
-didChangeOldFilename:oldFilename];
+  [self __document:controller didChangeOldFilename:oldFilename];
 }
 
 -(void)__documentWillClose:(SVRDocumentWindowController*)document;

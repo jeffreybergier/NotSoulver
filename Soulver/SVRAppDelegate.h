@@ -20,8 +20,7 @@
 -(void)__windowWillCloseNotification:(NSNotification*)aNotification;
 -(void)__documentDidChangeFilenameNotification:(NSNotification*)aNotification;
 -(void)__documentWillClose:(SVRDocumentWindowController*)document;
--(void)   __document:(SVRDocumentWindowController*)document
-didChangeOldFilename:(NSString*)oldFilename;
+-(void)__document:(SVRDocumentWindowController*)document didChangeOldFilename:(NSString*)oldFilename;
 
 @end
 
