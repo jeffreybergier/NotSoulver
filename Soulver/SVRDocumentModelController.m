@@ -21,7 +21,7 @@
   _mathString = [mathString retain];
   [self setLatestRender:[mathString renderWithError:&error]];
   if (error != nil) {
-    [XPLog pause:@"%@: setMathString: %@: Error: %@", self, mathString, error];
+    [XPLog debug:@"%@: setMathString: %@: Error: %@", self, mathString, error];
   }
 }
 
