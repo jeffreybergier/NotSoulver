@@ -21,7 +21,7 @@
 {
   int control;
   SVRDocumentViewController *vc;
-  NSLog(@"%@: START: test_tagMap", self);
+  [XPLog alwys:@"%@: START: test_tagMap", self];
   vc = [[[SVRDocumentViewController alloc] init] autorelease];
   [vc awakeFromNib];
   NSAssert([[vc __mapKeyWithTag: 1 control:&control] isEqualToString:@"1"], @"");
@@ -50,14 +50,14 @@
   NSAssert(control == -2, @"");
   NSAssert( [vc __mapKeyWithTag:23 control:&control] == nil, @"");
   NSAssert(control == -3, @"");
-  NSLog(@"%@: PASS: test_tagMap", self);
+  [XPLog alwys:@"%@: PASS: test_tagMap", self];
 }
 
 +(void)test_modelUpdate;
 {
   SVRDocumentViewController *vc;
   SVRDocumentModelController *model;
-  NSLog(@"%@: START: test_modelUpdate", self);
+  [XPLog alwys:@"%@: START: test_modelUpdate", self];
   vc = [[[SVRDocumentViewController alloc] init] autorelease];
   model = [[[SVRDocumentModelController alloc] init] autorelease];
   [model awakeFromNib];
@@ -110,7 +110,7 @@
   NSAssert([[[[vc model] mathString] stringValue] isEqualToString:@"1234567890-="], @"");
   [vc __append:23];
   NSAssert([[[[vc model] mathString] stringValue] isEqualToString:@""], @"");
-  NSLog(@"%@: PASS: test_modelUpdate", self);
+  [XPLog alwys:@"%@: PASS: test_modelUpdate", self];
 }
 @end
 
