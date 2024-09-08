@@ -16,7 +16,7 @@
 
 // MARK: Document Management
 
-- (void)newDoc:(id)sender
+-(void)newDoc:(id)sender
 {
   SVRDocumentWindowController *controller;
   NSWindow *window;
@@ -30,7 +30,7 @@
   [window makeKeyAndOrderFront:sender];
 }
 
-- (void)openDoc:(id)sender
+-(void)openDoc:(id)sender
 {
   NSOpenPanel *panel;
   NSString *file;

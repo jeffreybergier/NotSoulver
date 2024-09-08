@@ -198,9 +198,11 @@
                                     _contents, _range.location, _range.length];
 }
 
-- (void)dealloc
+-(void)dealloc
 {
+  [XPLog extra:@"DEALLOC: %@", self];
   [_contents release];
+  _contents = nil;
   [super dealloc];
 }
 @end
@@ -278,11 +280,15 @@
                                     _lhs, _operator, _rhs, _range.location, _range.length];
 }
 
-- (void)dealloc
+-(void)dealloc
 {
+  [XPLog extra:@"DEALLOC: %@", self];
   [_lhs release];
   [_rhs release];
   [_operator release];
+  _lhs = nil;
+  _rhs = nil;
+  _operator = nil;
   [super dealloc];
 }
 
@@ -559,9 +565,11 @@
   return [[[SVRStringEnumeratorRange alloc] initWithRange:range substring:substring] autorelease];
 }
 
-- (void)dealloc
+-(void)dealloc
 {
+  [XPLog extra:@"DEALLOC: %@", self];
   [_substring release];
+  _substring = nil;
   [super dealloc];
 }
 
@@ -602,9 +610,11 @@
   return [[[SVRStringEnumerator alloc] initWithString:string] autorelease];
 }
 
-- (void)dealloc
+-(void)dealloc
 {
+  [XPLog extra:@"DEALLOC: %@", self];
   [_string release];
+  _string = nil;
   [super dealloc];
 }
 

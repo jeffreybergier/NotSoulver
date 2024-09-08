@@ -84,9 +84,9 @@
 }
 
 // MARK: Dealloc
-- (void)dealloc
+-(void)dealloc
 {
-  NSLog(@"DEALLOC: %@", self);
+  [XPLog extra:@"DEALLOC: %@", self];
   [_string release];
   _string = nil;
   [super dealloc];
@@ -318,8 +318,9 @@ NSSet *NSSet_SVR_solutionInsertCheck;
   return [[[SVRMathStringEnumeratorLine alloc] initWithLine:line isComplete:isComplete index:index] autorelease];
 }
 
-- (void)dealloc
+-(void)dealloc
 {
+  [XPLog extra:@"DEALLOC: %@", self];
   [_line release];
   _line = nil;
   [super dealloc];
@@ -383,8 +384,9 @@ NSSet *NSSet_SVR_solutionInsertCheck;
   return [[[SVRMathStringEnumerator alloc] initWithMathString:mathString] autorelease];
 }
 
-- (void)dealloc
+-(void)dealloc
 {
+  [XPLog extra:@"DEALLOC: %@", self];
   [_allObjects release];
   _allObjects = nil;
   [super dealloc];
