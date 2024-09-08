@@ -14,9 +14,9 @@ typedef NSUInteger XPUInteger;
 @interface XPLog: NSObject
 /// Always does an NSLog
 +(void)alwys:(NSString*)formatString, ...;
-/// NSLog when in DEBUG
+/// NSLog when in DEBUG or EXTRA flag found
 +(void)debug:(NSString*)formatString, ...;
-/// NSLog only when DEBUG and EXCESS flag found
+/// NSLog only when DEBUG and EXTRA flag found
 /// Requires `-DEXTRA` CFLAG option in GCC
 +(void)extra:(NSString*)formatString, ...;
 /// Requires `fb +[XPLog pause:]` in GDB to Pause Debugger
