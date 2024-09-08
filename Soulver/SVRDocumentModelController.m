@@ -20,8 +20,9 @@
   [_mathString release];
   _mathString = [mathString retain];
   [self setLatestRender:[mathString renderWithError:&error]];
-  if (error != nil) { NSLog(@"%@: setMathString: %@: Error: %@",
-                            self, mathString, error); }
+  if (error != nil) {
+    [XPLog pause:@"%@: setMathString: %@: Error: %@", self, mathString, error];
+  }
 }
 
 -(NSAttributedString*)latestRender;
@@ -50,7 +51,7 @@
 {
   _mathString = [[SVRMathString alloc] init];
   _latestRender = [NSAttributedString new];
-  NSLog(@"%@", self);
+  [XPLog debug:@"%@ awakeFromNib", self];
 }
 
 // MARK: Usage
