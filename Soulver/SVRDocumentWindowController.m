@@ -81,9 +81,12 @@
   // Read the file if there is a filepath
   filename = [self filename];
   if (filename) {
-    NSLog(@"Opening File: %@", filename);
     document = [SVRMathString mathStringWithFilename:filename];
-    if (!document) { NSLog(@"Open File Failed: %@", filename); return; }
+    if (!document) {
+      // TODO: Present Error
+      [XPLog pause:@"Open File Failed: %@", filename];
+      return;
+    }
     [[self model] setMathString:document];
   }
   [self __updateWindowState];
@@ -94,15 +97,17 @@
        selector:@selector(__modelRenderDidChangeNotification:)
            name:[SVRDocumentModelController renderDidChangeNotificationName]
          object:[self model]];
-
+  
   // Check to make sure we are delegate
-  NSAssert1((SVRDocumentWindowController*)[[self window] delegate] == self,
-            @"Incorrect Window Delegate: %@", [[self window] delegate]);
+  if ((SVRDocumentWindowController*)[[self window] delegate] != self) {
+    [XPLog error:@"Incorrect Window Delegate: %@", [[self window] delegate]];
+  }
 
   // Set up Last Responder
   [[self window] setNextResponder:self];
   
-  NSLog(@"%@", self);
+  // Announce
+  [XPLog debug:@"%@ awakeFromNib", self];
 }
 
 // MARK: Private
@@ -204,11 +209,6 @@
 // MARK: NSMenuActionResponder
 @implementation SVRDocumentWindowController (NSMenuActionResponder)
 
--(void)keyUp:(NSEvent*)theEvent;
-{
-  NSLog(@"keyUp: %@", theEvent);
-}
-
 -(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
 {
   switch ([menuItem tag]) {
@@ -222,25 +222,24 @@
       // TODO: Set KeyEquivalent to CMD+U
     case 2007: return ([self filename] != nil) && [self __needsSaving];
     default:
-      NSLog(@"%@ validateMenuItem: Unexpected: (%ld)%@",
-            self, [menuItem tag], [menuItem title]);
+      [XPLog pause:@"%@ validateMenuItem: Unexpected: (%ld)%@", self, [menuItem tag], [menuItem title]];
       return NO;
   }
 }
 
 -(void)cut:(id)sender;
 {
-  NSLog(@"%@ cut: %@", self, sender);
+  [XPLog pause:@"%@ cut: %@", self, sender];
 }
 
 -(void)copy:(id)sender;
 {
-  NSLog(@"%@ copy: %@", self, sender);
+  [XPLog pause:@"%@ copy: %@", self, sender];
 }
 
 -(void)paste:(id)sender;
 {
-  NSLog(@"%@ paste: %@", self, sender);
+  [XPLog pause:@"%@ paste: %@", self, sender];
 }
 
 -(void)save:(id)sender;
@@ -263,9 +262,9 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
   XPInteger alertResult = NSRunAlertPanel(@"Revert to Saved",
-                                     @"Any changes will be lost",
-                                     @"Revert to Saved",
-                                     @"Cancel", nil);
+                                          @"Any changes will be lost",
+                                          @"Revert to Saved",
+                                          @"Cancel", nil);
 #pragma clang diagnostic pop
   switch (alertResult) {
     case 1: [self __revertToSaved]; break;
@@ -276,43 +275,65 @@
 -(BOOL)__save;
 {
   if (![self filename]) { return [self __saveAs]; }
-  if (![[[self model] mathString] writeToFilename:[self filename]])
-     { NSLog(@"%@ __save: FAILED: %@", self, [self filename]); return NO; }
-  NSLog(@"%@ __save: SUCCESS: %@", self, [self filename]);
-  [self __updateWindowState];
-  return YES;
+  
+  if ([[[self model] mathString] writeToFilename:[self filename]]) {
+    [XPLog alwys:@"%@ __save: Success: %@", self, [self filename]];
+    [self __updateWindowState];
+    return YES;
+  } else {
+    // TODO: Present Error
+    [XPLog pause:@"%@ __save: Failed: %@", self, [self filename]];
+    return NO;
+  }
 }
 
 -(BOOL)__saveAs;
 {
   NSString *newFilename = [self __runSavePanel];
-  if (!newFilename) { NSLog(@"%@ __saveAs: CANCELLED", self); return NO; }
-  if (![[[self model] mathString] writeToFilename:newFilename])
-     { NSLog(@"%@ __saveAs: FAILED: %@", self, newFilename); return NO; }
-  [self setFilename:newFilename];
-  NSLog(@"%@ __saveAs: SUCCESS: %@", self, newFilename);
-  return YES;
+  if (!newFilename) { [XPLog debug:@"%@ __saveAs: Cancelled", self]; return NO; }
+  
+  if ([[[self model] mathString] writeToFilename:newFilename]) {
+    [self setFilename:newFilename];
+    [XPLog alwys:@"%@ __saveAs: Success: %@", self, newFilename];
+    return YES;
+  } else {
+    // TODO: Present Error
+    [XPLog pause:@"%@ __saveAs: Failed: %@", self, newFilename];
+    return NO;
+  }
 }
 
 -(BOOL)__saveTo;
 {
   NSString *newFilename = [self __runSavePanel];
-  if (!newFilename) { NSLog(@"%@ __saveTo: CANCELLED", self); return NO; }
-  if ([[[self model] mathString] writeToFilename:newFilename])
-     { NSLog(@"%@ __saveTo: FAILED: %@", self, newFilename); return NO; }
-  NSLog(@"%@ __saveTo: SUCCESS: %@", self, newFilename);
-  return YES;
+  if (!newFilename) { [XPLog debug:@"%@ __saveAs: Cancelled", self]; return NO; }
+
+  if ([[[self model] mathString] writeToFilename:newFilename]) {
+    [XPLog alwys:@"%@ __saveTo: Success: %@", self, newFilename];
+    return YES;
+  } else {
+    // TODO: Present Error
+    [XPLog pause:@"%@ __saveTo: Failed: %@", self, newFilename];
+    return NO;
+  }
+
 }
 
 -(BOOL)__revertToSaved;
 {
   SVRMathString *replacement = nil;
-  if (![self filename]) { NSLog(@"%@ revertToSaved: FAILED: No Filename", self); return NO; }
+  if (![self filename]) { [XPLog error:@"%@ revertToSaved: Failed: No Filename", self]; return NO; }
+  
   replacement = [SVRMathString mathStringWithFilename:[self filename]];
-  if (!replacement) { NSLog(@"%@ revertToSaved: FAILED: %@", self, [self filename]); return NO; }
+  if (!replacement) {
+    // TODO: Present Error
+    [XPLog pause:@"%@ revertToSaved: FAILED: %@", self, [self filename]];
+    return NO;
+  }
   [[self model] setMathString:replacement];
   [self __updateWindowState];
-  NSLog(@"%@ revertToSaved: SUCCESS: %@", self, [self filename]);
+  
+  [XPLog debug:@"%@ revertToSaved: SUCCESS: %@", self, [self filename]];
   return YES;
 }
 

@@ -43,7 +43,6 @@
 
 // MARK: NSMenuActionResponder
 @interface SVRDocumentWindowController (NSMenuActionResponder)
--(void)keyUp:(NSEvent*)theEvent; // delete in the future
 -(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
 -(void)cut:(id)sender;
 -(void)copy:(id)sender;
