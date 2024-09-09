@@ -35,7 +35,7 @@
   if (toAppend) {
     [[self model] appendCharacter:toAppend error:&error];
     if (error != nil) { [
-      XPLog pause:@"%@ appendString:%@ forTag:%ld error:%@", self, toAppend, tag, error];
+      XPLog alwys:@"%@ appendString:%@ forTag:%ld error:%@", self, toAppend, tag, error];
     }
   } else {
     switch (control) {
@@ -44,9 +44,8 @@
       case -3: [[self model] backspaceAllWithError:&error]; break;
       default: [XPLog error:@"%@ Button with unknown tag: %ld", self, tag];
     }
-    
     if (error != nil) {
-      [XPLog pause:@"%@ backspaceWithTag:%ld error:%@", self, tag, error];
+      [XPLog alwys:@"%@ backspaceWithTag:%ld error:%@", self, tag, error];
     }
   }
 }
