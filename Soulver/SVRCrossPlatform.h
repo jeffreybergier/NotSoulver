@@ -44,3 +44,11 @@ typedef NSUInteger XPUInteger;
                        otherButton:(NSString*)otherButton;
 
 @end
+
+@interface XPOpenPanel: NSObject
++(NSArray*)filenamesByRunningAppModalOpenPanel;
+@end
+
+@interface XPSavePanel: NSObject
++(NSString*)filenameByRunningSheetModalSavePanelForWindow:(NSWindow*)window;
+@end

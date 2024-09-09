@@ -221,7 +221,7 @@
       // TODO: Set KeyEquivalent to CMD+U
     case 2007: return ([self filename] != nil) && [self __needsSaving];
     default:
-      [XPLog pause:@"%@ validateMenuItem: Unexpected: (%ld)%@", self, [menuItem tag], [menuItem title]];
+      [XPLog debug:@"%@ validateMenuItem: Unexpected: (%ld)%@", self, [menuItem tag], [menuItem title]];
       return NO;
   }
 }

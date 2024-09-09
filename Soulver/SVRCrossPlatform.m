@@ -108,3 +108,30 @@
 #pragma clang diagnostic pop
 
 @end
+
+@implementation XPOpenPanel
++(NSArray*)filenamesByRunningAppModalOpenPanel;
+{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+  XPInteger result;
+  NSOpenPanel *panel = [NSOpenPanel openPanel];
+  [panel setAllowsMultipleSelection:YES];
+  result = [panel runModalForDirectory:nil
+                                  file:nil
+                                 types:[NSArray arrayWithObject:@"solv"]];
+  switch (result) {
+    case NSOKButton:     return [panel filenames];
+    case NSCancelButton: return [[NSArray new] autorelease];
+    default: [XPLog error:@"Impossible XPOpenPanel result: %lu", result]; return nil;
+  }
+#pragma clang diagnostic pop
+}
+@end
+
+@implementation XPSavePanel
++(NSString*)filenameByRunningSheetModalSavePanelForWindow:(NSWindow*)window;
+{
+  return nil;
+}
+@end

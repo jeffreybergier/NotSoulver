@@ -32,25 +32,22 @@
 
 -(void)openDoc:(id)sender
 {
-  NSOpenPanel *panel;
-  NSString *file;
-  SVRDocumentWindowController *controller;
-
-  panel = [NSOpenPanel openPanel];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-  [panel setRequiredFileType:@"solv"];
-  [panel runModal];
-  file = [panel filename];
-#pragma clang diagnostic pop
-  if (!file) { [XPLog debug:@"%@ Open Cancelled", self]; return; }
-  controller = [[self openFiles] objectForKey:file];
-  if (!controller) {
-    controller = [SVRDocumentWindowController controllerWithFilename:file];
-    [[self openFiles] setObject:controller forKey:file];
+  NSArray *filenames;
+  NSEnumerator *e;
+  NSString *nextF;
+  SVRDocumentWindowController *nextC;
+  
+  filenames = [XPOpenPanel filenamesByRunningAppModalOpenPanel];
+  if ([filenames count] == 0) { [XPLog debug:@"%@ Open Cancelled", self]; return; }
+  e = [filenames objectEnumerator];
+  while ((nextF = [e nextObject])) {
+    nextC = [[self openFiles] objectForKey:nextF];
+    if (!nextC) {
+      nextC = [SVRDocumentWindowController controllerWithFilename:nextF];
+      [[self openFiles] setObject:nextC forKey:nextF];
+    }
+    [[nextC window] makeKeyAndOrderFront:sender];
   }
-
-  [[controller window] makeKeyAndOrderFront:sender];
 }
 
 -(void)saveAll:(id)sender;
