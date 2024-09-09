@@ -25,15 +25,11 @@
 -(id)initWithFilename:(NSString*)filename;
 +(id)controllerWithFilename:(NSString*)filename;
 
-// MARK: Saving
-
 // PRIVATE
 -(void)__updateWindowState;
 -(void)__modelRenderDidChangeNotification:(NSNotification*)aNotification;
 -(XPUInteger)__onDiskHash;
 -(BOOL)__needsSaving;
--(NSString*)__runSavePanel;
-
 @end
 
 // MARK: SVRDocumentWindowController

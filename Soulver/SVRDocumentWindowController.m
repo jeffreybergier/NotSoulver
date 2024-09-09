@@ -147,19 +147,6 @@
   return lhs != rhs;
 }
 
--(NSString*)__runSavePanel;
-{
-  NSString *output = nil;
-  NSSavePanel *panel = [NSSavePanel savePanel];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-  [panel setRequiredFileType:@"solv"];
-  [panel runModal];
-  output = [panel filename];
-#pragma clang diagnostic pop
-  return output;
-}
-
 -(void)dealloc;
 {
   [XPLog extra:@"DEALLOC: %@", self];
@@ -287,7 +274,8 @@
 
 -(BOOL)__saveAs;
 {
-  NSString *newFilename = [self __runSavePanel];
+  NSString *newFilename = [XPSavePanel filenameByRunningSheetModalSavePanelForWindow:[self window]
+                                                                withExistingFilename:[self filename]];
   if (!newFilename) { [XPLog debug:@"%@ __saveAs: Cancelled", self]; return NO; }
   
   if ([[[self model] mathString] writeToFilename:newFilename]) {
@@ -303,7 +291,8 @@
 
 -(BOOL)__saveTo;
 {
-  NSString *newFilename = [self __runSavePanel];
+  NSString *newFilename = [XPSavePanel filenameByRunningSheetModalSavePanelForWindow:[self window]
+                                                                withExistingFilename:[self filename]];
   if (!newFilename) { [XPLog debug:@"%@ __saveAs: Cancelled", self]; return NO; }
 
   if ([[[self model] mathString] writeToFilename:newFilename]) {

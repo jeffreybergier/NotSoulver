@@ -109,29 +109,73 @@
 
 @end
 
+NSString *XPSavePanelLastDirectory = nil;
+
+@implementation XPSavePanel
+
++(NSString*)lastDirectory;
+{
+  if (!XPSavePanelLastDirectory) {
+    // TODO: Hook this up to NSUserDefaults (when it exists)
+    XPSavePanelLastDirectory = NSHomeDirectory();
+  }
+  return XPSavePanelLastDirectory;
+}
+
++(void)setLastDirectory:(NSString*)lastDirectory;
+{
+  XPSavePanelLastDirectory = [lastDirectory retain];
+}
+
++(NSString*)filenameByRunningSheetModalSavePanelForWindow:(NSWindow*)window;
+{
+  return [self filenameByRunningSheetModalSavePanelForWindow:window
+                                        withExistingFilename:nil];
+}
+
++(NSString*)filenameByRunningSheetModalSavePanelForWindow:(NSWindow*)window
+                                     withExistingFilename:(NSString*)_filename;
+{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+  XPInteger result;
+  // OpenStep documentation clearly states that empty string is OK but NIL is not
+  NSString *filename = (_filename) ? _filename : @"";
+  NSSavePanel *panel = [NSSavePanel savePanel];
+  [panel setRequiredFileType:@"solv"];
+  result = [panel runModalForDirectory:[self lastDirectory] file:filename];
+  [self setLastDirectory:[panel directory]];
+  switch (result) {
+    case NSOKButton:     return [panel filename];
+    case NSCancelButton: return nil;
+    default: [XPLog error:@"Impossible NSSavePanel result: %lu", result]; return nil;
+  }
+#pragma clang diagnostic pop
+}
+@end
+
 @implementation XPOpenPanel
 +(NSArray*)filenamesByRunningAppModalOpenPanel;
+{
+  return [self filenamesByRunningAppModalOpenPanelWithExistingFilename:nil];
+}
+
++(NSArray*)filenamesByRunningAppModalOpenPanelWithExistingFilename:(NSString*)filename;
 {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
   XPInteger result;
   NSOpenPanel *panel = [NSOpenPanel openPanel];
   [panel setAllowsMultipleSelection:YES];
-  result = [panel runModalForDirectory:nil
-                                  file:nil
+  result = [panel runModalForDirectory:[self lastDirectory]
+                                  file:filename // Unlike NSSavePanel, this can be NIL
                                  types:[NSArray arrayWithObject:@"solv"]];
+  [self setLastDirectory:[panel directory]];
   switch (result) {
     case NSOKButton:     return [panel filenames];
     case NSCancelButton: return [[NSArray new] autorelease];
-    default: [XPLog error:@"Impossible XPOpenPanel result: %lu", result]; return nil;
+    default: [XPLog error:@"Impossible NSOpenPanel result: %lu", result]; return nil;
   }
 #pragma clang diagnostic pop
-}
-@end
-
-@implementation XPSavePanel
-+(NSString*)filenameByRunningSheetModalSavePanelForWindow:(NSWindow*)window;
-{
-  return nil;
 }
 @end

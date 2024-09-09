@@ -45,10 +45,16 @@ typedef NSUInteger XPUInteger;
 
 @end
 
-@interface XPOpenPanel: NSObject
-+(NSArray*)filenamesByRunningAppModalOpenPanel;
+@interface XPSavePanel: NSObject
++(NSString*)lastDirectory;
++(void)setLastDirectory:(NSString*)lastDirectory;
++(NSString*)filenameByRunningSheetModalSavePanelForWindow:(NSWindow*)window;
++(NSString*)filenameByRunningSheetModalSavePanelForWindow:(NSWindow*)window
+                                     withExistingFilename:(NSString*)filename;
 @end
 
-@interface XPSavePanel: NSObject
-+(NSString*)filenameByRunningSheetModalSavePanelForWindow:(NSWindow*)window;
+@interface XPOpenPanel: XPSavePanel
++(NSArray*)filenamesByRunningAppModalOpenPanel;
++(NSArray*)filenamesByRunningAppModalOpenPanelWithExistingFilename:(NSString*)filename;
+
 @end
