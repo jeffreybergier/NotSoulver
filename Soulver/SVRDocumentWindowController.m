@@ -211,12 +211,12 @@
 {
   // TODO: Add Cut (3001), Copy (3002), Paste (3003), Select All (3004)
   switch ([menuItem tag]) {
-      // Save
-    case 2003: return [self __needsSaving];
+      // Save, logic allows saving if needed or if its a new document
+    case 2003: return [self __needsSaving] || [[[self model] mathString] isEmpty];
       // Save As
     case 2004: return [self filename] != nil;
       // Save To
-    case 2005: return ([self filename] != nil) && [self __needsSaving];
+    case 2005: return [self filename] != nil;
       // Revert to Saved
       // TODO: Set KeyEquivalent to CMD+U
     case 2007: return ([self filename] != nil) && [self __needsSaving];
