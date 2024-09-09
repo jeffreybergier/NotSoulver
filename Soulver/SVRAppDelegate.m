@@ -187,13 +187,13 @@ didChangeOldFilename:(NSString*)oldFilename;
   }
 
   if (!result) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    alertResult = NSRunAlertPanel(@"Quit Application",
-                                  @"There are documents with unsaved changes.",
-                                  @"Review Unsaved Changes", @"Quit Anyway",
-                                  nil);
-#pragma clang diagnostic pop
+    // TODO: Improve this to actually save things
+    // Change buttons to Quit Without Saving, Cancel, Save All
+    alertResult = [XPAlert runAppModalWithTitle:@"Quit [Not] Soulver"
+                                        message:@"There are documents with unsaved changes. Save changes before quitting?"
+                                  defaultButton:@"Review Unsaved Changes"
+                                alternateButton:@"Quit Anyway"
+                                    otherButton:nil];
     switch (alertResult) {
       case 1: // Review Unsaved
         result = NO;
