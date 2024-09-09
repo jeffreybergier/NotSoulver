@@ -187,14 +187,12 @@
 {
   XPInteger alertResult;
   if (![self __needsSaving]) { return YES; }
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-  alertResult = NSRunAlertPanel(@"Close Document",
-                                @"Save changes before closing?",
-                                @"Save",
-                                @"Cancel",
-                                @"Don't Save");
-#pragma clang diagnostic pop
+  alertResult = [XPAlert runSheetModalForWindow:[self window]
+                                      withTitle:@"Close Document"
+                                        message:@"Save changes before closing?"
+                                  defaultButton:@"Save"
+                                alternateButton:@"Cancel"
+                                    otherButton:@"Don't Save"];
   switch (alertResult) {
     case 1:
       return [self __save];
@@ -211,6 +209,7 @@
 
 -(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
 {
+  // TODO: Add Cut (3001), Copy (3002), Paste (3003), Select All (3004)
   switch ([menuItem tag]) {
       // Save
     case 2003: return [self __needsSaving];
@@ -259,13 +258,12 @@
 
 -(void)revertToSaved:(id)sender;
 {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-  XPInteger alertResult = NSRunAlertPanel(@"Revert to Saved",
-                                          @"Any changes will be lost",
-                                          @"Revert to Saved",
-                                          @"Cancel", nil);
-#pragma clang diagnostic pop
+  XPInteger alertResult = [XPAlert runSheetModalForWindow:[self window]
+                                                withTitle:@"Revert to Saved"
+                                                  message:@"Any changes will be lost"
+                                            defaultButton:@"Revert"
+                                          alternateButton:@"Cancel"
+                                              otherButton:nil];
   switch (alertResult) {
     case 1: [self __revertToSaved]; break;
     default: break;

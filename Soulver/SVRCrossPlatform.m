@@ -71,3 +71,40 @@
 #endif
 }
 @end
+
+@implementation XPAlert
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#pragma clang diagnostic ignored "-Wformat-security"
++(XPInteger)runAppModalWithTitle:(NSString*)title
+                         message:(NSString*)message
+                   defaultButton:(NSString*)defaultButton
+                 alternateButton:(NSString*)alternateButton
+                     otherButton:(NSString*)otherButton;
+{
+  return NSRunAlertPanel(title,
+                         message,
+                         defaultButton,
+                         alternateButton,
+                         otherButton);
+}
+
++(XPInteger)runSheetModalForWindow:(NSWindow*)window
+                         withTitle:(NSString*)title
+                           message:(NSString*)message
+                     defaultButton:(NSString*)defaultButton
+                   alternateButton:(NSString*)alternateButton
+                       otherButton:(NSString*)otherButton;
+{
+  // TODO: Implement hack to work with MacOSX
+  // ChatGPT explains how, but I can't find a google link
+  return NSRunAlertPanel(title,
+                         message,
+                         defaultButton,
+                         alternateButton,
+                         otherButton);
+}
+#pragma clang diagnostic pop
+
+@end

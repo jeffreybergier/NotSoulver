@@ -28,3 +28,19 @@ typedef NSUInteger XPUInteger;
 @interface NSNumber (CrossPlatform)
 +(NSNumber*)XP_numberWithInteger:(XPInteger)integer;
 @end
+
+@interface XPAlert: NSObject
+
++(XPInteger)runAppModalWithTitle:(NSString*)title
+                         message:(NSString*)message
+                   defaultButton:(NSString*)defaultButton
+                 alternateButton:(NSString*)alternateButton
+                     otherButton:(NSString*)otherButton;
++(XPInteger)runSheetModalForWindow:(NSWindow*)window
+                         withTitle:(NSString*)title
+                           message:(NSString*)message
+                     defaultButton:(NSString*)defaultButton
+                   alternateButton:(NSString*)alternateButton
+                       otherButton:(NSString*)otherButton;
+
+@end
