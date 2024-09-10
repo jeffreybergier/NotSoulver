@@ -52,7 +52,30 @@
 
 -(void)saveAll:(id)sender;
 {
-  [XPLog pause:@"%@ saveAll", self];
+  NSEnumerator *e1;
+  NSEnumerator *e2;
+  SVRDocumentWindowController *nextC = nil;
+  
+  XPAlertReturn alertResult = [XPAlert runAppModalWithTitle:@"Save All"
+                                                    message:@"Save all documents? This cannot be undone."
+                                              defaultButton:@"Save All"
+                                            alternateButton:@"Cancel"
+                                                otherButton:nil];
+  
+  switch (alertResult) {
+    case XPAlertReturnDefault:   break;
+    case XPAlertReturnAlternate: return;
+    default: [XPLog error:@"%@ Unexpected alert return: %lu", self, alertResult]; return;
+  }
+  
+  e1 = [[self openUnsaved] objectEnumerator];
+  e2 = [[self openFiles] objectEnumerator];
+  nextC = [e1 nextObject];
+  while (nextC) {
+    [nextC save:sender];
+    nextC = [e1 nextObject];
+    if (!nextC) { nextC = [e2 nextObject]; }
+  }
 }
 
 -(void)__windowWillCloseNotification:(NSNotification*)aNotification;
@@ -171,16 +194,17 @@ didChangeOldFilename:(NSString*)oldFilename;
 {
   NSEnumerator *e1;
   NSEnumerator *e2;
-  SVRDocumentWindowController *value;
+  SVRDocumentWindowController *nextC;
   XPAlertReturn alertResult;
   BOOL result = YES;
   
   e1 = [[self openUnsaved] objectEnumerator];
   e2 = [[self openFiles] objectEnumerator];
-  value = [e1 nextObject];
-  while (value && result) {
-    result = ![[value window] isDocumentEdited];
-    value = [e1 nextObject] ? [e1 nextObject] : [e2 nextObject];
+  nextC = [e1 nextObject];
+  while (nextC && result) {
+    result = ![nextC hasUnsavedChanges];
+    nextC = [e1 nextObject];
+    if (!nextC) { nextC = [e2 nextObject]; }
   }
   if (result) { return YES; }
   

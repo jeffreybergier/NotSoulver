@@ -110,6 +110,15 @@
   [XPLog debug:@"%@ awakeFromNib", self];
 }
 
+// MARK: Basic Logic
+
+-(BOOL)hasUnsavedChanges;
+{
+  XPUInteger lhs = [[[self model] mathString] hash];
+  XPUInteger rhs = [self __onDiskHash];
+  return lhs != rhs;
+}
+
 // MARK: Private
 
 -(void)__updateWindowState;
@@ -122,7 +131,7 @@
     [[self window] setTitle:@"UNTITLED.solv"];
     [[self window] setRepresentedFilename:@""];
   }
-  [[self window] setDocumentEdited:[self __needsSaving]];
+  [[self window] setDocumentEdited:[self hasUnsavedChanges]];
 }
 
 -(void)__modelRenderDidChangeNotification:(NSNotification*)aNotification;
@@ -139,12 +148,6 @@
   read = [SVRMathString mathStringWithFilename:[self filename]];
   if (!read) { return blankHash; }
   return [read hash];
-}
--(BOOL)__needsSaving;
-{
-  XPUInteger lhs = [[[self model] mathString] hash];
-  XPUInteger rhs = [self __onDiskHash];
-  return lhs != rhs;
 }
 
 -(void)dealloc;
@@ -173,7 +176,7 @@
 -(BOOL)windowShouldClose:(id)sender;
 {
   XPAlertReturn alertResult;
-  if (![self __needsSaving]) { return YES; }
+  if (![self hasUnsavedChanges]) { return YES; }
   alertResult = [XPAlert runSheetModalForWindow:[self window]
                                       withTitle:@"Close Document"
                                         message:@"Save changes before closing?"
@@ -197,14 +200,14 @@
   // TODO: Add Cut (3001), Copy (3002), Paste (3003), Select All (3004)
   switch ([menuItem tag]) {
       // Save, logic allows saving if needed or if its a new document
-    case 2003: return [self __needsSaving] || [[[self model] mathString] isEmpty];
+    case 2003: return [self hasUnsavedChanges] || [[[self model] mathString] isEmpty];
       // Save As
     case 2004: return [self filename] != nil;
       // Save To
     case 2005: return [self filename] != nil;
       // Revert to Saved
       // TODO: Set KeyEquivalent to CMD+U
-    case 2007: return ([self filename] != nil) && [self __needsSaving];
+    case 2007: return ([self filename] != nil) && [self hasUnsavedChanges];
     default:
       [XPLog debug:@"%@ validateMenuItem: Unexpected: (%ld)%@", self, [menuItem tag], [menuItem title]];
       return NO;
