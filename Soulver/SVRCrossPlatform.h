@@ -29,32 +29,54 @@ typedef NSUInteger XPUInteger;
 +(NSNumber*)XP_numberWithInteger:(XPInteger)integer;
 @end
 
+#if OS_OPENSTEP
+/// These match XPAlertButtonDefault
+typedef enum {
+  XPAlertReturnDefault   = (XPInteger)1,
+  XPAlertReturnAlternate = (XPInteger)0,
+  XPAlertReturnOther     = (XPInteger)-1,
+  XPAlertReturnError     = (XPInteger)-2
+} XPAlertReturn;
+#else
+typedef NS_ENUM(XPInteger, XPAlertReturn) {
+  XPAlertReturnDefault   =  1,
+  XPAlertReturnAlternate =  0,
+  XPAlertReturnOther     = -1,
+  XPAlertReturnError     = -2
+};
+#endif
+
 @interface XPAlert: NSObject
 
-+(XPInteger)runAppModalWithTitle:(NSString*)title
-                         message:(NSString*)message
-                   defaultButton:(NSString*)defaultButton
-                 alternateButton:(NSString*)alternateButton
-                     otherButton:(NSString*)otherButton;
-+(XPInteger)runSheetModalForWindow:(NSWindow*)window
-                         withTitle:(NSString*)title
-                           message:(NSString*)message
-                     defaultButton:(NSString*)defaultButton
-                   alternateButton:(NSString*)alternateButton
-                       otherButton:(NSString*)otherButton;
++(XPAlertReturn)runAppModalWithTitle:(NSString*)title
+                             message:(NSString*)message
+                       defaultButton:(NSString*)defaultButton
+                     alternateButton:(NSString*)alternateButton
+                         otherButton:(NSString*)otherButton;
+/// Returns ENUM NSAlertDefaultReturn
++(XPAlertReturn)runSheetModalForWindow:(NSWindow*)window
+                             withTitle:(NSString*)title
+                               message:(NSString*)message
+                         defaultButton:(NSString*)defaultButton
+                       alternateButton:(NSString*)alternateButton
+                           otherButton:(NSString*)otherButton;
 
 @end
 
 @interface XPSavePanel: NSObject
 +(NSString*)lastDirectory;
 +(void)setLastDirectory:(NSString*)lastDirectory;
+/// Returns nil if user cancels
 +(NSString*)filenameByRunningSheetModalSavePanelForWindow:(NSWindow*)window;
+/// Returns nil if user cancels
 +(NSString*)filenameByRunningSheetModalSavePanelForWindow:(NSWindow*)window
                                      withExistingFilename:(NSString*)filename;
 @end
 
 @interface XPOpenPanel: XPSavePanel
+/// Returns empty array if user cancels
 +(NSArray*)filenamesByRunningAppModalOpenPanel;
+/// Returns empty array if user cancels
 +(NSArray*)filenamesByRunningAppModalOpenPanelWithExistingFilename:(NSString*)filename;
 
 @end

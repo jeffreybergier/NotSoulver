@@ -172,9 +172,9 @@ didChangeOldFilename:(NSString*)oldFilename;
   NSEnumerator *e1;
   NSEnumerator *e2;
   SVRDocumentWindowController *value;
-  XPInteger alertResult;
+  XPAlertReturn alertResult;
   BOOL result = YES;
-
+  
   e1 = [[self openUnsaved] objectEnumerator];
   e2 = [[self openFiles] objectEnumerator];
   value = [e1 nextObject];
@@ -182,25 +182,20 @@ didChangeOldFilename:(NSString*)oldFilename;
     result = ![[value window] isDocumentEdited];
     value = [e1 nextObject] ? [e1 nextObject] : [e2 nextObject];
   }
-
-  if (!result) {
-    // TODO: Improve this to actually save things
-    // Change buttons to Quit Without Saving, Cancel, Save All
-    alertResult = [XPAlert runAppModalWithTitle:@"Quit [Not] Soulver"
-                                        message:@"There are documents with unsaved changes. Save changes before quitting?"
-                                  defaultButton:@"Review Unsaved Changes"
-                                alternateButton:@"Quit Anyway"
-                                    otherButton:nil];
-    switch (alertResult) {
-      case 1: // Review Unsaved
-        result = NO;
-        break;
-      default: // Quit Immediately
-        result = YES;
-        break;
-    }
+  if (result) { return YES; }
+  
+  // TODO: Improve this to actually save things
+  // Change buttons to Quit Without Saving, Cancel, Save All
+  alertResult = [XPAlert runAppModalWithTitle:@"Quit [Not] Soulver"
+                                      message:@"There are documents with unsaved changes. Save changes before quitting?"
+                                defaultButton:@"Review Unsaved Changes"
+                              alternateButton:@"Quit Anyway"
+                                  otherButton:nil];
+  switch (alertResult) {
+    case XPAlertReturnDefault:   return NO;
+    case XPAlertReturnAlternate: return YES;
+    default: [XPLog error:@"%@ Unexpected alert result: %lu", self, alertResult]; return NO;
   }
-  return result;
 }
 
 -(BOOL)application:(NSApplication *)sender openFile:(NSString *)filename;

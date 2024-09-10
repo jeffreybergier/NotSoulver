@@ -172,7 +172,7 @@
 @implementation SVRDocumentWindowController (NSWindowDelegate)
 -(BOOL)windowShouldClose:(id)sender;
 {
-  XPInteger alertResult;
+  XPAlertReturn alertResult;
   if (![self __needsSaving]) { return YES; }
   alertResult = [XPAlert runSheetModalForWindow:[self window]
                                       withTitle:@"Close Document"
@@ -181,12 +181,10 @@
                                 alternateButton:@"Cancel"
                                     otherButton:@"Don't Save"];
   switch (alertResult) {
-    case 1:
-      return [self __save];
-    case -1:
-      return YES;
-    default:
-      return NO;
+    case XPAlertReturnDefault:   return [self __save];
+    case XPAlertReturnAlternate: return NO;
+    case XPAlertReturnOther:     return YES;
+    default: [XPLog error:@"%@ Unexpected alert result: %lu", self, alertResult]; return NO;
   }
 }
 @end
@@ -245,15 +243,16 @@
 
 -(void)revertToSaved:(id)sender;
 {
-  XPInteger alertResult = [XPAlert runSheetModalForWindow:[self window]
-                                                withTitle:@"Revert to Saved"
-                                                  message:@"Any changes will be lost"
-                                            defaultButton:@"Revert"
-                                          alternateButton:@"Cancel"
-                                              otherButton:nil];
+  XPAlertReturn alertResult = [XPAlert runSheetModalForWindow:[self window]
+                                                    withTitle:@"Revert to Saved"
+                                                      message:@"Any changes will be lost"
+                                                defaultButton:@"Revert"
+                                              alternateButton:@"Cancel"
+                                                  otherButton:nil];
   switch (alertResult) {
-    case 1: [self __revertToSaved]; break;
-    default: break;
+    case XPAlertReturnDefault:   [self __revertToSaved]; return;
+    case XPAlertReturnAlternate: [XPLog debug:@"%@ Cancelled: Revert to Saved"]; return;
+    default: [XPLog error:@"%@ Unexpected alert result: %lu", self, alertResult]; return;
   }
 }
 
