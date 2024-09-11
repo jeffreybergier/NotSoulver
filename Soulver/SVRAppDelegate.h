@@ -16,6 +16,7 @@
 -(void)newDoc:(id)sender;
 -(void)openDoc:(id)sender;
 -(void)saveAll:(id)sender;
+-(void)__saveAll:(id)sender;
 
 // MARK: Notifications
 -(void)__windowWillCloseNotification:(NSNotification*)aNotification;

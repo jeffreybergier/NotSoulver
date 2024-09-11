@@ -55,9 +55,6 @@
 
 -(void)saveAll:(id)sender;
 {
-  NSEnumerator *e;
-  SVRDocumentWindowController *nextC;
-  
   XPAlertReturn alertResult = [XPAlert runAppModalWithTitle:@"Save All"
                                                     message:@"Save all documents? This cannot be undone."
                                               defaultButton:@"Save All"
@@ -65,11 +62,18 @@
                                                 otherButton:nil];
   
   switch (alertResult) {
-    case XPAlertReturnDefault:   break;
+    case XPAlertReturnDefault: [self __saveAll:sender]; return;
     case XPAlertReturnAlternate: return;
     default: [XPLog error:@"%@ Unexpected alert return: %lu", self, alertResult]; return;
   }
   
+  
+}
+
+-(void)__saveAll:(id)sender;
+{
+  NSEnumerator *e;
+  SVRDocumentWindowController *nextC;
   e = [self openDocumentEnumerator];
   while ((nextC = [e nextObject])) {
     [nextC save:sender];
@@ -198,16 +202,18 @@ didChangeOldFilename:(NSString*)oldFilename;
   // If no unsaved changes, return YES the app can terminate
   if (!hasUnsavedChanges) { return YES; }
   
-  // TODO: Improve this to actually save things
-  // Change buttons to Quit Without Saving, Cancel, Save All
+  // If there are unsaved changes, ask if we should save everything before quitting
   alertResult = [XPAlert runAppModalWithTitle:@"Quit [Not] Soulver"
-                                      message:@"There are documents with unsaved changes. Save changes before quitting?"
-                                defaultButton:@"Review Unsaved Changes"
-                              alternateButton:@"Quit Anyway"
-                                  otherButton:nil];
+                                      message:@"Do you want to save changes to your documents before quitting?"
+                                defaultButton:@"Save All"
+                              alternateButton:@"Cancel"
+                                  otherButton:@"Don't Save"];
   switch (alertResult) {
-    case XPAlertReturnDefault:   return NO;
-    case XPAlertReturnAlternate: return YES;
+    case XPAlertReturnDefault:
+      [self __saveAll:sender];                         // Save everything
+      return [self applicationShouldTerminate:sender]; // Check again if there are unsaved changes
+    case XPAlertReturnAlternate: return NO;
+    case XPAlertReturnOther: return YES;
     default: [XPLog error:@"%@ Unexpected alert result: %lu", self, alertResult]; return NO;
   }
 }
