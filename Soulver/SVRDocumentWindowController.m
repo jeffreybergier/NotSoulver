@@ -142,8 +142,7 @@
 -(XPUInteger)__onDiskHash;
 {
   SVRMathString *read;
-  // TODO: Consider making this has smarter/lazier
-  unsigned blankHash = 0;
+  XPUInteger blankHash = [[[[SVRMathString alloc] init] autorelease] hash];
   if (![self filename]) { return blankHash; }
   read = [SVRMathString mathStringWithFilename:[self filename]];
   if (!read) { return blankHash; }
