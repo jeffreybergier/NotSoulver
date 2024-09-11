@@ -80,3 +80,17 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 +(NSArray*)filenamesByRunningAppModalOpenPanelWithExistingFilename:(NSString*)filename;
 
 @end
+
+@interface XPUserDefaults: NSObject
+{
+  NSMutableDictionary *_storage;
+}
+
+-(NSString*)savePanelLastDirectory;
+-(BOOL)setSavePanelLastDirectory:(NSString*)newValue;
+-(BOOL)synchronize;
+-(id)init;
++(XPUserDefaults*)standardUserDefaults;
++(NSDictionary*)onDiskStorage;
++(NSDictionary*)defaultStorage;
+@end

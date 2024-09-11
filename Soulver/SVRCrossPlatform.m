@@ -73,7 +73,6 @@
 @end
 
 @implementation XPAlert
-
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #pragma clang diagnostic ignored "-Wformat-security"
@@ -97,8 +96,7 @@
                        alternateButton:(NSString*)alternateButton
                            otherButton:(NSString*)otherButton;
 {
-  // TODO: Implement hack to work with MacOSX
-  // ChatGPT explains how, but I can't find a google link
+  // TODO: Update to use sheets in Mac OS X
   return NSRunAlertPanel(title,
                          message,
                          defaultButton,
@@ -109,22 +107,16 @@
 
 @end
 
-NSString *XPSavePanelLastDirectory = nil;
-
 @implementation XPSavePanel
 
 +(NSString*)lastDirectory;
 {
-  if (!XPSavePanelLastDirectory) {
-    // TODO: Hook this up to NSUserDefaults (when it exists)
-    XPSavePanelLastDirectory = NSHomeDirectory();
-  }
-  return XPSavePanelLastDirectory;
+  return [[XPUserDefaults standardUserDefaults] savePanelLastDirectory];
 }
 
 +(void)setLastDirectory:(NSString*)lastDirectory;
 {
-  XPSavePanelLastDirectory = [lastDirectory retain];
+  [[XPUserDefaults standardUserDefaults] setSavePanelLastDirectory:lastDirectory];
 }
 
 +(NSString*)filenameByRunningSheetModalSavePanelForWindow:(NSWindow*)window;
@@ -178,4 +170,79 @@ NSString *XPSavePanelLastDirectory = nil;
   }
 #pragma clang diagnostic pop
 }
+@end
+
+XPUserDefaults *XPUserDefaultsStandardUserDefaults = nil;
+NSString *XPUserDefaultsSavePanelLastDirectory = @"kSavePanelLastDirectory";
+
+@implementation XPUserDefaults
+
+-(NSString*)savePanelLastDirectory;
+{
+  return [_storage objectForKey:XPUserDefaultsSavePanelLastDirectory];
+}
+
+-(BOOL)setSavePanelLastDirectory:(NSString*)newValue;
+{
+  if (newValue) {
+    [_storage setObject:newValue forKey:XPUserDefaultsSavePanelLastDirectory];
+  } else {
+    [_storage removeObjectForKey:XPUserDefaultsSavePanelLastDirectory];
+  }
+  return [self synchronize];
+}
+
+-(BOOL)synchronize;
+{
+  return YES;
+}
+
+-(id)init;
+{
+  NSMutableDictionary *storage;
+  self = [super init];
+  storage = [[XPUserDefaults onDiskStorage] mutableCopy];
+  if (!storage) {
+    storage = [[XPUserDefaults defaultStorage] mutableCopy];
+  }
+  _storage = storage;
+  return self;
+}
+
++(XPUserDefaults*)standardUserDefaults;
+{
+  if (!XPUserDefaultsStandardUserDefaults) {
+    XPUserDefaultsStandardUserDefaults = [[self alloc] init];
+  }
+  return XPUserDefaultsStandardUserDefaults;
+}
+
++(NSDictionary*)onDiskStorage;
+{
+  return nil;
+}
+
++(NSDictionary*)defaultStorage;
+{
+  NSArray *keys;
+  NSArray *vals;
+  
+  keys = [NSArray arrayWithObjects:
+          XPUserDefaultsSavePanelLastDirectory,
+          nil];
+  vals = [NSArray arrayWithObjects:
+          NSHomeDirectory(),
+          nil];
+  
+  return [NSDictionary dictionaryWithObjects:vals forKeys:keys];
+}
+
+- (void)dealloc
+{
+  [XPLog extra:@"DEALLOC: %@", self];
+  [_storage release];
+  _storage = nil;
+  [super dealloc];
+}
+
 @end
