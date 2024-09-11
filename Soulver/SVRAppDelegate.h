@@ -10,6 +10,7 @@
 // MARK: Properties
 -(NSMutableDictionary*)openFiles;
 -(NSMutableDictionary*)openUnsaved;
+-(NSEnumerator*)openDocumentEnumerator;
 
 // MARK: Document Management
 -(void)newDoc:(id)sender;
@@ -28,4 +29,15 @@
 -(BOOL)applicationShouldTerminate:(NSApplication *)sender;
 -(BOOL)application:(NSApplication *)sender openFile:(NSString *)filename;
 -(BOOL)applicationOpenUntitledFile:(NSApplication *)sender;
+@end
+
+@interface MultiEnumerator: NSEnumerator
+{
+  NSArray *_allCollections;
+  XPInteger _currentIndex;
+  NSEnumerator *_currentEnumerator;
+}
+-(id)nextObject;
+-(id)initWithCollections:(NSArray*)collections;
++(id)enumeratorWithCollections:(NSArray*)collections;
 @end

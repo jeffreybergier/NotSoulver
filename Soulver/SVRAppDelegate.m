@@ -13,6 +13,11 @@
 {
   return _openUnsaved;
 }
+-(NSEnumerator*)openDocumentEnumerator;
+{
+  NSArray *collections = [NSArray arrayWithObjects:[self ___openUnsaved], [self openFiles], nil];
+  return [MultiEnumerator enumeratorWithCollections:collections];
+}
 
 // MARK: Document Management
 
@@ -52,9 +57,8 @@
 
 -(void)saveAll:(id)sender;
 {
-  NSEnumerator *e1;
-  NSEnumerator *e2;
-  SVRDocumentWindowController *nextC = nil;
+  NSEnumerator *e;
+  SVRDocumentWindowController *nextC;
   
   XPAlertReturn alertResult = [XPAlert runAppModalWithTitle:@"Save All"
                                                     message:@"Save all documents? This cannot be undone."
@@ -68,13 +72,9 @@
     default: [XPLog error:@"%@ Unexpected alert return: %lu", self, alertResult]; return;
   }
   
-  e1 = [[self openUnsaved] objectEnumerator];
-  e2 = [[self openFiles] objectEnumerator];
-  nextC = [e1 nextObject];
-  while (nextC) {
+  e = [self openDocumentEnumerator];
+  while ((nextC = [e nextObject])) {
     [nextC save:sender];
-    nextC = [e1 nextObject];
-    if (!nextC) { nextC = [e2 nextObject]; }
   }
 }
 
@@ -192,21 +192,18 @@ didChangeOldFilename:(NSString*)oldFilename;
 @implementation SVRAppDelegate (NSApplicationDelegate)
 -(BOOL)applicationShouldTerminate:(NSApplication *)sender;
 {
-  NSEnumerator *e1;
-  NSEnumerator *e2;
+  NSEnumerator *e;
   SVRDocumentWindowController *nextC;
   XPAlertReturn alertResult;
-  BOOL result = YES;
+  BOOL hasUnsavedChanges = NO;
   
-  e1 = [[self openUnsaved] objectEnumerator];
-  e2 = [[self openFiles] objectEnumerator];
-  nextC = [e1 nextObject];
-  while (nextC && result) {
-    result = ![nextC hasUnsavedChanges];
-    nextC = [e1 nextObject];
-    if (!nextC) { nextC = [e2 nextObject]; }
+  e = [self openDocumentEnumerator];
+  while ((nextC = [e nextObject])) {
+    hasUnsavedChanges = [nextC hasUnsavedChanges];
+    if (hasUnsavedChanges) { break; }
   }
-  if (result) { return YES; }
+  // If no unsaved changes, return YES the app can terminate
+  if (!hasUnsavedChanges) { return YES; }
   
   // TODO: Improve this to actually save things
   // Change buttons to Quit Without Saving, Cancel, Save All
@@ -238,5 +235,50 @@ didChangeOldFilename:(NSString*)oldFilename;
 {
   [self newDoc:sender];
   return YES;
+}
+@end
+
+@implementation MultiEnumerator
+
+-(id)nextObject;
+{
+  // 1. Check the easy path
+  id nextObject = [_currentEnumerator nextObject];
+  if (nextObject) { return nextObject; }
+  
+  // 2. See if we can move to the next enumerator
+  if (_currentIndex >= [_allCollections count]) { return nil; }
+  
+  // 3. Increment the enumerator
+  [_currentEnumerator release];
+  _currentEnumerator = [[[_allCollections objectAtIndex:_currentIndex] objectEnumerator] retain];
+  _currentIndex += 1;
+  
+  // 4. Start over
+  return [self nextObject];
+}
+
+-(id)initWithCollections:(NSArray*)collections;
+{
+  self = [super init];
+  _allCollections = [collections retain];
+  _currentIndex = 0;
+  _currentEnumerator = nil;
+  return self;
+}
+
++(id)enumeratorWithCollections:(NSArray*)collections;
+{
+  return [[[MultiEnumerator alloc] initWithCollections:collections] autorelease];
+}
+
+-(void)dealloc;
+{
+  [XPLog extra:@"DEALLOC: %@", self];
+  [_allCollections release];
+  [_currentEnumerator release];
+  _allCollections = nil;
+  _currentEnumerator = nil;
+  [super dealloc];
 }
 @end
