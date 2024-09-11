@@ -173,9 +173,15 @@
 @end
 
 XPUserDefaults *XPUserDefaultsStandardUserDefaults = nil;
+NSString *XPUserDefaultsStorageFilename = @"kUserDefaultsStorageFilename";
 NSString *XPUserDefaultsSavePanelLastDirectory = @"kSavePanelLastDirectory";
 
 @implementation XPUserDefaults
+
+-(NSString*)storageFilename;
+{
+  return [_storage objectForKey:XPUserDefaultsStorageFilename];
+}
 
 -(NSString*)savePanelLastDirectory;
 {
@@ -194,16 +200,25 @@ NSString *XPUserDefaultsSavePanelLastDirectory = @"kSavePanelLastDirectory";
 
 -(BOOL)synchronize;
 {
-  return YES;
+  BOOL success = NO;
+  NSString *filename = [self storageFilename];
+  NSString *directory = [filename stringByDeletingLastPathComponent];
+  NSFileManager *fm = [NSFileManager defaultManager];
+  
+  success = [fm createDirectoryAtPath:directory attributes:nil];
+  if (!success) { [XPLog extra:@"%@ Failed: synchronize: directory %@", self, directory]; }
+  success = [_storage writeToFile:[self storageFilename] atomically:YES];
+  if (!success) { [XPLog pause:@"%@ Failed: synchronize: write: %@", self, filename]; }
+  return success;
 }
 
 -(id)init;
 {
   NSMutableDictionary *storage;
   self = [super init];
-  storage = [[XPUserDefaults onDiskStorage] mutableCopy];
+  storage = [[XPUserDefaults standardDictionaryOnDisk] mutableCopy];
   if (!storage) {
-    storage = [[XPUserDefaults defaultStorage] mutableCopy];
+    storage = [[XPUserDefaults standardDictionary] mutableCopy];
   }
   _storage = storage;
   return self;
@@ -217,20 +232,26 @@ NSString *XPUserDefaultsSavePanelLastDirectory = @"kSavePanelLastDirectory";
   return XPUserDefaultsStandardUserDefaults;
 }
 
-+(NSDictionary*)onDiskStorage;
++(NSDictionary*)standardDictionaryOnDisk;
 {
-  return nil;
+  NSString *filename = [[self standardDictionary] objectForKey:XPUserDefaultsStorageFilename];
+  NSDictionary* output = [NSDictionary dictionaryWithContentsOfFile:filename];
+  if (!output) { [XPLog debug:@"%@ Failed: onDiskStorage: %@", self, filename]; }
+  return output;
 }
 
-+(NSDictionary*)defaultStorage;
++(NSDictionary*)standardDictionary;
 {
   NSArray *keys;
   NSArray *vals;
   
+  // TODO: Replace NSHomeDirectory with NSStandardLibraryPaths
   keys = [NSArray arrayWithObjects:
+          XPUserDefaultsStorageFilename,
           XPUserDefaultsSavePanelLastDirectory,
           nil];
   vals = [NSArray arrayWithObjects:
+          [NSHomeDirectory() stringByAppendingPathComponent:@"/Library/NotSoulver/Preferences.plist"],
           NSHomeDirectory(),
           nil];
   
