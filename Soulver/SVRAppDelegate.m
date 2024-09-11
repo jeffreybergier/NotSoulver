@@ -9,13 +9,13 @@
 {
   return _openFiles;
 }
--(NSMutableDictionary*)openUnsaved;
+-(NSMutableArray*)openUnsaved;
 {
   return _openUnsaved;
 }
 -(NSEnumerator*)openDocumentEnumerator;
 {
-  NSArray *collections = [NSArray arrayWithObjects:[self ___openUnsaved], [self openFiles], nil];
+  NSArray *collections = [NSArray arrayWithObjects:[self openUnsaved], [self openFiles], nil];
   return [MultiEnumerator enumeratorWithCollections:collections];
 }
 
@@ -25,13 +25,11 @@
 {
   SVRDocumentWindowController *controller;
   NSWindow *window;
-  NSNumber *windowNumber;
 
   controller = [SVRDocumentWindowController controllerWithFilename:nil];
   window = [controller window];
-  windowNumber = [NSNumber XP_numberWithInteger:[window windowNumber]];
   
-  [[self openUnsaved] setObject:controller forKey:windowNumber];
+  [[self openUnsaved] addObject:controller];
   [window makeKeyAndOrderFront:sender];
 }
 
@@ -111,46 +109,41 @@
 
 -(void)__documentWillClose:(SVRDocumentWindowController*)document;
 {
-  XPUInteger windowNumber = [[document window] windowNumber];
-  NSString *filename = [document filename];
+  XPInteger unsavedIndex = NSNotFound;
+  NSString *savedFilename = [document filename];
   
-  // Not strictly necessary
-  // But might help the NSWindow closing process settle more gracefully
   [document retain];
-  
-  [[self openUnsaved] removeObjectForKey:[NSNumber XP_numberWithInteger:windowNumber]];
-  if (filename) {
-    [[self openFiles] removeObjectForKey:filename];
+  unsavedIndex = [[self openUnsaved] indexOfObject:document];
+  if (unsavedIndex != NSNotFound) {
+    [[self openUnsaved] removeObjectAtIndex:unsavedIndex];
   }
-  
-  [XPLog debug:@"%@ closedWindow: %lu closedFile: %@", self, windowNumber, filename];
-  
+  if (savedFilename) {
+    [[self openFiles] removeObjectForKey:savedFilename];
+  }
+  [XPLog debug:@"%@ closedWindow: %lu closedFile: %@", self, [[document window] windowNumber], savedFilename];
   [document autorelease];
 }
 
 -(void)   __document:(SVRDocumentWindowController*)document
 didChangeOldFilename:(NSString*)oldFilename;
 {
-  XPUInteger windowNumber = [[document window] windowNumber];
+  XPInteger unsavedIndex = NSNotFound;
   NSString *newFilename = [document filename];
 
-  // Not strictly necessary as the Document should not be released by changing its filename
   [document retain];
-  
-  [[self openUnsaved] removeObjectForKey:[NSNumber XP_numberWithInteger:windowNumber]];
-  
+  unsavedIndex = [[self openUnsaved] indexOfObject:document];
+  if (unsavedIndex != NSNotFound) {
+    [[self openUnsaved] removeObjectAtIndex:unsavedIndex];
+  }
   if (oldFilename) {
     [[self openFiles] removeObjectForKey:oldFilename];
   }
-  
   if (newFilename) {
     [[self openFiles] setObject:document forKey:newFilename];
   } else {
-    [[self openUnsaved] setObject:document forKey:[NSNumber XP_numberWithInteger:windowNumber]];
+    [[self openUnsaved] addObject:document];
   }
-  
   [XPLog debug:@"%@ fileChanged: %@", newFilename];
-
   [document autorelease];
 }
 
@@ -158,7 +151,7 @@ didChangeOldFilename:(NSString*)oldFilename;
 {
   // Initialize Properties
   _openFiles = [NSMutableDictionary new];
-  _openUnsaved = [NSMutableDictionary new];
+  _openUnsaved = [NSMutableArray new];
   
   // Register for Notifications
   [[NSNotificationCenter defaultCenter] addObserver:self

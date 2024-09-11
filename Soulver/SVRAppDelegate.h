@@ -4,12 +4,12 @@
 @interface SVRAppDelegate: NSObject
 {
   NSMutableDictionary *_openFiles;
-  NSMutableDictionary *_openUnsaved;
+  NSMutableArray *_openUnsaved;
 }
 
 // MARK: Properties
 -(NSMutableDictionary*)openFiles;
--(NSMutableDictionary*)openUnsaved;
+-(NSMutableArray*)openUnsaved;
 -(NSEnumerator*)openDocumentEnumerator;
 
 // MARK: Document Management
