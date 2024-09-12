@@ -157,6 +157,9 @@ didChangeOldFilename:(NSString*)oldFilename;
   _openFiles = [NSMutableDictionary new];
   _openUnsaved = [NSMutableArray new];
   
+  // Prepare UserDefaults
+  [[NSUserDefaults standardUserDefaults] registerDefaults:[NSUserDefaults standardDictionary]];
+  
   // Register for Notifications
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(__windowWillCloseNotification:)

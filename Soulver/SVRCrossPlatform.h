@@ -81,28 +81,8 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 
 @end
 
-@interface XPUserDefaults: NSObject
-{
-#if OS_OPENSTEP
-  NSMutableDictionary *_storage;
-#endif
-}
-
-// MARK: Preferences
--(NSString*)storageFilename;
+@interface NSUserDefaults (Soulver)
 -(NSString*)savePanelLastDirectory;
 -(BOOL)setSavePanelLastDirectory:(NSString*)newValue;
-
-// MARK: Private
--(id)objectForKey:(NSString*)key;
--(void)setObject:(id)object forKey:(NSString*)key;
-#if OS_OPENSTEP
-+(NSDictionary*)standardDictionaryOnDisk;
-#endif
-
-// MARK: Boilerplate
--(BOOL)synchronize;
--(id)init;
-+(XPUserDefaults*)standardUserDefaults;
 +(NSDictionary*)standardDictionary;
 @end
