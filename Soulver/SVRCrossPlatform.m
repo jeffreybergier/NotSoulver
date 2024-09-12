@@ -172,34 +172,68 @@
 }
 @end
 
+
 XPUserDefaults *XPUserDefaultsStandardUserDefaults = nil;
 NSString *XPUserDefaultsStorageFilename = @"kUserDefaultsStorageFilename";
 NSString *XPUserDefaultsSavePanelLastDirectory = @"kSavePanelLastDirectory";
 
 @implementation XPUserDefaults
 
+// MARK: Preferences
 -(NSString*)storageFilename;
 {
-  return [_storage objectForKey:XPUserDefaultsStorageFilename];
+  return [self objectForKey:XPUserDefaultsStorageFilename];
 }
 
 -(NSString*)savePanelLastDirectory;
 {
-  return [_storage objectForKey:XPUserDefaultsSavePanelLastDirectory];
+  return [self objectForKey:XPUserDefaultsSavePanelLastDirectory];
 }
 
 -(BOOL)setSavePanelLastDirectory:(NSString*)newValue;
 {
-  if (newValue) {
-    [_storage setObject:newValue forKey:XPUserDefaultsSavePanelLastDirectory];
-  } else {
-    [_storage removeObjectForKey:XPUserDefaultsSavePanelLastDirectory];
-  }
+  [self setObject:newValue forKey:XPUserDefaultsSavePanelLastDirectory];
   return [self synchronize];
 }
 
+// MARK: Private
+-(id)objectForKey:(NSString*)key;
+{
+#if OS_OPENSTEP
+  return [_storage objectForKey:key];
+#else
+  return [[NSUserDefaults standardUserDefaults] objectForKey:key];
+#endif
+}
+
+-(void)setObject:(id)object forKey:(NSString*)key;
+{
+#if OS_OPENSTEP
+  if (object) {
+    [_storage setObject:object forKey:key];
+  } else {
+    [_storage removeObjectForKey:key];
+  }
+#else
+  [[NSUserDefaults standardUserDefaults] setObject:object forKey:key];
+#endif
+}
+
+#if OS_OPENSTEP
++(NSDictionary*)standardDictionaryOnDisk;
+{
+  NSString *filename = [[self standardDictionary] objectForKey:XPUserDefaultsStorageFilename];
+  NSDictionary* output = [NSDictionary dictionaryWithContentsOfFile:filename];
+  if (!output) { [XPLog debug:@"%@ Failed: onDiskStorage: %@", self, filename]; }
+  return output;
+}
+#endif
+
+
+// MARK: Boilerplate
 -(BOOL)synchronize;
 {
+#if OS_OPENSTEP
   BOOL success = NO;
   NSString *filename = [self storageFilename];
   NSString *directory = [filename stringByDeletingLastPathComponent];
@@ -210,17 +244,22 @@ NSString *XPUserDefaultsSavePanelLastDirectory = @"kSavePanelLastDirectory";
   success = [_storage writeToFile:[self storageFilename] atomically:YES];
   if (!success) { [XPLog pause:@"%@ Failed: synchronize: write: %@", self, filename]; }
   return success;
+#else
+  return [[NSUserDefaults standardUserDefaults] synchronize];
+#endif
 }
 
 -(id)init;
 {
-  NSMutableDictionary *storage;
   self = [super init];
-  storage = [[XPUserDefaults standardDictionaryOnDisk] mutableCopy];
-  if (!storage) {
-    storage = [[XPUserDefaults standardDictionary] mutableCopy];
+#if OS_OPENSTEP
+  _storage = [[XPUserDefaults standardDictionaryOnDisk] mutableCopy];
+  if (!_storage) {
+    _storage = [[XPUserDefaults standardDictionary] mutableCopy];
   }
-  _storage = storage;
+#else
+  [[NSUserDefaults standardUserDefaults] registerDefaults:[XPUserDefaults standardDictionary]];
+#endif
   return self;
 }
 
@@ -232,27 +271,25 @@ NSString *XPUserDefaultsSavePanelLastDirectory = @"kSavePanelLastDirectory";
   return XPUserDefaultsStandardUserDefaults;
 }
 
-+(NSDictionary*)standardDictionaryOnDisk;
-{
-  NSString *filename = [[self standardDictionary] objectForKey:XPUserDefaultsStorageFilename];
-  NSDictionary* output = [NSDictionary dictionaryWithContentsOfFile:filename];
-  if (!output) { [XPLog debug:@"%@ Failed: onDiskStorage: %@", self, filename]; }
-  return output;
-}
-
 +(NSDictionary*)standardDictionary;
 {
   NSArray *keys;
   NSArray *vals;
   
+  NSString *filename = nil;
+#if OS_OPENSTEP
+  filename = [[NSStandardLibraryPaths() objectAtIndex:0] stringByAppendingPathComponent:@"NotSoulver/Preferences.plist"];
+  [XPLog pause:@"%@", filename];
+#endif
+  
   // TODO: Replace NSHomeDirectory with NSStandardLibraryPaths
   keys = [NSArray arrayWithObjects:
-          XPUserDefaultsStorageFilename,
           XPUserDefaultsSavePanelLastDirectory,
+          XPUserDefaultsStorageFilename,
           nil];
   vals = [NSArray arrayWithObjects:
-          [NSHomeDirectory() stringByAppendingPathComponent:@"/Library/NotSoulver/Preferences.plist"],
           NSHomeDirectory(),
+          filename,
           nil];
   
   return [NSDictionary dictionaryWithObjects:vals forKeys:keys];
@@ -261,8 +298,10 @@ NSString *XPUserDefaultsSavePanelLastDirectory = @"kSavePanelLastDirectory";
 - (void)dealloc
 {
   [XPLog extra:@"DEALLOC: %@", self];
+#if OS_OPENSTEP
   [_storage release];
   _storage = nil;
+#endif
   [super dealloc];
 }
 
