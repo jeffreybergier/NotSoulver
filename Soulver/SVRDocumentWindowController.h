@@ -42,9 +42,9 @@
 // MARK: NSMenuActionResponder
 @interface SVRDocumentWindowController (NSMenuActionResponder)
 -(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
--(void)cut:(id)sender;
 -(void)copy:(id)sender;
--(void)paste:(id)sender;
+-(void)copyRaw:(id)sender;
+-(void)pasteRaw:(id)sender;
 -(void)save:(id)sender;
 -(void)saveAs:(id)sender;
 -(void)saveTo:(id)sender;

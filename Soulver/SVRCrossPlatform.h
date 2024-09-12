@@ -6,9 +6,11 @@
 #if OS_OPENSTEP
 typedef int XPInteger;
 typedef unsigned int XPUInteger;
+#define XPPasteboardTypeRTF NSRTFPboardType
 #else
 typedef NSInteger XPInteger;
 typedef NSUInteger XPUInteger;
+#define XPPasteboardTypeRTF NSPasteboardTypeRTF
 #endif
 
 @interface XPLog: NSObject
@@ -31,6 +33,7 @@ typedef NSUInteger XPUInteger;
 
 #if OS_OPENSTEP
 /// These match XPAlertButtonDefault
+/// NSAlertDefaultReturn
 typedef enum {
   XPAlertReturnDefault   = (XPInteger)1,
   XPAlertReturnAlternate = (XPInteger)0,
@@ -78,11 +81,17 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 +(NSArray*)filenamesByRunningAppModalOpenPanel;
 /// Returns empty array if user cancels
 +(NSArray*)filenamesByRunningAppModalOpenPanelWithExistingFilename:(NSString*)filename;
-
 @end
 
 @interface NSUserDefaults (Soulver)
 -(NSString*)savePanelLastDirectory;
 -(BOOL)setSavePanelLastDirectory:(NSString*)newValue;
 +(NSDictionary*)standardDictionary;
+@end
+
+@interface NSAttributedString (Pasteboard)
+-(NSData*)SVR_RTFRepresentation;
+/// Pass NIL for generalPasteboard
+-(BOOL)SVR_writeToPasteboard:(NSPasteboard*)pasteboard;
+-(BOOL)SVR_writeToPasteboard;
 @end

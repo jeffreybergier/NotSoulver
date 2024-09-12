@@ -196,7 +196,6 @@
 
 -(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
 {
-  // TODO: Add Cut (3001), Copy (3002), Paste (3003), Select All (3004)
   switch ([menuItem tag]) {
       // Save, logic allows saving if needed or if its a new document
     case 2003: return [self hasUnsavedChanges] || [[[self model] mathString] isEmpty];
@@ -207,25 +206,31 @@
       // Revert to Saved
       // TODO: Set KeyEquivalent to CMD+U
     case 2007: return ([self filename] != nil) && [self hasUnsavedChanges];
+      // Copy
+    case 3001: return ![[[self model] mathString] isEmpty];
+      // Copy Raw
+    case 3002: return ![[[self model] mathString] isEmpty];
+      // Paste Raw
+    case 3003: return YES; // TODO: Check clipboard for text
     default:
       [XPLog debug:@"%@ validateMenuItem: Unexpected: (%ld)%@", self, [menuItem tag], [menuItem title]];
       return NO;
   }
 }
 
--(void)cut:(id)sender;
-{
-  [XPLog pause:@"%@ cut: %@", self, sender];
-}
-
 -(void)copy:(id)sender;
 {
-  [XPLog pause:@"%@ copy: %@", self, sender];
+  [[[self model] latestRender] SVR_writeToPasteboard];
 }
 
--(void)paste:(id)sender;
+-(void)copyRaw:(id)sender;
 {
-  [XPLog pause:@"%@ paste: %@", self, sender];
+  // TODO: Implement copy raw
+}
+
+-(void)pasteRaw:(id)sender;
+{
+  // TODO: Implement Paste Raw
 }
 
 -(void)save:(id)sender;

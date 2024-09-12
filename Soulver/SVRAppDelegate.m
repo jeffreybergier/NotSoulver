@@ -160,6 +160,9 @@ didChangeOldFilename:(NSString*)oldFilename;
   // Prepare UserDefaults
   [[NSUserDefaults standardUserDefaults] registerDefaults:[NSUserDefaults standardDictionary]];
   
+  // Prepare Pastboard
+  [[NSPasteboard generalPasteboard] declareTypes:[NSArray arrayWithObject:XPPasteboardTypeRTF] owner:self];
+  
   // Register for Notifications
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(__windowWillCloseNotification:)

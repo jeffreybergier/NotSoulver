@@ -204,3 +204,33 @@ NSString *XPUserDefaultsSavePanelLastDirectory = @"kSavePanelLastDirectory";
 }
 
 @end
+
+@implementation NSAttributedString (Pasteboard)
+
+-(NSData*)SVR_RTFRepresentation;
+{
+  return [self RTFFromRange:NSMakeRange(0, [self length]) documentAttributes:NULL];
+}
+
+/// Pass NIL for generalPasteboard
+-(BOOL)SVR_writeToPasteboard:(NSPasteboard*)pasteboard;
+{
+  BOOL success = NO;
+  NSData *data = [self SVR_RTFRepresentation];
+  if (!data) {
+    [XPLog pause:@"%@ Fail: RTFRepresentation", self];
+    return success;
+  }
+  pasteboard = (pasteboard) ? pasteboard : [NSPasteboard generalPasteboard];
+  success = [pasteboard setData:data forType:XPPasteboardTypeRTF];
+  if (!success) {
+    [XPLog pause:@"%@ Fail: PBSetData: %@", self, data];
+  }
+  return success;
+}
+
+-(BOOL)SVR_writeToPasteboard;
+{
+  return [self SVR_writeToPasteboard:nil];
+}
+@end
