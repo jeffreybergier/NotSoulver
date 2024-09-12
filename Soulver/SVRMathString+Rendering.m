@@ -503,7 +503,7 @@
 @end
 
 // MARK: NSAttributedString
-@implementation NSAttributedString (Soulver)
+@implementation NSAttributedString (MathStringRendering)
 
 +(id)SVR_stringWithString:(NSString*)aString;
 {

@@ -79,7 +79,7 @@
 @end
 
 // MARK: NSAttributedString
-@interface NSAttributedString (Soulver)
+@interface NSAttributedString (MathStringRendering)
 +(id)SVR_stringWithString:(NSString*)aString;
 +(id)SVR_stringWithString:(NSString*)aString color:(NSColor*)aColor;
 @end
