@@ -220,17 +220,20 @@
 
 -(void)copy:(id)sender;
 {
+  [XPLog debug:@"%@ copy:", self];
   [[[self model] latestRender] SVR_writeToPasteboard];
 }
 
 -(void)copyRaw:(id)sender;
 {
   // TODO: Implement copy raw
+  [XPLog debug:@"%@ copyRaw:", self];
 }
 
 -(void)pasteRaw:(id)sender;
 {
   // TODO: Implement Paste Raw
+  [XPLog debug:@"%@ pasteRaw:", self];
 }
 
 -(void)save:(id)sender;
