@@ -206,11 +206,11 @@
       // Revert to Saved
       // TODO: Set KeyEquivalent to CMD+U
     case 2007: return ([self filename] != nil) && [self hasUnsavedChanges];
-      // Copy
+      // Copy Render
     case 3001: return ![[[self model] mathString] isEmpty];
-      // Copy Raw
+      // Copy
     case 3002: return ![[[self model] mathString] isEmpty];
-      // Paste Raw
+      // Paste
     case 3003: return YES; // TODO: Check clipboard for text
     default:
       [XPLog debug:@"%@ validateMenuItem: Unexpected: (%ld)%@", self, [menuItem tag], [menuItem title]];
@@ -221,19 +221,19 @@
 -(void)copy:(id)sender;
 {
   [XPLog debug:@"%@ copy:", self];
+}
+
+-(void)copyRender:(id)sender;
+{
+  // TODO: Implement copy raw
+  [XPLog debug:@"%@ copyRender:", self];
   [[[self model] latestRender] SVR_writeToPasteboard];
 }
 
--(void)copyRaw:(id)sender;
-{
-  // TODO: Implement copy raw
-  [XPLog debug:@"%@ copyRaw:", self];
-}
-
--(void)pasteRaw:(id)sender;
+-(void)paste:(id)sender;
 {
   // TODO: Implement Paste Raw
-  [XPLog debug:@"%@ pasteRaw:", self];
+  [XPLog debug:@"%@ paste:", self];
 }
 
 -(void)save:(id)sender;
