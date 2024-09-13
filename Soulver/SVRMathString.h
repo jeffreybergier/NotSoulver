@@ -74,20 +74,20 @@
 {
   NSString *_line;
   BOOL _isComplete;
-  int _index;
+  XPUInteger _index;
 }
 -(NSString*)line;
 -(BOOL)isComplete;
--(int)index;
+-(XPUInteger)index;
 -(NSString*)description;
--(id)initWithLine:(NSString*)line isComplete:(BOOL)isComplete index:(int)index;
-+(id)lineWithLine:(NSString*)line isComplete:(BOOL)isComplete index:(int)index;
+-(id)initWithLine:(NSString*)line isComplete:(BOOL)isComplete index:(XPUInteger)index;
++(id)lineWithLine:(NSString*)line isComplete:(BOOL)isComplete index:(XPUInteger)index;
 @end
 
 @interface SVRMathStringEnumerator: NSEnumerator
 {
   NSArray *_allObjects;
-  int _nextIndex;
+  XPUInteger _nextIndex;
   BOOL _lastLineComplete;
 }
 -(NSArray*)allObjects;

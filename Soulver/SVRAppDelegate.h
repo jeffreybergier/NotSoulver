@@ -35,7 +35,7 @@
 @interface MultiEnumerator: NSEnumerator
 {
   NSArray *_allCollections;
-  XPInteger _currentIndex;
+  XPUInteger _currentIndex;
   NSEnumerator *_currentEnumerator;
 }
 -(id)nextObject;

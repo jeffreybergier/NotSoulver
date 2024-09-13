@@ -293,18 +293,18 @@ NSSet *NSSet_SVR_solutionInsertCheck;
   return _isComplete;
 }
 
--(int)index;
+-(XPUInteger)index;
 {
   return _index;
 }
 
 -(NSString*)description;
 {
-  return [NSString stringWithFormat:@"<%@> Line: '%@' isComplete: %d, Index: %d",
+  return [NSString stringWithFormat:@"<%@> Line: '%@' isComplete: %d, Index: %lu",
           [super description], _line, _isComplete, _index];
 }
 
--(id)initWithLine:(NSString*)line isComplete:(BOOL)isComplete index:(int)index;
+-(id)initWithLine:(NSString*)line isComplete:(BOOL)isComplete index:(XPUInteger)index;
 {
   self = [super init];
   _line = [line retain];
@@ -313,7 +313,7 @@ NSSet *NSSet_SVR_solutionInsertCheck;
   return self;
 }
 
-+(id)lineWithLine:(NSString*)line isComplete:(BOOL)isComplete index:(int)index;
++(id)lineWithLine:(NSString*)line isComplete:(BOOL)isComplete index:(XPUInteger)index;
 {
   return [[[SVRMathStringEnumeratorLine alloc] initWithLine:line isComplete:isComplete index:index] autorelease];
 }
@@ -340,7 +340,7 @@ NSSet *NSSet_SVR_solutionInsertCheck;
   XPUInteger count = [_allObjects count];
   XPUInteger lastIndex = count - 1;
   BOOL lineIsComplete = YES;
-  int index = _nextIndex;
+  XPUInteger index = _nextIndex;
   _nextIndex += 1;
 
   // Bail Conditions

@@ -113,7 +113,7 @@
 
 -(void)__documentWillClose:(SVRDocumentWindowController*)document;
 {
-  XPInteger unsavedIndex = NSNotFound;
+  XPUInteger unsavedIndex = NSNotFound;
   NSString *savedFilename = [document filename];
   
   [document retain];
@@ -131,7 +131,7 @@
 -(void)   __document:(SVRDocumentWindowController*)document
 didChangeOldFilename:(NSString*)oldFilename;
 {
-  XPInteger unsavedIndex = NSNotFound;
+  XPUInteger unsavedIndex = NSNotFound;
   NSString *newFilename = [document filename];
 
   [document retain];
