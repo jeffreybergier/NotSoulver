@@ -264,11 +264,24 @@ NSString *XPUserDefaultsSavePanelLastDirectory = @"kSavePanelLastDirectory";
     }
   }
   
-  // TODO: check if string is empty
-  // Trim newlines from string ends
+  // TODO: Trim newlines from string ends after 10.3 Panther
   if (!fromPboard) { return nil; }
+  fromPboard = [fromPboard SVR_stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+  if ([fromPboard length] == 0) { return nil; }	
   
   return [SVRMathString mathStringWithString:fromPboard];
 }
 
+@end
+
+@implementation NSString (CrossPlatform)
+-(NSString*)SVR_stringByTrimmingCharactersInSet:(NSCharacterSet*)set;
+{
+#if OS_OPENSTEP
+  // Make a manual implementation?
+  return self;
+#else
+  return [self stringByTrimmingCharactersInSet:set];
+#endif
+}
 @end

@@ -108,5 +108,8 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 -(BOOL)SVR_setMathString:(SVRMathString*)aString;
 /// Hack that just get the raw string as plain text from the pasteboard
 -(SVRMathString*)SVR_mathString;
+@end
 
+@interface NSString (CrossPlatform)
+-(NSString*)SVR_stringByTrimmingCharactersInSet:(NSCharacterSet*)set;
 @end
