@@ -94,8 +94,10 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 @end
 
 @interface NSAttributedString (Pasteboard)
--(NSData*)SVR_RTFRepresentation;
-/// Pass NIL for generalPasteboard
--(BOOL)SVR_writeToPasteboard:(NSPasteboard*)pasteboard;
--(BOOL)SVR_writeToPasteboard;
+-(NSData*)SVR_pasteboardRepresentation;
+@end
+
+@interface NSPasteboard (Pasteboard)
+-(void)SVR_configure;
+-(BOOL)SVR_setAttributedString:(NSAttributedString*)aString;
 @end

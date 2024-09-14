@@ -161,7 +161,7 @@ didChangeOldFilename:(NSString*)oldFilename;
   [[NSUserDefaults standardUserDefaults] registerDefaults:[NSUserDefaults standardDictionary]];
   
   // Prepare Pastboard
-  [[NSPasteboard generalPasteboard] declareTypes:[NSArray arrayWithObject:XPPasteboardTypeRTF] owner:self];
+  [[NSPasteboard generalPasteboard] SVR_configure];
   
   // Register for Notifications
   [[NSNotificationCenter defaultCenter] addObserver:self

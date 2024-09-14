@@ -227,7 +227,7 @@
 {
   // TODO: Implement copy raw
   [XPLog debug:@"%@ copyRender:", self];
-  [[[self model] latestRender] SVR_writeToPasteboard];
+  [[NSPasteboard generalPasteboard] SVR_setAttributedString:[[self model] latestRender]];
 }
 
 -(void)paste:(id)sender;

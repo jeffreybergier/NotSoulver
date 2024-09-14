@@ -207,32 +207,33 @@ NSString *XPUserDefaultsSavePanelLastDirectory = @"kSavePanelLastDirectory";
 
 @implementation NSAttributedString (Pasteboard)
 
--(NSData*)SVR_RTFRepresentation;
+-(NSData*)SVR_pasteboardRepresentation;
 {
   NSDictionary *attribs = [NSDictionary dictionaryWithObject:XPRTFTextDocumentType
                                                       forKey:XPDocumentTypeDocumentAttribute];
   return [self RTFFromRange:NSMakeRange(0, [self length]) documentAttributes:attribs];
 }
+@end
 
-/// Pass NIL for generalPasteboard
--(BOOL)SVR_writeToPasteboard:(NSPasteboard*)pasteboard;
+@implementation NSPasteboard (Pasteboard)
+-(void)SVR_configure;
+{
+  [self declareTypes:[NSArray arrayWithObject:XPPasteboardTypeRTF] owner:nil];
+}
+
+-(BOOL)SVR_setAttributedString:(NSAttributedString*)aString;
 {
   BOOL success = NO;
-  NSData *data = [self SVR_RTFRepresentation];
+  NSData *data = [aString SVR_pasteboardRepresentation];
   if (!data) {
     [XPLog pause:@"%@ Fail: RTFRepresentation", self];
     return success;
   }
-  pasteboard = (pasteboard) ? pasteboard : [NSPasteboard generalPasteboard];
-  success = [pasteboard setData:data forType:XPPasteboardTypeRTF];
+  success = [self setData:data forType:XPPasteboardTypeRTF];
   if (!success) {
     [XPLog pause:@"%@ Fail: PBSetData: %@", self, data];
   }
   return success;
 }
 
--(BOOL)SVR_writeToPasteboard;
-{
-  return [self SVR_writeToPasteboard:nil];
-}
 @end
