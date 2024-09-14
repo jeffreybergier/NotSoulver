@@ -209,7 +209,9 @@ NSString *XPUserDefaultsSavePanelLastDirectory = @"kSavePanelLastDirectory";
 
 -(NSData*)SVR_RTFRepresentation;
 {
-  return [self RTFFromRange:NSMakeRange(0, [self length]) documentAttributes:NULL];
+  NSDictionary *attribs = [NSDictionary dictionaryWithObject:XPRTFTextDocumentType
+                                                      forKey:XPDocumentTypeDocumentAttribute];
+  return [self RTFFromRange:NSMakeRange(0, [self length]) documentAttributes:attribs];
 }
 
 /// Pass NIL for generalPasteboard

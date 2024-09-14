@@ -7,10 +7,14 @@
 typedef int XPInteger;
 typedef unsigned int XPUInteger;
 #define XPPasteboardTypeRTF NSRTFPboardType
+#define XPRTFTextDocumentType @"NSRTF"
+#define XPDocumentTypeDocumentAttribute @"NSDocumentType"
 #else
 typedef NSInteger XPInteger;
 typedef NSUInteger XPUInteger;
 #define XPPasteboardTypeRTF NSPasteboardTypeRTF
+#define XPRTFTextDocumentType NSRTFTextDocumentType
+#define XPDocumentTypeDocumentAttribute NSDocumentTypeDocumentAttribute
 #endif
 
 @interface XPLog: NSObject
