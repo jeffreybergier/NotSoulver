@@ -1,6 +1,7 @@
 /* SVRCrossPlatform.m created by me on Fri 06-Sep-2024 */
 
 #import "SVRCrossPlatform.h"
+#import "SVRMathString.h"
 
 @implementation XPLog
 
@@ -216,10 +217,6 @@ NSString *XPUserDefaultsSavePanelLastDirectory = @"kSavePanelLastDirectory";
 @end
 
 @implementation NSPasteboard (Pasteboard)
--(void)SVR_configure;
-{
-  [self declareTypes:[NSArray arrayWithObject:XPPasteboardTypeRTF] owner:nil];
-}
 
 -(BOOL)SVR_setAttributedString:(NSAttributedString*)aString;
 {
@@ -229,11 +226,49 @@ NSString *XPUserDefaultsSavePanelLastDirectory = @"kSavePanelLastDirectory";
     [XPLog pause:@"%@ Fail: RTFRepresentation", self];
     return success;
   }
+  [self declareTypes:[NSArray arrayWithObjects:XPPasteboardTypeRTF, XPPasteboardTypeString, nil] owner:nil];
   success = [self setData:data forType:XPPasteboardTypeRTF];
+  success = success && [self setString:[aString string] forType:XPPasteboardTypeString];
   if (!success) {
     [XPLog pause:@"%@ Fail: PBSetData: %@", self, data];
   }
   return success;
+}
+
+-(BOOL)SVR_setMathString:(SVRMathString*)aString;
+{
+  NSString *toPboard;
+  BOOL success = NO;
+  
+  toPboard = [aString stringValue];
+  [self declareTypes:[NSArray arrayWithObjects:XPPasteboardTypeString, nil] owner:nil];
+  success = [self setString:toPboard forType:XPPasteboardTypeString];
+  
+  if (!success) {
+    [XPLog pause:@"%@ Fail: PBSetString: %@", self, toPboard];
+  }
+  return success;
+}
+
+-(SVRMathString*)SVR_mathString;
+{
+  NSString *type;
+  NSString *fromPboard = nil;
+  NSEnumerator *e = [[self types] objectEnumerator];
+  
+  while ((type = [e nextObject])) {
+    fromPboard = [self stringForType:type];
+    if (fromPboard) {
+      [XPLog debug:@"%@ stringForType: %@: %@", self, type, fromPboard];
+      break;
+    }
+  }
+  
+  // TODO: check if string is empty
+  // Trim newlines from string ends
+  if (!fromPboard) { return nil; }
+  
+  return [SVRMathString mathStringWithString:fromPboard];
 }
 
 @end

@@ -2,16 +2,21 @@
 
 #import <AppKit/AppKit.h>
 
+// MARK: Forward Declarations
+@class SVRMathString;
+
 /// MARK: Simple Typedefs
 #if OS_OPENSTEP
 typedef int XPInteger;
 typedef unsigned int XPUInteger;
+#define XPPasteboardTypeString NSStringPboardType
 #define XPPasteboardTypeRTF NSRTFPboardType
 #define XPRTFTextDocumentType @"NSRTF"
 #define XPDocumentTypeDocumentAttribute @"NSDocumentType"
 #else
 typedef NSInteger XPInteger;
 typedef NSUInteger XPUInteger;
+#define XPPasteboardTypeString NSPasteboardTypeString
 #define XPPasteboardTypeRTF NSPasteboardTypeRTF
 #define XPRTFTextDocumentType NSRTFTextDocumentType
 #define XPDocumentTypeDocumentAttribute NSDocumentTypeDocumentAttribute
@@ -98,6 +103,10 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 @end
 
 @interface NSPasteboard (Pasteboard)
--(void)SVR_configure;
 -(BOOL)SVR_setAttributedString:(NSAttributedString*)aString;
+/// Hack that just sets the raw string as plain text into the pasteboard
+-(BOOL)SVR_setMathString:(SVRMathString*)aString;
+/// Hack that just get the raw string as plain text from the pasteboard
+-(SVRMathString*)SVR_mathString;
+
 @end
