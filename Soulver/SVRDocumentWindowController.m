@@ -230,11 +230,17 @@
 
 -(void)paste:(id)sender;
 {
-  // TODO: Implement warning about losing data
-  SVRMathString *fromPboard;  
-  fromPboard = [[NSPasteboard generalPasteboard] SVR_mathString];
-  if (!fromPboard) { [XPLog debug:@"%@ paste: empty", self]; return; }
-  [[self model] setMathString:fromPboard];
+  XPAlertReturn alertResult = [XPAlert runSheetModalForWindow:[self window]
+                                                    withTitle:@"Paste"
+                                                      message:@"Replace document contents with clipboard contents?"
+                                                defaultButton:@"Paste"
+                                              alternateButton:@"Cancel"
+                                                  otherButton:nil];
+  switch (alertResult) {
+    case XPAlertReturnDefault:   [self __paste]; return;
+    case XPAlertReturnAlternate: [XPLog debug:@"%@ Cancelled: Paste", self]; return;
+    default: [XPLog error:@"%@ Unexpected alert result: %lu", self, alertResult]; return;
+  }
 }
 
 -(void)save:(id)sender;
@@ -262,9 +268,17 @@
                                                   otherButton:nil];
   switch (alertResult) {
     case XPAlertReturnDefault:   [self __revertToSaved]; return;
-    case XPAlertReturnAlternate: [XPLog debug:@"%@ Cancelled: Revert to Saved"]; return;
+    case XPAlertReturnAlternate: [XPLog debug:@"%@ Cancelled: Revert to Saved", self]; return;
     default: [XPLog error:@"%@ Unexpected alert result: %lu", self, alertResult]; return;
   }
+}
+
+-(void)__paste;
+{
+  SVRMathString *fromPboard;
+  fromPboard = [[NSPasteboard generalPasteboard] SVR_mathString];
+  if (!fromPboard) { [XPLog debug:@"%@ paste: empty", self]; return; }
+  [[self model] setMathString:fromPboard];
 }
 
 -(BOOL)__save;

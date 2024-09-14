@@ -49,6 +49,7 @@
 -(void)saveAs:(id)sender;
 -(void)saveTo:(id)sender;
 -(void)revertToSaved:(id)sender;
+-(void)__paste;
 -(BOOL)__save;
 -(BOOL)__saveAs;
 -(BOOL)__saveTo;
