@@ -123,12 +123,11 @@
 
 -(void)__updateWindowState;
 {
-  // Update Title
   if ([self filename]) {
-    [[self window] setTitle:[self filename]];
+    [[self window] setTitle:[[self filename] lastPathComponent]];
     [[self window] setRepresentedFilename:[self filename]];
   } else {
-    [[self window] setTitle:@"UNTITLED.solv"];
+    [[self window] setTitle:@"UNTITLED"];
     [[self window] setRepresentedFilename:@""];
   }
   [[self window] setDocumentEdited:[self hasUnsavedChanges]];
