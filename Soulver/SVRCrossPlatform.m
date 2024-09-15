@@ -185,7 +185,7 @@ NSString *XPUserDefaultsNumberErrorMismatchedBrackets     = @"kNumberErrorMismat
 NSString *XPUserDefaultsNumberErrorInvalidCharacter       = @"kNumberErrorInvalidCharacter";
 NSString *XPUserDefaultsNumberErrorMissingNumber          = @"kNumberErrorMissingNumber";
 NSString *XPUserDefaultsNumberErrorPatching               = @"kNumberErrorPatching";
-NSString *XPUserDefaultsDictionaryDecimalNumberLocale     = @"kNumberDictionaryDecimalNumberLocale";
+NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumberLocale";
 
 
 @implementation NSUserDefaults (Soulver)
@@ -287,6 +287,15 @@ NSString *XPUserDefaultsDictionaryDecimalNumberLocale     = @"kNumberDictionaryD
   return [self objectForKey:XPUserDefaultsNumberErrorPatching];
 }
 
+-(XPLocale*)decimalNumberLocale;
+{
+#if OS_OPENSTEP
+  return [self objectForKey:XPUserDefaultsLegacyDecimalNumberLocale];
+#else
+  return [NSLocale currentLocale];
+#endif
+}
+
 -(void)configure;
 {
   return [self registerDefaults:[NSUserDefaults __standardDictionary]];
@@ -309,7 +318,7 @@ NSString *XPUserDefaultsDictionaryDecimalNumberLocale     = @"kNumberDictionaryD
           XPUserDefaultsNumberErrorInvalidCharacter,
           XPUserDefaultsNumberErrorMissingNumber,
           XPUserDefaultsNumberErrorPatching,
-          // XPUserDefaultsDictionaryDecimalNumberLocale,
+          XPUserDefaultsLegacyDecimalNumberLocale,
           nil];
   vals = [NSArray arrayWithObjects:
           NSHomeDirectory(),
@@ -323,10 +332,17 @@ NSString *XPUserDefaultsDictionaryDecimalNumberLocale     = @"kNumberDictionaryD
           [NSNumber numberWithInt:-1002],
           [NSNumber numberWithInt:-1004],
           [NSNumber numberWithInt:-1005],
-          // Implement decimcal number locale
+          [self __legacyDecimalNumberLocale],
           nil];
   
   return [NSDictionary dictionaryWithObjects:vals forKeys:keys];
+}
+
++(NSDictionary*)__legacyDecimalNumberLocale;
+{
+  NSArray *keys   = [NSArray arrayWithObjects:@"kCFLocaleDecimalSeparatorKey", @"NSDecimalSeparator", nil];
+  NSArray *values = [NSArray arrayWithObjects:@".", @".", nil];
+  return [[[NSDictionary alloc] initWithObjects:values forKeys:keys] autorelease];
 }
 
 @end

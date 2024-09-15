@@ -115,5 +115,4 @@
 -(BOOL)SVR_isNotANumber;
 -(NSString*)SVR_description;
 +(id)SVR_decimalNumberWithString:(NSString*)string;
-+(id)SVR_numberLocale;
 @end

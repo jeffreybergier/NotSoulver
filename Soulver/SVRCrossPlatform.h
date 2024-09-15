@@ -23,6 +23,7 @@ typedef unsigned int XPUInteger;
 #define XPPasteboardTypeRTF NSRTFPboardType
 #define XPRTFTextDocumentType @"NSRTF"
 #define XPDocumentTypeDocumentAttribute @"NSDocumentType"
+#define XPLocale NSDictionary
 #else
 typedef CGFloat XPFloat;
 typedef NSInteger XPInteger;
@@ -31,6 +32,7 @@ typedef NSUInteger XPUInteger;
 #define XPPasteboardTypeRTF NSPasteboardTypeRTF
 #define XPRTFTextDocumentType NSRTFTextDocumentType
 #define XPDocumentTypeDocumentAttribute NSDocumentTypeDocumentAttribute
+#define XPLocale NSLocale
 #endif
 
 @interface XPLog: NSObject
@@ -122,8 +124,10 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 -(NSNumber*)errorInvalidCharacter;
 -(NSNumber*)errorMissingNumber;
 -(NSNumber*)errorPatching;
+-(XPLocale*)decimalNumberLocale;
 -(void)configure;
 +(NSDictionary*)__standardDictionary;
++(XPLocale*)__legacyDecimalNumberLocale;
 @end
 
 @interface NSAttributedString (Pasteboard)

@@ -664,10 +664,6 @@
 
 @end
 
-// MARK: Constant Storage
-
-NSDictionary *NSDecimalNumber_SVR_numberLocale;
-
 // MARK: NSDecimalNumber
 @implementation NSDecimalNumber (Soulver)
 
@@ -684,24 +680,12 @@ NSDictionary *NSDecimalNumber_SVR_numberLocale;
 
 -(NSString*)SVR_description;
 {
-  return [self descriptionWithLocale:[NSDecimalNumber SVR_numberLocale]];
+  return [self descriptionWithLocale:[[NSUserDefaults standardUserDefaults] decimalNumberLocale]];
 }
 
 +(id)SVR_decimalNumberWithString:(NSString*)string;
 {
-  return [NSDecimalNumber decimalNumberWithString:string locale:[NSDecimalNumber SVR_numberLocale]];
+  return [NSDecimalNumber decimalNumberWithString:string locale:[[NSUserDefaults standardUserDefaults] decimalNumberLocale]];
 }
 
-+(id)SVR_numberLocale;
-{
-  if (!NSDecimalNumber_SVR_numberLocale) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    NSArray *keys   = [NSArray arrayWithObjects:@"kCFLocaleDecimalSeparatorKey", NSDecimalSeparator, nil];
-    NSArray *values = [NSArray arrayWithObjects:@".", @".", nil];
-    NSDecimalNumber_SVR_numberLocale = [[NSDictionary alloc] initWithObjects:values forKeys:keys];
-#pragma clang diagnostic pop
-  }
-  return NSDecimalNumber_SVR_numberLocale;
-}
 @end
