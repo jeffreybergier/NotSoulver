@@ -158,7 +158,7 @@ didChangeOldFilename:(NSString*)oldFilename;
   _openUnsaved = [NSMutableArray new];
   
   // Prepare UserDefaults
-  [[NSUserDefaults standardUserDefaults] configure];
+  [[NSUserDefaults standardUserDefaults] SVR_configure];
   
   // Register for Notifications
   [[NSNotificationCenter defaultCenter] addObserver:self

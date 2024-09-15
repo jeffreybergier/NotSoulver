@@ -680,12 +680,12 @@
 
 -(NSString*)SVR_description;
 {
-  return [self descriptionWithLocale:[[NSUserDefaults standardUserDefaults] decimalNumberLocale]];
+  return [self descriptionWithLocale:[[NSUserDefaults standardUserDefaults] SVR_decimalNumberLocale]];
 }
 
 +(id)SVR_decimalNumberWithString:(NSString*)string;
 {
-  return [NSDecimalNumber decimalNumberWithString:string locale:[[NSUserDefaults standardUserDefaults] decimalNumberLocale]];
+  return [NSDecimalNumber decimalNumberWithString:string locale:[[NSUserDefaults standardUserDefaults] SVR_decimalNumberLocale]];
 }
 
 @end

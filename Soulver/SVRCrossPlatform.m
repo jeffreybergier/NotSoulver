@@ -112,12 +112,12 @@
 
 +(NSString*)lastDirectory;
 {
-  return [[NSUserDefaults standardUserDefaults] savePanelLastDirectory];
+  return [[NSUserDefaults standardUserDefaults] SVR_savePanelLastDirectory];
 }
 
 +(void)setLastDirectory:(NSString*)lastDirectory;
 {
-  [[NSUserDefaults standardUserDefaults] setSavePanelLastDirectory:lastDirectory];
+  [[NSUserDefaults standardUserDefaults] SVR_setSavePanelLastDirectory:lastDirectory];
 }
 
 +(NSString*)filenameByRunningSheetModalSavePanelForWindow:(NSWindow*)window;
@@ -190,104 +190,104 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
 
 @implementation NSUserDefaults (Soulver)
 
--(NSString*)savePanelLastDirectory;
+-(NSString*)SVR_savePanelLastDirectory;
 {
   return [self objectForKey:XPUserDefaultsSavePanelLastDirectory];
 }
 
--(BOOL)setSavePanelLastDirectory:(NSString*)newValue;
+-(BOOL)SVR_setSavePanelLastDirectory:(NSString*)newValue;
 {
   [self setObject:newValue forKey:XPUserDefaultsSavePanelLastDirectory];
   return [self synchronize];
 }
 
--(XPColor*)colorForSolutionPrimary;
+-(XPColor*)SVR_colorForSolutionPrimary;
 {
   return [self objectForKey:XPUserDefaultsColorForSolutionPrimary];
 }
 
--(BOOL)setColorForSolutionPrimary:(XPColor*)newValue;
+-(BOOL)SVR_setColorForSolutionPrimary:(XPColor*)newValue;
 {
   [self setObject:newValue forKey:XPUserDefaultsColorForSolutionPrimary];
   return [self synchronize];
 }
 
--(XPColor*)backgroundColorForSolutionPrimary;
+-(XPColor*)SVR_backgroundColorForSolutionPrimary;
 {
   return [self objectForKey:XPUserDefaultsBackgroundColorForSolutionPrimary];
 }
 
--(BOOL)setBackgroundColorForSolutionPrimary:(XPColor*)newValue;
+-(BOOL)SVR_setBackgroundColorForSolutionPrimary:(XPColor*)newValue;
 {
   [self setObject:newValue forKey:XPUserDefaultsBackgroundColorForSolutionPrimary];
   return [self synchronize];
 }
 
--(XPColor*)colorForSolutionSecondary;
+-(XPColor*)SVR_colorForSolutionSecondary;
 {
   return [self objectForKey:XPUserDefaultsColorForSolutionSecondary];
 }
 
--(BOOL)setColorForSolutionSecondary:(XPColor*)newValue;
+-(BOOL)SVR_setColorForSolutionSecondary:(XPColor*)newValue;
 {
   [self setObject:newValue forKey:XPUserDefaultsColorForSolutionSecondary];
   return [self synchronize];
 }
 
--(XPColor*)colorForOperator;
+-(XPColor*)SVR_colorForOperator;
 {
   return [self objectForKey:XPUserDefaultsColorForOperator];
 }
 
--(BOOL)setColorForOperator:(XPColor*)newValue;
+-(BOOL)SVR_setColorForOperator:(XPColor*)newValue;
 {
   [self setObject:newValue forKey:XPUserDefaultsColorForOperator];
   return [self synchronize];
 }
 
--(XPColor*)colorForNumeral;
+-(XPColor*)SVR_colorForNumeral;
 {
   return [self objectForKey:XPUserDefaultsColorForNumeral];
 }
 
--(BOOL)setColorForNumeral:(XPColor*)newValue;
+-(BOOL)SVR_setColorForNumeral:(XPColor*)newValue;
 {
   [self setObject:newValue forKey:XPUserDefaultsColorForNumeral];
   return [self synchronize];
 }
 
--(XPColor*)colorForText;
+-(XPColor*)SVR_colorForText;
 {
   return [self objectForKey:XPUserDefaultsColorForText];
 }
 
--(BOOL)setColorForText:(XPColor*)newValue;
+-(BOOL)SVR_setColorForText:(XPColor*)newValue;
 {
   [self setObject:newValue forKey:XPUserDefaultsColorForText];
   return [self synchronize];
 }
 
--(NSNumber*)errorMismatchedBrackets;
+-(NSNumber*)SVR_errorMismatchedBrackets;
 {
   return [self objectForKey:XPUserDefaultsNumberErrorMismatchedBrackets];
 }
 
--(NSNumber*)errorInvalidCharacter;
+-(NSNumber*)SVR_errorInvalidCharacter;
 {
   return [self objectForKey:XPUserDefaultsNumberErrorInvalidCharacter];
 }
 
--(NSNumber*)errorMissingNumber;
+-(NSNumber*)SVR_errorMissingNumber;
 {
   return [self objectForKey:XPUserDefaultsNumberErrorMissingNumber];
 }
 
--(NSNumber*)errorPatching;
+-(NSNumber*)SVR_errorPatching;
 {
   return [self objectForKey:XPUserDefaultsNumberErrorPatching];
 }
 
--(XPLocale*)decimalNumberLocale;
+-(XPLocale*)SVR_decimalNumberLocale;
 {
 #if OS_OPENSTEP
   return [self objectForKey:XPUserDefaultsLegacyDecimalNumberLocale];
@@ -296,12 +296,12 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
 #endif
 }
 
--(void)configure;
+-(void)SVR_configure;
 {
-  return [self registerDefaults:[NSUserDefaults __standardDictionary]];
+  return [self registerDefaults:[NSUserDefaults __SVR_standardDictionary]];
 }
 
-+(NSDictionary*)__standardDictionary;
++(NSDictionary*)__SVR_standardDictionary;
 {
   NSArray *keys;
   NSArray *vals;
@@ -332,13 +332,13 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
           [NSNumber numberWithInt:-1002],
           [NSNumber numberWithInt:-1004],
           [NSNumber numberWithInt:-1005],
-          [self __legacyDecimalNumberLocale],
+          [self __SVR_legacyDecimalNumberLocale],
           nil];
   
   return [NSDictionary dictionaryWithObjects:vals forKeys:keys];
 }
 
-+(NSDictionary*)__legacyDecimalNumberLocale;
++(NSDictionary*)__SVR_legacyDecimalNumberLocale;
 {
   NSArray *keys   = [NSArray arrayWithObjects:@"kCFLocaleDecimalSeparatorKey", @"NSDecimalSeparator", nil];
   NSArray *values = [NSArray arrayWithObjects:@".", @".", nil];
@@ -455,22 +455,22 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
 
 +(NSNumber*)SVR_errorMismatchedBrackets;
 {
-  return [[NSUserDefaults standardUserDefaults] errorMismatchedBrackets];
+  return [[NSUserDefaults standardUserDefaults] SVR_errorMismatchedBrackets];
 }
 
 +(NSNumber*)SVR_errorInvalidCharacter;
 {
-  return [[NSUserDefaults standardUserDefaults] errorInvalidCharacter];
+  return [[NSUserDefaults standardUserDefaults] SVR_errorInvalidCharacter];
 }
 
 +(NSNumber*)SVR_errorMissingNumber;
 {
-  return [[NSUserDefaults standardUserDefaults] errorMissingNumber];
+  return [[NSUserDefaults standardUserDefaults] SVR_errorMissingNumber];
 }
 
 +(NSNumber*)SVR_errorPatching;
 {
-  return [[NSUserDefaults standardUserDefaults] errorPatching];
+  return [[NSUserDefaults standardUserDefaults] SVR_errorPatching];
 }
 
 +(NSString*)SVR_descriptionForError:(NSNumber*)error;

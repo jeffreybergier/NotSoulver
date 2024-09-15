@@ -106,28 +106,29 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 @end
 
 @interface NSUserDefaults (Soulver)
--(NSString*)savePanelLastDirectory;
--(BOOL)setSavePanelLastDirectory:(NSString*)newValue;
--(XPColor*)colorForSolutionPrimary;
--(BOOL)setColorForSolutionPrimary:(XPColor*)newValue;
--(XPColor*)backgroundColorForSolutionPrimary;
--(BOOL)setBackgroundColorForSolutionPrimary:(XPColor*)newValue;
--(XPColor*)colorForSolutionSecondary;
--(BOOL)setColorForSolutionSecondary:(XPColor*)newValue;
--(XPColor*)colorForOperator;
--(BOOL)setColorForOperator:(XPColor*)newValue;
--(XPColor*)colorForNumeral;
--(BOOL)setColorForNumeral:(XPColor*)newValue;
--(XPColor*)colorForText;
--(BOOL)setColorForText:(XPColor*)newValue;
--(NSNumber*)errorMismatchedBrackets;
--(NSNumber*)errorInvalidCharacter;
--(NSNumber*)errorMissingNumber;
--(NSNumber*)errorPatching;
--(XPLocale*)decimalNumberLocale;
--(void)configure;
-+(NSDictionary*)__standardDictionary;
-+(XPLocale*)__legacyDecimalNumberLocale;
+-(NSString*)SVR_savePanelLastDirectory;
+-(BOOL)SVR_setSavePanelLastDirectory:(NSString*)newValue;
+-(XPColor*)SVR_colorForSolutionPrimary;
+-(BOOL)SVR_setColorForSolutionPrimary:(XPColor*)newValue;
+-(XPColor*)SVR_backgroundColorForSolutionPrimary;
+-(BOOL)SVR_setBackgroundColorForSolutionPrimary:(XPColor*)newValue;
+-(XPColor*)SVR_colorForSolutionSecondary;
+-(BOOL)SVR_setColorForSolutionSecondary:(XPColor*)newValue;
+-(XPColor*)SVR_colorForOperator;
+-(BOOL)SVR_setColorForOperator:(XPColor*)newValue;
+-(XPColor*)SVR_colorForNumeral;
+-(BOOL)SVR_setColorForNumeral:(XPColor*)newValue;
+-(XPColor*)SVR_colorForText;
+-(BOOL)SVR_setColorForText:(XPColor*)newValue;
+-(NSNumber*)SVR_errorMismatchedBrackets;
+-(NSNumber*)SVR_errorInvalidCharacter;
+-(NSNumber*)SVR_errorMissingNumber;
+-(NSNumber*)SVR_errorPatching;
+-(XPLocale*)SVR_decimalNumberLocale;
+-(void)SVR_configure;
+// MARK: Private
++(NSDictionary*)__SVR_standardDictionary;
++(XPLocale*)__SVR_legacyDecimalNumberLocale;
 @end
 
 @interface NSAttributedString (Pasteboard)
