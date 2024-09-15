@@ -118,7 +118,12 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 -(BOOL)setColorForNumeral:(XPColor*)newValue;
 -(XPColor*)colorForText;
 -(BOOL)setColorForText:(XPColor*)newValue;
-+(NSDictionary*)standardDictionary;
+-(NSNumber*)errorMismatchedBrackets;
+-(NSNumber*)errorInvalidCharacter;
+-(NSNumber*)errorMissingNumber;
+-(NSNumber*)errorPatching;
+-(void)configure;
++(NSDictionary*)__standardDictionary;
 @end
 
 @interface NSAttributedString (Pasteboard)
@@ -148,4 +153,13 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
                       green:(XPFloat)green
                        blue:(XPFloat)blue
                       alpha:(XPFloat)alpha;
+@end
+
+// MARK: Error Handling
+@interface XPError: NSObject
++(NSNumber*)SVR_errorInvalidCharacter;
++(NSNumber*)SVR_errorMismatchedBrackets;
++(NSNumber*)SVR_errorMissingNumber;
++(NSNumber*)SVR_errorPatching;
++(NSString*)SVR_descriptionForError:(NSNumber*)error;
 @end

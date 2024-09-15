@@ -37,7 +37,7 @@
      [NSAttributedString SVR_stringWithString:[line isComplete] ? @"=\n" : @"\n"]
     ];
   }
-  [output appendAttributedString:[NSAttributedString SVR_stringWithString:[NSNumber SVR_descriptionForError:error]
+  [output appendAttributedString:[NSAttributedString SVR_stringWithString:[XPError SVR_descriptionForError:error]
                                                                     color:[NSColor orangeColor]]];
   return [[output copy] autorelease];
 }
@@ -52,7 +52,7 @@
   NSNumber *error = nil;
   
   if (![_string SVR_containsOnlyCharactersInSet:[NSSet SVR_allowedCharacters]]) {
-    error = [NSNumber SVR_errorInvalidCharacter];
+    error = [XPError SVR_errorInvalidCharacter];
     if (errorPointer) { *errorPointer = error; }
     return nil;
   }
@@ -64,7 +64,7 @@
   
   while ((line = [e nextObject])) {
     if ([[line line] SVR_beginsWithCharacterInSet:[NSSet SVR_operatorsAll]]) {             // If the line begins with an operator we need to prepend the last solution
-      if (!lastSolution) { error = [NSNumber SVR_errorMissingNumber]; break; }             // If no previous solution AND the line begins with an operator we need to bail
+      if (!lastSolution) { error = [XPError SVR_errorMissingNumber]; break; }             // If no previous solution AND the line begins with an operator we need to bail
       encodedLine = [lastSolution stringByAppendingString:[line line]];                    // Prepend the encoded line with the last solution
     } else {
       encodedLine = [line line];                                                           // Set the baseline for doing math operations later
@@ -131,9 +131,9 @@
   // The NSDecimalNumber check is surprisingly shitty,
   // but it might help if the main check fails
   if (![output SVR_containsOnlyCharactersInSet:[NSSet SVR_numeralsAll]]) {
-    error = [NSNumber SVR_errorMissingNumber];
+    error = [XPError SVR_errorMissingNumber];
   } else if ([[NSDecimalNumber SVR_decimalNumberWithString:output] SVR_isNotANumber]) {
-    error = [NSNumber SVR_errorMissingNumber];
+    error = [XPError SVR_errorMissingNumber];
   }
   
   if (error != nil) { if (errorPointer) { *errorPointer = error; } return nil; }
@@ -327,7 +327,7 @@
   }
   
   if (balanceCounter != 0) {
-    error = [NSNumber SVR_errorMismatchedBrackets];
+    error = [XPError SVR_errorMismatchedBrackets];
     if (errorPointer) { *errorPointer = error; }
     return nil;
   } else if ([foundLHS count] == 0 && foundRHS == nil) {
@@ -434,7 +434,7 @@
   
   if (error != nil) { return; }
   if (![self __canInsertSolutionAtRange:range]) {
-    error = [NSNumber SVR_errorPatching];
+    error = [XPError SVR_errorPatching];
     if (errorPointer) { *errorPointer = error; }
     return;
   }
@@ -451,7 +451,7 @@
   }
   
   if (problem) {
-    error = [NSNumber SVR_errorInvalidCharacter];
+    error = [XPError SVR_errorInvalidCharacter];
     if (errorPointer) { *errorPointer = error; }
     return;
   }
@@ -667,10 +667,6 @@
 // MARK: Constant Storage
 
 NSDictionary *NSDecimalNumber_SVR_numberLocale;
-NSNumber *NSNumber_SVR_errorMismatchedBrackets;
-NSNumber *NSNumber_SVR_errorInvalidCharacter;
-NSNumber *NSNumber_SVR_SVR_errorMissingNumber;
-NSNumber *NSNumber_SVR_errorPatching;
 
 // MARK: NSDecimalNumber
 @implementation NSDecimalNumber (Soulver)
@@ -707,52 +703,5 @@ NSNumber *NSNumber_SVR_errorPatching;
 #pragma clang diagnostic pop
   }
   return NSDecimalNumber_SVR_numberLocale;
-}
-@end
-
-// MARK: NSError
-// OPENSTEP does not have NSError so I am just using NSNumber
-@implementation NSNumber (SVRError)
-+(NSNumber*)SVR_errorMismatchedBrackets;
-{
-  if (NSNumber_SVR_errorMismatchedBrackets == nil) {
-    NSNumber_SVR_errorMismatchedBrackets = [[NSNumber alloc] initWithDouble:-1003];
-  }
-  return NSNumber_SVR_errorMismatchedBrackets;
-}
-+(NSNumber*)SVR_errorInvalidCharacter;
-{
-  if (NSNumber_SVR_errorInvalidCharacter == nil) {
-    NSNumber_SVR_errorInvalidCharacter = [[NSNumber alloc] initWithDouble:-1002];
-  }
-  return NSNumber_SVR_errorInvalidCharacter;
-}
-+(NSNumber*)SVR_errorMissingNumber;
-{
-  if (NSNumber_SVR_SVR_errorMissingNumber == nil) {
-    NSNumber_SVR_SVR_errorMissingNumber = [[NSNumber alloc] initWithDouble:-1004];
-  }
-  return NSNumber_SVR_SVR_errorMissingNumber;
-}
-+(NSNumber*)SVR_errorPatching;
-{
-  if (NSNumber_SVR_errorPatching == nil) {
-    NSNumber_SVR_errorPatching = [[NSNumber alloc] initWithDouble:-1005];
-  }
-  return NSNumber_SVR_errorPatching;
-}
-+(NSString*)SVR_descriptionForError:(NSNumber*)error;
-{
-  if ([error isEqualToNumber:[NSNumber SVR_errorInvalidCharacter]]) {
-    return [NSString stringWithFormat:@"<Error:%@> An incompatible character was found", error];
-  } else if ([error isEqualToNumber:[NSNumber SVR_errorMismatchedBrackets]]) {
-    return [NSString stringWithFormat:@"<Error:%@> Parentheses were unbalanced", error];
-  } else if ([error isEqualToNumber:[NSNumber SVR_errorMissingNumber]]) {
-    return [NSString stringWithFormat:@"<Error:%@> Operators around the numbers were unbalanced", error];
-  } else if ([error isEqualToNumber:[NSNumber SVR_errorPatching]]) {
-    return [NSString stringWithFormat:@"<Error:%@> Operators around the parentheses were missing", error];
-  } else {
-    return @"<Error> An Unknown Error Ocurred";
-  }
 }
 @end

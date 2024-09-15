@@ -181,6 +181,12 @@ NSString *XPUserDefaultsColorForSolutionSecondary         = @"kColorForSolutionS
 NSString *XPUserDefaultsColorForOperator                  = @"kColorForOperator";
 NSString *XPUserDefaultsColorForNumeral                   = @"kColorForNumeral";
 NSString *XPUserDefaultsColorForText                      = @"kColorForText";
+NSString *XPUserDefaultsNumberErrorMismatchedBrackets     = @"kNumberErrorMismatchedBrackets";
+NSString *XPUserDefaultsNumberErrorInvalidCharacter       = @"kNumberErrorInvalidCharacter";
+NSString *XPUserDefaultsNumberErrorMissingNumber          = @"kNumberErrorMissingNumber";
+NSString *XPUserDefaultsNumberErrorPatching               = @"kNumberErrorPatching";
+NSString *XPUserDefaultsDictionaryDecimalNumberLocale     = @"kNumberDictionaryDecimalNumberLocale";
+
 
 @implementation NSUserDefaults (Soulver)
 
@@ -261,7 +267,32 @@ NSString *XPUserDefaultsColorForText                      = @"kColorForText";
   return [self synchronize];
 }
 
-+(NSDictionary*)standardDictionary;
+-(NSNumber*)errorMismatchedBrackets;
+{
+  return [self objectForKey:XPUserDefaultsNumberErrorMismatchedBrackets];
+}
+
+-(NSNumber*)errorInvalidCharacter;
+{
+  return [self objectForKey:XPUserDefaultsNumberErrorInvalidCharacter];
+}
+
+-(NSNumber*)errorMissingNumber;
+{
+  return [self objectForKey:XPUserDefaultsNumberErrorMissingNumber];
+}
+
+-(NSNumber*)errorPatching;
+{
+  return [self objectForKey:XPUserDefaultsNumberErrorPatching];
+}
+
+-(void)configure;
+{
+  return [self registerDefaults:[NSUserDefaults __standardDictionary]];
+}
+
++(NSDictionary*)__standardDictionary;
 {
   NSArray *keys;
   NSArray *vals;
@@ -274,6 +305,11 @@ NSString *XPUserDefaultsColorForText                      = @"kColorForText";
           XPUserDefaultsColorForOperator,
           XPUserDefaultsColorForNumeral,
           XPUserDefaultsColorForText,
+          XPUserDefaultsNumberErrorMismatchedBrackets,
+          XPUserDefaultsNumberErrorInvalidCharacter,
+          XPUserDefaultsNumberErrorMissingNumber,
+          XPUserDefaultsNumberErrorPatching,
+          // XPUserDefaultsDictionaryDecimalNumberLocale,
           nil];
   vals = [NSArray arrayWithObjects:
           NSHomeDirectory(),
@@ -283,6 +319,11 @@ NSString *XPUserDefaultsColorForText                      = @"kColorForText";
           [XPColor SVR_colorWithRed:255/255.0 green:147/255.0 blue:000/255.0 alpha:1.0],
           [XPColor SVR_colorWithRed:000/255.0 green:000/255.0 blue:000/255.0 alpha:1.0],
           [XPColor SVR_colorWithRed:145/255.0 green:145/255.0 blue:145/255.0 alpha:1.0],
+          [NSNumber numberWithInt:-1003],
+          [NSNumber numberWithInt:-1002],
+          [NSNumber numberWithInt:-1004],
+          [NSNumber numberWithInt:-1005],
+          // Implement decimcal number locale
           nil];
   
   return [NSDictionary dictionaryWithObjects:vals forKeys:keys];
@@ -389,5 +430,45 @@ NSString *XPUserDefaultsColorForText                      = @"kColorForText";
                       alpha:(XPFloat)alpha;
 {
   return [NSColor colorWithDeviceRed:red green:green blue:blue alpha:alpha];
+}
+@end
+
+// MARK: XPError
+// OPENSTEP does not have NSError so I am just using NSNumber
+@implementation XPError
+
++(NSNumber*)SVR_errorMismatchedBrackets;
+{
+  return [[NSUserDefaults standardUserDefaults] errorMismatchedBrackets];
+}
+
++(NSNumber*)SVR_errorInvalidCharacter;
+{
+  return [[NSUserDefaults standardUserDefaults] errorInvalidCharacter];
+}
+
++(NSNumber*)SVR_errorMissingNumber;
+{
+  return [[NSUserDefaults standardUserDefaults] errorMissingNumber];
+}
+
++(NSNumber*)SVR_errorPatching;
+{
+  return [[NSUserDefaults standardUserDefaults] errorPatching];
+}
+
++(NSString*)SVR_descriptionForError:(NSNumber*)error;
+{
+  if ([error isEqualToNumber:[XPError SVR_errorInvalidCharacter]]) {
+    return [NSString stringWithFormat:@"<Error:%@> An incompatible character was found", error];
+  } else if ([error isEqualToNumber:[XPError SVR_errorMismatchedBrackets]]) {
+    return [NSString stringWithFormat:@"<Error:%@> Parentheses were unbalanced", error];
+  } else if ([error isEqualToNumber:[XPError SVR_errorMissingNumber]]) {
+    return [NSString stringWithFormat:@"<Error:%@> Operators around the numbers were unbalanced", error];
+  } else if ([error isEqualToNumber:[XPError SVR_errorPatching]]) {
+    return [NSString stringWithFormat:@"<Error:%@> Operators around the parentheses were missing", error];
+  } else {
+    return @"<Error> An Unknown Error Ocurred";
+  }
 }
 @end

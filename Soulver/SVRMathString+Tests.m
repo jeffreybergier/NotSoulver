@@ -80,43 +80,43 @@
   
   [[SVRMathString mathStringWithString:@"5a5a5Xa6a6a6="]
                      __testAssertEqual:@"5+5+5X+6+6+6=\n<Error:-1002> An incompatible character was found"
-                           expectError:[NSNumber SVR_errorInvalidCharacter]];
+                           expectError:[XPError SVR_errorInvalidCharacter]];
   
   [[SVRMathString mathStringWithString:@"(5m((10a3)m10a2)e2="]
                      __testAssertEqual:@"(5*((10+3)*10+2)^2=\n<Error:-1003> Parentheses were unbalanced"
-                           expectError:[NSNumber SVR_errorMismatchedBrackets]];
+                           expectError:[XPError SVR_errorMismatchedBrackets]];
   
   [[SVRMathString mathStringWithString:@"1m2=s3=aa4=6a7="]
                      __testAssertEqual:@"1*2=\n-3=\n++4=\n6+7=\n<Error:-1004> Operators around the numbers were unbalanced"
-                           expectError:[NSNumber SVR_errorMissingNumber]];
+                           expectError:[XPError SVR_errorMissingNumber]];
   
   [[SVRMathString mathStringWithString:@"5aa="]
                      __testAssertEqual:@"5++=\n<Error:-1004> Operators around the numbers were unbalanced"
-                           expectError:[NSNumber SVR_errorMissingNumber]];
+                           expectError:[XPError SVR_errorMissingNumber]];
   
   [[SVRMathString mathStringWithString:@"aa5="]
                      __testAssertEqual:@"++5=\n<Error:-1004> Operators around the numbers were unbalanced"
-                           expectError:[NSNumber SVR_errorMissingNumber]];
+                           expectError:[XPError SVR_errorMissingNumber]];
   
   [[SVRMathString mathStringWithString:@"a5="]
                      __testAssertEqual:@"+5=\n<Error:-1004> Operators around the numbers were unbalanced"
-                           expectError:[NSNumber SVR_errorMissingNumber]];
+                           expectError:[XPError SVR_errorMissingNumber]];
   
   [[SVRMathString mathStringWithString:@"5a="]
                      __testAssertEqual:@"5+=\n<Error:-1004> Operators around the numbers were unbalanced"
-                           expectError:[NSNumber SVR_errorMissingNumber]];
+                           expectError:[XPError SVR_errorMissingNumber]];
   
   [[SVRMathString mathStringWithString:@"1m2=s3=4a=6a7="]
                      __testAssertEqual:@"1*2=\n-3=\n4+=\n6+7=\n<Error:-1004> Operators around the numbers were unbalanced"
-                           expectError:[NSNumber SVR_errorMissingNumber]];
+                           expectError:[XPError SVR_errorMissingNumber]];
   
   [[SVRMathString mathStringWithString:@"5(10)="]
                      __testAssertEqual:@"5(10)=\n<Error:-1005> Operators around the parentheses were missing"
-                           expectError:[NSNumber SVR_errorPatching]];
+                           expectError:[XPError SVR_errorPatching]];
   
   [[SVRMathString mathStringWithString:@"(10)5="]
                      __testAssertEqual:@"(10)5=\n<Error:-1005> Operators around the parentheses were missing"
-                           expectError:[NSNumber SVR_errorPatching]];
+                           expectError:[XPError SVR_errorPatching]];
   
   // MARK: Test Normal Math
   

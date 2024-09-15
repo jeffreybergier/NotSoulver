@@ -117,12 +117,3 @@
 +(id)SVR_decimalNumberWithString:(NSString*)string;
 +(id)SVR_numberLocale;
 @end
-
-// MARK: Error Handling
-@interface NSNumber (SVRError)
-+(NSNumber*)SVR_errorInvalidCharacter;
-+(NSNumber*)SVR_errorMismatchedBrackets;
-+(NSNumber*)SVR_errorMissingNumber;
-+(NSNumber*)SVR_errorPatching;
-+(NSString*)SVR_descriptionForError:(NSNumber*)error;
-@end

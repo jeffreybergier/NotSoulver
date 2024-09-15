@@ -20,6 +20,7 @@ int main(int argc, const char *argv[]) {
   
   // 2. Execute Unit Tests if Needed
 #ifdef TESTING
+  [[NSUserDefaults standardUserDefaults] configure];
   [XPLog alwys:@"TESTS: Starting..."];
   [SVRMathString executeTests];
   [SVRDocumentViewController executeTests];
