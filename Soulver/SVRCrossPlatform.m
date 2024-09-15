@@ -264,7 +264,6 @@ NSString *XPUserDefaultsSavePanelLastDirectory = @"kSavePanelLastDirectory";
     }
   }
   
-  // TODO: Trim newlines from string ends after 10.3 Panther
   if (!fromPboard) { return nil; }
   fromPboard = [fromPboard SVR_stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
   if ([fromPboard length] == 0) { return nil; }	
@@ -278,7 +277,7 @@ NSString *XPUserDefaultsSavePanelLastDirectory = @"kSavePanelLastDirectory";
 -(NSString*)SVR_stringByTrimmingCharactersInSet:(NSCharacterSet*)set;
 {
 #if OS_OPENSTEP
-  // Make a manual implementation?
+  // TOOD: Manual implementation?
   return self;
 #else
   return [self stringByTrimmingCharactersInSet:set];
