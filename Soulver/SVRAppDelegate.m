@@ -55,6 +55,7 @@
 
 -(void)saveAll:(id)sender;
 {
+  // TODO: Is this needed? TextEdit does not do this.
   XPAlertReturn alertResult = [XPAlert runAppModalWithTitle:@"Save All"
                                                     message:@"Save all documents? This cannot be undone."
                                               defaultButton:@"Save All"
@@ -192,6 +193,7 @@ didChangeOldFilename:(NSString*)oldFilename;
 @implementation SVRAppDelegate (NSApplicationDelegate)
 -(BOOL)applicationShouldTerminate:(NSApplication *)sender;
 {
+  // TODO: Make this text match the textedit default
   NSEnumerator *e;
   SVRDocumentWindowController *nextC;
   XPAlertReturn alertResult;

@@ -24,6 +24,7 @@
 
 -(NSAttributedString*)renderError:(NSNumber*)error;
 {
+  // TODO: Color with new colors in NSUserDefaults
   NSMutableAttributedString *output;
   NSEnumerator *e;
   SVRMathStringEnumeratorLine *line;
@@ -44,6 +45,7 @@
 
 -(NSAttributedString*)__render_encodedStringWithError:(NSNumber**)errorPointer;
 {
+  // TODO: Color with new colors in NSUserDefaults
   NSMutableAttributedString *decodedOutput;
   SVRMathStringEnumeratorLine *line;
   NSEnumerator *e;

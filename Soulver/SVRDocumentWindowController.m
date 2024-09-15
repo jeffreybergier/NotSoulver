@@ -186,6 +186,7 @@
 @implementation SVRDocumentWindowController (NSWindowDelegate)
 -(BOOL)windowShouldClose:(id)sender;
 {
+  // TODO: Make this text match the textedit default
   XPAlertReturn alertResult;
   if (![self hasUnsavedChanges]) { return YES; }
   alertResult = [XPAlert runSheetModalForWindow:[self window]
@@ -271,6 +272,7 @@
 
 -(void)revertToSaved:(id)sender;
 {
+  // TODO: Make this text match the project builder default
   XPAlertReturn alertResult = [XPAlert runSheetModalForWindow:[self window]
                                                     withTitle:@"Revert to Saved"
                                                       message:@"Any changes will be lost"
