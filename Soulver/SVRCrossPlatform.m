@@ -174,7 +174,13 @@
 @end
 
 
-NSString *XPUserDefaultsSavePanelLastDirectory = @"kSavePanelLastDirectory";
+NSString *XPUserDefaultsSavePanelLastDirectory            = @"kSavePanelLastDirectory";
+NSString *XPUserDefaultsColorForSolutionPrimary           = @"kColorForSolutionPrimary";
+NSString *XPUserDefaultsBackgroundColorForSolutionPrimary = @"kBackgroundColorForSolutionPrimary";
+NSString *XPUserDefaultsColorForSolutionSecondary         = @"kColorForSolutionSecondary";
+NSString *XPUserDefaultsColorForOperator                  = @"kColorForOperator";
+NSString *XPUserDefaultsColorForNumeral                   = @"kColorForNumeral";
+NSString *XPUserDefaultsColorForText                      = @"kColorForText";
 
 @implementation NSUserDefaults (Soulver)
 
@@ -189,6 +195,72 @@ NSString *XPUserDefaultsSavePanelLastDirectory = @"kSavePanelLastDirectory";
   return [self synchronize];
 }
 
+-(XPColor*)colorForSolutionPrimary;
+{
+  return [self objectForKey:XPUserDefaultsColorForSolutionPrimary];
+}
+
+-(BOOL)setColorForSolutionPrimary:(XPColor*)newValue;
+{
+  [self setObject:newValue forKey:XPUserDefaultsColorForSolutionPrimary];
+  return [self synchronize];
+}
+
+-(XPColor*)backgroundColorForSolutionPrimary;
+{
+  return [self objectForKey:XPUserDefaultsBackgroundColorForSolutionPrimary];
+}
+
+-(BOOL)setBackgroundColorForSolutionPrimary:(XPColor*)newValue;
+{
+  [self setObject:newValue forKey:XPUserDefaultsBackgroundColorForSolutionPrimary];
+  return [self synchronize];
+}
+
+-(XPColor*)colorForSolutionSecondary;
+{
+  return [self objectForKey:XPUserDefaultsColorForSolutionSecondary];
+}
+
+-(BOOL)setColorForSolutionSecondary:(XPColor*)newValue;
+{
+  [self setObject:newValue forKey:XPUserDefaultsColorForSolutionSecondary];
+  return [self synchronize];
+}
+
+-(XPColor*)colorForOperator;
+{
+  return [self objectForKey:XPUserDefaultsColorForOperator];
+}
+
+-(BOOL)setColorForOperator:(XPColor*)newValue;
+{
+  [self setObject:newValue forKey:XPUserDefaultsColorForOperator];
+  return [self synchronize];
+}
+
+-(XPColor*)colorForNumeral;
+{
+  return [self objectForKey:XPUserDefaultsColorForNumeral];
+}
+
+-(BOOL)setColorForNumeral:(XPColor*)newValue;
+{
+  [self setObject:newValue forKey:XPUserDefaultsColorForNumeral];
+  return [self synchronize];
+}
+
+-(XPColor*)colorForText;
+{
+  return [self objectForKey:XPUserDefaultsColorForText];
+}
+
+-(BOOL)setColorForText:(XPColor*)newValue;
+{
+  [self setObject:newValue forKey:XPUserDefaultsColorForText];
+  return [self synchronize];
+}
+
 +(NSDictionary*)standardDictionary;
 {
   NSArray *keys;
@@ -196,9 +268,21 @@ NSString *XPUserDefaultsSavePanelLastDirectory = @"kSavePanelLastDirectory";
   
   keys = [NSArray arrayWithObjects:
           XPUserDefaultsSavePanelLastDirectory,
+          XPUserDefaultsColorForSolutionPrimary,
+          XPUserDefaultsBackgroundColorForSolutionPrimary,
+          XPUserDefaultsColorForSolutionSecondary,
+          XPUserDefaultsColorForOperator,
+          XPUserDefaultsColorForNumeral,
+          XPUserDefaultsColorForText,
           nil];
   vals = [NSArray arrayWithObjects:
           NSHomeDirectory(),
+          [XPColor SVR_colorWithRed:004/255.0 green:051/255.0 blue:255/255.0 alpha:1.0],
+          [XPColor SVR_colorWithRed:184/255.0 green:197/255.0 blue:255/255.0 alpha:1.0],
+          [XPColor SVR_colorWithRed:004/255.0 green:051/255.0 blue:255/255.0 alpha:1.0],
+          [XPColor SVR_colorWithRed:255/255.0 green:147/255.0 blue:000/255.0 alpha:1.0],
+          [XPColor SVR_colorWithRed:000/255.0 green:000/255.0 blue:000/255.0 alpha:1.0],
+          [XPColor SVR_colorWithRed:145/255.0 green:145/255.0 blue:145/255.0 alpha:1.0],
           nil];
   
   return [NSDictionary dictionaryWithObjects:vals forKeys:keys];
@@ -295,5 +379,15 @@ NSString *XPUserDefaultsSavePanelLastDirectory = @"kSavePanelLastDirectory";
 #else
   return [self loadNibNamed:nibName owner:owner topLevelObjects:topLevelObjects];
 #endif
+}
+@end
+
+@implementation XPColor (CrossPlatform)
++(XPColor*)SVR_colorWithRed:(XPFloat)red
+                      green:(XPFloat)green
+                       blue:(XPFloat)blue
+                      alpha:(XPFloat)alpha;
+{
+  return [NSColor colorWithDeviceRed:red green:green blue:blue alpha:alpha];
 }
 @end

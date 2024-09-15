@@ -16,6 +16,7 @@
 #endif
 
 #if OS_OPENSTEP
+typedef float XPFloat;
 typedef int XPInteger;
 typedef unsigned int XPUInteger;
 #define XPPasteboardTypeString NSStringPboardType
@@ -23,6 +24,7 @@ typedef unsigned int XPUInteger;
 #define XPRTFTextDocumentType @"NSRTF"
 #define XPDocumentTypeDocumentAttribute @"NSDocumentType"
 #else
+typedef CGFloat XPFloat;
 typedef NSInteger XPInteger;
 typedef NSUInteger XPUInteger;
 #define XPPasteboardTypeString NSPasteboardTypeString
@@ -104,6 +106,18 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 @interface NSUserDefaults (Soulver)
 -(NSString*)savePanelLastDirectory;
 -(BOOL)setSavePanelLastDirectory:(NSString*)newValue;
+-(XPColor*)colorForSolutionPrimary;
+-(BOOL)setColorForSolutionPrimary:(XPColor*)newValue;
+-(XPColor*)backgroundColorForSolutionPrimary;
+-(BOOL)setBackgroundColorForSolutionPrimary:(XPColor*)newValue;
+-(XPColor*)colorForSolutionSecondary;
+-(BOOL)setColorForSolutionSecondary:(XPColor*)newValue;
+-(XPColor*)colorForOperator;
+-(BOOL)setColorForOperator:(XPColor*)newValue;
+-(XPColor*)colorForNumeral;
+-(BOOL)setColorForNumeral:(XPColor*)newValue;
+-(XPColor*)colorForText;
+-(BOOL)setColorForText:(XPColor*)newValue;
 +(NSDictionary*)standardDictionary;
 @end
 
@@ -127,4 +141,11 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 -(BOOL)SVR_loadNibNamed:(NSString*)nibName
                   owner:(id)owner
         topLevelObjects:(NSArray**)topLevelObjects;
+@end
+
+@interface XPColor (CrossPlatform)
++(XPColor*)SVR_colorWithRed:(XPFloat)red
+                      green:(XPFloat)green
+                       blue:(XPFloat)blue
+                      alpha:(XPFloat)alpha;
 @end
