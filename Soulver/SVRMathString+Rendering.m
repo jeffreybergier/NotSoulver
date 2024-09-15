@@ -74,7 +74,7 @@
     lastSolution = [self __render_solveEncodedLine:encodedLine error:&error];              // Solve the problem
     if (lastSolution == nil) { if (errorPointer) { *errorPointer = error; } return nil; }  // If the solution is nil, there was an error
     [decodedOutput appendAttributedString:[NSAttributedString SVR_stringWithString:@"="]]; // Append an equal sign
-    [decodedOutput appendAttributedString:[self __render_colorSolution:lastSolution]];     // Append the solution
+    [decodedOutput appendAttributedString:[NSAttributedString SVR_answerPostfixString:lastSolution]];     // Append the solution
     [decodedOutput appendAttributedString:[NSAttributedString SVR_stringWithString:@"\n"]];// Append a newline
   }
   
@@ -148,11 +148,6 @@
                [SVRMathString operatorDecodeMap]
             ]
   ];
-}
-
--(NSAttributedString*)__render_colorSolution:(NSString*)solution;
-{
-  return [NSAttributedString SVR_stringWithString:solution color:[NSColor cyanColor]];
 }
 
 -(SVRMathRange*)__render_rangeBySearching:(NSString*)string
@@ -531,6 +526,55 @@
     return [[[NSAttributedString alloc] initWithString:aString attributes:attr] autorelease];
   }
 }
+
++(id)SVR_answerPostfixString:(NSString*)aString;
+{
+  NSArray      *keys;
+  NSArray      *vals;
+  NSDictionary *attr;
+  NSFont       *font;
+  NSColor      *fClr;
+  NSColor      *bClr;
+  
+  font = [NSFont userFixedPitchFontOfSize:14];
+  fClr = [NSColor colorWithDeviceRed:004/255.0 green:051/255.0 blue:255/255.0 alpha:1];
+  bClr = [NSColor colorWithDeviceRed:184/255.0 green:197/255.0 blue:255/255.0 alpha:1];
+  
+  keys = [NSArray arrayWithObjects:
+          NSBackgroundColorAttributeName,
+          NSForegroundColorAttributeName,
+          NSFontAttributeName,
+          nil];
+  vals = [NSArray arrayWithObjects:bClr, fClr, font, nil];
+  attr = [NSDictionary dictionaryWithObjects:vals forKeys:keys];
+  return [[[NSAttributedString alloc] initWithString:aString attributes:attr] autorelease];
+}
+
++(id)SVR_answerPrefixString:(NSString*)aString;
+{
+  NSArray      *keys;
+  NSArray      *vals;
+  NSDictionary *attr;
+  NSFont       *font;
+  NSColor      *fClr;
+  
+  font = [NSFont userFixedPitchFontOfSize:14];
+  fClr = [NSColor colorWithDeviceRed:004/255.0 green:051/255.0 blue:255/255.0 alpha:1];
+  
+  keys = [NSArray arrayWithObjects:
+          NSForegroundColorAttributeName,
+          NSFontAttributeName,
+          nil];
+  vals = [NSArray arrayWithObjects:fClr, font, nil];
+  attr = [NSDictionary dictionaryWithObjects:vals forKeys:keys];
+  return [[[NSAttributedString alloc] initWithString:aString attributes:attr] autorelease];
+}
+
++(id)SVR_operatorString:(NSString*)aString;
+{
+  return nil;
+}
+
 @end
 
 @implementation SVRStringEnumeratorRange
