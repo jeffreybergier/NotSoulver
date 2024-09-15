@@ -222,7 +222,7 @@
       // Copy
     case 3002: return ![[[self model] mathString] isEmpty];
       // Paste
-    case 3003: return [[NSPasteboard generalPasteboard] SVR_mathString] != nil;
+    case 3003: return [[XPPasteboard generalPasteboard] SVR_mathString] != nil;
     default:
       [XPLog debug:@"%@ validateMenuItem: Unexpected: (%ld)%@", self, [menuItem tag], [menuItem title]];
       return NO;
@@ -231,12 +231,12 @@
 
 -(void)copy:(id)sender;
 {
-  [[NSPasteboard generalPasteboard] SVR_setMathString:[[self model] mathString]];
+  [[XPPasteboard generalPasteboard] SVR_setMathString:[[self model] mathString]];
 }
 
 -(void)copyRender:(id)sender;
 {
-  [[NSPasteboard generalPasteboard] SVR_setAttributedString:[[self model] latestRender]];
+  [[XPPasteboard generalPasteboard] SVR_setAttributedString:[[self model] latestRender]];
 }
 
 -(void)paste:(id)sender;
@@ -287,7 +287,7 @@
 -(void)__paste;
 {
   SVRMathString *fromPboard;
-  fromPboard = [[NSPasteboard generalPasteboard] SVR_mathString];
+  fromPboard = [[XPPasteboard generalPasteboard] SVR_mathString];
   if (!fromPboard) { [XPLog debug:@"%@ paste: empty", self]; return; }
   [[self model] setMathString:fromPboard];
 }

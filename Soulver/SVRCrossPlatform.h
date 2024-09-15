@@ -1,11 +1,20 @@
 /* SVRCrossPlatform.h created by me on Fri 06-Sep-2024 */
 
-#import <AppKit/AppKit.h>
-
 // MARK: Forward Declarations
 @class SVRMathString;
 
 /// MARK: Simple Typedefs
+
+#if OS_IOS
+#import <UIKit/UIKit.h>
+#define XPColor UIColor
+#define XPPasteboard UIPasteboard
+#else
+#import <AppKit/AppKit.h>
+#define XPColor NSColor
+#define XPPasteboard NSPasteboard
+#endif
+
 #if OS_OPENSTEP
 typedef int XPInteger;
 typedef unsigned int XPUInteger;
@@ -102,7 +111,7 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 -(NSData*)SVR_pasteboardRepresentation;
 @end
 
-@interface NSPasteboard (Pasteboard)
+@interface XPPasteboard (Pasteboard)
 -(BOOL)SVR_setAttributedString:(NSAttributedString*)aString;
 /// Hack that just sets the raw string as plain text into the pasteboard
 -(BOOL)SVR_setMathString:(SVRMathString*)aString;

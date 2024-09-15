@@ -216,7 +216,7 @@ NSString *XPUserDefaultsSavePanelLastDirectory = @"kSavePanelLastDirectory";
 }
 @end
 
-@implementation NSPasteboard (Pasteboard)
+@implementation XPPasteboard (Pasteboard)
 
 -(BOOL)SVR_setAttributedString:(NSAttributedString*)aString;
 {
