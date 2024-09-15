@@ -7,7 +7,11 @@
   SVRDocumentModelController *_model;
   NSWindow *_window;
   NSObject *_viewController;
+  NSArray *_nibTopLevelObjects;
 }
+
+// MARK: Nib Name
++(NSString*)nibName;
 
 // MARK: Notifications
 +(NSString*)documentDidChangeFilenameNotification;

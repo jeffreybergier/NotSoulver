@@ -113,3 +113,9 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 @interface NSString (CrossPlatform)
 -(NSString*)SVR_stringByTrimmingCharactersInSet:(NSCharacterSet*)set;
 @end
+
+@interface NSBundle (CrossPlatform)
+-(BOOL)SVR_loadNibNamed:(NSString*)nibName
+                  owner:(id)owner
+        topLevelObjects:(NSArray**)topLevelObjects;
+@end

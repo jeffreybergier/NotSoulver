@@ -285,3 +285,16 @@ NSString *XPUserDefaultsSavePanelLastDirectory = @"kSavePanelLastDirectory";
 #endif
 }
 @end
+
+@implementation NSBundle (CrossPlatform)
+-(BOOL)SVR_loadNibNamed:(NSString*)nibName
+                  owner:(id)owner
+        topLevelObjects:(NSArray**)topLevelObjects;
+{
+#if OS_OPENSTEP
+  return [[self class] loadNibNamed:nibName owner:owner];
+#else
+  return [self loadNibNamed:nibName owner:owner topLevelObjects:topLevelObjects];
+#endif
+}
+@end

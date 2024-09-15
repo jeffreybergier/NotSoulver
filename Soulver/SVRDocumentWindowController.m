@@ -2,6 +2,17 @@
 
 @implementation SVRDocumentWindowController
 
+// MARK: Nib Name
++(NSString*)nibName;
+{
+#if OS_OPENSTEP
+  return @"NEXTSTEP_SVRDocument.nib";
+#else
+  return @"MACOSX_SVRDocument.nib";
+#endif
+}
+
+// MARK: Notifications
 +(NSString*)documentDidChangeFilenameNotification;
 {
   return @"SVRDocumentControllerDocumentDidChangeFilenameNotification";
@@ -60,10 +71,10 @@
 {
   self = [super init];
   _filename = [filename retain];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-  [NSBundle loadNibNamed:@"NEXTSTEP_SVRDocument.nib" owner:self];
-#pragma clang diagnostic pop
+  _nibTopLevelObjects = nil;
+  [[NSBundle mainBundle] SVR_loadNibNamed:[[self class] nibName]
+                                    owner:self
+                          topLevelObjects:&_nibTopLevelObjects];
 
   return self;
 }
@@ -159,6 +170,8 @@
   [_window autorelease];
   [_filename release];
   [_model release];
+  [_nibTopLevelObjects release];
+  _nibTopLevelObjects = nil;
   _window = nil;
   _filename = nil;
   _model = nil;
@@ -203,7 +216,6 @@
       // Save To
     case 2005: return [self filename] != nil;
       // Revert to Saved
-      // TODO: Set KeyEquivalent to CMD+U
     case 2007: return ([self filename] != nil) && [self hasUnsavedChanges];
       // Copy Render
     case 3001: return ![[[self model] mathString] isEmpty];
