@@ -2,6 +2,7 @@
 #import "SVRCrossPlatform.h"
 #import "SVRMathString+Tests.h"
 #import "SVRDocumentViewController+Tests.h"
+#import "JSBRegex.h"
 
 int main(int argc, const char *argv[]) {
   
@@ -22,6 +23,7 @@ int main(int argc, const char *argv[]) {
 #ifdef TESTING
   [[NSUserDefaults standardUserDefaults] SVR_configure];
   [XPLog alwys:@"TESTS: Starting..."];
+  [JSBRegex executeTests];
   [SVRMathString executeTests];
   [SVRDocumentViewController executeTests];
   [XPLog alwys:@"TESTS: Completed"];
