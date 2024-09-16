@@ -103,6 +103,11 @@
   NSAssert(range.length == 4, @"");
   NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"verb"], @"");
   NSLog(@"DONE");
+  regex = [JSBRegex regexWithString:@"543a567m890)" pattern:@"[[:digit:]]{1,}m[[:digit:]]{1,}"];
+  range = [regex nextMatch];
+  NSAssert(range.location == 2, @"");
+  NSAssert(range.length == 4, @"");
+  NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"5m-2"], @"");
 }
 
 @end
