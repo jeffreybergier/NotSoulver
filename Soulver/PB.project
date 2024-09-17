@@ -12,7 +12,8 @@
             SVRDocumentModelController.m, 
             "SVRDocumentViewController+Tests.m", 
             SVRCrossPlatform.m, 
-            JSBRegex.m
+            JSBRegex.m, 
+            SVRMathString2.m
         ); 
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
         H_FILES = (
@@ -26,7 +27,8 @@
             "SVRDocumentViewController+Tests.h", 
             SVRCrossPlatform.h, 
             JSBRegex.h, 
-            re.h
+            re.h, 
+            SVRMathString2.h
         ); 
         INTERFACES = (NEXTSTEP_Soulver.nib, NEXTSTEP_SVRDocument.nib); 
         OTHER_LINKED = (re.c, Soulver_main.m); 

@@ -19,6 +19,8 @@
 -(void)setExpressionString:(NSString*)expressionString;
 {
   if ([expressionString isEqualToString:_expressionString]) { return; }
+
+  // Clear all the caches
   [_coloredSolvedString release];
   [_coloredExpressionString release];
   [_encodedExpressionString release];
@@ -26,7 +28,8 @@
   _coloredSolvedString = nil;
   _coloredExpressionString = nil;
   _encodedExpressionString = nil;
-  
+
+  // Store the new value
   _expressionString = [expressionString copy];
 }
 
@@ -58,8 +61,8 @@
 -(NSString*)__encodedExpressionString;
 {
   // TODO: Find negative numbers first
-  JSBRegex *regex;
   NSRange range;
+  JSBRegex *regex = nil;
   NSMutableString *output = [[[self expressionString] mutableCopy] autorelease];
   
   // Find negative numbers - Replace with tilde - First number is negative number
@@ -71,7 +74,7 @@
     range = [regex nextMatch];
   }
   
-  // Find negative numbers - Replace with tilde - Negative number is found after operator
+  // Find negative numbers - Replace with tilde - Negative number found after operator
   regex = [JSBRegex regexWithString:output pattern:@"[\\(\\+\\-\\*\\/\\^\\(]\\-\\d"];
   range = [regex nextMatch];
   while (range.location != NSNotFound) {
@@ -89,7 +92,7 @@
     range = [regex nextMatch];
   }
   
-  // Put back the negative numbers
+  // Find the tilde - Put back the negative sign to restore negative numbers
   regex = [JSBRegex regexWithString:output pattern:@"[\\~]\\d"];
   range = [regex nextMatch];
   while (range.location != NSNotFound) {

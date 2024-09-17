@@ -24,8 +24,8 @@ int main(int argc, const char *argv[]) {
 #ifdef TESTING
   [[NSUserDefaults standardUserDefaults] SVR_configure];
   [XPLog alwys:@"<Main> Unit Tests: STARTING"];
+  [JSBRegex executeTests];
   [SVRMathString2 executeUnitTests];
-//[JSBRegex executeTests];
 //[SVRMathString executeTests];
 //[SVRDocumentViewController executeTests];
   [XPLog alwys:@"<Main> Unit Tests: PASSED"];
