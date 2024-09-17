@@ -104,10 +104,10 @@
   NSRange range;
   JSBRegex *regex;
   NSLog(@"%@ Unit Tests: STARTING", self);
-  /*
+  
+  // MARK: Test basic string matching
   regex = [JSBRegex regexWithString:@"this is a verb for other cool verbs" pattern:@"verb"];
   NSAssert(regex, @"");
-  NSLog(@"%@", regex);
   NSAssert([regex containsMatch], @"");
   range = [regex nextMatch];
   NSAssert(range.location == 10, @"");
@@ -117,8 +117,9 @@
   NSAssert(range.location == 30, @"");
   NSAssert(range.length == 4, @"");
   NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"verb"], @"");
-  */
-  regex = [JSBRegex regexWithString:@"12.34a56.78m-90.12)" pattern:@"-?\\d+\\.*\\d+"];
+  
+  // MARK: Test simple numbers
+  regex = [JSBRegex regexWithString:@"12.34a56.78m-90.12" pattern:@"-?\\d+\\.?\\d+"];
   NSAssert([regex containsMatch], @"");
   range = [regex nextMatch];
   NSAssert(range.location == 0, @"");
@@ -134,6 +135,22 @@
   range = [regex nextMatch];
   NSAssert(range.location == NSNotFound, @"");
   NSAssert(range.length == 0, @"");
+  
+  // MARK: Test expression finding
+  regex = [JSBRegex regexWithString:@"12.34a56.78m-90.12" pattern:@"-?\\d+\\.?\\d+m-?\\d+\\.?\\d+"];
+  NSAssert([regex containsMatch], @"");
+  range = [regex nextMatch];
+  NSAssert(range.location == 6, @"");
+  NSAssert(range.length == 12, @"");
+  NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"56.78m-90.12"], @"");
+  range = [regex nextMatch];
+  NSAssert(range.location == NSNotFound, @"");
+  NSAssert(range.length == 0, @"");
+  
+  // MARK: Test expressions with bad numbers
+  regex = [JSBRegex regexWithString:@"12.m56...78m--90.12" pattern:@"-?\\d+\\.?\\d+m-?\\d+\\.?\\d+"];
+  NSAssert(![regex containsMatch], @"");
+
   NSLog(@"%@ Unit Tests: PASSED", self);
 }
 
