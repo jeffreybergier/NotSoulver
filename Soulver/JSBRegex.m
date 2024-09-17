@@ -18,7 +18,6 @@
   _cursor = [_string cString];
   _rx = re_compile([_pattern cString]);
   NSAssert2(_rx != NULL, @"%@ Failed to compile pattern: %@", self, pattern);
-
   return self;
 }
 
@@ -57,19 +56,18 @@
   
   // Perform Regex
   location = re_matchp(_rx, _cursor, &length);
+  
+  // Check for NotFound
   if (location == -1) {
     _last = NSMakeRange(NSNotFound, 0);
     return _last;
   }
 
-  // Update _last
-  if (_last.location != NSNotFound) {
-    _last.location += _last.length + location;
-    _last.length = length;
-  } else {
-    _last.location = location;
-    _last.length = length;
-  }
+  // Calculate the range and update ivar
+  _last.location = (_last.location == NSNotFound)
+                 ? location
+                 : location + _last.location + _last.length;
+  _last.length   = length;
 
   // Update cursor for next iteration
   _cursor += location + length;
@@ -79,19 +77,19 @@
 
 -(NSString*)description;
 {
-  return [NSString stringWithFormat:@"%@ pattern: `%@` string: `%@`",
-                                    [super description], _pattern, _string];
+  return [NSString stringWithFormat:@"%@ string: `%@` pattern: `%@`",
+                                    [super description], _string, _pattern];
 }
 
 -(void)dealloc;
 {
   NSLog(@"DEALLOC: %@", self);
   [_pattern release];
-  [_string release];
+  [_string  release];
   _pattern = nil;
-  _string = nil;
-  _cursor = NULL;
-  _rx = NULL;
+  _string  = nil;
+  _cursor  = NULL;
+  _rx      = NULL;
   [super dealloc];
 }
 
