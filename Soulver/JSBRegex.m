@@ -119,7 +119,7 @@
   NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"verb"], @"");
   
   // MARK: Test simple numbers
-  regex = [JSBRegex regexWithString:@"12.34a56.78m-90.12" pattern:@"-?\\d+\\.?\\d+"];
+  regex = [JSBRegex regexWithString:@"12.34a5678m-90.12s-3456" pattern:@"-?\\d+\\.?\\d+"];
   NSAssert([regex containsMatch], @"");
   range = [regex nextMatch];
   NSAssert(range.location == 0, @"");
@@ -127,22 +127,31 @@
   NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"12.34"], @"");
   range = [regex nextMatch];
   NSAssert(range.location == 6, @"");
-  NSAssert(range.length == 5, @"");
-  NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"56.78"], @"");
+  NSAssert(range.length == 4, @"");
+  NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"5678"], @"");
   range = [regex nextMatch];
-  NSAssert(range.location == 12, @"");
+  NSAssert(range.location == 11, @"");
   NSAssert(range.length == 6, @"");
+  NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"-90.12"], @"");
+  range = [regex nextMatch];
+  NSAssert(range.location == 18, @"");
+  NSAssert(range.length == 5, @"");
+  NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"-3456"], @"");
   range = [regex nextMatch];
   NSAssert(range.location == NSNotFound, @"");
   NSAssert(range.length == 0, @"");
   
   // MARK: Test expression finding
-  regex = [JSBRegex regexWithString:@"12.34a56.78m-90.12" pattern:@"-?\\d+\\.?\\d+m-?\\d+\\.?\\d+"];
+  regex = [JSBRegex regexWithString:@"12.34a5678m999m-90.12s-3456" pattern:@"-?\\d+\\.?\\d+[ma]-?\\d+\\.?\\d+"];
   NSAssert([regex containsMatch], @"");
   range = [regex nextMatch];
-  NSAssert(range.location == 6, @"");
-  NSAssert(range.length == 12, @"");
-  NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"56.78m-90.12"], @"");
+  NSAssert(range.location == 0, @"");
+  NSAssert(range.length == 10, @"");
+  NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"12.34a5678"], @"");
+  range = [regex nextMatch];
+  NSAssert(range.location == 11, @"");
+  NSAssert(range.length == 10, @"");
+  NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"999m-90.12"], @"");
   range = [regex nextMatch];
   NSAssert(range.location == NSNotFound, @"");
   NSAssert(range.length == 0, @"");
