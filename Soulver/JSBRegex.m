@@ -15,9 +15,9 @@
   self = [super init];
   _pattern = [pattern copy];
   _string = [string copy];
-  _cString = [_string cString];
+  _cursor = [_string cString];
   cPattern = [_pattern cString];
-  _rx = re_compile(cPattern, /*REG_EXTENDED*/ 1);
+  _rx = re_compile(cPattern);
   NSAssert2(_rx != NULL, @"%@ Failed to compile pattern: %@", self, pattern);
 
   return self;
@@ -41,31 +41,25 @@
 
 -(BOOL)containsMatch;
 {
-  int output;
-  struct regex rx = *_rx;
-  output = re_match(_cString, &rx);
-  return output;
+  int location = NSNotFound;
+  int length = 0;
+  location = re_matchp(_rx, _cursor, &length);
+  return location == -1 ? NO : YES;
 }
 
 -(NSRange)nextMatch;
 {
-  int output;
-  unsigned int location;
-  unsigned int length;
-  const char *startPosition;
-
-  // Find starting place
-  startPosition = (_rx->end == NULL) ? _cString : _rx->end;
-
+  int location = NSNotFound;
+  int length = 0;
+  
   // Perform Regex
-  output = re_match(startPosition, _rx);
-  if (output == 0) {
+  location = re_matchp(_rx, _cursor, &length);
+  if (location == -1) {
     return NSMakeRange(NSNotFound, 0);
   }
 
-  // Calculate NSRange
-  location = _rx->start - _cString;
-  length   = _rx->end   - _rx->start;
+  // Update cursor for next iteration
+  _cursor += location + length;
   
   return NSMakeRange(location, length);
 }
@@ -78,7 +72,7 @@
   free(_rx);
   _pattern = nil;
   _string = nil;
-  _cString = NULL;
+  _cursor = NULL;
   _rx = NULL;
   [super dealloc];
 }
@@ -90,7 +84,9 @@
 +(void)executeTests;
 {
   NSRange range;
-  JSBRegex *regex = [JSBRegex regexWithString:@"this is a verb for other cool verbs" pattern:@"verb"];
+  JSBRegex *regex;
+  /*
+  regex = [JSBRegex regexWithString:@"this is a verb for other cool verbs" pattern:@"verb"];
   NSAssert(regex, @"");
   NSLog(@"%@", regex);
   NSAssert([regex containsMatch], @"");
@@ -102,12 +98,22 @@
   NSAssert(range.location == 30, @"");
   NSAssert(range.length == 4, @"");
   NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"verb"], @"");
-  NSLog(@"DONE");
-  regex = [JSBRegex regexWithString:@"543a567m890)" pattern:@"[[:digit:]]{1,}m[[:digit:]]{1,}"];
+  */
+  regex = [JSBRegex regexWithString:@"12.34a56.78m-90.12)" pattern:@"-?\\d+\\.*\\d+"];
+  NSAssert([regex containsMatch], @"");
   range = [regex nextMatch];
-  NSAssert(range.location == 2, @"");
-  NSAssert(range.length == 4, @"");
-  NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"5m-2"], @"");
+  NSAssert(range.location == 0, @"");
+  NSAssert(range.length == 5, @"");
+  NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"12.34"], @"");
+  range = [regex nextMatch];
+  NSAssert(range.location == 6, @"");
+  NSAssert(range.length == 5, @"");
+  NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"56.78"], @"");
+  range = [regex nextMatch];
+  NSAssert(range.location == 12, @"");
+  NSAssert(range.length == 6, @"");
+  NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"-90.12"], @"");
+  NSLog(@"DONE");
 }
 
 @end

@@ -6,14 +6,16 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <regex.h>
+#import "re.h"
 
 @interface JSBRegex: NSObject
 {
   NSString *_pattern;
   NSString *_string;
-  const char *_cString;
-  struct regex *_rx;
+  const char *_cursor;
+  re_t _rx;
+  // TODO store last range for just in time calculations
+  // Check the REGEX pointer to see if its stores it for me
 }
 
 -(id)initWithString:(NSString*)string pattern:(NSString*)pattern;
