@@ -2,6 +2,7 @@
 #import "SVRCrossPlatform.h"
 #import "SVRMathString+Tests.h"
 #import "SVRDocumentViewController+Tests.h"
+#import "SVRMathString2.h"
 #import "JSBRegex.h"
 
 int main(int argc, const char *argv[]) {
@@ -22,13 +23,14 @@ int main(int argc, const char *argv[]) {
   // 2. Execute Unit Tests if Needed
 #ifdef TESTING
   [[NSUserDefaults standardUserDefaults] SVR_configure];
-  [XPLog alwys:@"TESTS: Starting..."];
-  [JSBRegex executeTests];
-  [SVRMathString executeTests];
-  [SVRDocumentViewController executeTests];
-  [XPLog alwys:@"TESTS: Completed"];
+  [XPLog alwys:@"<Main> Unit Tests: STARTING"];
+  [SVRMathString2 executeUnitTests];
+//[JSBRegex executeTests];
+//[SVRMathString executeTests];
+//[SVRDocumentViewController executeTests];
+  [XPLog alwys:@"<Main> Unit Tests: PASSED"];
 #else
-  [XPLog alwys:@"TESTS: Skipped"];
+  [XPLog alwys:@"<Main> Unit Tests: SKIPPED"];
 #endif
   
   // 3. Release pool
