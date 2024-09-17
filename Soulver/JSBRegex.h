@@ -12,19 +12,20 @@
 {
   NSString *_pattern;
   NSString *_string;
+  NSRange _last;
   const char *_cursor;
   re_t _rx;
-  // TODO store last range for just in time calculations
-  // Check the REGEX pointer to see if its stores it for me
 }
 
 -(id)initWithString:(NSString*)string pattern:(NSString*)pattern;
 +(id)regexWithString:(NSString*)string pattern:(NSString*)pattern;
 -(NSString*)string;
--(NSString*)description;
+-(NSString*)pattern;
+-(NSRange)lastMatch;
 -(BOOL)containsMatch;
 /// Returns NSNotFound for location when there are no more matches
 -(NSRange)nextMatch;
+-(NSString*)description;
 
 @end
 

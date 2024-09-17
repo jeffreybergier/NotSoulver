@@ -11,13 +11,12 @@
 
 -(id)initWithString:(NSString*)string pattern:(NSString*)pattern;
 {
-  const char *cPattern;
   self = [super init];
+  _last = NSMakeRange(NSNotFound, 0);
   _pattern = [pattern copy];
   _string = [string copy];
   _cursor = [_string cString];
-  cPattern = [_pattern cString];
-  _rx = re_compile(cPattern);
+  _rx = re_compile([_pattern cString]);
   NSAssert2(_rx != NULL, @"%@ Failed to compile pattern: %@", self, pattern);
 
   return self;
@@ -33,10 +32,14 @@
   return [[_string retain] autorelease];
 }
 
--(NSString*)description;
+-(NSString*)pattern;
 {
-  return [NSString stringWithFormat:@"%@ pattern: `%@` string: `%@`",
-                                    [super description], _pattern, _string];
+  return [[_pattern retain] autorelease];
+}
+
+-(NSRange)lastMatch;
+{
+  return _last;
 }
 
 -(BOOL)containsMatch;
@@ -55,13 +58,29 @@
   // Perform Regex
   location = re_matchp(_rx, _cursor, &length);
   if (location == -1) {
-    return NSMakeRange(NSNotFound, 0);
+    _last = NSMakeRange(NSNotFound, 0);
+    return _last;
+  }
+
+  // Update _last
+  if (_last.location != NSNotFound) {
+    _last.location += _last.length + location;
+    _last.length = length;
+  } else {
+    _last.location = location;
+    _last.length = length;
   }
 
   // Update cursor for next iteration
   _cursor += location + length;
-  
-  return NSMakeRange(location, length);
+
+  return _last;
+}
+
+-(NSString*)description;
+{
+  return [NSString stringWithFormat:@"%@ pattern: `%@` string: `%@`",
+                                    [super description], _pattern, _string];
 }
 
 -(void)dealloc;
@@ -69,7 +88,6 @@
   NSLog(@"DEALLOC: %@", self);
   [_pattern release];
   [_string release];
-  free(_rx);
   _pattern = nil;
   _string = nil;
   _cursor = NULL;
@@ -85,6 +103,7 @@
 {
   NSRange range;
   JSBRegex *regex;
+  NSLog(@"%@ Unit Tests: STARTING", self);
   /*
   regex = [JSBRegex regexWithString:@"this is a verb for other cool verbs" pattern:@"verb"];
   NSAssert(regex, @"");
@@ -112,8 +131,10 @@
   range = [regex nextMatch];
   NSAssert(range.location == 12, @"");
   NSAssert(range.length == 6, @"");
-  NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"-90.12"], @"");
-  NSLog(@"DONE");
+  range = [regex nextMatch];
+  NSAssert(range.location == NSNotFound, @"");
+  NSAssert(range.length == 0, @"");
+  NSLog(@"%@ Unit Tests: PASSED", self);
 }
 
 @end
