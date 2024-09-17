@@ -25,10 +25,11 @@
             SVRDocumentModelController.h, 
             "SVRDocumentViewController+Tests.h", 
             SVRCrossPlatform.h, 
-            JSBRegex.h
+            JSBRegex.h, 
+            re.h
         ); 
         INTERFACES = (NEXTSTEP_Soulver.nib, NEXTSTEP_SVRDocument.nib); 
-        OTHER_LINKED = (Soulver_main.m); 
+        OTHER_LINKED = (re.c, Soulver_main.m); 
         OTHER_SOURCES = (
             Makefile.preamble, 
             Makefile, 

@@ -28,9 +28,12 @@ CLASSES = SVRDocumentWindowController.m SVRDocumentViewController.m\
 HFILES = SVRDocumentWindowController.h SVRDocumentViewController.h\
          SVRMathString+Rendering.h SVRMathString.h SVRAppDelegate.h\
          SVRMathString+Tests.h SVRDocumentModelController.h\
-         SVRDocumentViewController+Tests.h SVRCrossPlatform.h JSBRegex.h
+         SVRDocumentViewController+Tests.h SVRCrossPlatform.h JSBRegex.h\
+         re.h
 
 MFILES = Soulver_main.m
+
+CFILES = re.c
 
 OTHERSRCS = Makefile.preamble Makefile Makefile.postamble m.template\
             h.template .gdbinit
