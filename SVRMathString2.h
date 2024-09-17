@@ -25,7 +25,7 @@
 -(NSString*)description;
 
 // MARK Private
-
+-(NSString*)__encodedExpressionString;
 
 @end
 

@@ -6,6 +6,8 @@
 //
 
 #import "SVRMathString2.h"
+#import "SVRMathString.h"
+#import "JSBRegex.h"
 
 @implementation SVRMathString2
 
@@ -31,7 +33,8 @@
 -(NSString*)encodedExpressionString;
 {
   if (_encodedExpressionString) { return _encodedExpressionString; }
-  return nil; // TODO: Implement encoding
+  _encodedExpressionString = [[self __encodedExpressionString] retain];
+  return _encodedExpressionString;
 }
 
 -(NSAttributedString*)coloredExpressionString;
@@ -52,6 +55,50 @@
 }
 
 // MARK Private
+-(NSString*)__encodedExpressionString;
+{
+  // TODO: Find negative numbers first
+  JSBRegex *regex;
+  NSRange range;
+  NSMutableString *output = [[[self expressionString] mutableCopy] autorelease];
+  
+  // Find negative numbers - Replace with tilde - First number is negative number
+  regex = [JSBRegex regexWithString:output pattern:@"^\\-\\d"];
+  range = [regex nextMatch];
+  while (range.location != NSNotFound) {
+    range.length -= 1;
+    [output replaceCharactersInRange:range withString:@"~"];
+    range = [regex nextMatch];
+  }
+  
+  // Find negative numbers - Replace with tilde - Negative number is found after operator
+  regex = [JSBRegex regexWithString:output pattern:@"[\\(\\+\\-\\*\\/\\^\\(]\\-\\d"];
+  range = [regex nextMatch];
+  while (range.location != NSNotFound) {
+    range.location += 1;
+    range.length -= 2;
+    [output replaceCharactersInRange:range withString:@"~"];
+    range = [regex nextMatch];
+  }
+  
+  // Find operators and encode them
+  regex = [JSBRegex regexWithString:output pattern:@"[\\+\\-\\*\\/\\^]"];
+  range = [regex nextMatch];
+  while (range.location != NSNotFound) {
+    [output replaceCharactersInRange:range withString:[[SVRMathString operatorEncodeMap] objectForKey:[output substringWithRange:range]]];
+    range = [regex nextMatch];
+  }
+  
+  // Put back the negative numbers
+  regex = [JSBRegex regexWithString:output pattern:@"[\\~]\\d"];
+  range = [regex nextMatch];
+  while (range.location != NSNotFound) {
+    range.length -= 1;
+    [output replaceCharactersInRange:range withString:@"-"];
+    range = [regex nextMatch];
+  }
+  return [[output copy] autorelease];
+}
 
 // MARK: Dealloc
 -(void)dealloc
@@ -147,3 +194,15 @@
 
 @end
 
+// MARK: Testing
+@implementation SVRMathString2 (Testing)
++(void)executeUnitTests;
+{
+  SVRMathString2 *string;
+  [XPLog alwys:@"<%@> Unit Tests: STARTING", self];
+  string = [SVRMathString2 mathStringWithExpressionString:   @"-4(-2+2)-3*5-(5/-2)^2"];
+  NSAssert([[string expressionString] isEqualToString:       @"-4(-2+2)-3*5-(5/-2)^2"], @"");
+  NSAssert([[string encodedExpressionString] isEqualToString:@"-4(-2a2)s3m5s(5d-2)e2"], @"");
+  [XPLog alwys:@"<%@> Unit Tests: PASSED", self];
+}
+@end
