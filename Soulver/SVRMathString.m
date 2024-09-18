@@ -171,9 +171,6 @@
 
 @end
 
-NSDictionary *SVR_operatorDecodeMap;
-NSDictionary *SVR_operatorEncodeMap;
-
 NSSet *NSSet_SVR_numeralsAll;
 NSSet *NSSet_SVR_operatorsAll;
 NSSet *NSSet_SVR_allowedCharacters;
@@ -182,28 +179,6 @@ NSSet *NSSet_SVR_operatorsMultDiv;
 NSSet *NSSet_SVR_operatorsExponent;
 NSSet *NSSet_SVR_solutionInsertCheck;
 NSSet *NSSet_SVR_solutionInsertCheck;
-
-// MARK: NSDictionaryHelper
-@implementation SVRMathString (Constants)
-+(NSDictionary*)operatorDecodeMap;
-{
-  if (!SVR_operatorDecodeMap) {
-    NSArray *keys   = [NSArray arrayWithObjects:@"a", @"s", @"d", @"m", @"e", nil];
-    NSArray *values = [NSArray arrayWithObjects:@"+", @"-", @"/", @"*", @"^", nil];
-    SVR_operatorDecodeMap = [[NSDictionary alloc] initWithObjects:values forKeys:keys];
-  }
-  return SVR_operatorDecodeMap;
-}
-+(NSDictionary*)operatorEncodeMap;
-{
-  if (!SVR_operatorEncodeMap) {
-    NSArray *keys   = [NSArray arrayWithObjects:@"+", @"-", @"/", @"*", @"^", nil];
-    NSArray *values = [NSArray arrayWithObjects:@"a", @"s", @"d", @"m", @"e", nil];
-    SVR_operatorEncodeMap = [[NSDictionary alloc] initWithObjects:values forKeys:keys];
-  }
-  return SVR_operatorEncodeMap;
-}
-@end
 
 @implementation NSSet (Constants)
 +(NSSet*)SVR_operatorsAll;

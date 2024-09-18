@@ -147,7 +147,7 @@
 {
   return [NSAttributedString SVR_stringWithString:
             [line SVR_stringByMappingCharactersInDictionary:
-               [SVRMathString operatorDecodeMap]
+               [[NSUserDefaults standardUserDefaults] SVR_operatorDecodeMap]
             ]
   ];
 }

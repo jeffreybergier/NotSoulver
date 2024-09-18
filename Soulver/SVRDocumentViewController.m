@@ -69,13 +69,13 @@
     case 12: return @".";
     case 13: *control = -1; return nil;
     case 14: return @"=";
-    case 15: return [[SVRMathString operatorEncodeMap] objectForKey:@"+"];
-    case 16: return [[SVRMathString operatorEncodeMap] objectForKey:@"-"];
+    case 15: return [[[NSUserDefaults standardUserDefaults] SVR_operatorEncodeMap] objectForKey:@"+"];
+    case 16: return [[[NSUserDefaults standardUserDefaults] SVR_operatorEncodeMap] objectForKey:@"-"];
     case 17: return @")";
-    case 18: return [[SVRMathString operatorEncodeMap] objectForKey:@"*"];
-    case 19: return [[SVRMathString operatorEncodeMap] objectForKey:@"/"];
+    case 18: return [[[NSUserDefaults standardUserDefaults] SVR_operatorEncodeMap] objectForKey:@"*"];
+    case 19: return [[[NSUserDefaults standardUserDefaults] SVR_operatorEncodeMap] objectForKey:@"/"];
     case 20: return @"(";
-    case 21: return [[SVRMathString operatorEncodeMap] objectForKey:@"^"];
+    case 21: return [[[NSUserDefaults standardUserDefaults] SVR_operatorEncodeMap] objectForKey:@"^"];
     case 22: *control = -2; return nil;
     case 23: *control = -3; return nil;
   }

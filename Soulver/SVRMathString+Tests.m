@@ -24,7 +24,7 @@
   error = nil;
   [model appendEncodedString:@"5"];
   [model __testAssertEqual:@"5"];
-  [model appendEncodedString:[[SVRMathString operatorEncodeMap] objectForKey:@"+"]];
+  [model appendEncodedString:[[[NSUserDefaults standardUserDefaults] SVR_operatorEncodeMap] objectForKey:@"+"]];
   [model __testAssertEqual:@"5+"];
   [model appendEncodedString:@"5"];
   [model __testAssertEqual:@"5+5"];
@@ -33,7 +33,7 @@
   [model appendEncodedString:@"="];
   [model appendEncodedString:@"="];
   [model __testAssertEqual:@"5+5=10\n"];
-  [model appendEncodedString:[[SVRMathString operatorEncodeMap] objectForKey:@"*"]];
+  [model appendEncodedString:[[[NSUserDefaults standardUserDefaults] SVR_operatorEncodeMap] objectForKey:@"*"]];
   [model __testAssertEqual:@"5+5=10\n10*"];
   [model appendEncodedString:@"9"];
   [model __testAssertEqual:@"5+5=10\n10*9"];
@@ -61,20 +61,20 @@
   
   // MARK: Test Maps
   
-  NSAssert([[[SVRMathString operatorEncodeMap] objectForKey:@"*"] isEqualToString:@"m"], @"FAIL: Encode *");
-  NSAssert([[[SVRMathString operatorEncodeMap] objectForKey:@"+"] isEqualToString:@"a"], @"FAIL: Encode +");
-  NSAssert([[[SVRMathString operatorEncodeMap] objectForKey:@"-"] isEqualToString:@"s"], @"FAIL: Encode -");
-  NSAssert([[[SVRMathString operatorEncodeMap] objectForKey:@"/"] isEqualToString:@"d"], @"FAIL: Encode /");
-  NSAssert([[[SVRMathString operatorEncodeMap] objectForKey:@"^"] isEqualToString:@"e"], @"FAIL: Encode ^");
+  NSAssert([[[[NSUserDefaults standardUserDefaults] SVR_operatorEncodeMap] objectForKey:@"*"] isEqualToString:@"m"], @"FAIL: Encode *");
+  NSAssert([[[[NSUserDefaults standardUserDefaults] SVR_operatorEncodeMap] objectForKey:@"+"] isEqualToString:@"a"], @"FAIL: Encode +");
+  NSAssert([[[[NSUserDefaults standardUserDefaults] SVR_operatorEncodeMap] objectForKey:@"-"] isEqualToString:@"s"], @"FAIL: Encode -");
+  NSAssert([[[[NSUserDefaults standardUserDefaults] SVR_operatorEncodeMap] objectForKey:@"/"] isEqualToString:@"d"], @"FAIL: Encode /");
+  NSAssert([[[[NSUserDefaults standardUserDefaults] SVR_operatorEncodeMap] objectForKey:@"^"] isEqualToString:@"e"], @"FAIL: Encode ^");
   
-  NSAssert([[[SVRMathString operatorDecodeMap] objectForKey:@"m"] isEqualToString:@"*"], @"FAIL: Decode *");
-  NSAssert([[[SVRMathString operatorDecodeMap] objectForKey:@"a"] isEqualToString:@"+"], @"FAIL: Decode +");
-  NSAssert([[[SVRMathString operatorDecodeMap] objectForKey:@"s"] isEqualToString:@"-"], @"FAIL: Decode -");
-  NSAssert([[[SVRMathString operatorDecodeMap] objectForKey:@"d"] isEqualToString:@"/"], @"FAIL: Decode /");
-  NSAssert([[[SVRMathString operatorDecodeMap] objectForKey:@"e"] isEqualToString:@"^"], @"FAIL: Decode ^");
+  NSAssert([[[[NSUserDefaults standardUserDefaults] SVR_operatorDecodeMap] objectForKey:@"m"] isEqualToString:@"*"], @"FAIL: Decode *");
+  NSAssert([[[[NSUserDefaults standardUserDefaults] SVR_operatorDecodeMap] objectForKey:@"a"] isEqualToString:@"+"], @"FAIL: Decode +");
+  NSAssert([[[[NSUserDefaults standardUserDefaults] SVR_operatorDecodeMap] objectForKey:@"s"] isEqualToString:@"-"], @"FAIL: Decode -");
+  NSAssert([[[[NSUserDefaults standardUserDefaults] SVR_operatorDecodeMap] objectForKey:@"d"] isEqualToString:@"/"], @"FAIL: Decode /");
+  NSAssert([[[[NSUserDefaults standardUserDefaults] SVR_operatorDecodeMap] objectForKey:@"e"] isEqualToString:@"^"], @"FAIL: Decode ^");
 
-  NSAssert([[SVRMathString operatorEncodeMap] count] == 5, @"FAIL: Decode Count");
-  NSAssert([[SVRMathString operatorDecodeMap] count] == 5, @"FAIL: Decode Count");
+  NSAssert([[[NSUserDefaults standardUserDefaults] SVR_operatorEncodeMap] count] == 5, @"FAIL: Decode Count");
+  NSAssert([[[NSUserDefaults standardUserDefaults] SVR_operatorDecodeMap] count] == 5, @"FAIL: Decode Count");
   
   // MARK: Test Errors
   

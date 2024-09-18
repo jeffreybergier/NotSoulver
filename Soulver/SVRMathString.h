@@ -47,11 +47,6 @@
 
 // MARK: Constants
 
-@interface SVRMathString (SVRConstants)
-+(NSDictionary*)operatorDecodeMap;
-+(NSDictionary*)operatorEncodeMap;
-@end
-
 @interface NSSet (SVRConstants)
 +(NSSet*)SVR_operatorsAll;
 +(NSSet*)SVR_operatorsPlusMinus;

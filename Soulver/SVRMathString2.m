@@ -6,7 +6,6 @@
 //
 
 #import "SVRMathString2.h"
-#import "SVRMathString.h"
 #import "JSBRegex.h"
 
 @implementation SVRMathString2
@@ -75,7 +74,7 @@
   }
   
   // Find negative numbers - Replace with tilde - Negative number found after operator
-  regex = [JSBRegex regexWithString:output pattern:@"[\\(\\+\\-\\*\\/\\^\\(]\\-\\d"];
+  regex = [JSBRegex regexWithString:output pattern:@"[\\+\\-\\*\\/\\^\\(]\\-\\d"];
   range = [regex nextMatch];
   while (range.location != NSNotFound) {
     range.location += 1;
@@ -88,12 +87,12 @@
   regex = [JSBRegex regexWithString:output pattern:@"[\\+\\-\\*\\/\\^]"];
   range = [regex nextMatch];
   while (range.location != NSNotFound) {
-    [output replaceCharactersInRange:range withString:[[SVRMathString operatorEncodeMap] objectForKey:[output substringWithRange:range]]];
+    [output replaceCharactersInRange:range withString:[[[NSUserDefaults standardUserDefaults] SVR_operatorEncodeMap] objectForKey:[output substringWithRange:range]]];
     range = [regex nextMatch];
   }
   
   // Find the tilde - Put back the negative sign to restore negative numbers
-  regex = [JSBRegex regexWithString:output pattern:@"[\\~]\\d"];
+  regex = [JSBRegex regexWithString:output pattern:@"\\~\\d"];
   range = [regex nextMatch];
   while (range.location != NSNotFound) {
     range.length -= 1;

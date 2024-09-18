@@ -120,6 +120,8 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 -(BOOL)SVR_setColorForNumeral:(XPColor*)newValue;
 -(XPColor*)SVR_colorForText;
 -(BOOL)SVR_setColorForText:(XPColor*)newValue;
+-(NSDictionary*)SVR_operatorDecodeMap;
+-(NSDictionary*)SVR_operatorEncodeMap;
 -(NSNumber*)SVR_errorMismatchedBrackets;
 -(NSNumber*)SVR_errorInvalidCharacter;
 -(NSNumber*)SVR_errorMissingNumber;
@@ -129,6 +131,8 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 // MARK: Private
 +(NSDictionary*)__SVR_standardDictionary;
 +(XPLocale*)__SVR_legacyDecimalNumberLocale;
++(NSDictionary*)__SVR_standardOperatorDecodeMap;
++(NSDictionary*)__SVR_standardOperatorEncodeMap;
 @end
 
 @interface NSAttributedString (Pasteboard)
