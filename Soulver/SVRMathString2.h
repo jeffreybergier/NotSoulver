@@ -26,6 +26,7 @@
 
 // MARK Private
 -(NSString*)__encodedExpressionString;
+-(NSAttributedString*)__colorExpressionString;
 
 @end
 

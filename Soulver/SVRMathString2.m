@@ -42,7 +42,8 @@
 -(NSAttributedString*)coloredExpressionString;
 {
   if (_coloredExpressionString) { return _coloredExpressionString; }
-  return nil; // TODO: Implement Solcing
+  _coloredExpressionString = [[self __colorExpressionString] retain];
+  return _coloredExpressionString;
 }
 
 -(NSAttributedString*)coloredSolvedString;
@@ -59,7 +60,6 @@
 // MARK Private
 -(NSString*)__encodedExpressionString;
 {
-  // TODO: Find negative numbers first
   NSRange range;
   JSBRegex *regex = nil;
   NSMutableString *output = [[[self expressionString] mutableCopy] autorelease];
@@ -99,6 +99,57 @@
     [output replaceCharactersInRange:range withString:@"-"];
     range = [regex nextMatch];
   }
+  return [[output copy] autorelease];
+}
+
+-(NSAttributedString*)__colorExpressionString;
+{
+  NSRange range;
+  JSBRegex *regex = nil;
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  NSString *encodedExpression = [self encodedExpressionString];
+  NSString *expression = [self expressionString];
+  NSMutableAttributedString *output = [
+    [[NSMutableAttributedString alloc] initWithString:expression attributes:
+       [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:
+                                            [ud SVR_colorForText],
+                                            [NSFont userFixedPitchFontOfSize:14],
+                                            nil]
+                                   forKeys:[NSArray arrayWithObjects:
+                                            NSForegroundColorAttributeName,
+                                            NSFontAttributeName,
+                                            nil]]
+    ] autorelease];
+  
+  // Color Operators
+  regex = [JSBRegex regexWithString:expression pattern:@"[\\+\\-\\*\\/\\^]"];
+  range = [regex nextMatch];
+  while (range.location != NSNotFound) {
+    [XPLog extra:@"Color: Operator: %@", [expression substringWithRange:range]];
+    [output setAttributes:[NSDictionary dictionaryWithObject:[ud SVR_colorForOperator]
+                                                      forKey:NSForegroundColorAttributeName] range:range];
+    range = [regex nextMatch];
+  }
+  
+  // Find numbers - numbers with decimals
+  regex = [JSBRegex regexWithString:encodedExpression pattern:@"\\-?\\d+\\.\\d+"];
+  range = [regex nextMatch];
+  while (range.location != NSNotFound) {
+    [XPLog extra:@"Color: Numeral: `%@`", [expression substringWithRange:range]];
+    [output setAttributes:[NSDictionary dictionaryWithObject:[ud SVR_colorForNumeral]
+                                                      forKey:NSForegroundColorAttributeName] range:range];
+    range = [regex nextMatch];
+  }
+  // Find numbers - numbers without decimals
+  regex = [JSBRegex regexWithString:encodedExpression pattern:@"\\-?\\d+"];
+  range = [regex nextMatch];
+  while (range.location != NSNotFound) {
+    [XPLog extra:@"Color: Numeral: %@", [expression substringWithRange:range]];
+    [output setAttributes:[NSDictionary dictionaryWithObject:[ud SVR_colorForNumeral]
+                                                      forKey:NSForegroundColorAttributeName] range:range];
+    range = [regex nextMatch];
+  }
+  
   return [[output copy] autorelease];
 }
 
@@ -200,11 +251,17 @@
 @implementation SVRMathString2 (Testing)
 +(void)executeUnitTests;
 {
-  SVRMathString2 *string;
+  
+  // MARK: Test Encoding
+  SVRMathString2 *math;
   [XPLog alwys:@"<%@> Unit Tests: STARTING", self];
-  string = [SVRMathString2 mathStringWithExpressionString:   @"-4(-2+2)-3*5-(5/-2)^2"];
-  NSAssert([[string expressionString] isEqualToString:       @"-4(-2+2)-3*5-(5/-2)^2"], @"");
-  NSAssert([[string encodedExpressionString] isEqualToString:@"-4(-2a2)s3m5s(5d-2)e2"], @"");
+  math = [SVRMathString2 mathStringWithExpressionString:   @"-4(-2.35+2.2)-3*5-(50/-2)^2"];
+  NSAssert([[math expressionString] isEqualToString:       @"-4(-2.35+2.2)-3*5-(50/-2)^2"], @"");
+  NSAssert([[math encodedExpressionString] isEqualToString:@"-4(-2.35a2.2)s3m5s(50d-2)e2"], @"");
+  
+  // MARK: Test Coloring
+  NSAssert([[[math coloredExpressionString] string] isEqualToString:@"-4(-2.35+2.2)-3*5-(50/-2)^2"], @"");
+  // TODO: Test for the actual attributes
   [XPLog alwys:@"<%@> Unit Tests: PASSED", self];
 }
 @end
