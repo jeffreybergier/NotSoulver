@@ -23,13 +23,13 @@ CLASSES = SVRDocumentWindowController.m SVRDocumentViewController.m\
           SVRMathString+Rendering.m SVRMathString.m SVRAppDelegate.m\
           SVRMathString+Tests.m SVRDocumentModelController.m\
           SVRDocumentViewController+Tests.m SVRCrossPlatform.m\
-          JSBRegex.m SVRMathString2.m
+          JSBRegex.m SVRMathString2.m SVRTextStorageController.m
 
 HFILES = SVRDocumentWindowController.h SVRDocumentViewController.h\
          SVRMathString+Rendering.h SVRMathString.h SVRAppDelegate.h\
          SVRMathString+Tests.h SVRDocumentModelController.h\
          SVRDocumentViewController+Tests.h SVRCrossPlatform.h JSBRegex.h\
-         re.h SVRMathString2.h
+         re.h SVRMathString2.h SVRTextStorageController.h
 
 MFILES = Soulver_main.m
 
