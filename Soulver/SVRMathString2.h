@@ -25,8 +25,13 @@
 -(NSString*)description;
 
 // MARK Private
--(NSString*)__encodedExpressionString;
--(NSAttributedString*)__colorExpressionString;
++(NSString*)__encodeExpressionString:(NSString*)expressionString;
++(void)__colorExpressionString:(NSMutableAttributedString*)attrstr;
++(void)__resetAttributes:(NSMutableAttributedString*)attrstr;
+
+// MARK: Stateless Methods
++(void)updateStorage:(NSMutableAttributedString*)attrstr;
+
 
 @end
 

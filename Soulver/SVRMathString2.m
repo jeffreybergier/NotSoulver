@@ -35,14 +35,14 @@
 -(NSString*)encodedExpressionString;
 {
   if (_encodedExpressionString) { return _encodedExpressionString; }
-  _encodedExpressionString = [[self __encodedExpressionString] retain];
+  // _encodedExpressionString = [[self __encodedExpressionString] retain];
   return _encodedExpressionString;
 }
 
 -(NSAttributedString*)coloredExpressionString;
 {
   if (_coloredExpressionString) { return _coloredExpressionString; }
-  _coloredExpressionString = [[self __colorExpressionString] retain];
+  // _coloredExpressionString = [[self __colorExpressionString] retain];
   return _coloredExpressionString;
 }
 
@@ -58,11 +58,11 @@
 }
 
 // MARK Private
--(NSString*)__encodedExpressionString;
++(NSString*)__encodeExpressionString:(NSString*)expressionString;
 {
   NSRange range;
   JSBRegex *regex = nil;
-  NSMutableString *output = [[[self expressionString] mutableCopy] autorelease];
+  NSMutableString *output = [[expressionString mutableCopy] autorelease];
   
   // Find negative numbers - Replace with tilde - First number is negative number
   regex = [JSBRegex regexWithString:output pattern:@"^\\-\\d"];
@@ -102,32 +102,22 @@
   return [[output copy] autorelease];
 }
 
--(NSAttributedString*)__colorExpressionString;
++(void)__colorExpressionString:(NSMutableAttributedString*)attrstr;
 {
   NSRange range;
   JSBRegex *regex = nil;
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  NSString *encodedExpression = [self encodedExpressionString];
-  NSString *expression = [self expressionString];
-  NSMutableAttributedString *output = [
-    [[NSMutableAttributedString alloc] initWithString:expression attributes:
-       [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:
-                                            [ud SVR_colorForText],
-                                            [NSFont userFixedPitchFontOfSize:14],
-                                            nil]
-                                   forKeys:[NSArray arrayWithObjects:
-                                            NSForegroundColorAttributeName,
-                                            NSFontAttributeName,
-                                            nil]]
-    ] autorelease];
+  NSString *expression = [attrstr string];
+  NSString *encodedExpression = [self __encodeExpressionString:expression];
+  [self __resetAttributes:attrstr];
   
   // Color Operators
   regex = [JSBRegex regexWithString:expression pattern:@"[\\+\\-\\*\\/\\^]"];
   range = [regex nextMatch];
   while (range.location != NSNotFound) {
     [XPLog extra:@"Color: Operator: %@", [expression substringWithRange:range]];
-    [output setAttributes:[NSDictionary dictionaryWithObject:[ud SVR_colorForOperator]
-                                                      forKey:NSForegroundColorAttributeName] range:range];
+    [attrstr setAttributes:[NSDictionary dictionaryWithObject:[ud SVR_colorForOperator]
+                                                       forKey:NSForegroundColorAttributeName] range:range];
     range = [regex nextMatch];
   }
   
@@ -136,8 +126,8 @@
   range = [regex nextMatch];
   while (range.location != NSNotFound) {
     [XPLog extra:@"Color: Numeral: `%@`", [expression substringWithRange:range]];
-    [output setAttributes:[NSDictionary dictionaryWithObject:[ud SVR_colorForNumeral]
-                                                      forKey:NSForegroundColorAttributeName] range:range];
+    [attrstr setAttributes:[NSDictionary dictionaryWithObject:[ud SVR_colorForNumeral]
+                                                       forKey:NSForegroundColorAttributeName] range:range];
     range = [regex nextMatch];
   }
   // Find numbers - numbers without decimals
@@ -145,12 +135,37 @@
   range = [regex nextMatch];
   while (range.location != NSNotFound) {
     [XPLog extra:@"Color: Numeral: %@", [expression substringWithRange:range]];
-    [output setAttributes:[NSDictionary dictionaryWithObject:[ud SVR_colorForNumeral]
-                                                      forKey:NSForegroundColorAttributeName] range:range];
+    [attrstr setAttributes:[NSDictionary dictionaryWithObject:[ud SVR_colorForNumeral]
+                                                       forKey:NSForegroundColorAttributeName] range:range];
     range = [regex nextMatch];
   }
+}
+
++(void)__resetAttributes:(NSMutableAttributedString*)attrstr;
+{
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  NSRange range = NSMakeRange(0, [attrstr length]);
+  [attrstr removeAttribute:NSForegroundColorAttributeName range:range];
+  [attrstr removeAttribute:NSBackgroundColorAttributeName range:range];
+  [attrstr removeAttribute:NSFontAttributeName range:range];
   
-  return [[output copy] autorelease];
+  [attrstr setAttributes:
+   [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:
+                                        [ud SVR_colorForText],
+                                        [NSFont userFixedPitchFontOfSize:14],
+                                        nil]
+                               forKeys:[NSArray arrayWithObjects:
+                                        NSForegroundColorAttributeName,
+                                        NSFontAttributeName,
+                                        nil]]
+                   range:range];
+}
+
+// MARK: Stateless Methods
++(void)updateStorage:(NSMutableAttributedString*)attrstr;
+{
+  [self __resetAttributes:attrstr];
+  [self __colorExpressionString:attrstr];
 }
 
 // MARK: Dealloc
