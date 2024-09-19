@@ -26,8 +26,8 @@ int main(int argc, const char *argv[]) {
   [XPLog alwys:@"<Main> Unit Tests: STARTING"];
   [JSBRegex executeTests];
   [SVRMathString2 executeUnitTests];
-//[SVRMathString executeTests];
-//[SVRDocumentViewController executeTests];
+  [SVRMathString executeTests];
+  [SVRDocumentViewController executeTests];
   [XPLog alwys:@"<Main> Unit Tests: PASSED"];
 #else
   [XPLog alwys:@"<Main> Unit Tests: SKIPPED"];

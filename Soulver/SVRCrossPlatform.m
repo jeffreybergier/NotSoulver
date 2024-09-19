@@ -365,14 +365,14 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
 {
   NSArray *keys   = [NSArray arrayWithObjects:@"a", @"s", @"d", @"m", @"e", nil];
   NSArray *values = [NSArray arrayWithObjects:@"+", @"-", @"/", @"*", @"^", nil];
-  return [[NSDictionary alloc] initWithObjects:values forKeys:keys];
+  return [[[NSDictionary alloc] initWithObjects:values forKeys:keys] autorelease];
 }
 
 +(NSDictionary*)__SVR_standardOperatorEncodeMap;
 {
   NSArray *keys   = [NSArray arrayWithObjects:@"+", @"-", @"/", @"*", @"^", nil];
   NSArray *values = [NSArray arrayWithObjects:@"a", @"s", @"d", @"m", @"e", nil];
-  return [[NSDictionary alloc] initWithObjects:values forKeys:keys];
+  return [[[NSDictionary alloc] initWithObjects:values forKeys:keys] autorelease];
 }
 
 @end
