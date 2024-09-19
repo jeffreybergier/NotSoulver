@@ -1,14 +1,17 @@
 #import <AppKit/AppKit.h>
 #import "SVRDocumentModelController.h"
+#import "SVRTextStorageController.h"
 
 @interface SVRDocumentViewController : NSObject
 {
-    id _model;
-    id _textView;
+  id _model;
+  id _textController;
+  id _textView;
 }
 
 // MARK: Interface Builder
 /*@IBOutlet*/-(NSTextView*)textView;
+/*@IBOutlet*/-(SVRTextStorageController*)textController;
 /*@IBOutlet*/-(SVRDocumentModelController*)model;
 /*@IBAction*/-(void)append:(NSButton*)sender;
 

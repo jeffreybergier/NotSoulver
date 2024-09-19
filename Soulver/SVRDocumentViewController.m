@@ -9,6 +9,11 @@
   return _textView; 
 }
 
+/*@IBOutlet*/-(SVRTextStorageController*)textController;
+{
+  return _textController;
+}
+
 /*@IBOutlet*/-(SVRDocumentModelController*)model;
 {
   return _model;
@@ -105,6 +110,8 @@
        selector:@selector(modelRenderDidChangeNotification:)
            name:[SVRDocumentModelController renderDidChangeNotificationName] 
          object:[self model]];
+  
+  [[[self textView] textStorage] setDelegate:[self textController]];
 
   [XPLog debug:@"%@ awakeFromNib", self];
 }
