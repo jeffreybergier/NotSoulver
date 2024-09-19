@@ -1,7 +1,7 @@
 #import <AppKit/AppKit.h>
 #import "SVRMathString2.h"
 
-@interface SVRTextStorageController : NSObject
+@interface SVRTextStorageController: NSObject
 {
   SVRMathString2 *_mathString;
 }

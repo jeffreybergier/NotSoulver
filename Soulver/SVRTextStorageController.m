@@ -14,14 +14,19 @@
   [XPLog debug:@"%@ awakeFromNib", self];
 }
 
+-(void)textStorageWillProcessEditing:(NSNotification*)aNotification
+{
+  NSTextStorage *storage = [aNotification object];
+  [XPLog debug:@"%@ textStorageWillProcessEditing: `%@`", self, [storage string]];
+  [[self mathString] setExpressionString:[storage string]];
+  [storage setAttributedString:[[self mathString] coloredExpressionString]];
+}
+
 -(void)textStorageDidProcessEditing:(NSNotification*)aNotification
 {
   NSTextStorage *storage = [aNotification object];
   [XPLog debug:@"%@ textStorageDidProcessEditing: `%@`", self, [storage string]];
-  [[self mathString] setExpressionString:[storage string]];
-  [storage beginEditing];
-  [storage setAttributedString:[[self mathString] coloredExpressionString]];
-  [storage endEditing];
+  // TODO: See if I can only use this method, if I only mutate the existing storage instead of replacing it.
 }
 
 @end
