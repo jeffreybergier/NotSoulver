@@ -8,15 +8,15 @@
 #import "SVRSolver.h"
 #import "JSBRegex.h"
 
-NSString *kSVRSolverSolutionKey   = @"kSVRSolverSolutionKey";
+NSString *kSVRSolverSolutionKey   = @"kSVRSolverSolutionKey"; // Store NSDecimalNumber
 NSString *kSVRSolverExpressionKey = @"kSVRSolverExpressionKey";
 NSString *kSVRSolverBracketsKey   = @"kSVRSolverBracketsKey";
 NSString *kSVRSolverOperatorKey   = @"kSVRSolverExponentKey";
 NSString *kSVRSolverNumeralKey    = @"kSVRSolverMultDivKey";
 NSString *kSVRSolverOtherKey      = @"kSVRSolverAddSubKey";
 
-NSString *kSVRSolverExpressionSolved    = @"kSVRSolverExpressionSolved";
-NSString *kSVRSolverExpressionNotSolved = @"kSVRSolverExpressionNotSolved";
+//NSString *kSVRSolverExpressionSolved    = @"kSVRSolverExpressionSolved";
+//NSString *kSVRSolverExpressionNotSolved = @"kSVRSolverExpressionNotSolved";
 NSString *kSVRSolverOperatorExponent    = @"kSVRSolverOperatorExponent";
 NSString *kSVRSolverOperatorMultDiv     = @"kSVRSolverOperatorMultDiv";
 NSString *kSVRSolverOperatorAddSub      = @"kSVRSolverOperatorAddSub";
@@ -27,12 +27,27 @@ NSString *kSVRSolverYES                 = @"kSVRSolverYES";
 // MARK: Business Logic
 +(void)solveTextStorage:(NSMutableAttributedString*)output;
 {
+  // Clear existing annotations
+  NSRange range = NSMakeRange(0, [output length]);
+  [output removeAttribute:kSVRSolverSolutionKey range:range];
+  [output removeAttribute:kSVRSolverExpressionKey range:range];
+  [output removeAttribute:kSVRSolverBracketsKey range:range];
+  [output removeAttribute:kSVRSolverOperatorKey range:range];
+  [output removeAttribute:kSVRSolverNumeralKey range:range];
+  [output removeAttribute:kSVRSolverOtherKey range:range];
+  
+  // Restart annotation process
   [self __solve_annotateExpressions:output];
   [self __solve_annotateUnsolvedExpressions:output];
 }
 
 +(void)colorTextStorage:(NSMutableAttributedString*)output;
 {
+  // Remove all font, foreground, and backgorund color attributes
+  NSRange range = NSMakeRange(0, [output length]);
+  [output removeAttribute:NSFontAttributeName range:range];
+  [output removeAttribute:NSForegroundColorAttributeName range:range];
+  [output removeAttribute:NSBackgroundColorAttributeName range:range];
   [self __color_colorTextStorage:output];
 }
 
@@ -49,8 +64,8 @@ NSString *kSVRSolverYES                 = @"kSVRSolverYES";
   while (range.location != NSNotFound) {
     loopRange = NSMakeRange(cursor, range.location + range.length - cursor);
     loopCheck = [output attribute:kSVRSolverExpressionKey atIndex:loopRange.location effectiveRange:NULL];
-    if (loopCheck == nil || [kSVRSolverExpressionSolved isEqualToString:loopCheck]) {
-      [output addAttribute:kSVRSolverExpressionKey value:kSVRSolverExpressionNotSolved range:loopRange];
+    if (loopCheck == nil) {
+      [output addAttribute:kSVRSolverExpressionKey value:kSVRSolverYES range:loopRange];
       [XPLog debug:@"%@ `%@` { loc: %lu, len: %lu }", kSVRSolverExpressionKey, [[output string] substringWithRange:loopRange], loopRange.location, loopRange.length];
     }
     cursor = range.location + range.length;
@@ -65,7 +80,7 @@ NSString *kSVRSolverYES                 = @"kSVRSolverYES";
   NSRange range = NSMakeRange(NSNotFound, 0);
   while (index < [output length]) {
     check = [output attribute:kSVRSolverExpressionKey atIndex:index effectiveRange:&range];
-    if ([kSVRSolverExpressionNotSolved isEqualToString:check]) {
+    if ([kSVRSolverYES isEqualToString:check]) {
       [self __solve_annotateBrackets:output inRange:range];
       index = range.location + range.length;
     } else {
@@ -80,11 +95,10 @@ NSString *kSVRSolverYES                 = @"kSVRSolverYES";
   JSBRegex *regex = [JSBRegex regexWithString:[[output string] substringWithRange:_range]
                                       pattern:@"\\([\\d\\.\\^\\*\\-\\+\\/]+\\)"];
   range = [regex nextMatch];
-  range.location += _range.location;
   while (range.location != NSNotFound) {
+    range.location += _range.location;
     [output addAttribute:kSVRSolverBracketsKey value:kSVRSolverYES range:range];
     range = [regex nextMatch];
-    range.location += _range.location;
   }
 }
 
@@ -95,11 +109,6 @@ NSString *kSVRSolverYES                 = @"kSVRSolverYES";
   XPUInteger index = 0;
   NSRange range = NSMakeRange(0, [output length]);
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  
-  // Remove all font, foreground, and backgorund color attributes
-  [output removeAttribute:NSFontAttributeName range:range];
-  [output removeAttribute:NSForegroundColorAttributeName range:range];
-  [output removeAttribute:NSBackgroundColorAttributeName range:range];
   
   // Add font and other text attributes
   [output addAttribute:NSFontAttributeName value:[ud SVR_fontForText] range:range];
@@ -124,6 +133,10 @@ NSString *kSVRSolverYES                 = @"kSVRSolverYES";
   NSString *_string = @"(5+5)+(4+4)=3+4+(2+2)=";
   NSMutableAttributedString *string = [[[NSMutableAttributedString alloc] initWithString:_string] autorelease];
   [XPLog alwys:@"<%@> Unit Tests: STARTING", self];
+  [SVRSolver solveTextStorage:string];
+  [XPLog pause:@"%@", string];
+  [SVRSolver colorTextStorage:string];
+  [string deleteCharactersInRange:NSMakeRange([string length] - 1, 1)];
   [SVRSolver solveTextStorage:string];
   [XPLog pause:@"%@", string];
   [SVRSolver colorTextStorage:string];

@@ -18,6 +18,20 @@
 {
   NSTextStorage *storage = [aNotification object];
   [XPLog debug:@"%@ textStorageDidProcessEditing: `%@`", self, [storage string]];
+  [SVRSolver solveTextStorage:storage];
+  [SVRSolver colorTextStorage:storage];
+}
+
+-(void)textDidBeginEditing:(NSNotification*)aNotification;
+{
+  NSTextView *textView = [aNotification object];
+  [XPLog debug:@"%@ textDidBeginEditing", self];
+}
+
+-(void)textDidEndEditing:(NSNotification*)aNotification;
+{
+  NSTextView *textView = [aNotification object];
+  [XPLog debug:@"%@ textDidEndEditing", self];
 }
 
 @end

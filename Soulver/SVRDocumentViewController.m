@@ -91,11 +91,14 @@
 // MARK: Respond to Notifications
 -(void)replaceTapeWithString:(NSAttributedString*)aString;
 {
+  // TODO: Remove MathString and then re-enable
+  /* 
   NSTextStorage *storage = [[self textView] textStorage];
   [storage beginEditing];
   [storage setAttributedString:aString];
   [storage endEditing];
   [[self textView] didChangeText];
+   */
 }
 
 -(void)modelRenderDidChangeNotification:(NSNotification*)aNotification;
@@ -112,6 +115,7 @@
          object:[self model]];
   
   [[[self textView] textStorage] setDelegate:[self textDelegate]];
+  [[self textView] setDelegate:[self textDelegate]];
 
   [XPLog debug:@"%@ awakeFromNib", self];
 }

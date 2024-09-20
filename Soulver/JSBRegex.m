@@ -83,7 +83,6 @@
 
 -(void)dealloc;
 {
-  NSLog(@"DEALLOC: %@", self);
   [_pattern release];
   [_string  release];
   _pattern = nil;
