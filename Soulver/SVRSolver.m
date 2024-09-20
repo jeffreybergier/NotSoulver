@@ -55,18 +55,17 @@ NSString *kSVRSolverYES                 = @"kSVRSolverYES";
 +(void)__solve_annotateExpressions:(NSMutableAttributedString*)output;
 {
   NSRange range;
-  NSRange loopRange;
-  NSString *loopCheck;
+  NSString *check;
   XPUInteger cursor = 0;
   JSBRegex *regex = [JSBRegex regexWithString:[output string]
-                                      pattern:@"\\="];
+                                      pattern:@"[\\d\\.\\^\\*\\-\\+\\/\\(\\)]+\\="];
   range = [regex nextMatch];
   while (range.location != NSNotFound) {
-    loopRange = NSMakeRange(cursor, range.location + range.length - cursor);
-    loopCheck = [output attribute:kSVRSolverExpressionKey atIndex:loopRange.location effectiveRange:NULL];
-    if (loopCheck == nil) {
-      [output addAttribute:kSVRSolverExpressionKey value:kSVRSolverYES range:loopRange];
-      [XPLog debug:@"%@ `%@` { loc: %lu, len: %lu }", kSVRSolverExpressionKey, [[output string] substringWithRange:loopRange], loopRange.location, loopRange.length];
+    range = NSMakeRange(cursor, range.location + range.length - cursor);
+    check = [output attribute:kSVRSolverExpressionKey atIndex:range.location effectiveRange:NULL];
+    if (check == nil) {
+      [output addAttribute:kSVRSolverExpressionKey value:kSVRSolverYES range:range];
+      [XPLog debug:@"%@ `%@` { loc: %lu, len: %lu }", kSVRSolverExpressionKey, [[output string] substringWithRange:range], range.location, range.length];
     }
     cursor = range.location + range.length;
     range = [regex nextMatch];
