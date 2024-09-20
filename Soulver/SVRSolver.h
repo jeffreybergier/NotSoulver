@@ -14,9 +14,13 @@
 +(void)solveTextStorage:(NSMutableAttributedString*)input;
 +(void)colorTextStorage:(NSMutableAttributedString*)input;
 
-// MARK: Private
+// MARK: Private: solveTextStorage
 +(void)__solve_annotateExpressions:(NSMutableAttributedString*)input;
-+(void)__solve_annotateBrackets:(NSMutableAttributedString*)input;
++(void)__solve_annotateUnsolvedExpressions:(NSMutableAttributedString*)input;
++(void)__solve_annotateBrackets:(NSMutableAttributedString*)input inRange:(NSRange)range;
+
+// MARK: Private: colorTextStorage
+
 
 @end
 
