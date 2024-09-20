@@ -120,7 +120,7 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 -(BOOL)SVR_setColorForNumeral:(XPColor*)newValue;
 -(XPColor*)SVR_colorForText;
 -(BOOL)SVR_setColorForText:(XPColor*)newValue;
-// TODO: Set userFixedPitchFont
+// TODO: These are fake and not stored in UserDefaults
 -(NSFont*)SVR_fontForText;
 -(BOOL)SVR_setFontForText:(NSFont*)newValue;
 -(NSDictionary*)SVR_operatorDecodeMap;

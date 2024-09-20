@@ -269,6 +269,16 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
   return [self synchronize];
 }
 
+-(NSFont*)SVR_fontForText;
+{
+  return [NSFont userFixedPitchFontOfSize:16];
+}
+-(BOOL)SVR_setFontForText:(NSFont*)newValue;
+{
+  [XPLog error:@"NSUnimplemented"];
+  return NO;
+}
+
 -(NSDictionary*)SVR_operatorDecodeMap;
 {
   return [self objectForKey:XPUserDefaultsDictionaryOperatorDecodeMap];
