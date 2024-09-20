@@ -4,19 +4,19 @@
 
 // MARK: Interface Builder
 
+/*@IBOutlet*/-(SVRDocumentModelController*)model;
+{
+  return _model;
+}
+
 /*@IBOutlet*/-(NSTextView*)textView;
 {
   return _textView; 
 }
 
-/*@IBOutlet*/-(SVRTextStorageController*)textController;
+/*@IBOutlet*/-(SVRDocumentTextDelegate*)textDelegate;
 {
-  return _textController;
-}
-
-/*@IBOutlet*/-(SVRDocumentModelController*)model;
-{
-  return _model;
+  return _textDelegate;
 }
 
 // @IBAction
@@ -111,7 +111,7 @@
            name:[SVRDocumentModelController renderDidChangeNotificationName] 
          object:[self model]];
   
-  [[[self textView] textStorage] setDelegate:[self textController]];
+  [[[self textView] textStorage] setDelegate:[self textDelegate]];
 
   [XPLog debug:@"%@ awakeFromNib", self];
 }
