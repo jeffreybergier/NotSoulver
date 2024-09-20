@@ -8,13 +8,16 @@
 #import "SVRSolver.h"
 #import "JSBRegex.h"
 
-NSString *kSVRSolverSolution   = @"kSVRSolverSolution";
-NSString *kSVRSolverExpression = @"kSVRSolverExpression";
-NSString *kSVRSolverBrackets   = @"kSVRSolverBrackets";
-NSString *kSVRSolverExponent   = @"kSVRSolverExponent";
-NSString *kSVRSolverMultDiv    = @"kSVRSolverMultDiv";
-NSString *kSVRSolverAddSub     = @"kSVRSolverAddSub";
-NSString *kSVRSolverYES        = @"kSVRSolverYES";
+NSString *kSVRSolverSolutionKey   = @"kSVRSolverSolutionKey";
+NSString *kSVRSolverExpressionKey = @"kSVRSolverExpressionKey";
+NSString *kSVRSolverBracketsKey   = @"kSVRSolverBracketsKey";
+NSString *kSVRSolverExponentKey   = @"kSVRSolverExponentKey";
+NSString *kSVRSolverMultDivKey    = @"kSVRSolverMultDivKey";
+NSString *kSVRSolverAddSubKey     = @"kSVRSolverAddSubKey";
+
+NSString *kSVRSolverExpressionSolved    = @"kSVRSolverExpressionSolved";
+NSString *kSVRSolverExpressionNotSolved = @"kSVRSolverExpressionNotSolved";
+NSString *kSVRSolverYES                 = @"kSVRSolverYES";
 
 @implementation SVRSolver: NSObject
 
@@ -22,6 +25,7 @@ NSString *kSVRSolverYES        = @"kSVRSolverYES";
 +(void)solveTextStorage:(NSMutableAttributedString*)output;
 {
   [self __solve_annotateExpressions:output];
+  [self __solve_annotateBrackets:output];
 }
 +(void)colorTextStorage:(NSMutableAttributedString*)output;
 {
@@ -33,15 +37,35 @@ NSString *kSVRSolverYES        = @"kSVRSolverYES";
 {
   NSRange range;
   NSRange loopRange;
+  NSString *loopCheck;
   XPUInteger cursor = 0;
   JSBRegex *regex = [JSBRegex regexWithString:[output string] pattern:@"\\="];
   range = [regex nextMatch];
   while (range.location != NSNotFound) {
     loopRange = NSMakeRange(cursor, range.location + range.length - cursor);
-    [output addAttribute:kSVRSolverExpression value:kSVRSolverYES range:loopRange];
-    [XPLog debug:@"%@ { loc: %lu, len: %lu }", kSVRSolverExpression, loopRange.location, loopRange.length];
+    loopCheck = [output attribute:kSVRSolverExpressionKey atIndex:loopRange.location effectiveRange:NULL];
+    if (loopCheck == nil || [kSVRSolverExpressionSolved isEqualToString:loopCheck]) {
+      [output addAttribute:kSVRSolverExpressionKey value:kSVRSolverExpressionNotSolved range:loopRange];
+      [XPLog debug:@"%@ { loc: %lu, len: %lu }", kSVRSolverExpressionKey, loopRange.location, loopRange.length];
+    }
     cursor = range.location + range.length + 1;
     range = [regex nextMatch];
+  }
+}
+
++(void)__solve_annotateBrackets:(NSMutableAttributedString*)output;
+{
+  NSString *loopCheck;
+  XPUInteger index = 0;
+  NSRange range = NSMakeRange(NSNotFound, 0);
+  loopCheck = [output attribute:kSVRSolverExpressionKey atIndex:index effectiveRange:&range];
+  while (loopCheck) {
+    if ([kSVRSolverExpressionNotSolved isEqualToString:loopCheck]) {
+      // Find brackets
+      NSLog(@"");
+    }
+    index = range.location + range.length + 1;
+    loopCheck = [output attribute:kSVRSolverExpressionKey atIndex:index effectiveRange:&range];
   }
 }
 

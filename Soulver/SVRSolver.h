@@ -16,6 +16,7 @@
 
 // MARK: Private
 +(void)__solve_annotateExpressions:(NSMutableAttributedString*)input;
++(void)__solve_annotateBrackets:(NSMutableAttributedString*)input;
 
 @end
 
