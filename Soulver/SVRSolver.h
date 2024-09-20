@@ -20,7 +20,7 @@
 +(void)__solve_annotateBrackets:(NSMutableAttributedString*)input inRange:(NSRange)range;
 
 // MARK: Private: colorTextStorage
-
++(void)__color_colorTextStorage:(NSMutableAttributedString*)input;
 
 @end
 

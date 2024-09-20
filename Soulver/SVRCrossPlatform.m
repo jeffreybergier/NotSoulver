@@ -236,6 +236,18 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
   return [self synchronize];
 }
 
+-(XPColor*)SVR_colorForBrackets;
+{
+  // TODO: Make separate color for brackets
+  return [self objectForKey:XPUserDefaultsColorForOperator];
+}
+
+-(BOOL)SVR_setColorForBrackets:(XPColor*)newValue;
+{
+  [self setObject:newValue forKey:XPUserDefaultsColorForOperator];
+  return [self synchronize];
+}
+
 -(XPColor*)SVR_colorForOperator;
 {
   return [self objectForKey:XPUserDefaultsColorForOperator];

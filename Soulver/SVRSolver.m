@@ -11,12 +11,15 @@
 NSString *kSVRSolverSolutionKey   = @"kSVRSolverSolutionKey";
 NSString *kSVRSolverExpressionKey = @"kSVRSolverExpressionKey";
 NSString *kSVRSolverBracketsKey   = @"kSVRSolverBracketsKey";
-NSString *kSVRSolverExponentKey   = @"kSVRSolverExponentKey";
-NSString *kSVRSolverMultDivKey    = @"kSVRSolverMultDivKey";
-NSString *kSVRSolverAddSubKey     = @"kSVRSolverAddSubKey";
+NSString *kSVRSolverOperatorKey   = @"kSVRSolverExponentKey";
+NSString *kSVRSolverNumeralKey    = @"kSVRSolverMultDivKey";
+NSString *kSVRSolverOtherKey      = @"kSVRSolverAddSubKey";
 
 NSString *kSVRSolverExpressionSolved    = @"kSVRSolverExpressionSolved";
 NSString *kSVRSolverExpressionNotSolved = @"kSVRSolverExpressionNotSolved";
+NSString *kSVRSolverOperatorExponent    = @"kSVRSolverOperatorExponent";
+NSString *kSVRSolverOperatorMultDiv     = @"kSVRSolverOperatorMultDiv";
+NSString *kSVRSolverOperatorAddSub      = @"kSVRSolverOperatorAddSub";
 NSString *kSVRSolverYES                 = @"kSVRSolverYES";
 
 @implementation SVRSolver: NSObject
@@ -27,9 +30,10 @@ NSString *kSVRSolverYES                 = @"kSVRSolverYES";
   [self __solve_annotateExpressions:output];
   [self __solve_annotateUnsolvedExpressions:output];
 }
+
 +(void)colorTextStorage:(NSMutableAttributedString*)output;
 {
-  
+  [self __color_colorTextStorage:output];
 }
 
 // MARK: Private: solveTextStorage
@@ -84,6 +88,32 @@ NSString *kSVRSolverYES                 = @"kSVRSolverYES";
   }
 }
 
+// MARK: Private: colorTextStorage
++(void)__color_colorTextStorage:(NSMutableAttributedString*)output;
+{
+  NSString *check;
+  XPUInteger index = 0;
+  NSRange range = NSMakeRange(0, [output length]);
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  
+  // Remove all font, foreground, and backgorund color attributes
+  [output removeAttribute:NSFontAttributeName range:range];
+  [output removeAttribute:NSForegroundColorAttributeName range:range];
+  [output removeAttribute:NSBackgroundColorAttributeName range:range];
+  
+  // Add font and other text attributes
+  [output addAttribute:NSFontAttributeName value:[ud SVR_fontForText] range:range];
+  [output addAttribute:NSForegroundColorAttributeName value:[ud SVR_colorForText] range:range];
+  
+  while (index < [output length]) {
+    check = [output attribute:kSVRSolverBracketsKey atIndex:index effectiveRange:&range];
+    if (check) {
+      [output addAttribute:NSForegroundColorAttributeName value:[ud SVR_colorForBrackets] range:range];
+    }
+    index += 1;
+  }
+}
+
 
 @end
 
@@ -95,6 +125,8 @@ NSString *kSVRSolverYES                 = @"kSVRSolverYES";
   NSMutableAttributedString *string = [[[NSMutableAttributedString alloc] initWithString:_string] autorelease];
   [XPLog alwys:@"<%@> Unit Tests: STARTING", self];
   [SVRSolver solveTextStorage:string];
+  [XPLog pause:@"%@", string];
+  [SVRSolver colorTextStorage:string];
   [XPLog pause:@"%@", string];
   [XPLog alwys:@"<%@> Unit Tests: PASSED", self];
 }
