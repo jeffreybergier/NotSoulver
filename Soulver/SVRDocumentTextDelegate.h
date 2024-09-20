@@ -1,5 +1,5 @@
 #import <AppKit/AppKit.h>
-#import "SVRMathString2.h"
+#import "SVRSolver.h"
 
 #if OS_OPENSTEP
 @interface SVRDocumentTextDelegate: NSObject

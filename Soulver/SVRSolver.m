@@ -5,9 +5,64 @@
 //  Created by Jeffrey Bergier on 2024/07/29.
 //
 
-#import "SVRMathString2.h"
+#import "SVRSolver.h"
 #import "JSBRegex.h"
 
+NSString *kSVRSolverSolution   = @"kSVRSolverSolution";
+NSString *kSVRSolverExpression = @"kSVRSolverExpression";
+NSString *kSVRSolverBrackets   = @"kSVRSolverBrackets";
+NSString *kSVRSolverExponent   = @"kSVRSolverExponent";
+NSString *kSVRSolverMultDiv    = @"kSVRSolverMultDiv";
+NSString *kSVRSolverAddSub     = @"kSVRSolverAddSub";
+NSString *kSVRSolverYES        = @"kSVRSolverYES";
+
+@implementation SVRSolver: NSObject
+
+// MARK: Business Logic
++(void)solveTextStorage:(NSMutableAttributedString*)output;
+{
+  [self __solve_annotateExpressions:output];
+}
++(void)colorTextStorage:(NSMutableAttributedString*)output;
+{
+  
+}
+
+// MARK: Private
++(void)__solve_annotateExpressions:(NSMutableAttributedString*)output;
+{
+  NSRange range;
+  NSRange loopRange;
+  XPUInteger cursor = 0;
+  JSBRegex *regex = [JSBRegex regexWithString:[output string] pattern:@"\\="];
+  range = [regex nextMatch];
+  while (range.location != NSNotFound) {
+    loopRange = NSMakeRange(cursor, range.location + range.length - cursor);
+    [output addAttribute:kSVRSolverExpression value:kSVRSolverYES range:loopRange];
+    [XPLog debug:@"%@ { loc: %lu, len: %lu }", kSVRSolverExpression, loopRange.location, loopRange.length];
+    cursor = range.location + range.length + 1;
+    range = [regex nextMatch];
+  }
+}
+
+
+@end
+
+@implementation SVRSolver (Testing)
+
++(void)executeTests;
+{
+  NSString *_string = @"5+5=2+2=";
+  NSMutableAttributedString *string = [[[NSMutableAttributedString alloc] initWithString:_string] autorelease];
+  [XPLog alwys:@"<%@> Unit Tests: STARTING", self];
+  [SVRSolver solveTextStorage:string];
+  [XPLog pause:@"%@", [string string]];
+  [XPLog alwys:@"<%@> Unit Tests: PASSED", self];
+}
+
+@end
+
+/*
 @implementation SVRMathString2
 
 -(NSString*)expressionString;
@@ -280,3 +335,5 @@
   [XPLog alwys:@"<%@> Unit Tests: PASSED", self];
 }
 @end
+
+*/

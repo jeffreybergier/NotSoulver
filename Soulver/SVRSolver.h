@@ -8,6 +8,24 @@
 #import <Foundation/Foundation.h>
 #import "SVRCrossPlatform.h"
 
+@interface SVRSolver: NSObject
+
+// MARK: Business Logic
++(void)solveTextStorage:(NSMutableAttributedString*)input;
++(void)colorTextStorage:(NSMutableAttributedString*)input;
+
+// MARK: Private
++(void)__solve_annotateExpressions:(NSMutableAttributedString*)input;
+
+@end
+
+@interface SVRSolver (Testing)
++(void)executeTests;
+@end
+
+
+/*
+
 @interface SVRMathString2: NSObject
 {
   /// Source of truth for this class
@@ -67,3 +85,5 @@
 @interface SVRMathString2 (Testing)
 +(void)executeUnitTests;
 @end
+
+*/

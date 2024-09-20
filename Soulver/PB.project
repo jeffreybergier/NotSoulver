@@ -3,34 +3,34 @@
     DYNAMIC_CODE_GEN = YES; 
     FILESTABLE = {
         CLASSES = (
-            SVRDocumentWindowController.m, 
-            SVRDocumentViewController.m, 
-            "SVRMathString+Rendering.m", 
-            SVRMathString.m, 
-            SVRAppDelegate.m, 
-            "SVRMathString+Tests.m", 
-            SVRDocumentModelController.m, 
-            "SVRDocumentViewController+Tests.m", 
-            SVRCrossPlatform.m, 
             JSBRegex.m, 
-            SVRMathString2.m, 
-            SVRDocumentTextDelegate.m
+            SVRAppDelegate.m, 
+            SVRCrossPlatform.m, 
+            SVRDocumentModelController.m, 
+            SVRDocumentTextDelegate.m, 
+            SVRDocumentViewController.m, 
+            "SVRDocumentViewController+Tests.m", 
+            SVRDocumentWindowController.m, 
+            SVRMathString.m, 
+            "SVRMathString+Rendering.m", 
+            "SVRMathString+Tests.m", 
+            SVRSolver.m
         ); 
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
         H_FILES = (
-            SVRDocumentWindowController.h, 
-            SVRDocumentViewController.h, 
-            "SVRMathString+Rendering.h", 
-            SVRMathString.h, 
-            SVRAppDelegate.h, 
-            "SVRMathString+Tests.h", 
-            SVRDocumentModelController.h, 
-            "SVRDocumentViewController+Tests.h", 
-            SVRCrossPlatform.h, 
             JSBRegex.h, 
+            SVRAppDelegate.h, 
+            SVRCrossPlatform.h, 
+            SVRDocumentModelController.h, 
+            SVRDocumentTextDelegate.h, 
+            SVRDocumentViewController.h, 
+            "SVRDocumentViewController+Tests.h", 
+            SVRDocumentWindowController.h, 
+            SVRMathString.h, 
+            "SVRMathString+Rendering.h", 
+            "SVRMathString+Tests.h", 
+            SVRSolver.h,
             re.h, 
-            SVRMathString2.h, 
-            SVRDocumentTextDelegate.h
         ); 
         INTERFACES = (NEXTSTEP_Soulver.nib, NEXTSTEP_SVRDocument.nib); 
         OTHER_LINKED = (re.c, Soulver_main.m); 
