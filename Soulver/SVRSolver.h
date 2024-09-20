@@ -16,8 +16,10 @@
 
 // MARK: Private: solveTextStorage
 +(void)__solve_annotateExpressions:(NSMutableAttributedString*)input;
-+(void)__solve_annotateUnsolvedExpressions:(NSMutableAttributedString*)input;
-+(void)__solve_annotateBrackets:(NSMutableAttributedString*)input inRange:(NSRange)range;
++(void)__solve_annotateBrackets:(NSMutableAttributedString*)input;
++(void)__solve_annotateOperators:(NSMutableAttributedString*)output;
++(void)__solve_annotateNumerals:(NSMutableAttributedString*)output;
++(void)__solve_PEMDAS:(NSMutableAttributedString*)output;
 
 // MARK: Private: colorTextStorage
 +(void)__color_colorTextStorage:(NSMutableAttributedString*)input;
