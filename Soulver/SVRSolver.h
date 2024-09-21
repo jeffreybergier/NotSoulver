@@ -30,7 +30,9 @@
 +(NSAttributedString*)__solveSubexpression:(NSAttributedString*)input
                          forOperatorsInSet:(NSSet*)operators
                           rangeForPatching:(NSRange*)range;
-
++(NSDecimalNumber*)__solveWithOperator:(NSString*)anOp
+                            leftString:(NSString*)leftString
+                           rightString:(NSString*)rightString;
 // MARK: Private: colorAnnotatedAndSolvedStorage
 +(void)__colorAnnotatedAndSolvedStorage:(NSMutableAttributedString*)input;
 
