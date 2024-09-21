@@ -30,9 +30,8 @@ NSString *kSVRSolverYES                 = @"kSVRSolverYES";
   NSRange range;
   [output retain];
   
-  // Clear existing annotations
+  // Clear existing annotations except solution keys
   range = NSMakeRange(0, [output length]);
-  [output removeAttribute:kSVRSolverSolutionKey range:range];
   [output removeAttribute:kSVRSolverExpressionKey range:range];
   [output removeAttribute:kSVRSolverBracketsKey range:range];
   [output removeAttribute:kSVRSolverOperatorKey range:range];
@@ -154,20 +153,43 @@ NSString *kSVRSolverYES                 = @"kSVRSolverYES";
 // MARK: Private: annotateStorage
 +(void)__solveExpressions:(NSMutableAttributedString*)output;
 {
-  NSString *check;
-  NSUInteger index = 0;
-  NSRange range = NSMakeRange(NSNotFound, 0);
-  while (index < [output length]) {
-    check = [output attribute:kSVRSolverExpressionKey
-                      atIndex:index
-        longestEffectiveRange:&range
-                      inRange:NSMakeRange(0, [output length])];
-    if (check) {
-      NSLog(@"%@", [[output string] substringWithRange:range]);
-      NSLog(@"skip");
+  NSRange range;
+  NSAttributedString *solution;
+  JSBRegex *regex = [JSBRegex regexWithString:[output string]
+                                      pattern:@"[\\d\\.\\^\\*\\-\\+\\/\\(\\)]+\\="];
+  range = [regex nextMatch];
+  while (range.location != NSNotFound) {
+    if (![self __solveIsValidSolutionInStorage:output
+                        forExpressionWithRange:range])
+    {
+      NSLog(@"Solving: %@", [[output string] substringWithRange:range]);
+      solution = [self __solvePEMDASInExpression:[output attributedSubstringFromRange:range]];
+      NSLog(@"Solved: %@%@", [[output string] substringWithRange:range], solution);
     }
-    index = (check) ? (range.location + range.length) : (index + 1);
+    range = [regex nextMatch];
   }
+}
+
++(BOOL)__solveIsValidSolutionInStorage:(NSMutableAttributedString*)input
+                forExpressionWithRange:(NSRange)range;
+{
+  NSRange checkRange;
+  NSDecimalNumber *check;
+  
+  if (range.location + range.length >= [input length]) {
+    return NO;
+  }
+  checkRange = NSMakeRange(range.location + 1, 1);
+  check = [input attribute:kSVRSolverSolutionKey
+                    atIndex:checkRange.location
+             effectiveRange:NULL];
+  return check != nil;
+}
+
++(NSAttributedString*)__solvePEMDASInExpression:(NSAttributedString*)input;
+{
+  NSMutableAttributedString *output = [[input mutableCopy] autorelease];
+  return output;
 }
 
 // MARK: Private: colorTextStorage

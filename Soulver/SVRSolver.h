@@ -18,11 +18,14 @@
 // MARK: Private: annotateStorage
 +(void)__annotateExpressions:(NSMutableAttributedString*)input;
 +(void)__annotateBrackets:(NSMutableAttributedString*)input;
-+(void)__annotateOperators:(NSMutableAttributedString*)output;
-+(void)__annotateNumerals:(NSMutableAttributedString*)output;
++(void)__annotateOperators:(NSMutableAttributedString*)input;
++(void)__annotateNumerals:(NSMutableAttributedString*)input;
 
 // MARK: Private: annotateStorage
-+(void)__solveExpressions:(NSMutableAttributedString*)output;
++(void)__solveExpressions:(NSMutableAttributedString*)input;
++(BOOL)__solveIsValidSolutionInStorage:(NSMutableAttributedString*)input
+                forExpressionWithRange:(NSRange)range;
++(NSAttributedString*)__solvePEMDASInExpression:(NSAttributedString*)input;
 
 // MARK: Private: colorAnnotatedAndSolvedStorage
 +(void)__colorAnnotatedAndSolvedStorage:(NSMutableAttributedString*)input;
