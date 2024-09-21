@@ -11,86 +11,24 @@
 @interface SVRSolver: NSObject
 
 // MARK: Business Logic
-+(void)solveTextStorage:(NSMutableAttributedString*)input;
-+(void)colorTextStorage:(NSMutableAttributedString*)input;
++(void)annotateStorage:(NSMutableAttributedString*)input;
++(void)solveAnnotatedStorage:(NSMutableAttributedString*)input;
++(void)colorAnnotatedAndSolvedStorage:(NSMutableAttributedString*)input;
 
-// MARK: Private: solveTextStorage
-+(void)__solve_annotateExpressions:(NSMutableAttributedString*)input;
-+(void)__solve_annotateBrackets:(NSMutableAttributedString*)input;
-+(void)__solve_annotateOperators:(NSMutableAttributedString*)output;
-+(void)__solve_annotateNumerals:(NSMutableAttributedString*)output;
-+(void)__solve_PEMDAS:(NSMutableAttributedString*)output;
+// MARK: Private: annotateStorage
++(void)__annotateExpressions:(NSMutableAttributedString*)input;
++(void)__annotateBrackets:(NSMutableAttributedString*)input;
++(void)__annotateOperators:(NSMutableAttributedString*)output;
++(void)__annotateNumerals:(NSMutableAttributedString*)output;
 
-// MARK: Private: colorTextStorage
-+(void)__color_colorTextStorage:(NSMutableAttributedString*)input;
+// MARK: Private: annotateStorage
++(void)__solveExpressions:(NSMutableAttributedString*)output;
+
+// MARK: Private: colorAnnotatedAndSolvedStorage
++(void)__colorAnnotatedAndSolvedStorage:(NSMutableAttributedString*)input;
 
 @end
 
 @interface SVRSolver (Testing)
 +(void)executeTests;
 @end
-
-
-/*
-
-@interface SVRMathString2: NSObject
-{
-  /// Source of truth for this class
-  NSString *_expressionString;
-  /// Cached properties
-  NSString *_encodedExpressionString;
-  NSAttributedString *_coloredExpressionString;
-  NSAttributedString *_coloredSolvedString;
-}
--(NSString*)expressionString;
--(void)setExpressionString:(NSString*)expressionString;
--(NSString*)encodedExpressionString;
--(NSAttributedString*)coloredExpressionString;
--(NSAttributedString*)coloredSolvedString;
--(NSString*)description;
-
-// MARK Private
-+(NSString*)__encodeExpressionString:(NSString*)expressionString;
-+(void)__colorExpressionString:(NSMutableAttributedString*)attrstr;
-+(void)__resetAttributes:(NSMutableAttributedString*)attrstr;
-
-// MARK: Stateless Methods
-+(void)updateStorage:(NSMutableAttributedString*)attrstr;
-
-
-@end
-
-// MARK: Init
-@interface SVRMathString2 (Creating)
--(id)init;
--(id)initWithExpressionString:(NSString*)expressionString;
-+(id)mathStringWithExpressionString:(NSString*)expressionString;
-@end
-
-@interface SVRMathString2 (Copying) <NSCopying>
--(id)copyWithZone:(NSZone*)zone;
-@end
-
-@interface SVRMathString2 (Archiving)
--(BOOL)writeToFilename:(NSString*)filename;
-+(id)mathStringWithFilename:(NSString*)filename;
-@end
-
-@interface SVRMathString2 (NSObjectProtocol)
--(BOOL)isEqual:(id)object;
--(XPUInteger)hash;
-@end
-
-// MARK: Constants
-
-@interface SVRMathString2 (SVRConstants)
-+(NSDictionary*)operatorDecodeMap;
-+(NSDictionary*)operatorEncodeMap;
-@end
-
-// MARK: Testing
-@interface SVRMathString2 (Testing)
-+(void)executeUnitTests;
-@end
-
-*/

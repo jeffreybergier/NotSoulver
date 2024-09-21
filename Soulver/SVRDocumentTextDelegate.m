@@ -18,8 +18,8 @@
 {
   NSTextStorage *storage = [aNotification object];
   [XPLog debug:@"%@ textStorageDidProcessEditing: `%@`", self, [storage string]];
-  [SVRSolver solveTextStorage:storage];
-  [SVRSolver colorTextStorage:storage];
+  [SVRSolver annotateStorage:storage];
+  [SVRSolver colorAnnotatedAndSolvedStorage:storage];
 }
 
 -(void)textDidBeginEditing:(NSNotification*)aNotification;
