@@ -177,3 +177,12 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 +(NSNumber*)SVR_errorPatching;
 +(NSString*)SVR_descriptionForError:(NSNumber*)error;
 @end
+
+// MARK: NSDecimalNumber
+@interface NSDecimalNumber (Soulver)
+/// In OpenStep, NaN comparisons are weird, so this uses a string comparison
+-(BOOL)SVR_isNotANumber;
+-(NSString*)SVR_description;
++(id)SVR_decimalNumberWithString:(NSString*)string;
+-(NSDecimalNumber*)SVR_decimalNumberByRaisingToPower:(NSDecimalNumber*)power;
+@end

@@ -540,3 +540,38 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
   }
 }
 @end
+
+// MARK: NSDecimalNumber
+@implementation NSDecimalNumber (Soulver)
+
+-(BOOL)SVR_isNotANumber;
+{
+  NSString *lhsDescription;
+  NSString *rhsDescription;
+  
+  lhsDescription = [self SVR_description];
+  rhsDescription = [[NSDecimalNumber notANumber] SVR_description];
+  
+  return [lhsDescription isEqualToString:rhsDescription];
+}
+
+-(NSString*)SVR_description;
+{
+  return [self descriptionWithLocale:[[NSUserDefaults standardUserDefaults] SVR_decimalNumberLocale]];
+}
+
++(id)SVR_decimalNumberWithString:(NSString*)string;
+{
+  return [NSDecimalNumber decimalNumberWithString:string locale:[[NSUserDefaults standardUserDefaults] SVR_decimalNumberLocale]];
+}
+
+-(NSDecimalNumber*)SVR_decimalNumberByRaisingToPower:(NSDecimalNumber*)power;
+{
+  if ([power isGreaterThanOrEqualTo:0]) {
+    return [self decimalNumberByRaisingToPower:(XPUInteger)[power unsignedIntValue]];
+  } else {
+    return [[NSDecimalNumber one] decimalNumberByDividingBy:[self decimalNumberByRaisingToPower:(XPUInteger)abs([power intValue])]];
+  }
+}
+
+@end
