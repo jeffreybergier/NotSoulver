@@ -26,6 +26,10 @@
 +(BOOL)__solveIsValidSolutionInStorage:(NSMutableAttributedString*)input
                 forExpressionWithRange:(NSRange)range;
 +(NSAttributedString*)__solvePEMDASInExpression:(NSAttributedString*)input;
++(NSRange)__solveRangeForBracketsInExpression:(NSAttributedString*)input;
++(NSAttributedString*)__solveSubexpression:(NSAttributedString*)input
+                         forOperatorsInSet:(NSSet*)operators
+                          rangeForPatching:(NSRange*)range;
 
 // MARK: Private: colorAnnotatedAndSolvedStorage
 +(void)__colorAnnotatedAndSolvedStorage:(NSMutableAttributedString*)input;

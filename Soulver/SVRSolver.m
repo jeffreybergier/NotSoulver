@@ -15,12 +15,16 @@ NSString *kSVRSolverOperatorKey   = @"kSVRSolverOperatorKey";
 NSString *kSVRSolverNumeralKey    = @"kSVRSolverNumeralKey";
 NSString *kSVRSolverOtherKey      = @"kSVRSolverOtherKey";
 
-//NSString *kSVRSolverExpressionSolved    = @"kSVRSolverExpressionSolved";
-//NSString *kSVRSolverExpressionNotSolved = @"kSVRSolverExpressionNotSolved";
-NSString *kSVRSolverOperatorExponent    = @"kSVRSolverOperatorExponent";
-NSString *kSVRSolverOperatorMultDiv     = @"kSVRSolverOperatorMultDiv";
-NSString *kSVRSolverOperatorAddSub      = @"kSVRSolverOperatorAddSub";
+NSString *kSVRSolverOperatorExponent    = @"kSVRSolverOperator^";
+NSString *kSVRSolverOperatorMultiply    = @"kSVRSolverOperator*";
+NSString *kSVRSolverOperatorDivide      = @"kSVRSolverOperator/";
+NSString *kSVRSolverOperatorAdd         = @"kSVRSolverOperator+";
+NSString *kSVRSolverOperatorSubtract    = @"kSVRSolverOperator-";
 NSString *kSVRSolverYES                 = @"kSVRSolverYES";
+
+static NSString *kSVRSolverOperator(NSString* operator) {
+  return [@"kSVRSolverOperator" stringByAppendingString:operator];
+}
 
 @implementation SVRSolver: NSObject
 
@@ -43,8 +47,14 @@ NSString *kSVRSolverYES                 = @"kSVRSolverYES";
   [self __annotateBrackets:output];
   [self __annotateOperators:output];
   [self __annotateNumerals:output];
-  [self __solveExpressions:output];
   
+  [output autorelease];
+}
+
++(void)solveAnnotatedStorage:(NSMutableAttributedString*)output;
+{
+  [output retain];
+  [self __solveExpressions:output];
   [output autorelease];
 }
 
@@ -112,7 +122,9 @@ NSString *kSVRSolverYES                 = @"kSVRSolverYES";
   while (range.location != NSNotFound) {
     range.location += 1;
     range.length = 1;
-    [output addAttribute:kSVRSolverOperatorKey value:kSVRSolverYES range:range];
+    [output addAttribute:kSVRSolverOperatorKey
+                   value:kSVRSolverOperator([[output string] substringWithRange:range])
+                   range:range];
     range = [regex nextMatch];
   }
 }
@@ -188,8 +200,157 @@ NSString *kSVRSolverYES                 = @"kSVRSolverYES";
 
 +(NSAttributedString*)__solvePEMDASInExpression:(NSAttributedString*)input;
 {
+  NSRange patchRange = NSMakeRange(NSNotFound, 0);
+  NSAttributedString *solution = nil;
   NSMutableAttributedString *output = [[input mutableCopy] autorelease];
+  
+  // Find brackets
+  patchRange = [self __solveRangeForBracketsInExpression:output];
+  while (patchRange.location != NSNotFound) {
+    NSLog(@"%@・%@", [[output string] substringWithRange:patchRange],
+                     [[output string] substringWithRange:NSMakeRange(patchRange.location+1, patchRange.length-2)]);
+    solution = [self __solvePEMDASInExpression:[output attributedSubstringFromRange:NSMakeRange(patchRange.location+1, patchRange.length-2)]];
+    NSAssert(solution, @"BOOM");
+    [output replaceCharactersInRange:patchRange withAttributedString:solution];
+    patchRange = [self __solveRangeForBracketsInExpression:output];
+  }
+  
+  // Find Add Subtract
+  solution = [self __solveSubexpression:output
+                      forOperatorsInSet:[NSSet setWithObjects:kSVRSolverOperatorAdd, kSVRSolverOperatorSubtract, nil]
+                       rangeForPatching:&patchRange];
+  while (solution) {
+    NSLog(@"%@", solution);
+    solution = [self __solveSubexpression:output
+                        forOperatorsInSet:[NSSet setWithObjects:kSVRSolverOperatorAdd, kSVRSolverOperatorSubtract, nil]
+                         rangeForPatching:&patchRange];
+  }
+  
+  // Find exponents
+  solution = [self __solveSubexpression:output
+                      forOperatorsInSet:[NSSet setWithObject:kSVRSolverOperatorExponent]
+                       rangeForPatching:&patchRange];
+  while (solution) {
+    NSLog(@"%@", solution);
+    solution = [self __solveSubexpression:output
+                        forOperatorsInSet:[NSSet setWithObject:kSVRSolverOperatorExponent]
+                         rangeForPatching:&patchRange];
+  }
+  
   return output;
+}
+
++(NSRange)__solveRangeForBracketsInExpression:(NSAttributedString*)input;
+{
+  NSString *check = nil;
+  XPUInteger index = 0;
+  NSRange output = NSMakeRange(NSNotFound, 0);
+  while (index < [input length]) {
+    check = [input attribute:kSVRSolverBracketsKey
+                     atIndex:index
+              effectiveRange:NULL];
+    if (check && output.location == NSNotFound) {
+      output.location = index;
+    } else if (check && output.location != NSNotFound) {
+      output.length = index + output.location + 1;
+      if ((output.length-2)-(output.location+1) >= 1) {
+        return output;
+      } else {
+        output.location = NSNotFound;
+      }
+    }
+    index += 1;
+  }
+  return NSMakeRange(NSNotFound, 0);
+}
+
++(NSAttributedString*)__solveSubexpression:(NSAttributedString*)input
+                         forOperatorsInSet:(NSSet*)operators
+                          rangeForPatching:(NSRange*)range;
+{
+  XPUInteger index = 0;
+  NSRange lhsRange = NSMakeRange(NSNotFound, 0);
+  NSRange rhsRange = NSMakeRange(NSNotFound, 0);
+  NSString *check    = nil;
+  NSString *operator = nil;
+  NSDecimalNumber *solution = nil;
+  NSDictionary *attributes = [NSDictionary dictionaryWithObject:kSVRSolverYES
+                                                         forKey:kSVRSolverNumeralKey];
+  
+  while (index < [input length]) {
+    // find numbers
+    check = [input attribute:kSVRSolverNumeralKey
+                     atIndex:index
+              effectiveRange:NULL];
+    if (check) {
+      if (lhsRange.location == NSNotFound) {
+        lhsRange.location = index;
+        lhsRange.length = 1;
+      } else if (lhsRange.location != NSNotFound && operator == nil) {
+        lhsRange.length = index - lhsRange.location + 1;
+      } else if (rhsRange.location == NSNotFound && operator != nil) {
+        rhsRange.location = index;
+        rhsRange.length = 1;
+      } else if (rhsRange.location != NSNotFound && operator != nil) {
+        rhsRange.length = index - rhsRange.location + 1;
+      }
+    } else {
+      if (lhsRange.location != NSNotFound && rhsRange.location != NSNotFound && operator != nil) {
+        break; // everything is satisfied and we can break
+      } else if (lhsRange.location != NSNotFound && operator == nil) {
+        check = [input attribute:kSVRSolverOperatorKey
+                         atIndex:index
+                  effectiveRange:NULL];
+        if ([operators member:check]) {
+          operator = check;
+        } else {
+          // reset everything because we just found the wrong operator
+          lhsRange = NSMakeRange(NSNotFound, 0);
+          rhsRange = NSMakeRange(NSNotFound, 0);
+        }
+      }
+    }
+    index += 1;
+  }
+  
+  if (lhsRange.location == NSNotFound || rhsRange.location == NSNotFound || operator == nil) {
+    // no problem to solve
+    return nil;
+  }
+  solution = [NSDecimalNumber decimalNumberWithString:@"127.6"];
+  return [[[NSAttributedString alloc] initWithString:[solution description]
+                                          attributes:attributes] autorelease];
+  
+  /*
+   // Find exponents
+   index = 0;
+   patchRange = NSMakeRange(NSNotFound, 0);
+   solveRange = NSMakeRange(NSNotFound, 0);
+   while (index < [output length]) {
+     check = [output attribute:kSVRSolverNumeralKey
+                       atIndex:index
+                effectiveRange:NULL];
+     if (check != nil && patchRange.location == NSNotFound) {
+       patchRange.location = index;
+       solveRange.location = index;
+     } else if (check != nil) {
+       // continue finding numbers
+     } else {
+       check = [output attribute:kSVRSolverOperatorKey
+                         atIndex:index
+                  effectiveRange:NULL];
+       if (check == nil) {
+         // after finding numbers, we found something that is not on operator
+         [XPLog pause:@"Found numbers and then NaN and not an operator"];
+         patchRange.location = NSNotFound;
+         solveRange.location = NSNotFound;
+       } else if ([kSVRSolverOperatorExponent isEqualToString:check]) {
+         
+       }
+     }
+     index += 1;
+   }
+   */
 }
 
 // MARK: Private: colorTextStorage
@@ -232,6 +393,8 @@ NSString *kSVRSolverYES                 = @"kSVRSolverYES";
   NSMutableAttributedString *string = [[[NSMutableAttributedString alloc] initWithString:_string] autorelease];
   [XPLog alwys:@"<%@> Unit Tests: STARTING", self];
   [SVRSolver annotateStorage:string];
+  [XPLog pause:@"%@", string];
+  [SVRSolver solveAnnotatedStorage:string];
   [XPLog pause:@"%@", string];
   [SVRSolver colorAnnotatedAndSolvedStorage:string];
   [XPLog alwys:@"<%@> Unit Tests: PASSED", self];
