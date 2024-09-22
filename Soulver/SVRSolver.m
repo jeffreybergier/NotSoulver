@@ -200,7 +200,6 @@ static NSString *kSVRSolverOperator(NSString* operator) {
       // Calculate solution
       solution = [[[self __solvePEMDASInExpression:[output attributedSubstringFromRange:rangeForSolving]] mutableCopy] autorelease];
       if (solution) {
-        NSLog(@"Solved: %@`%@`", [[output string] substringWithRange:rangeOfExpression], [solution string]);
         [solution appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n"] autorelease]];
         // TODO: Don't append the answer and instead subclass NSLayoutManager to insert them manually
         [output insertAttributedString:solution
@@ -246,7 +245,8 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   while (patchRange.location != NSNotFound) {
     patchSolution = [self __solvePEMDASInExpression:[output attributedSubstringFromRange:NSMakeRange(patchRange.location+1, patchRange.length-2)]];
     NSAssert(patchSolution, @"BOOM");
-    NSLog(@"<()> `%@` %@ → %@", [output string], [[output string] substringWithRange:patchRange], [patchSolution string]);
+    // TODO: Pass the solution to the next line in case its needed.
+    [XPLog extra:@"<()> `%@` %@ → %@", [output string], [[output string] substringWithRange:patchRange], [patchSolution string]];
     [output replaceCharactersInRange:patchRange withAttributedString:patchSolution];
     patchRange = [self __solveRangeForBracketsInExpression:output];
   }
@@ -254,23 +254,25 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   // Solve Exponents
   while ((patchSolution = [self __solveSubexpression:output forOperatorsInSet:setExponent rangeForPatching:&patchRange]))
   {
-    NSLog(@"<^^> `%@` %@ → %@", [output string], [[output string] substringWithRange:patchRange], [patchSolution string]);
+    [XPLog extra:@"<^^> `%@` %@ → %@", [output string], [[output string] substringWithRange:patchRange], [patchSolution string]];
     [output replaceCharactersInRange:patchRange withAttributedString:patchSolution];
   }
   
   // Find Multiplying and Dividing
   while ((patchSolution = [self __solveSubexpression:output forOperatorsInSet:setMultDiv rangeForPatching:&patchRange]))
   {
-    NSLog(@"<*/> `%@` %@ → %@", [output string], [[output string] substringWithRange:patchRange], [patchSolution string]);
+    [XPLog extra:@"<*/> `%@` %@ → %@", [output string], [[output string] substringWithRange:patchRange], [patchSolution string]];
     [output replaceCharactersInRange:patchRange withAttributedString:patchSolution];
   }
   
   while ((patchSolution = [self __solveSubexpression:output forOperatorsInSet:setAddSub rangeForPatching:&patchRange]))
   {
-    NSLog(@"<+-> `%@` %@ → %@", [output string], [[output string] substringWithRange:patchRange], [patchSolution string]);
+    [XPLog extra:@"<+-> `%@` %@ → %@", [output string], [[output string] substringWithRange:patchRange], [patchSolution string]];
     [output replaceCharactersInRange:patchRange withAttributedString:patchSolution];
   }
   
+  // TODO: check for any characters that are not numbers
+  // this NSDecimalNumber check is useless
   finalSolution = [NSDecimalNumber decimalNumberWithString:[output string]];
   if ([finalSolution SVR_isNotANumber]) {
     return nil;
