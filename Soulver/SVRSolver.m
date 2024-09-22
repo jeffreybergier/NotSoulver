@@ -82,7 +82,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   JSBRegex *regex = [JSBRegex regexWithString:[output string]
                                       pattern:@"[\\d\\.\\^\\*\\-\\+\\/\\(\\)]+\\="];
   range = [regex nextMatch];
-  while (range.location != NSNotFound) {
+  while (XPIsFoundRange(range)) {
     [output addAttribute:kSVRSolverExpressionKey value:kSVRSolverYES range:range];
     range = [regex nextMatch];
   }
@@ -95,7 +95,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   JSBRegex *regex = [JSBRegex regexWithString:[output string]
                                       pattern:@"\\([\\-\\d]"];
   range = [regex nextMatch];
-  while (range.location != NSNotFound) {
+  while (XPIsFoundRange(range)) {
     range.length = 1;
     [output addAttribute:kSVRSolverBracketsKey value:kSVRSolverYES range:range];
     range = [regex nextMatch];
@@ -105,7 +105,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   regex = [JSBRegex regexWithString:[output string]
                             pattern:@"\\d\\)[\\^\\*\\/\\+\\-\\=]"];
   range = [regex nextMatch];
-  while (range.location != NSNotFound) {
+  while (XPIsFoundRange(range)) {
     range.location += 1;
     range.length = 1;
     [output addAttribute:kSVRSolverBracketsKey value:kSVRSolverYES range:range];
@@ -120,7 +120,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   JSBRegex *regex = [JSBRegex regexWithString:[output string]
                                       pattern:@"[\\d\\)][\\*\\-\\+\\/\\^][\\-\\d\\(]"];
   range = [regex nextMatch];
-  while (range.location != NSNotFound) {
+  while (XPIsFoundRange(range)) {
     range.location += 1;
     range.length = 1;
     operator = [[output string] substringWithRange:range];
@@ -135,7 +135,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   regex = [JSBRegex regexWithString:[output string]
                             pattern:@"[\\d\\)]\\^[\\-\\d\\(]"];
   range = [regex nextMatch];
-  while (range.location != NSNotFound) {
+  while (XPIsFoundRange(range)) {
     range.location += 1;
     range.length = 1;
     operator = [[output string] substringWithRange:range];
@@ -154,7 +154,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   JSBRegex *regex = [JSBRegex regexWithString:[output string]
                                       pattern:@"\\-?\\d+\\.\\d+"];
   range = [regex nextMatch];
-  while (range.location != NSNotFound) {
+  while (XPIsFoundRange(range)) {
     check = [output attribute:kSVRSolverOperatorKey
                       atIndex:range.location
                effectiveRange:NULL];
@@ -168,7 +168,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   regex = [JSBRegex regexWithString:[output string]
                             pattern:@"\\d+"];
   range = [regex nextMatch];
-  while (range.location != NSNotFound) {
+  while (XPIsFoundRange(range)) {
     check = [output attribute:kSVRSolverNumeralKey
                       atIndex:range.location
                effectiveRange:NULL];
@@ -190,7 +190,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   JSBRegex *regex = [JSBRegex regexWithString:[output string]
                                       pattern:@"[\\d\\.\\^\\*\\-\\+\\/\\(\\)]+\\="];
   rangeOfExpression = [regex nextMatch];
-  while (rangeOfExpression.location != NSNotFound) {
+  while (XPIsFoundRange(rangeOfExpression)) {
     if (![self __solveIsSolvedExpressionInStorage:output
                                         withRange:rangeOfExpression])
     {
@@ -237,12 +237,12 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   
   NSDecimalNumber *finalSolution = nil;
   NSAttributedString *patchSolution = nil;
-  NSRange patchRange = NSMakeRange(NSNotFound, 0);
+  NSRange patchRange = XPNotFoundRange;
   NSMutableAttributedString *output = [[input mutableCopy] autorelease];
   
   // Find brackets
   patchRange = [self __solveRangeForBracketsInExpression:output];
-  while (patchRange.location != NSNotFound) {
+  while (XPIsFoundRange(patchRange)) {
     patchSolution = [self __solvePEMDASInExpression:[output attributedSubstringFromRange:NSMakeRange(patchRange.location+1, patchRange.length-2)]];
     NSAssert(patchSolution, @"BOOM");
     // TODO: Pass the solution to the next line in case its needed.
@@ -286,25 +286,25 @@ static NSString *kSVRSolverOperator(NSString* operator) {
 {
   NSString *check = nil;
   XPUInteger index = 0;
-  NSRange output = NSMakeRange(NSNotFound, 0);
+  NSRange output = XPNotFoundRange;
   while (index < [input length]) {
     check = [input attribute:kSVRSolverBracketsKey
                      atIndex:index
               effectiveRange:NULL];
-    if (check && output.location == NSNotFound) {
+    if (check && XPIsFoundRange(output)) {
       output.location = index;
       output.length = 1;
-    } else if (check && output.location != NSNotFound) {
+    } else if (check && XPIsFoundRange(output)) {
       output.length = index - output.location + 1;;
       if ((output.length-2)-(output.location+1) >= 1) {
         return output;
       } else {
-        output.location = NSNotFound;
+        output = XPNotFoundRange;
       }
     }
     index += 1;
   }
-  return NSMakeRange(NSNotFound, 0);
+  return XPNotFoundRange;
 }
 
 +(NSAttributedString*)__solveSubexpression:(NSAttributedString*)input
@@ -312,8 +312,8 @@ static NSString *kSVRSolverOperator(NSString* operator) {
                           rangeForPatching:(NSRange*)range;
 {
   XPUInteger index = 0;
-  NSRange lhsRange = NSMakeRange(NSNotFound, 0);
-  NSRange rhsRange = NSMakeRange(NSNotFound, 0);
+  NSRange lhsRange = XPNotFoundRange;
+  NSRange rhsRange = XPNotFoundRange;
   NSString *check    = nil;
   NSString *operator = nil;
   NSDecimalNumber *solution = nil;
@@ -326,21 +326,21 @@ static NSString *kSVRSolverOperator(NSString* operator) {
                      atIndex:index
               effectiveRange:NULL];
     if (check) {
-      if (lhsRange.location == NSNotFound) {
+      if (XPIsNotFoundRange(lhsRange)) {
         lhsRange.location = index;
         lhsRange.length = 1;
-      } else if (lhsRange.location != NSNotFound && operator == nil) {
+      } else if (XPIsFoundRange(lhsRange) && !operator) {
         lhsRange.length = index - lhsRange.location + 1;
-      } else if (rhsRange.location == NSNotFound && operator != nil) {
+      } else if (XPIsNotFoundRange(rhsRange) && operator) {
         rhsRange.location = index;
         rhsRange.length = 1;
-      } else if (rhsRange.location != NSNotFound && operator != nil) {
+      } else if (XPIsFoundRange(rhsRange) && operator) {
         rhsRange.length = index - rhsRange.location + 1;
       }
     } else {
-      if (lhsRange.location != NSNotFound && rhsRange.location != NSNotFound && operator != nil) {
+      if (XPIsFoundRange(lhsRange) && XPIsFoundRange(rhsRange) && operator) {
         break; // everything is satisfied and we can break
-      } else if (lhsRange.location != NSNotFound && operator == nil) {
+      } else if (XPIsFoundRange(lhsRange) && !operator) {
         check = [input attribute:kSVRSolverOperatorKey
                          atIndex:index
                   effectiveRange:NULL];
@@ -348,14 +348,14 @@ static NSString *kSVRSolverOperator(NSString* operator) {
           operator = check;
         } else {
           // reset everything because we just found the wrong operator
-          lhsRange = NSMakeRange(NSNotFound, 0);
-          rhsRange = NSMakeRange(NSNotFound, 0);
+          lhsRange = XPNotFoundRange;
+          rhsRange = XPNotFoundRange;
         }
       }
     }
     index += 1;
   }
-  if (lhsRange.location == NSNotFound || rhsRange.location == NSNotFound || operator == nil) {
+  if (XPIsNotFoundRange(lhsRange) || XPIsNotFoundRange(rhsRange) || !operator) {
     // no problem to solve
     return nil;
   }
@@ -407,7 +407,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   [output addAttribute:NSForegroundColorAttributeName value:[ud SVR_colorForText] range:range];
   
   while (index < [output length]) {
-    range = NSMakeRange(NSNotFound, 0);
+    range = XPNotFoundRange;
     check = [output attribute:kSVRSolverBracketsKey atIndex:index effectiveRange:&range];
     if (check) {
       [output addAttribute:NSForegroundColorAttributeName value:[ud SVR_colorForBrackets] range:range];
@@ -425,7 +425,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
       [output addAttribute:NSForegroundColorAttributeName value:[ud SVR_colorForSolutionPrimary] range:range];
       [output addAttribute:NSBackgroundColorAttributeName value:[ud SVR_backgroundColorForSolutionPrimary] range:range];
     }
-    if (range.location == NSNotFound) {
+    if (XPIsNotFoundRange(range)) {
       index += 1;
     } else {
       index = range.location + range.length;
@@ -446,7 +446,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   [SVRSolver annotateStorage:string];
   NSAssert([[string string] isEqualToString:@"150.0+120.0-37*30/8^2="], @"");
   [SVRSolver solveAnnotatedStorage:string];
-  NSAssert([[string string] isEqualToString:@"150.0+120.0-37*30/8^2=252.65625"], @"");
+  NSAssert([[string string] isEqualToString:@"150.0+120.0-37*30/8^2=252.65625\n"], @"");
   [SVRSolver colorAnnotatedAndSolvedStorage:string];
   [XPLog alwys:@"<%@> Unit Tests: PASSED", self];
   /*

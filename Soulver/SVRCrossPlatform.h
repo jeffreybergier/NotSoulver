@@ -35,6 +35,10 @@ typedef NSUInteger XPUInteger;
 #define XPLocale NSLocale
 #endif
 
+extern const NSRange XPNotFoundRange;
+BOOL XPIsNotFoundRange(NSRange range);
+BOOL XPIsFoundRange(NSRange range);
+
 @interface XPLog: NSObject
 /// Always does an NSLog
 +(void)alwys:(NSString*)formatString, ...;

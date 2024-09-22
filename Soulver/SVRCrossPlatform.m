@@ -3,6 +3,16 @@
 #import "SVRCrossPlatform.h"
 #import "SVRMathString.h"
 
+const NSRange XPNotFoundRange = { .location = NSNotFound, .length = 0 };
+BOOL XPIsNotFoundRange(NSRange range)
+{
+  return range.location == NSNotFound;
+}
+BOOL XPIsFoundRange(NSRange range)
+{
+  return range.location != NSNotFound;
+}
+
 @implementation XPLog
 
 +(void)alwys:(NSString*)_formatString, ...;
