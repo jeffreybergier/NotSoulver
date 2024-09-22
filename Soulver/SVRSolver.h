@@ -26,7 +26,7 @@
 +(BOOL)__solveIsSolvedExpressionInStorage:(NSMutableAttributedString*)input
                                 withRange:(NSRange)range;
 +(NSAttributedString*)__solvePEMDASInExpression:(NSAttributedString*)input;
-+(NSRange)__solveRangeForBracketsInExpression:(NSAttributedString*)input;
++(NSValue*)__solveRangeForBracketsInExpression:(NSAttributedString*)input;
 +(NSAttributedString*)__solveSubexpression:(NSAttributedString*)input
                          forOperatorsInSet:(NSSet*)operators
                           rangeForPatching:(NSRange*)range;

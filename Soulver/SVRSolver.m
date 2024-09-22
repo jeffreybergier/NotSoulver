@@ -79,109 +79,107 @@ static NSString *kSVRSolverOperator(NSString* operator) {
 +(void)__annotateExpressions:(NSMutableAttributedString*)output;
 {
   NSRange range;
+  NSValue *value;
   JSBRegex *regex = [JSBRegex regexWithString:[output string]
                                       pattern:@"[\\d\\.\\^\\*\\-\\+\\/\\(\\)]+\\="];
-  range = [regex nextMatch];
-  while (XPIsFoundRange(range)) {
+  while ((value = [regex nextObject])) {
+    range = [value XP_rangeValue];
     [output addAttribute:kSVRSolverExpressionKey value:kSVRSolverYES range:range];
-    range = [regex nextMatch];
   }
 }
 
 +(void)__annotateBrackets:(NSMutableAttributedString*)output;
 {
   NSRange range;
+  NSValue *value;
   // Check for opening brackets
   JSBRegex *regex = [JSBRegex regexWithString:[output string]
                                       pattern:@"\\([\\-\\d]"];
-  range = [regex nextMatch];
-  while (XPIsFoundRange(range)) {
+  while ((value = [regex nextObject])) {
+    range = [value XP_rangeValue];
     range.length = 1;
     [output addAttribute:kSVRSolverBracketsKey value:kSVRSolverYES range:range];
-    range = [regex nextMatch];
   }
   
   // Check for closing brackets
   regex = [JSBRegex regexWithString:[output string]
                             pattern:@"\\d\\)[\\^\\*\\/\\+\\-\\=]"];
-  range = [regex nextMatch];
-  while (XPIsFoundRange(range)) {
+  while ((value = [regex nextObject])) {
+    range = [value XP_rangeValue];
     range.location += 1;
     range.length = 1;
     [output addAttribute:kSVRSolverBracketsKey value:kSVRSolverYES range:range];
-    range = [regex nextMatch];
   }
 }
 
 +(void)__annotateOperators:(NSMutableAttributedString*)output;
 {
   NSRange range;
+  NSValue *value;
   NSString *operator;
   JSBRegex *regex = [JSBRegex regexWithString:[output string]
                                       pattern:@"[\\d\\)][\\*\\-\\+\\/\\^][\\-\\d\\(]"];
-  range = [regex nextMatch];
-  while (XPIsFoundRange(range)) {
+  while ((value = [regex nextObject])) {
+    range = [value XP_rangeValue];
     range.location += 1;
     range.length = 1;
     operator = [[output string] substringWithRange:range];
     [output addAttribute:kSVRSolverOperatorKey
                    value:kSVRSolverOperator(operator)
                    range:range];
-    range = [regex nextMatch];
   }
   
   // Do a second round looking for just the exponent
   // TODO: Fix problem where Regex doesn't seem to work right when ^ is in []
   regex = [JSBRegex regexWithString:[output string]
                             pattern:@"[\\d\\)]\\^[\\-\\d\\(]"];
-  range = [regex nextMatch];
-  while (XPIsFoundRange(range)) {
+  while ((value = [regex nextObject])) {
+    range = [value XP_rangeValue];
     range.location += 1;
     range.length = 1;
     operator = [[output string] substringWithRange:range];
     [output addAttribute:kSVRSolverOperatorKey
                    value:kSVRSolverOperator(operator)
                    range:range];
-    range = [regex nextMatch];
   }
 }
 
 +(void)__annotateNumerals:(NSMutableAttributedString*)output;
 {
   NSRange range;
+  NSValue *value;
   NSString *check;
   // Find floats
   JSBRegex *regex = [JSBRegex regexWithString:[output string]
                                       pattern:@"\\-?\\d+\\.\\d+"];
-  range = [regex nextMatch];
-  while (XPIsFoundRange(range)) {
+  while ((value = [regex nextObject])) {
+    range = [value XP_rangeValue];
     check = [output attribute:kSVRSolverOperatorKey
                       atIndex:range.location
                effectiveRange:NULL];
     if (check == nil) {
       [output addAttribute:kSVRSolverNumeralKey value:kSVRSolverYES range:range];
     }
-    range = [regex nextMatch];
   }
   
   // Find integers
   regex = [JSBRegex regexWithString:[output string]
                             pattern:@"\\d+"];
-  range = [regex nextMatch];
-  while (XPIsFoundRange(range)) {
+  while ((value = [regex nextObject])) {
+    range = [value XP_rangeValue];
     check = [output attribute:kSVRSolverNumeralKey
                       atIndex:range.location
                effectiveRange:NULL];
     if (check == nil) {
       [output addAttribute:kSVRSolverNumeralKey value:kSVRSolverYES range:range];
     }
-    range = [regex nextMatch];
   }
 }
 
 // MARK: Private: annotateStorage
 +(void)__solveExpressions:(NSMutableAttributedString*)output;
 {
+  NSValue *value;
   NSRange rangeOfExpression; // found by regex
   NSRange rangeForSolving;   // subtracting the = sign at the end
   NSRange rangeForEqualSign; // to apply to the solution key to the equal sign
@@ -189,8 +187,8 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   
   JSBRegex *regex = [JSBRegex regexWithString:[output string]
                                       pattern:@"[\\d\\.\\^\\*\\-\\+\\/\\(\\)]+\\="];
-  rangeOfExpression = [regex nextMatch];
-  while (XPIsFoundRange(rangeOfExpression)) {
+  while ((value = [regex nextObject])) {
+    rangeOfExpression = [value XP_rangeValue];
     if (![self __solveIsSolvedExpressionInStorage:output
                                         withRange:rangeOfExpression])
     {
@@ -212,7 +210,6 @@ static NSString *kSVRSolverOperator(NSString* operator) {
         [XPLog alwys:@"%@: Error: Could not calculate solution", [[output string] substringWithRange:rangeOfExpression]];
       }
     }
-    rangeOfExpression = [regex nextMatch];
   }
 }
 
@@ -237,18 +234,18 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   
   NSDecimalNumber *finalSolution = nil;
   NSAttributedString *patchSolution = nil;
+  NSValue *value = nil;
   NSRange patchRange = XPNotFoundRange;
   NSMutableAttributedString *output = [[input mutableCopy] autorelease];
   
   // Find brackets
-  patchRange = [self __solveRangeForBracketsInExpression:output];
-  while (XPIsFoundRange(patchRange)) {
+  while ((value = [self __solveRangeForBracketsInExpression:output])) {
+    patchRange = [value XP_rangeValue];
     patchSolution = [self __solvePEMDASInExpression:[output attributedSubstringFromRange:NSMakeRange(patchRange.location+1, patchRange.length-2)]];
     NSAssert(patchSolution, @"BOOM");
     // TODO: Pass the solution to the next line in case its needed.
     [XPLog extra:@"<()> `%@` %@ → %@", [output string], [[output string] substringWithRange:patchRange], [patchSolution string]];
     [output replaceCharactersInRange:patchRange withAttributedString:patchSolution];
-    patchRange = [self __solveRangeForBracketsInExpression:output];
   }
   
   // Solve Exponents
@@ -282,7 +279,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   return output;
 }
 
-+(NSRange)__solveRangeForBracketsInExpression:(NSAttributedString*)input;
++(NSValue*)__solveRangeForBracketsInExpression:(NSAttributedString*)input;
 {
   NSString *check = nil;
   XPUInteger index = 0;
@@ -297,14 +294,14 @@ static NSString *kSVRSolverOperator(NSString* operator) {
     } else if (check && XPIsFoundRange(output)) {
       output.length = index - output.location + 1;;
       if ((output.length-2)-(output.location+1) >= 1) {
-        return output;
+        return [NSValue XP_valueWithRange:output];
       } else {
         output = XPNotFoundRange;
       }
     }
     index += 1;
   }
-  return XPNotFoundRange;
+  return [NSValue XP_valueWithRange:XPNotFoundRange];
 }
 
 +(NSAttributedString*)__solveSubexpression:(NSAttributedString*)input

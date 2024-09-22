@@ -16,10 +16,12 @@ BOOL XPIsFoundRange(NSRange range)
 @implementation NSValue (CrossPlatform)
 -(id)XP_initWithRange:(NSRange)range;
 {
+  if (XPIsNotFoundRange(range)) { return nil; }
   return [self initWithBytes:&range objCType:@encode(NSRange)];
 }
 +(id)XP_valueWithRange:(NSRange)range;
 {
+  if (XPIsNotFoundRange(range)) { return nil; }
   return [self valueWithBytes:&range objCType:@encode(NSRange)];
 }
 -(NSRange)XP_rangeValue;
