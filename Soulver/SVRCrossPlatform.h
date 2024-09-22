@@ -39,6 +39,12 @@ extern const NSRange XPNotFoundRange;
 BOOL XPIsNotFoundRange(NSRange range);
 BOOL XPIsFoundRange(NSRange range);
 
+@interface NSValue (CrossPlatform)
+-(id)XP_initWithRange:(NSRange)range;
++(id)XP_valueWithRange:(NSRange)range;
+-(NSRange)XP_rangeValue;
+@end
+
 @interface XPLog: NSObject
 /// Always does an NSLog
 +(void)alwys:(NSString*)formatString, ...;

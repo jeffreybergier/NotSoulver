@@ -3,7 +3,7 @@
 #import "SVRCrossPlatform.h"
 #import "SVRMathString.h"
 
-const NSRange XPNotFoundRange = { .location = NSNotFound, .length = 0 };
+const NSRange XPNotFoundRange = {NSNotFound, 0};
 BOOL XPIsNotFoundRange(NSRange range)
 {
   return range.location == NSNotFound;
@@ -12,6 +12,23 @@ BOOL XPIsFoundRange(NSRange range)
 {
   return range.location != NSNotFound;
 }
+
+@implementation NSValue (CrossPlatform)
+-(id)XP_initWithRange:(NSRange)range;
+{
+  return [self initWithBytes:&range objCType:@encode(NSRange)];
+}
++(id)XP_valueWithRange:(NSRange)range;
+{
+  return [self valueWithBytes:&range objCType:@encode(NSRange)];
+}
+-(NSRange)XP_rangeValue;
+{
+  NSRange range;
+  [self getValue:&range];
+  return range;
+}
+@end
 
 @implementation XPLog
 
