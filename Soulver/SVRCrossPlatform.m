@@ -567,10 +567,15 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
 
 -(NSDecimalNumber*)SVR_decimalNumberByRaisingToPower:(NSDecimalNumber*)power;
 {
-  if ([power isGreaterThanOrEqualTo:0]) {
-    return [self decimalNumberByRaisingToPower:(XPUInteger)[power unsignedIntValue]];
-  } else {
-    return [[NSDecimalNumber one] decimalNumberByDividingBy:[self decimalNumberByRaisingToPower:(XPUInteger)abs([power intValue])]];
+  switch ([power compare:[NSDecimalNumber zero]]) {
+      // power is less than 1
+    case NSOrderedAscending:
+      return [[NSDecimalNumber one] decimalNumberByDividingBy:[self decimalNumberByRaisingToPower:(XPUInteger)abs([power intValue])]];
+      // power greater than or equal to 0
+    case NSOrderedSame:
+    case NSOrderedDescending:
+    default:
+      return [self decimalNumberByRaisingToPower:(XPUInteger)[power unsignedIntValue]];
   }
 }
 

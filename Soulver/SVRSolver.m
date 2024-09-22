@@ -130,6 +130,21 @@ static NSString *kSVRSolverOperator(NSString* operator) {
                    range:range];
     range = [regex nextMatch];
   }
+  
+  // Do a second round looking for just the exponent
+  // TODO: Fix problem where Regex doesn't seem to work right when ^ is in []
+  regex = [JSBRegex regexWithString:[output string]
+                            pattern:@"[\\d\\)]\\^[\\-\\d\\(]"];
+  range = [regex nextMatch];
+  while (range.location != NSNotFound) {
+    range.location += 1;
+    range.length = 1;
+    operator = [[output string] substringWithRange:range];
+    [output addAttribute:kSVRSolverOperatorKey
+                   value:kSVRSolverOperator(operator)
+                   range:range];
+    range = [regex nextMatch];
+  }
 }
 
 +(void)__annotateNumerals:(NSMutableAttributedString*)output;
@@ -406,8 +421,9 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   NSMutableAttributedString *string = [[[NSMutableAttributedString alloc] initWithString:_string] autorelease];
   [XPLog alwys:@"<%@> Unit Tests: STARTING", self];
   [SVRSolver annotateStorage:string];
+  NSAssert([[string string] isEqualToString:@"150.0+120.0-37*30/8^2="], @"");
   [SVRSolver solveAnnotatedStorage:string];
-  [XPLog alwys:@"%@", [string string]];
+  NSAssert([[string string] isEqualToString:@"150.0+120.0-37*30/8^2=252.65625"], @"");
   [SVRSolver colorAnnotatedAndSolvedStorage:string];
   [XPLog alwys:@"<%@> Unit Tests: PASSED", self];
   /*
