@@ -23,8 +23,8 @@
 
 // MARK: Private: annotateStorage
 +(void)__solveExpressions:(NSMutableAttributedString*)input;
-+(BOOL)__solveIsValidSolutionInStorage:(NSMutableAttributedString*)input
-                forExpressionWithRange:(NSRange)range;
++(BOOL)__solveIsSolvedExpressionInStorage:(NSMutableAttributedString*)input
+                                withRange:(NSRange)range;
 +(NSAttributedString*)__solvePEMDASInExpression:(NSAttributedString*)input;
 +(NSRange)__solveRangeForBracketsInExpression:(NSAttributedString*)input;
 +(NSAttributedString*)__solveSubexpression:(NSAttributedString*)input

@@ -117,7 +117,6 @@ static NSString *kSVRSolverOperator(NSString* operator) {
 {
   NSRange range;
   NSString *operator;
-  // TODO: Fix problem with not being able to find the ^ operator
   JSBRegex *regex = [JSBRegex regexWithString:[output string]
                                       pattern:@"[\\d\\)][\\*\\-\\+\\/\\^][\\-\\d\\(]"];
   range = [regex nextMatch];
@@ -183,39 +182,41 @@ static NSString *kSVRSolverOperator(NSString* operator) {
 // MARK: Private: annotateStorage
 +(void)__solveExpressions:(NSMutableAttributedString*)output;
 {
-  NSRange rangeOfExpression;
-  NSRange rangeForSolving;
+  NSRange rangeOfExpression; // found by regex
+  NSRange rangeForSolving;   // subtracting the = sign at the end
+  NSRange rangeForEqualSign; // to apply to the solution key to the equal sign
   NSAttributedString *solution;
+  
   JSBRegex *regex = [JSBRegex regexWithString:[output string]
                                       pattern:@"[\\d\\.\\^\\*\\-\\+\\/\\(\\)]+\\="];
   rangeOfExpression = [regex nextMatch];
   while (rangeOfExpression.location != NSNotFound) {
-    if (![self __solveIsValidSolutionInStorage:output
-                        forExpressionWithRange:rangeOfExpression])
+    if (![self __solveIsSolvedExpressionInStorage:output
+                                        withRange:rangeOfExpression])
     {
-      rangeForSolving = rangeOfExpression;
-      rangeForSolving.length -= 1;
+      rangeForEqualSign = NSMakeRange(rangeOfExpression.location + rangeOfExpression.length - 1, 1);
+      rangeForSolving = NSMakeRange(rangeOfExpression.location, rangeOfExpression.length - 1);
       solution = [self __solvePEMDASInExpression:[output attributedSubstringFromRange:rangeForSolving]];
       NSLog(@"Solved: %@`%@`", [[output string] substringWithRange:rangeOfExpression], [solution string]);
       [output insertAttributedString:solution atIndex:rangeOfExpression.location + rangeOfExpression.length];
+      [output addAttribute:kSVRSolverSolutionKey
+                     value:[solution attribute:kSVRSolverSolutionKey atIndex:0 effectiveRange:NULL]
+                     range:rangeForEqualSign];
     }
     rangeOfExpression = [regex nextMatch];
   }
 }
 
-+(BOOL)__solveIsValidSolutionInStorage:(NSMutableAttributedString*)input
-                forExpressionWithRange:(NSRange)range;
++(BOOL)__solveIsSolvedExpressionInStorage:(NSMutableAttributedString*)input
+                                withRange:(NSRange)range;
 {
   NSRange checkRange;
   NSDecimalNumber *check;
   
-  if (range.location + range.length >= [input length]) {
-    return NO;
-  }
-  checkRange = NSMakeRange(range.location + 1, 1);
+  checkRange = NSMakeRange(range.location + range.length - 1, 1);
   check = [input attribute:kSVRSolverSolutionKey
-                    atIndex:checkRange.location
-             effectiveRange:NULL];
+                   atIndex:checkRange.location
+            effectiveRange:NULL];
   return check != nil;
 }
 
