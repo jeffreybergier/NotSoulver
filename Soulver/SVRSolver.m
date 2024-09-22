@@ -385,7 +385,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
 // MARK: Private: colorTextStorage
 +(void)__colorAnnotatedAndSolvedStorage:(NSMutableAttributedString*)output;
 {
-  NSString *check;
+  id check;
   XPUInteger index = 0;
   NSRange range = NSMakeRange(0, [output length]);
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
@@ -395,6 +395,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   [output addAttribute:NSForegroundColorAttributeName value:[ud SVR_colorForText] range:range];
   
   while (index < [output length]) {
+    range = NSMakeRange(NSNotFound, 0);
     check = [output attribute:kSVRSolverBracketsKey atIndex:index effectiveRange:&range];
     if (check) {
       [output addAttribute:NSForegroundColorAttributeName value:[ud SVR_colorForBrackets] range:range];
@@ -407,7 +408,16 @@ static NSString *kSVRSolverOperator(NSString* operator) {
     if (check) {
       [output addAttribute:NSForegroundColorAttributeName value:[ud SVR_colorForNumeral] range:range];
     }
-    index += 1;
+    check = [output attribute:kSVRSolverSolutionKey atIndex:index effectiveRange:&range];
+    if (check) {
+      [output addAttribute:NSForegroundColorAttributeName value:[ud SVR_colorForSolutionPrimary] range:range];
+      [output addAttribute:NSBackgroundColorAttributeName value:[ud SVR_backgroundColorForSolutionPrimary] range:range];
+    }
+    if (range.location == NSNotFound) {
+      index += 1;
+    } else {
+      index = range.location + range.length;
+    }
   }
 }
 
