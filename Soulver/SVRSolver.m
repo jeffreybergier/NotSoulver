@@ -437,26 +437,41 @@ static NSString *kSVRSolverOperator(NSString* operator) {
 
 +(void)executeTests;
 {
-  NSString *_string = @"150.0+120.0-37*30/8^2=";
-  NSMutableAttributedString *string = [[[NSMutableAttributedString alloc] initWithString:_string] autorelease];
+  NSString *_string;;
+  NSMutableAttributedString *string;
+  
   [XPLog alwys:@"<%@> Unit Tests: STARTING", self];
+  _string = @"(5+7)+3=";
+  string = [[[NSMutableAttributedString alloc] initWithString:_string] autorelease];
+  [SVRSolver annotateStorage:string];
+  [SVRSolver solveAnnotatedStorage:string];
+  NSAssert([[string string] isEqualToString:@"(5+7)+3=15"], @"");
+  
+  _string = @"5+7+3=";
+  string = [[[NSMutableAttributedString alloc] initWithString:_string] autorelease];
+  [SVRSolver annotateStorage:string];
+  [SVRSolver solveAnnotatedStorage:string];
+  NSAssert([[string string] isEqualToString:@"5+7+3=15"], @"");
+  
+  _string = @"150.0+120.0-37*30/8^2=";
+  string = [[[NSMutableAttributedString alloc] initWithString:_string] autorelease];
   [SVRSolver annotateStorage:string];
   NSAssert([[string string] isEqualToString:@"150.0+120.0-37*30/8^2="], @"");
   [SVRSolver solveAnnotatedStorage:string];
   NSAssert([[string string] isEqualToString:@"150.0+120.0-37*30/8^2=252.65625\n"], @"");
   [SVRSolver colorAnnotatedAndSolvedStorage:string];
-  [XPLog alwys:@"<%@> Unit Tests: PASSED", self];
-  /*
-  NSString *_string = @"(5.4+5)*(4--4.30)=3.3^2/(2+2)=";
-  NSMutableAttributedString *string = [[[NSMutableAttributedString alloc] initWithString:_string] autorelease];
-  [XPLog alwys:@"<%@> Unit Tests: STARTING", self];
+  
+  _string = @"(5.4+5)*(4--4.30)=3.3^2/(2+2)=";
+  string = [[[NSMutableAttributedString alloc] initWithString:_string] autorelease];
   [SVRSolver annotateStorage:string];
   [XPLog pause:@"%@", string];
   [SVRSolver solveAnnotatedStorage:string];
   [XPLog pause:@"%@", string];
   [SVRSolver colorAnnotatedAndSolvedStorage:string];
+  
+  
   [XPLog alwys:@"<%@> Unit Tests: PASSED", self];
-   */
+
 }
 
 @end
