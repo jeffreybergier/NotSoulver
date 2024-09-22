@@ -185,7 +185,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   NSRange rangeOfExpression; // found by regex
   NSRange rangeForSolving;   // subtracting the = sign at the end
   NSRange rangeForEqualSign; // to apply to the solution key to the equal sign
-  NSAttributedString *solution;
+  NSMutableAttributedString *solution;
   
   JSBRegex *regex = [JSBRegex regexWithString:[output string]
                                       pattern:@"[\\d\\.\\^\\*\\-\\+\\/\\(\\)]+\\="];
@@ -194,14 +194,24 @@ static NSString *kSVRSolverOperator(NSString* operator) {
     if (![self __solveIsSolvedExpressionInStorage:output
                                         withRange:rangeOfExpression])
     {
+      // Calculate ranges
       rangeForEqualSign = NSMakeRange(rangeOfExpression.location + rangeOfExpression.length - 1, 1);
       rangeForSolving = NSMakeRange(rangeOfExpression.location, rangeOfExpression.length - 1);
-      solution = [self __solvePEMDASInExpression:[output attributedSubstringFromRange:rangeForSolving]];
-      NSLog(@"Solved: %@`%@`", [[output string] substringWithRange:rangeOfExpression], [solution string]);
-      [output insertAttributedString:solution atIndex:rangeOfExpression.location + rangeOfExpression.length];
-      [output addAttribute:kSVRSolverSolutionKey
-                     value:[solution attribute:kSVRSolverSolutionKey atIndex:0 effectiveRange:NULL]
-                     range:rangeForEqualSign];
+      // Calculate solution
+      solution = [[[self __solvePEMDASInExpression:[output attributedSubstringFromRange:rangeForSolving]] mutableCopy] autorelease];
+      if (solution) {
+        NSLog(@"Solved: %@`%@`", [[output string] substringWithRange:rangeOfExpression], [solution string]);
+        [solution appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n"] autorelease]];
+        // TODO: Don't append the answer and instead subclass NSLayoutManager to insert them manually
+        [output insertAttributedString:solution
+                               atIndex:rangeOfExpression.location + rangeOfExpression.length];
+        [output addAttribute:kSVRSolverSolutionKey
+                       value:[solution attribute:kSVRSolverSolutionKey atIndex:0 effectiveRange:NULL]
+                       range:rangeForEqualSign];
+      } else {
+        // TODO: Append Error
+        [XPLog alwys:@"%@: Error: Could not calculate solution", [[output string] substringWithRange:rangeOfExpression]];
+      }
     }
     rangeOfExpression = [regex nextMatch];
   }

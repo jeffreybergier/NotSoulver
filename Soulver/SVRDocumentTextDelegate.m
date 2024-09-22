@@ -25,13 +25,11 @@
 
 -(void)textDidBeginEditing:(NSNotification*)aNotification;
 {
-  NSTextView *textView = [aNotification object];
   [XPLog debug:@"%@ textDidBeginEditing", self];
 }
 
 -(void)textDidEndEditing:(NSNotification*)aNotification;
 {
-  NSTextView *textView = [aNotification object];
   [XPLog debug:@"%@ textDidEndEditing", self];
 }
 
