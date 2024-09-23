@@ -21,18 +21,22 @@
 +(void)__annotateOperators:(NSMutableAttributedString*)input;
 +(void)__annotateNumerals:(NSMutableAttributedString*)input;
 
-// MARK: Private: annotateStorage
+// MARK: Private: solveAnnotatedStorage
 +(void)__solveExpressions:(NSMutableAttributedString*)input;
 +(BOOL)__solveIsSolvedExpressionInStorage:(NSMutableAttributedString*)input
-                                withRange:(NSRange)range;
-+(NSAttributedString*)__solvePEMDASInExpression:(NSAttributedString*)input;
-+(NSValue*)__solveRangeForBracketsInExpression:(NSAttributedString*)input;
-+(NSAttributedString*)__solveSubexpression:(NSAttributedString*)input
-                         forOperatorsInSet:(NSSet*)operators
-                          rangeForPatching:(NSRange*)range;
+                                withRange:(NSRange)range
+                         rangeOfEqualSign:(NSRange*)rangeOfEqualSign;
++(NSDecimalNumber*)__solveMathInExpression:(NSAttributedString*)input;
++(NSValue*)__solveRangeForNextBracketsInExpression:(NSAttributedString*)input;
++(NSDecimalNumber*)__solveNextSubexpressionInExpression:(NSAttributedString*)expression
+                                      forOperatorsInSet:(NSSet*)operators
+                                   rangeOfSubexpression:(NSRange*)range;
 +(NSDecimalNumber*)__solveWithOperator:(NSString*)anOp
                             leftString:(NSString*)leftString
                            rightString:(NSString*)rightString;
++(NSAttributedString*)__solveAttributedStringForPatchingWithDecimalNumber:(NSDecimalNumber*)number;
++(BOOL)__solveValidateOnlyNumeralsInAttributedString:(NSAttributedString*)string;
+
 // MARK: Private: colorAnnotatedAndSolvedStorage
 +(void)__colorAnnotatedAndSolvedStorage:(NSMutableAttributedString*)input;
 
