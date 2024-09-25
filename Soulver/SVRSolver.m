@@ -38,7 +38,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   range = NSMakeRange(0, [output length]);
   [output removeAttribute:kSVRSolverBracketsKey range:range];
   [output removeAttribute:kSVRSolverOperatorKey range:range];
-  [output removeAttribute:kSVRSolverNumeralKey range:range];
+  [output removeAttribute:kSVRSolverNumberKey range:range];
   [output removeAttribute:kSVRSolverOtherKey range:range];
   
   // Restart annotation process
@@ -112,33 +112,65 @@ static NSString *kSVRSolverOperator(NSString* operator) {
     range.location += 1;
     range.length = 1;
     operator = [[output string] substringWithRange:range];
+    [XPLog extra:@"<+-*/> '%@' '%@'→'%@'", [output string], operator, [[output string] substringWithRange:range]];
     [output addAttribute:kSVRSolverOperatorKey
                    value:kSVRSolverOperator(operator)
                    range:range];
   }
 }
 
+// TODO: Refactor all regex in this file to XPRegex
+// Its getting really messy and can be optimized on its own in later OS versions
 +(void)__annotateNumerals:(NSMutableAttributedString*)output;
 {
   NSRange range = XPNotFoundRange;
   NSValue *rangeV = nil;
   NSDecimalNumber *number = nil;
   JSBRegex *regex = nil;
-  
-  // Annotate integer numbers
-  regex = [JSBRegex regexWithString:[output string] pattern:@"\\-?\\d+"];
+  JSBRegex *n_regex = nil; // for testing negative numbers to make sure they are preceded by an operator
+
+  // Annotate positive integers
+  regex = [JSBRegex regexWithString:[output string] pattern:@"\\d+"];
   while ((rangeV = [regex nextObject])) {
     range = [rangeV XP_rangeValue];
     number = [NSDecimalNumber decimalNumberWithString:[[output string] substringWithRange:range]];
+    [XPLog extra:@"<#> '%@' '%@'→'%@'", [output string], [number SVR_description], [[output string] substringWithRange:range]];
     [output addAttribute:kSVRSolverNumberKey value:number range:range];
   }
   
-  // Annotate floating point numbers
-  regex = [JSBRegex regexWithString:[output string] pattern:@"\\-?\\d+\\.\\d+"];
+  // Annotate positive floats
+  regex = [JSBRegex regexWithString:[output string] pattern:@"\\d+\\.\\d+"];
   while ((rangeV = [regex nextObject])) {
     range = [rangeV XP_rangeValue];
     number = [NSDecimalNumber decimalNumberWithString:[[output string] substringWithRange:range]];
+    [XPLog extra:@"<#> '%@' '%@'→'%@'", [output string], [number SVR_description], [[output string] substringWithRange:range]];
     [output addAttribute:kSVRSolverNumberKey value:number range:range];
+  }
+  
+  // Annotate negative integers
+  regex = [JSBRegex regexWithString:[output string] pattern:@"\\-\\d+"];
+  while ((rangeV = [regex nextObject])) {
+    range = [rangeV XP_rangeValue];
+    n_regex = [JSBRegex regexWithString:[[output string] substringWithRange:NSMakeRange(range.location-1, 1)]
+                                pattern:@"[\\(\\+\\-\\*\\/\\^]"];
+    if ([n_regex nextObject]) {
+      number = [NSDecimalNumber decimalNumberWithString:[[output string] substringWithRange:range]];
+      [XPLog extra:@"<#> '%@' '%@'→'%@'", [output string], [number SVR_description], [[output string] substringWithRange:range]];
+      [output addAttribute:kSVRSolverNumberKey value:number range:range];
+    }
+  }
+  
+  // Annotate negative floats
+  regex = [JSBRegex regexWithString:[output string] pattern:@"\\-\\d+\\.\\d+"];
+  while ((rangeV = [regex nextObject])) {
+    range = [rangeV XP_rangeValue];
+    n_regex = [JSBRegex regexWithString:[[output string] substringWithRange:NSMakeRange(range.location-1, 1)]
+                                pattern:@"[\\(\\+\\-\\*\\/\\^]"];
+    if ([n_regex nextObject]) {
+      number = [NSDecimalNumber decimalNumberWithString:[[output string] substringWithRange:range]];
+      [XPLog extra:@"<#> '%@' '%@'→'%@'", [output string], [number SVR_description], [[output string] substringWithRange:range]];
+      [output addAttribute:kSVRSolverNumberKey value:number range:range];
+    }
   }
 }
 
@@ -218,6 +250,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
        [expression string], [[expression string] substringWithRange:patchRange], [NSDecimalNumber notANumber]
       ];
     }
+    output = nil;
   }
   
   // Solve Exponents
@@ -289,74 +322,67 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   return [NSValue XP_valueWithRange:XPNotFoundRange];
 }
 
-// TODO: Refactor to use kSVRSolverNumberKey
 +(NSDecimalNumber*)__solveNextSubexpressionInExpression:(NSAttributedString*)expression
                                       forOperatorsInSet:(NSSet*)operators
                                    rangeOfSubexpression:(NSRange*)range;
 {
-  XPUInteger index = 0;
+  NSRange operatorRange = NSMakeRange(0, 1);
   NSRange lhsRange = XPNotFoundRange;
   NSRange rhsRange = XPNotFoundRange;
-  NSString *check    = nil;
   NSString *operator = nil;
-  NSDecimalNumber *solution = nil;
+  NSDecimalNumber *lhs = nil;
+  NSDecimalNumber *rhs = nil;
   
-  while (index < [expression length]) {
-    // find numbers
-    check = [expression attribute:kSVRSolverNumeralKey
-                     atIndex:index
-              effectiveRange:NULL];
-    if (check) {
-      if (XPIsNotFoundRange(lhsRange)) {
-        lhsRange.location = index;
-        lhsRange.length = 1;
-      } else if (XPIsFoundRange(lhsRange) && !operator) {
-        lhsRange.length = index - lhsRange.location + 1;
-      } else if (XPIsNotFoundRange(rhsRange) && operator) {
-        rhsRange.location = index;
-        rhsRange.length = 1;
-      } else if (XPIsFoundRange(rhsRange) && operator) {
-        rhsRange.length = index - rhsRange.location + 1;
-      }
-    } else {
-      if (XPIsFoundRange(lhsRange) && XPIsFoundRange(rhsRange) && operator) {
-        break; // everything is satisfied and we can break
-      } else if (XPIsFoundRange(lhsRange) && !operator) {
-        check = [expression attribute:kSVRSolverOperatorKey
-                         atIndex:index
-                  effectiveRange:NULL];
-        if ([operators member:check]) {
-          operator = check;
-        } else {
-          // reset everything because we just found the wrong operator
-          lhsRange = XPNotFoundRange;
-          rhsRange = XPNotFoundRange;
-        }
-      }
-    }
-    index += 1;
+  // Find the first matching operator
+  while (operatorRange.location + operatorRange.length <= [expression length]) {
+    operator = [expression attribute:kSVRSolverOperatorKey
+                             atIndex:operatorRange.location
+                      effectiveRange:&operatorRange];
+    if ([operators member:operator]) { break; }
+    operatorRange.location = operatorRange.location + operatorRange.length;
+    operatorRange.length = 1;
   }
-  if (XPIsNotFoundRange(lhsRange) || XPIsNotFoundRange(rhsRange) || !operator) {
-    // no problem to solve
+  
+  if (![operators member:operator]) {
+    [XPLog extra:@"__solveNextSubexpressionInExpression: operator not found in set: '%@'", [expression string]];
     return nil;
   }
-  solution = [self __solveWithOperator:operator
-                            leftString:[[expression string] substringWithRange:lhsRange]
-                           rightString:[[expression string] substringWithRange:rhsRange]];
-  *range = NSMakeRange(lhsRange.location, lhsRange.length + 1 + rhsRange.length);
   
-  return solution;
+  lhsRange = NSMakeRange(operatorRange.location - 1, 1);
+  if (lhsRange.location >= 0) {
+    lhs = [expression attribute:kSVRSolverNumberKey
+                        atIndex:lhsRange.location
+                 effectiveRange:&lhsRange];
+  }
+  if (lhs == nil) {
+    [XPLog extra:@"__solveNextSubexpressionInExpression: LHS number not found in expression: '%@'", [expression string]];
+    return nil;
+  }
+  
+  rhsRange = NSMakeRange(operatorRange.location + operatorRange.length, 1);
+  if (rhsRange.location + rhsRange.length <= [expression length]) {
+    rhs = [expression attribute:kSVRSolverNumberKey
+                        atIndex:rhsRange.location
+                 effectiveRange:&rhsRange];
+  }
+  if (rhs == nil) {
+    [XPLog extra:@"__solveNextSubexpressionInExpression: RHS number not found in expression: '%@'", [expression string]];
+    return nil;
+  }
+  
+  range->location = lhsRange.location;
+  range->length = lhsRange.length + operatorRange.length + rhsRange.length;
+  
+  return [self __solveWithOperator:operator leftNumber:lhs rightNumber:rhs];
 }
 
 +(NSDecimalNumber*)__solveWithOperator:(NSString*)anOp
-                            leftString:(NSString*)leftString
-                           rightString:(NSString*)rightString;
+                            leftNumber:(NSDecimalNumber*)lhs
+                           rightNumber:(NSDecimalNumber*)rhs;
 {
-  NSDecimalNumber *lhs = [NSDecimalNumber decimalNumberWithString:leftString];
-  NSDecimalNumber *rhs = [NSDecimalNumber decimalNumberWithString:rightString];
   
-  if ([lhs SVR_isNotANumber] || [rhs SVR_isNotANumber]) {
-    [XPLog error:@"__solveWithOperator:%@ lhs:%@ rhs:%@", anOp, leftString, rightString];
+  if (anOp == nil || [lhs SVR_isNotANumber] || [rhs SVR_isNotANumber]) {
+    [XPLog error:@"__solveWithOperator:%@ lhs:%@ rhs:%@", anOp, [lhs SVR_description], [rhs SVR_description]];
     return nil;
   }
   if ([kSVRSolverOperatorExponent isEqualToString:anOp]) {
@@ -377,8 +403,8 @@ static NSString *kSVRSolverOperator(NSString* operator) {
 
 +(NSAttributedString*)__solveAttributedStringForPatchingWithDecimalNumber:(NSDecimalNumber*)number;
 {
-  NSDictionary *attributes = [NSDictionary dictionaryWithObject:kSVRSolverYES
-                                                         forKey:kSVRSolverNumeralKey];
+  NSDictionary *attributes = [NSDictionary dictionaryWithObject:number
+                                                         forKey:kSVRSolverNumberKey];
   return [[[NSAttributedString alloc] initWithString:[number SVR_description] attributes:attributes] autorelease];
 }
 
@@ -391,7 +417,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
     if ([[attributes allKeys] count] != 1) {
       return NO;
     }
-    if (![attributes objectForKey:kSVRSolverNumeralKey]) {
+    if (![attributes objectForKey:kSVRSolverNumberKey]) {
       return NO;
     }
     index += 1;
@@ -421,7 +447,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
     if (check) {
       [output addAttribute:NSForegroundColorAttributeName value:[ud SVR_colorForOperator] range:range];
     }
-    check = [output attribute:kSVRSolverNumeralKey atIndex:index effectiveRange:&range];
+    check = [output attribute:kSVRSolverNumberKey atIndex:index effectiveRange:&range];
     if (check) {
       [output addAttribute:NSForegroundColorAttributeName value:[ud SVR_colorForNumeral] range:range];
     }
@@ -451,6 +477,16 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   
   [XPLog alwys:@"<%@> Unit Tests: STARTING", self];
   
+  userInput = @"5+7+3=";
+  storage = [[[NSMutableAttributedString alloc] initWithString:userInput] autorelease];
+  [SVRSolver annotateStorage:storage];
+  NSAssert([[storage string] isEqualToString:@"5+7+3="], @"");
+  [SVRSolver solveAnnotatedStorage:storage];
+  attributedSolution = [storage attribute:kSVRSolverSolutionKey
+                                  atIndex:[storage length] - 1
+                           effectiveRange:NULL];
+  NSAssert([attributedSolution isEqual:[NSDecimalNumber decimalNumberWithString:@"15"]], @"");
+  
   userInput = @"(2.0+-3.75)+150.0+120.0-37*30/8^2=";
   storage = [[[NSMutableAttributedString alloc] initWithString:userInput] autorelease];
   [SVRSolver annotateStorage:storage];
@@ -471,46 +507,46 @@ static NSString *kSVRSolverOperator(NSString* operator) {
                            effectiveRange:NULL];
   NSAssert([attributedSolution isEqual:[NSDecimalNumber decimalNumberWithString:@"15"]], @"");
   
-  userInput = @"5+7+3=";
+  userInput = @"150.0+120.0-37*30/8^2=";
   storage = [[[NSMutableAttributedString alloc] initWithString:userInput] autorelease];
   [SVRSolver annotateStorage:storage];
-  NSAssert([[storage string] isEqualToString:@"5+7+3="], @"");
+  NSAssert([[storage string] isEqualToString:@"150.0+120.0-37*30/8^2="], @"");
   [SVRSolver solveAnnotatedStorage:storage];
   attributedSolution = [storage attribute:kSVRSolverSolutionKey
                                   atIndex:[storage length] - 1
                            effectiveRange:NULL];
-  NSAssert([attributedSolution isEqual:[NSDecimalNumber decimalNumberWithString:@"15"]], @"");
+  NSAssert([attributedSolution isEqual:[NSDecimalNumber decimalNumberWithString:@"252.65625"]], @"");
   
+  userInput = @"(5.4+5)*(4--4.30)=3.3^2/(2+2)=";
+  storage = [[[NSMutableAttributedString alloc] initWithString:userInput] autorelease];
+  [SVRSolver annotateStorage:storage];
+  NSAssert([[storage string] isEqualToString:@"(5.4+5)*(4--4.30)=3.3^2/(2+2)="], @"");
+  [SVRSolver solveAnnotatedStorage:storage];
+  attributedSolution = [storage attribute:kSVRSolverSolutionKey
+                                  atIndex:17
+                           effectiveRange:NULL];
+  NSAssert([attributedSolution isEqual:[NSDecimalNumber decimalNumberWithString:@"86.32"]], @"");
+  attributedSolution = [storage attribute:kSVRSolverSolutionKey
+                                  atIndex:[storage length] - 1
+                           effectiveRange:NULL];
+  NSAssert([attributedSolution isEqual:[NSDecimalNumber decimalNumberWithString:@"2.7225"]], @"");
   
   /*
-  _string = @"(5+7)+3=";
-  string = [[[NSMutableAttributedString alloc] initWithString:_string] autorelease];
-  [SVRSolver annotateStorage:string];
-  [SVRSolver solveAnnotatedStorage:string];
-  NSAssert([[string string] isEqualToString:@"(5+7)+3=15"], @"");
-  
-  _string = @"5+7+3=";
-  string = [[[NSMutableAttributedString alloc] initWithString:_string] autorelease];
-  [SVRSolver annotateStorage:string];
-  [SVRSolver solveAnnotatedStorage:string];
-  NSAssert([[string string] isEqualToString:@"5+7+3=15"], @"");
-  
-  _string = @"150.0+120.0-37*30/8^2=";
-  string = [[[NSMutableAttributedString alloc] initWithString:_string] autorelease];
-  [SVRSolver annotateStorage:string];
-  NSAssert([[string string] isEqualToString:@"150.0+120.0-37*30/8^2="], @"");
-  [SVRSolver solveAnnotatedStorage:string];
-  NSAssert([[string string] isEqualToString:@"150.0+120.0-37*30/8^2=252.65625\n"], @"");
-  [SVRSolver colorAnnotatedAndSolvedStorage:string];
-  
-  _string = @"(5.4+5)*(4--4.30)=3.3^2/(2+2)=";
-  string = [[[NSMutableAttributedString alloc] initWithString:_string] autorelease];
-  [SVRSolver annotateStorage:string];
-  [XPLog pause:@"%@", string];
-  [SVRSolver solveAnnotatedStorage:string];
-  [XPLog pause:@"%@", string];
-  [SVRSolver colorAnnotatedAndSolvedStorage:string];
-  */
+  // TODO: Still Failing
+  userInput = @"4.0+3=-3.3^2=";
+  storage = [[[NSMutableAttributedString alloc] initWithString:userInput] autorelease];
+  [SVRSolver annotateStorage:storage];
+  NSAssert([[storage string] isEqualToString:@"4.0+3=-3.3^2="], @"");
+  [SVRSolver solveAnnotatedStorage:storage];
+  attributedSolution = [storage attribute:kSVRSolverSolutionKey
+                                  atIndex:5
+                           effectiveRange:NULL];
+  NSAssert([attributedSolution isEqual:[NSDecimalNumber decimalNumberWithString:@"7"]], @"");
+  attributedSolution = [storage attribute:kSVRSolverSolutionKey
+                                  atIndex:[storage length] - 1
+                           effectiveRange:NULL];
+  NSAssert([attributedSolution isEqual:[NSDecimalNumber decimalNumberWithString:@"-2.7225"]], @"");
+   */
   
   [XPLog alwys:@"<%@> Unit Tests: PASSED", self];
 

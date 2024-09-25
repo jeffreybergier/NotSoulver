@@ -31,8 +31,8 @@
                                       forOperatorsInSet:(NSSet*)operators
                                    rangeOfSubexpression:(NSRange*)range;
 +(NSDecimalNumber*)__solveWithOperator:(NSString*)anOp
-                            leftString:(NSString*)leftString
-                           rightString:(NSString*)rightString;
+                            leftNumber:(NSDecimalNumber*)lhs
+                           rightNumber:(NSDecimalNumber*)rhs;
 +(NSAttributedString*)__solveAttributedStringForPatchingWithDecimalNumber:(NSDecimalNumber*)number;
 +(BOOL)__solveValidateOnlyNumeralsInAttributedString:(NSAttributedString*)string;
 
