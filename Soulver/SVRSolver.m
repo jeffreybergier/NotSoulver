@@ -8,10 +8,11 @@
 #import "SVRSolver.h"
 #import "JSBRegex.h"
 
-NSString *kSVRSolverSolutionKey   = @"kSVRSolverSolutionKey"; // Store NSDecimalNumber
+NSString *kSVRSolverSolutionKey   = @"kSVRSolverSolutionKey"; // Store NSDecimalNumber or NSNumber for Error
 NSString *kSVRSolverBracketsKey   = @"kSVRSolverBracketsKey";
 NSString *kSVRSolverOperatorKey   = @"kSVRSolverOperatorKey";
-NSString *kSVRSolverNumeralKey    = @"kSVRSolverNumeralKey";
+NSString *kSVRSolverNumeralKey    = @"kSVRSolverNumeralKey"; // TODO: Delete
+NSString *kSVRSolverNumberKey     = @"kSVRSolverNumberKey"; // Stores NSDecimalNumber
 NSString *kSVRSolverOtherKey      = @"kSVRSolverOtherKey";
 
 NSString *kSVRSolverOperatorExponent    = @"kSVRSolverOperator^";
@@ -41,9 +42,9 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   [output removeAttribute:kSVRSolverOtherKey range:range];
   
   // Restart annotation process
+  [self __annotateNumerals:output];
   [self __annotateBrackets:output];
   [self __annotateOperators:output];
-  [self __annotateNumerals:output];
   
   [output autorelease];
 }
@@ -119,33 +120,25 @@ static NSString *kSVRSolverOperator(NSString* operator) {
 
 +(void)__annotateNumerals:(NSMutableAttributedString*)output;
 {
-  NSRange range;
-  NSValue *value;
-  NSString *check;
-  // Find floats
-  JSBRegex *regex = [JSBRegex regexWithString:[output string]
-                                      pattern:@"\\-?\\d+\\.\\d+"];
-  while ((value = [regex nextObject])) {
-    range = [value XP_rangeValue];
-    check = [output attribute:kSVRSolverOperatorKey
-                      atIndex:range.location
-               effectiveRange:NULL];
-    if (check == nil) {
-      [output addAttribute:kSVRSolverNumeralKey value:kSVRSolverYES range:range];
-    }
+  NSRange range = XPNotFoundRange;
+  NSValue *rangeV = nil;
+  NSDecimalNumber *number = nil;
+  JSBRegex *regex = nil;
+  
+  // Annotate integer numbers
+  regex = [JSBRegex regexWithString:[output string] pattern:@"\\-?\\d+"];
+  while ((rangeV = [regex nextObject])) {
+    range = [rangeV XP_rangeValue];
+    number = [NSDecimalNumber decimalNumberWithString:[[output string] substringWithRange:range]];
+    [output addAttribute:kSVRSolverNumberKey value:number range:range];
   }
   
-  // Find integers
-  regex = [JSBRegex regexWithString:[output string]
-                            pattern:@"\\d+"];
-  while ((value = [regex nextObject])) {
-    range = [value XP_rangeValue];
-    check = [output attribute:kSVRSolverNumeralKey
-                      atIndex:range.location
-               effectiveRange:NULL];
-    if (check == nil) {
-      [output addAttribute:kSVRSolverNumeralKey value:kSVRSolverYES range:range];
-    }
+  // Annotate floating point numbers
+  regex = [JSBRegex regexWithString:[output string] pattern:@"\\-?\\d+\\.\\d+"];
+  while ((rangeV = [regex nextObject])) {
+    range = [rangeV XP_rangeValue];
+    number = [NSDecimalNumber decimalNumberWithString:[[output string] substringWithRange:range]];
+    [output addAttribute:kSVRSolverNumberKey value:number range:range];
   }
 }
 
@@ -296,6 +289,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   return [NSValue XP_valueWithRange:XPNotFoundRange];
 }
 
+// TODO: Refactor to use kSVRSolverNumberKey
 +(NSDecimalNumber*)__solveNextSubexpressionInExpression:(NSAttributedString*)expression
                                       forOperatorsInSet:(NSSet*)operators
                                    rangeOfSubexpression:(NSRange*)range;
