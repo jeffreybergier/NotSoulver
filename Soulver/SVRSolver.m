@@ -118,21 +118,8 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   NSValue *value;
   NSString *operator;
   JSBRegex *regex = [JSBRegex regexWithString:[output string]
-                                      pattern:@"[\\d\\)][\\*\\-\\+\\/\\^][\\-\\d\\(]"];
-  while ((value = [regex nextObject])) {
-    range = [value XP_rangeValue];
-    range.location += 1;
-    range.length = 1;
-    operator = [[output string] substringWithRange:range];
-    [output addAttribute:kSVRSolverOperatorKey
-                   value:kSVRSolverOperator(operator)
-                   range:range];
-  }
-  
-  // Do a second round looking for just the exponent
-  // TODO: Fix problem where Regex doesn't seem to work right when ^ is in []
-  regex = [JSBRegex regexWithString:[output string]
-                            pattern:@"[\\d\\)]\\^[\\-\\d\\(]"];
+                                      pattern:@"[\\d\\)][\\*\\-\\+\\/\\^][\\-\\d\\(]"
+                               forceIteration:YES];
   while ((value = [regex nextObject])) {
     range = [value XP_rangeValue];
     range.location += 1;
@@ -493,6 +480,26 @@ static NSString *kSVRSolverOperator(NSString* operator) {
                                   atIndex:[storage length] - 1
                            effectiveRange:NULL];
   NSAssert([attributedSolution isEqual:[NSDecimalNumber decimalNumberWithString:@"250.90625"]], @"");
+  
+  userInput = @"(5+7)+3=";
+  storage = [[[NSMutableAttributedString alloc] initWithString:userInput] autorelease];
+  [SVRSolver annotateStorage:storage];
+  NSAssert([[storage string] isEqualToString:@"(5+7)+3="], @"");
+  [SVRSolver solveAnnotatedStorage:storage];
+  attributedSolution = [storage attribute:kSVRSolverSolutionKey
+                                  atIndex:[storage length] - 1
+                           effectiveRange:NULL];
+  NSAssert([attributedSolution isEqual:[NSDecimalNumber decimalNumberWithString:@"15"]], @"");
+  
+  userInput = @"5+7+3=";
+  storage = [[[NSMutableAttributedString alloc] initWithString:userInput] autorelease];
+  [SVRSolver annotateStorage:storage];
+  NSAssert([[storage string] isEqualToString:@"5+7+3="], @"");
+  [SVRSolver solveAnnotatedStorage:storage];
+  attributedSolution = [storage attribute:kSVRSolverSolutionKey
+                                  atIndex:[storage length] - 1
+                           effectiveRange:NULL];
+  NSAssert([attributedSolution isEqual:[NSDecimalNumber decimalNumberWithString:@"15"]], @"");
   
   
   /*

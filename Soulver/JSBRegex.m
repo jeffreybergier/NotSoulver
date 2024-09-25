@@ -12,7 +12,13 @@
 // MARK: Initialization
 -(id)initWithString:(NSString*)string pattern:(NSString*)pattern;
 {
+  return [self initWithString:string pattern:pattern forceIteration:NO];
+}
+
+-(id)initWithString:(NSString*)string pattern:(NSString*)pattern forceIteration:(BOOL)forceIteration;
+{
   self = [super init];
+  _forceIteration = forceIteration;
   _last = NSMakeRange(NSNotFound, 0);
   _pattern = [pattern copy];
   _string = [string copy];
@@ -25,6 +31,11 @@
 +(id)regexWithString:(NSString*)string pattern:(NSString*)pattern;
 {
   return [[[JSBRegex alloc] initWithString:string pattern:pattern] autorelease];
+}
+
++(id)regexWithString:(NSString*)string pattern:(NSString*)pattern forceIteration:(BOOL)forceIteration;
+{
+  return [[[JSBRegex alloc] initWithString:string pattern:pattern forceIteration:forceIteration] autorelease];
 }
 
 // MARK: Core Functionality
@@ -40,6 +51,7 @@
 {
   int location = NSNotFound;
   int length = 0;
+  int lastLength = _forceIteration ? 1 : _last.length;
   
   // Perform Regex
   location = re_matchp(_rx, _cursor, &length);
@@ -53,11 +65,15 @@
   // Calculate the range and update ivar
   _last.location = (_last.location == NSNotFound)
                  ? location
-                 : location + _last.location + _last.length;
+                 : location + _last.location + lastLength;
   _last.length   = length;
 
   // Update cursor for next iteration
-  _cursor += location + length;
+  if (_forceIteration) {
+    _cursor += location + 1;
+  } else {
+    _cursor += location + length;
+  }
 
   return _last;
 }
@@ -93,6 +109,11 @@
 -(NSRange)lastMatch;
 {
   return _last;
+}
+
+-(BOOL)forceIteration;
+{
+  return _forceIteration;
 }
 
 -(NSString*)description;
@@ -185,6 +206,18 @@
   regex = [JSBRegex regexWithString:@"12.m56...78m--90.12" pattern:@"-?\\d+\\.?\\d+m-?\\d+\\.?\\d+"];
   NSAssert(![regex containsMatch], @"");
   
+  // MARK: Test Multiple Operators
+  regex = [JSBRegex regexWithString:@"5+7+3" pattern:@"[\\d\\)][\\*\\-\\+\\/\\^][\\-\\d\\(]" forceIteration:YES];
+  NSAssert([regex containsMatch], @"");
+  range = [regex nextMatch];
+  NSAssert(range.location == 0, @"");
+  NSAssert(range.length == 3, @"");
+  range = [regex nextMatch];
+  NSAssert(range.location == 2, @"");
+  NSAssert(range.length == 3, @"");
+  range = [regex nextMatch];
+  NSAssert(range.location == NSNotFound, @"");
+  
   // MARK: Test finding exponent
   regex = [JSBRegex regexWithString:@"3*5^2+7" pattern:@"\\d\\^\\d"];
   NSAssert([regex containsMatch], @"");
@@ -196,15 +229,14 @@
   range = [regex nextMatch];
   NSAssert(range.location == NSNotFound, @"");
   NSAssert(range.length == 0, @"");
-  regex = [JSBRegex regexWithString:@"3*5^2" pattern:@"\\d[\\^\\*]\\d"];
+  regex = [JSBRegex regexWithString:@"3*5^2" pattern:@"\\d[\\^\\*]\\d" forceIteration:YES];
   NSAssert([regex containsMatch], @"");
   range = [regex nextMatch];
   NSAssert(range.location == 0, @"");
   NSAssert(range.length == 3, @"");
   range = [regex nextMatch];
-  // TODO: Known to not work
-  NSAssert(range.location == NSNotFound, @"");
-  // NSAssert(range.location == 3, @"");
+  NSAssert(range.location == 2, @"");
+  NSAssert(range.length == 3, @"");
 }
 
 +(void)__executeTests_values;
@@ -285,15 +317,16 @@
   NSAssert(![regex containsMatch], @"");
   value = [regex nextObject];
   NSAssert(!value, @"");
-  regex = [JSBRegex regexWithString:@"3*5^2" pattern:@"\\d[\\^\\*]\\d"];
+  regex = [JSBRegex regexWithString:@"3*5^2" pattern:@"\\d[\\^\\*]\\d" forceIteration:YES];
   NSAssert([regex containsMatch], @"");
   value = [regex nextObject];
   [value getValue:&range];
   NSAssert(range.location == 0, @"");
   NSAssert(range.length == 3, @"");
   value = [regex nextObject];
-  // TODO: Known to not work
-  NSAssert(!value, @"");
+  [value getValue:&range];
+  NSAssert(range.location == 2, @"");
+  NSAssert(range.length == 3, @"");
 }
 
 @end

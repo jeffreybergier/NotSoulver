@@ -10,6 +10,7 @@
 
 @interface JSBRegex: NSEnumerator
 {
+  BOOL _forceIteration;
   NSString *_pattern;
   NSString *_string;
   NSRange _last;
@@ -19,7 +20,9 @@
 
 // MARK: Initialization
 -(id)initWithString:(NSString*)string pattern:(NSString*)pattern;
+-(id)initWithString:(NSString*)string pattern:(NSString*)pattern forceIteration:(BOOL)forceIteration;
 +(id)regexWithString:(NSString*)string pattern:(NSString*)pattern;
++(id)regexWithString:(NSString*)string pattern:(NSString*)pattern forceIteration:(BOOL)forceIteration;
 
 // MARK: Core Functionality
 /// Returns NSNotFound for location when there are no more matches
@@ -34,6 +37,7 @@
 -(NSString*)string;
 -(NSString*)pattern;
 -(NSRange)lastMatch;
+-(BOOL)forceIteration;
 -(NSString*)description;
 
 @end
