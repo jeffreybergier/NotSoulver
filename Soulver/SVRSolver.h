@@ -16,7 +16,6 @@
 +(void)colorAnnotatedAndSolvedStorage:(NSMutableAttributedString*)input;
 
 // MARK: Private: annotateStorage
-+(void)__annotateExpressions:(NSMutableAttributedString*)input;
 +(void)__annotateBrackets:(NSMutableAttributedString*)input;
 +(void)__annotateOperators:(NSMutableAttributedString*)input;
 +(void)__annotateNumerals:(NSMutableAttributedString*)input;

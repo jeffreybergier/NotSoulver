@@ -9,7 +9,6 @@
 #import "JSBRegex.h"
 
 NSString *kSVRSolverSolutionKey   = @"kSVRSolverSolutionKey"; // Store NSDecimalNumber
-NSString *kSVRSolverExpressionKey = @"kSVRSolverExpressionKey";
 NSString *kSVRSolverBracketsKey   = @"kSVRSolverBracketsKey";
 NSString *kSVRSolverOperatorKey   = @"kSVRSolverOperatorKey";
 NSString *kSVRSolverNumeralKey    = @"kSVRSolverNumeralKey";
@@ -36,14 +35,12 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   
   // Clear existing annotations except solution keys
   range = NSMakeRange(0, [output length]);
-  [output removeAttribute:kSVRSolverExpressionKey range:range];
   [output removeAttribute:kSVRSolverBracketsKey range:range];
   [output removeAttribute:kSVRSolverOperatorKey range:range];
   [output removeAttribute:kSVRSolverNumeralKey range:range];
   [output removeAttribute:kSVRSolverOtherKey range:range];
   
   // Restart annotation process
-  [self __annotateExpressions:output];
   [self __annotateBrackets:output];
   [self __annotateOperators:output];
   [self __annotateNumerals:output];
@@ -76,17 +73,6 @@ static NSString *kSVRSolverOperator(NSString* operator) {
 }
 
 // MARK: Private: solveTextStorage
-+(void)__annotateExpressions:(NSMutableAttributedString*)output;
-{
-  NSRange range;
-  NSValue *value;
-  JSBRegex *regex = [JSBRegex regexWithString:[output string]
-                                      pattern:@"[\\d\\.\\^\\*\\-\\+\\/\\(\\)]+\\="];
-  while ((value = [regex nextObject])) {
-    range = [value XP_rangeValue];
-    [output addAttribute:kSVRSolverExpressionKey value:kSVRSolverYES range:range];
-  }
-}
 
 +(void)__annotateBrackets:(NSMutableAttributedString*)output;
 {
