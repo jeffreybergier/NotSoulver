@@ -1,13 +1,13 @@
 //
-//  JSBRegex.m
+//  SVRLegacyRegex.m
 //  NotSoulver
 //
 //  Created by Jeffrey Bergier on 2024/09/16.
 //
 
-#import "JSBRegex.h"
+#import "SVRLegacyRegex.h"
 
-@implementation JSBRegex
+@implementation SVRLegacyRegex
 
 // MARK: Initialization
 -(id)initWithString:(NSString*)string pattern:(NSString*)pattern;
@@ -30,12 +30,12 @@
 
 +(id)regexWithString:(NSString*)string pattern:(NSString*)pattern;
 {
-  return [[[JSBRegex alloc] initWithString:string pattern:pattern] autorelease];
+  return [[[SVRLegacyRegex alloc] initWithString:string pattern:pattern] autorelease];
 }
 
 +(id)regexWithString:(NSString*)string pattern:(NSString*)pattern forceIteration:(BOOL)forceIteration;
 {
-  return [[[JSBRegex alloc] initWithString:string pattern:pattern forceIteration:forceIteration] autorelease];
+  return [[[SVRLegacyRegex alloc] initWithString:string pattern:pattern forceIteration:forceIteration] autorelease];
 }
 
 // MARK: Core Functionality
@@ -136,7 +136,7 @@
 
 @end
 
-@implementation JSBRegex (Tests)
+@implementation SVRLegacyRegex (Tests)
 
 +(void)executeTests;
 {
@@ -149,10 +149,10 @@
 +(void)__executeTests_ranges;
 {
   NSRange range;
-  JSBRegex *regex;
+  SVRLegacyRegex *regex;
   
   // MARK: Test basic string matching
-  regex = [JSBRegex regexWithString:@"this is a verb for other cool verbs" pattern:@"verb"];
+  regex = [SVRLegacyRegex regexWithString:@"this is a verb for other cool verbs" pattern:@"verb"];
   NSAssert(regex, @"");
   NSAssert([regex containsMatch], @"");
   range = [regex nextMatch];
@@ -165,7 +165,7 @@
   NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"verb"], @"");
   
   // MARK: Test simple numbers
-  regex = [JSBRegex regexWithString:@"12.34a5678m-90.12s-3456" pattern:@"-?\\d+\\.?\\d+"];
+  regex = [SVRLegacyRegex regexWithString:@"12.34a5678m-90.12s-3456" pattern:@"-?\\d+\\.?\\d+"];
   NSAssert([regex containsMatch], @"");
   range = [regex nextMatch];
   NSAssert(range.location == 0, @"");
@@ -188,7 +188,7 @@
   NSAssert(range.length == 0, @"");
   
   // MARK: Test expression finding
-  regex = [JSBRegex regexWithString:@"12.34a5678m999m-90.12s-3456" pattern:@"-?\\d+\\.?\\d+[ma]-?\\d+\\.?\\d+"];
+  regex = [SVRLegacyRegex regexWithString:@"12.34a5678m999m-90.12s-3456" pattern:@"-?\\d+\\.?\\d+[ma]-?\\d+\\.?\\d+"];
   NSAssert([regex containsMatch], @"");
   range = [regex nextMatch];
   NSAssert(range.location == 0, @"");
@@ -203,11 +203,11 @@
   NSAssert(range.length == 0, @"");
   
   // MARK: Test expressions with bad numbers
-  regex = [JSBRegex regexWithString:@"12.m56...78m--90.12" pattern:@"-?\\d+\\.?\\d+m-?\\d+\\.?\\d+"];
+  regex = [SVRLegacyRegex regexWithString:@"12.m56...78m--90.12" pattern:@"-?\\d+\\.?\\d+m-?\\d+\\.?\\d+"];
   NSAssert(![regex containsMatch], @"");
   
   // MARK: Test Multiple Operators
-  regex = [JSBRegex regexWithString:@"5+7+3" pattern:@"[\\d\\)][\\*\\-\\+\\/\\^][\\-\\d\\(]" forceIteration:YES];
+  regex = [SVRLegacyRegex regexWithString:@"5+7+3" pattern:@"[\\d\\)][\\*\\-\\+\\/\\^][\\-\\d\\(]" forceIteration:YES];
   NSAssert([regex containsMatch], @"");
   range = [regex nextMatch];
   NSAssert(range.location == 0, @"");
@@ -219,17 +219,17 @@
   NSAssert(range.location == NSNotFound, @"");
   
   // MARK: Test finding exponent
-  regex = [JSBRegex regexWithString:@"3*5^2+7" pattern:@"\\d\\^\\d"];
+  regex = [SVRLegacyRegex regexWithString:@"3*5^2+7" pattern:@"\\d\\^\\d"];
   NSAssert([regex containsMatch], @"");
   range = [regex nextMatch];
   NSAssert(range.location == 2, @"");
   NSAssert(range.length == 3, @"");
-  regex = [JSBRegex regexWithString:@"3*5/2+7" pattern:@"\\d\\^\\d"];
+  regex = [SVRLegacyRegex regexWithString:@"3*5/2+7" pattern:@"\\d\\^\\d"];
   NSAssert(![regex containsMatch], @"");
   range = [regex nextMatch];
   NSAssert(range.location == NSNotFound, @"");
   NSAssert(range.length == 0, @"");
-  regex = [JSBRegex regexWithString:@"3*5^2" pattern:@"\\d[\\^\\*]\\d" forceIteration:YES];
+  regex = [SVRLegacyRegex regexWithString:@"3*5^2" pattern:@"\\d[\\^\\*]\\d" forceIteration:YES];
   NSAssert([regex containsMatch], @"");
   range = [regex nextMatch];
   NSAssert(range.location == 0, @"");
@@ -243,10 +243,10 @@
 {
   NSRange range;
   NSValue *value;
-  JSBRegex *regex;
+  SVRLegacyRegex *regex;
   
   // MARK: Test basic string matching
-  regex = [JSBRegex regexWithString:@"this is a verb for other cool verbs" pattern:@"verb"];
+  regex = [SVRLegacyRegex regexWithString:@"this is a verb for other cool verbs" pattern:@"verb"];
   NSAssert(regex, @"");
   NSAssert([regex containsMatch], @"");
   value = [regex nextObject];
@@ -261,7 +261,7 @@
   NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"verb"], @"");
   
   // MARK: Test simple numbers
-  regex = [JSBRegex regexWithString:@"12.34a5678m-90.12s-3456" pattern:@"-?\\d+\\.?\\d+"];
+  regex = [SVRLegacyRegex regexWithString:@"12.34a5678m-90.12s-3456" pattern:@"-?\\d+\\.?\\d+"];
   NSAssert([regex containsMatch], @"");
   value = [regex nextObject];
   [value getValue:&range];
@@ -287,7 +287,7 @@
   NSAssert(!value, @"");
   
   // MARK: Test expression finding
-  regex = [JSBRegex regexWithString:@"12.34a5678m999m-90.12s-3456" pattern:@"-?\\d+\\.?\\d+[ma]-?\\d+\\.?\\d+"];
+  regex = [SVRLegacyRegex regexWithString:@"12.34a5678m999m-90.12s-3456" pattern:@"-?\\d+\\.?\\d+[ma]-?\\d+\\.?\\d+"];
   NSAssert([regex containsMatch], @"");
   value = [regex nextObject];
   [value getValue:&range];
@@ -303,21 +303,21 @@
   NSAssert(!value, @"");
   
   // MARK: Test expressions with bad numbers
-  regex = [JSBRegex regexWithString:@"12.m56...78m--90.12" pattern:@"-?\\d+\\.?\\d+m-?\\d+\\.?\\d+"];
+  regex = [SVRLegacyRegex regexWithString:@"12.m56...78m--90.12" pattern:@"-?\\d+\\.?\\d+m-?\\d+\\.?\\d+"];
   NSAssert(![regex containsMatch], @"");
   
   // MARK: Test finding exponent
-  regex = [JSBRegex regexWithString:@"3*5^2+7" pattern:@"\\d\\^\\d"];
+  regex = [SVRLegacyRegex regexWithString:@"3*5^2+7" pattern:@"\\d\\^\\d"];
   NSAssert([regex containsMatch], @"");
   value = [regex nextObject];
   [value getValue:&range];
   NSAssert(range.location == 2, @"");
   NSAssert(range.length == 3, @"");
-  regex = [JSBRegex regexWithString:@"3*5/2+7" pattern:@"\\d\\^\\d"];
+  regex = [SVRLegacyRegex regexWithString:@"3*5/2+7" pattern:@"\\d\\^\\d"];
   NSAssert(![regex containsMatch], @"");
   value = [regex nextObject];
   NSAssert(!value, @"");
-  regex = [JSBRegex regexWithString:@"3*5^2" pattern:@"\\d[\\^\\*]\\d" forceIteration:YES];
+  regex = [SVRLegacyRegex regexWithString:@"3*5^2" pattern:@"\\d[\\^\\*]\\d" forceIteration:YES];
   NSAssert([regex containsMatch], @"");
   value = [regex nextObject];
   [value getValue:&range];

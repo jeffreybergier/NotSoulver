@@ -3,7 +3,7 @@
 #import "SVRMathString+Tests.h"
 #import "SVRDocumentViewController+Tests.h"
 #import "SVRSolver.h"
-#import "JSBRegex.h"
+#import "SVRLegacyRegex.h"
 
 int main(int argc, const char *argv[]) {
   
@@ -24,7 +24,7 @@ int main(int argc, const char *argv[]) {
 #ifdef TESTING
   [[NSUserDefaults standardUserDefaults] SVR_configure];
   [XPLog alwys:@"<Main> Unit Tests: STARTING"];
-  [JSBRegex executeTests];
+  [SVRLegacyRegex executeTests];
   [SVRSolver executeTests];
   [SVRMathString executeTests];
   [SVRDocumentViewController executeTests];

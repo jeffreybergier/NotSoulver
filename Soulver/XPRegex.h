@@ -6,11 +6,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JSBRegex.h"
+#import "SVRLegacyRegex.h"
 
 @interface XPRegex: NSObject
 {
-  JSBRegex *_regex;
+  SVRLegacyRegex *_regex;
   NSString *_string;
 }
 

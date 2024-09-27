@@ -1,5 +1,5 @@
 //
-//  JSBRegex.h
+//  SVRLegacyRegex.h
 //  NotSoulver
 //
 //  Created by Jeffrey Bergier on 2024/09/16.
@@ -8,7 +8,7 @@
 #import <Foundation/Foundation.h>
 #import "re.h"
 
-@interface JSBRegex: NSEnumerator
+@interface SVRLegacyRegex: NSEnumerator
 {
   BOOL _forceIteration;
   NSString *_pattern;
@@ -42,7 +42,7 @@
 
 @end
 
-@interface JSBRegex (Tests)
+@interface SVRLegacyRegex (Tests)
 +(void)executeTests;
 +(void)__executeTests_ranges;
 +(void)__executeTests_values;

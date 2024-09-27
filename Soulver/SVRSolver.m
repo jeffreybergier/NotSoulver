@@ -6,7 +6,7 @@
 //
 
 #import "SVRSolver.h"
-#import "JSBRegex.h"
+#import "SVRLegacyRegex.h"
 
 NSString *kSVRSolverSolutionKey   = @"kSVRSolverSolutionKey"; // Store NSDecimalNumber or NSNumber for Error
 NSString *kSVRSolverBracketsKey   = @"kSVRSolverBracketsKey";
@@ -80,7 +80,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   NSRange range;
   NSValue *value;
   // Check for opening brackets
-  JSBRegex *regex = [JSBRegex regexWithString:[output string]
+  SVRLegacyRegex *regex = [SVRLegacyRegex regexWithString:[output string]
                                       pattern:@"\\([\\-\\d]"];
   while ((value = [regex nextObject])) {
     range = [value XP_rangeValue];
@@ -89,7 +89,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   }
   
   // Check for closing brackets
-  regex = [JSBRegex regexWithString:[output string]
+  regex = [SVRLegacyRegex regexWithString:[output string]
                             pattern:@"\\d\\)[\\^\\*\\/\\+\\-\\=]"];
   while ((value = [regex nextObject])) {
     range = [value XP_rangeValue];
@@ -104,7 +104,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   NSRange range;
   NSValue *value;
   NSString *operator;
-  JSBRegex *regex = [JSBRegex regexWithString:[output string]
+  SVRLegacyRegex *regex = [SVRLegacyRegex regexWithString:[output string]
                                       pattern:@"[\\d\\)][\\*\\-\\+\\/\\^][\\-\\d\\(]"
                                forceIteration:YES];
   while ((value = [regex nextObject])) {
@@ -126,11 +126,11 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   NSRange range = XPNotFoundRange;
   NSValue *rangeV = nil;
   NSDecimalNumber *number = nil;
-  JSBRegex *regex = nil;
-  JSBRegex *n_regex = nil; // for testing negative numbers to make sure they are preceded by an operator
+  SVRLegacyRegex *regex = nil;
+  SVRLegacyRegex *n_regex = nil; // for testing negative numbers to make sure they are preceded by an operator
 
   // Find positive integers
-  regex = [JSBRegex regexWithString:[output string] pattern:@"\\d+"];
+  regex = [SVRLegacyRegex regexWithString:[output string] pattern:@"\\d+"];
   while ((rangeV = [regex nextObject])) {
     range = [rangeV XP_rangeValue];
     number = [NSDecimalNumber decimalNumberWithString:[[output string] substringWithRange:range]];
@@ -139,7 +139,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   }
   
   // Find positive floats
-  regex = [JSBRegex regexWithString:[output string] pattern:@"\\d+\\.\\d+"];
+  regex = [SVRLegacyRegex regexWithString:[output string] pattern:@"\\d+\\.\\d+"];
   while ((rangeV = [regex nextObject])) {
     range = [rangeV XP_rangeValue];
     number = [NSDecimalNumber decimalNumberWithString:[[output string] substringWithRange:range]];
@@ -148,7 +148,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   }
   
   // Find negative integers
-  regex = [JSBRegex regexWithString:[output string] pattern:@"\\-\\d+"];
+  regex = [SVRLegacyRegex regexWithString:[output string] pattern:@"\\-\\d+"];
   while ((rangeV = [regex nextObject])) {
     range = [rangeV XP_rangeValue];
     if (range.location == 0) { // If we're at the beginning of the string the negative number needs no checks
@@ -156,7 +156,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
       [XPLog extra:@"<#> '%@' '%@'→'%@'", [output string], [number SVR_description], [[output string] substringWithRange:range]];
       [output addAttribute:kSVRSolverNumberKey value:number range:range];
     } else {
-      n_regex = [JSBRegex regexWithString:[[output string] substringWithRange:NSMakeRange(range.location-1, 1)]
+      n_regex = [SVRLegacyRegex regexWithString:[[output string] substringWithRange:NSMakeRange(range.location-1, 1)]
                                   pattern:@"[\\=\\(\\+\\-\\*\\/\\^]"];
       if ([n_regex nextObject]) {
         number = [NSDecimalNumber decimalNumberWithString:[[output string] substringWithRange:range]];
@@ -167,7 +167,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   }
   
   // Find negative floats
-  regex = [JSBRegex regexWithString:[output string] pattern:@"\\-\\d+\\.\\d+"];
+  regex = [SVRLegacyRegex regexWithString:[output string] pattern:@"\\-\\d+\\.\\d+"];
   while ((rangeV = [regex nextObject])) {
     range = [rangeV XP_rangeValue];
     if (range.location == 0) { // If we're at the beginning of the string the negative number needs no checks
@@ -175,7 +175,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
       [XPLog extra:@"<#> '%@' '%@'→'%@'", [output string], [number SVR_description], [[output string] substringWithRange:range]];
       [output addAttribute:kSVRSolverNumberKey value:number range:range];
     } else {
-      n_regex = [JSBRegex regexWithString:[[output string] substringWithRange:NSMakeRange(range.location-1, 1)]
+      n_regex = [SVRLegacyRegex regexWithString:[[output string] substringWithRange:NSMakeRange(range.location-1, 1)]
                                   pattern:@"[\\=\\(\\+\\-\\*\\/\\^]"];
       if ([n_regex nextObject]) {
         number = [NSDecimalNumber decimalNumberWithString:[[output string] substringWithRange:range]];
@@ -196,7 +196,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   NSRange rangeOfEqualSign = XPNotFoundRange;
   NSDecimalNumber *solution = nil;
   
-  JSBRegex *regex = [JSBRegex regexWithString:[output string]
+  SVRLegacyRegex *regex = [SVRLegacyRegex regexWithString:[output string]
                                       pattern:@"[\\d\\.\\^\\*\\-\\+\\/\\(\\)]+\\="];
   while ((value = [regex nextObject])) {
     range = [value XP_rangeValue];
