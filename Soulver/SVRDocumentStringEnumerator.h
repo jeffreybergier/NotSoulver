@@ -8,10 +8,12 @@
 #import <Foundation/Foundation.h>
 #import "SVRLegacyRegex.h"
 
-@interface XPRegex: NSObject
+@interface SVRDocumentStringEnumerator: NSObject
 {
-  SVRLegacyRegex *_regex;
-  NSString *_string;
+  NSString     *_string;
+  NSEnumerator *_numbers;
+  NSEnumerator *_operators;
+  NSEnumerator *_expressions;
 }
 
 // MARK: Initialization
@@ -19,16 +21,21 @@
 +(id)regexWithString:(NSString*)string;
 
 // MARK: NSEnumerator
--(NSArray*)allObjects;
 -(NSValue*)nextNumber;
 -(NSValue*)nextOperator;
+-(NSValue*)nextExpression;
 
 // MARK: Convenience Properties
 -(NSString*)string;
 -(NSString*)description;
 
+// MARK: Enumerator Access (mostly for testing)
+-(NSEnumerator*)numberEnumerator;
+-(NSEnumerator*)operatorEnumerator;
+-(NSEnumerator*)expressionEnumerator;
+
 @end
 
-@interface XPRegex (Tests)
+@interface SVRDocumentStringEnumerator (Tests)
 +(void)executeTests;
 @end

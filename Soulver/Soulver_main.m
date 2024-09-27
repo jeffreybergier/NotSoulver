@@ -4,6 +4,7 @@
 #import "SVRDocumentViewController+Tests.h"
 #import "SVRSolver.h"
 #import "SVRLegacyRegex.h"
+#import "SVRDocumentStringEnumerator.h"
 
 int main(int argc, const char *argv[]) {
   
@@ -24,6 +25,7 @@ int main(int argc, const char *argv[]) {
 #ifdef TESTING
   [[NSUserDefaults standardUserDefaults] SVR_configure];
   [XPLog alwys:@"<Main> Unit Tests: STARTING"];
+  [SVRDocumentStringEnumerator executeTests];
   [SVRLegacyRegex executeTests];
   [SVRSolver executeTests];
   [SVRMathString executeTests];
