@@ -164,6 +164,7 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 
 @interface NSString (CrossPlatform)
 -(NSString*)SVR_stringByTrimmingCharactersInSet:(NSCharacterSet*)set;
+-(const char*)XP_UTF8String;
 @end
 
 @interface NSBundle (CrossPlatform)

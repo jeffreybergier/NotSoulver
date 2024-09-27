@@ -496,6 +496,7 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
 @end
 
 @implementation NSString (CrossPlatform)
+
 -(NSString*)SVR_stringByTrimmingCharactersInSet:(NSCharacterSet*)set;
 {
 #if OS_OPENSTEP
@@ -505,6 +506,16 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
   return [self stringByTrimmingCharactersInSet:set];
 #endif
 }
+
+-(const char*)XP_UTF8String;
+{
+#if OS_OPENSTEP
+  return [self cString];
+#else
+  return [self UTF8String];
+#endif
+}
+
 @end
 
 @implementation NSBundle (CrossPlatform)

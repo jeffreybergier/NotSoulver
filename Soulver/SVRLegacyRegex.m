@@ -6,6 +6,7 @@
 //
 
 #import "SVRLegacyRegex.h"
+#import "SVRCrossPlatform.h"
 
 @implementation SVRLegacyRegex
 
@@ -22,8 +23,8 @@
   _last = NSMakeRange(NSNotFound, 0);
   _pattern = [pattern copy];
   _string = [string copy];
-  _cursor = [_string cString];
-  _rx = re_compile([_pattern cString]);
+  _cursor = [_string XP_UTF8String];
+  _rx = re_compile([_pattern XP_UTF8String]);
   NSAssert2(_rx != NULL, @"%@ Failed to compile pattern: %@", self, pattern);
   return self;
 }
@@ -41,7 +42,7 @@
 // MARK: Core Functionality
 -(BOOL)containsMatch;
 {
-  int location = NSNotFound;
+  int location = (int)NSNotFound;
   int length = 0;
   location = re_matchp(_rx, _cursor, &length);
   return location == -1 ? NO : YES;
@@ -49,9 +50,9 @@
 
 -(NSRange)nextMatch;
 {
-  int location = NSNotFound;
+  int location = (int)NSNotFound;
   int length = 0;
-  int lastLength = _forceIteration ? 1 : _last.length;
+  int lastLength = (_forceIteration) ? 1 : (int)_last.length;
   
   // Perform Regex
   location = re_matchp(_rx, _cursor, &length);
@@ -64,9 +65,9 @@
 
   // Calculate the range and update ivar
   _last.location = (_last.location == NSNotFound)
-                 ? location
-                 : location + _last.location + lastLength;
-  _last.length   = length;
+                 ? (XPUInteger)location
+                 : (XPUInteger)location + _last.location + (XPUInteger)lastLength;
+  _last.length   = (XPUInteger)length;
 
   // Update cursor for next iteration
   if (_forceIteration) {
