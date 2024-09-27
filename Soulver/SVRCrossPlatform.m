@@ -594,18 +594,25 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
   return [NSDecimalNumber decimalNumberWithString:string locale:[[NSUserDefaults standardUserDefaults] SVR_decimalNumberLocale]];
 }
 
+// NSDecimalNumber handles exponents extremely strangely
+// This provides a little wrapper around the oddities
 -(NSDecimalNumber*)SVR_decimalNumberByRaisingToPower:(NSDecimalNumber*)power;
 {
-  switch ([power compare:[NSDecimalNumber zero]]) {
-      // power is less than 1
-    case NSOrderedAscending:
-      return [[NSDecimalNumber one] decimalNumberByDividingBy:[self decimalNumberByRaisingToPower:(XPUInteger)abs([power intValue])]];
-      // power greater than or equal to 0
-    case NSOrderedSame:
-    case NSOrderedDescending:
-    default:
-      return [self decimalNumberByRaisingToPower:(XPUInteger)[power unsignedIntValue]];
+  NSDecimalNumber *output = nil;
+  BOOL powerIsNegative = ([power compare:[NSDecimalNumber zero]] == NSOrderedAscending);
+  BOOL selfIsNegative = ([self compare:[NSDecimalNumber zero]] == NSOrderedAscending);
+  
+  if (powerIsNegative) {
+    output = [[NSDecimalNumber one] decimalNumberByDividingBy:[self decimalNumberByRaisingToPower:(XPUInteger)abs([power intValue])]];
+  } else {
+    output = [self decimalNumberByRaisingToPower:(XPUInteger)[power unsignedIntValue]];
   }
+  
+  if (selfIsNegative) {
+    output = [output decimalNumberByMultiplyingBy:[NSDecimalNumber decimalNumberWithString:@"-1"]];
+  }
+  
+  return output;
 }
 
 @end
