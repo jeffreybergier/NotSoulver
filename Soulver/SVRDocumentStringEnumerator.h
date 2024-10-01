@@ -38,6 +38,7 @@
 -(void)__populateNumbers;
 -(void)__populateOperators;
 -(void)__populateExpressions;
+-(void)__addRange:(NSRange)range toArray:(NSMutableArray*)array;
 
 @end
 

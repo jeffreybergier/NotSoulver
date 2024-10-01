@@ -8,6 +8,10 @@
 #import "SVRDocumentStringEnumerator.h"
 #import "SVRCrossPlatform.h"
 
+BOOL NSContainsRange(NSRange lhs, NSRange rhs) {
+  return (lhs.location <= rhs.location) && (NSMaxRange(lhs) >= NSMaxRange(rhs));
+}
+
 @implementation SVRDocumentStringEnumerator
 
 // MARK: Initialization
@@ -90,7 +94,51 @@
 // MARK: Private
 -(void)__populateNumbers;
 {
-  NSAssert(NO, @"SVRUnimplemented");
+  NSMutableArray *output = [[NSMutableArray new] autorelease];
+  NSRange range = XPNotFoundRange;
+  NSValue *rangeV = nil;
+  NSDecimalNumber *number = nil;
+  SVRLegacyRegex *regex = nil;
+  SVRLegacyRegex *n_regex = nil; // for testing negative numbers to make sure they are preceded by an operator
+
+  // Find positive floats
+  regex = [SVRLegacyRegex regexWithString:_string pattern:@"\\d+\\.\\d+"];
+  while ((rangeV = [regex nextObject])) {
+    range = [rangeV XP_rangeValue];
+    number = [NSDecimalNumber decimalNumberWithString:[_string substringWithRange:range]];
+    [XPLog extra:@"<#> '%@' '%@'→'%@'", _string, [number SVR_description], [_string substringWithRange:range]];
+    [self __addRange:range toArray:output];
+  }
+  
+  // Find positive integers
+  regex = [SVRLegacyRegex regexWithString:_string pattern:@"\\d+"];
+  while ((rangeV = [regex nextObject])) {
+    range = [rangeV XP_rangeValue];
+    number = [NSDecimalNumber decimalNumberWithString:[_string substringWithRange:range]];
+    [XPLog extra:@"<#> '%@' '%@'→'%@'", _string, [number SVR_description], [_string substringWithRange:range]];
+    [self __addRange:range toArray:output];
+  }
+  
+  _numbers = [[output objectEnumerator] retain];
+}
+
+-(void)__addRange:(NSRange)rhs toArray:(NSMutableArray*)array;
+{
+  BOOL shouldAdd = YES;
+  NSEnumerator *e = nil;
+  NSValue *next = nil;
+  NSRange lhs = XPNotFoundRange;
+  [array retain];
+  e = [array objectEnumerator];
+  while ((next = [e nextObject])) {
+    lhs = [next XP_rangeValue];
+    shouldAdd = !NSContainsRange(lhs, rhs);
+    if (!shouldAdd) { break; }
+  }
+  if (shouldAdd) {
+    [array addObject:[NSValue XP_valueWithRange:rhs]];
+  }
+  [array autorelease];
 }
 
 -(void)__populateOperators;
@@ -139,7 +187,15 @@
   expected = [NSArray arrayWithObject:[NSValue XP_valueWithRange:NSMakeRange(0, 3)]];
   e = [SVRDocumentStringEnumerator enumeratorWithString:input];
   output = [[e numberEnumerator] allObjects];
-  NSAssert([output count] > 0, @"");
+  NSAssert([output count] == 1, @"");
+  NSAssert([output isEqualToArray:expected], @"");
+  
+  // MARK: Test 23.78
+  input = @"23.78";
+  expected = [NSArray arrayWithObject:[NSValue XP_valueWithRange:NSMakeRange(0, 5)]];
+  e = [SVRDocumentStringEnumerator enumeratorWithString:input];
+  output = [[e numberEnumerator] allObjects];
+  NSAssert([output count] == 1, @"");
   NSAssert([output isEqualToArray:expected], @"");
 }
 
