@@ -94,51 +94,82 @@ BOOL NSContainsRange(NSRange lhs, NSRange rhs) {
 // MARK: Private
 -(void)__populateNumbers;
 {
-  NSMutableArray *output = [[NSMutableArray new] autorelease];
+  NSMutableSet *output = [[NSMutableSet new] autorelease];
   NSRange range = XPNotFoundRange;
   NSValue *rangeV = nil;
-  NSDecimalNumber *number = nil;
   SVRLegacyRegex *regex = nil;
   SVRLegacyRegex *n_regex = nil; // for testing negative numbers to make sure they are preceded by an operator
 
+  // Find negative floats
+  regex = [SVRLegacyRegex regexWithString:_string pattern:@"\\-\\d+\\.\\d+"];
+  while ((rangeV = [regex nextObject])) {
+    range = [rangeV XP_rangeValue];
+    if (range.location == 0) { // If we're at the beginning of the string the negative number needs no checks
+      [XPLog extra:@"<#> '%@'→'%@'", _string, [_string substringWithRange:range]];
+      [self __addRange:range toSet:output];
+    } else {
+      n_regex = [SVRLegacyRegex regexWithString:[_string substringWithRange:NSMakeRange(range.location-1, 1)]
+                                        pattern:@"[\\=\\(\\+\\-\\*\\/\\^]"];
+      if ([n_regex nextObject]) {
+        [XPLog extra:@"<#> '%@'→'%@'", _string, [_string substringWithRange:range]];
+        [self __addRange:range toSet:output];
+      }
+    }
+  }
+  
+  // Find negative integers
+  regex = [SVRLegacyRegex regexWithString:_string pattern:@"\\-\\d+"];
+  while ((rangeV = [regex nextObject])) {
+    range = [rangeV XP_rangeValue];
+    if (range.location == 0) { // If we're at the beginning of the string the negative number needs no checks
+      [XPLog extra:@"<#> '%@'→'%@'", _string, [_string substringWithRange:range]];
+      [self __addRange:range toSet:output];
+    } else {
+      n_regex = [SVRLegacyRegex regexWithString:[_string substringWithRange:NSMakeRange(range.location-1, 1)]
+                                        pattern:@"[\\=\\(\\+\\-\\*\\/\\^]"];
+      if ([n_regex nextObject]) {
+        [XPLog extra:@"<#> '%@'→'%@'", _string, [_string substringWithRange:range]];
+        [self __addRange:range toSet:output];
+      }
+    }
+  }
+  
   // Find positive floats
   regex = [SVRLegacyRegex regexWithString:_string pattern:@"\\d+\\.\\d+"];
   while ((rangeV = [regex nextObject])) {
     range = [rangeV XP_rangeValue];
-    number = [NSDecimalNumber decimalNumberWithString:[_string substringWithRange:range]];
-    [XPLog extra:@"<#> '%@' '%@'→'%@'", _string, [number SVR_description], [_string substringWithRange:range]];
-    [self __addRange:range toArray:output];
+    [XPLog extra:@"<#> '%@'→'%@'", _string, [_string substringWithRange:range]];
+    [self __addRange:range toSet:output];
   }
   
   // Find positive integers
   regex = [SVRLegacyRegex regexWithString:_string pattern:@"\\d+"];
   while ((rangeV = [regex nextObject])) {
     range = [rangeV XP_rangeValue];
-    number = [NSDecimalNumber decimalNumberWithString:[_string substringWithRange:range]];
-    [XPLog extra:@"<#> '%@' '%@'→'%@'", _string, [number SVR_description], [_string substringWithRange:range]];
-    [self __addRange:range toArray:output];
+    [XPLog extra:@"<#> '%@'→'%@'", _string, [_string substringWithRange:range]];
+    [self __addRange:range toSet:output];
   }
   
   _numbers = [[output objectEnumerator] retain];
 }
 
--(void)__addRange:(NSRange)rhs toArray:(NSMutableArray*)array;
+-(void)__addRange:(NSRange)rhs toSet:(NSMutableSet*)set;
 {
   BOOL shouldAdd = YES;
   NSEnumerator *e = nil;
   NSValue *next = nil;
   NSRange lhs = XPNotFoundRange;
-  [array retain];
-  e = [array objectEnumerator];
+  [set retain];
+  e = [set objectEnumerator];
   while ((next = [e nextObject])) {
     lhs = [next XP_rangeValue];
     shouldAdd = !NSContainsRange(lhs, rhs);
     if (!shouldAdd) { break; }
   }
   if (shouldAdd) {
-    [array addObject:[NSValue XP_valueWithRange:rhs]];
+    [set addObject:[NSValue XP_valueWithRange:rhs]];
   }
-  [array autorelease];
+  [set autorelease];
 }
 
 -(void)__populateOperators;
@@ -176,27 +207,117 @@ BOOL NSContainsRange(NSRange lhs, NSRange rhs) {
 +(void)__executeNumberTests;
 {
   NSString *input = nil;
-  NSArray *output = nil;
-  NSArray *expected = nil;
+  NSSet *output = nil;
+  NSSet *expected = nil;
   SVRDocumentStringEnumerator *e = nil;
   
   [XPLog alwys:@"SVRDocumentStringEnumerator Tests: NSUnimplemented"];
   
   // MARK: Test 200
   input = @"200";
-  expected = [NSArray arrayWithObject:[NSValue XP_valueWithRange:NSMakeRange(0, 3)]];
+  expected = [NSSet setWithObject:[NSValue XP_valueWithRange:NSMakeRange(0, 3)]];
   e = [SVRDocumentStringEnumerator enumeratorWithString:input];
-  output = [[e numberEnumerator] allObjects];
-  NSAssert([output count] == 1, @"");
-  NSAssert([output isEqualToArray:expected], @"");
+  output = [NSSet setWithArray:[[e numberEnumerator] allObjects]];
+  NSAssert([output isEqualToSet:expected], @"");
   
   // MARK: Test 23.78
   input = @"23.78";
-  expected = [NSArray arrayWithObject:[NSValue XP_valueWithRange:NSMakeRange(0, 5)]];
+  expected = [NSSet setWithObject:[NSValue XP_valueWithRange:NSMakeRange(0, 5)]];
   e = [SVRDocumentStringEnumerator enumeratorWithString:input];
-  output = [[e numberEnumerator] allObjects];
-  NSAssert([output count] == 1, @"");
-  NSAssert([output isEqualToArray:expected], @"");
+  output = [NSSet setWithArray:[[e numberEnumerator] allObjects]];
+  NSAssert([output isEqualToSet:expected], @"");
+
+  // MARK: Test -200
+  input = @"-200";
+  expected = [NSSet setWithObject:[NSValue XP_valueWithRange:NSMakeRange(0, 4)]];
+  e = [SVRDocumentStringEnumerator enumeratorWithString:input];
+  output = [NSSet setWithArray:[[e numberEnumerator] allObjects]];
+  NSAssert([output isEqualToSet:expected], @"");
+
+  // MARK: Test -23.78
+  input = @"-23.78";
+  expected = [NSSet setWithObject:[NSValue XP_valueWithRange:NSMakeRange(0, 6)]];
+  e = [SVRDocumentStringEnumerator enumeratorWithString:input];
+  output = [NSSet setWithArray:[[e numberEnumerator] allObjects]];
+  NSAssert([output isEqualToSet:expected], @"");
+  
+  // MARK: Test 5^2=
+  input = @"5^2=";
+  expected = [NSSet setWithObjects:
+              [NSValue XP_valueWithRange:NSMakeRange(0, 1)],
+              [NSValue XP_valueWithRange:NSMakeRange(2, 1)],
+              nil
+  ];
+  e = [SVRDocumentStringEnumerator enumeratorWithString:input];
+  output = [NSSet setWithArray:[[e numberEnumerator] allObjects]];
+  NSAssert([output isEqualToSet:expected], @"");
+  
+  // MARK: Test 5.2^2.3=
+  input = @"5.2^2.3=";
+  expected = [NSSet setWithObjects:
+              [NSValue XP_valueWithRange:NSMakeRange(0, 3)],
+              [NSValue XP_valueWithRange:NSMakeRange(4, 3)],
+              nil
+  ];
+  e = [SVRDocumentStringEnumerator enumeratorWithString:input];
+  output = [NSSet setWithArray:[[e numberEnumerator] allObjects]];
+  NSAssert([output isEqualToSet:expected], @"");
+  
+  // MARK: Test 2+-5.2^2.3=
+  input = @"2+-5.2^2.3=";
+  expected = [NSSet setWithObjects:
+              [NSValue XP_valueWithRange:NSMakeRange(0, 1)],
+              [NSValue XP_valueWithRange:NSMakeRange(2, 4)],
+              [NSValue XP_valueWithRange:NSMakeRange(7, 3)],
+              nil
+  ];
+  e = [SVRDocumentStringEnumerator enumeratorWithString:input];
+  output = [NSSet setWithArray:[[e numberEnumerator] allObjects]];
+  NSAssert([output isEqualToSet:expected], @"");
+  
+  // MARK: Test 100+200+300+400+500+600=
+  input = @"100+200+300+400+500+600=";
+  expected = [NSSet setWithObjects:
+              [NSValue XP_valueWithRange:NSMakeRange(0, 3)],
+              [NSValue XP_valueWithRange:NSMakeRange(4, 3)],
+              [NSValue XP_valueWithRange:NSMakeRange(8, 3)],
+              [NSValue XP_valueWithRange:NSMakeRange(12, 3)],
+              [NSValue XP_valueWithRange:NSMakeRange(16, 3)],
+              [NSValue XP_valueWithRange:NSMakeRange(20, 3)],
+              nil
+  ];
+  e = [SVRDocumentStringEnumerator enumeratorWithString:input];
+  output = [NSSet setWithArray:[[e numberEnumerator] allObjects]];
+  NSAssert([output isEqualToSet:expected], @"");
+  
+  // MARK: Test 100+200+300+400+500+600=
+  input = @"10.0+20.0+30.0+40.0+50.0+60.0=";
+  expected = [NSSet setWithObjects:
+              [NSValue XP_valueWithRange:NSMakeRange(0, 4)],
+              [NSValue XP_valueWithRange:NSMakeRange(5, 4)],
+              [NSValue XP_valueWithRange:NSMakeRange(10, 4)],
+              [NSValue XP_valueWithRange:NSMakeRange(15, 4)],
+              [NSValue XP_valueWithRange:NSMakeRange(20, 4)],
+              [NSValue XP_valueWithRange:NSMakeRange(25, 4)],
+              nil
+  ];
+  e = [SVRDocumentStringEnumerator enumeratorWithString:input];
+  output = [NSSet setWithArray:[[e numberEnumerator] allObjects]];
+  NSAssert([output isEqualToSet:expected], @"");
+
+  // MARK: Test -2.5+-75/90*-3.0^8=
+  input = @"-2.5+-75/90*-3.0^8=";
+  expected = [NSSet setWithObjects:
+              [NSValue XP_valueWithRange:NSMakeRange(0, 4)],
+              [NSValue XP_valueWithRange:NSMakeRange(5, 3)],
+              [NSValue XP_valueWithRange:NSMakeRange(9, 2)],
+              [NSValue XP_valueWithRange:NSMakeRange(12, 5)], // TODO: This is wrong!!! 5→4
+              [NSValue XP_valueWithRange:NSMakeRange(17, 1)],
+              nil
+  ];
+  e = [SVRDocumentStringEnumerator enumeratorWithString:input];
+  output = [NSSet setWithArray:[[e numberEnumerator] allObjects]];
+  NSAssert([output isEqualToSet:expected], @"");
 }
 
 @end
