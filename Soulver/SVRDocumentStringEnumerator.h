@@ -18,24 +18,30 @@
 
 // MARK: Initialization
 -(id)initWithString:(NSString*)string;
-+(id)regexWithString:(NSString*)string;
++(id)enumeratorWithString:(NSString*)string;
 
 // MARK: NSEnumerator
 -(NSValue*)nextNumber;
 -(NSValue*)nextOperator;
 -(NSValue*)nextExpression;
 
-// MARK: Convenience Properties
--(NSString*)string;
--(NSString*)description;
-
 // MARK: Enumerator Access (mostly for testing)
 -(NSEnumerator*)numberEnumerator;
 -(NSEnumerator*)operatorEnumerator;
 -(NSEnumerator*)expressionEnumerator;
 
+// MARK: Convenience Properties
+-(NSString*)string;
+-(NSString*)description;
+
+// MARK: Private
+-(void)__populateNumbers;
+-(void)__populateOperators;
+-(void)__populateExpressions;
+
 @end
 
 @interface SVRDocumentStringEnumerator (Tests)
 +(void)executeTests;
++(void)__executeNumberTests;
 @end
