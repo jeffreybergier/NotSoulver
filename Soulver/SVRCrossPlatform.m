@@ -502,6 +502,21 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
 
 @implementation NSString (CrossPlatform)
 
+-(NSString*)SVR_descriptionHighlightingRange:(NSRange)range;
+{
+#if OS_OPENSTEP
+  NSString *trailing = @"´";
+  NSString *leading  = @"ª";
+#else
+  NSString *trailing = @"„Äç";
+  NSString *leading  = @"„Äå";
+#endif
+  NSMutableString *output = [[self mutableCopy] autorelease];
+  [output insertString:trailing atIndex:NSMaxRange(range)];
+  [output insertString:leading atIndex:range.location];
+  return [[output copy] autorelease];
+}
+
 -(NSString*)SVR_stringByTrimmingCharactersInSet:(NSCharacterSet*)set;
 {
 #if OS_OPENSTEP

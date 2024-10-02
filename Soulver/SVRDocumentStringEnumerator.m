@@ -103,13 +103,13 @@
   while ((rangeV = [regex nextObject])) {
     range = [rangeV XP_rangeValue];
     if (range.location == 0) { // If we're at the beginning of the string the negative number needs no checks
-      [XPLog extra:@"<#> '%@'→'%@'", _string, [_string substringWithRange:range]];
+      [XPLog extra:@"<#> %@", [_string SVR_descriptionHighlightingRange:range]];
       [self __addRange:range toSet:output];
     } else {
       n_regex = [SVRLegacyRegex regexWithString:[_string substringWithRange:NSMakeRange(range.location-1, 1)]
                                         pattern:@"[\\=\\(\\+\\-\\*\\/\\^]"];
       if ([n_regex nextObject]) {
-        [XPLog extra:@"<#> '%@'→'%@'", _string, [_string substringWithRange:range]];
+        [XPLog extra:@"<#> %@", [_string SVR_descriptionHighlightingRange:range]];
         [self __addRange:range toSet:output];
       }
     }
@@ -120,13 +120,13 @@
   while ((rangeV = [regex nextObject])) {
     range = [rangeV XP_rangeValue];
     if (range.location == 0) { // If we're at the beginning of the string the negative number needs no checks
-      [XPLog extra:@"<#> '%@'→'%@'", _string, [_string substringWithRange:range]];
+      [XPLog extra:@"<#> %@", [_string SVR_descriptionHighlightingRange:range]];
       [self __addRange:range toSet:output];
     } else {
       n_regex = [SVRLegacyRegex regexWithString:[_string substringWithRange:NSMakeRange(range.location-1, 1)]
                                         pattern:@"[\\=\\(\\+\\-\\*\\/\\^]"];
       if ([n_regex nextObject]) {
-        [XPLog extra:@"<#> '%@'→'%@'", _string, [_string substringWithRange:range]];
+        [XPLog extra:@"<#> %@", [_string SVR_descriptionHighlightingRange:range]];
         [self __addRange:range toSet:output];
       }
     }
@@ -136,7 +136,7 @@
   regex = [SVRLegacyRegex regexWithString:_string pattern:@"\\d+\\.\\d+"];
   while ((rangeV = [regex nextObject])) {
     range = [rangeV XP_rangeValue];
-    [XPLog extra:@"<#> '%@'→'%@'", _string, [_string substringWithRange:range]];
+    [XPLog extra:@"<#> %@", [_string SVR_descriptionHighlightingRange:range]];
     [self __addRange:range toSet:output];
   }
   
@@ -144,7 +144,7 @@
   regex = [SVRLegacyRegex regexWithString:_string pattern:@"\\d+"];
   while ((rangeV = [regex nextObject])) {
     range = [rangeV XP_rangeValue];
-    [XPLog extra:@"<#> '%@'→'%@'", _string, [_string substringWithRange:range]];
+    [XPLog extra:@"<#> %@", [_string SVR_descriptionHighlightingRange:range]];
     [self __addRange:range toSet:output];
   }
   
@@ -181,7 +181,7 @@
     range = [value XP_rangeValue];
     range.location += 1;
     range.length = 1;
-    [XPLog extra:@"<+-*/> '%@'→'%@'", _string, [_string substringWithRange:range]];
+    [XPLog extra:@"<#> %@", [_string SVR_descriptionHighlightingRange:range]];
     [output addObject:[NSValue XP_valueWithRange:range]];
   }
   
