@@ -8,9 +8,14 @@ BOOL XPIsNotFoundRange(NSRange range)
 {
   return range.location == NSNotFound;
 }
+
 BOOL XPIsFoundRange(NSRange range)
 {
   return range.location != NSNotFound;
+}
+
+BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
+  return (lhs.location <= rhs.location) && (NSMaxRange(lhs) >= NSMaxRange(rhs));
 }
 
 @implementation NSValue (CrossPlatform)

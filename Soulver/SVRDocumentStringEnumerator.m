@@ -8,10 +8,6 @@
 #import "SVRDocumentStringEnumerator.h"
 #import "SVRCrossPlatform.h"
 
-BOOL NSContainsRange(NSRange lhs, NSRange rhs) {
-  return (lhs.location <= rhs.location) && (NSMaxRange(lhs) >= NSMaxRange(rhs));
-}
-
 @implementation SVRDocumentStringEnumerator
 
 // MARK: Initialization
@@ -163,7 +159,7 @@ BOOL NSContainsRange(NSRange lhs, NSRange rhs) {
   e = [set objectEnumerator];
   while ((next = [e nextObject])) {
     lhs = [next XP_rangeValue];
-    shouldAdd = !NSContainsRange(lhs, rhs);
+    shouldAdd = !XPContainsRange(lhs, rhs);
     if (!shouldAdd) { break; }
   }
   if (shouldAdd) {

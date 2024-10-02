@@ -38,6 +38,7 @@ typedef NSUInteger XPUInteger;
 extern const NSRange XPNotFoundRange;
 BOOL XPIsNotFoundRange(NSRange range);
 BOOL XPIsFoundRange(NSRange range);
+BOOL XPContainsRange(NSRange lhs, NSRange rhs);
 
 @interface NSValue (CrossPlatform)
 -(id)XP_initWithRange:(NSRange)range;
