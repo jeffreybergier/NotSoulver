@@ -198,7 +198,7 @@
     range = [value XP_rangeValue];
     range.location += 1;
     range.length = 1;
-    [XPLog extra:@"<#> %@", [_string SVR_descriptionHighlightingRange:range]];
+    [XPLog extra:@"<+*> %@", [_string SVR_descriptionHighlightingRange:range]];
     [output addObject:[NSValue XP_valueWithRange:range]];
   }
   
@@ -207,7 +207,16 @@
 
 -(void)__populateExpressions;
 {
-  NSAssert(NO, @"SVRUnimplemented");
+  NSValue *value;
+  NSMutableSet *output = [[NSMutableSet new] autorelease];
+  SVRLegacyRegex *regex = [SVRLegacyRegex regexWithString:_string
+                                                  pattern:@"[\\d\\.\\^\\*\\-\\+\\/\\(\\)]+\\="];
+  NSAssert(!_expressions, @"This is a lazy init method, it assumes _expressions is NIL");
+  while ((value = [regex nextObject])) {
+    [XPLog extra:@"<=> %@", [_string SVR_descriptionHighlightingRange:[value XP_rangeValue]]];
+    [output addObject:value];
+  }
+  _expressions = [[output objectEnumerator] retain];
 }
 
 -(void)__populateBrackets;
@@ -222,7 +231,7 @@
   while ((value = [regex nextObject])) {
     range = [value XP_rangeValue];
     range.length = 1;
-    [XPLog extra:@"<#> %@", [_string SVR_descriptionHighlightingRange:range]];
+    [XPLog extra:@"<(> %@", [_string SVR_descriptionHighlightingRange:range]];
     [output addObject:[NSValue XP_valueWithRange:range]];
   }
   
@@ -233,7 +242,7 @@
     range = [value XP_rangeValue];
     range.location += 1;
     range.length = 1;
-    [XPLog extra:@"<#> %@", [_string SVR_descriptionHighlightingRange:range]];
+    [XPLog extra:@"<)> %@", [_string SVR_descriptionHighlightingRange:range]];
     [output addObject:[NSValue XP_valueWithRange:range]];
   }
   
@@ -264,6 +273,7 @@
   [XPLog alwys:@"SVRDocumentStringEnumerator Tests: Starting"];
   [self __executeNumberTests];
   [self __executeOperatorTests];
+  [self __executeExpressionTests];
   [self __executeBracketTests];
   [XPLog alwys:@"SVRDocumentStringEnumerator Tests: Passed"];
 }
@@ -483,6 +493,52 @@
   ];
   e = [SVRDocumentStringEnumerator enumeratorWithString:input];
   output = [NSSet setWithArray:[[e operatorEnumerator] allObjects]];
+  NSAssert([output isEqualToSet:expected], @"");
+}
+
++(void)__executeExpressionTests;
+{
+  NSString *input = nil;
+  NSSet *output = nil;
+  NSSet *expected = nil;
+  SVRDocumentStringEnumerator *e = nil;
+  
+  // MARK: Test 1
+  input = @"200=";
+  expected = [NSSet setWithObject:[NSValue XP_valueWithRange:NSMakeRange(0, 4)]];
+  e = [SVRDocumentStringEnumerator enumeratorWithString:input];
+  output = [NSSet setWithArray:[[e expressionEnumerator] allObjects]];
+  NSAssert([output isEqualToSet:expected], @"");
+  
+  // MARK: Test 2
+  input = @"200=400=";
+  expected = [NSSet setWithObjects:
+              [NSValue XP_valueWithRange:NSMakeRange(0, 4)],
+              [NSValue XP_valueWithRange:NSMakeRange(4, 4)],
+              nil];
+  e = [SVRDocumentStringEnumerator enumeratorWithString:input];
+  output = [NSSet setWithArray:[[e expressionEnumerator] allObjects]];
+  NSAssert([output isEqualToSet:expected], @"");
+  
+  // MARK: Test 3
+  input = @"1+2-3*4/5^6=7^8/9*10-11+12=";
+  expected = [NSSet setWithObjects:
+              [NSValue XP_valueWithRange:NSMakeRange(0, 12)],
+              [NSValue XP_valueWithRange:NSMakeRange(12, 15)],
+              nil];
+  e = [SVRDocumentStringEnumerator enumeratorWithString:input];
+  output = [NSSet setWithArray:[[e expressionEnumerator] allObjects]];
+  NSAssert([output isEqualToSet:expected], @"");
+  
+  // MARK: Test 4
+  input = @"/*This*/2+3=/*That*/4+5=/*Other*/6+7=";
+  expected = [NSSet setWithObjects:
+              [NSValue XP_valueWithRange:NSMakeRange(6, 6)],
+              [NSValue XP_valueWithRange:NSMakeRange(18, 6)],
+              [NSValue XP_valueWithRange:NSMakeRange(31, 6)],
+              nil];
+  e = [SVRDocumentStringEnumerator enumeratorWithString:input];
+  output = [NSSet setWithArray:[[e expressionEnumerator] allObjects]];
   NSAssert([output isEqualToSet:expected], @"");
 }
 

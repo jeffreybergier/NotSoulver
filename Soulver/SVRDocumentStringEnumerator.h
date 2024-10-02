@@ -50,5 +50,6 @@
 +(void)executeTests;
 +(void)__executeNumberTests;
 +(void)__executeOperatorTests;
++(void)__executeExpressionTests;
 +(void)__executeBracketTests;
 @end
