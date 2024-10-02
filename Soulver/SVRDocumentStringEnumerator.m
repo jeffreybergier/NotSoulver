@@ -19,6 +19,7 @@
   _operators = nil;
   _operators = nil;
   _expressions = nil;
+  _brackets = nil;
   return self;
 }
 
@@ -52,6 +53,14 @@
   return [_expressions nextObject];
 }
 
+-(NSValue*)nextBracket;
+{
+  if (_brackets == nil) {
+    [self __populateBrackets];
+  }
+  return [_brackets nextObject];
+}
+
 // MARK: Enumerator Access (mostly for testing)
 -(NSEnumerator*)numberEnumerator;
 {
@@ -75,6 +84,14 @@
     [self __populateExpressions];
   }
   return [[_expressions retain] autorelease];
+}
+
+-(NSEnumerator*)bracketEnumerator;
+{
+  if (_brackets == nil) {
+    [self __populateBrackets];
+  }
+  return [[_brackets retain] autorelease];
 }
 
 // MARK: Convenience Properties
@@ -193,6 +210,36 @@
   NSAssert(NO, @"SVRUnimplemented");
 }
 
+-(void)__populateBrackets;
+{
+  NSRange range;
+  NSValue *value;
+  NSMutableSet *output = [[NSMutableSet new] autorelease];
+  NSAssert(!_brackets, @"This is a lazy init method, it assumes _brackets is NIL");
+  // Check for opening brackets
+  SVRLegacyRegex *regex = [SVRLegacyRegex regexWithString:_string
+                                                  pattern:@"\\([\\-\\d]"];
+  while ((value = [regex nextObject])) {
+    range = [value XP_rangeValue];
+    range.length = 1;
+    [XPLog extra:@"<#> %@", [_string SVR_descriptionHighlightingRange:range]];
+    [output addObject:[NSValue XP_valueWithRange:range]];
+  }
+  
+  // Check for closing brackets
+  regex = [SVRLegacyRegex regexWithString:_string
+                                  pattern:@"\\d\\)[\\^\\*\\/\\+\\-\\=]"];
+  while ((value = [regex nextObject])) {
+    range = [value XP_rangeValue];
+    range.location += 1;
+    range.length = 1;
+    [XPLog extra:@"<#> %@", [_string SVR_descriptionHighlightingRange:range]];
+    [output addObject:[NSValue XP_valueWithRange:range]];
+  }
+  
+  _brackets = [[output objectEnumerator] retain];
+}
+
 // MARK: Dealloc
 -(void)dealloc;
 {
@@ -200,10 +247,12 @@
   [_numbers release];
   [_operators release];
   [_expressions release];
+  [_brackets release];
   _string = nil;
   _numbers = nil;
   _operators = nil;
   _expressions = nil;
+  _brackets = nil;
   [super dealloc];
 }
 
@@ -215,6 +264,7 @@
   [XPLog alwys:@"SVRDocumentStringEnumerator Tests: Starting"];
   [self __executeNumberTests];
   [self __executeOperatorTests];
+  [self __executeBracketTests];
   [XPLog alwys:@"SVRDocumentStringEnumerator Tests: Passed"];
 }
 
@@ -433,6 +483,88 @@
   ];
   e = [SVRDocumentStringEnumerator enumeratorWithString:input];
   output = [NSSet setWithArray:[[e operatorEnumerator] allObjects]];
+  NSAssert([output isEqualToSet:expected], @"");
+}
+
++(void)__executeBracketTests;
+{
+  NSString *input = nil;
+  NSSet *output = nil;
+  NSSet *expected = nil;
+  SVRDocumentStringEnumerator *e = nil;
+  
+  
+  // MARK: Test (200)=
+  input = @"(200)=";
+  expected = [NSSet setWithObjects:
+              [NSValue XP_valueWithRange:NSMakeRange(0, 1)],
+              [NSValue XP_valueWithRange:NSMakeRange(4, 1)],
+              nil];
+  e = [SVRDocumentStringEnumerator enumeratorWithString:input];
+  output = [NSSet setWithArray:[[e bracketEnumerator] allObjects]];
+  NSAssert([output isEqualToSet:expected], @"");
+  
+  // MARK: Test (2.0+3.0/4.0)+8=
+  input = @"(2.0+3.0/4.0)+8=";
+  expected = [NSSet setWithObjects:
+              [NSValue XP_valueWithRange:NSMakeRange(0, 1)],
+              [NSValue XP_valueWithRange:NSMakeRange(12, 1)],
+              nil];
+  e = [SVRDocumentStringEnumerator enumeratorWithString:input];
+  output = [NSSet setWithArray:[[e bracketEnumerator] allObjects]];
+  NSAssert([output isEqualToSet:expected], @"");
+  
+  // MARK: Test -5/(2.0+3.0/4.0)+8=
+  input = @"-5/(2.0+3.0/4.0)+8=";
+  expected = [NSSet setWithObjects:
+              [NSValue XP_valueWithRange:NSMakeRange(3, 1)],
+              [NSValue XP_valueWithRange:NSMakeRange(15, 1)],
+              nil];
+  e = [SVRDocumentStringEnumerator enumeratorWithString:input];
+  output = [NSSet setWithArray:[[e bracketEnumerator] allObjects]];
+  NSAssert([output isEqualToSet:expected], @"");
+  
+  // MARK: Test (500)+(200)-(300)/(400)^(2)=
+  input = @"(500)+(200)-(300)/(400)^(2)=";
+  expected = [NSSet setWithObjects:
+              [NSValue XP_valueWithRange:NSMakeRange( 0, 1)],
+              [NSValue XP_valueWithRange:NSMakeRange( 4, 1)],
+              [NSValue XP_valueWithRange:NSMakeRange( 6, 1)],
+              [NSValue XP_valueWithRange:NSMakeRange(10, 1)],
+              [NSValue XP_valueWithRange:NSMakeRange(12, 1)],
+              [NSValue XP_valueWithRange:NSMakeRange(16, 1)],
+              [NSValue XP_valueWithRange:NSMakeRange(18, 1)],
+              [NSValue XP_valueWithRange:NSMakeRange(22, 1)],
+              [NSValue XP_valueWithRange:NSMakeRange(24, 1)],
+              [NSValue XP_valueWithRange:NSMakeRange(26, 1)],
+              nil];
+  e = [SVRDocumentStringEnumerator enumeratorWithString:input];
+  output = [NSSet setWithArray:[[e bracketEnumerator] allObjects]];
+  NSAssert([output isEqualToSet:expected], @"");
+  
+  // MARK: Test ((3)+(4))=
+  // Known negative test
+  input = @"((3)+(4))=";
+  expected = [NSSet setWithObjects:
+              [NSValue XP_valueWithRange:NSMakeRange(1, 1)],
+              [NSValue XP_valueWithRange:NSMakeRange(3, 1)],
+              [NSValue XP_valueWithRange:NSMakeRange(5, 1)],
+              nil];
+  e = [SVRDocumentStringEnumerator enumeratorWithString:input];
+  output = [NSSet setWithArray:[[e bracketEnumerator] allObjects]];
+  NSAssert([output isEqualToSet:expected], @"");
+  
+  // MARK: Test (5+3+(7+8)-3)=
+  // Known negative test
+  input = @"(5+3+(7+8)-3)=";
+  expected = [NSSet setWithObjects:
+              [NSValue XP_valueWithRange:NSMakeRange( 0, 1)],
+              [NSValue XP_valueWithRange:NSMakeRange( 5, 1)],
+              [NSValue XP_valueWithRange:NSMakeRange( 9, 1)],
+              [NSValue XP_valueWithRange:NSMakeRange(12, 1)],
+              nil];
+  e = [SVRDocumentStringEnumerator enumeratorWithString:input];
+  output = [NSSet setWithArray:[[e bracketEnumerator] allObjects]];
   NSAssert([output isEqualToSet:expected], @"");
 }
 

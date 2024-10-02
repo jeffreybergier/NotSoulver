@@ -14,6 +14,7 @@
   NSEnumerator *_numbers;
   NSEnumerator *_operators;
   NSEnumerator *_expressions;
+  NSEnumerator *_brackets;
 }
 
 // MARK: Initialization
@@ -24,11 +25,13 @@
 -(NSValue*)nextNumber;
 -(NSValue*)nextOperator;
 -(NSValue*)nextExpression;
+-(NSValue*)nextBracket;
 
 // MARK: Enumerator Access (mostly for testing)
 -(NSEnumerator*)numberEnumerator;
 -(NSEnumerator*)operatorEnumerator;
 -(NSEnumerator*)expressionEnumerator;
+-(NSEnumerator*)bracketEnumerator;
 
 // MARK: Convenience Properties
 -(NSString*)string;
@@ -38,6 +41,7 @@
 -(void)__populateNumbers;
 -(void)__populateOperators;
 -(void)__populateExpressions;
+-(void)__populateBrackets;
 -(void)__addRange:(NSRange)range toSet:(NSMutableSet*)set;
 
 @end
@@ -46,4 +50,5 @@
 +(void)executeTests;
 +(void)__executeNumberTests;
 +(void)__executeOperatorTests;
++(void)__executeBracketTests;
 @end
