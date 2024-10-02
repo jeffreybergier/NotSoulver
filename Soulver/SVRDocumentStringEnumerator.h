@@ -45,4 +45,5 @@
 @interface SVRDocumentStringEnumerator (Tests)
 +(void)executeTests;
 +(void)__executeNumberTests;
++(void)__executeOperatorTests;
 @end
