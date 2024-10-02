@@ -3,7 +3,6 @@
     DYNAMIC_CODE_GEN = YES; 
     FILESTABLE = {
         CLASSES = (
-            JSBRegex.m, 
             SVRAppDelegate.m, 
             SVRCrossPlatform.m, 
             SVRDocumentModelController.m, 
@@ -14,11 +13,12 @@
             SVRMathString.m, 
             "SVRMathString+Rendering.m", 
             "SVRMathString+Tests.m", 
-            SVRSolver.m
+            SVRSolver.m, 
+            SVRDocumentStringEnumerator.m, 
+            SVRLegacyRegex.m
         ); 
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
         H_FILES = (
-            JSBRegex.h, 
             SVRAppDelegate.h, 
             SVRCrossPlatform.h, 
             SVRDocumentModelController.h, 
@@ -29,8 +29,10 @@
             SVRMathString.h, 
             "SVRMathString+Rendering.h", 
             "SVRMathString+Tests.h", 
-            SVRSolver.h,
+            SVRSolver.h, 
             re.h, 
+            SVRDocumentStringEnumerator.h, 
+            SVRLegacyRegex.h
         ); 
         INTERFACES = (NEXTSTEP_Soulver.nib, NEXTSTEP_SVRDocument.nib); 
         OTHER_LINKED = (re.c, Soulver_main.m); 

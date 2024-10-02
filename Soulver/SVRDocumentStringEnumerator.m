@@ -201,7 +201,9 @@ BOOL NSContainsRange(NSRange lhs, NSRange rhs) {
 @implementation SVRDocumentStringEnumerator (Tests)
 +(void)executeTests;
 {
+  [XPLog alwys:@"SVRDocumentStringEnumerator Tests: Starting"];
   [self __executeNumberTests];
+  [XPLog alwys:@"SVRDocumentStringEnumerator Tests: Passed"];
 }
 
 +(void)__executeNumberTests;
@@ -211,7 +213,6 @@ BOOL NSContainsRange(NSRange lhs, NSRange rhs) {
   NSSet *expected = nil;
   SVRDocumentStringEnumerator *e = nil;
   
-  [XPLog alwys:@"SVRDocumentStringEnumerator Tests: NSUnimplemented"];
   
   // MARK: Test 200
   input = @"200";

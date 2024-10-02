@@ -19,17 +19,19 @@ ICONSECTIONS =	-sectcreate __ICON app /NextLibrary/Frameworks/AppKit.framework/R
 
 LOCAL_RESOURCES = NEXTSTEP_Soulver.nib NEXTSTEP_SVRDocument.nib
 
-CLASSES = SVRDocumentWindowController.m SVRDocumentViewController.m\
-          SVRMathString+Rendering.m SVRMathString.m SVRAppDelegate.m\
-          SVRMathString+Tests.m SVRDocumentModelController.m\
-          SVRDocumentViewController+Tests.m SVRCrossPlatform.m\
-          JSBRegex.m SVRDocumentTextDelegate.m SVRSolver.m
+CLASSES = SVRAppDelegate.m SVRCrossPlatform.m\
+          SVRDocumentModelController.m SVRDocumentTextDelegate.m\
+          SVRDocumentViewController.m SVRDocumentViewController+Tests.m\
+          SVRDocumentWindowController.m SVRMathString.m\
+          SVRMathString+Rendering.m SVRMathString+Tests.m SVRSolver.m\
+          SVRDocumentStringEnumerator.m SVRLegacyRegex.m
 
-HFILES = SVRDocumentWindowController.h SVRDocumentViewController.h\
-         SVRMathString+Rendering.h SVRMathString.h SVRAppDelegate.h\
-         SVRMathString+Tests.h SVRDocumentModelController.h\
-         SVRDocumentViewController+Tests.h SVRCrossPlatform.h JSBRegex.h\
-         re.h SVRDocumentTextDelegate.h SVRSolver.h
+HFILES = SVRAppDelegate.h SVRCrossPlatform.h\
+         SVRDocumentModelController.h SVRDocumentTextDelegate.h\
+         SVRDocumentViewController.h SVRDocumentViewController+Tests.h\
+         SVRDocumentWindowController.h SVRMathString.h\
+         SVRMathString+Rendering.h SVRMathString+Tests.h SVRSolver.h\
+         re.h SVRDocumentStringEnumerator.h SVRLegacyRegex.h
 
 MFILES = Soulver_main.m
 
