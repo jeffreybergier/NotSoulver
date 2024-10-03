@@ -23,46 +23,13 @@
   return self;
 }
 
-+(id)enumeratorWithString:(NSString*)string;
++(id)scannerWithString:(NSString*)string;
 {
   return [[[SVRSoulverScanner alloc] initWithString:string] autorelease];
 }
 
-// MARK: NSEnumerator
--(NSValue*)nextNumber;
-{
-  if (_numbers == nil) {
-    [self __populateNumbers];
-  }
-  return [_numbers nextObject];
-}
-
--(NSValue*)nextOperator;
-{
-  if (_numbers == nil) {
-    [self __populateOperators];
-  }
-  return [_operators nextObject];
-}
-
--(NSValue*)nextExpression;
-{
-  if (_numbers == nil) {
-    [self __populateExpressions];
-  }
-  return [_expressions nextObject];
-}
-
--(NSValue*)nextBracket;
-{
-  if (_brackets == nil) {
-    [self __populateBrackets];
-  }
-  return [_brackets nextObject];
-}
-
 // MARK: Enumerator Access (mostly for testing)
--(NSEnumerator*)numberEnumerator;
+-(NSSet*)numberRanges;
 {
   if (_numbers == nil) {
     [self __populateNumbers];
@@ -70,7 +37,7 @@
   return [[_numbers retain] autorelease];
 }
 
--(NSEnumerator*)operatorEnumerator;
+-(NSSet*)operatorRanges;
 {
   if (_numbers == nil) {
     [self __populateOperators];
@@ -78,7 +45,7 @@
   return [[_operators retain] autorelease];
 }
 
--(NSEnumerator*)expressionEnumerator;
+-(NSSet*)expressionRanges;
 {
   if (_numbers == nil) {
     [self __populateExpressions];
@@ -86,7 +53,7 @@
   return [[_expressions retain] autorelease];
 }
 
--(NSEnumerator*)bracketEnumerator;
+-(NSSet*)bracketRanges;
 {
   if (_brackets == nil) {
     [self __populateBrackets];
@@ -165,7 +132,7 @@
     [self __addRange:range toSet:output];
   }
   
-  _numbers = [[output objectEnumerator] retain];
+  _numbers = [output copy];
 }
 
 -(void)__addRange:(NSRange)rhs toSet:(NSMutableSet*)set;
@@ -202,7 +169,7 @@
     [output addObject:[NSValue XP_valueWithRange:range]];
   }
   
-  _operators = [[output objectEnumerator] retain];
+  _operators = [output copy];
 }
 
 -(void)__populateExpressions;
@@ -216,7 +183,7 @@
     [XPLog extra:@"<=> %@", [_string SVR_descriptionHighlightingRange:[value XP_rangeValue]]];
     [output addObject:value];
   }
-  _expressions = [[output objectEnumerator] retain];
+  _expressions = [output copy];
 }
 
 -(void)__populateBrackets;
@@ -246,7 +213,7 @@
     [output addObject:[NSValue XP_valueWithRange:range]];
   }
   
-  _brackets = [[output objectEnumerator] retain];
+  _brackets = [output copy];
 }
 
 // MARK: Dealloc
@@ -283,35 +250,29 @@
   NSString *input = nil;
   NSSet *output = nil;
   NSSet *expected = nil;
-  SVRSoulverScanner *e = nil;
-  
   
   // MARK: Test 200
   input = @"200";
   expected = [NSSet setWithObject:[NSValue XP_valueWithRange:NSMakeRange(0, 3)]];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e numberEnumerator] allObjects]];
+  output = [[SVRSoulverScanner scannerWithString:input] numberRanges];
   NSAssert([output isEqualToSet:expected], @"");
   
   // MARK: Test 23.78
   input = @"23.78";
   expected = [NSSet setWithObject:[NSValue XP_valueWithRange:NSMakeRange(0, 5)]];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e numberEnumerator] allObjects]];
+  output = [[SVRSoulverScanner scannerWithString:input] numberRanges];
   NSAssert([output isEqualToSet:expected], @"");
 
   // MARK: Test -200
   input = @"-200";
   expected = [NSSet setWithObject:[NSValue XP_valueWithRange:NSMakeRange(0, 4)]];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e numberEnumerator] allObjects]];
+  output = [[SVRSoulverScanner scannerWithString:input] numberRanges];
   NSAssert([output isEqualToSet:expected], @"");
 
   // MARK: Test -23.78
   input = @"-23.78";
   expected = [NSSet setWithObject:[NSValue XP_valueWithRange:NSMakeRange(0, 6)]];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e numberEnumerator] allObjects]];
+  output = [[SVRSoulverScanner scannerWithString:input] numberRanges];
   NSAssert([output isEqualToSet:expected], @"");
   
   // MARK: Test 5^2=
@@ -319,10 +280,8 @@
   expected = [NSSet setWithObjects:
               [NSValue XP_valueWithRange:NSMakeRange(0, 1)],
               [NSValue XP_valueWithRange:NSMakeRange(2, 1)],
-              nil
-  ];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e numberEnumerator] allObjects]];
+              nil];
+  output = [[SVRSoulverScanner scannerWithString:input] numberRanges];
   NSAssert([output isEqualToSet:expected], @"");
   
   // MARK: Test 5.2^2.3=
@@ -330,10 +289,8 @@
   expected = [NSSet setWithObjects:
               [NSValue XP_valueWithRange:NSMakeRange(0, 3)],
               [NSValue XP_valueWithRange:NSMakeRange(4, 3)],
-              nil
-  ];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e numberEnumerator] allObjects]];
+              nil];
+  output = [[SVRSoulverScanner scannerWithString:input] numberRanges];
   NSAssert([output isEqualToSet:expected], @"");
   
   // MARK: Test 2+-5.2^2.3=
@@ -342,10 +299,8 @@
               [NSValue XP_valueWithRange:NSMakeRange(0, 1)],
               [NSValue XP_valueWithRange:NSMakeRange(2, 4)],
               [NSValue XP_valueWithRange:NSMakeRange(7, 3)],
-              nil
-  ];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e numberEnumerator] allObjects]];
+              nil];
+  output = [[SVRSoulverScanner scannerWithString:input] numberRanges];
   NSAssert([output isEqualToSet:expected], @"");
   
   // MARK: Test 100+200+300+400+500+600=
@@ -357,10 +312,8 @@
               [NSValue XP_valueWithRange:NSMakeRange(12, 3)],
               [NSValue XP_valueWithRange:NSMakeRange(16, 3)],
               [NSValue XP_valueWithRange:NSMakeRange(20, 3)],
-              nil
-  ];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e numberEnumerator] allObjects]];
+              nil];
+  output = [[SVRSoulverScanner scannerWithString:input] numberRanges];
   NSAssert([output isEqualToSet:expected], @"");
   
   // MARK: Test 100+200+300+400+500+600=
@@ -372,10 +325,8 @@
               [NSValue XP_valueWithRange:NSMakeRange(15, 4)],
               [NSValue XP_valueWithRange:NSMakeRange(20, 4)],
               [NSValue XP_valueWithRange:NSMakeRange(25, 4)],
-              nil
-  ];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e numberEnumerator] allObjects]];
+              nil];
+  output = [[SVRSoulverScanner scannerWithString:input] numberRanges];
   NSAssert([output isEqualToSet:expected], @"");
 
   // MARK: Test -2.5+-75/90*-3.0^8=
@@ -386,10 +337,8 @@
               [NSValue XP_valueWithRange:NSMakeRange(9, 2)],
               [NSValue XP_valueWithRange:NSMakeRange(12, 5)], // TODO: This is wrong!!! 5→4
               [NSValue XP_valueWithRange:NSMakeRange(17, 1)],
-              nil
-  ];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e numberEnumerator] allObjects]];
+              nil];
+  output = [[SVRSoulverScanner scannerWithString:input] numberRanges];
   NSAssert([output isEqualToSet:expected], @"");
 }
 
@@ -398,49 +347,41 @@
   NSString *input = nil;
   NSSet *output = nil;
   NSSet *expected = nil;
-  SVRSoulverScanner *e = nil;
-  
   
   // MARK: Test 200
   input = @"200";
   expected = [[NSSet new] autorelease];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e operatorEnumerator] allObjects]];
+  output = [[SVRSoulverScanner scannerWithString:input] operatorRanges];
   NSAssert([output isEqualToSet:expected], @"");
   
   // MARK: Test 23.78
   input = @"23.78";
   expected = [[NSSet new] autorelease];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e operatorEnumerator] allObjects]];
+  output = [[SVRSoulverScanner scannerWithString:input] operatorRanges];
   NSAssert([output isEqualToSet:expected], @"");
 
   // MARK: Test -200
   input = @"-200";
   expected = [[NSSet new] autorelease];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e operatorEnumerator] allObjects]];
+  output = [[SVRSoulverScanner scannerWithString:input] operatorRanges];
   NSAssert([output isEqualToSet:expected], @"");
 
   // MARK: Test -23.78
   input = @"-23.78";
   expected = [[NSSet new] autorelease];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e operatorEnumerator] allObjects]];
+  output = [[SVRSoulverScanner scannerWithString:input] operatorRanges];
   NSAssert([output isEqualToSet:expected], @"");
   
   // MARK: Test 5^2=
   input = @"5^2=";
   expected = [NSSet setWithObject:[NSValue XP_valueWithRange:NSMakeRange(1, 1)]];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e operatorEnumerator] allObjects]];
+  output = [[SVRSoulverScanner scannerWithString:input] operatorRanges];
   NSAssert([output isEqualToSet:expected], @"");
   
   // MARK: Test 5.2^2.3=
   input = @"5.2^2.3=";
   expected = [NSSet setWithObject:[NSValue XP_valueWithRange:NSMakeRange(3, 1)]];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e operatorEnumerator] allObjects]];
+  output = [[SVRSoulverScanner scannerWithString:input] operatorRanges];
   NSAssert([output isEqualToSet:expected], @"");
   
   // MARK: Test 2+-5.2^2.3=
@@ -448,10 +389,8 @@
   expected = [NSSet setWithObjects:
               [NSValue XP_valueWithRange:NSMakeRange(1, 1)],
               [NSValue XP_valueWithRange:NSMakeRange(6, 1)],
-              nil
-  ];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e operatorEnumerator] allObjects]];
+              nil];
+  output = [[SVRSoulverScanner scannerWithString:input] operatorRanges];
   NSAssert([output isEqualToSet:expected], @"");
   
   // MARK: Test 100+200+300+400+500+600=
@@ -462,10 +401,8 @@
               [NSValue XP_valueWithRange:NSMakeRange(11, 1)],
               [NSValue XP_valueWithRange:NSMakeRange(15, 1)],
               [NSValue XP_valueWithRange:NSMakeRange(19, 1)],
-              nil
-  ];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e operatorEnumerator] allObjects]];
+              nil];
+  output = [[SVRSoulverScanner scannerWithString:input] operatorRanges];
   NSAssert([output isEqualToSet:expected], @"");
   
   // MARK: Test 100+200+300+400+500+600=
@@ -476,10 +413,8 @@
               [NSValue XP_valueWithRange:NSMakeRange(14, 1)],
               [NSValue XP_valueWithRange:NSMakeRange(19, 1)],
               [NSValue XP_valueWithRange:NSMakeRange(24, 1)],
-              nil
-  ];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e operatorEnumerator] allObjects]];
+              nil];
+  output = [[SVRSoulverScanner scannerWithString:input] operatorRanges];
   NSAssert([output isEqualToSet:expected], @"");
 
   // MARK: Test -2.5+-75/90*-3.0^8=
@@ -489,10 +424,8 @@
               [NSValue XP_valueWithRange:NSMakeRange( 8, 1)],
               [NSValue XP_valueWithRange:NSMakeRange(11, 1)],
               [NSValue XP_valueWithRange:NSMakeRange(16, 1)],
-              nil
-  ];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e operatorEnumerator] allObjects]];
+              nil];
+  output = [[SVRSoulverScanner scannerWithString:input] operatorRanges];
   NSAssert([output isEqualToSet:expected], @"");
 }
 
@@ -501,13 +434,11 @@
   NSString *input = nil;
   NSSet *output = nil;
   NSSet *expected = nil;
-  SVRSoulverScanner *e = nil;
   
   // MARK: Test 1
   input = @"200=";
   expected = [NSSet setWithObject:[NSValue XP_valueWithRange:NSMakeRange(0, 4)]];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e expressionEnumerator] allObjects]];
+  output = [[SVRSoulverScanner scannerWithString:input] expressionRanges];
   NSAssert([output isEqualToSet:expected], @"");
   
   // MARK: Test 2
@@ -516,8 +447,7 @@
               [NSValue XP_valueWithRange:NSMakeRange(0, 4)],
               [NSValue XP_valueWithRange:NSMakeRange(4, 4)],
               nil];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e expressionEnumerator] allObjects]];
+  output = [[SVRSoulverScanner scannerWithString:input] expressionRanges];
   NSAssert([output isEqualToSet:expected], @"");
   
   // MARK: Test 3
@@ -526,8 +456,7 @@
               [NSValue XP_valueWithRange:NSMakeRange(0, 12)],
               [NSValue XP_valueWithRange:NSMakeRange(12, 15)],
               nil];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e expressionEnumerator] allObjects]];
+  output = [[SVRSoulverScanner scannerWithString:input] expressionRanges];
   NSAssert([output isEqualToSet:expected], @"");
   
   // MARK: Test 4
@@ -537,8 +466,7 @@
               [NSValue XP_valueWithRange:NSMakeRange(18, 6)],
               [NSValue XP_valueWithRange:NSMakeRange(31, 6)],
               nil];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e expressionEnumerator] allObjects]];
+  output = [[SVRSoulverScanner scannerWithString:input] expressionRanges];
   NSAssert([output isEqualToSet:expected], @"");
 }
 
@@ -547,8 +475,6 @@
   NSString *input = nil;
   NSSet *output = nil;
   NSSet *expected = nil;
-  SVRSoulverScanner *e = nil;
-  
   
   // MARK: Test (200)=
   input = @"(200)=";
@@ -556,8 +482,7 @@
               [NSValue XP_valueWithRange:NSMakeRange(0, 1)],
               [NSValue XP_valueWithRange:NSMakeRange(4, 1)],
               nil];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e bracketEnumerator] allObjects]];
+  output = [[SVRSoulverScanner scannerWithString:input] bracketRanges];
   NSAssert([output isEqualToSet:expected], @"");
   
   // MARK: Test (2.0+3.0/4.0)+8=
@@ -566,8 +491,7 @@
               [NSValue XP_valueWithRange:NSMakeRange(0, 1)],
               [NSValue XP_valueWithRange:NSMakeRange(12, 1)],
               nil];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e bracketEnumerator] allObjects]];
+  output = [[SVRSoulverScanner scannerWithString:input] bracketRanges];
   NSAssert([output isEqualToSet:expected], @"");
   
   // MARK: Test -5/(2.0+3.0/4.0)+8=
@@ -576,8 +500,7 @@
               [NSValue XP_valueWithRange:NSMakeRange(3, 1)],
               [NSValue XP_valueWithRange:NSMakeRange(15, 1)],
               nil];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e bracketEnumerator] allObjects]];
+  output = [[SVRSoulverScanner scannerWithString:input] bracketRanges];
   NSAssert([output isEqualToSet:expected], @"");
   
   // MARK: Test (500)+(200)-(300)/(400)^(2)=
@@ -594,8 +517,7 @@
               [NSValue XP_valueWithRange:NSMakeRange(24, 1)],
               [NSValue XP_valueWithRange:NSMakeRange(26, 1)],
               nil];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e bracketEnumerator] allObjects]];
+  output = [[SVRSoulverScanner scannerWithString:input] bracketRanges];
   NSAssert([output isEqualToSet:expected], @"");
   
   // MARK: Test ((3)+(4))=
@@ -606,8 +528,7 @@
               [NSValue XP_valueWithRange:NSMakeRange(3, 1)],
               [NSValue XP_valueWithRange:NSMakeRange(5, 1)],
               nil];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e bracketEnumerator] allObjects]];
+  output = [[SVRSoulverScanner scannerWithString:input] bracketRanges];
   NSAssert([output isEqualToSet:expected], @"");
   
   // MARK: Test (5+3+(7+8)-3)=
@@ -619,8 +540,7 @@
               [NSValue XP_valueWithRange:NSMakeRange( 9, 1)],
               [NSValue XP_valueWithRange:NSMakeRange(12, 1)],
               nil];
-  e = [SVRSoulverScanner enumeratorWithString:input];
-  output = [NSSet setWithArray:[[e bracketEnumerator] allObjects]];
+  output = [[SVRSoulverScanner scannerWithString:input] bracketRanges];
   NSAssert([output isEqualToSet:expected], @"");
 }
 

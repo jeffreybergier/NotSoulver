@@ -10,28 +10,22 @@
 
 @interface SVRSoulverScanner: NSObject
 {
-  NSString     *_string;
-  NSEnumerator *_numbers;
-  NSEnumerator *_operators;
-  NSEnumerator *_expressions;
-  NSEnumerator *_brackets;
+  NSString *_string;
+  NSSet    *_numbers;
+  NSSet    *_operators;
+  NSSet    *_expressions;
+  NSSet    *_brackets;
 }
 
 // MARK: Initialization
 -(id)initWithString:(NSString*)string;
-+(id)enumeratorWithString:(NSString*)string;
++(id)scannerWithString:(NSString*)string;
 
-// MARK: NSEnumerator
--(NSValue*)nextNumber;
--(NSValue*)nextOperator;
--(NSValue*)nextExpression;
--(NSValue*)nextBracket;
-
-// MARK: Enumerator Access (mostly for testing)
--(NSEnumerator*)numberEnumerator;
--(NSEnumerator*)operatorEnumerator;
--(NSEnumerator*)expressionEnumerator;
--(NSEnumerator*)bracketEnumerator;
+// MARK: Access the ranges
+-(NSSet*)numberRanges;
+-(NSSet*)operatorRanges;
+-(NSSet*)expressionRanges;
+-(NSSet*)bracketRanges;
 
 // MARK: Convenience Properties
 -(NSString*)string;
