@@ -8,6 +8,14 @@
 #import <Foundation/Foundation.h>
 #import "SVRCrossPlatform.h"
 
+typedef enum {
+  SVRSoulverOperatorExponent,
+  SVRSoulverOperatorDivide,
+  SVRSoulverOperatorMultiply,
+  SVRSoulverOperatorSubtract,
+  SVRSoulverOperatorAdd,
+} SVRSoulverOperator;
+
 @interface SVRSolver: NSObject
 
 // MARK: Business Logic
