@@ -8,7 +8,7 @@
 #import <Foundation/Foundation.h>
 #import "SVRLegacyRegex.h"
 
-@interface SVRDocumentStringEnumerator: NSObject
+@interface SVRSoulverScanner: NSObject
 {
   NSString     *_string;
   NSEnumerator *_numbers;
@@ -46,7 +46,7 @@
 
 @end
 
-@interface SVRDocumentStringEnumerator (Tests)
+@interface SVRSoulverScanner (Tests)
 +(void)executeTests;
 +(void)__executeNumberTests;
 +(void)__executeOperatorTests;
