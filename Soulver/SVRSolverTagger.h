@@ -21,5 +21,5 @@
 @end
 
 @interface SVRSolverTagger (Tests)
-+(void)executeTests;
++(NSMutableAttributedString*)executeTests;
 @end

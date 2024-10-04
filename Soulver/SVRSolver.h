@@ -16,6 +16,8 @@ typedef enum {
   SVRSolverTagOperator,
   // Stores NSValue of the range of the expression
   SVRSolverTagExpression,
+  // Stores NSValue with the solution for the expression
+  SVRSolverTagSolution,
   // Stores NSValue of the range of the bracket
   SVRSolverTagBracket,
 } SVRSolverTag;

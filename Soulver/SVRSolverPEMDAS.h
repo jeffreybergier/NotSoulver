@@ -9,6 +9,8 @@
 
 @interface SVRSolverPEMDAS: NSObject
 
++(NSDecimalNumber*)solveTaggedString:(NSAttributedString*)input;
+
 @end
 
 @interface SVRSolverPEMDAS (Tests)

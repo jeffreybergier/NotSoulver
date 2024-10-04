@@ -73,7 +73,7 @@
 @end
 
 @implementation SVRSolverTagger (Tests)
-+(void)executeTests;
++(NSMutableAttributedString*)executeTests;
 {
   NSString *_userInput = @"(-3.2+4)/7.3=";
   NSAttributedString *userInput = [[[NSAttributedString alloc] initWithString:_userInput] autorelease];
@@ -203,5 +203,6 @@
             isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(0, 13)]], @"");
   
   [XPLog alwys:@"SVRSolverTagger Tests: Passed"];
+  return input;
 }
 @end
