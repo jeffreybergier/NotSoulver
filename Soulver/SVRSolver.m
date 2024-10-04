@@ -8,6 +8,54 @@
 #import "SVRSolver.h"
 #import "SVRLegacyRegex.h"
 
+SVRSoulverOperator SVR_operatorForString(NSString *string)
+{
+  if        ([string isEqualToString:@"^"]) {
+    return SVRSoulverOperatorExponent;
+  } else if ([string isEqualToString:@"/"]) {
+    return SVRSoulverOperatorDivide;
+  } else if ([string isEqualToString:@"*"]) {
+    return SVRSoulverOperatorMultiply;
+  } else if ([string isEqualToString:@"-"]) {
+    return SVRSoulverOperatorSubtract;
+  } else if ([string isEqualToString:@"+"]) {
+    return SVRSoulverOperatorAdd;
+  } else {
+    [XPLog pause:@"Unknown operator: %@", string];
+    return (SVRSoulverOperator)-1;
+  }
+}
+
+NSString *SVR_stringForTag(SVRSoulverTag tag)
+{
+  switch (tag) {
+    case SVRSoulverTagNumber:     return @"kSVRSoulverTagNumberKey";
+    case SVRSoulverTagOperator:   return @"kSVRSoulverTagOperatorKey";
+    case SVRSoulverTagExpression: return @"kSVRSoulverTagExpressionKey";
+    case SVRSoulverTagBracket:    return @"kSVRSoulverTagBracketKey";
+    default:
+      [XPLog error:@"SVR_stringForTagUnknown: %d", tag];
+      return nil;
+  }
+}
+
+SVRSoulverTag SVR_tagForString(NSString *string)
+{
+  if        ([string isEqualToString:SVR_stringForTag(SVRSoulverTagNumber)])     {
+    return SVRSoulverTagNumber;
+  } else if ([string isEqualToString:SVR_stringForTag(SVRSoulverTagOperator)])   {
+    return SVRSoulverTagOperator;
+  } else if ([string isEqualToString:SVR_stringForTag(SVRSoulverTagExpression)]) {
+    return SVRSoulverTagExpression;
+  } else if ([string isEqualToString:SVR_stringForTag(SVRSoulverTagBracket)])    {
+    return SVRSoulverTagBracket;
+  } else {
+    [XPLog error:@"SVR_tagForStringUnknown: %@", string];
+    return (SVRSoulverTag)-1;
+  }
+}
+
+// TODO: Delete these
 NSString *kSVRSolverSolutionKey   = @"kSVRSolverSolutionKey"; // Store NSDecimalNumber or NSNumber for Error
 NSString *kSVRSolverBracketsKey   = @"kSVRSolverBracketsKey";
 NSString *kSVRSolverOperatorKey   = @"kSVRSolverOperatorKey";

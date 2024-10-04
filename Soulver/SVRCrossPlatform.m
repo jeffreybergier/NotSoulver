@@ -606,12 +606,8 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
 
 -(BOOL)SVR_isNotANumber;
 {
-  NSString *lhsDescription;
-  NSString *rhsDescription;
-  
-  lhsDescription = [self SVR_description];
-  rhsDescription = [[NSDecimalNumber notANumber] SVR_description];
-  
+  NSString *lhsDescription = [self SVR_description];
+  NSString *rhsDescription = [[NSDecimalNumber notANumber] SVR_description];
   return [lhsDescription isEqualToString:rhsDescription];
 }
 

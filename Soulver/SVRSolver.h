@@ -8,6 +8,18 @@
 #import <Foundation/Foundation.h>
 #import "SVRCrossPlatform.h"
 
+/// Used by SVRSolverTagger
+typedef enum {
+  // Stores NSDecimalNumber
+  SVRSoulverTagNumber,
+  // Stores NSNumber containing the SVRSoulverOperator
+  SVRSoulverTagOperator,
+  // Stores NSValue of the range of the expression
+  SVRSoulverTagExpression,
+  // Stores NSValue of the range of the bracket
+  SVRSoulverTagBracket,
+} SVRSoulverTag;
+
 typedef enum {
   SVRSoulverOperatorExponent,
   SVRSoulverOperatorDivide,
@@ -15,6 +27,10 @@ typedef enum {
   SVRSoulverOperatorSubtract,
   SVRSoulverOperatorAdd,
 } SVRSoulverOperator;
+
+NSString *SVR_stringForTag(SVRSoulverTag tag);
+SVRSoulverTag SVR_tagForString(NSString *string);
+SVRSoulverOperator SVR_operatorForString(NSString *string);
 
 @interface SVRSolver: NSObject
 

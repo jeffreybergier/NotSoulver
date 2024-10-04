@@ -6,9 +6,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SVRLegacyRegex.h"
 
-@interface SVRSoulverScanner: NSObject
+@interface SVRSolverScanner: NSObject
 {
   NSString *_string;
   NSSet    *_numbers;
@@ -40,7 +39,7 @@
 
 @end
 
-@interface SVRSoulverScanner (Tests)
+@interface SVRSolverScanner (Tests)
 +(void)executeTests;
 +(void)__executeNumberTests;
 +(void)__executeOperatorTests;
