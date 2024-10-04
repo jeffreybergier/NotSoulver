@@ -4,9 +4,9 @@
 #import "SVRDocumentViewController+Tests.h"
 #import "SVRSolver.h"
 #import "SVRLegacyRegex.h"
-#import "SVRSolverPEMDAS.h"
+#import "SVRSolverSolutionTagger.h"
 #import "SVRSolverScanner.h"
-#import "SVRSolverTagger.h"
+#import "SVRSolverExpressionTagger.h"
 
 int main(int argc, const char *argv[]) {
   
@@ -27,9 +27,9 @@ int main(int argc, const char *argv[]) {
 #ifdef TESTING
   [[NSUserDefaults standardUserDefaults] SVR_configure];
   [XPLog alwys:@"<Main> Unit Tests: STARTING"];
-  [SVRSolverPEMDAS executeTests];
+  [SVRSolverSolutionTagger executeTests];
   [SVRSolverScanner executeTests];
-  [SVRSolverTagger executeTests];
+  [SVRSolverExpressionTagger executeTests];
   [SVRLegacyRegex executeTests];
   [SVRSolver executeTests];
   [SVRMathString executeTests];

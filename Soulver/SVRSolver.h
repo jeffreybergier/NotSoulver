@@ -8,7 +8,6 @@
 #import <Foundation/Foundation.h>
 #import "SVRCrossPlatform.h"
 
-/// Used by SVRSolverTagger
 typedef enum {
   // Stores NSDecimalNumber
   SVRSolverTagNumber,
@@ -17,7 +16,7 @@ typedef enum {
   // Stores NSValue of the range of the expression
   SVRSolverTagExpression,
   // Stores NSValue with the solution for the expression
-  SVRSolverTagSolution,
+  SVRSolverTagExpressionSolution,
   // Stores NSValue of the range of the bracket
   SVRSolverTagBracket,
 } SVRSolverTag;

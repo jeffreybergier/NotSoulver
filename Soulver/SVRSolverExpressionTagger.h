@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SVRSolverTagger: NSObject
+@interface SVRSolverExpressionTagger: NSObject
 
 +(void)tagNumbersAtRanges:(NSSet*)ranges
        inAttributedString:(NSMutableAttributedString*)string;
@@ -20,6 +20,6 @@
 
 @end
 
-@interface SVRSolverTagger (Tests)
+@interface SVRSolverExpressionTagger (Tests)
 +(NSMutableAttributedString*)executeTests;
 @end

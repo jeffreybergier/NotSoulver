@@ -7,12 +7,12 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SVRSolverPEMDAS: NSObject
+@interface SVRSolverSolutionTagger: NSObject
 
 +(NSDecimalNumber*)solveTaggedString:(NSAttributedString*)input;
 
 @end
 
-@interface SVRSolverPEMDAS (Tests)
+@interface SVRSolverSolutionTagger (Tests)
 +(void)executeTests;
 @end

@@ -5,11 +5,11 @@
 //  Created by Jeffrey Bergier on 2024/09/27.
 //
 
-#import "SVRSolverPEMDAS.h"
+#import "SVRSolverSolutionTagger.h"
 #import "SVRCrossPlatform.h"
 #import "SVRSolver.h"
 
-@implementation SVRSolverPEMDAS
+@implementation SVRSolverSolutionTagger
 
 +(void)embedSolutionsInString:(NSMutableAttributedString*)input;
 {
@@ -24,7 +24,7 @@
     if (![attribute isKindOfClass:[NSValue class]]) { index += 1; continue; }
     expressionRange = [attribute XP_rangeValue];
     solution = [self __solveMathInExpression:[input attributedSubstringFromRange:expressionRange]];
-    [input addAttribute:SVR_stringForTag(SVRSolverTagSolution) value:solution range:expressionRange];
+    [input addAttribute:SVR_stringForTag(SVRSolverTagExpressionSolution) value:solution range:expressionRange];
     index = NSMaxRange(expressionRange);
   }
 }
@@ -109,13 +109,13 @@
 
 @end
 
-#import "SVRSolverTagger.h"
+#import "SVRSolverExpressionTagger.h"
 
-@implementation SVRSolverPEMDAS (Tests)
+@implementation SVRSolverSolutionTagger (Tests)
 +(void)executeTests;
 {
-  [XPLog alwys:@"SVRSolverPEMDAS Tests: Starting"];
-  [SVRSolverPEMDAS embedSolutionsInString:[SVRSolverTagger executeTests]];
-  [XPLog alwys:@"SVRSolverPEMDAS Tests: Passed"];
+  [XPLog alwys:@"SVRSolverSolutionTagger Tests: Starting"];
+  [SVRSolverSolutionTagger embedSolutionsInString:[SVRSolverExpressionTagger executeTests]];
+  [XPLog alwys:@"SVRSolverSolutionTagger Tests: Passed"];
 }
 @end

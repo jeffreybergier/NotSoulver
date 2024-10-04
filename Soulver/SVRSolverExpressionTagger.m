@@ -5,11 +5,11 @@
 //  Created by Jeffrey Bergier on 2024/09/27.
 //
 
-#import "SVRSolverTagger.h"
+#import "SVRSolverExpressionTagger.h"
 #import "SVRCrossPlatform.h"
 #import "SVRSolver.h"
 
-@implementation SVRSolverTagger
+@implementation SVRSolverExpressionTagger
 
 +(void)tagNumbersAtRanges:(NSSet*)ranges
        inAttributedString:(NSMutableAttributedString*)string;
@@ -72,7 +72,7 @@
 
 @end
 
-@implementation SVRSolverTagger (Tests)
+@implementation SVRSolverExpressionTagger (Tests)
 +(NSMutableAttributedString*)executeTests;
 {
   NSString *_userInput = @"(-3.2+4)/7.3=";
@@ -81,7 +81,7 @@
   NSSet *ranges = nil;
   NSDictionary *output = nil;
   
-  [XPLog alwys:@"SVRSolverTagger Tests: Starting"];
+  [XPLog alwys:@"SVRExpressionTagger Tests: Starting"];
   
   // Numbers
   ranges = [NSSet setWithObjects:
@@ -89,7 +89,7 @@
             [NSValue XP_valueWithRange:NSMakeRange(6, 1)],
             [NSValue XP_valueWithRange:NSMakeRange(9, 3)],
             nil];
-  [SVRSolverTagger tagNumbersAtRanges:ranges inAttributedString:input];
+  [SVRSolverExpressionTagger tagNumbersAtRanges:ranges inAttributedString:input];
   
   // Operators
   ranges = [NSSet setWithObjects:
@@ -97,7 +97,7 @@
             [NSValue XP_valueWithRange:NSMakeRange(8, 1)],
             nil];
   
-  [SVRSolverTagger tagOperatorsAtRanges:ranges inAttributedString:input];
+  [SVRSolverExpressionTagger tagOperatorsAtRanges:ranges inAttributedString:input];
   
   // Brackets
   ranges = [NSSet setWithObjects:
@@ -105,12 +105,12 @@
             [NSValue XP_valueWithRange:NSMakeRange(7, 1)],
             nil];
   
-  [SVRSolverTagger tagBracketsAtRanges:ranges inAttributedString:input];
+  [SVRSolverExpressionTagger tagBracketsAtRanges:ranges inAttributedString:input];
   
   // Expressions
   ranges = [NSSet setWithObject:[NSValue XP_valueWithRange:NSMakeRange(0, 13)]];
   
-  [SVRSolverTagger tagExpressionsAtRanges:ranges inAttributedString:input];
+  [SVRSolverExpressionTagger tagExpressionsAtRanges:ranges inAttributedString:input];
   
   // Iterate through the string to verify attributes
   output = [input attributesAtIndex:0 effectiveRange:NULL];
@@ -202,7 +202,7 @@
   NSAssert([[output objectForKey:SVR_stringForTag(SVRSolverTagExpression)]
             isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(0, 13)]], @"");
   
-  [XPLog alwys:@"SVRSolverTagger Tests: Passed"];
+  [XPLog alwys:@"SVRExpressionTagger Tests: Passed"];
   return input;
 }
 @end

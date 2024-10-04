@@ -32,7 +32,7 @@ NSString *SVR_stringForTag(SVRSolverTag tag)
     case SVRSolverTagNumber:     return @"kSVRSoulverTagNumberKey";
     case SVRSolverTagOperator:   return @"kSVRSoulverTagOperatorKey";
     case SVRSolverTagExpression: return @"kSVRSoulverTagExpressionKey";
-    case SVRSolverTagSolution:   return @"kSVRSoulverTagSolutionKey";
+    case SVRSolverTagExpressionSolution:   return @"kSVRSoulverTagSolutionKey";
     case SVRSolverTagBracket:    return @"kSVRSoulverTagBracketKey";
     default:
       [XPLog error:@"SVR_stringForTagUnknown: %d", tag];
