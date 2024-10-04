@@ -11,14 +11,16 @@
 typedef enum {
   // Stores NSDecimalNumber
   SVRSolverTagNumber,
+  // Stores NSValue of the range of the bracket
+  SVRSolverTagBracket,
   // Stores NSNumber containing the SVRSoulverOperator
   SVRSolverTagOperator,
   // Stores NSValue of the range of the expression
   SVRSolverTagExpression,
-  // Stores NSValue with the solution for the expression
+  // Stores NSDecimalNumber with the solution for the expression
   SVRSolverTagExpressionSolution,
-  // Stores NSValue of the range of the bracket
-  SVRSolverTagBracket,
+  // Stores NSDecimalNumber with the solution of the previous expression
+  SVRSolverTagPreviousSolution,
 } SVRSolverTag;
 
 typedef enum {

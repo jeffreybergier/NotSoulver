@@ -8,9 +8,9 @@
 #import <Foundation/Foundation.h>
 
 @interface SVRSolverSolutionTagger: NSObject
-
-+(NSDecimalNumber*)solveTaggedString:(NSAttributedString*)input;
-
++(void)tagSolutionsInAttributedString:(NSMutableAttributedString*)string;
++(NSDecimalNumber*)__solutionForExpression:(NSAttributedString*)string
+                                     error:(NSNumber**)errorPtr;
 @end
 
 @interface SVRSolverSolutionTagger (Tests)

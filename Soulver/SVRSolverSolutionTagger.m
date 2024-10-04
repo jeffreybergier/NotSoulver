@@ -11,25 +11,41 @@
 
 @implementation SVRSolverSolutionTagger
 
-+(void)embedSolutionsInString:(NSMutableAttributedString*)input;
++(void)tagSolutionsInAttributedString:(NSMutableAttributedString*)string;
 {
   id attribute = nil;
-  NSDecimalNumber *solution = nil;
   XPUInteger index = 0;
   NSRange expressionRange = XPNotFoundRange;
-  while (index < [input length]) {
-    attribute = [input attribute:SVR_stringForTag(SVRSolverTagExpression)
-                         atIndex:index
-                  effectiveRange:NULL];
-    if (![attribute isKindOfClass:[NSValue class]]) { index += 1; continue; }
+  NSDecimalNumber *solution = nil;
+  
+  // Find expressions
+  while (index < [string length]) {
+    attribute = [string attribute:SVR_stringForTag(SVRSolverTagExpression)
+                          atIndex:index
+                   effectiveRange:NULL];
+    if (!attribute) { index += 1; continue; }
     expressionRange = [attribute XP_rangeValue];
-    solution = [self __solveMathInExpression:[input attributedSubstringFromRange:expressionRange]];
-    [input addAttribute:SVR_stringForTag(SVRSolverTagExpressionSolution) value:solution range:expressionRange];
+    if (solution) {
+      // For previous solution, add it to the string in case it needs it
+      [string addAttribute:SVR_stringForTag(SVRSolverTagPreviousSolution)
+                     value:solution
+                     range:expressionRange];
+    }
+    solution = [self __solutionForExpression:[string attributedSubstringFromRange:expressionRange]
+                                       error:NULL];
+    if (solution) {
+      [string addAttribute:SVR_stringForTag(SVRSolverTagExpressionSolution)
+                     value:solution
+                     range:expressionRange];
+    } else {
+      // Store error in SVRSolverTagExpressionSolution
+    }
     index = NSMaxRange(expressionRange);
   }
 }
 
-+(NSDecimalNumber*)__solveMathInExpression:(NSAttributedString*)input;
++(NSDecimalNumber*)__solutionForExpression:(NSAttributedString*)string
+                                     error:(NSNumber**)errorPtr;
 {
   return nil;
 }

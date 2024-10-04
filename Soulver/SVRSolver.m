@@ -29,11 +29,12 @@ SVRSolverOperator SVR_operatorForString(NSString *string)
 NSString *SVR_stringForTag(SVRSolverTag tag)
 {
   switch (tag) {
-    case SVRSolverTagNumber:     return @"kSVRSoulverTagNumberKey";
-    case SVRSolverTagOperator:   return @"kSVRSoulverTagOperatorKey";
-    case SVRSolverTagExpression: return @"kSVRSoulverTagExpressionKey";
-    case SVRSolverTagExpressionSolution:   return @"kSVRSoulverTagSolutionKey";
-    case SVRSolverTagBracket:    return @"kSVRSoulverTagBracketKey";
+    case SVRSolverTagNumber:             return @"kSVRSoulverTagNumberKey";
+    case SVRSolverTagBracket:            return @"kSVRSoulverTagBracketKey";
+    case SVRSolverTagOperator:           return @"kSVRSoulverTagOperatorKey";
+    case SVRSolverTagExpression:         return @"kSVRSoulverTagExpressionKey";
+    case SVRSolverTagExpressionSolution: return @"kSVRSolverTagExpressionSolutionKey";
+    case SVRSolverTagPreviousSolution:   return @"kSVRSolverTagPreviousSolutionKey";
     default:
       [XPLog error:@"SVR_stringForTagUnknown: %d", tag];
       return nil;
@@ -42,14 +43,18 @@ NSString *SVR_stringForTag(SVRSolverTag tag)
 
 SVRSolverTag SVR_tagForString(NSString *string)
 {
-  if        ([string isEqualToString:SVR_stringForTag(SVRSolverTagNumber)])     {
+  if        ([string isEqualToString:SVR_stringForTag(SVRSolverTagNumber)])             {
     return SVRSolverTagNumber;
-  } else if ([string isEqualToString:SVR_stringForTag(SVRSolverTagOperator)])   {
-    return SVRSolverTagOperator;
-  } else if ([string isEqualToString:SVR_stringForTag(SVRSolverTagExpression)]) {
-    return SVRSolverTagExpression;
-  } else if ([string isEqualToString:SVR_stringForTag(SVRSolverTagBracket)])    {
+  } else if ([string isEqualToString:SVR_stringForTag(SVRSolverTagBracket)])            {
     return SVRSolverTagBracket;
+  } else if ([string isEqualToString:SVR_stringForTag(SVRSolverTagOperator)])           {
+    return SVRSolverTagOperator;
+  } else if ([string isEqualToString:SVR_stringForTag(SVRSolverTagExpression)])         {
+    return SVRSolverTagExpression;
+  } else if ([string isEqualToString:SVR_stringForTag(SVRSolverTagExpressionSolution)]) {
+    return SVRSolverTagExpressionSolution;
+  } else if ([string isEqualToString:SVR_stringForTag(SVRSolverTagPreviousSolution)])   {
+    return SVRSolverTagPreviousSolution;
   } else {
     [XPLog error:@"SVR_tagForStringUnknown: %@", string];
     return (SVRSolverTag)-1;
