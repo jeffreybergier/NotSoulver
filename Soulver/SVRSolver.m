@@ -8,7 +8,39 @@
 #import "SVRSolver.h"
 #import "SVRLegacyRegex.h"
 
-SVRSolverOperator SVR_operatorForString(NSString *string)
+NSString* SVR_valueStringForOperator(SVRSolverOperator operator)
+{
+  switch (operator) {
+    case SVRSolverOperatorExponent: return @"kSVRSolverOperatorExponentValue";
+    case SVRSolverOperatorDivide:   return @"kSVRSolverOperatorDivideValue";
+    case SVRSolverOperatorMultiply: return @"kSVRSolverOperatorMultiplyValue";
+    case SVRSolverOperatorSubtract: return @"kSVRSolverOperatorSubtractValue";
+    case SVRSolverOperatorAdd:      return @"kSVRSolverOperatorAddValue";
+    default:
+      [XPLog pause:@"Unknown operator: %d", operator];
+      return @"kSVRSolverOperatorUnknownValue";
+  }
+}
+
+SVRSolverOperator SVR_operatorForValueString(NSString *string)
+{
+  if        ([string isEqualToString:SVR_valueStringForOperator(SVRSolverOperatorExponent)]) {
+    return SVRSolverOperatorExponent;
+  } else if ([string isEqualToString:SVR_valueStringForOperator(SVRSolverOperatorDivide)])   {
+    return SVRSolverOperatorDivide;
+  } else if ([string isEqualToString:SVR_valueStringForOperator(SVRSolverOperatorMultiply)]) {
+    return SVRSolverOperatorMultiply;
+  } else if ([string isEqualToString:SVR_valueStringForOperator(SVRSolverOperatorSubtract)]) {
+    return SVRSolverOperatorSubtract;
+  } else if ([string isEqualToString:SVR_valueStringForOperator(SVRSolverOperatorAdd)])      {
+    return SVRSolverOperatorAdd;
+  } else {
+    [XPLog error:@"SVR_operatorForValueString: %@", string];
+    return (SVRSolverOperator)-1;
+  }
+}
+
+SVRSolverOperator SVR_operatorForRawString(NSString *string)
 {
   if        ([string isEqualToString:@"^"]) {
     return SVRSolverOperatorExponent;
@@ -21,7 +53,7 @@ SVRSolverOperator SVR_operatorForString(NSString *string)
   } else if ([string isEqualToString:@"+"]) {
     return SVRSolverOperatorAdd;
   } else {
-    [XPLog pause:@"Unknown operator: %@", string];
+    [XPLog error:@"SVR_operatorForRawStringUnknown: %@", string];
     return (SVRSolverOperator)-1;
   }
 }

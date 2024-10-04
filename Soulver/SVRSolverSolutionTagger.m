@@ -11,6 +11,7 @@
 
 @implementation SVRSolverSolutionTagger
 
+// MARK: Business Logic
 +(void)tagSolutionsInAttributedString:(NSMutableAttributedString*)string;
 {
   id attribute = nil;
@@ -44,10 +45,49 @@
   }
 }
 
-+(NSDecimalNumber*)__solutionForExpression:(NSAttributedString*)string
+// MARK: Private
++(NSDecimalNumber*)__solutionForExpression:(NSAttributedString*)input
                                      error:(NSNumber**)errorPtr;
 {
+  NSSet *setExponent = [NSSet setWithObject:SVR_valueStringForOperator(SVRSolverOperatorExponent)];
+  
+  NSRange patchRange = XPNotFoundRange;
+  NSValue *bracketRange = nil;
+  NSDecimalNumber *output = nil;
+  NSAttributedString *patchString = nil;
+  NSMutableAttributedString *expression = [[input mutableCopy] autorelease];
+  
+  // Find brackets later
+  
+  // Solve Exponents
+  while ((output = [self __nextSolutionInExpression:expression
+                                  forOperatorsInSet:setExponent
+                                         patchRange:&patchRange
+                                              error:errorPtr]))
+  {
+    [XPLog extra:@"^ %@ → %@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output];
+    patchString = [self __taggedStringWithNumber:output];
+    [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
+  }
+  
+  
   return nil;
+}
+
++(NSDecimalNumber*)__nextSolutionInExpression:(NSAttributedString*)input
+                            forOperatorsInSet:(NSSet*)opertors
+                                   patchRange:(NSRange*)rangePtr
+                                        error:(NSNumber**)errorPtr;
+{
+  return nil;
+}
+
++(NSAttributedString*)__taggedStringWithNumber:(NSDecimalNumber*)number;
+{
+  NSDictionary *attributes = [NSDictionary dictionaryWithObject:number
+                                                         forKey:SVR_stringForTag(SVRSolverTagNumber)];
+  return [[[NSAttributedString alloc] initWithString:[number SVR_description]
+                                          attributes:attributes] autorelease];
 }
 
 /*
@@ -131,7 +171,7 @@
 +(void)executeTests;
 {
   [XPLog alwys:@"SVRSolverSolutionTagger Tests: Starting"];
-  [SVRSolverSolutionTagger embedSolutionsInString:[SVRSolverExpressionTagger executeTests]];
+  [SVRSolverSolutionTagger tagSolutionsInAttributedString:[SVRSolverExpressionTagger executeTests]];
   [XPLog alwys:@"SVRSolverSolutionTagger Tests: Passed"];
 }
 @end

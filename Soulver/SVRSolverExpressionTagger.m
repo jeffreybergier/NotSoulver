@@ -39,7 +39,7 @@
   NSEnumerator *e = [ranges objectEnumerator];
   while ((next = [e nextObject])) {
     range = [next XP_rangeValue];
-    operator = SVR_operatorForString([[string string] substringWithRange:range]);
+    operator = SVR_operatorForRawString([[string string] substringWithRange:range]);
     [string addAttribute:SVR_stringForTag(SVRSolverTagOperator)
                    value:[NSNumber XP_numberWithInteger:operator]
                    range:range];
