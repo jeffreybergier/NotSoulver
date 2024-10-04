@@ -11,26 +11,26 @@
 /// Used by SVRSolverTagger
 typedef enum {
   // Stores NSDecimalNumber
-  SVRSoulverTagNumber,
+  SVRSolverTagNumber,
   // Stores NSNumber containing the SVRSoulverOperator
-  SVRSoulverTagOperator,
+  SVRSolverTagOperator,
   // Stores NSValue of the range of the expression
-  SVRSoulverTagExpression,
+  SVRSolverTagExpression,
   // Stores NSValue of the range of the bracket
-  SVRSoulverTagBracket,
-} SVRSoulverTag;
+  SVRSolverTagBracket,
+} SVRSolverTag;
 
 typedef enum {
-  SVRSoulverOperatorExponent,
-  SVRSoulverOperatorDivide,
-  SVRSoulverOperatorMultiply,
-  SVRSoulverOperatorSubtract,
-  SVRSoulverOperatorAdd,
-} SVRSoulverOperator;
+  SVRSolverOperatorExponent,
+  SVRSolverOperatorDivide,
+  SVRSolverOperatorMultiply,
+  SVRSolverOperatorSubtract,
+  SVRSolverOperatorAdd,
+} SVRSolverOperator;
 
-NSString *SVR_stringForTag(SVRSoulverTag tag);
-SVRSoulverTag SVR_tagForString(NSString *string);
-SVRSoulverOperator SVR_operatorForString(NSString *string);
+NSString *SVR_stringForTag(SVRSolverTag tag);
+SVRSolverTag SVR_tagForString(NSString *string);
+SVRSolverOperator SVR_operatorForString(NSString *string);
 
 @interface SVRSolver: NSObject
 

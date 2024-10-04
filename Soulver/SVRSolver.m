@@ -8,50 +8,50 @@
 #import "SVRSolver.h"
 #import "SVRLegacyRegex.h"
 
-SVRSoulverOperator SVR_operatorForString(NSString *string)
+SVRSolverOperator SVR_operatorForString(NSString *string)
 {
   if        ([string isEqualToString:@"^"]) {
-    return SVRSoulverOperatorExponent;
+    return SVRSolverOperatorExponent;
   } else if ([string isEqualToString:@"/"]) {
-    return SVRSoulverOperatorDivide;
+    return SVRSolverOperatorDivide;
   } else if ([string isEqualToString:@"*"]) {
-    return SVRSoulverOperatorMultiply;
+    return SVRSolverOperatorMultiply;
   } else if ([string isEqualToString:@"-"]) {
-    return SVRSoulverOperatorSubtract;
+    return SVRSolverOperatorSubtract;
   } else if ([string isEqualToString:@"+"]) {
-    return SVRSoulverOperatorAdd;
+    return SVRSolverOperatorAdd;
   } else {
     [XPLog pause:@"Unknown operator: %@", string];
-    return (SVRSoulverOperator)-1;
+    return (SVRSolverOperator)-1;
   }
 }
 
-NSString *SVR_stringForTag(SVRSoulverTag tag)
+NSString *SVR_stringForTag(SVRSolverTag tag)
 {
   switch (tag) {
-    case SVRSoulverTagNumber:     return @"kSVRSoulverTagNumberKey";
-    case SVRSoulverTagOperator:   return @"kSVRSoulverTagOperatorKey";
-    case SVRSoulverTagExpression: return @"kSVRSoulverTagExpressionKey";
-    case SVRSoulverTagBracket:    return @"kSVRSoulverTagBracketKey";
+    case SVRSolverTagNumber:     return @"kSVRSoulverTagNumberKey";
+    case SVRSolverTagOperator:   return @"kSVRSoulverTagOperatorKey";
+    case SVRSolverTagExpression: return @"kSVRSoulverTagExpressionKey";
+    case SVRSolverTagBracket:    return @"kSVRSoulverTagBracketKey";
     default:
       [XPLog error:@"SVR_stringForTagUnknown: %d", tag];
       return nil;
   }
 }
 
-SVRSoulverTag SVR_tagForString(NSString *string)
+SVRSolverTag SVR_tagForString(NSString *string)
 {
-  if        ([string isEqualToString:SVR_stringForTag(SVRSoulverTagNumber)])     {
-    return SVRSoulverTagNumber;
-  } else if ([string isEqualToString:SVR_stringForTag(SVRSoulverTagOperator)])   {
-    return SVRSoulverTagOperator;
-  } else if ([string isEqualToString:SVR_stringForTag(SVRSoulverTagExpression)]) {
-    return SVRSoulverTagExpression;
-  } else if ([string isEqualToString:SVR_stringForTag(SVRSoulverTagBracket)])    {
-    return SVRSoulverTagBracket;
+  if        ([string isEqualToString:SVR_stringForTag(SVRSolverTagNumber)])     {
+    return SVRSolverTagNumber;
+  } else if ([string isEqualToString:SVR_stringForTag(SVRSolverTagOperator)])   {
+    return SVRSolverTagOperator;
+  } else if ([string isEqualToString:SVR_stringForTag(SVRSolverTagExpression)]) {
+    return SVRSolverTagExpression;
+  } else if ([string isEqualToString:SVR_stringForTag(SVRSolverTagBracket)])    {
+    return SVRSolverTagBracket;
   } else {
     [XPLog error:@"SVR_tagForStringUnknown: %@", string];
-    return (SVRSoulverTag)-1;
+    return (SVRSolverTag)-1;
   }
 }
 
