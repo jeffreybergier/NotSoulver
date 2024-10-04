@@ -74,12 +74,56 @@
   return nil;
 }
 
-+(NSDecimalNumber*)__nextSolutionInExpression:(NSAttributedString*)input
-                            forOperatorsInSet:(NSSet*)opertors
++(NSDecimalNumber*)__nextSolutionInExpression:(NSAttributedString*)expression
+                            forOperatorsInSet:(NSSet*)operators
                                    patchRange:(NSRange*)rangePtr
                                         error:(NSNumber**)errorPtr;
 {
-  return nil;
+  NSRange operatorRange = NSMakeRange(0, 1);
+  NSRange lhsRange = XPNotFoundRange;
+  NSRange rhsRange = XPNotFoundRange;
+  NSString *operator = nil;
+  NSDecimalNumber *lhs = nil;
+  NSDecimalNumber *rhs = nil;
+  
+  // Find the first matching operator
+  while (NSMaxRange(operatorRange) < [expression length]) {
+    operator = [expression attribute:SVR_stringForTag(SVRSolverTagOperator)
+                             atIndex:operatorRange.location
+                      effectiveRange:&operatorRange];
+    if ([operators member:operator]) { break; }
+    operatorRange.location = operatorRange.location + operatorRange.length;
+    operatorRange.length = 1;
+  }
+  if (![operators member:operator]) { return nil; }
+  
+  lhsRange = NSMakeRange(operatorRange.location - 1, 1);
+  if (lhsRange.location >= 0) {
+    lhs = [expression attribute:SVR_stringForTag(SVRSolverTagNumber)
+                        atIndex:lhsRange.location
+                 effectiveRange:&lhsRange];
+  }
+  if (lhs == nil) {
+    // TODO: Populate ErrorPtr
+    return nil;
+  }
+  
+  rhsRange = NSMakeRange(NSMaxRange(operatorRange), 1);
+  if (rhsRange.location + rhsRange.length <= [expression length]) {
+    rhs = [expression attribute:SVR_stringForTag(SVRSolverTagNumber)
+                        atIndex:rhsRange.location
+                 effectiveRange:&rhsRange];
+  }
+  if (rhs == nil) {
+    // TODO: Populate ErrorPtr
+    return nil;
+  }
+  
+  rangePtr->location = lhsRange.location;
+  rangePtr->length   = lhsRange.length + operatorRange.length + rhsRange.length;
+  
+  // TODO: Do the solving
+  return [self __solveWithOperator:operator leftNumber:lhs rightNumber:rhs];
 }
 
 +(NSAttributedString*)__taggedStringWithNumber:(NSDecimalNumber*)number;
