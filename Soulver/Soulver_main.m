@@ -7,6 +7,7 @@
 #import "SVRSolverSolutionTagger.h"
 #import "SVRSolverScanner.h"
 #import "SVRSolverExpressionTagger.h"
+#import "SVRSolverStyler.h"
 
 int main(int argc, const char *argv[]) {
   
@@ -27,11 +28,12 @@ int main(int argc, const char *argv[]) {
 #ifdef TESTING
   [[NSUserDefaults standardUserDefaults] SVR_configure];
   [XPLog alwys:@"<Main> Unit Tests: STARTING"];
-  [SVRSolverSolutionTagger executeTests];
+  [SVRSolver executeTests];
+  [SVRSolverStyler executeTests];
   [SVRSolverScanner executeTests];
+  [SVRSolverSolutionTagger executeTests];
   [SVRSolverExpressionTagger executeTests];
   [SVRLegacyRegex executeTests];
-  [SVRSolver executeTests];
   [SVRMathString executeTests];
   [SVRDocumentViewController executeTests];
   [XPLog alwys:@"<Main> Unit Tests: PASSED"];
