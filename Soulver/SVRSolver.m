@@ -90,7 +90,7 @@ SVRSolverTag SVR_tagForString(NSString *string)
                               inAttributedString:input];
   [SVRSolverExpressionTagger tagOperatorsAtRanges:[scanner operatorRanges]
                                inAttributedString:input];
-  [SVRSolverExpressionTagger tagExpressionsAtRanges:[scanner operatorRanges]
+  [SVRSolverExpressionTagger tagExpressionsAtRanges:[scanner expressionRanges]
                                  inAttributedString:input];
   [input autorelease];
 }

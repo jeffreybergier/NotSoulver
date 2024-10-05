@@ -60,7 +60,7 @@
                             value:[ud SVR_colorForSolutionPrimary]
                             range:checkRange];
               [input addAttribute:NSBackgroundColorAttributeName
-                            value:[ud SVR_colorForSolutionSecondary]
+                            value:[ud SVR_backgroundColorForSolutionPrimary]
                             range:checkRange];
             } else if ([check isKindOfClass:[NSNumber class]]) {
               [input addAttribute:NSForegroundColorAttributeName
@@ -135,7 +135,7 @@
   output = [input attribute:NSForegroundColorAttributeName atIndex:12 effectiveRange:NULL];
   NSAssert([output isEqual:[ud SVR_colorForSolutionPrimary]], @"");
   output = [input attribute:NSBackgroundColorAttributeName atIndex:12 effectiveRange:NULL];
-  NSAssert([output isEqual:[ud SVR_colorForSolutionSecondary]], @"");
+  NSAssert([output isEqual:[ud SVR_backgroundColorForSolutionPrimary]], @"");
   
   [XPLog alwys:@"SVRSolverStyler Tests: Passed"];
 }

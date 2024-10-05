@@ -32,7 +32,7 @@
 // MARK: Enumerator Access (mostly for testing)
 -(NSSet*)numberRanges;
 {
-  if (_numbers == nil) {
+  if (!_numbers) {
     [self __populateNumbers];
   }
   return [[_numbers retain] autorelease];
@@ -40,7 +40,7 @@
 
 -(NSSet*)operatorRanges;
 {
-  if (_numbers == nil) {
+  if (!_operators) {
     [self __populateOperators];
   }
   return [[_operators retain] autorelease];
@@ -48,7 +48,7 @@
 
 -(NSSet*)expressionRanges;
 {
-  if (_numbers == nil) {
+  if (!_expressions) {
     [self __populateExpressions];
   }
   return [[_expressions retain] autorelease];
@@ -56,7 +56,7 @@
 
 -(NSSet*)bracketRanges;
 {
-  if (_brackets == nil) {
+  if (!_brackets) {
     [self __populateBrackets];
   }
   return [[_brackets retain] autorelease];
