@@ -440,10 +440,10 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   range->location = lhsRange.location;
   range->length = lhsRange.length + operatorRange.length + rhsRange.length;
   
-  return [self __solveWithOperator:operator leftNumber:lhs rightNumber:rhs];
+  return [self ___solveWithOperator:operator leftNumber:lhs rightNumber:rhs];
 }
 
-+(NSDecimalNumber*)__solveWithOperator:(NSString*)anOp
++(NSDecimalNumber*)___solveWithOperator:(NSString*)anOp
                             leftNumber:(NSDecimalNumber*)lhs
                            rightNumber:(NSDecimalNumber*)rhs;
 {

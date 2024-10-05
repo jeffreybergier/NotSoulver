@@ -59,7 +59,7 @@ SVRSolverOperator SVR_operatorForNumber(NSNumber *number);
 +(NSDecimalNumber*)__solveNextSubexpressionInExpression:(NSAttributedString*)expression
                                       forOperatorsInSet:(NSSet*)operators
                                    rangeOfSubexpression:(NSRange*)range;
-+(NSDecimalNumber*)__solveWithOperator:(NSString*)anOp
++(NSDecimalNumber*)___solveWithOperator:(NSString*)anOp
                             leftNumber:(NSDecimalNumber*)lhs
                            rightNumber:(NSDecimalNumber*)rhs;
 +(NSAttributedString*)__solveAttributedStringForPatchingWithDecimalNumber:(NSDecimalNumber*)number;

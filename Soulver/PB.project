@@ -14,8 +14,11 @@
             "SVRMathString+Rendering.m", 
             "SVRMathString+Tests.m", 
             SVRSolver.m, 
-            SVRDocumentStringEnumerator.m, 
-            SVRLegacyRegex.m
+            SVRLegacyRegex.m, 
+            SVRSolverExpressionTagger.m, 
+            SVRSolverScanner.m, 
+            SVRSolverSolutionTagger.m, 
+            SVRSolverStyler.m
         ); 
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
         H_FILES = (
@@ -31,8 +34,11 @@
             "SVRMathString+Tests.h", 
             SVRSolver.h, 
             re.h, 
-            SVRDocumentStringEnumerator.h, 
-            SVRLegacyRegex.h
+            SVRLegacyRegex.h, 
+            SVRSolverExpressionTagger.h, 
+            SVRSolverScanner.h, 
+            SVRSolverSolutionTagger.h, 
+            SVRSolverStyler.h
         ); 
         INTERFACES = (NEXTSTEP_Soulver.nib, NEXTSTEP_SVRDocument.nib); 
         OTHER_LINKED = (re.c, Soulver_main.m); 

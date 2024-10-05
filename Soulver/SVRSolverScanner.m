@@ -191,11 +191,12 @@
 {
   NSRange range;
   NSValue *value;
+  SVRLegacyRegex *regex = nil;
   NSMutableSet *output = [[NSMutableSet new] autorelease];
   NSAssert(!_brackets, @"This is a lazy init method, it assumes _brackets is NIL");
+
   // Check for opening brackets
-  SVRLegacyRegex *regex = [SVRLegacyRegex regexWithString:_string
-                                                  pattern:@"\\([\\-\\d]"];
+  regex = [SVRLegacyRegex regexWithString:_string pattern:@"\\([\\-\\d]"];
   while ((value = [regex nextObject])) {
     range = [value XP_rangeValue];
     range.length = 1;
@@ -204,8 +205,7 @@
   }
   
   // Check for closing brackets
-  regex = [SVRLegacyRegex regexWithString:_string
-                                  pattern:@"\\d\\)[\\^\\*\\/\\+\\-\\=]"];
+  regex = [SVRLegacyRegex regexWithString:_string pattern:@"\\d\\)[\\^\\*\\/\\+\\-\\=]"];
   while ((value = [regex nextObject])) {
     range = [value XP_rangeValue];
     range.location += 1;

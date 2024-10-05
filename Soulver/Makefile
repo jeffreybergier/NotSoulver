@@ -24,14 +24,16 @@ CLASSES = SVRAppDelegate.m SVRCrossPlatform.m\
           SVRDocumentViewController.m SVRDocumentViewController+Tests.m\
           SVRDocumentWindowController.m SVRMathString.m\
           SVRMathString+Rendering.m SVRMathString+Tests.m SVRSolver.m\
-          SVRDocumentStringEnumerator.m SVRLegacyRegex.m
+          SVRLegacyRegex.m SVRSolverExpressionTagger.m\
+          SVRSolverScanner.m SVRSolverSolutionTagger.m SVRSolverStyler.m
 
 HFILES = SVRAppDelegate.h SVRCrossPlatform.h\
          SVRDocumentModelController.h SVRDocumentTextDelegate.h\
          SVRDocumentViewController.h SVRDocumentViewController+Tests.h\
          SVRDocumentWindowController.h SVRMathString.h\
          SVRMathString+Rendering.h SVRMathString+Tests.h SVRSolver.h\
-         re.h SVRDocumentStringEnumerator.h SVRLegacyRegex.h
+         re.h SVRLegacyRegex.h SVRSolverExpressionTagger.h\
+         SVRSolverScanner.h SVRSolverSolutionTagger.h SVRSolverStyler.h
 
 MFILES = Soulver_main.m
 
