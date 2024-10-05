@@ -67,7 +67,9 @@
   NSMutableAttributedString *expression = [[input mutableCopy] autorelease];
   
   // Find brackets
-  while ((bracketRange = [self __rangeOfNextBracketsInExpression:expression])) {
+  while ((bracketRange = [self __rangeOfNextBracketsInExpression:expression
+                                                           error:errorPtr]))
+  {
     patchRange = [bracketRange XP_rangeValue];
     // Configure patch for subexpression within brackets
     patchRange.location += 1;
@@ -143,29 +145,33 @@
   return output;
 }
 
-+(NSValue*)__rangeOfNextBracketsInExpression:(NSAttributedString*)input;
++(NSValue*)__rangeOfNextBracketsInExpression:(NSAttributedString*)input
+                                       error:(NSNumber **)errorPtr;
 {
   NSValue *check = nil;
+  NSValue *lhs = nil;
+  NSValue *rhs = nil;
   XPUInteger index = 0;
-  NSRange output = XPNotFoundRange;
   while (index < [input length]) {
     check = [input attribute:SVR_stringForTag(SVRSolverTagBracket)
                      atIndex:index
               effectiveRange:NULL];
-    if (check && XPIsNotFoundRange(output)) {
-      output.location = index;
-      output.length = 1;
-    } else if (check && XPIsFoundRange(output)) {
-      output.length = index - output.location + 1;;
-      if ((output.length-2)-(output.location+1) >= 1) {
-        return [NSValue XP_valueWithRange:output];
-      } else {
-        output = XPNotFoundRange;
-      }
+    if (check && !lhs) {
+      lhs = check;
+    } else if (check && lhs) {
+      rhs = check;
+    }
+    if (lhs && rhs) {
+      return [NSValue XP_valueWithRange:
+              NSMakeRange([lhs XP_rangeValue].location,
+                          NSMaxRange([rhs XP_rangeValue]) - [lhs XP_rangeValue].location)];
     }
     index += 1;
   }
-  return [NSValue XP_valueWithRange:XPNotFoundRange];
+  if (lhs && errorPtr != NULL) {
+    *errorPtr = [XPError SVR_errorMismatchedBrackets];
+  }
+  return nil;
 }
 
 +(NSDecimalNumber*)__nextSolutionInExpression:(NSAttributedString*)expression
@@ -191,7 +197,9 @@
   }
   
   if (![operators member:operator]) {
-    return nil; // Not an error, just no math to do in this string with this operator set
+    // Not an error, just no math to do
+    // in this string with this operator set
+    return nil;
   }
   
   lhsRange = NSMakeRange(operatorRange.location - 1, 1);

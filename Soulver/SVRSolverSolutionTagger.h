@@ -16,7 +16,8 @@
 // MARK: Private
 +(NSDecimalNumber*)__solutionForExpression:(NSAttributedString*)string
                                      error:(NSNumber**)errorPtr;
-+(NSValue*)__rangeOfNextBracketsInExpression:(NSAttributedString*)input;
++(NSValue*)__rangeOfNextBracketsInExpression:(NSAttributedString*)input
+                                       error:(NSNumber **)errorPtr;
 +(NSDecimalNumber*)__nextSolutionInExpression:(NSAttributedString*)expression
                             forOperatorsInSet:(NSSet*)operators
                                    patchRange:(NSRange*)rangePtr
