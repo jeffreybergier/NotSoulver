@@ -54,19 +54,21 @@
           check = [input attribute:SVR_stringForTag(SVRSolverTagExpressionSolution)
                            atIndex:index
                     effectiveRange:&checkRange];
-          if ([check isKindOfClass:[NSDecimalNumber class]]) {
-            [input addAttribute:NSForegroundColorAttributeName
-                          value:[ud SVR_colorForSolutionPrimary]
-                          range:checkRange];
-            [input addAttribute:NSBackgroundColorAttributeName
-                          value:[ud SVR_colorForSolutionSecondary]
-                          range:checkRange];
-          } else if ([check isKindOfClass:[NSNumber class]]) {
-            [input addAttribute:NSForegroundColorAttributeName
-                          value:[NSColor orangeColor]
-                          range:checkRange];
-          } else {
-            [XPLog pause:@"potentially unknown case"];
+          if (check) {
+            if ([check isKindOfClass:[NSDecimalNumber class]]) {
+              [input addAttribute:NSForegroundColorAttributeName
+                            value:[ud SVR_colorForSolutionPrimary]
+                            range:checkRange];
+              [input addAttribute:NSBackgroundColorAttributeName
+                            value:[ud SVR_colorForSolutionSecondary]
+                            range:checkRange];
+            } else if ([check isKindOfClass:[NSNumber class]]) {
+              [input addAttribute:NSForegroundColorAttributeName
+                            value:[NSColor orangeColor]
+                            range:checkRange];
+            } else {
+              [XPLog pause:@"potentially unknown case"];
+            }
           }
         }
       }
