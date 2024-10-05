@@ -66,21 +66,28 @@
   NSAttributedString *patchString = nil;
   NSMutableAttributedString *expression = [[input mutableCopy] autorelease];
   
-  // Find brackets later
+  // Find brackets
   while ((bracketRange = [self __rangeOfNextBracketsInExpression:expression])) {
     patchRange = [bracketRange XP_rangeValue];
-    // TODO: introduce subexpression variable to make this next line shorter
-    output = [self __solutionForExpression:[expression attributedSubstringFromRange:
-                                            NSMakeRange(patchRange.location+1, patchRange.length-2)]
-                                   error:errorPtr];
+    // Configure patch for subexpression within brackets
+    patchRange.location += 1;
+    patchRange.length -= 2;
+    output = [self __solutionForExpression:[expression attributedSubstringFromRange:patchRange]
+                                     error:errorPtr];
+    // Revert patch back to subexpression with brackets
+    patchRange = [bracketRange XP_rangeValue];
     if (output) {
       [XPLog extra:@"(): %@←%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output];
       patchString = [self __taggedStringWithNumber:output];
       [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
+      output = nil;
     } else {
       [XPLog pause:@"(): %@←%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], [NSDecimalNumber notANumber]];
     }
-    output = nil;
+  }
+  
+  if (errorPtr != NULL && *errorPtr != nil) {
+    return nil;
   }
   
   // Solve Exponents
@@ -94,6 +101,10 @@
     [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
   }
   
+  if (errorPtr != NULL && *errorPtr != nil) {
+    return nil;
+  }
+  
   // Solve MultDiv
   while ((output = [self __nextSolutionInExpression:expression
                                   forOperatorsInSet:setMultDiv
@@ -103,6 +114,10 @@
     [XPLog extra:@"Op*: %@←%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output];
     patchString = [self __taggedStringWithNumber:output];
     [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
+  }
+  
+  if (errorPtr != NULL && *errorPtr != nil) {
+    return nil;
   }
   
   // Solve AddSub
@@ -116,9 +131,13 @@
     [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
   }
   
+  if (errorPtr != NULL && *errorPtr != nil) {
+    return nil;
+  }
+  
   output = [NSDecimalNumber decimalNumberWithString:[expression string]];
   if ([output SVR_isNotANumber]) {
-    // TODO: Populate errorPtr
+    if (errorPtr != NULL) { *errorPtr = [XPError SVR_errorInvalidCharacter]; }
     return nil;
   }
   return output;
@@ -126,7 +145,7 @@
 
 +(NSValue*)__rangeOfNextBracketsInExpression:(NSAttributedString*)input;
 {
-  NSString *check = nil;
+  NSValue *check = nil;
   XPUInteger index = 0;
   NSRange output = XPNotFoundRange;
   while (index < [input length]) {
@@ -170,7 +189,10 @@
     operatorRange.location = NSMaxRange(operatorRange);
     operatorRange.length = 1;
   }
-  if (![operators member:operator]) { return nil; }
+  
+  if (![operators member:operator]) {
+    return nil; // Not an error, just no math to do in this string with this operator set
+  }
   
   lhsRange = NSMakeRange(operatorRange.location - 1, 1);
   if (lhsRange.location >= 0) {
@@ -179,7 +201,7 @@
                  effectiveRange:&lhsRange];
   }
   if (lhs == nil) {
-    // TODO: Populate ErrorPtr
+    if (errorPtr != NULL) { *errorPtr = [XPError SVR_errorMissingNumber]; }
     return nil;
   }
   
@@ -190,7 +212,7 @@
                  effectiveRange:&rhsRange];
   }
   if (rhs == nil) {
-    // TODO: Populate ErrorPtr
+    if (errorPtr != NULL) { *errorPtr = [XPError SVR_errorMissingNumber]; }
     return nil;
   }
   
