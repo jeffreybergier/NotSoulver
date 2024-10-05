@@ -126,8 +126,8 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 -(BOOL)SVR_setBackgroundColorForSolutionPrimary:(XPColor*)newValue;
 -(XPColor*)SVR_colorForSolutionSecondary;
 -(BOOL)SVR_setColorForSolutionSecondary:(XPColor*)newValue;
--(XPColor*)SVR_colorForBrackets;
--(BOOL)SVR_setColorForBrackets:(XPColor*)newValue;
+-(XPColor*)SVR_colorForBracket;
+-(BOOL)SVR_setColorForBracket:(XPColor*)newValue;
 -(XPColor*)SVR_colorForOperator;
 -(BOOL)SVR_setColorForOperator:(XPColor*)newValue;
 -(XPColor*)SVR_colorForNumeral;

@@ -508,7 +508,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
     range = XPNotFoundRange;
     check = [output attribute:kSVRSolverBracketsKey atIndex:index effectiveRange:&range];
     if (check) {
-      [output addAttribute:NSForegroundColorAttributeName value:[ud SVR_colorForBrackets] range:range];
+      [output addAttribute:NSForegroundColorAttributeName value:[ud SVR_colorForBracket] range:range];
     }
     check = [output attribute:kSVRSolverOperatorKey atIndex:index effectiveRange:&range];
     if (check) {

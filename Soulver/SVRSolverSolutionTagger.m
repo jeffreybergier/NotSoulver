@@ -270,7 +270,7 @@
 #import "SVRSolverExpressionTagger.h"
 
 @implementation SVRSolverSolutionTagger (Tests)
-+(void)executeTests;
++(NSMutableAttributedString*)executeTests;
 {
   NSDecimalNumber *output = nil;
   NSDecimalNumber *expected = [NSDecimalNumber decimalNumberWithString:@"0.10958904109589041095890410958904109589"];
@@ -282,5 +282,6 @@
                        effectiveRange:NULL];
   NSAssert([expected isEqualToNumber:output], @"");
   [XPLog alwys:@"SVRSolverSolutionTagger Tests: Passed"];
+  return taggedUserInput;
 }
 @end
