@@ -17,6 +17,7 @@
   XPUInteger index = 0;
   NSRange expressionRange = XPNotFoundRange;
   NSDecimalNumber *solution = nil;
+  NSNumber *error = nil;
   
   // Find expressions
   while (index < [string length]) {
@@ -32,14 +33,16 @@
                      range:expressionRange];
     }
     solution = [self __solutionForExpression:[string attributedSubstringFromRange:expressionRange]
-                                       error:NULL];
+                                       error:&error];
     if (solution) {
       [string addAttribute:SVR_stringForTag(SVRSolverTagExpressionSolution)
                      value:solution
                      range:expressionRange];
     } else {
-      // Store error in SVRSolverTagExpressionSolution
-      [XPLog pause:@""];
+      if (error == nil) { [XPLog error:@"tagSolutionsInAttributedString"]; }
+      [string addAttribute:SVR_stringForTag(SVRSolverTagExpressionSolution)
+                     value:error
+                     range:expressionRange];
     }
     index = NSMaxRange(expressionRange);
   }
@@ -269,8 +272,15 @@
 @implementation SVRSolverSolutionTagger (Tests)
 +(void)executeTests;
 {
+  NSDecimalNumber *output = nil;
+  NSDecimalNumber *expected = [NSDecimalNumber decimalNumberWithString:@"0.10958904109589041095890410958904109589"];
+  NSMutableAttributedString *taggedUserInput = [SVRSolverExpressionTagger executeTests];
   [XPLog alwys:@"SVRSolverSolutionTagger Tests: Starting"];
-  [SVRSolverSolutionTagger tagSolutionsInAttributedString:[SVRSolverExpressionTagger executeTests]];
+  [SVRSolverSolutionTagger tagSolutionsInAttributedString:taggedUserInput];
+  output = [taggedUserInput attribute:SVR_stringForTag(SVRSolverTagExpressionSolution)
+                              atIndex:0
+                       effectiveRange:NULL];
+  NSAssert([expected isEqualToNumber:output], @"");
   [XPLog alwys:@"SVRSolverSolutionTagger Tests: Passed"];
 }
 @end
