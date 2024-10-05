@@ -41,7 +41,7 @@
     range = [next XP_rangeValue];
     operator = SVR_operatorForRawString([[string string] substringWithRange:range]);
     [string addAttribute:SVR_stringForTag(SVRSolverTagOperator)
-                   value:[NSNumber XP_numberWithInteger:operator]
+                   value:SVR_numberForOperator(operator)
                    range:range];
   }
 }

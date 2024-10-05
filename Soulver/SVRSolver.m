@@ -8,36 +8,14 @@
 #import "SVRSolver.h"
 #import "SVRLegacyRegex.h"
 
-NSString* SVR_valueStringForOperator(SVRSolverOperator operator)
+NSNumber* SVR_numberForOperator(SVRSolverOperator operator)
 {
-  switch (operator) {
-    case SVRSolverOperatorExponent: return @"kSVRSolverOperatorExponentValue";
-    case SVRSolverOperatorDivide:   return @"kSVRSolverOperatorDivideValue";
-    case SVRSolverOperatorMultiply: return @"kSVRSolverOperatorMultiplyValue";
-    case SVRSolverOperatorSubtract: return @"kSVRSolverOperatorSubtractValue";
-    case SVRSolverOperatorAdd:      return @"kSVRSolverOperatorAddValue";
-    default:
-      [XPLog pause:@"Unknown operator: %d", operator];
-      return @"kSVRSolverOperatorUnknownValue";
-  }
+  return [NSNumber XP_numberWithInteger:operator];
 }
 
-SVRSolverOperator SVR_operatorForValueString(NSString *string)
+SVRSolverOperator SVR_operatorForNumber(NSNumber *number)
 {
-  if        ([string isEqualToString:SVR_valueStringForOperator(SVRSolverOperatorExponent)]) {
-    return SVRSolverOperatorExponent;
-  } else if ([string isEqualToString:SVR_valueStringForOperator(SVRSolverOperatorDivide)])   {
-    return SVRSolverOperatorDivide;
-  } else if ([string isEqualToString:SVR_valueStringForOperator(SVRSolverOperatorMultiply)]) {
-    return SVRSolverOperatorMultiply;
-  } else if ([string isEqualToString:SVR_valueStringForOperator(SVRSolverOperatorSubtract)]) {
-    return SVRSolverOperatorSubtract;
-  } else if ([string isEqualToString:SVR_valueStringForOperator(SVRSolverOperatorAdd)])      {
-    return SVRSolverOperatorAdd;
-  } else {
-    [XPLog error:@"SVR_operatorForValueString: %@", string];
-    return (SVRSolverOperator)-1;
-  }
+  return (SVRSolverOperator)[number XP_integerValue];
 }
 
 SVRSolverOperator SVR_operatorForRawString(NSString *string)

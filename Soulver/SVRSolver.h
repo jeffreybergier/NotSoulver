@@ -33,9 +33,9 @@ typedef enum {
 
 NSString *SVR_stringForTag(SVRSolverTag tag);
 SVRSolverTag SVR_tagForString(NSString *string);
-NSString* SVR_valueStringForOperator(SVRSolverOperator operator);
+NSNumber* SVR_numberForOperator(SVRSolverOperator operator);
 SVRSolverOperator SVR_operatorForRawString(NSString *string);
-SVRSolverOperator SVR_operatorForValueString(NSString *string);
+SVRSolverOperator SVR_operatorForNumber(NSNumber *number);
 
 @interface SVRSolver: NSObject
 

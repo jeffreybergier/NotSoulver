@@ -49,7 +49,16 @@
 +(NSDecimalNumber*)__solutionForExpression:(NSAttributedString*)input
                                      error:(NSNumber**)errorPtr;
 {
-  NSSet *setExponent = [NSSet setWithObject:SVR_valueStringForOperator(SVRSolverOperatorExponent)];
+  NSSet *setExponent = [NSSet setWithObject:
+                        SVR_numberForOperator(SVRSolverOperatorExponent)];
+  NSSet *setMultDiv  = [NSSet setWithObjects:
+                        SVR_numberForOperator(SVRSolverOperatorMultiply),
+                        SVR_numberForOperator(SVRSolverOperatorDivide),
+                        nil];
+  NSSet *setAddSub   = [NSSet setWithObjects:
+                        SVR_numberForOperator(SVRSolverOperatorSubtract),
+                        SVR_numberForOperator(SVRSolverOperatorAdd),
+                        nil];
   
   NSRange patchRange = XPNotFoundRange;
   NSValue *bracketRange = nil;
@@ -65,13 +74,39 @@
                                          patchRange:&patchRange
                                               error:errorPtr]))
   {
-    [XPLog extra:@"^ %@ → %@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output];
+    [XPLog extra:@"Op^: %@ ← %@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output];
     patchString = [self __taggedStringWithNumber:output];
     [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
   }
   
+  // Solve MultDiv
+  while ((output = [self __nextSolutionInExpression:expression
+                                  forOperatorsInSet:setMultDiv
+                                         patchRange:&patchRange
+                                              error:errorPtr]))
+  {
+    [XPLog extra:@"Op*: %@ ← %@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output];
+    patchString = [self __taggedStringWithNumber:output];
+    [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
+  }
   
-  return nil;
+  // Solve AddSub
+  while ((output = [self __nextSolutionInExpression:expression
+                                  forOperatorsInSet:setAddSub
+                                         patchRange:&patchRange
+                                              error:errorPtr]))
+  {
+    [XPLog extra:@"Op+: %@ ← %@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output];
+    patchString = [self __taggedStringWithNumber:output];
+    [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
+  }
+  
+  output = [NSDecimalNumber decimalNumberWithString:[expression string]];
+  if ([output SVR_isNotANumber]) {
+    // TODO: Populate errorPtr
+    return nil;
+  }
+  return output;
 }
 
 +(NSDecimalNumber*)__nextSolutionInExpression:(NSAttributedString*)expression
@@ -82,7 +117,7 @@
   NSRange operatorRange = NSMakeRange(0, 1);
   NSRange lhsRange = XPNotFoundRange;
   NSRange rhsRange = XPNotFoundRange;
-  NSString *operator = nil;
+  NSNumber *operator = nil;
   NSDecimalNumber *lhs = nil;
   NSDecimalNumber *rhs = nil;
   
@@ -92,10 +127,12 @@
                              atIndex:operatorRange.location
                       effectiveRange:&operatorRange];
     if ([operators member:operator]) { break; }
-    operatorRange.location = operatorRange.location + operatorRange.length;
+    operatorRange.location = NSMaxRange(operatorRange);
     operatorRange.length = 1;
   }
-  if (![operators member:operator]) { return nil; }
+  if (![operators member:operator]) {
+    return nil;
+  }
   
   lhsRange = NSMakeRange(operatorRange.location - 1, 1);
   if (lhsRange.location >= 0) {
@@ -123,7 +160,9 @@
   rangePtr->length   = lhsRange.length + operatorRange.length + rhsRange.length;
   
   // TODO: Do the solving
-  return [self __solveWithOperator:operator leftNumber:lhs rightNumber:rhs];
+  return [self __solveWithOperator:SVR_operatorForNumber(operator)
+                        leftNumber:lhs
+                       rightNumber:rhs];
 }
 
 +(NSAttributedString*)__taggedStringWithNumber:(NSDecimalNumber*)number;
@@ -134,78 +173,26 @@
                                           attributes:attributes] autorelease];
 }
 
-/*
-+(NSDecimalNumber*)__solveMathInExpression:(NSAttributedString*)input;
++(NSDecimalNumber*)__solveWithOperator:(SVRSolverOperator)operator
+                            leftNumber:(NSDecimalNumber*)lhs
+                           rightNumber:(NSDecimalNumber*)rhs;
 {
-  NSSet *setExponent = [NSSet setWithObject:kSVRSolverOperatorExponent];
-  NSSet *setMultDiv  = [NSSet setWithObjects:kSVRSolverOperatorMultiply, kSVRSolverOperatorDivide, nil];
-  NSSet *setAddSub   = [NSSet setWithObjects:kSVRSolverOperatorAdd, kSVRSolverOperatorSubtract, nil];
-  
-  NSRange patchRange = XPNotFoundRange;
-  NSValue *bracketRange = nil;
-  NSDecimalNumber *output = nil;
-  NSAttributedString *patchString = nil;
-  NSMutableAttributedString *expression = [[input mutableCopy] autorelease];
-  
-  // Remove trailing equal sign if needed
-  patchRange = NSMakeRange([expression length]-1, 1);
-  if ([[[expression string] substringWithRange:NSMakeRange([expression length]-1, 1)] isEqualToString:@"="])
-  {
-    [expression deleteCharactersInRange:patchRange];
+  switch (operator) {
+    case SVRSolverOperatorExponent:
+      return [lhs SVR_decimalNumberByRaisingToPower:rhs];
+    case SVRSolverOperatorDivide:
+      return [lhs decimalNumberByDividingBy:rhs];
+    case SVRSolverOperatorMultiply:
+      return [lhs decimalNumberByMultiplyingBy:rhs];
+    case SVRSolverOperatorSubtract:
+      return [lhs decimalNumberBySubtracting:rhs];
+    case SVRSolverOperatorAdd:
+      return [lhs decimalNumberByAdding:rhs];
+    default:
+      [XPLog error:@"__solveWithOperatorUnknown"];
+      return nil;
   }
-  
-  // Find brackets
-  while ((bracketRange = [self __solveRangeForNextBracketsInExpression:expression])) {
-    patchRange = [bracketRange XP_rangeValue];
-    output = [self __solveMathInExpression:[expression attributedSubstringFromRange:NSMakeRange(patchRange.location+1, patchRange.length-2)]];
-    if (output) {
-      [XPLog extra:@"<()> `%@` %@ → %@", [expression string], [[expression string] substringWithRange:patchRange], output];
-      patchString = [self __solveAttributedStringForPatchingWithDecimalNumber:output];
-      [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
-    } else {
-      [XPLog pause:@"<()> `%@` %@ → %@", [expression string], [[expression string] substringWithRange:patchRange], [NSDecimalNumber notANumber]];
-    }
-    output = nil;
-  }
-  
-  // Solve Exponents
-  while ((output = [self __solveNextSubexpressionInExpression:expression
-                                            forOperatorsInSet:setExponent
-                                         rangeOfSubexpression:&patchRange]))
-  {
-    [XPLog extra:@"<^^> `%@` %@ → %@", [expression string], [[expression string] substringWithRange:patchRange], output];
-    patchString = [self __solveAttributedStringForPatchingWithDecimalNumber:output];
-    [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
-  }
-  
-  // Find Multiplying and Dividing
-  while ((output = [self __solveNextSubexpressionInExpression:expression
-                                            forOperatorsInSet:setMultDiv
-                                         rangeOfSubexpression:&patchRange]))
-  {
-    [XPLog extra:@"<**> `%@` %@ → %@", [expression string], [[expression string] substringWithRange:patchRange], output];
-    patchString = [self __solveAttributedStringForPatchingWithDecimalNumber:output];
-    [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
-  }
-  
-  while ((output = [self __solveNextSubexpressionInExpression:expression
-                                            forOperatorsInSet:setAddSub
-                                         rangeOfSubexpression:&patchRange]))
-  {
-    [XPLog extra:@"<+-> `%@` %@ → %@", [expression string], [[expression string] substringWithRange:patchRange], output];
-    patchString = [self __solveAttributedStringForPatchingWithDecimalNumber:output];
-    [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
-  }
-  
-  if (![self __solveValidateOnlyNumeralsInAttributedString:expression]) {
-    [XPLog pause:@"__solveMathInExpression: Non-numbers present in: `%@`", [expression string]];
-    return nil;
-  }
-  
-  output = [NSDecimalNumber decimalNumberWithString:[expression string]];
-  return output;
 }
-*/
 
 @end
 

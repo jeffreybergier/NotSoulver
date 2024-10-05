@@ -97,12 +97,22 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
 @end
 
 @implementation NSNumber (CrossPlatform)
+
 +(NSNumber*)XP_numberWithInteger:(XPInteger)integer;
 {
 #if OS_OPENSTEP
   return [NSNumber numberWithInt:integer];
 #else
   return [NSNumber numberWithInteger:integer];
+#endif
+}
+
+-(XPInteger)XP_integerValue;
+{
+#if OS_OPENSTEP
+  return [self intValue];
+#else
+  return [self integerValue];
 #endif
 }
 @end

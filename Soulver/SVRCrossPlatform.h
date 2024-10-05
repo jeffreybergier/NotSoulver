@@ -62,6 +62,7 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs);
 
 @interface NSNumber (CrossPlatform)
 +(NSNumber*)XP_numberWithInteger:(XPInteger)integer;
+-(XPInteger)XP_integerValue;
 @end
 
 #if OS_OPENSTEP
