@@ -401,7 +401,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
   NSDecimalNumber *rhs = nil;
   
   // Find the first matching operator
-  while (operatorRange.location + operatorRange.length <= [expression length]) {
+  while (NSMaxRange(operatorRange) < [expression length]) {
     operator = [expression attribute:kSVRSolverOperatorKey
                              atIndex:operatorRange.location
                       effectiveRange:&operatorRange];
@@ -426,7 +426,7 @@ static NSString *kSVRSolverOperator(NSString* operator) {
     return nil;
   }
   
-  rhsRange = NSMakeRange(operatorRange.location + operatorRange.length, 1);
+  rhsRange = NSMakeRange(NSMaxRange(operatorRange), 1);
   if (rhsRange.location + rhsRange.length <= [expression length]) {
     rhs = [expression attribute:kSVRSolverNumberKey
                         atIndex:rhsRange.location

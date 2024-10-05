@@ -7,7 +7,6 @@
 
 #import "SVRSolverSolutionTagger.h"
 #import "SVRCrossPlatform.h"
-#import "SVRSolver.h"
 
 @implementation SVRSolverSolutionTagger
 
@@ -40,6 +39,7 @@
                      range:expressionRange];
     } else {
       // Store error in SVRSolverTagExpressionSolution
+      [XPLog pause:@""];
     }
     index = NSMaxRange(expressionRange);
   }
@@ -67,6 +67,21 @@
   NSMutableAttributedString *expression = [[input mutableCopy] autorelease];
   
   // Find brackets later
+  while ((bracketRange = [self __rangeOfNextBracketsInExpression:expression])) {
+    patchRange = [bracketRange XP_rangeValue];
+    // TODO: introduce subexpression variable to make this next line shorter
+    output = [self __solutionForExpression:[expression attributedSubstringFromRange:
+                                            NSMakeRange(patchRange.location+1, patchRange.length-2)]
+                                   error:errorPtr];
+    if (output) {
+      [XPLog extra:@"(): %@←%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output];
+      patchString = [self __taggedStringWithNumber:output];
+      [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
+    } else {
+      [XPLog pause:@"(): %@←%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], [NSDecimalNumber notANumber]];
+    }
+    output = nil;
+  }
   
   // Solve Exponents
   while ((output = [self __nextSolutionInExpression:expression
@@ -74,7 +89,7 @@
                                          patchRange:&patchRange
                                               error:errorPtr]))
   {
-    [XPLog extra:@"Op^: %@ ← %@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output];
+    [XPLog extra:@"Op^: %@←%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output];
     patchString = [self __taggedStringWithNumber:output];
     [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
   }
@@ -85,7 +100,7 @@
                                          patchRange:&patchRange
                                               error:errorPtr]))
   {
-    [XPLog extra:@"Op*: %@ ← %@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output];
+    [XPLog extra:@"Op*: %@←%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output];
     patchString = [self __taggedStringWithNumber:output];
     [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
   }
@@ -96,7 +111,7 @@
                                          patchRange:&patchRange
                                               error:errorPtr]))
   {
-    [XPLog extra:@"Op+: %@ ← %@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output];
+    [XPLog extra:@"Op+: %@←%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output];
     patchString = [self __taggedStringWithNumber:output];
     [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
   }
@@ -107,6 +122,31 @@
     return nil;
   }
   return output;
+}
+
++(NSValue*)__rangeOfNextBracketsInExpression:(NSAttributedString*)input;
+{
+  NSString *check = nil;
+  XPUInteger index = 0;
+  NSRange output = XPNotFoundRange;
+  while (index < [input length]) {
+    check = [input attribute:SVR_stringForTag(SVRSolverTagBracket)
+                     atIndex:index
+              effectiveRange:NULL];
+    if (check && XPIsNotFoundRange(output)) {
+      output.location = index;
+      output.length = 1;
+    } else if (check && XPIsFoundRange(output)) {
+      output.length = index - output.location + 1;;
+      if ((output.length-2)-(output.location+1) >= 1) {
+        return [NSValue XP_valueWithRange:output];
+      } else {
+        output = XPNotFoundRange;
+      }
+    }
+    index += 1;
+  }
+  return [NSValue XP_valueWithRange:XPNotFoundRange];
 }
 
 +(NSDecimalNumber*)__nextSolutionInExpression:(NSAttributedString*)expression
@@ -130,9 +170,7 @@
     operatorRange.location = NSMaxRange(operatorRange);
     operatorRange.length = 1;
   }
-  if (![operators member:operator]) {
-    return nil;
-  }
+  if (![operators member:operator]) { return nil; }
   
   lhsRange = NSMakeRange(operatorRange.location - 1, 1);
   if (lhsRange.location >= 0) {

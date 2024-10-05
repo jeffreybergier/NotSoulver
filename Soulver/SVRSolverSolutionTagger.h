@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SVRSolver.h"
 
 @interface SVRSolverSolutionTagger: NSObject
 
@@ -15,11 +16,15 @@
 // MARK: Private
 +(NSDecimalNumber*)__solutionForExpression:(NSAttributedString*)string
                                      error:(NSNumber**)errorPtr;
++(NSValue*)__rangeOfNextBracketsInExpression:(NSAttributedString*)input;
 +(NSDecimalNumber*)__nextSolutionInExpression:(NSAttributedString*)expression
                             forOperatorsInSet:(NSSet*)operators
                                    patchRange:(NSRange*)rangePtr
                                         error:(NSNumber**)errorPtr;
 +(NSAttributedString*)__taggedStringWithNumber:(NSDecimalNumber*)number;
++(NSDecimalNumber*)__solveWithOperator:(SVRSolverOperator)operator
+                            leftNumber:(NSDecimalNumber*)lhs
+                           rightNumber:(NSDecimalNumber*)rhs;
 
 @end
 
