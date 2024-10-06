@@ -105,10 +105,10 @@ SVRSolverTag SVR_tagForString(NSString *string)
 
 +(void)solveAnnotatedStorage:(NSMutableAttributedString*)input;
 {
-  NSArray *solutions = nil;
+  //NSArray *solutions = nil;
   [SVRSolverSolutionTagger tagSolutionsInAttributedString:input];
-  solutions = [SVRSolverSolutionInserter solutionsToInsertFromAttributedString:input];
-  [SVRSolverSolutionInserter insertSolutions:solutions inAttributedString:input];
+  //solutions = [SVRSolverSolutionInserter solutionsToInsertFromAttributedString:input];
+  //[SVRSolverSolutionInserter insertSolutions:solutions inAttributedString:input];
 }
 
 +(void)colorAnnotatedAndSolvedStorage:(NSMutableAttributedString*)input;
