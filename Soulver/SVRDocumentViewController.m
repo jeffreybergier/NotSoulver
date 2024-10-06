@@ -108,13 +108,20 @@
 
 -(void)awakeFromNib;
 {
+  NSLayoutManager *layoutManager = nil;
+  NSTextStorage *textStorage = nil;
+  
   [[NSNotificationCenter defaultCenter]
     addObserver:self
        selector:@selector(modelRenderDidChangeNotification:)
            name:[SVRDocumentModelController renderDidChangeNotificationName] 
          object:[self model]];
   
-  [[[self textView] textStorage] setDelegate:[self textDelegate]];
+  textStorage = [[self textView] textStorage];
+  layoutManager = [[SVRLayoutManager alloc] init];
+  [layoutManager setTextStorage:textStorage];
+  [textStorage setDelegate:[self textDelegate]];
+  [[[self textView] textContainer] replaceLayoutManager:layoutManager];
   [[self textView] setDelegate:[self textDelegate]];
 
   [XPLog debug:@"%@ awakeFromNib", self];

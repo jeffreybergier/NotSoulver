@@ -34,3 +34,17 @@
 }
 
 @end
+
+@implementation SVRLayoutManager
+-(void)drawGlyphsForGlyphRange:(NSRange)glyphsToShow atPoint:(NSPoint)origin;
+{
+  NSDictionary *attribs = nil;
+  [XPLog debug:@"drawGlyphsForGlyphRange:{%lu,%lu} point:{%f,%f}",
+   glyphsToShow.location, glyphsToShow.length, origin.x, origin.y];
+  
+  attribs = [[self textStorage] attributesAtIndex:NSMaxRange(glyphsToShow)-1 effectiveRange:NULL];
+  [XPLog debug:@"drawGlyphsForGlyphRange: %@ %@", [[[self textStorage] string] SVR_descriptionHighlightingRange:NSMakeRange(NSMaxRange(glyphsToShow)-1, 1)], attribs];
+  
+  [super drawGlyphsForGlyphRange:glyphsToShow atPoint:origin];
+}
+@end

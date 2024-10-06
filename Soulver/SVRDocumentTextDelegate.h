@@ -14,3 +14,7 @@
 -(void)textDidEndEditing:(NSNotification*)aNotification;
 
 @end
+
+@interface SVRLayoutManager: NSLayoutManager
+-(void)drawGlyphsForGlyphRange:(NSRange)glyphsToShow atPoint:(NSPoint)origin;
+@end
