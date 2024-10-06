@@ -92,7 +92,7 @@
   
   controller = (SVRDocumentWindowController*)[window delegate];
   
-  if (![controller isKindOfClass:[SVRDocumentWindowController class]]) {
+  if (controller && ![controller isKindOfClass:[SVRDocumentWindowController class]]) {
     [XPLog error:@"%@ __windowWillCloseNotification: %@", self, aNotification];
   }
   
