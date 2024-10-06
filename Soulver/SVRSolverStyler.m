@@ -51,28 +51,30 @@
                         value:[ud SVR_colorForOperator]
                         range:checkRange];
         } else {
-          check = [input attribute:SVR_stringForTag(SVRSolverTagExpressionSolution)
+          check = [input attribute:SVR_stringForTag(SVRSolverTagSolution)
                            atIndex:index
                     effectiveRange:&checkRange];
           if (check) {
-            if ([check isKindOfClass:[NSDecimalNumber class]]) {
-              [input addAttribute:NSForegroundColorAttributeName
-                            value:[ud SVR_colorForSolutionPrimary]
-                            range:checkRange];
-              [input addAttribute:NSBackgroundColorAttributeName
-                            value:[ud SVR_backgroundColorForSolutionPrimary]
-                            range:checkRange];
-            } else if ([check isKindOfClass:[NSNumber class]]) {
+            [input addAttribute:NSForegroundColorAttributeName
+                          value:[ud SVR_colorForSolutionPrimary]
+                          range:checkRange];
+            [input addAttribute:NSBackgroundColorAttributeName
+                          value:[ud SVR_backgroundColorForSolutionPrimary]
+                          range:checkRange];
+          } else {
+            check = [input attribute:SVR_stringForTag(SVRSolverTagSolutionError)
+                             atIndex:index
+                      effectiveRange:&checkRange];
+            if (check) {
               [input addAttribute:NSForegroundColorAttributeName
                             value:[NSColor orangeColor]
                             range:checkRange];
-            } else {
-              [XPLog pause:@"potentially unknown case"];
             }
           }
         }
       }
     }
+    
     if (XPIsNotFoundRange(checkRange)) {
       index += 1;
     } else {
@@ -83,13 +85,13 @@
 
 @end
 
-#import "SVRSolverSolutionTagger.h"
+#import "SVRSolverSolutionInserter.h"
 
 @implementation SVRSolverStyler (Tests)
 +(void)executeTests;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  NSMutableAttributedString *input = [SVRSolverSolutionTagger executeTests];
+  NSMutableAttributedString *input = [SVRSolverSolutionInserter executeTests];
   XPColor *output = nil;
   
   [XPLog alwys:@"SVRSolverStyler Tests: Starting"];
@@ -133,8 +135,26 @@
   NSAssert([output isEqual:[ud SVR_colorForNumeral]], @"");
   
   output = [input attribute:NSForegroundColorAttributeName atIndex:12 effectiveRange:NULL];
+  NSAssert([output isEqual:[ud SVR_colorForText]], @"");
+  
+  output = [input attribute:NSForegroundColorAttributeName atIndex:13 effectiveRange:NULL];
   NSAssert([output isEqual:[ud SVR_colorForSolutionPrimary]], @"");
-  output = [input attribute:NSBackgroundColorAttributeName atIndex:12 effectiveRange:NULL];
+  output = [input attribute:NSBackgroundColorAttributeName atIndex:13 effectiveRange:NULL];
+  NSAssert([output isEqual:[ud SVR_backgroundColorForSolutionPrimary]], @"");
+  
+  output = [input attribute:NSForegroundColorAttributeName atIndex:14 effectiveRange:NULL];
+  NSAssert([output isEqual:[ud SVR_colorForSolutionPrimary]], @"");
+  output = [input attribute:NSBackgroundColorAttributeName atIndex:14 effectiveRange:NULL];
+  NSAssert([output isEqual:[ud SVR_backgroundColorForSolutionPrimary]], @"");
+  
+  output = [input attribute:NSForegroundColorAttributeName atIndex:15 effectiveRange:NULL];
+  NSAssert([output isEqual:[ud SVR_colorForSolutionPrimary]], @"");
+  output = [input attribute:NSBackgroundColorAttributeName atIndex:15 effectiveRange:NULL];
+  NSAssert([output isEqual:[ud SVR_backgroundColorForSolutionPrimary]], @"");
+  
+  output = [input attribute:NSForegroundColorAttributeName atIndex:16 effectiveRange:NULL];
+  NSAssert([output isEqual:[ud SVR_colorForSolutionPrimary]], @"");
+  output = [input attribute:NSBackgroundColorAttributeName atIndex:16 effectiveRange:NULL];
   NSAssert([output isEqual:[ud SVR_backgroundColorForSolutionPrimary]], @"");
   
   [XPLog alwys:@"SVRSolverStyler Tests: Passed"];

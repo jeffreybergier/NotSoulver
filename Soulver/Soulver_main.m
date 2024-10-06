@@ -6,6 +6,7 @@
 #import "SVRLegacyRegex.h"
 #import "SVRSolverSolutionTagger.h"
 #import "SVRSolverScanner.h"
+#import "SVRSolverSolutionInserter.h"
 #import "SVRSolverExpressionTagger.h"
 #import "SVRSolverStyler.h"
 
@@ -31,6 +32,7 @@ int main(int argc, const char *argv[]) {
   [SVRSolver executeTests];
   [SVRSolverStyler executeTests];
   [SVRSolverScanner executeTests];
+  [SVRSolverSolutionInserter executeTests];
   [SVRSolverSolutionTagger executeTests];
   [SVRSolverExpressionTagger executeTests];
   [SVRLegacyRegex executeTests];

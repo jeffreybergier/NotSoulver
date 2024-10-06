@@ -9,36 +9,38 @@
             SVRDocumentTextDelegate.m, 
             SVRDocumentViewController.m, 
             "SVRDocumentViewController+Tests.m", 
-            SVRDocumentWindowController.m,
-            SVRLegacyRegex.m,
-            SVRMathString.m,
+            SVRDocumentWindowController.m, 
+            SVRLegacyRegex.m, 
+            SVRMathString.m, 
             "SVRMathString+Rendering.m", 
             "SVRMathString+Tests.m", 
             SVRSolver.m, 
-            SVRSolverExpressionTagger.m,
+            SVRSolverExpressionTagger.m, 
             SVRSolverScanner.m, 
             SVRSolverSolutionTagger.m, 
-            SVRSolverStyler.m
+            SVRSolverStyler.m, 
+            SVRSolverSolutionInserter.m
         ); 
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
         H_FILES = (
-            re.h,
-            SVRAppDelegate.h,
+            re.h, 
+            SVRAppDelegate.h, 
             SVRCrossPlatform.h, 
             SVRDocumentModelController.h, 
             SVRDocumentTextDelegate.h, 
             SVRDocumentViewController.h, 
             "SVRDocumentViewController+Tests.h", 
-            SVRDocumentWindowController.h,
-            SVRLegacyRegex.h,
-            SVRMathString.h,
+            SVRDocumentWindowController.h, 
+            SVRLegacyRegex.h, 
+            SVRMathString.h, 
             "SVRMathString+Rendering.h", 
             "SVRMathString+Tests.h", 
-            SVRSolver.h,
-            SVRSolverExpressionTagger.h,
+            SVRSolver.h, 
+            SVRSolverExpressionTagger.h, 
             SVRSolverScanner.h, 
             SVRSolverSolutionTagger.h, 
-            SVRSolverStyler.h
+            SVRSolverStyler.h, 
+            SVRSolverSolutionInserter.h
         ); 
         INTERFACES = (NEXTSTEP_Soulver.nib, NEXTSTEP_SVRDocument.nib); 
         OTHER_LINKED = (re.c, Soulver_main.m); 

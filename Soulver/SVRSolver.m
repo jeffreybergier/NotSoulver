@@ -10,6 +10,7 @@
 #import "SVRSolverStyler.h"
 #import "SVRSolverScanner.h"
 #import "SVRSolverSolutionTagger.h"
+#import "SVRSolverSolutionInserter.h"
 #import "SVRSolverExpressionTagger.h"
 
 NSNumber* SVR_numberForOperator(SVRSolverOperator operator)
@@ -48,6 +49,8 @@ NSString *SVR_stringForTag(SVRSolverTag tag)
     case SVRSolverTagOperator:           return @"kSVRSoulverTagOperatorKey";
     case SVRSolverTagExpression:         return @"kSVRSoulverTagExpressionKey";
     case SVRSolverTagExpressionSolution: return @"kSVRSolverTagExpressionSolutionKey";
+    case SVRSolverTagSolution:           return @"kSVRSolverTagSolutionKey";
+    case SVRSolverTagSolutionError:      return @"kSVRSolverTagSolutionErrorKey";
     case SVRSolverTagPreviousSolution:   return @"kSVRSolverTagPreviousSolutionKey";
     default:
       [XPLog error:@"SVR_stringForTagUnknown: %d", tag];
@@ -67,6 +70,10 @@ SVRSolverTag SVR_tagForString(NSString *string)
     return SVRSolverTagExpression;
   } else if ([string isEqualToString:SVR_stringForTag(SVRSolverTagExpressionSolution)]) {
     return SVRSolverTagExpressionSolution;
+  } else if ([string isEqualToString:SVR_stringForTag(SVRSolverTagSolution)]) {
+    return SVRSolverTagSolution;
+  } else if ([string isEqualToString:SVR_stringForTag(SVRSolverTagSolutionError)]) {
+    return SVRSolverTagSolutionError;
   } else if ([string isEqualToString:SVR_stringForTag(SVRSolverTagPreviousSolution)])   {
     return SVRSolverTagPreviousSolution;
   } else {
@@ -82,6 +89,7 @@ SVRSolverTag SVR_tagForString(NSString *string)
 {
   SVRSolverScanner *scanner = nil;
   [input retain];
+  [self __removedInsertedSolutionsInStorage:input];
   [self __removeAllAttributesInStorage:input];
   scanner = [SVRSolverScanner scannerWithString:[input string]];
   [SVRSolverExpressionTagger tagNumbersAtRanges:[scanner numberRanges]
@@ -97,7 +105,10 @@ SVRSolverTag SVR_tagForString(NSString *string)
 
 +(void)solveAnnotatedStorage:(NSMutableAttributedString*)input;
 {
+  NSArray *solutions = nil;
   [SVRSolverSolutionTagger tagSolutionsInAttributedString:input];
+  solutions = [SVRSolverSolutionInserter solutionsToInsertFromAttributedString:input];
+  [SVRSolverSolutionInserter insertSolutions:solutions inAttributedString:input];
 }
 
 +(void)colorAnnotatedAndSolvedStorage:(NSMutableAttributedString*)input;
@@ -106,6 +117,41 @@ SVRSolverTag SVR_tagForString(NSString *string)
 }
 
 // MARK: Private
+
++(void)__removedInsertedSolutionsInStorage:(NSMutableAttributedString*)input;
+{
+  id scanCheck = nil;
+  XPUInteger scanIndex = 0;
+  NSRange scanRange = XPNotFoundRange;
+  NSMutableArray *toRemove = [[NSMutableArray new] autorelease];
+  NSEnumerator *removeE = nil;
+  NSValue *removeNext = nil;
+  
+  // Scan
+  while (scanIndex < [input length]) {
+    scanCheck = [input attribute:SVR_stringForTag(SVRSolverTagSolution)
+                     atIndex:scanIndex
+              effectiveRange:&scanRange];
+    if (!scanCheck) {
+      scanCheck = [input attribute:SVR_stringForTag(SVRSolverTagSolutionError)
+                       atIndex:scanIndex
+                effectiveRange:&scanRange];
+    }
+    if (scanCheck) {
+      [toRemove addObject:[NSValue XP_valueWithRange:scanRange]];
+      scanIndex = NSMaxRange(scanRange);
+    } else {
+      scanIndex += 1;
+    }
+  }
+  
+  // Remove
+  removeE = [toRemove reverseObjectEnumerator];
+  while ((removeNext = [removeE nextObject])) {
+    [input deleteCharactersInRange:[removeNext XP_rangeValue]];
+  }
+}
+
 +(void)__removeAllAttributesInStorage:(NSMutableAttributedString*)input;
 {
   NSRange range = NSMakeRange(0, [input length]);

@@ -18,6 +18,10 @@ typedef enum {
   SVRSolverTagExpression,
   // Stores NSDecimalNumber with the solution for the expression
   SVRSolverTagExpressionSolution,
+  // Stores NSValue of the range of the expression
+  SVRSolverTagSolution,
+  // Stores NSValue of the range of the expression
+  SVRSolverTagSolutionError,
   // Stores NSDecimalNumber with the solution of the previous expression
   SVRSolverTagPreviousSolution,
 } SVRSolverTag;
@@ -44,6 +48,7 @@ SVRSolverOperator SVR_operatorForNumber(NSNumber *number);
 +(void)colorAnnotatedAndSolvedStorage:(NSMutableAttributedString*)input;
 
 // MARK: Private
++(void)__removedInsertedSolutionsInStorage:(NSMutableAttributedString*)input;
 +(void)__removeAllAttributesInStorage:(NSMutableAttributedString*)input;
 
 @end
