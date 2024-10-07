@@ -89,7 +89,7 @@
 -(NSValue*)nextObject;
 {
   NSRange range = [self nextMatch];
-  if (range.location == NSNotFound) {
+  if (XPIsNotFoundRange(range)) {
     return nil;
   } else {
     return [NSValue valueWithBytes:&range objCType:@encode(NSRange)];
@@ -242,9 +242,9 @@
 
 +(void)__executeTests_values;
 {
-  NSRange range;
-  NSValue *value;
-  SVRLegacyRegex *regex;
+  NSRange range = XPNotFoundRange;
+  NSValue *value = nil;
+  SVRLegacyRegex *regex = nil;
   
   // MARK: Test basic string matching
   regex = [SVRLegacyRegex regexWithString:@"this is a verb for other cool verbs" pattern:@"verb"];

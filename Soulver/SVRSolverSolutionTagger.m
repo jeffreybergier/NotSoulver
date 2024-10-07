@@ -39,10 +39,13 @@
                      value:solution
                      range:expressionRange];
     } else {
-      if (error == nil) { [XPLog error:@"tagSolutionsInAttributedString"]; }
-      [string addAttribute:SVR_stringForTag(SVRSolverTagExpressionSolution)
-                     value:error
-                     range:expressionRange];
+      if (error != nil) {
+        [string addAttribute:SVR_stringForTag(SVRSolverTagExpressionSolution)
+                       value:error
+                       range:expressionRange];
+      } else {
+        [XPLog error:@"tagSolutionsInAttributedString"];
+      }
     }
     index = NSMaxRange(expressionRange);
   }
@@ -199,7 +202,7 @@
     operatorRange.length = 1;
   }
   
-  if (![operators member:operator]) {
+  if (operator == nil || ![operators member:operator]) {
     // Not an error, just no math to do
     // in this string with this operator set
     return nil;

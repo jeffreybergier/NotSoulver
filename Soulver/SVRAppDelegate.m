@@ -116,6 +116,7 @@
 {
   XPUInteger unsavedIndex = NSNotFound;
   NSString *savedFilename = [document filename];
+  if (!document) { [XPLog error:@"__documentWillClose: document was nil"]; return; }
   
   [document retain];
   unsavedIndex = [[self openUnsaved] indexOfObject:document];

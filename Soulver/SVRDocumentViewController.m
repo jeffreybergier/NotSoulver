@@ -118,7 +118,7 @@
          object:[self model]];
   
   textStorage = [[self textView] textStorage];
-  layoutManager = [[SVRLayoutManager alloc] init];
+  layoutManager = [[[SVRLayoutManager alloc] init] autorelease];
   [layoutManager setTextStorage:textStorage];
   [textStorage setDelegate:[self textDelegate]];
   [[[self textView] textContainer] replaceLayoutManager:layoutManager];
