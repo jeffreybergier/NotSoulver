@@ -93,7 +93,7 @@
   controller = (SVRDocumentWindowController*)[window delegate];
   
   if (controller && ![controller isKindOfClass:[SVRDocumentWindowController class]]) {
-    [XPLog error:@"%@ __windowWillCloseNotification: %@", self, aNotification];
+    [XPLog debug:@"%@ __windowWillCloseNotification: %@", self, aNotification];
   }
   
   [self __documentWillClose:controller];
@@ -115,10 +115,11 @@
 -(void)__documentWillClose:(SVRDocumentWindowController*)document;
 {
   XPUInteger unsavedIndex = NSNotFound;
-  NSString *savedFilename = [document filename];
-  if (!document) { [XPLog error:@"__documentWillClose: document was nil"]; return; }
-  
+  NSString *savedFilename = nil;
+  if (!document) { [XPLog debug:@"__documentWillClose: document was nil"]; return; }
   [document retain];
+
+  savedFilename = [document filename];
   unsavedIndex = [[self openUnsaved] indexOfObject:document];
   if (unsavedIndex != NSNotFound) {
     [[self openUnsaved] removeObjectAtIndex:unsavedIndex];
@@ -127,6 +128,7 @@
     [[self openFiles] removeObjectForKey:savedFilename];
   }
   [XPLog debug:@"%@ closedWindow: %lu closedFile: %@", self, [[document window] windowNumber], savedFilename];
+  
   [document autorelease];
 }
 
