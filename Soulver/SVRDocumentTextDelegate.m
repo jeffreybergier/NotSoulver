@@ -38,13 +38,55 @@
 @implementation SVRLayoutManager
 -(void)drawGlyphsForGlyphRange:(NSRange)glyphsToShow atPoint:(NSPoint)origin;
 {
-  NSDictionary *attribs = nil;
-  [XPLog debug:@"drawGlyphsForGlyphRange:{%lu,%lu} point:{%f,%f}",
-   glyphsToShow.location, glyphsToShow.length, origin.x, origin.y];
+  NSRange charRange = XPNotFoundRange;
+  NSString *character = nil;
+  NSRect glyphRect = NSZeroRect;
+  XPUInteger glyphIndex;
   
-  attribs = [[self textStorage] attributesAtIndex:NSMaxRange(glyphsToShow)-1 effectiveRange:NULL];
-  [XPLog debug:@"drawGlyphsForGlyphRange: %@ %@", [[[self textStorage] string] SVR_descriptionHighlightingRange:NSMakeRange(NSMaxRange(glyphsToShow)-1, 1)], attribs];
-  
+  for (glyphIndex = glyphsToShow.location; glyphIndex < NSMaxRange(glyphsToShow); glyphIndex++) {
+      charRange = [self characterRangeForGlyphRange:NSMakeRange(glyphIndex, 1) actualGlyphRange:NULL];
+      character = [[self textStorage].string substringWithRange:charRange];
+      
+      if ([character isEqualToString:@"="]) {
+          // Custom drawing for "*"
+          glyphRect = [self boundingRectForGlyphRange:NSMakeRange(glyphIndex, 1) inTextContainer:[self textContainerForGlyphAtIndex:glyphIndex effectiveRange:NULL]];
+          glyphRect = NSOffsetRect(glyphRect, origin.x, origin.y);
+          [[NSColor redColor] setFill];
+          [[NSBezierPath bezierPathWithOvalInRect:glyphRect] fill];
+      }
+  }
   [super drawGlyphsForGlyphRange:glyphsToShow atPoint:origin];
 }
 @end
+
+/*
+ More from ChatGPT
+ - (void)drawGlyphsForGlyphRange:(NSRange)glyphsToShow atPoint:(NSPoint)origin {
+     for (NSUInteger glyphIndex = glyphsToShow.location; glyphIndex < NSMaxRange(glyphsToShow); glyphIndex++) {
+         NSRange charRange = [self characterRangeForGlyphRange:NSMakeRange(glyphIndex, 1) actualGlyphRange:NULL];
+         NSString *character = [[self textStorage] string]; // Old API without modern accessors
+         character = [character substringWithRange:charRange];
+
+         if ([character isEqualToString:@"*"]) {
+             // Custom drawing for "*"
+             NSRect glyphRect = [self boundingRectForGlyphRange:NSMakeRange(glyphIndex, 1)
+                                                inTextContainer:[self textContainerForGlyphAtIndex:glyphIndex effectiveRange:NULL]];
+             glyphRect = NSOffsetRect(glyphRect, origin.x, origin.y);
+
+             // Use NSColor's set method (older API)
+             [[NSColor redColor] set];  // This sets both the fill and stroke colors in older API
+
+             // Manually draw the oval (no bezier path `fill` in older API)
+             NSBezierPath *path = [NSBezierPath bezierPathWithOvalInRect:glyphRect];
+             [path fill];  // In older APIs, this might not exist. So, instead:
+
+             // Fallback method for older APIs without NSBezierPath's fill:
+             [[NSGraphicsContext currentContext] saveGraphicsState];
+             [[NSColor redColor] set];  // Again, ensure color is set
+             NSRectFill(glyphRect);     // Use NSRectFill as a fallback for basic shape drawing
+             [[NSGraphicsContext currentContext] restoreGraphicsState];
+         }
+     }
+     [super drawGlyphsForGlyphRange:glyphsToShow atPoint:origin];
+ }
+ */
