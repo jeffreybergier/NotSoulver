@@ -41,18 +41,40 @@
   NSRange charRange = XPNotFoundRange;
   NSString *character = nil;
   NSRect glyphRect = NSZeroRect;
+  //NSBezierPath *path = nil;
   XPUInteger glyphIndex;
   
   for (glyphIndex = glyphsToShow.location; glyphIndex < NSMaxRange(glyphsToShow); glyphIndex++) {
       charRange = [self characterRangeForGlyphRange:NSMakeRange(glyphIndex, 1) actualGlyphRange:NULL];
-      character = [[self textStorage].string substringWithRange:charRange];
+      character = [[[self textStorage] string] substringWithRange:charRange];
       
       if ([character isEqualToString:@"="]) {
-          // Custom drawing for "*"
-          glyphRect = [self boundingRectForGlyphRange:NSMakeRange(glyphIndex, 1) inTextContainer:[self textContainerForGlyphAtIndex:glyphIndex effectiveRange:NULL]];
-          glyphRect = NSOffsetRect(glyphRect, origin.x, origin.y);
-          [[NSColor redColor] setFill];
-          [[NSBezierPath bezierPathWithOvalInRect:glyphRect] fill];
+        // Custom drawing for "*"
+        glyphRect = [self boundingRectForGlyphRange:NSMakeRange(glyphIndex, 1)
+                                    inTextContainer:[self textContainerForGlyphAtIndex:glyphIndex effectiveRange:NULL]];
+        glyphRect = NSOffsetRect(glyphRect, origin.x, origin.y);
+
+        // Draw with postscript
+        // Draw box
+        PSsetgray(0.3);
+        PSrectstroke(glyphRect.origin.x,
+                     glyphRect.origin.y,
+                     glyphRect.size.width/1.2,
+                     glyphRect.size.height/1.2);
+        // Draw Line
+        // TODO: Figure out how to do this drawing
+        PSsetgray(0.0);
+        PSmoveto(glyphRect.origin.x, glyphRect.origin.y);
+        PSlineto(glyphRect.origin.x+glyphRect.size.width,
+                 glyphRect.origin.y+glyphRect.size.height);
+        PSstroke();
+        
+        // Draw text
+        // PSmoveto(glyphRect.origin.x, glyphRect.origin.y);
+        // PSshow("Hello, PostScript World");
+        
+        // Flush the PostScript drawing commands to render
+        PSflush();
       }
   }
   [super drawGlyphsForGlyphRange:glyphsToShow atPoint:origin];
