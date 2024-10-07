@@ -47,6 +47,8 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs);
 @end
 
 @interface XPLog: NSObject
+// TODO: Add these Macros
+// FOUNDATION_EXPORT void NSLog(NSString *format, ...) NS_FORMAT_FUNCTION(1,2) NS_NO_TAIL_CALL;
 /// Always does an NSLog
 +(void)alwys:(NSString*)formatString, ...;
 /// NSLog when in DEBUG or EXTRA flag found
