@@ -1,5 +1,6 @@
 #import "SVRDocumentTextDelegate.h"
 #import "SVRCrossPlatform.h"
+#import "SVRSolver.h"
 
 @implementation SVRDocumentTextDelegate
 
@@ -58,28 +59,43 @@
   return self;
 }
 
--(void)drawGlyphsForGlyphRange:(NSRange)glyphsToShow atPoint:(NSPoint)origin;
+-(void)drawGlyphsForGlyphRange:(NSRange)glyphRange atPoint:(NSPoint)origin;
 {
-  NSRange charRange = XPNotFoundRange;
-  NSString *character = nil;
-  NSRect glyphRect = NSZeroRect;
-  XPUInteger glyphIndex = 0;
+  NSRange storageRange = [self characterRangeForGlyphRange:glyphRange actualGlyphRange:NULL];
+  NSArray *solutionRanges = [self rangesOfSolutionsInStorage];
+  NSEnumerator *e = [solutionRanges objectEnumerator];
+  NSValue *next = nil;
+  NSRange solutionRange = XPNotFoundRange;
+  NSRange solutionGlyphRange = XPNotFoundRange;
+  NSDecimalNumber *solution = nil;
+  NSRect rect = NSZeroRect;
   
-  for (glyphIndex = glyphsToShow.location; glyphIndex < NSMaxRange(glyphsToShow); glyphIndex++) {
-      charRange = [self characterRangeForGlyphRange:NSMakeRange(glyphIndex, 1) actualGlyphRange:NULL];
-      character = [[[self textStorage] string] substringWithRange:charRange];
-      
-      if ([character isEqualToString:@"#"]) {
-        glyphRect = [self boundingRectForGlyphRange:NSMakeRange(glyphIndex, 1)
-                                    inTextContainer:[self textContainerForGlyphAtIndex:glyphIndex effectiveRange:NULL]];
-        glyphRect = NSOffsetRect(glyphRect, origin.x, origin.y);
-        NSDrawButton(glyphRect, glyphRect);
-        [[NSString stringWithFormat:@"553.678"] drawAtPoint:NSMakePoint(glyphRect.origin.x+glyphRect.size.width,
-                                                                        glyphRect.origin.y)
-                                             withAttributes:[self solutionFontAttributes]];
-      }
+  while ((next = [e nextObject])) {
+    if (XPContainsRange(storageRange, [next XP_rangeValue])) {
+      solutionRange = [next XP_rangeValue];
+      break;
+    }
   }
-  [super drawGlyphsForGlyphRange:glyphsToShow atPoint:origin];
+  
+  if (XPIsNotFoundRange(solutionRange)) {
+    [super drawGlyphsForGlyphRange:glyphRange atPoint:origin];
+    return;
+  }
+  
+  solution = [[self textStorage] attribute:SVR_stringForTag(SVRSolverTagSolution)
+                                   atIndex:solutionRange.location
+                            effectiveRange:NULL];
+  if (![solution isKindOfClass:[NSDecimalNumber class]]) {
+    [XPLog error:@"unexpected solution: %@", solution];
+    return;
+  }
+  
+  solutionGlyphRange = [self glyphRangeForCharacterRange:solutionRange actualCharacterRange:NULL];
+  rect = [self boundingRectForGlyphRange:solutionGlyphRange
+                         inTextContainer:[self textContainerForGlyphAtIndex:solutionGlyphRange.location effectiveRange:NULL]];
+  [XPLog pause:@"Found solution:%@ forRect:%@", solution, NSStringFromRect(rect)];
+  
+  [super drawGlyphsForGlyphRange:glyphRange atPoint:origin];
 }
 
 // TODO: Return length of the characters with with a solution
@@ -87,6 +103,35 @@
 {
   NSRect output = [super boundingRectForGlyphRange:glyphRange inTextContainer:container];
   [XPLog debug:@"boundingRectForGlyphRange:<%@> <%@>", NSStringFromRange(glyphRange), NSStringFromRect(output)];
+  return output;
+}
+
+-(NSArray*)rangesOfSolutionsInStorage;
+{
+  id check = nil;
+  XPUInteger index = 0;
+  NSRange range = XPNotFoundRange;
+  NSAttributedString *storage = [self textStorage];
+  NSMutableArray *output = [[NSMutableArray new] autorelease];
+  
+  while (index < [storage length]) {
+    check = [storage attribute:SVR_stringForTag(SVRSolverTagExpressionSolution)
+                       atIndex:index
+                effectiveRange:&range];
+    if (!check) {
+      // TODO: Clean up ENUM
+      // TODO: Add in error handling
+      // check = [storage attribute:SVR_stringForTag(SVRSolverTagExpressionSolutionError)
+                         // atIndex:index
+                  // effectiveRange:&range];
+    }
+    if (check) {
+      [output addObject:[NSValue XP_valueWithRange:range]];
+      index = NSMaxRange(range);
+    } else {
+      index += 1;
+    }
+  }
   return output;
 }
 
