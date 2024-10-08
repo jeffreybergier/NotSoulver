@@ -30,11 +30,11 @@ int main(int argc, const char *argv[]) {
   [[NSUserDefaults standardUserDefaults] SVR_configure];
   [XPLog alwys:@"<Main> Unit Tests: STARTING"];
   [SVRSolver executeTests];
-  [SVRSolverStyler executeTests];
   [SVRSolverScanner executeTests];
 //[SVRSolverSolutionInserter executeTests];
   [SVRSolverSolutionTagger executeTests];
   [SVRSolverExpressionTagger executeTests];
+  [SVRSolverStyler executeTests];
   [SVRLegacyRegex executeTests];
   [SVRMathString executeTests];
   [SVRDocumentViewController executeTests];

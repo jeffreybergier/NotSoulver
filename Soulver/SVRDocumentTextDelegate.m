@@ -115,16 +115,9 @@
   NSMutableArray *output = [[NSMutableArray new] autorelease];
   
   while (index < [storage length]) {
-    check = [storage attribute:SVR_stringForTag(SVRSolverTagExpressionSolution)
+    check = [storage attribute:SVR_stringForTag(SVRSolverTagSolution)
                        atIndex:index
                 effectiveRange:&range];
-    if (!check) {
-      // TODO: Clean up ENUM
-      // TODO: Add in error handling
-      // check = [storage attribute:SVR_stringForTag(SVRSolverTagExpressionSolutionError)
-                         // atIndex:index
-                  // effectiveRange:&range];
-    }
     if (check) {
       [output addObject:[NSValue XP_valueWithRange:range]];
       index = NSMaxRange(range);

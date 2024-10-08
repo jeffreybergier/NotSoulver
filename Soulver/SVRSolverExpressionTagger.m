@@ -108,7 +108,7 @@
   [SVRSolverExpressionTagger tagBracketsAtRanges:ranges inAttributedString:input];
   
   // Expressions
-  ranges = [NSSet setWithObject:[NSValue XP_valueWithRange:NSMakeRange(0, 13)]];
+  ranges = [NSSet setWithObject:[NSValue XP_valueWithRange:NSMakeRange(0, 12)]];
   
   [SVRSolverExpressionTagger tagExpressionsAtRanges:ranges inAttributedString:input];
   
@@ -118,89 +118,87 @@
   NSAssert([[output objectForKey:SVR_stringForTag(SVRSolverTagBracket)]
             isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(0, 1)]], @"");
   NSAssert([[output objectForKey:SVR_stringForTag(SVRSolverTagExpression)]
-            isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(0, 13)]], @"");
+            isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(0, 12)]], @"");
   
   output = [input attributesAtIndex:1 effectiveRange:NULL];
   NSAssert([output count] == 2, @"");
   NSAssert([[output objectForKey:SVR_stringForTag(SVRSolverTagNumber)]
             isEqualToNumber:[NSDecimalNumber decimalNumberWithString:@"-3.2"]], @"");
   NSAssert([[output objectForKey:SVR_stringForTag(SVRSolverTagExpression)]
-            isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(0, 13)]], @"");
+            isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(0, 12)]], @"");
   
   output = [input attributesAtIndex:2 effectiveRange:NULL];
   NSAssert([output count] == 2, @"");
   NSAssert([[output objectForKey:SVR_stringForTag(SVRSolverTagNumber)]
             isEqualToNumber:[NSDecimalNumber decimalNumberWithString:@"-3.2"]], @"");
   NSAssert([[output objectForKey:SVR_stringForTag(SVRSolverTagExpression)]
-            isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(0, 13)]], @"");
+            isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(0, 12)]], @"");
   
   output = [input attributesAtIndex:3 effectiveRange:NULL];
   NSAssert([output count] == 2, @"");
   NSAssert([[output objectForKey:SVR_stringForTag(SVRSolverTagNumber)]
             isEqualToNumber:[NSDecimalNumber decimalNumberWithString:@"-3.2"]], @"");
   NSAssert([[output objectForKey:SVR_stringForTag(SVRSolverTagExpression)]
-            isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(0, 13)]], @"");
+            isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(0, 12)]], @"");
   
   output = [input attributesAtIndex:4 effectiveRange:NULL];
   NSAssert([output count] == 2, @"");
   NSAssert([[output objectForKey:SVR_stringForTag(SVRSolverTagNumber)]
             isEqualToNumber:[NSDecimalNumber decimalNumberWithString:@"-3.2"]], @"");
   NSAssert([[output objectForKey:SVR_stringForTag(SVRSolverTagExpression)]
-            isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(0, 13)]], @"");
+            isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(0, 12)]], @"");
   
   output = [input attributesAtIndex:5 effectiveRange:NULL];
   NSAssert([output count] == 2, @"");
   NSAssert([[output objectForKey:SVR_stringForTag(SVRSolverTagOperator)]
             isEqualToNumber:[NSNumber XP_numberWithInteger:SVRSolverOperatorAdd]], @"");
   NSAssert([[output objectForKey:SVR_stringForTag(SVRSolverTagExpression)]
-            isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(0, 13)]], @"");
+            isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(0, 12)]], @"");
   
   output = [input attributesAtIndex:6 effectiveRange:NULL];
   NSAssert([output count] == 2, @"");
   NSAssert([[output objectForKey:SVR_stringForTag(SVRSolverTagNumber)]
             isEqualToNumber:[NSDecimalNumber decimalNumberWithString:@"4"]], @"");
   NSAssert([[output objectForKey:SVR_stringForTag(SVRSolverTagExpression)]
-            isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(0, 13)]], @"");
+            isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(0, 12)]], @"");
   
   output = [input attributesAtIndex:7 effectiveRange:NULL];
   NSAssert([output count] == 2, @"");
   NSAssert([[output objectForKey:SVR_stringForTag(SVRSolverTagBracket)]
             isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(7, 1)]], @"");
   NSAssert([[output objectForKey:SVR_stringForTag(SVRSolverTagExpression)]
-            isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(0, 13)]], @"");
+            isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(0, 12)]], @"");
   
   output = [input attributesAtIndex:8 effectiveRange:NULL];
   NSAssert([output count] == 2, @"");
   NSAssert([[output objectForKey:SVR_stringForTag(SVRSolverTagOperator)]
             isEqualToNumber:[NSNumber XP_numberWithInteger:SVRSolverOperatorDivide]], @"");
   NSAssert([[output objectForKey:SVR_stringForTag(SVRSolverTagExpression)]
-            isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(0, 13)]], @"");
+            isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(0, 12)]], @"");
   
   output = [input attributesAtIndex:9 effectiveRange:NULL];
   NSAssert([output count] == 2, @"");
   NSAssert([[output objectForKey:SVR_stringForTag(SVRSolverTagNumber)]
             isEqualToNumber:[NSDecimalNumber decimalNumberWithString:@"7.3"]], @"");
   NSAssert([[output objectForKey:SVR_stringForTag(SVRSolverTagExpression)]
-            isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(0, 13)]], @"");
+            isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(0, 12)]], @"");
   
   output = [input attributesAtIndex:10 effectiveRange:NULL];
   NSAssert([output count] == 2, @"");
   NSAssert([[output objectForKey:SVR_stringForTag(SVRSolverTagNumber)]
             isEqualToNumber:[NSDecimalNumber decimalNumberWithString:@"7.3"]], @"");
   NSAssert([[output objectForKey:SVR_stringForTag(SVRSolverTagExpression)]
-            isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(0, 13)]], @"");
+            isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(0, 12)]], @"");
   
   output = [input attributesAtIndex:11 effectiveRange:NULL];
   NSAssert([output count] == 2, @"");
   NSAssert([[output objectForKey:SVR_stringForTag(SVRSolverTagNumber)]
             isEqualToNumber:[NSDecimalNumber decimalNumberWithString:@"7.3"]], @"");
   NSAssert([[output objectForKey:SVR_stringForTag(SVRSolverTagExpression)]
-            isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(0, 13)]], @"");
+            isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(0, 12)]], @"");
   
   output = [input attributesAtIndex:12 effectiveRange:NULL];
-  NSAssert([output count] == 1, @"");
-  NSAssert([[output objectForKey:SVR_stringForTag(SVRSolverTagExpression)]
-            isEqualToValue:[NSValue XP_valueWithRange:NSMakeRange(0, 13)]], @"");
+  NSAssert([output count] == 0, @"");
   
   [XPLog alwys:@"SVRExpressionTagger Tests: Passed"];
   return input;

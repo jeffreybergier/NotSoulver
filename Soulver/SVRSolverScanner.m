@@ -175,14 +175,19 @@
 
 -(void)__populateExpressions;
 {
-  NSValue *value;
+  // TODO: Why isn't this being called?
+  NSRange range = XPNotFoundRange;
+  NSValue *value = nil;
   NSMutableSet *output = [[NSMutableSet new] autorelease];
   SVRLegacyRegex *regex = [SVRLegacyRegex regexWithString:_string
                                                   pattern:@"[\\d\\.\\^\\*\\-\\+\\/\\(\\)]+\\="];
   NSAssert(!_expressions, @"This is a lazy init method, it assumes _expressions is NIL");
   while ((value = [regex nextObject])) {
-    [XPLog extra:@"<=> %@", [_string SVR_descriptionHighlightingRange:[value XP_rangeValue]]];
-    [output addObject:value];
+    // Trim the = sign off
+    range = [value XP_rangeValue];
+    range.length -= 1;
+    [XPLog extra:@"<=> %@", [_string SVR_descriptionHighlightingRange:range]];
+    [output addObject:[NSValue XP_valueWithRange:range]];
   }
   _expressions = [output copy];
 }
@@ -307,9 +312,9 @@
   // MARK: Test 100+200+300+400+500+600=
   input = @"100+200+300+400+500+600=";
   expected = [NSSet setWithObjects:
-              [NSValue XP_valueWithRange:NSMakeRange(0, 3)],
-              [NSValue XP_valueWithRange:NSMakeRange(4, 3)],
-              [NSValue XP_valueWithRange:NSMakeRange(8, 3)],
+              [NSValue XP_valueWithRange:NSMakeRange( 0, 3)],
+              [NSValue XP_valueWithRange:NSMakeRange( 4, 3)],
+              [NSValue XP_valueWithRange:NSMakeRange( 8, 3)],
               [NSValue XP_valueWithRange:NSMakeRange(12, 3)],
               [NSValue XP_valueWithRange:NSMakeRange(16, 3)],
               [NSValue XP_valueWithRange:NSMakeRange(20, 3)],
@@ -320,8 +325,8 @@
   // MARK: Test 100+200+300+400+500+600=
   input = @"10.0+20.0+30.0+40.0+50.0+60.0=";
   expected = [NSSet setWithObjects:
-              [NSValue XP_valueWithRange:NSMakeRange(0, 4)],
-              [NSValue XP_valueWithRange:NSMakeRange(5, 4)],
+              [NSValue XP_valueWithRange:NSMakeRange( 0, 4)],
+              [NSValue XP_valueWithRange:NSMakeRange( 5, 4)],
               [NSValue XP_valueWithRange:NSMakeRange(10, 4)],
               [NSValue XP_valueWithRange:NSMakeRange(15, 4)],
               [NSValue XP_valueWithRange:NSMakeRange(20, 4)],
@@ -333,9 +338,9 @@
   // MARK: Test -2.5+-75/90*-3.0^8=
   input = @"-2.5+-75/90*-3.0^8=";
   expected = [NSSet setWithObjects:
-              [NSValue XP_valueWithRange:NSMakeRange(0, 4)],
-              [NSValue XP_valueWithRange:NSMakeRange(5, 3)],
-              [NSValue XP_valueWithRange:NSMakeRange(9, 2)],
+              [NSValue XP_valueWithRange:NSMakeRange( 0, 4)],
+              [NSValue XP_valueWithRange:NSMakeRange( 5, 3)],
+              [NSValue XP_valueWithRange:NSMakeRange( 9, 2)],
               [NSValue XP_valueWithRange:NSMakeRange(12, 5)], // TODO: This is wrong!!! 5→4
               [NSValue XP_valueWithRange:NSMakeRange(17, 1)],
               nil];
@@ -436,17 +441,19 @@
   NSSet *output = nil;
   NSSet *expected = nil;
   
+  // TODO: Keep fixing tests
+  
   // MARK: Test 1
   input = @"200=";
-  expected = [NSSet setWithObject:[NSValue XP_valueWithRange:NSMakeRange(0, 4)]];
+  expected = [NSSet setWithObject:[NSValue XP_valueWithRange:NSMakeRange(0, 3)]];
   output = [[SVRSolverScanner scannerWithString:input] expressionRanges];
   NSAssert([output isEqualToSet:expected], @"");
   
   // MARK: Test 2
   input = @"200=400=";
   expected = [NSSet setWithObjects:
-              [NSValue XP_valueWithRange:NSMakeRange(0, 4)],
-              [NSValue XP_valueWithRange:NSMakeRange(4, 4)],
+              [NSValue XP_valueWithRange:NSMakeRange(0, 3)],
+              [NSValue XP_valueWithRange:NSMakeRange(4, 3)],
               nil];
   output = [[SVRSolverScanner scannerWithString:input] expressionRanges];
   NSAssert([output isEqualToSet:expected], @"");
@@ -454,8 +461,8 @@
   // MARK: Test 3
   input = @"1+2-3*4/5^6=7^8/9*10-11+12=";
   expected = [NSSet setWithObjects:
-              [NSValue XP_valueWithRange:NSMakeRange(0, 12)],
-              [NSValue XP_valueWithRange:NSMakeRange(12, 15)],
+              [NSValue XP_valueWithRange:NSMakeRange(0, 11)],
+              [NSValue XP_valueWithRange:NSMakeRange(12, 14)],
               nil];
   output = [[SVRSolverScanner scannerWithString:input] expressionRanges];
   NSAssert([output isEqualToSet:expected], @"");
@@ -463,9 +470,9 @@
   // MARK: Test 4
   input = @"/*This*/2+3=/*That*/4+5=/*Other*/6+7=";
   expected = [NSSet setWithObjects:
-              [NSValue XP_valueWithRange:NSMakeRange(6, 6)],
-              [NSValue XP_valueWithRange:NSMakeRange(18, 6)],
-              [NSValue XP_valueWithRange:NSMakeRange(31, 6)],
+              [NSValue XP_valueWithRange:NSMakeRange(6, 5)],
+              [NSValue XP_valueWithRange:NSMakeRange(18, 5)],
+              [NSValue XP_valueWithRange:NSMakeRange(31, 5)],
               nil];
   output = [[SVRSolverScanner scannerWithString:input] expressionRanges];
   NSAssert([output isEqualToSet:expected], @"");

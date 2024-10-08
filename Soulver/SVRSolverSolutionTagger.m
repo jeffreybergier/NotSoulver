@@ -16,6 +16,7 @@
   id attribute = nil;
   XPUInteger index = 0;
   NSRange expressionRange = XPNotFoundRange;
+  NSRange solutionRange = XPNotFoundRange; // range of the equal sign
   NSDecimalNumber *solution = nil;
   NSNumber *error = nil;
   
@@ -26,26 +27,24 @@
                    effectiveRange:NULL];
     if (!attribute) { index += 1; continue; }
     expressionRange = [attribute XP_rangeValue];
+    solutionRange = NSMakeRange(NSMaxRange(expressionRange), 1);
     if (solution) {
       // For previous solution, add it to the string in case it needs it
       [string addAttribute:SVR_stringForTag(SVRSolverTagPreviousSolution)
                      value:solution
-                     range:expressionRange];
+                     range:solutionRange];
     }
     solution = [self __solutionForExpression:[string attributedSubstringFromRange:expressionRange]
                                        error:&error];
+    [XPLog extra:@"=: %@←%@", [[string string] SVR_descriptionHighlightingRange:solutionRange], solution];
     if (solution) {
-      [string addAttribute:SVR_stringForTag(SVRSolverTagExpressionSolution)
+      [string addAttribute:SVR_stringForTag(SVRSolverTagSolution)
                      value:solution
-                     range:expressionRange];
+                     range:solutionRange];
     } else {
-      if (error != nil) {
-        [string addAttribute:SVR_stringForTag(SVRSolverTagExpressionSolution)
-                       value:error
-                       range:expressionRange];
-      } else {
-        [XPLog error:@"tagSolutionsInAttributedString"];
-      }
+      [string addAttribute:SVR_stringForTag(SVRSolverTagSolution)
+                     value:error
+                     range:solutionRange];
     }
     index = NSMaxRange(expressionRange);
   }
@@ -280,8 +279,8 @@
   NSMutableAttributedString *taggedUserInput = [SVRSolverExpressionTagger executeTests];
   [XPLog alwys:@"SVRSolverSolutionTagger Tests: Starting"];
   [SVRSolverSolutionTagger tagSolutionsInAttributedString:taggedUserInput];
-  output = [taggedUserInput attribute:SVR_stringForTag(SVRSolverTagExpressionSolution)
-                              atIndex:0
+  output = [taggedUserInput attribute:SVR_stringForTag(SVRSolverTagSolution)
+                              atIndex:12
                        effectiveRange:NULL];
   NSAssert([expected isEqualToNumber:output], @"");
   [XPLog alwys:@"SVRSolverSolutionTagger Tests: Passed"];

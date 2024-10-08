@@ -48,9 +48,7 @@ NSString *SVR_stringForTag(SVRSolverTag tag)
     case SVRSolverTagBracket:            return @"kSVRSoulverTagBracketKey";
     case SVRSolverTagOperator:           return @"kSVRSoulverTagOperatorKey";
     case SVRSolverTagExpression:         return @"kSVRSoulverTagExpressionKey";
-    case SVRSolverTagExpressionSolution: return @"kSVRSolverTagExpressionSolutionKey";
     case SVRSolverTagSolution:           return @"kSVRSolverTagSolutionKey";
-    case SVRSolverTagSolutionError:      return @"kSVRSolverTagSolutionErrorKey";
     case SVRSolverTagPreviousSolution:   return @"kSVRSolverTagPreviousSolutionKey";
     default:
       [XPLog error:@"SVR_stringForTagUnknown: %d", tag];
@@ -60,21 +58,17 @@ NSString *SVR_stringForTag(SVRSolverTag tag)
 
 SVRSolverTag SVR_tagForString(NSString *string)
 {
-  if        ([string isEqualToString:SVR_stringForTag(SVRSolverTagNumber)])             {
+  if        ([string isEqualToString:SVR_stringForTag(SVRSolverTagNumber)])           {
     return SVRSolverTagNumber;
-  } else if ([string isEqualToString:SVR_stringForTag(SVRSolverTagBracket)])            {
+  } else if ([string isEqualToString:SVR_stringForTag(SVRSolverTagBracket)])          {
     return SVRSolverTagBracket;
-  } else if ([string isEqualToString:SVR_stringForTag(SVRSolverTagOperator)])           {
+  } else if ([string isEqualToString:SVR_stringForTag(SVRSolverTagOperator)])         {
     return SVRSolverTagOperator;
-  } else if ([string isEqualToString:SVR_stringForTag(SVRSolverTagExpression)])         {
+  } else if ([string isEqualToString:SVR_stringForTag(SVRSolverTagExpression)])       {
     return SVRSolverTagExpression;
-  } else if ([string isEqualToString:SVR_stringForTag(SVRSolverTagExpressionSolution)]) {
-    return SVRSolverTagExpressionSolution;
-  } else if ([string isEqualToString:SVR_stringForTag(SVRSolverTagSolution)]) {
+  } else if ([string isEqualToString:SVR_stringForTag(SVRSolverTagSolution)])         {
     return SVRSolverTagSolution;
-  } else if ([string isEqualToString:SVR_stringForTag(SVRSolverTagSolutionError)]) {
-    return SVRSolverTagSolutionError;
-  } else if ([string isEqualToString:SVR_stringForTag(SVRSolverTagPreviousSolution)])   {
+  } else if ([string isEqualToString:SVR_stringForTag(SVRSolverTagPreviousSolution)]) {
     return SVRSolverTagPreviousSolution;
   } else {
     [XPLog error:@"SVR_tagForStringUnknown: %@", string];
@@ -89,7 +83,6 @@ SVRSolverTag SVR_tagForString(NSString *string)
 {
   SVRSolverScanner *scanner = nil;
   [input retain];
-  [self __removedInsertedSolutionsInStorage:input];
   [self __removeAllAttributesInStorage:input];
   scanner = [SVRSolverScanner scannerWithString:[input string]];
   [SVRSolverExpressionTagger tagNumbersAtRanges:[scanner numberRanges]
@@ -118,49 +111,15 @@ SVRSolverTag SVR_tagForString(NSString *string)
 
 // MARK: Private
 
-+(void)__removedInsertedSolutionsInStorage:(NSMutableAttributedString*)input;
-{
-  id scanCheck = nil;
-  XPUInteger scanIndex = 0;
-  NSRange scanRange = XPNotFoundRange;
-  NSMutableArray *toRemove = [[NSMutableArray new] autorelease];
-  NSEnumerator *removeE = nil;
-  NSValue *removeNext = nil;
-  
-  // Scan
-  while (scanIndex < [input length]) {
-    scanCheck = [input attribute:SVR_stringForTag(SVRSolverTagSolution)
-                     atIndex:scanIndex
-              effectiveRange:&scanRange];
-    if (!scanCheck) {
-      scanCheck = [input attribute:SVR_stringForTag(SVRSolverTagSolutionError)
-                       atIndex:scanIndex
-                effectiveRange:&scanRange];
-    }
-    if (scanCheck) {
-      [toRemove addObject:[NSValue XP_valueWithRange:scanRange]];
-      scanIndex = NSMaxRange(scanRange);
-    } else {
-      scanIndex += 1;
-    }
-  }
-  
-  // Remove
-  removeE = [toRemove reverseObjectEnumerator];
-  while ((removeNext = [removeE nextObject])) {
-    [input deleteCharactersInRange:[removeNext XP_rangeValue]];
-  }
-}
-
 +(void)__removeAllAttributesInStorage:(NSMutableAttributedString*)input;
 {
   NSRange range = NSMakeRange(0, [input length]);
   [input removeAttribute:SVR_stringForTag(SVRSolverTagNumber) range:range];
   [input removeAttribute:SVR_stringForTag(SVRSolverTagBracket) range:range];
   [input removeAttribute:SVR_stringForTag(SVRSolverTagOperator) range:range];
+  [input removeAttribute:SVR_stringForTag(SVRSolverTagSolution) range:range];
   [input removeAttribute:SVR_stringForTag(SVRSolverTagExpression) range:range];
   [input removeAttribute:SVR_stringForTag(SVRSolverTagPreviousSolution) range:range];
-  [input removeAttribute:SVR_stringForTag(SVRSolverTagExpressionSolution) range:range];
   [input removeAttribute:NSFontAttributeName range:range];
   [input removeAttribute:NSForegroundColorAttributeName range:range];
   [input removeAttribute:NSBackgroundColorAttributeName range:range];

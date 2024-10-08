@@ -56,17 +56,14 @@
                            atIndex:index
                     effectiveRange:&checkRange];
           if (check) {
-            [input addAttribute:NSForegroundColorAttributeName
-                          value:[ud SVR_colorForSolutionPrimary]
-                          range:checkRange];
-            [input addAttribute:NSBackgroundColorAttributeName
-                          value:[ud SVR_backgroundColorForSolutionPrimary]
-                          range:checkRange];
-          } else {
-            check = [input attribute:SVR_stringForTag(SVRSolverTagSolutionError)
-                             atIndex:index
-                      effectiveRange:&checkRange];
-            if (check) {
+            if ([check isKindOfClass:[NSDecimalNumber class]]) {
+              [input addAttribute:NSForegroundColorAttributeName
+                            value:[ud SVR_colorForSolutionPrimary]
+                            range:checkRange];
+              [input addAttribute:NSBackgroundColorAttributeName
+                            value:[ud SVR_backgroundColorForSolutionPrimary]
+                            range:checkRange];
+            } else {
               [input addAttribute:NSForegroundColorAttributeName
                             value:[NSColor orangeColor]
                             range:checkRange];
@@ -136,7 +133,7 @@
   NSAssert([output isEqual:[ud SVR_colorForNumeral]], @"");
   
   output = [input attribute:NSForegroundColorAttributeName atIndex:12 effectiveRange:NULL];
-  NSAssert([output isEqual:[ud SVR_colorForText]], @"");
+  NSAssert([output isEqual:[ud SVR_colorForSolutionPrimary]], @"");
   
   [XPLog alwys:@"SVRSolverStyler Tests: Passed"];
 }
