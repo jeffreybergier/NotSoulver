@@ -7,6 +7,7 @@
 
 #import "SVRSolverStyler.h"
 #import "SVRCrossPlatform.h"
+#import "SVRSolverSolutionTagger.h"
 #import "SVRSolver.h"
 
 @implementation SVRSolverStyler
@@ -91,7 +92,7 @@
 +(void)executeTests;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  NSMutableAttributedString *input = [SVRSolverSolutionInserter executeTests];
+  NSMutableAttributedString *input = [SVRSolverSolutionTagger executeTests];
   XPColor *output = nil;
   
   [XPLog alwys:@"SVRSolverStyler Tests: Starting"];
@@ -136,26 +137,6 @@
   
   output = [input attribute:NSForegroundColorAttributeName atIndex:12 effectiveRange:NULL];
   NSAssert([output isEqual:[ud SVR_colorForText]], @"");
-  
-  output = [input attribute:NSForegroundColorAttributeName atIndex:13 effectiveRange:NULL];
-  NSAssert([output isEqual:[ud SVR_colorForSolutionPrimary]], @"");
-  output = [input attribute:NSBackgroundColorAttributeName atIndex:13 effectiveRange:NULL];
-  NSAssert([output isEqual:[ud SVR_backgroundColorForSolutionPrimary]], @"");
-  
-  output = [input attribute:NSForegroundColorAttributeName atIndex:14 effectiveRange:NULL];
-  NSAssert([output isEqual:[ud SVR_colorForSolutionPrimary]], @"");
-  output = [input attribute:NSBackgroundColorAttributeName atIndex:14 effectiveRange:NULL];
-  NSAssert([output isEqual:[ud SVR_backgroundColorForSolutionPrimary]], @"");
-  
-  output = [input attribute:NSForegroundColorAttributeName atIndex:15 effectiveRange:NULL];
-  NSAssert([output isEqual:[ud SVR_colorForSolutionPrimary]], @"");
-  output = [input attribute:NSBackgroundColorAttributeName atIndex:15 effectiveRange:NULL];
-  NSAssert([output isEqual:[ud SVR_backgroundColorForSolutionPrimary]], @"");
-  
-  output = [input attribute:NSForegroundColorAttributeName atIndex:16 effectiveRange:NULL];
-  NSAssert([output isEqual:[ud SVR_colorForSolutionPrimary]], @"");
-  output = [input attribute:NSBackgroundColorAttributeName atIndex:16 effectiveRange:NULL];
-  NSAssert([output isEqual:[ud SVR_backgroundColorForSolutionPrimary]], @"");
   
   [XPLog alwys:@"SVRSolverStyler Tests: Passed"];
 }

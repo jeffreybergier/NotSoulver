@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 #import "SVRCrossPlatform.h"
 
+/*
 @interface SVRSolverSolutionInserter: NSObject
 // MARK: Business Logic
 +(NSArray*)solutionsToInsertFromAttributedString:(NSAttributedString*)string;
@@ -35,3 +36,4 @@
 -(id)initWithIndex:(XPUInteger)index string:(NSAttributedString*)string;
 +(id)solutionWithIndex:(XPUInteger)index string:(NSAttributedString*)string;
 @end
+*/
