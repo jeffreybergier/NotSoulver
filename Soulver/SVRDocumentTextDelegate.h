@@ -16,5 +16,12 @@
 @end
 
 @interface SVRLayoutManager: NSLayoutManager
+{
+  NSDictionary *_solutionFontAttributes;
+}
+
+-(NSDictionary*)solutionFontAttributes;
+-(id)init;
 -(void)drawGlyphsForGlyphRange:(NSRange)glyphsToShow atPoint:(NSPoint)origin;
+-(NSRect)boundingRectForGlyphRange:(NSRange)glyphRange inTextContainer:(NSTextContainer *)container;
 @end
