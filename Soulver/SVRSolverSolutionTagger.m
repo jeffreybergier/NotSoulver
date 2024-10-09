@@ -13,40 +13,36 @@
 // MARK: Business Logic
 +(void)tagSolutionsInAttributedString:(NSMutableAttributedString*)string;
 {
-  id attribute = nil;
-  XPUInteger index = 0;
-  NSRange expressionRange = XPNotFoundRange;
-  NSRange solutionRange = XPNotFoundRange; // range of the equal sign
-  NSDecimalNumber *solution = nil;
   NSNumber *error = nil;
+  NSDecimalNumber *solution = nil;
+  NSRange solutionRange = XPNotFoundRange; // range of the equal sign
   
-  // Find expressions
-  while (index < [string length]) {
-    attribute = [string attribute:SVR_stringForTag(SVRSolverTagExpression)
-                          atIndex:index
-                   effectiveRange:NULL];
-    if (!attribute) { index += 1; continue; }
-    expressionRange = [attribute XP_rangeValue];
-    solutionRange = NSMakeRange(NSMaxRange(expressionRange), 1);
+  XPAttributeEnumerator *e = [string SVR_enumeratorForAttribute:SVR_stringForTag(SVRSolverTagExpression)];
+  NSValue *nextExpressionValue = nil;
+  NSRange nextExpressionRange = XPNotFoundRange;
+  
+  while ((nextExpressionValue = [e nextObject])) {
+    nextExpressionRange = [nextExpressionValue XP_rangeValue];
+    solutionRange = NSMakeRange(NSMaxRange(nextExpressionRange), 1);
     if (solution) {
       // For previous solution, add it to the string in case it needs it
       [string addAttribute:SVR_stringForTag(SVRSolverTagPreviousSolution)
                      value:solution
                      range:solutionRange];
     }
-    solution = [self __solutionForExpression:[string attributedSubstringFromRange:expressionRange]
+    solution = [self __solutionForExpression:[string attributedSubstringFromRange:nextExpressionRange]
                                        error:&error];
-    [XPLog extra:@"=: %@←%@", [[string string] SVR_descriptionHighlightingRange:solutionRange], solution];
     if (solution) {
+      [XPLog extra:@"=: %@←%@", [[string string] SVR_descriptionHighlightingRange:solutionRange], solution];
       [string addAttribute:SVR_stringForTag(SVRSolverTagSolution)
                      value:solution
                      range:solutionRange];
     } else {
+      [XPLog extra:@"=: %@←%@", [[string string] SVR_descriptionHighlightingRange:solutionRange], error];
       [string addAttribute:SVR_stringForTag(SVRSolverTagSolution)
                      value:error
                      range:solutionRange];
     }
-    index = NSMaxRange(expressionRange);
   }
 }
 
@@ -153,25 +149,21 @@
 +(NSValue*)__rangeOfNextBracketsInExpression:(NSAttributedString*)input
                                        error:(NSNumber **)errorPtr;
 {
-  NSValue *check = nil;
+  NSRange range = XPNotFoundRange;
   NSValue *lhs = nil;
   NSValue *rhs = nil;
-  XPUInteger index = 0;
-  while (index < [input length]) {
-    check = [input attribute:SVR_stringForTag(SVRSolverTagBracket)
-                     atIndex:index
-              effectiveRange:NULL];
-    if (check && !lhs) {
+  NSValue *check = nil;
+  XPAttributeEnumerator *e = [input SVR_enumeratorForAttribute:SVR_stringForTag(SVRSolverTagBracket)];
+  while ((check = [e nextObject])) {
+    if (!lhs) {
       lhs = check;
-    } else if (check && lhs) {
+    } else if (!rhs) {
       rhs = check;
     }
     if (lhs && rhs) {
-      return [NSValue XP_valueWithRange:
-              NSMakeRange([lhs XP_rangeValue].location,
-                          NSMaxRange([rhs XP_rangeValue]) - [lhs XP_rangeValue].location)];
+      range = NSMakeRange([lhs XP_rangeValue].location, NSMaxRange([rhs XP_rangeValue]) - [lhs XP_rangeValue].location);
+      return [NSValue XP_valueWithRange:range];
     }
-    index += 1;
   }
   if (lhs && errorPtr != NULL) {
     *errorPtr = [XPError SVR_errorMismatchedBrackets];

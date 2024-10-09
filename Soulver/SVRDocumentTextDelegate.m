@@ -108,22 +108,14 @@
 
 -(NSArray*)rangesOfSolutionsInStorage;
 {
-  id check = nil;
-  XPUInteger index = 0;
-  NSRange range = XPNotFoundRange;
   NSAttributedString *storage = [self textStorage];
   NSMutableArray *output = [[NSMutableArray new] autorelease];
-  
-  while (index < [storage length]) {
-    check = [storage attribute:SVR_stringForTag(SVRSolverTagSolution)
-                       atIndex:index
-                effectiveRange:&range];
-    if (check) {
-      [output addObject:[NSValue XP_valueWithRange:range]];
-      index = NSMaxRange(range);
-    } else {
-      index += 1;
-    }
+  XPAttributeEnumerator *e = [storage SVR_enumeratorForAttribute:SVR_stringForTag(SVRSolverTagSolution)];
+  NSRange range = XPNotFoundRange;
+  id next = nil;
+  while ((next = [e nextObjectEffectiveRange:&range])) {
+    [XPLog extra:@"=: %@ | %@", [[storage string] SVR_descriptionHighlightingRange:range], next];
+    [output addObject:[NSValue XP_valueWithRange:range]];
   }
   return output;
 }
