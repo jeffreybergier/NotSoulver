@@ -59,43 +59,32 @@
   return self;
 }
 
--(void)drawGlyphsForGlyphRange:(NSRange)glyphRange atPoint:(NSPoint)origin;
+-(void)drawGlyphsForGlyphRange:(NSRange)_glyphRange atPoint:(NSPoint)origin;
 {
-  NSRange storageRange = [self characterRangeForGlyphRange:glyphRange actualGlyphRange:NULL];
-  NSArray *solutionRanges = [self rangesOfSolutionsInStorage];
-  NSEnumerator *e = [solutionRanges objectEnumerator];
-  NSValue *next = nil;
-  NSRange solutionRange = XPNotFoundRange;
-  NSRange solutionGlyphRange = XPNotFoundRange;
-  NSDecimalNumber *solution = nil;
-  NSRect rect = NSZeroRect;
   
-  while ((next = [e nextObject])) {
-    if (XPContainsRange(storageRange, [next XP_rangeValue])) {
-      solutionRange = [next XP_rangeValue];
-      break;
+  NSAttributedString *storage = [[self textStorage] attributedSubstringFromRange:
+                                 [self characterRangeForGlyphRange:_glyphRange actualGlyphRange:NULL]];
+  XPAttributeEnumerator *e = [storage SVR_enumeratorForAttribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)];
+  NSRange charRange = XPNotFoundRange;
+  NSRange glyphRange = XPNotFoundRange;
+  NSRect glyphRect = NSZeroRect;
+  id solution = nil;
+  
+  while ((solution = [e nextObjectEffectiveRange:&charRange])) {
+    glyphRange = [self glyphRangeForCharacterRange:charRange actualCharacterRange:NULL];
+    glyphRect = [self boundingRectForGlyphRange:glyphRange
+                                inTextContainer:[self textContainerForGlyphAtIndex:glyphRange.location effectiveRange:NULL]];
+    [XPLog debug:@"Found solution:%@ forRect:%@", solution, NSStringFromRect(glyphRect)];
+    
+    NSDrawButton(glyphRect, glyphRect);
+    if ([solution isKindOfClass:[NSDecimalNumber class]]) {
+      [[solution SVR_description] drawAtPoint:glyphRect.origin withAttributes:[self solutionFontAttributes]];
+    } else {
+      [[solution description] drawAtPoint:glyphRect.origin withAttributes:[self solutionFontAttributes]];
     }
   }
   
-  if (XPIsNotFoundRange(solutionRange)) {
-    [super drawGlyphsForGlyphRange:glyphRange atPoint:origin];
-    return;
-  }
-  
-  solution = [[self textStorage] attribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)
-                                   atIndex:solutionRange.location
-                            effectiveRange:NULL];
-  if (![solution isKindOfClass:[NSDecimalNumber class]]) {
-    [XPLog error:@"unexpected solution: %@", solution];
-    return;
-  }
-  
-  solutionGlyphRange = [self glyphRangeForCharacterRange:solutionRange actualCharacterRange:NULL];
-  rect = [self boundingRectForGlyphRange:solutionGlyphRange
-                         inTextContainer:[self textContainerForGlyphAtIndex:solutionGlyphRange.location effectiveRange:NULL]];
-  [XPLog pause:@"Found solution:%@ forRect:%@", solution, NSStringFromRect(rect)];
-  
-  [super drawGlyphsForGlyphRange:glyphRange atPoint:origin];
+  [super drawGlyphsForGlyphRange:_glyphRange atPoint:origin];
 }
 
 // TODO: Return length of the characters with with a solution
@@ -103,20 +92,6 @@
 {
   NSRect output = [super boundingRectForGlyphRange:glyphRange inTextContainer:container];
   [XPLog debug:@"boundingRectForGlyphRange:<%@> <%@>", NSStringFromRange(glyphRange), NSStringFromRect(output)];
-  return output;
-}
-
--(NSArray*)rangesOfSolutionsInStorage;
-{
-  NSAttributedString *storage = [self textStorage];
-  NSMutableArray *output = [[NSMutableArray new] autorelease];
-  XPAttributeEnumerator *e = [storage SVR_enumeratorForAttribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)];
-  NSRange range = XPNotFoundRange;
-  id next = nil;
-  while ((next = [e nextObjectEffectiveRange:&range])) {
-    [XPLog extra:@"=: %@ | %@", [[storage string] SVR_descriptionHighlightingRange:range], next];
-    [output addObject:[NSValue XP_valueWithRange:range]];
-  }
   return output;
 }
 

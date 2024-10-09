@@ -24,5 +24,4 @@
 -(id)init;
 -(void)drawGlyphsForGlyphRange:(NSRange)glyphsToShow atPoint:(NSPoint)origin;
 -(NSRect)boundingRectForGlyphRange:(NSRange)glyphRange inTextContainer:(NSTextContainer *)container;
--(NSArray*)rangesOfSolutionsInStorage;
 @end
