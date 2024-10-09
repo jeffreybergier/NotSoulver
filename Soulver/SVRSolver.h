@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SVRCrossPlatform.h"
 
 typedef enum {
   // Stores NSDecimalNumber
@@ -31,11 +32,11 @@ typedef enum {
   SVRSolverOperatorAdd,
 } SVRSolverOperator;
 
-NSString *SVR_stringForTag(SVRSolverTag tag);
-SVRSolverTag SVR_tagForString(NSString *string);
-NSNumber* SVR_numberForOperator(SVRSolverOperator operator);
-SVRSolverOperator SVR_operatorForRawString(NSString *string);
-SVRSolverOperator SVR_operatorForNumber(NSNumber *number);
+XPAttributedStringKey XPAttributedStringKeyForTag(SVRSolverTag tag);
+SVRSolverTag SVRSolverTagForKey(XPAttributedStringKey string);
+NSNumber* NSNumberForOperator(SVRSolverOperator operator);
+SVRSolverOperator SVRSolverOperatorForNumber(NSNumber *number);
+SVRSolverOperator SVRSolverOperatorForRawString(NSString *string);
 
 @interface SVRSolver: NSObject
 

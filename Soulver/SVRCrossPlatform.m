@@ -452,12 +452,12 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
   return [self RTFFromRange:NSMakeRange(0, [self length]) documentAttributes:attribs];
 }
 
--(XPAttributeEnumerator*)SVR_enumeratorForAttribute:(NSAttributedStringKey)key;
+-(XPAttributeEnumerator*)SVR_enumeratorForAttribute:(XPAttributedStringKey)key;
 {
   return [self SVR_enumeratorForAttribute:key usingLongestEffectiveRange:NO];
 }
 
--(XPAttributeEnumerator*)SVR_enumeratorForAttribute:(NSAttributedStringKey)key
+-(XPAttributeEnumerator*)SVR_enumeratorForAttribute:(XPAttributedStringKey)key
                          usingLongestEffectiveRange:(BOOL)usesLongest;
 {
   return [XPAttributeEnumerator enumeratorWithAttributedString:self
@@ -468,7 +468,7 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
 
 @implementation XPAttributeEnumerator
 -(id)initWithAttributedString:(NSAttributedString*)attributedString
-              forAttributeKey:(NSAttributedStringKey)key
+              forAttributeKey:(XPAttributedStringKey)key
    usingLongestEffectiveRange:(BOOL)usesLongest;
 {
   self = [super init];
@@ -479,7 +479,7 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
   return self;
 }
 +(id)enumeratorWithAttributedString:(NSAttributedString*)attributedString
-                    forAttributeKey:(NSAttributedStringKey)key
+                    forAttributeKey:(XPAttributedStringKey)key
          usingLongestEffectiveRange:(BOOL)usesLongest;
 {
   return [[[XPAttributeEnumerator alloc] initWithAttributedString:attributedString

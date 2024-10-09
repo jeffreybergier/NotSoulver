@@ -28,7 +28,7 @@
                 range:NSMakeRange(0, [input length])];
   
   while (index < [input length]) {
-    check = [input attribute:SVR_stringForTag(SVRSolverTagNumber)
+    check = [input attribute:XPAttributedStringKeyForTag(SVRSolverTagNumber)
                      atIndex:index
               effectiveRange:&checkRange];
     if (check) {
@@ -36,7 +36,7 @@
                     value:[ud SVR_colorForNumeral]
                     range:checkRange];
     } else {
-      check = [input attribute:SVR_stringForTag(SVRSolverTagBracket)
+      check = [input attribute:XPAttributedStringKeyForTag(SVRSolverTagBracket)
                        atIndex:index
                 effectiveRange:&checkRange];
       if (check) {
@@ -44,7 +44,7 @@
                       value:[ud SVR_colorForBracket]
                       range:checkRange];
       } else {
-        check = [input attribute:SVR_stringForTag(SVRSolverTagOperator)
+        check = [input attribute:XPAttributedStringKeyForTag(SVRSolverTagOperator)
                          atIndex:index
                   effectiveRange:&checkRange];
         if (check) {
@@ -52,7 +52,7 @@
                         value:[ud SVR_colorForOperator]
                         range:checkRange];
         } else {
-          check = [input attribute:SVR_stringForTag(SVRSolverTagSolution)
+          check = [input attribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)
                            atIndex:index
                     effectiveRange:&checkRange];
           if (check) {

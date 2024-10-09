@@ -17,7 +17,7 @@
   NSDecimalNumber *solution = nil;
   NSRange solutionRange = XPNotFoundRange; // range of the equal sign
   
-  XPAttributeEnumerator *e = [string SVR_enumeratorForAttribute:SVR_stringForTag(SVRSolverTagExpression)];
+  XPAttributeEnumerator *e = [string SVR_enumeratorForAttribute:XPAttributedStringKeyForTag(SVRSolverTagExpression)];
   NSValue *nextExpressionValue = nil;
   NSRange nextExpressionRange = XPNotFoundRange;
   
@@ -26,7 +26,7 @@
     solutionRange = NSMakeRange(NSMaxRange(nextExpressionRange), 1);
     if (solution) {
       // For previous solution, add it to the string in case it needs it
-      [string addAttribute:SVR_stringForTag(SVRSolverTagPreviousSolution)
+      [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagPreviousSolution)
                      value:solution
                      range:solutionRange];
     }
@@ -34,12 +34,12 @@
                                        error:&error];
     if (solution) {
       [XPLog extra:@"=: %@←%@", [[string string] SVR_descriptionHighlightingRange:solutionRange], solution];
-      [string addAttribute:SVR_stringForTag(SVRSolverTagSolution)
+      [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)
                      value:solution
                      range:solutionRange];
     } else {
       [XPLog extra:@"=: %@←%@", [[string string] SVR_descriptionHighlightingRange:solutionRange], error];
-      [string addAttribute:SVR_stringForTag(SVRSolverTagSolution)
+      [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)
                      value:error
                      range:solutionRange];
     }
@@ -51,14 +51,14 @@
                                      error:(NSNumber**)errorPtr;
 {
   NSSet *setExponent = [NSSet setWithObject:
-                        SVR_numberForOperator(SVRSolverOperatorExponent)];
+                        NSNumberForOperator(SVRSolverOperatorExponent)];
   NSSet *setMultDiv  = [NSSet setWithObjects:
-                        SVR_numberForOperator(SVRSolverOperatorMultiply),
-                        SVR_numberForOperator(SVRSolverOperatorDivide),
+                        NSNumberForOperator(SVRSolverOperatorMultiply),
+                        NSNumberForOperator(SVRSolverOperatorDivide),
                         nil];
   NSSet *setAddSub   = [NSSet setWithObjects:
-                        SVR_numberForOperator(SVRSolverOperatorSubtract),
-                        SVR_numberForOperator(SVRSolverOperatorAdd),
+                        NSNumberForOperator(SVRSolverOperatorSubtract),
+                        NSNumberForOperator(SVRSolverOperatorAdd),
                         nil];
   
   NSRange patchRange = XPNotFoundRange;
@@ -153,7 +153,7 @@
   NSValue *lhs = nil;
   NSValue *rhs = nil;
   NSValue *check = nil;
-  XPAttributeEnumerator *e = [input SVR_enumeratorForAttribute:SVR_stringForTag(SVRSolverTagBracket)];
+  XPAttributeEnumerator *e = [input SVR_enumeratorForAttribute:XPAttributedStringKeyForTag(SVRSolverTagBracket)];
   while ((check = [e nextObject])) {
     if (!lhs) {
       lhs = check;
@@ -185,7 +185,7 @@
   
   // Find the first matching operator
   while (NSMaxRange(operatorRange) < [expression length]) {
-    operator = [expression attribute:SVR_stringForTag(SVRSolverTagOperator)
+    operator = [expression attribute:XPAttributedStringKeyForTag(SVRSolverTagOperator)
                              atIndex:operatorRange.location
                       effectiveRange:&operatorRange];
     if ([operators member:operator]) { break; }
@@ -201,7 +201,7 @@
   
   lhsRange = NSMakeRange(operatorRange.location - 1, 1);
   if (lhsRange.location >= 0) {
-    lhs = [expression attribute:SVR_stringForTag(SVRSolverTagNumber)
+    lhs = [expression attribute:XPAttributedStringKeyForTag(SVRSolverTagNumber)
                         atIndex:lhsRange.location
                  effectiveRange:&lhsRange];
   }
@@ -212,7 +212,7 @@
   
   rhsRange = NSMakeRange(NSMaxRange(operatorRange), 1);
   if (rhsRange.location + rhsRange.length <= [expression length]) {
-    rhs = [expression attribute:SVR_stringForTag(SVRSolverTagNumber)
+    rhs = [expression attribute:XPAttributedStringKeyForTag(SVRSolverTagNumber)
                         atIndex:rhsRange.location
                  effectiveRange:&rhsRange];
   }
@@ -225,7 +225,7 @@
   rangePtr->length   = lhsRange.length + operatorRange.length + rhsRange.length;
   
   // TODO: Do the solving
-  return [self __solveWithOperator:SVR_operatorForNumber(operator)
+  return [self __solveWithOperator:SVRSolverOperatorForNumber(operator)
                         leftNumber:lhs
                        rightNumber:rhs];
 }
@@ -233,7 +233,7 @@
 +(NSAttributedString*)__taggedStringWithNumber:(NSDecimalNumber*)number;
 {
   NSDictionary *attributes = [NSDictionary dictionaryWithObject:number
-                                                         forKey:SVR_stringForTag(SVRSolverTagNumber)];
+                                                         forKey:XPAttributedStringKeyForTag(SVRSolverTagNumber)];
   return [[[NSAttributedString alloc] initWithString:[number SVR_description]
                                           attributes:attributes] autorelease];
 }
@@ -271,7 +271,7 @@
   NSMutableAttributedString *taggedUserInput = [SVRSolverExpressionTagger executeTests];
   [XPLog alwys:@"SVRSolverSolutionTagger Tests: Starting"];
   [SVRSolverSolutionTagger tagSolutionsInAttributedString:taggedUserInput];
-  output = [taggedUserInput attribute:SVR_stringForTag(SVRSolverTagSolution)
+  output = [taggedUserInput attribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)
                               atIndex:12
                        effectiveRange:NULL];
   NSAssert([expected isEqualToNumber:output], @"");

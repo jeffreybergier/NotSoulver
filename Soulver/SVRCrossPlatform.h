@@ -19,6 +19,7 @@
 typedef float XPFloat;
 typedef int XPInteger;
 typedef unsigned int XPUInteger;
+typedef NSString *XPAttributedStringKey;
 #define XPPasteboardTypeString NSStringPboardType
 #define XPPasteboardTypeRTF NSRTFPboardType
 #define XPRTFTextDocumentType @"NSRTF"
@@ -28,6 +29,7 @@ typedef unsigned int XPUInteger;
 typedef CGFloat XPFloat;
 typedef NSInteger XPInteger;
 typedef NSUInteger XPUInteger;
+typedef NSAttributedStringKey XPAttributedStringKey;
 #define XPPasteboardTypeString NSPasteboardTypeString
 #define XPPasteboardTypeRTF NSPasteboardTypeRTF
 #define XPRTFTextDocumentType NSRTFTextDocumentType
@@ -156,16 +158,16 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 
 @interface XPAttributeEnumerator: NSEnumerator
 {
-  NSAttributedStringKey _key;
+  XPAttributedStringKey _key;
   NSAttributedString *_string;
   XPUInteger _index;
   BOOL _usesLongestEffectiveRange;
 }
 -(id)initWithAttributedString:(NSAttributedString*)attributedString
-              forAttributeKey:(NSAttributedStringKey)key
+              forAttributeKey:(XPAttributedStringKey)key
    usingLongestEffectiveRange:(BOOL)usesLongest;
 +(id)enumeratorWithAttributedString:(NSAttributedString*)attributedString
-                    forAttributeKey:(NSAttributedStringKey)key
+                    forAttributeKey:(XPAttributedStringKey)key
          usingLongestEffectiveRange:(BOOL)usesLongest;
 -(id)nextObject;
 -(id)nextObjectEffectiveRange:(NSRange*)range;
@@ -173,8 +175,8 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 
 @interface NSAttributedString (CrossPlatform)
 -(NSData*)SVR_pasteboardRepresentation;
--(XPAttributeEnumerator*)SVR_enumeratorForAttribute:(NSAttributedStringKey)key;
--(XPAttributeEnumerator*)SVR_enumeratorForAttribute:(NSAttributedStringKey)key
+-(XPAttributeEnumerator*)SVR_enumeratorForAttribute:(XPAttributedStringKey)key;
+-(XPAttributeEnumerator*)SVR_enumeratorForAttribute:(XPAttributedStringKey)key
                          usingLongestEffectiveRange:(BOOL)useLongest;
 @end
 

@@ -82,7 +82,7 @@
     return;
   }
   
-  solution = [[self textStorage] attribute:SVR_stringForTag(SVRSolverTagSolution)
+  solution = [[self textStorage] attribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)
                                    atIndex:solutionRange.location
                             effectiveRange:NULL];
   if (![solution isKindOfClass:[NSDecimalNumber class]]) {
@@ -110,7 +110,7 @@
 {
   NSAttributedString *storage = [self textStorage];
   NSMutableArray *output = [[NSMutableArray new] autorelease];
-  XPAttributeEnumerator *e = [storage SVR_enumeratorForAttribute:SVR_stringForTag(SVRSolverTagSolution)];
+  XPAttributeEnumerator *e = [storage SVR_enumeratorForAttribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)];
   NSRange range = XPNotFoundRange;
   id next = nil;
   while ((next = [e nextObjectEffectiveRange:&range])) {
