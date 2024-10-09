@@ -154,8 +154,28 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 +(NSDictionary*)__SVR_standardOperatorEncodeMap;
 @end
 
-@interface NSAttributedString (Pasteboard)
+@interface XPAttributeEnumerator: NSEnumerator
+{
+  NSAttributedStringKey _key;
+  NSAttributedString *_string;
+  XPUInteger _index;
+  BOOL _usesLongestEffectiveRange;
+}
+-(id)initWithAttributedString:(NSAttributedString*)attributedString
+              forAttributeKey:(NSAttributedStringKey)key
+   usingLongestEffectiveRange:(BOOL)usesLongest;
++(id)enumeratorWithAttributedString:(NSAttributedString*)attributedString
+                    forAttributeKey:(NSAttributedStringKey)key
+         usingLongestEffectiveRange:(BOOL)usesLongest;
+-(id)nextObject;
+-(id)nextObjectEffectiveRange:(NSRange*)range;
+@end
+
+@interface NSAttributedString (CrossPlatform)
 -(NSData*)SVR_pasteboardRepresentation;
+-(XPAttributeEnumerator*)SVR_enumeratorForAttribute:(NSAttributedStringKey)key;
+-(XPAttributeEnumerator*)SVR_enumeratorForAttribute:(NSAttributedStringKey)key
+                         usingLongestEffectiveRange:(BOOL)useLongest;
 @end
 
 @interface XPPasteboard (Pasteboard)

@@ -443,13 +443,90 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
 
 @end
 
-@implementation NSAttributedString (Pasteboard)
+@implementation NSAttributedString (CrossPlatform)
 
 -(NSData*)SVR_pasteboardRepresentation;
 {
   NSDictionary *attribs = [NSDictionary dictionaryWithObject:XPRTFTextDocumentType
                                                       forKey:XPDocumentTypeDocumentAttribute];
   return [self RTFFromRange:NSMakeRange(0, [self length]) documentAttributes:attribs];
+}
+
+-(XPAttributeEnumerator*)SVR_enumeratorForAttribute:(NSAttributedStringKey)key;
+{
+  return [self SVR_enumeratorForAttribute:key usingLongestEffectiveRange:NO];
+}
+
+-(XPAttributeEnumerator*)SVR_enumeratorForAttribute:(NSAttributedStringKey)key
+                         usingLongestEffectiveRange:(BOOL)usesLongest;
+{
+  return [XPAttributeEnumerator enumeratorWithAttributedString:self
+                                               forAttributeKey:key
+                                    usingLongestEffectiveRange:usesLongest];
+}
+@end
+
+@implementation XPAttributeEnumerator
+-(id)initWithAttributedString:(NSAttributedString*)attributedString
+              forAttributeKey:(NSAttributedStringKey)key
+   usingLongestEffectiveRange:(BOOL)usesLongest;
+{
+  self = [super init];
+  _key = [key retain];
+  _string = [attributedString copy];
+  _index = 0;
+  _usesLongestEffectiveRange = usesLongest;
+  return self;
+}
++(id)enumeratorWithAttributedString:(NSAttributedString*)attributedString
+                    forAttributeKey:(NSAttributedStringKey)key
+         usingLongestEffectiveRange:(BOOL)usesLongest;
+{
+  return [[[XPAttributeEnumerator alloc] initWithAttributedString:attributedString
+                                                  forAttributeKey:key
+                                       usingLongestEffectiveRange:usesLongest] autorelease];
+}
+-(id)nextObject;
+{
+  return [self nextObjectEffectiveRange:NULL];
+}
+-(id)nextObjectEffectiveRange:(NSRange*)range;
+{
+  XPUInteger length = [_string length];
+  id output = nil;
+  NSRange loopRange = XPNotFoundRange;
+  
+  while (_index < length) {
+    if (_usesLongestEffectiveRange) {
+      output = [_string attribute:_key
+                          atIndex:_index
+            longestEffectiveRange:&loopRange
+                          inRange:NSMakeRange(0, length)];
+    } else {
+      output = [_string attribute:_key
+                          atIndex:_index
+                   effectiveRange:&loopRange];
+    }
+    if (output) {
+      if (range != NULL) { *range = loopRange; }
+      _index = NSMaxRange(loopRange);
+      return output;
+    } else {
+      _index += 1;
+    }
+  }
+  if (range != NULL) { *range = XPNotFoundRange; }
+  return nil;
+}
+
+- (void)dealloc
+{
+  [XPLog extra:@"DEALLOC: %@", self];
+  [_key release];
+  [_string release];
+  _key = nil;
+  _string = nil;
+  [super dealloc];
 }
 @end
 
