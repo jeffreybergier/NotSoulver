@@ -94,24 +94,23 @@
   NSAttributedString *storage = [[self textStorage] attributedSubstringFromRange:
                                  [self characterRangeForGlyphRange:_glyphRange actualGlyphRange:NULL]];
   XPAttributeEnumerator *e = [storage SVR_enumeratorForAttribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)];
+  NSNumber *solution = nil;
   NSRange charRange = XPNotFoundRange;
   NSSize solutionSize = NSZeroSize;
-  id solution = nil;
   
   while ((solution = [e nextObjectEffectiveRange:&charRange])) {
-    solutionSize = [[solution description] sizeWithAttributes:[self solutionFontAttributes]];
+    solutionSize = [[solution SVR_descriptionForDrawing] sizeWithAttributes:[self solutionFontAttributes]];
     if (output.size.height != solutionSize.height) {
       [XPLog pause:@"solutionSize.height %f != %f output.size.height",
        solutionSize.height, output.size.height];
     }
-    [XPLog extra:@"boundingRectForGlyphRange: Adding Width %@ toRect %@",
-     NSStringFromSize(solutionSize), NSStringFromRect(output)];
     output.size.width += solutionSize.width;
+    [XPLog extra:@"boundingRectForGlyphRange: Found: %@ addedWidth %@ toRect %@",
+     [solution SVR_descriptionForDrawing], NSStringFromSize(solutionSize), NSStringFromRect(output)];
   }
   
   return output;
 }
-
 - (void)dealloc
 {
   [XPLog extra:@"DEALLOC: %@", self];
