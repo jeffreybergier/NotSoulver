@@ -115,6 +115,15 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
   return [self integerValue];
 #endif
 }
+
+-(NSString*)SVR_descriptionForDrawing;
+{
+  if ([self isKindOfClass:[NSDecimalNumber class]]) {
+    return [(NSDecimalNumber*)self SVR_description];
+  } else {
+    return [self description];
+  }
+}
 @end
 
 @implementation XPAlert
