@@ -23,5 +23,7 @@
 -(NSDictionary*)solutionFontAttributes;
 -(id)init;
 -(void)drawGlyphsForGlyphRange:(NSRange)glyphsToShow atPoint:(NSPoint)origin;
--(NSRect)boundingRectForGlyphRange:(NSRange)glyphRange inTextContainer:(NSTextContainer *)container;
+-(void)setLineFragmentRect:(NSRect)fragmentRect
+             forGlyphRange:(NSRange)glyphRange
+                  usedRect:(NSRect)usedRect;
 @end

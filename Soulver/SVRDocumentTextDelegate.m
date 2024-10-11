@@ -63,6 +63,7 @@
 {
   NSAttributedString *storage = [[self textStorage] attributedSubstringFromRange:
                                  [self characterRangeForGlyphRange:_glyphRange actualGlyphRange:NULL]];
+  NSTextContainer *container = nil;
   XPAttributeEnumerator *e = [storage SVR_enumeratorForAttribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)];
   NSRange charRange = XPNotFoundRange;
   NSRange glyphRange = XPNotFoundRange;
@@ -72,45 +73,70 @@
   
   while ((solution = [e nextObjectEffectiveRange:&charRange])) {
     glyphRange = [self glyphRangeForCharacterRange:charRange actualCharacterRange:NULL];
+    container = [self textContainerForGlyphAtIndex:glyphRange.location effectiveRange:NULL];
     glyphRect = [self boundingRectForGlyphRange:glyphRange
-                                inTextContainer:[self textContainerForGlyphAtIndex:glyphRange.location effectiveRange:NULL]];
+                                inTextContainer:container];
     drawPoint = glyphRect.origin;
     drawPoint.x += [@"=" sizeWithAttributes:[self solutionFontAttributes]].width;
+    //glyphRect.size.width += [[solution SVR_descriptionForDrawing] sizeWithAttributes:[self solutionFontAttributes]].width;
     
     NSDrawGroove(glyphRect, glyphRect);
     [[solution SVR_descriptionForDrawing] drawAtPoint:drawPoint
                                        withAttributes:[self solutionFontAttributes]];
-    [XPLog extra:@"drawGlyphsForGlyphRange: Drew %@ atPoint %@",
+    [XPLog extra:@"drawGlyphsForGlyphRange: Drew `%@` atPoint %@",
      [solution SVR_descriptionForDrawing], NSStringFromPoint(drawPoint)];
   }
   
   [super drawGlyphsForGlyphRange:_glyphRange atPoint:origin];
 }
 
-// TODO: Return length of the characters with with a solution
--(NSRect)boundingRectForGlyphRange:(NSRange)_glyphRange inTextContainer:(NSTextContainer *)container;
+-(void)setLineFragmentRect:(NSRect)fragmentRect
+             forGlyphRange:(NSRange)glyphRange
+                  usedRect:(NSRect)usedRect;
 {
-  NSRect output = [super boundingRectForGlyphRange:_glyphRange inTextContainer:container];
   NSAttributedString *storage = [[self textStorage] attributedSubstringFromRange:
-                                 [self characterRangeForGlyphRange:_glyphRange actualGlyphRange:NULL]];
+                                 [self characterRangeForGlyphRange:glyphRange actualGlyphRange:NULL]];
   XPAttributeEnumerator *e = [storage SVR_enumeratorForAttribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)];
   NSNumber *solution = nil;
   NSRange charRange = XPNotFoundRange;
   NSSize solutionSize = NSZeroSize;
-  
+  [XPLog debug:@"setLineFragmentRect:%@ forGlyphRange:%@ usedRect:%@",
+   NSStringFromRect(fragmentRect), NSStringFromRange(glyphRange), NSStringFromRect(usedRect)];
   while ((solution = [e nextObjectEffectiveRange:&charRange])) {
     solutionSize = [[solution SVR_descriptionForDrawing] sizeWithAttributes:[self solutionFontAttributes]];
-    if (output.size.height != solutionSize.height) {
-      [XPLog pause:@"solutionSize.height %f != %f output.size.height",
-       solutionSize.height, output.size.height];
-    }
-    output.size.width += solutionSize.width;
-    [XPLog extra:@"boundingRectForGlyphRange: Found: %@ addedWidth %@ toRect %@",
+    usedRect.size.width += solutionSize.width;
+    [XPLog debug:@"setLineFragmentRect: Found: `%@` addedWidth %@ toRect %@",
+     [solution SVR_descriptionForDrawing], NSStringFromSize(solutionSize), NSStringFromRect(usedRect)];
+  }
+  [super setLineFragmentRect:fragmentRect forGlyphRange:glyphRange usedRect:usedRect];
+}
+
+/*
+// TODO: Return length of the characters with with a solution
+-(NSRect)boundingRectForGlyphRange:(NSRange)glyphRange inTextContainer:(NSTextContainer *)container;
+{
+  NSNumber *solution = nil;
+  NSAttributedString *storage = nil;
+  NSSize solutionSize = NSZeroSize;
+  NSRange charRange = XPNotFoundRange;
+  NSRect output = [super boundingRectForGlyphRange:glyphRange inTextContainer:container];
+  if (glyphRange.length > 1) { return output; }
+  
+  charRange = [self characterRangeForGlyphRange:glyphRange actualGlyphRange:NULL];
+  storage = [[self textStorage] attributedSubstringFromRange:charRange];
+  solution = [storage attribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)
+                        atIndex:0
+                 effectiveRange:NULL];
+  if (solution) {
+    output.size.width += [[solution SVR_descriptionForDrawing] sizeWithAttributes:[self solutionFontAttributes]].width;
+    [XPLog debug:@"boundingRectForGlyphRange: Found: %@ addedWidth %@ toRect %@",
      [solution SVR_descriptionForDrawing], NSStringFromSize(solutionSize), NSStringFromRect(output)];
   }
   
   return output;
 }
+*/
+
 - (void)dealloc
 {
   [XPLog extra:@"DEALLOC: %@", self];
