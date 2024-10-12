@@ -1,6 +1,5 @@
 #import "SVRAppDelegate.h"
 #import "SVRDocumentWindowController.h"
-#import "SVRMathString+Tests.h"
 
 @implementation SVRAppDelegate
 
@@ -169,11 +168,6 @@ didChangeOldFilename:(NSString*)oldFilename;
                                            selector:@selector(__windowWillCloseNotification:)
                                                name:NSWindowWillCloseNotification
                                              object:nil];
-  
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(__documentDidChangeFilenameNotification:)
-                                               name:[SVRDocumentWindowController documentDidChangeFilenameNotification]
-                                             object:nil];
 
   // Announce
   [XPLog debug:@"%@ awakeFromNib", self];
@@ -196,21 +190,11 @@ didChangeOldFilename:(NSString*)oldFilename;
 @implementation SVRAppDelegate (NSApplicationDelegate)
 -(BOOL)applicationShouldTerminate:(NSApplication *)sender;
 {
-  // TODO: Make this text match the textedit default
-  NSEnumerator *e;
-  SVRDocumentWindowController *nextC;
   XPAlertReturn alertResult;
-  BOOL hasUnsavedChanges = NO;
   
-  e = [self openDocumentEnumerator];
-  while ((nextC = [e nextObject])) {
-    hasUnsavedChanges = [nextC hasUnsavedChanges];
-    if (hasUnsavedChanges) { break; }
-  }
-  // If no unsaved changes, return YES the app can terminate
-  if (!hasUnsavedChanges) { return YES; }
+  return YES; // TODO: Reimplement document save checking
   
-  // If there are unsaved changes, ask if we should save everything before quitting
+  // TODO: Make this text match the textedit default
   alertResult = [XPAlert runAppModalWithTitle:@"Quit [Not] Soulver"
                                       message:@"Do you want to save changes to your documents before quitting?"
                                 defaultButton:@"Save All"

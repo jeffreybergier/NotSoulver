@@ -21,21 +21,15 @@ LOCAL_RESOURCES = NEXTSTEP_Soulver.nib NEXTSTEP_SVRDocument.nib
 
 CLASSES = SVRAppDelegate.m SVRCrossPlatform.m\
           SVRDocumentModelController.m SVRDocumentTextDelegate.m\
-          SVRDocumentViewController.m SVRDocumentViewController+Tests.m\
-          SVRDocumentWindowController.m SVRLegacyRegex.m SVRMathString.m\
-          SVRMathString+Rendering.m SVRMathString+Tests.m SVRSolver.m\
-          SVRSolverExpressionTagger.m SVRSolverScanner.m\
-          SVRSolverSolutionTagger.m SVRSolverStyler.m\
-          SVRSolverSolutionInserter.m
+          SVRDocumentViewController.m SVRDocumentWindowController.m\
+          SVRLegacyRegex.m SVRSolver.m SVRSolverExpressionTagger.m\
+          SVRSolverScanner.m SVRSolverSolutionTagger.m SVRSolverStyler.m
 
 HFILES = re.h SVRAppDelegate.h SVRCrossPlatform.h\
          SVRDocumentModelController.h SVRDocumentTextDelegate.h\
-         SVRDocumentViewController.h SVRDocumentViewController+Tests.h\
-         SVRDocumentWindowController.h SVRLegacyRegex.h SVRMathString.h\
-         SVRMathString+Rendering.h SVRMathString+Tests.h SVRSolver.h\
-         SVRSolverExpressionTagger.h SVRSolverScanner.h\
-         SVRSolverSolutionTagger.h SVRSolverStyler.h\
-         SVRSolverSolutionInserter.h
+         SVRDocumentViewController.h SVRDocumentWindowController.h\
+         SVRLegacyRegex.h SVRSolver.h SVRSolverExpressionTagger.h\
+         SVRSolverScanner.h SVRSolverSolutionTagger.h SVRSolverStyler.h
 
 MFILES = Soulver_main.m
 

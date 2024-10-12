@@ -1,12 +1,9 @@
 #import <AppKit/AppKit.h>
 #import "SVRCrossPlatform.h"
-#import "SVRMathString+Tests.h"
-#import "SVRDocumentViewController+Tests.h"
 #import "SVRSolver.h"
 #import "SVRLegacyRegex.h"
 #import "SVRSolverSolutionTagger.h"
 #import "SVRSolverScanner.h"
-// #import "SVRSolverSolutionInserter.h"
 #import "SVRSolverExpressionTagger.h"
 #import "SVRSolverStyler.h"
 
@@ -31,13 +28,10 @@ int main(int argc, const char *argv[]) {
   [XPLog alwys:@"<Main> Unit Tests: STARTING"];
   [SVRSolver executeTests];
   [SVRSolverScanner executeTests];
-//[SVRSolverSolutionInserter executeTests];
   [SVRSolverSolutionTagger executeTests];
   [SVRSolverExpressionTagger executeTests];
   [SVRSolverStyler executeTests];
   [SVRLegacyRegex executeTests];
-  [SVRMathString executeTests];
-  [SVRDocumentViewController executeTests];
   [XPLog alwys:@"<Main> Unit Tests: PASSED"];
 #else
   [XPLog alwys:@"<Main> Unit Tests: SKIPPED"];

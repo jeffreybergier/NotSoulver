@@ -10,7 +10,6 @@
 #import "SVRSolverStyler.h"
 #import "SVRSolverScanner.h"
 #import "SVRSolverSolutionTagger.h"
-#import "SVRSolverSolutionInserter.h"
 #import "SVRSolverExpressionTagger.h"
 
 NSNumber* NSNumberForOperator(SVRSolverOperator operator)

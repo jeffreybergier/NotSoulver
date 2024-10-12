@@ -181,14 +181,6 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
                          usingLongestEffectiveRange:(BOOL)useLongest;
 @end
 
-@interface XPPasteboard (Pasteboard)
--(BOOL)SVR_setAttributedString:(NSAttributedString*)aString;
-/// Hack that just sets the raw string as plain text into the pasteboard
--(BOOL)SVR_setMathString:(SVRMathString*)aString;
-/// Hack that just get the raw string as plain text from the pasteboard
--(SVRMathString*)SVR_mathString;
-@end
-
 @interface NSString (CrossPlatform)
 -(NSString*)SVR_descriptionHighlightingRange:(NSRange)range;
 -(NSString*)SVR_stringByTrimmingCharactersInSet:(NSCharacterSet*)set;

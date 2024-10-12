@@ -83,8 +83,6 @@
 
 @end
 
-#import "SVRSolverSolutionInserter.h"
-
 @implementation SVRSolverStyler (Tests)
 +(void)executeTests;
 {

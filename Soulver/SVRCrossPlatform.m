@@ -1,7 +1,6 @@
 /* SVRCrossPlatform.m created by me on Fri 06-Sep-2024 */
 
 #import "SVRCrossPlatform.h"
-#import "SVRMathString.h"
 
 const NSRange XPNotFoundRange = {NSNotFound, 0};
 BOOL XPIsNotFoundRange(NSRange range)
@@ -537,63 +536,6 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
   _string = nil;
   [super dealloc];
 }
-@end
-
-@implementation XPPasteboard (Pasteboard)
-
--(BOOL)SVR_setAttributedString:(NSAttributedString*)aString;
-{
-  BOOL success = NO;
-  NSData *data = [aString SVR_pasteboardRepresentation];
-  if (!data) {
-    [XPLog pause:@"%@ Fail: RTFRepresentation", self];
-    return success;
-  }
-  [self declareTypes:[NSArray arrayWithObjects:XPPasteboardTypeRTF, XPPasteboardTypeString, nil] owner:nil];
-  success = [self setData:data forType:XPPasteboardTypeRTF];
-  success = success && [self setString:[aString string] forType:XPPasteboardTypeString];
-  if (!success) {
-    [XPLog pause:@"%@ Fail: PBSetData: %@", self, data];
-  }
-  return success;
-}
-
--(BOOL)SVR_setMathString:(SVRMathString*)aString;
-{
-  NSString *toPboard;
-  BOOL success = NO;
-  
-  toPboard = [aString stringValue];
-  [self declareTypes:[NSArray arrayWithObjects:XPPasteboardTypeString, nil] owner:nil];
-  success = [self setString:toPboard forType:XPPasteboardTypeString];
-  
-  if (!success) {
-    [XPLog pause:@"%@ Fail: PBSetString: %@", self, toPboard];
-  }
-  return success;
-}
-
--(SVRMathString*)SVR_mathString;
-{
-  NSString *type;
-  NSString *fromPboard = nil;
-  NSEnumerator *e = [[self types] objectEnumerator];
-  
-  while ((type = [e nextObject])) {
-    fromPboard = [self stringForType:type];
-    if (fromPboard) {
-      [XPLog debug:@"%@ stringForType: %@: %@", self, type, fromPboard];
-      break;
-    }
-  }
-  
-  if (!fromPboard) { return nil; }
-  fromPboard = [fromPboard SVR_stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-  if ([fromPboard length] == 0) { return nil; }
-  
-  return [SVRMathString mathStringWithString:fromPboard];
-}
-
 @end
 
 @implementation NSString (CrossPlatform)

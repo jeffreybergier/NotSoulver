@@ -25,12 +25,6 @@
   [self __append:[sender tag]];
 }
 
-// MARK: Properties
--(NSString*)description;
-{
-  return [super description];
-}
-
 // MARK: Private
 -(void)__append:(XPInteger)tag;
 {
@@ -88,34 +82,10 @@
   return nil;
 }
 
-// MARK: Respond to Notifications
--(void)replaceTapeWithString:(NSAttributedString*)aString;
-{
-  // TODO: Remove MathString and then re-enable
-  /* 
-  NSTextStorage *storage = [[self textView] textStorage];
-  [storage beginEditing];
-  [storage setAttributedString:aString];
-  [storage endEditing];
-  [[self textView] didChangeText];
-   */
-}
-
--(void)modelRenderDidChangeNotification:(NSNotification*)aNotification;
-{
-  [self replaceTapeWithString:[[self model] latestRender]];
-}
-
 -(void)awakeFromNib;
 {
   NSLayoutManager *layoutManager = nil;
   NSTextStorage *textStorage = nil;
-  
-  [[NSNotificationCenter defaultCenter]
-    addObserver:self
-       selector:@selector(modelRenderDidChangeNotification:)
-           name:[SVRDocumentModelController renderDidChangeNotificationName] 
-         object:[self model]];
   
   textStorage = [[self textView] textStorage];
   layoutManager = [[[SVRLayoutManager alloc] init] autorelease];
@@ -133,7 +103,6 @@
   [XPLog extra:@"DEALLOC: %@", self];
   _model = nil;
   _textView = nil;
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
 }
 

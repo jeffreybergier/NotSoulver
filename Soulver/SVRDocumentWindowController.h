@@ -1,5 +1,6 @@
 #import <AppKit/AppKit.h>
 #import "SVRDocumentModelController.h"
+#import "SVRCrossPlatform.h"
 
 @interface SVRDocumentWindowController: NSResponder
 {
@@ -13,29 +14,19 @@
 // MARK: Nib Name
 +(NSString*)nibName;
 
-// MARK: Notifications
-+(NSString*)documentDidChangeFilenameNotification;
--(NSDictionary*)__documentDidChangeFilenameNotificationInfo:(NSString*)oldFilename;
-
 // MARK: Properties
--(NSString*)filename;
 -(void)setFilename:(NSString*)filename;
+-(NSString*)filename;
 -(NSWindow*)window;
--(SVRDocumentModelController*)model;
 -(NSObject*)viewController;
--(NSString*)description;
+-(SVRDocumentModelController*)model;
 
 // MARK: INIT
 -(id)initWithFilename:(NSString*)filename;
 +(id)controllerWithFilename:(NSString*)filename;
 
-// MARK: Basic Logic
--(BOOL)hasUnsavedChanges;
-
 // PRIVATE
 -(void)__updateWindowState;
--(void)__modelRenderDidChangeNotification:(NSNotification*)aNotification;
--(XPUInteger)__onDiskHash;
 @end
 
 // MARK: SVRDocumentWindowController
@@ -46,16 +37,8 @@
 // MARK: NSMenuActionResponder
 @interface SVRDocumentWindowController (NSMenuActionResponder)
 -(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
--(void)copy:(id)sender;
--(void)copyRender:(id)sender;
--(void)paste:(id)sender;
 -(void)save:(id)sender;
 -(void)saveAs:(id)sender;
--(void)saveTo:(id)sender;
--(void)revertToSaved:(id)sender;
--(void)__paste;
 -(BOOL)__save;
 -(BOOL)__saveAs;
--(BOOL)__saveTo;
--(BOOL)__revertToSaved;
 @end
