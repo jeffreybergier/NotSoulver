@@ -1,11 +1,5 @@
 "FirstResponder" = {
-    ACTIONS = {
-        "copyRender:" = id; 
-        "revertToSaved:" = id; 
-        "save:" = id; 
-        "saveAs:" = id; 
-        "saveTo:" = id; 
-    }; 
+    ACTIONS = {"save:" = id; "saveAs:" = id; }; 
     OUTLETS = {}; 
     SUPERCLASS = NSObject; 
 };

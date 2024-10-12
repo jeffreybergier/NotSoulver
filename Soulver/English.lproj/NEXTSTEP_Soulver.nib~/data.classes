@@ -1,7 +1,6 @@
 "FirstResponder" = {
     ACTIONS = {
-        "copyRaw:" = id; 
-        "pasteRaw:" = id; 
+        "copyRender:" = id; 
         "revertToSaved:" = id; 
         "save:" = id; 
         "saveAs:" = id; 
