@@ -41,12 +41,9 @@ SVRSolverOperator SVRSolverOperatorForRawString(NSString *string);
 @interface SVRSolver: NSObject
 
 // MARK: Business Logic
-+(void)annotateStorage:(NSMutableAttributedString*)input;
-+(void)solveAnnotatedStorage:(NSMutableAttributedString*)input;
-+(void)colorAnnotatedAndSolvedStorage:(NSMutableAttributedString*)input;
-
-// MARK: Private
-+(void)__removeAllAttributesInStorage:(NSMutableAttributedString*)input;
++(void)removeAllSolutionsAndTags:(NSMutableAttributedString*)input;
++(void)solveAndTagAttributedString:(NSMutableAttributedString*)input;
++(void)styleSolvedAndTaggedAttributedString:(NSMutableAttributedString*)input;
 
 @end
 

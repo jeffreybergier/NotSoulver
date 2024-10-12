@@ -77,42 +77,12 @@ SVRSolverTag SVRSolverTagForKey(XPAttributedStringKey string)
 
 @implementation SVRSolver: NSObject
 
-// MARK: Business Logic
-+(void)annotateStorage:(NSMutableAttributedString*)input;
++(void)removeAllSolutionsAndTags:(NSMutableAttributedString*)input;
 {
-  SVRSolverScanner *scanner = nil;
+  NSRange range = XPNotFoundRange;
   [input retain];
-  [self __removeAllAttributesInStorage:input];
-  scanner = [SVRSolverScanner scannerWithString:[input string]];
-  [SVRSolverExpressionTagger tagNumbersAtRanges:[scanner numberRanges]
-                             inAttributedString:input];
-  [SVRSolverExpressionTagger tagBracketsAtRanges:[scanner bracketRanges]
-                              inAttributedString:input];
-  [SVRSolverExpressionTagger tagOperatorsAtRanges:[scanner operatorRanges]
-                               inAttributedString:input];
-  [SVRSolverExpressionTagger tagExpressionsAtRanges:[scanner expressionRanges]
-                                 inAttributedString:input];
-  [input autorelease];
-}
-
-+(void)solveAnnotatedStorage:(NSMutableAttributedString*)input;
-{
-  //NSArray *solutions = nil;
-  [SVRSolverSolutionTagger tagSolutionsInAttributedString:input];
-  //solutions = [SVRSolverSolutionInserter solutionsToInsertFromAttributedString:input];
-  //[SVRSolverSolutionInserter insertSolutions:solutions inAttributedString:input];
-}
-
-+(void)colorAnnotatedAndSolvedStorage:(NSMutableAttributedString*)input;
-{
-  [SVRSolverStyler styleTaggedExpression:input];
-}
-
-// MARK: Private
-
-+(void)__removeAllAttributesInStorage:(NSMutableAttributedString*)input;
-{
-  NSRange range = NSMakeRange(0, [input length]);
+  
+  range = NSMakeRange(0, [input length]);
   [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagNumber) range:range];
   [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagBracket) range:range];
   [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagOperator) range:range];
@@ -122,8 +92,36 @@ SVRSolverTag SVRSolverTagForKey(XPAttributedStringKey string)
   [input removeAttribute:NSFontAttributeName range:range];
   [input removeAttribute:NSForegroundColorAttributeName range:range];
   [input removeAttribute:NSBackgroundColorAttributeName range:range];
+  
+  [input autorelease];
 }
 
+// MARK: Business Logic
++(void)solveAndTagAttributedString:(NSMutableAttributedString*)input;
+{
+  SVRSolverScanner *scanner = nil;
+  [input retain];
+  
+  // Add Tags
+  scanner = [SVRSolverScanner scannerWithString:[input string]];
+  [SVRSolverExpressionTagger tagNumbersAtRanges:[scanner numberRanges]
+                             inAttributedString:input];
+  [SVRSolverExpressionTagger tagBracketsAtRanges:[scanner bracketRanges]
+                              inAttributedString:input];
+  [SVRSolverExpressionTagger tagOperatorsAtRanges:[scanner operatorRanges]
+                               inAttributedString:input];
+  [SVRSolverExpressionTagger tagExpressionsAtRanges:[scanner expressionRanges]
+                                 inAttributedString:input];
+  
+  // Solve
+  [SVRSolverSolutionTagger tagSolutionsInAttributedString:input];
+  
+  [input autorelease];
+}
++(void)styleSolvedAndTaggedAttributedString:(NSMutableAttributedString*)input;
+{
+  [SVRSolverStyler styleTaggedExpression:input];
+}
 
 @end
 
@@ -131,103 +129,7 @@ SVRSolverTag SVRSolverTagForKey(XPAttributedStringKey string)
 
 +(void)executeTests;
 {
-  /*
-  NSString *userInput = nil;
-  NSMutableAttributedString *storage = nil;
-  NSDecimalNumber *attributedSolution = nil;
   
-  [XPLog alwys:@"<%@> Unit Tests: STARTING", self];
-  
-  userInput = @"5+7+3=";
-  storage = [[[NSMutableAttributedString alloc] initWithString:userInput] autorelease];
-  [SVRSolver annotateStorage:storage];
-  NSAssert([[storage string] isEqualToString:@"5+7+3="], @"");
-  [SVRSolver solveAnnotatedStorage:storage];
-  attributedSolution = [storage attribute:kSVRSolverSolutionKey
-                                  atIndex:[storage length] - 1
-                           effectiveRange:NULL];
-  NSAssert([attributedSolution isEqual:[NSDecimalNumber decimalNumberWithString:@"15"]], @"");
-  
-  userInput = @"(2.0+-3.75)+150.0+120.0-37*30/8^2=";
-  storage = [[[NSMutableAttributedString alloc] initWithString:userInput] autorelease];
-  [SVRSolver annotateStorage:storage];
-  NSAssert([[storage string] isEqualToString:@"(2.0+-3.75)+150.0+120.0-37*30/8^2="], @"");
-  [SVRSolver solveAnnotatedStorage:storage];
-  attributedSolution = [storage attribute:kSVRSolverSolutionKey
-                                  atIndex:[storage length] - 1
-                           effectiveRange:NULL];
-  NSAssert([attributedSolution isEqual:[NSDecimalNumber decimalNumberWithString:@"250.90625"]], @"");
-  
-  userInput = @"(5+7)+3=";
-  storage = [[[NSMutableAttributedString alloc] initWithString:userInput] autorelease];
-  [SVRSolver annotateStorage:storage];
-  NSAssert([[storage string] isEqualToString:@"(5+7)+3="], @"");
-  [SVRSolver solveAnnotatedStorage:storage];
-  attributedSolution = [storage attribute:kSVRSolverSolutionKey
-                                  atIndex:[storage length] - 1
-                           effectiveRange:NULL];
-  NSAssert([attributedSolution isEqual:[NSDecimalNumber decimalNumberWithString:@"15"]], @"");
-  
-  userInput = @"150.0+120.0-37*30/8^2=";
-  storage = [[[NSMutableAttributedString alloc] initWithString:userInput] autorelease];
-  [SVRSolver annotateStorage:storage];
-  NSAssert([[storage string] isEqualToString:@"150.0+120.0-37*30/8^2="], @"");
-  [SVRSolver solveAnnotatedStorage:storage];
-  attributedSolution = [storage attribute:kSVRSolverSolutionKey
-                                  atIndex:[storage length] - 1
-                           effectiveRange:NULL];
-  NSAssert([attributedSolution isEqual:[NSDecimalNumber decimalNumberWithString:@"252.65625"]], @"");
-  
-  userInput = @"(5.4+5)*(4--4.30)=3.3^2/(2+2)=";
-  storage = [[[NSMutableAttributedString alloc] initWithString:userInput] autorelease];
-  [SVRSolver annotateStorage:storage];
-  NSAssert([[storage string] isEqualToString:@"(5.4+5)*(4--4.30)=3.3^2/(2+2)="], @"");
-  [SVRSolver solveAnnotatedStorage:storage];
-  attributedSolution = [storage attribute:kSVRSolverSolutionKey
-                                  atIndex:17
-                           effectiveRange:NULL];
-  NSAssert([attributedSolution isEqual:[NSDecimalNumber decimalNumberWithString:@"86.32"]], @"");
-  attributedSolution = [storage attribute:kSVRSolverSolutionKey
-                                  atIndex:[storage length] - 1
-                           effectiveRange:NULL];
-  NSAssert([attributedSolution isEqual:[NSDecimalNumber decimalNumberWithString:@"2.7225"]], @"");
-  
-  // TODO: Still Failing
-  userInput = @"4.0+3=-3.3^2=";
-  storage = [[[NSMutableAttributedString alloc] initWithString:userInput] autorelease];
-  [SVRSolver annotateStorage:storage];
-  NSAssert([[storage string] isEqualToString:@"4.0+3=-3.3^2="], @"");
-  [SVRSolver solveAnnotatedStorage:storage];
-  attributedSolution = [storage attribute:kSVRSolverSolutionKey
-                                  atIndex:5
-                           effectiveRange:NULL];
-  NSAssert([attributedSolution isEqual:[NSDecimalNumber decimalNumberWithString:@"7"]], @"");
-  attributedSolution = [storage attribute:kSVRSolverSolutionKey
-                                  atIndex:[storage length] - 1
-                           effectiveRange:NULL];
-  NSAssert([attributedSolution isEqual:[NSDecimalNumber decimalNumberWithString:@"-10.89"]], @"");
-  
-  userInput = @"-3+4*5=";
-  storage = [[[NSMutableAttributedString alloc] initWithString:userInput] autorelease];
-  [SVRSolver annotateStorage:storage];
-  NSAssert([[storage string] isEqualToString:@"-3+4*5="], @"");
-  [SVRSolver solveAnnotatedStorage:storage];
-  attributedSolution = [storage attribute:kSVRSolverSolutionKey
-                                  atIndex:[storage length] - 1
-                           effectiveRange:NULL];
-  NSAssert([attributedSolution isEqual:[NSDecimalNumber decimalNumberWithString:@"17"]], @"");
-  
-  userInput = @"-3.5+4.5*5.5=";
-  storage = [[[NSMutableAttributedString alloc] initWithString:userInput] autorelease];
-  [SVRSolver annotateStorage:storage];
-  NSAssert([[storage string] isEqualToString:@"-3.5+4.5*5.5="], @"");
-  [SVRSolver solveAnnotatedStorage:storage];
-  attributedSolution = [storage attribute:kSVRSolverSolutionKey
-                                  atIndex:[storage length] - 1
-                           effectiveRange:NULL];
-  NSAssert([attributedSolution isEqual:[NSDecimalNumber decimalNumberWithString:@"21.25"]], @"");
-  [XPLog alwys:@"<%@> Unit Tests: PASSED", self];
-  */
 }
 
 @end

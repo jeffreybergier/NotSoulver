@@ -60,14 +60,14 @@
 {
   NSTextStorage *storage = [aNotification object];
   [XPLog extra:@"%@ textStorageWillProcessEditing: `%@`", self, [storage string]];
-  [SVRSolver annotateStorage:storage];
-  [SVRSolver solveAnnotatedStorage:storage];
-  [SVRSolver colorAnnotatedAndSolvedStorage:storage];
+  [SVRSolver removeAllSolutionsAndTags:storage];
+  [SVRSolver solveAndTagAttributedString:storage];
 }
 -(void)textStorageDidProcessEditing:(NSNotification*)aNotification;
 {
   NSTextStorage *storage = [aNotification object];
   [XPLog extra:@"%@ textStorageDidProcessEditing: `%@`", self, [storage string]];
+  [SVRSolver styleSolvedAndTaggedAttributedString:storage];
 }
 
 @end
