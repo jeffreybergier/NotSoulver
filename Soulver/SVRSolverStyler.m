@@ -56,18 +56,9 @@
                            atIndex:index
                     effectiveRange:&checkRange];
           if (check) {
-            if ([check isKindOfClass:[NSDecimalNumber class]]) {
-              [input addAttribute:NSForegroundColorAttributeName
-                            value:[ud SVR_colorForSolutionPrimary]
-                            range:checkRange];
-              [input addAttribute:NSBackgroundColorAttributeName
-                            value:[ud SVR_backgroundColorForSolutionPrimary]
-                            range:checkRange];
-            } else {
-              [input addAttribute:NSForegroundColorAttributeName
-                            value:[NSColor orangeColor]
-                            range:checkRange];
-            }
+            [input addAttribute:NSForegroundColorAttributeName
+                          value:[ud SVR_colorForOperator]
+                          range:checkRange];
           }
         }
       }
