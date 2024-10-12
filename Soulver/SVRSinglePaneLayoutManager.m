@@ -1,6 +1,7 @@
 #import "SVRSinglePaneLayoutManager.h"
-#import "SVRCrossPlatform.h"
+#import "XPCrossPlatform.h"
 #import "SVRSolver.h"
+#import "NSUserDefaults+Soulver.h"
 
 @implementation SVRSinglePaneLayoutManager
 

@@ -6,9 +6,10 @@
 //
 
 #import "SVRSolverStyler.h"
-#import "SVRCrossPlatform.h"
+#import "XPCrossPlatform.h"
 #import "SVRSolverSolutionTagger.h"
 #import "SVRSolver.h"
+#import "NSUserDefaults+Soulver.h"
 
 @implementation SVRSolverStyler
 

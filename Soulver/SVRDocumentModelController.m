@@ -1,5 +1,5 @@
 #import "SVRDocumentModelController.h"
-#import "SVRCrossPlatform.h"
+#import "XPCrossPlatform.h"
 #import "SVRSolver.h"
 
 @implementation SVRDocumentModelController

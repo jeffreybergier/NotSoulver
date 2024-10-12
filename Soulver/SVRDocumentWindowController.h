@@ -1,6 +1,6 @@
 #import <AppKit/AppKit.h>
 #import "SVRDocumentModelController.h"
-#import "SVRCrossPlatform.h"
+#import "XPCrossPlatform.h"
 
 @interface SVRDocumentWindowController: NSResponder
 {

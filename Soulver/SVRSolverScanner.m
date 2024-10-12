@@ -6,7 +6,7 @@
 //
 
 #import "SVRSolverScanner.h"
-#import "SVRCrossPlatform.h"
+#import "XPCrossPlatform.h"
 #import "SVRLegacyRegex.h"
 
 @implementation SVRSolverScanner

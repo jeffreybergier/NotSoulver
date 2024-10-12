@@ -6,7 +6,7 @@
 //
 
 #import "SVRLegacyRegex.h"
-#import "SVRCrossPlatform.h"
+#import "XPCrossPlatform.h"
 
 @implementation SVRLegacyRegex
 

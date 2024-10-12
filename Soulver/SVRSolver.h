@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SVRCrossPlatform.h"
+#import "XPCrossPlatform.h"
 
 typedef enum {
   // Stores NSDecimalNumber

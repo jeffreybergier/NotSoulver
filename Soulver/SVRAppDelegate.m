@@ -1,5 +1,6 @@
 #import "SVRAppDelegate.h"
 #import "SVRDocumentWindowController.h"
+#import "NSUserDefaults+Soulver.h"
 
 @implementation SVRAppDelegate
 

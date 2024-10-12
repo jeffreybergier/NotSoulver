@@ -6,7 +6,7 @@
 //
 
 #import "SVRSolverExpressionTagger.h"
-#import "SVRCrossPlatform.h"
+#import "XPCrossPlatform.h"
 #import "SVRSolver.h"
 
 @implementation SVRSolverExpressionTagger

@@ -1,5 +1,5 @@
 #import <AppKit/AppKit.h>
-#import "SVRCrossPlatform.h"
+#import "XPCrossPlatform.h"
 #import "SVRSolver.h"
 #import "SVRLegacyRegex.h"
 #import "SVRSolverSolutionTagger.h"
