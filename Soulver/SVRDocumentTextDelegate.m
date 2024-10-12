@@ -59,40 +59,41 @@
   return self;
 }
 
--(void)drawGlyphsForGlyphRange:(NSRange)_glyphRange atPoint:(NSPoint)origin;
+-(void)drawGlyphsForGlyphRange:(NSRange)glyphRange atPoint:(NSPoint)origin;
 {
   NSAttributedString *storage = [[self textStorage] attributedSubstringFromRange:
-                                 [self characterRangeForGlyphRange:_glyphRange actualGlyphRange:NULL]];
+                                 [self characterRangeForGlyphRange:glyphRange actualGlyphRange:NULL]];
   NSTextContainer *container = nil;
   XPAttributeEnumerator *e = [storage SVR_enumeratorForAttribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)];
-  NSRange charRange = XPNotFoundRange;
-  NSRange glyphRange = XPNotFoundRange;
+  NSRange solutionCharRange = XPNotFoundRange;
+  NSRange solutionGlyphRange = XPNotFoundRange;
   NSSize equalSignSize = NSZeroSize;
   NSRect boundingRect = NSZeroRect;
   NSRect drawRect = NSZeroRect;
   NSNumber *solution = nil;
   
-  NSLog(@"drawGlyphsForGlyphRange:%@ atPoint:%@",
-        [[[self textStorage] string] SVR_descriptionHighlightingRange:_glyphRange],
-        NSStringFromPoint(origin));
+  [XPLog extra:@"drawGlyphsForGlyphRange:%@ atPoint:%@",
+        [[[self textStorage] string] SVR_descriptionHighlightingRange:glyphRange],
+        NSStringFromPoint(origin)];
   
-  while ((solution = [e nextObjectEffectiveRange:&charRange])) {
-    equalSignSize = [[[storage string] substringWithRange:charRange] sizeWithAttributes:[self solutionFontAttributes]];
-    glyphRange = [self glyphRangeForCharacterRange:charRange actualCharacterRange:NULL];
-    container = [self textContainerForGlyphAtIndex:glyphRange.location effectiveRange:NULL];
-    boundingRect = [self boundingRectForGlyphRange:glyphRange
+  while ((solution = [e nextObjectEffectiveRange:&solutionCharRange])) {
+    // Calculate everything
+    equalSignSize = [[[storage string] substringWithRange:solutionCharRange] sizeWithAttributes:[self solutionFontAttributes]];
+    solutionGlyphRange = [self glyphRangeForCharacterRange:solutionCharRange actualCharacterRange:NULL];
+    container = [self textContainerForGlyphAtIndex:solutionGlyphRange.location effectiveRange:NULL];
+    boundingRect = [self boundingRectForGlyphRange:solutionGlyphRange
                                    inTextContainer:container];
     drawRect = NSMakeRect(boundingRect.origin.x + equalSignSize.width,
                           boundingRect.origin.y,
                           boundingRect.size.width - equalSignSize.width,
                           boundingRect.size.height);
-    NSDrawGroove(boundingRect, boundingRect);
+    // Draw
     NSDrawWhiteBezel(drawRect, drawRect);
     [[solution SVR_descriptionForDrawing] drawInRect:drawRect
                                       withAttributes:[self solutionFontAttributes]];
   }
   
-  [super drawGlyphsForGlyphRange:_glyphRange atPoint:origin];
+  [super drawGlyphsForGlyphRange:glyphRange atPoint:origin];
 }
 
 -(void)setLineFragmentRect:(NSRect)fragmentRect
