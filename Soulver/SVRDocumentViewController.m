@@ -1,22 +1,18 @@
 #import "SVRDocumentViewController.h"
+#import "SVRSinglePaneLayoutManager.h"
 
 @implementation SVRDocumentViewController
 
 // MARK: Interface Builder
 
-/*@IBOutlet*/-(SVRDocumentModelController*)model;
+/*@IBOutlet*/-(SVRDocumentModelController*)modelController;
 {
-  return _model;
+  return _modelController;
 }
 
 /*@IBOutlet*/-(NSTextView*)textView;
 {
   return _textView; 
-}
-
-/*@IBOutlet*/-(SVRDocumentTextDelegate*)textDelegate;
-{
-  return _textDelegate;
 }
 
 // @IBAction
@@ -32,15 +28,15 @@
   NSNumber *error = nil;
   NSString *toAppend = [self __mapKeyWithTag:tag control:&control];
   if (toAppend) {
-    [[self model] appendCharacter:toAppend error:&error];
+    [[self modelController] appendCharacter:toAppend error:&error];
     if (error != nil) { [
       XPLog alwys:@"%@ appendString:%@ forTag:%ld error:%@", self, toAppend, tag, error];
     }
   } else {
     switch (control) {
-      case -1: [[self model] backspaceCharacterWithError:&error]; break;
-      case -2: [[self model] backspaceLineWithError:&error]; break;
-      case -3: [[self model] backspaceAllWithError:&error]; break;
+      case -1: [[self modelController] backspaceCharacterWithError:&error]; break;
+      case -2: [[self modelController] backspaceLineWithError:&error]; break;
+      case -3: [[self modelController] backspaceAllWithError:&error]; break;
       default: [XPLog error:@"%@ Button with unknown tag: %ld", self, tag];
     }
     if (error != nil) {
@@ -88,11 +84,11 @@
   NSTextStorage *textStorage = nil;
   
   textStorage = [[self textView] textStorage];
-  layoutManager = [[[SVRLayoutManager alloc] init] autorelease];
+  layoutManager = [[[SVRSinglePaneLayoutManager alloc] init] autorelease];
   [layoutManager setTextStorage:textStorage];
-  [textStorage setDelegate:[self textDelegate]];
+  [textStorage setDelegate:[self modelController]];
   [[[self textView] textContainer] replaceLayoutManager:layoutManager];
-  [[self textView] setDelegate:[self textDelegate]];
+  [[self modelController] setModel:textStorage];
 
   [XPLog debug:@"%@ awakeFromNib", self];
 }
@@ -101,7 +97,7 @@
 -(void)dealloc;
 {
   [XPLog extra:@"DEALLOC: %@", self];
-  _model = nil;
+  _modelController = nil;
   _textView = nil;
   [super dealloc];
 }

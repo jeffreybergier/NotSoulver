@@ -1,42 +1,8 @@
-#import "SVRDocumentTextDelegate.h"
+#import "SVRSinglePaneLayoutManager.h"
 #import "SVRCrossPlatform.h"
 #import "SVRSolver.h"
 
-@implementation SVRDocumentTextDelegate
-
--(void)awakeFromNib
-{
-  [XPLog debug:@"%@ awakeFromNib", self];
-}
-
--(void)textStorageWillProcessEditing:(NSNotification*)aNotification;
-{
-  NSTextStorage *storage = [aNotification object];
-  [XPLog extra:@"%@ textStorageWillProcessEditing: `%@`", self, [storage string]];
-  [SVRSolver annotateStorage:storage];
-  [SVRSolver solveAnnotatedStorage:storage];
-  [SVRSolver colorAnnotatedAndSolvedStorage:storage];
-}
-
--(void)textStorageDidProcessEditing:(NSNotification*)aNotification;
-{
-  NSTextStorage *storage = [aNotification object];
-  [XPLog extra:@"%@ textStorageDidProcessEditing: `%@`", self, [storage string]];
-}
-
--(void)textDidBeginEditing:(NSNotification*)aNotification;
-{
-  [XPLog debug:@"%@ textDidBeginEditing", self];
-}
-
--(void)textDidEndEditing:(NSNotification*)aNotification;
-{
-  [XPLog debug:@"%@ textDidEndEditing", self];
-}
-
-@end
-
-@implementation SVRLayoutManager
+@implementation SVRSinglePaneLayoutManager
 
 -(NSDictionary*)solutionFontAttributes;
 {
@@ -119,7 +85,8 @@
   [super setLineFragmentRect:fragmentRect forGlyphRange:glyphRange usedRect:usedRect];
 }
 
--(NSRect)boundingRectForGlyphRange:(NSRange)glyphRange inTextContainer:(NSTextContainer *)container;
+-(NSRect)boundingRectForGlyphRange:(NSRange)glyphRange
+                   inTextContainer:(NSTextContainer *)container;
 {
   NSAttributedString *storage = [[self textStorage] attributedSubstringFromRange:
                                  [self characterRangeForGlyphRange:glyphRange actualGlyphRange:NULL]];

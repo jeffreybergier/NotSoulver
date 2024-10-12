@@ -20,13 +20,13 @@ ICONSECTIONS =	-sectcreate __ICON app /NextLibrary/Frameworks/AppKit.framework/R
 LOCAL_RESOURCES = NEXTSTEP_Soulver.nib NEXTSTEP_SVRDocument.nib
 
 CLASSES = SVRAppDelegate.m SVRCrossPlatform.m\
-          SVRDocumentModelController.m SVRDocumentTextDelegate.m\
+          SVRDocumentModelController.m SVRSinglePaneLayoutManager.m\
           SVRDocumentViewController.m SVRDocumentWindowController.m\
           SVRLegacyRegex.m SVRSolver.m SVRSolverExpressionTagger.m\
           SVRSolverScanner.m SVRSolverSolutionTagger.m SVRSolverStyler.m
 
 HFILES = re.h SVRAppDelegate.h SVRCrossPlatform.h\
-         SVRDocumentModelController.h SVRDocumentTextDelegate.h\
+         SVRDocumentModelController.h SVRSinglePaneLayoutManager.h\
          SVRDocumentViewController.h SVRDocumentWindowController.h\
          SVRLegacyRegex.h SVRSolver.h SVRSolverExpressionTagger.h\
          SVRSolverScanner.h SVRSolverSolutionTagger.h SVRSolverStyler.h

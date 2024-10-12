@@ -1,9 +1,8 @@
 "FirstResponder" = {ACTIONS = {}; OUTLETS = {}; SUPERCLASS = NSObject; };
 "SVRDocumentModelController" = {ACTIONS = {}; OUTLETS = {}; SUPERCLASS = NSObject; };
-"SVRDocumentTextDelegate" = {ACTIONS = {}; OUTLETS = {}; SUPERCLASS = NSObject; };
 "SVRDocumentViewController" = {
     ACTIONS = {"append:" = id; }; 
-    OUTLETS = {_model = id; _textDelegate = id; _textView = id; }; 
+    OUTLETS = {_modelController = id; _textDelegate = id; _textView = id; }; 
     SUPERCLASS = NSObject; 
 };
 "SVRDocumentWindowController" = {
