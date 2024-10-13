@@ -15,11 +15,16 @@
 #define XPPasteboard NSPasteboard
 #endif
 
+// TODO: Consider changing this to NSError in OS X
+#define XPError NSNumber
+
 #if OS_OPENSTEP
 typedef float XPFloat;
 typedef int XPInteger;
 typedef unsigned int XPUInteger;
-typedef NSString *XPAttributedStringKey;
+typedef NSString* XPAttributedStringKey;
+typedef NSRange* XPRangePointer;
+typedef NSNumber** XPErrorPointer;
 #define XPPasteboardTypeString NSStringPboardType
 #define XPPasteboardTypeRTF NSRTFPboardType
 #define XPRTFTextDocumentType @"NSRTF"
@@ -29,6 +34,8 @@ typedef NSString *XPAttributedStringKey;
 typedef CGFloat XPFloat;
 typedef NSInteger XPInteger;
 typedef NSUInteger XPUInteger;
+typedef NSRangePointer XPRangePointer;
+typedef NSNumber** XPErrorPointer;
 typedef NSAttributedStringKey XPAttributedStringKey;
 #define XPPasteboardTypeString NSPasteboardTypeString
 #define XPPasteboardTypeRTF NSPasteboardTypeRTF
@@ -137,7 +144,7 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
                     forAttributeKey:(XPAttributedStringKey)key
          usingLongestEffectiveRange:(BOOL)usesLongest;
 -(id)nextObject;
--(id)nextObjectEffectiveRange:(NSRange*)range;
+-(id)nextObjectEffectiveRange:(XPRangePointer)range;
 @end
 
 @interface NSAttributedString (CrossPlatform)
@@ -167,7 +174,7 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 @end
 
 // MARK: Error Handling
-@interface XPError: NSObject
+@interface XPError (XPError)
 +(NSNumber*)SVR_errorInvalidCharacter;
 +(NSNumber*)SVR_errorMismatchedBrackets;
 +(NSNumber*)SVR_errorMissingNumber;

@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SVRSolver.h"
+#import "XPCrossPlatform.h"
 
 @interface SVRSolverSolutionTagger: NSObject
 
@@ -15,13 +16,13 @@
 
 // MARK: Private
 +(NSDecimalNumber*)__solutionForExpression:(NSAttributedString*)string
-                                     error:(NSNumber**)errorPtr;
+                                     error:(XPErrorPointer)errorPtr;
 +(NSValue*)__rangeOfNextBracketsInExpression:(NSAttributedString*)input
-                                       error:(NSNumber **)errorPtr;
+                                       error:(XPErrorPointer)errorPtr;
 +(NSDecimalNumber*)__nextSolutionInExpression:(NSAttributedString*)expression
                             forOperatorsInSet:(NSSet*)operators
-                                   patchRange:(NSRange*)rangePtr
-                                        error:(NSNumber**)errorPtr;
+                                   patchRange:(XPRangePointer)rangePtr
+                                        error:(XPErrorPointer)errorPtr;
 +(NSAttributedString*)__taggedStringWithNumber:(NSDecimalNumber*)number;
 +(NSDecimalNumber*)__solveWithOperator:(SVRSolverOperator)operator
                             leftNumber:(NSDecimalNumber*)lhs

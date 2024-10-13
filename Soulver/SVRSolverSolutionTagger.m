@@ -6,7 +6,6 @@
 //
 
 #import "SVRSolverSolutionTagger.h"
-#import "XPCrossPlatform.h"
 
 @implementation SVRSolverSolutionTagger
 
@@ -48,7 +47,7 @@
 
 // MARK: Private
 +(NSDecimalNumber*)__solutionForExpression:(NSAttributedString*)input
-                                     error:(NSNumber**)errorPtr;
+                                     error:(XPErrorPointer)errorPtr;
 {
   NSSet *setExponent = [NSSet setWithObject:
                         NSNumberForOperator(SVRSolverOperatorExponent)];
@@ -173,8 +172,8 @@
 
 +(NSDecimalNumber*)__nextSolutionInExpression:(NSAttributedString*)expression
                             forOperatorsInSet:(NSSet*)operators
-                                   patchRange:(NSRange*)rangePtr
-                                        error:(NSNumber**)errorPtr;
+                                   patchRange:(XPRangePointer)rangePtr
+                                        error:(XPErrorPointer)errorPtr;
 {
   NSRange operatorRange = NSMakeRange(0, 1);
   NSRange lhsRange = XPNotFoundRange;

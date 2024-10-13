@@ -273,7 +273,7 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
 {
   return [self nextObjectEffectiveRange:NULL];
 }
--(id)nextObjectEffectiveRange:(NSRange*)range;
+-(id)nextObjectEffectiveRange:(XPRangePointer)range;
 {
   XPUInteger length = [_string length];
   id output = nil;
@@ -376,7 +376,7 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
 
 // MARK: XPError
 // OPENSTEP does not have NSError so I am just using NSNumber
-@implementation XPError
+@implementation XPError (XPError)
 
 +(NSNumber*)SVR_errorMismatchedBrackets;
 {

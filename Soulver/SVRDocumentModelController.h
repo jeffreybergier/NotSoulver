@@ -1,4 +1,5 @@
 #import <AppKit/AppKit.h>
+#import "XPCrossPlatform.h"
 
 @interface SVRDocumentModelController: NSObject
 {
@@ -10,10 +11,10 @@
 -(void)setModel:(NSTextStorage*)newModel;
 
 // MARK: Usage
--(int)appendCharacter:(NSString*)aString error:(NSNumber**)errorPointer;
--(int)backspaceCharacterWithError:(NSNumber**)errorPointer;
--(int)backspaceLineWithError:(NSNumber**)errorPointer;
--(int)backspaceAllWithError:(NSNumber**)errorPointer;
+-(int)appendCharacter:(NSString*)aString error:(XPErrorPointer)errorPointer;
+-(int)backspaceCharacterWithError:(XPErrorPointer)errorPointer;
+-(int)backspaceLineWithError:(XPErrorPointer)errorPointer;
+-(int)backspaceAllWithError:(XPErrorPointer)errorPointer;
 
 @end
 

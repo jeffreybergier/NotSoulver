@@ -1,5 +1,4 @@
 #import "SVRDocumentModelController.h"
-#import "XPCrossPlatform.h"
 #import "SVRSolver.h"
 
 @implementation SVRDocumentModelController
@@ -22,24 +21,24 @@
 }
 
 // MARK: Usage
--(int)appendCharacter:(NSString*)aString error:(NSNumber**)errorPointer;
+-(int)appendCharacter:(NSString*)aString error:(XPErrorPointer)errorPointer;
 {
   [XPLog error:@"Unimplemented"];
   return -1;
 }
--(int)backspaceCharacterWithError:(NSNumber**)errorPointer;
-{
-  [XPLog error:@"Unimplemented"];
-  return -1;
-}
-
--(int)backspaceLineWithError:(NSNumber**)errorPointer;
+-(int)backspaceCharacterWithError:(XPErrorPointer)errorPointer;
 {
   [XPLog error:@"Unimplemented"];
   return -1;
 }
 
--(int)backspaceAllWithError:(NSNumber**)errorPointer;
+-(int)backspaceLineWithError:(XPErrorPointer)errorPointer;
+{
+  [XPLog error:@"Unimplemented"];
+  return -1;
+}
+
+-(int)backspaceAllWithError:(XPErrorPointer)errorPointer;
 {
   [XPLog error:@"Unimplemented"];
   return -1;
