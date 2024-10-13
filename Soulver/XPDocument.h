@@ -8,7 +8,10 @@
 
 @interface XPDocument : NSObject
 {
-
+  IBOutlet NSWindow *_window;
+  NSString *_fileName;
+  NSString *_fileType;
+  NSData *_rawData;
 }
 
 // MARK: Init
@@ -22,12 +25,16 @@
 /// Default implementation throws exception.
 /// File's Owner Should be this Object
 -(NSString*)windowNibName;
+/// Override to read your file and prepare
+-(void)awakeFromNib;
 
 /// Shows the window for this document
 -(void)showWindows;
 
 /// Return YES to allow the document to close
 -(BOOL)shouldCloseDocument;
+
+-(NSWindow*)window;
 
 // MARK: Document Status
 
@@ -39,15 +46,21 @@
 /// Filename on disk is NIL if the document is not saved
 -(NSString*)fileName;
 -(void)setFileName:(NSString*)fileName;
+-(NSString*)fileType;
+-(void)setFileType:(NSString*)type;
+-(NSData*)rawData;
+-(void)setRawData:(NSData*)newData;
 
 /// For display in the window title. If NIL, "Untitled" shown
 -(NSString*)displayName;
 
 // MARK: Data reading and writing
 
+/// Return NSData object for your document
 -(NSData*)dataRepresentationOfType:(NSString*)type;
--(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
+/// Type and FileName are ignored, document values are used
 -(BOOL)writeToFile:(NSString*)fileName ofType:(NSString*)type;
+/// Type and FileName are ignored, document values are used
 -(BOOL)readFromFile:(NSString*)fileName ofType:(NSString*)type;
 
 // MARK: Menu Handling
