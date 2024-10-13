@@ -37,6 +37,39 @@
   return nil;
 }
 
+/// Shows the window for this document
+-(void)showWindows;
+{
+  [[self window] makeKeyAndOrderFront:self];
+}
+
+/// Return YES to allow the document to close
+-(BOOL)windowShouldClose:(id)sender;
+{
+  XPAlertReturn alertResult;
+  XPInteger savePanelResult;
+  if (![self isDocumentEdited]) { return YES; }
+  alertResult = [self runUnsavedChangesAlert];
+  switch (alertResult) {
+    case XPAlertReturnDefault:
+      savePanelResult = [self __runModalSavePanelAndSetFileName:nil];
+      return savePanelResult == NSOKButton;
+    case XPAlertReturnAlternate:
+      return YES;
+    case XPAlertReturnOther:
+      return NO;
+    case XPAlertReturnError:
+    default:
+      [XPLog error:@"Unexpected alert panel result: %ld", alertResult];
+      return NO;
+  }
+}
+
+-(NSWindow*)window;
+{
+  return [[_window retain] autorelease];
+}
+
 /// Override to read your file and prepare
 -(void)awakeFromNib;
 {
@@ -47,56 +80,8 @@
   }
   [[self window] setDelegate:self];
   [[self window] setNextResponder:self];
+  [self updateWindowState];
   [XPLog debug:@"awakeFromNib: %@", self];
-}
-
-/// Shows the window for this document
--(void)showWindows;
-{
-  [[self window] makeKeyAndOrderFront:self];
-}
-
-/// Return YES to allow the document to close
--(BOOL)windowShouldClose:(id)sender;
-{
-  XPAlertReturn result;
-  if (![self isDocumentEdited]) { return YES; }
-  result = [self runUnsavedChangesAlert];
-  switch (result) {
-    case XPAlertReturnDefault:
-      [self saveDocument:self];
-      return YES;
-    case XPAlertReturnAlternate:
-      return YES;
-    case XPAlertReturnOther:
-      return NO;
-    case XPAlertReturnError:
-    default:
-      [XPLog error:@"Unexpected alert panel result: %ld", result];
-      return NO;
-  }
-}
-
--(NSWindow*)window;
-{
-  return [[_window retain] autorelease];
-}
-
-// MARK: Document Status
-
-/// Override to update window status
--(BOOL)isDocumentEdited;
-{
-  NSData *diskData = nil;
-  NSData *rawData = nil;
-  NSString *fileName = [self fileName];
-  if (fileName) {
-    diskData = [NSData dataWithContentsOfFile:fileName];
-    rawData = [self rawData];
-    return [diskData isEqualToData:rawData];
-  } else {
-    return YES;
-  }
 }
 
 -(void)updateWindowState;
@@ -112,6 +97,30 @@
     [window setRepresentedFilename:@""];
   }
   [window setDocumentEdited:[self isDocumentEdited]];
+}
+
+// MARK: Document Status
+
+/// For display in the window title. If NIL, "Untitled" shown
+-(NSString*)displayName;
+{
+  NSString *lastPathComponent = [[self fileName] lastPathComponent];
+  return (lastPathComponent) ? lastPathComponent : @"UNTITLED";
+}
+
+/// Override to update window status
+-(BOOL)isDocumentEdited;
+{
+  NSData *diskData = nil;
+  NSData *rawData = nil;
+  NSString *fileName = [self fileName];
+  if (fileName) {
+    diskData = [NSData dataWithContentsOfFile:fileName];
+    rawData = [self rawData];
+    return [diskData isEqualToData:rawData];
+  } else {
+    return YES;
+  }
 }
 
 /// Filename on disk is NIL if the document is not saved
@@ -173,17 +182,11 @@
   }
 }
 
-/// For display in the window title. If NIL, "Untitled" shown
--(NSString*)displayName;
-{
-  return [[self fileName] lastPathComponent];
-}
-
 // MARK: Data reading and writing
 
 -(NSData*)dataRepresentationOfType:(NSString*)type;
 {
-  [XPLog debug:@"Override this to provide the data for your document"];
+  [XPLog pause:@"Override this to provide the data for your document"];
   return nil;
 }
 
@@ -221,22 +224,17 @@
 
 -(IBAction)saveDocument:(id)sender;
 {
-  NSSavePanel *savePanel = nil;
   NSString *fileName = [self fileName];
   if (fileName) {
     [self writeToFile:nil ofType:nil];
   } else {
-    savePanel = [self savePanelForDocument];
-    [self runModalSavePanel:savePanel];
-    [self setFileName:[savePanel filename]];
+    [self __runModalSavePanelAndSetFileName:nil];
   }
 }
 
 -(IBAction)saveDocumentAs:(id)sender;
 {
-  NSSavePanel *savePanel = [self savePanelForDocument];
-  [self runModalSavePanel:savePanel];
-  [self setFileName:[savePanel filename]];
+  [self __runModalSavePanelAndSetFileName:nil];
 }
 
 -(IBAction)saveDocumentTo:(id)sender;
@@ -278,6 +276,7 @@
   okCancel = [savePanel runModal];
   switch (okCancel) {
     case NSOKButton:
+      // TODO: Consider trying to return error value if this fails
       [self writeToFile:[savePanel filename] ofType:nil];
       break;
     case NSCancelButton:
@@ -290,6 +289,17 @@
   [[NSUserDefaults standardUserDefaults] SVR_setSavePanelLastDirectory:[savePanel directory]];
   return okCancel;
 }
+
+-(XPInteger)__runModalSavePanelAndSetFileName:(NSSavePanel*)_savePanel;
+{
+  NSSavePanel *savePanel = (_savePanel) ? _savePanel : [self savePanelForDocument];
+  XPInteger result = [self runModalSavePanel:savePanel];
+  if (result == NSOKButton) {
+    [self setFileName:[savePanel filename]];
+  }
+  return result;
+}
+
 
 -(XPAlertReturn)runUnsavedChangesAlert;
 {

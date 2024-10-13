@@ -82,7 +82,9 @@
 
 -(void)__windowWillCloseNotification:(NSNotification*)aNotification;
 {
-  [XPLog pause:@"Unimplemented"];
+  NSWindow *window = [aNotification object];
+  XPDocument *document = [window delegate];
+  [[self openDocuments] removeObject:document];
 }
 
 -(void)dealloc;
@@ -100,23 +102,32 @@
 @implementation SVRAppDelegate (NSApplicationDelegate)
 -(BOOL)applicationShouldTerminate:(NSApplication *)sender;
 {
-  XPAlertReturn alertResult;
+  XPAlertReturn alertResult = NSNotFound;
+  BOOL aDocumentNeedsSaving = NO;
+  NSEnumerator *e = nil;
+  XPDocument *next = nil;
   
-  return YES; // TODO: Reimplement document save checking
+  // Check all documents
+  e = [[self openDocuments] objectEnumerator];
+  while ((next = [e nextObject])) {
+    aDocumentNeedsSaving = [next isDocumentEdited];
+    if (aDocumentNeedsSaving) { break; }
+  }
   
-  // TODO: Make this text match the textedit default
-  alertResult = [XPAlert runAppModalWithTitle:@"Quit [Not] Soulver"
-                                      message:@"Do you want to save changes to your documents before quitting?"
-                                defaultButton:@"Save All"
-                              alternateButton:@"Cancel"
-                                  otherButton:@"Don't Save"];
+  // Ask the user if they want to quit
+  if (!aDocumentNeedsSaving) { return YES; }
+  alertResult = [XPAlert runAppModalWithTitle:@"Quit"
+                                      message:@"There are edited windows."
+                                defaultButton:@"Review Unsaved"
+                              alternateButton:@"Quit Anyway"
+                                  otherButton:@"Cancel"];
   switch (alertResult) {
-    case XPAlertReturnDefault:
-      [self __saveAll:sender];                         // Save everything
-      return [self applicationShouldTerminate:sender]; // Check again if there are unsaved changes
-    case XPAlertReturnAlternate: return NO;
-    case XPAlertReturnOther: return YES;
-    default: [XPLog error:@"%@ Unexpected alert result: %lu", self, alertResult]; return NO;
+    case XPAlertReturnDefault:   return NO;
+    case XPAlertReturnAlternate: return YES;
+    case XPAlertReturnOther:     return NO;
+    default:
+      [XPLog error:@"%@ Unexpected alert result: %ld", self, alertResult];
+      return NO;
   }
 }
 

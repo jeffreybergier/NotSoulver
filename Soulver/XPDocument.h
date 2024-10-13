@@ -41,6 +41,8 @@
 
 // MARK: Document Status
 
+/// For display in the window title. If NIL, "Untitled" shown
+-(NSString*)displayName;
 /// Default implementation reads file on disk and compares with _rawData property
 -(BOOL)isDocumentEdited;
 /// Filename on disk is NIL if the document is not saved
@@ -56,9 +58,6 @@
 -(XPUInteger)hash;
 /// Compares fileName or calls super
 -(BOOL)isEqual:(id)object;
-
-/// For display in the window title. If NIL, "Untitled" shown
--(NSString*)displayName;
 
 // MARK: Data reading and writing
 
@@ -82,6 +81,7 @@
 
 -(NSSavePanel*)savePanelForDocument;
 -(XPInteger)runModalSavePanel:(NSSavePanel*)savePanel;
+-(XPInteger)__runModalSavePanelAndSetFileName:(NSSavePanel*)savePanel;
 -(XPAlertReturn)runUnsavedChangesAlert;
 -(XPAlertReturn)runRevertToSavedAlert;
 
