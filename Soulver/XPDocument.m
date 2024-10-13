@@ -1,6 +1,7 @@
 /* XPDocument.m created by me on Sat 12-Oct-2024 */
 
 #import "XPDocument.h"
+#import "NSUserDefaults+Soulver.h"
 
 @implementation XPDocument
 
@@ -115,23 +116,25 @@
   return nil;
 }
 
--(BOOL)writeToFile:(NSString*)_fileName ofType:(NSString*)_type;
+-(BOOL)writeToFile:(NSString*)__fileName ofType:(NSString*)__type;
 {
-  NSString *fileName = [self fileName];
-  NSString *fileType = [self fileType];
+  BOOL writeResult = NO;
+  NSString *fileName = (__fileName) ? __fileName : [self fileName];
+  NSString *fileType = (__type) ? __type : [self fileType];
   NSData *forWriting = [self dataRepresentationOfType:fileType];
   if (fileName && fileType && forWriting) {
-    return [forWriting writeToFile:fileName atomically:YES];
-  } else {
-    return -1;
+    writeResult = [forWriting writeToFile:fileName atomically:YES];
+    [self setFileName:fileName];
   }
+  return writeResult;
 }
 
--(BOOL)readFromFile:(NSString*)_fileName ofType:(NSString*)_type;
+-(BOOL)readFromFile:(NSString*)__fileName ofType:(NSString*)__type;
 {
-  NSString *fileName = [self fileName];
+  NSString *fileName = (__fileName) ? __fileName : [self fileName];
   if (fileName) {
     [self setRawData:[NSData dataWithContentsOfFile:fileName]];
+    [self setFileName:fileName];
     return YES;
   } else {
     return NO;
@@ -142,26 +145,72 @@
 
 -(IBAction)saveDocument:(id)sender;
 {
+  NSSavePanel *savePanel = nil;
+  NSString *fileName = [self fileName];
+  if (fileName) {
+    [self writeToFile:nil ofType:nil];
+  } else {
+    savePanel = [self savePanelForDocument];
+    [self runModalSavePanel:savePanel];
+    [self setFileName:[savePanel filename]];
+  }
 }
+
 -(IBAction)saveDocumentAs:(id)sender;
 {
+  NSSavePanel *savePanel = [self savePanelForDocument];
+  [self runModalSavePanel:savePanel];
+  [self setFileName:[savePanel filename]];
 }
+
 -(IBAction)saveDocumentTo:(id)sender;
 {
+  [self runModalSavePanel:nil];
 }
+
 -(IBAction)revertDocumentToSaved:(id)sender;
 {
 }
 
 // MARK: Panels and Alerts
 
--(XPInteger)runModalSavePanel:(XPSavePanel*)savePanel;
+-(NSSavePanel*)savePanelForDocument;
+{
+  NSSavePanel *savePanel = [NSSavePanel savePanel];
+  [savePanel setRequiredFileType:[self fileType]];
+  [savePanel setDirectory:[[NSUserDefaults standardUserDefaults] SVR_savePanelLastDirectory]];
+  return savePanel;
+}
+
+-(XPInteger)runModalSavePanel:(NSSavePanel*)_savePanel;
+{
+  XPInteger okCancel;
+  NSSavePanel *savePanel = (_savePanel) ? _savePanel : [self savePanelForDocument];
+  okCancel = [savePanel runModal];
+  switch (okCancel) {
+    case NSOKButton:
+      [self writeToFile:[savePanel filename] ofType:nil];
+      break;
+    case NSCancelButton:
+      [XPLog debug:@"User cancelled save"];
+      break;
+    default:
+      [XPLog error:@"Unexpected save panel result: %d", okCancel];
+      break;
+  }
+  [[NSUserDefaults standardUserDefaults] SVR_setSavePanelLastDirectory:[savePanel directory]];
+  return okCancel;
+}
+
+-(XPAlertReturn)runUnsavedChangesAlert;
 {
   return -1;
 }
--(XPInteger)runUnsavedChangesAlert;
+
+-(XPAlertReturn)runRevertToSavedAlert;
 {
   return -1;
 }
+
 
 @end

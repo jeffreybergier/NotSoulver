@@ -58,9 +58,9 @@
 
 /// Return NSData object for your document
 -(NSData*)dataRepresentationOfType:(NSString*)type;
-/// Type and FileName are ignored, document values are used
+/// If arguments are nil, document values used
 -(BOOL)writeToFile:(NSString*)fileName ofType:(NSString*)type;
-/// Type and FileName are ignored, document values are used
+/// If arguments are nil, document values used
 -(BOOL)readFromFile:(NSString*)fileName ofType:(NSString*)type;
 
 // MARK: Menu Handling
@@ -72,7 +72,9 @@
 
 // MARK: Panels and Alerts
 
--(XPInteger)runModalSavePanel:(XPSavePanel*)savePanel;
--(XPInteger)runUnsavedChangesAlert;
+-(NSSavePanel*)savePanelForDocument;
+-(XPInteger)runModalSavePanel:(NSSavePanel*)savePanel;
+-(XPAlertReturn)runUnsavedChangesAlert;
+-(XPAlertReturn)runRevertToSavedAlert;
 
 @end
