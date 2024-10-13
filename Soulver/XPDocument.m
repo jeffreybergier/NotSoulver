@@ -52,7 +52,22 @@
 /// Return YES to allow the document to close
 -(BOOL)shouldCloseDocument;
 {
-  return YES;
+  XPAlertReturn result;
+  if (![self isDocumentEdited]) { return YES; }
+  result = [self runUnsavedChangesAlert];
+  switch (result) {
+    case XPAlertReturnDefault:
+      [self saveDocument:self];
+      return YES;
+    case XPAlertReturnAlternate:
+      return YES;
+    case XPAlertReturnOther:
+      return NO;
+    case XPAlertReturnError:
+    default:
+      [XPLog error:@"Unexpected alert panel result: %ld", result];
+      return NO;
+  }
 }
 
 -(NSWindow*)window;
@@ -170,6 +185,19 @@
 
 -(IBAction)revertDocumentToSaved:(id)sender;
 {
+  XPAlertReturn result = [self runRevertToSavedAlert];
+  switch (result) {
+    case XPAlertReturnDefault:
+      [self readFromFile:nil ofType:nil];
+      break;
+    case XPAlertReturnAlternate:
+      [XPLog debug:@"User cancelled revert"];
+      break;
+    case XPAlertReturnOther:
+    case XPAlertReturnError:
+    default:
+      [XPLog error:@"Unexpected alert panel result: %ld", result];
+  }
 }
 
 // MARK: Panels and Alerts
@@ -195,7 +223,7 @@
       [XPLog debug:@"User cancelled save"];
       break;
     default:
-      [XPLog error:@"Unexpected save panel result: %d", okCancel];
+      [XPLog error:@"Unexpected save panel result: %ld", okCancel];
       break;
   }
   [[NSUserDefaults standardUserDefaults] SVR_setSavePanelLastDirectory:[savePanel directory]];
@@ -204,12 +232,22 @@
 
 -(XPAlertReturn)runUnsavedChangesAlert;
 {
-  return -1;
+  return NSRunAlertPanel(@"Close",
+                         @"Save changes to %@?",
+                         @"Save",
+                         @"Don't Save",
+                         @"Cancel",
+                         [self displayName]);
 }
 
 -(XPAlertReturn)runRevertToSavedAlert;
 {
-  return -1;
+  return NSRunAlertPanel(@"Alert",
+                         @"Do you want to revert changes to %@?",
+                         @"Revert",
+                         @"Cancel",
+                         nil,
+                         [self displayName]);
 }
 
 
