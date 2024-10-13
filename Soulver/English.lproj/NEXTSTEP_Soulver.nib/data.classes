@@ -4,7 +4,7 @@
     SUPERCLASS = NSObject; 
 };
 "SVRAppDelegate" = {
-    ACTIONS = {"closeDoc:" = id; "newDoc:" = id; "openDoc:" = id; "saveAll:" = id; }; 
+    ACTIONS = {"newDoc:" = id; "openDoc:" = id; "saveAll:" = id; }; 
     OUTLETS = {}; 
     SUPERCLASS = NSObject; 
 };

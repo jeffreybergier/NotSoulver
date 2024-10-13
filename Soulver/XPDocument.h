@@ -5,8 +5,11 @@
 
 // This is a best effort implementation of NSDocument only for use in OpenStep.
 // Its insanely minimal because it won't be used once Mac OS X Ships
-
+#if OS_OPENSTEP
+@interface XPDocument: NSResponder
+#else
 @interface XPDocument: NSResponder <NSWindowDelegate>
+#endif
 {
   IBOutlet NSWindow *_window;
   NSString *_fileName;
@@ -47,6 +50,12 @@
 -(void)setFileType:(NSString*)type;
 -(NSData*)rawData;
 -(void)setRawData:(NSData*)rawData;
+
+// MARK: NSObject basics
+/// Returns hash of the filename or calls super
+-(XPUInteger)hash;
+/// Compares fileName or calls super
+-(BOOL)isEqual:(id)object;
 
 /// For display in the window title. If NIL, "Untitled" shown
 -(NSString*)displayName;

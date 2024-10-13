@@ -151,6 +151,28 @@
   _rawData = [rawData copy];
 }
 
+/// Returns hash of the filename or calls super
+-(XPUInteger)hash;
+{
+  NSString *fileName = [self fileName];
+  if (fileName) {
+    return [fileName hash];
+  } else {
+    return [super hash];
+  }
+}
+
+/// Compares fileName or calls super
+-(BOOL)isEqual:(id)object;
+{
+  NSString *fileName = [self fileName];
+  if (fileName && [object isKindOfClass:[NSString class]]) {
+    return [fileName isEqualToString:object];
+  } else {
+    return [super isEqual:object];
+  }
+}
+
 /// For display in the window title. If NIL, "Untitled" shown
 -(NSString*)displayName;
 {

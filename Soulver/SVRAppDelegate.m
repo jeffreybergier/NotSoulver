@@ -4,36 +4,37 @@
 
 @implementation SVRAppDelegate
 
+// MARK: Init
+-(void)awakeFromNib;
+{
+  // Initialize Properties
+  _openDocuments = [NSMutableSet new];
+  // Prepare UserDefaults
+  [[NSUserDefaults standardUserDefaults] SVR_configure];
+  // Register for Notifications
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(__windowWillCloseNotification:)
+                                               name:NSWindowWillCloseNotification
+                                             object:nil];
+  // Announce
+  [XPLog debug:@"AwakeFromNib:%@", self];
+}
+
 // MARK: Properties
--(NSMutableDictionary*)openFiles;
+-(NSMutableSet*)openDocuments;
 {
-  return _openFiles;
-}
--(NSMutableArray*)openUnsaved;
-{
-  return _openUnsaved;
-}
--(NSEnumerator*)openDocumentEnumerator;
-{
-  NSArray *collections = [NSArray arrayWithObjects:[self openUnsaved], [self openFiles], nil];
-  return [MultiEnumerator enumeratorWithCollections:collections];
+  return _openDocuments;
 }
 
-// MARK: Document Management
-
+// MARK: IBActions
 -(void)newDoc:(id)sender
 {
-  SVRDocument *controller;
-  NSWindow *window;
-
-  controller = [SVRDocument controllerWithFilename:nil];
-  window = [controller window];
-  
-  [[self openUnsaved] addObject:controller];
-  [window makeKeyAndOrderFront:sender];
+  SVRDocument *document = [SVRDocument documentWithContentsOfFile:nil];
+  [document showWindows];
+  [[self openDocuments] addObject:document];
 }
 
--(void)openDoc:(id)sender
+-(IBAction)openDoc:(id)sender
 {
   NSArray *filenames;
   NSEnumerator *e;
@@ -44,16 +45,16 @@
   if ([filenames count] == 0) { [XPLog debug:@"%@ Open Cancelled", self]; return; }
   e = [filenames objectEnumerator];
   while ((nextF = [e nextObject])) {
-    nextC = [[self openFiles] objectForKey:nextF];
+    nextC = [[self openDocuments] member:nextF];
     if (!nextC) {
-      nextC = [SVRDocument controllerWithFilename:nextF];
-      [[self openFiles] setObject:nextC forKey:nextF];
+      nextC = [SVRDocument documentWithContentsOfFile:nextF];
+      [[self openDocuments] addObject:nextC];
     }
     [[nextC window] makeKeyAndOrderFront:sender];
   }
 }
 
--(void)saveAll:(id)sender;
+-(IBAction)saveAll:(id)sender;
 {
   // TODO: Is this needed? TextEdit does not do this.
   XPAlertReturn alertResult = [XPAlert runAppModalWithTitle:@"Save All"
@@ -67,120 +68,28 @@
     case XPAlertReturnAlternate: return;
     default: [XPLog error:@"%@ Unexpected alert return: %lu", self, alertResult]; return;
   }
-  
-  
 }
 
 -(void)__saveAll:(id)sender;
 {
   NSEnumerator *e;
   SVRDocument *nextC;
-  e = [self openDocumentEnumerator];
+  e = [[self openDocuments] objectEnumerator];
   while ((nextC = [e nextObject])) {
-    [nextC save:sender];
+    [nextC saveDocument:self];
   }
 }
 
 -(void)__windowWillCloseNotification:(NSNotification*)aNotification;
 {
-  SVRDocument *controller = nil;
-  NSWindow *window = [aNotification object];
-  
-  if (![window isKindOfClass:[NSWindow class]]) {
-    [XPLog error:@"%@ __windowWillCloseNotification: %@", self, aNotification];
-  }
-  
-  controller = (SVRDocument*)[window delegate];
-  
-  if (controller && ![controller isKindOfClass:[SVRDocument class]]) {
-    [XPLog debug:@"%@ __windowWillCloseNotification: %@", self, aNotification];
-  }
-  
-  [self __documentWillClose:controller];
-}
-
--(void)__documentDidChangeFilenameNotification:(NSNotification*)aNotification;
-{
-  id _oldFilename = [[aNotification userInfo] objectForKey:@"oldFilename"];
-  NSString *oldFilename = ([_oldFilename isKindOfClass:[NSString class]]) ? _oldFilename : nil;
-  SVRDocument *controller = [aNotification object];
-  
-  if (![controller isKindOfClass:[SVRDocument class]]) {
-    [XPLog error:@"%@ __documentDidChangeFilenameNotification: %@", self, aNotification];
-  }
-  
-  [self __document:controller didChangeOldFilename:oldFilename];
-}
-
--(void)__documentWillClose:(SVRDocument*)document;
-{
-  XPUInteger unsavedIndex = NSNotFound;
-  NSString *savedFilename = nil;
-  if (!document) { [XPLog debug:@"__documentWillClose: document was nil"]; return; }
-  [document retain];
-
-  savedFilename = [document filename];
-  unsavedIndex = [[self openUnsaved] indexOfObject:document];
-  if (unsavedIndex != NSNotFound) {
-    [[self openUnsaved] removeObjectAtIndex:unsavedIndex];
-  }
-  if (savedFilename) {
-    [[self openFiles] removeObjectForKey:savedFilename];
-  }
-  [XPLog debug:@"%@ closedWindow: %lu closedFile: %@", self, [[document window] windowNumber], savedFilename];
-  
-  [document autorelease];
-}
-
--(void)   __document:(SVRDocument*)document
-didChangeOldFilename:(NSString*)oldFilename;
-{
-  XPUInteger unsavedIndex = NSNotFound;
-  NSString *newFilename = [document filename];
-
-  [document retain];
-  unsavedIndex = [[self openUnsaved] indexOfObject:document];
-  if (unsavedIndex != NSNotFound) {
-    [[self openUnsaved] removeObjectAtIndex:unsavedIndex];
-  }
-  if (oldFilename) {
-    [[self openFiles] removeObjectForKey:oldFilename];
-  }
-  if (newFilename) {
-    [[self openFiles] setObject:document forKey:newFilename];
-  } else {
-    [[self openUnsaved] addObject:document];
-  }
-  [XPLog debug:@"%@ fileChanged: %@", newFilename];
-  [document autorelease];
-}
-
--(void)awakeFromNib;
-{
-  // Initialize Properties
-  _openFiles = [NSMutableDictionary new];
-  _openUnsaved = [NSMutableArray new];
-  
-  // Prepare UserDefaults
-  [[NSUserDefaults standardUserDefaults] SVR_configure];
-  
-  // Register for Notifications
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(__windowWillCloseNotification:)
-                                               name:NSWindowWillCloseNotification
-                                             object:nil];
-
-  // Announce
-  [XPLog debug:@"%@ awakeFromNib", self];
+  [XPLog pause:@"Unimplemented"];
 }
 
 -(void)dealloc;
 {
   [XPLog extra:@"DEALLOC: %@", self];
-  [_openFiles release];
-  [_openUnsaved release];
-  _openFiles = nil;
-  _openUnsaved = nil;
+  [_openDocuments release];
+  _openDocuments = nil;
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
 }
@@ -213,13 +122,12 @@ didChangeOldFilename:(NSString*)oldFilename;
 
 -(BOOL)application:(NSApplication *)sender openFile:(NSString *)filename;
 {
-  SVRDocument *controller;
-  controller = [[self openFiles] objectForKey:filename];
-  if (!controller) {
-    controller = [SVRDocument controllerWithFilename:filename];
-    [[self openFiles] setObject:controller forKey:filename];
+  SVRDocument *document = [[self openDocuments] member:filename];
+  if (!document) {
+    document = [SVRDocument documentWithContentsOfFile:filename];
+    [[self openDocuments] addObject:document];
   }
-  [[controller window] makeKeyAndOrderFront:sender];
+  [[document window] makeKeyAndOrderFront:sender];
   return YES;
 }
 
@@ -227,50 +135,5 @@ didChangeOldFilename:(NSString*)oldFilename;
 {
   [self newDoc:sender];
   return YES;
-}
-@end
-
-@implementation MultiEnumerator
-
--(id)nextObject;
-{
-  // 1. Check the easy path
-  id nextObject = [_currentEnumerator nextObject];
-  if (nextObject) { return nextObject; }
-  
-  // 2. See if we can move to the next enumerator
-  if (_currentIndex >= [_allCollections count]) { return nil; }
-  
-  // 3. Increment the enumerator
-  [_currentEnumerator release];
-  _currentEnumerator = [[[_allCollections objectAtIndex:_currentIndex] objectEnumerator] retain];
-  _currentIndex += 1;
-  
-  // 4. Start over
-  return [self nextObject];
-}
-
--(id)initWithCollections:(NSArray*)collections;
-{
-  self = [super init];
-  _allCollections = [collections retain];
-  _currentIndex = 0;
-  _currentEnumerator = nil;
-  return self;
-}
-
-+(id)enumeratorWithCollections:(NSArray*)collections;
-{
-  return [[[MultiEnumerator alloc] initWithCollections:collections] autorelease];
-}
-
--(void)dealloc;
-{
-  [XPLog extra:@"DEALLOC: %@", self];
-  [_allCollections release];
-  [_currentEnumerator release];
-  _allCollections = nil;
-  _currentEnumerator = nil;
-  [super dealloc];
 }
 @end
