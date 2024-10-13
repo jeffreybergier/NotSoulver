@@ -1,13 +1,14 @@
 #import <AppKit/AppKit.h>
 #import "SVRDocumentModelController.h"
 #import "XPCrossPlatform.h"
+#import "SVRDocumentViewController.h"
 
 @interface SVRDocumentWindowController: NSResponder
 {
+  IBOutlet SVRDocumentModelController *_model;
+  IBOutlet NSWindow *_window;
+  IBOutlet SVRDocumentViewController *_viewController;
   NSString *_filename;
-  SVRDocumentModelController *_model;
-  NSWindow *_window;
-  NSObject *_viewController;
   NSArray *_nibTopLevelObjects;
 }
 
@@ -37,8 +38,8 @@
 // MARK: NSMenuActionResponder
 @interface SVRDocumentWindowController (NSMenuActionResponder)
 -(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
--(void)save:(id)sender;
--(void)saveAs:(id)sender;
+-(IBAction)save:(id)sender;
+-(IBAction)saveAs:(id)sender;
 -(BOOL)__save;
 -(BOOL)__saveAs;
 @end

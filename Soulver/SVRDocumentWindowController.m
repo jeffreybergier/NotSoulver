@@ -165,12 +165,12 @@
   }
 }
 
--(void)save:(id)sender;
+-(IBAction)save:(id)sender;
 {
   [self __save];
 }
 
--(void)saveAs:(id)sender;
+-(IBAction)saveAs:(id)sender;
 {
   [self __saveAs];
 }

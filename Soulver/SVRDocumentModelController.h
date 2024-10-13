@@ -2,7 +2,7 @@
 
 @interface SVRDocumentModelController: NSObject
 {
-  NSTextStorage *_model;
+  IBOutlet NSTextStorage *_model;
 }
 
 // MARK: Properties

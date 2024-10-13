@@ -2,16 +2,16 @@
 #import "SVRDocumentModelController.h"
 #import "XPCrossPlatform.h"
 
-@interface SVRDocumentViewController : NSObject
+@interface SVRDocumentViewController: NSObject
 {
-  id _modelController;
-  id _textView;
+  IBOutlet SVRDocumentModelController *_modelController;
+  IBOutlet NSTextView *_textView;
 }
 
 // MARK: Interface Builder
-/*@IBOutlet*/-(SVRDocumentModelController*)modelController;
-/*@IBOutlet*/-(NSTextView*)textView;
-/*@IBAction*/-(void)append:(NSButton*)sender;
+-(SVRDocumentModelController*)modelController;
+-(NSTextView*)textView;
+-(IBAction)append:(NSButton*)sender;
 
 // MARK: Private
 -(void)__append:(XPInteger)tag;

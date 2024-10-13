@@ -6,18 +6,17 @@
 
 // MARK: Interface Builder
 
-/*@IBOutlet*/-(SVRDocumentModelController*)modelController;
+-(SVRDocumentModelController*)modelController;
 {
   return _modelController;
 }
 
-/*@IBOutlet*/-(NSTextView*)textView;
+-(NSTextView*)textView;
 {
   return _textView; 
 }
 
-// @IBAction
--(void)append:(NSButton*)sender
+-(IBAction)append:(NSButton*)sender
 {
   [self __append:[sender tag]];
 }
