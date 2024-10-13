@@ -6,7 +6,7 @@
 // This is a best effort implementation of NSDocument only for use in OpenStep.
 // Its insanely minimal because it won't be used once Mac OS X Ships
 
-@interface XPDocument : NSObject
+@interface XPDocument: NSResponder <NSWindowDelegate>
 {
   IBOutlet NSWindow *_window;
   NSString *_fileName;
@@ -25,7 +25,8 @@
 /// Default implementation throws exception.
 /// File's Owner Should be this Object
 -(NSString*)windowNibName;
-/// Override to read your file and prepare
+/// Default implementation populates rawData property if fileName is set
+/// and sets self as window delegate
 -(void)awakeFromNib;
 
 /// Shows the window for this document
@@ -49,7 +50,7 @@
 -(NSString*)fileType;
 -(void)setFileType:(NSString*)type;
 -(NSData*)rawData;
--(void)setRawData:(NSData*)newData;
+-(void)setRawData:(NSData*)rawData;
 
 /// For display in the window title. If NIL, "Untitled" shown
 -(NSString*)displayName;
@@ -65,6 +66,8 @@
 
 // MARK: Menu Handling
 
+/// Override to enable and disable menu items, default returns YES
+-(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
 -(IBAction)saveDocument:(id)sender;
 -(IBAction)saveDocumentAs:(id)sender;
 -(IBAction)saveDocumentTo:(id)sender;

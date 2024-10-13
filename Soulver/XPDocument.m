@@ -40,6 +40,13 @@
 /// Override to read your file and prepare
 -(void)awakeFromNib;
 {
+  NSString *fileName = [self fileName];
+  NSString *fileType = [self fileType];
+  if (fileName && fileType) {
+    [self readFromFile:fileName ofType:fileType];
+  }
+  [[self window] setDelegate:self];
+  [[self window] setNextResponder:self];
   [XPLog debug:@"awakeFromNib: %@", self];
 }
 
@@ -91,6 +98,7 @@
 
 -(void)setFileName:(NSString*)fileName;
 {
+  if ([fileName isEqualToString:_fileName]) { return; }
   [_fileName release];
   _fileName = [fileName copy];
 }
@@ -102,6 +110,7 @@
 
 -(void)setFileType:(NSString*)type;
 {
+  if ([type isEqualToString:_fileType]) { return; }
   [_fileType release];
   _fileType = [type copy];
 }
@@ -111,10 +120,11 @@
   return [[_rawData retain] autorelease];
 }
 
--(void)setRawData:(NSData*)newData;
+-(void)setRawData:(NSData*)rawData;
 {
+  if ([rawData isEqualToData:_rawData]) { return; }
   [_rawData release];
-  _rawData = [newData copy];
+  _rawData = [rawData copy];
 }
 
 /// For display in the window title. If NIL, "Untitled" shown
@@ -157,6 +167,11 @@
 }
 
 // MARK: Menu Handling
+
+-(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
+{
+  return YES;
+}
 
 -(IBAction)saveDocument:(id)sender;
 {
@@ -248,6 +263,24 @@
                          @"Cancel",
                          nil,
                          [self displayName]);
+}
+
+- (void)dealloc
+{
+  [XPLog debug:@"DEALLOC: %@", self];
+  [_window setDelegate:nil];
+  [_window setNextResponder:nil];
+  // this autorelease (instead of release) is necessary
+  // to prevent crashes when the window is closing
+  [_window   autorelease];
+  [_fileName release];
+  [_fileType release];
+  [_rawData  release];
+  _window   = nil;
+  _fileName = nil;
+  _fileType = nil;
+  _rawData  = nil;
+  [super dealloc];
 }
 
 
