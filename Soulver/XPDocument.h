@@ -25,25 +25,21 @@
 /// Default implementation throws exception.
 /// File's Owner Should be this Object
 -(NSString*)windowNibName;
+/// Shows the window for this document
+-(void)showWindows;
+/// Return YES to allow the document to close
+-(BOOL)windowShouldClose:(id)sender;
+/// _window should be set as IBOutlet
+-(NSWindow*)window;
 /// Default implementation populates rawData property if fileName is set
 /// and sets self as window delegate
 -(void)awakeFromNib;
-
-/// Shows the window for this document
--(void)showWindows;
-
-/// Return YES to allow the document to close
--(BOOL)shouldCloseDocument;
-
--(NSWindow*)window;
+-(void)updateWindowState;
 
 // MARK: Document Status
 
-/// Automatically configured based on status of
-/// - (NSData *)dataRepresentationOfType:(NSString *)type;
-/// - (BOOL)loadDataRepresentation:(NSData *)data ofType:(NSString *)type;
+/// Default implementation reads file on disk and compares with _rawData property
 -(BOOL)isDocumentEdited;
-
 /// Filename on disk is NIL if the document is not saved
 -(NSString*)fileName;
 -(void)setFileName:(NSString*)fileName;

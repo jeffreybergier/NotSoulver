@@ -1,5 +1,5 @@
 #import "SVRAppDelegate.h"
-#import "SVRDocumentWindowController.h"
+#import "SVRDocument.h"
 #import "NSUserDefaults+Soulver.h"
 
 @implementation SVRAppDelegate
@@ -23,10 +23,10 @@
 
 -(void)newDoc:(id)sender
 {
-  SVRDocumentWindowController *controller;
+  SVRDocument *controller;
   NSWindow *window;
 
-  controller = [SVRDocumentWindowController controllerWithFilename:nil];
+  controller = [SVRDocument controllerWithFilename:nil];
   window = [controller window];
   
   [[self openUnsaved] addObject:controller];
@@ -38,7 +38,7 @@
   NSArray *filenames;
   NSEnumerator *e;
   NSString *nextF;
-  SVRDocumentWindowController *nextC;
+  SVRDocument *nextC;
   
   filenames = [XPOpenPanel filenamesByRunningAppModalOpenPanel];
   if ([filenames count] == 0) { [XPLog debug:@"%@ Open Cancelled", self]; return; }
@@ -46,7 +46,7 @@
   while ((nextF = [e nextObject])) {
     nextC = [[self openFiles] objectForKey:nextF];
     if (!nextC) {
-      nextC = [SVRDocumentWindowController controllerWithFilename:nextF];
+      nextC = [SVRDocument controllerWithFilename:nextF];
       [[self openFiles] setObject:nextC forKey:nextF];
     }
     [[nextC window] makeKeyAndOrderFront:sender];
@@ -74,7 +74,7 @@
 -(void)__saveAll:(id)sender;
 {
   NSEnumerator *e;
-  SVRDocumentWindowController *nextC;
+  SVRDocument *nextC;
   e = [self openDocumentEnumerator];
   while ((nextC = [e nextObject])) {
     [nextC save:sender];
@@ -83,16 +83,16 @@
 
 -(void)__windowWillCloseNotification:(NSNotification*)aNotification;
 {
-  SVRDocumentWindowController *controller = nil;
+  SVRDocument *controller = nil;
   NSWindow *window = [aNotification object];
   
   if (![window isKindOfClass:[NSWindow class]]) {
     [XPLog error:@"%@ __windowWillCloseNotification: %@", self, aNotification];
   }
   
-  controller = (SVRDocumentWindowController*)[window delegate];
+  controller = (SVRDocument*)[window delegate];
   
-  if (controller && ![controller isKindOfClass:[SVRDocumentWindowController class]]) {
+  if (controller && ![controller isKindOfClass:[SVRDocument class]]) {
     [XPLog debug:@"%@ __windowWillCloseNotification: %@", self, aNotification];
   }
   
@@ -103,16 +103,16 @@
 {
   id _oldFilename = [[aNotification userInfo] objectForKey:@"oldFilename"];
   NSString *oldFilename = ([_oldFilename isKindOfClass:[NSString class]]) ? _oldFilename : nil;
-  SVRDocumentWindowController *controller = [aNotification object];
+  SVRDocument *controller = [aNotification object];
   
-  if (![controller isKindOfClass:[SVRDocumentWindowController class]]) {
+  if (![controller isKindOfClass:[SVRDocument class]]) {
     [XPLog error:@"%@ __documentDidChangeFilenameNotification: %@", self, aNotification];
   }
   
   [self __document:controller didChangeOldFilename:oldFilename];
 }
 
--(void)__documentWillClose:(SVRDocumentWindowController*)document;
+-(void)__documentWillClose:(SVRDocument*)document;
 {
   XPUInteger unsavedIndex = NSNotFound;
   NSString *savedFilename = nil;
@@ -132,7 +132,7 @@
   [document autorelease];
 }
 
--(void)   __document:(SVRDocumentWindowController*)document
+-(void)   __document:(SVRDocument*)document
 didChangeOldFilename:(NSString*)oldFilename;
 {
   XPUInteger unsavedIndex = NSNotFound;
@@ -213,10 +213,10 @@ didChangeOldFilename:(NSString*)oldFilename;
 
 -(BOOL)application:(NSApplication *)sender openFile:(NSString *)filename;
 {
-  SVRDocumentWindowController *controller;
+  SVRDocument *controller;
   controller = [[self openFiles] objectForKey:filename];
   if (!controller) {
-    controller = [SVRDocumentWindowController controllerWithFilename:filename];
+    controller = [SVRDocument controllerWithFilename:filename];
     [[self openFiles] setObject:controller forKey:filename];
   }
   [[controller window] makeKeyAndOrderFront:sender];

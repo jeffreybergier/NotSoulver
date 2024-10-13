@@ -14,6 +14,7 @@
   _fileName = nil;
   _fileType = nil;
   _rawData = nil;
+  [NSBundle loadNibNamed:[self windowNibName] owner:self];
   return self;
 }
 
@@ -23,7 +24,6 @@
   _fileName = [fileName copy];
   _fileType = [fileType copy];
   _rawData = nil;
-  // TODO: Load the nib from the bundle
   return self;
 }
 
@@ -57,7 +57,7 @@
 }
 
 /// Return YES to allow the document to close
--(BOOL)shouldCloseDocument;
+-(BOOL)windowShouldClose:(id)sender;
 {
   XPAlertReturn result;
   if (![self isDocumentEdited]) { return YES; }
@@ -87,7 +87,31 @@
 /// Override to update window status
 -(BOOL)isDocumentEdited;
 {
-  return NO;
+  NSData *diskData = nil;
+  NSData *rawData = nil;
+  NSString *fileName = [self fileName];
+  if (fileName) {
+    diskData = [NSData dataWithContentsOfFile:fileName];
+    rawData = [self rawData];
+    return [diskData isEqualToData:rawData];
+  } else {
+    return YES;
+  }
+}
+
+-(void)updateWindowState;
+{
+  NSWindow *window = [self window];
+  NSString *fileName = [self fileName];
+  
+  if (fileName) {
+    [window setTitle:[self displayName]];
+    [window setRepresentedFilename:fileName];
+  } else {
+    [window setTitle:@"UNTITLED"];
+    [window setRepresentedFilename:@""];
+  }
+  [window setDocumentEdited:[self isDocumentEdited]];
 }
 
 /// Filename on disk is NIL if the document is not saved
@@ -130,7 +154,7 @@
 /// For display in the window title. If NIL, "Untitled" shown
 -(NSString*)displayName;
 {
-  return [[_fileName retain] autorelease];
+  return [[self fileName] lastPathComponent];
 }
 
 // MARK: Data reading and writing

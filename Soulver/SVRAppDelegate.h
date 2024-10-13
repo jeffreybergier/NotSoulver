@@ -1,5 +1,5 @@
 #import <AppKit/AppKit.h>
-#import "SVRDocumentWindowController.h"
+#import "SVRDocument.h"
 
 @interface SVRAppDelegate: NSObject
 {
@@ -21,8 +21,8 @@
 // MARK: Notifications
 -(void)__windowWillCloseNotification:(NSNotification*)aNotification;
 -(void)__documentDidChangeFilenameNotification:(NSNotification*)aNotification;
--(void)__documentWillClose:(SVRDocumentWindowController*)document;
--(void)__document:(SVRDocumentWindowController*)document didChangeOldFilename:(NSString*)oldFilename;
+-(void)__documentWillClose:(SVRDocument*)document;
+-(void)__document:(SVRDocument*)document didChangeOldFilename:(NSString*)oldFilename;
 
 @end
 
