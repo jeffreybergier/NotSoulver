@@ -8,16 +8,13 @@
 {
   return [[_model retain] autorelease];
 }
--(void)setModel:(NSTextStorage*)newModel;
-{
-  [_model release];
-  _model = [newModel retain];
-}
 
-// MARK: Interface Builder
--(void)awakeFromNib;
+// MARK: Init
+-(id)initWithModel:(NSTextStorage*)model;
 {
-  [XPLog debug:@"%@ awakeFromNib", self];
+  self = [super init];
+  _model = [_model retain];
+  return self;
 }
 
 // MARK: Usage
@@ -47,6 +44,8 @@
 -(void)dealloc;
 {
   [XPLog extra:@"DEALLOC: %@", self];
+  [_model release];
+  _model = nil;
   [super dealloc];
 }
 
@@ -58,14 +57,14 @@
 -(void)textStorageWillProcessEditing:(NSNotification*)aNotification;
 {
   NSTextStorage *storage = [aNotification object];
-  [XPLog extra:@"%@ textStorageWillProcessEditing: `%@`", self, [storage string]];
+  [XPLog debug:@"%@ textStorageWillProcessEditing: `%@`", self, [storage string]];
   [SVRSolver removeAllSolutionsAndTags:storage];
   [SVRSolver solveAndTagAttributedString:storage];
 }
 -(void)textStorageDidProcessEditing:(NSNotification*)aNotification;
 {
   NSTextStorage *storage = [aNotification object];
-  [XPLog extra:@"%@ textStorageDidProcessEditing: `%@`", self, [storage string]];
+  [XPLog debug:@"%@ textStorageDidProcessEditing: `%@`", self, [storage string]];
   [SVRSolver styleSolvedAndTaggedAttributedString:storage];
 }
 

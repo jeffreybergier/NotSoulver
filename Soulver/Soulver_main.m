@@ -6,6 +6,7 @@
 #import "SVRSolverScanner.h"
 #import "SVRSolverExpressionTagger.h"
 #import "SVRSolverStyler.h"
+#import "NSUserDefaults+Soulver.h"
 
 int main(int argc, const char *argv[]) {
   

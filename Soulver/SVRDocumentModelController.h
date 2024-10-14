@@ -8,7 +8,9 @@
 
 // MARK: Properties
 -(NSTextStorage*)model;
--(void)setModel:(NSTextStorage*)newModel;
+
+// MARK: Init
+-(id)initWithModel:(NSTextStorage*)model;
 
 // MARK: Usage
 -(int)appendCharacter:(NSString*)aString error:(XPErrorPointer)errorPointer;
@@ -21,7 +23,7 @@
 #if OS_OPENSTEP
 @interface SVRDocumentModelController (TextDelegate)
 #else
-@interface SVRDocumentModelController (TextDelegate) <NSTextStorageDelegate>
+@interface SVRDocumentModelController (TextDelegate) <NSTextStorageDelegate, NSTextViewDelegate>
 #endif
 
 -(void)textStorageWillProcessEditing:(NSNotification*)aNotification;

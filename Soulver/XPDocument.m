@@ -24,6 +24,7 @@
   _fileName = [fileName copy];
   _fileType = [fileType copy];
   _rawData = nil;
+  [self readFromFile:fileName ofType:fileType];
   return self;
 }
 
@@ -186,7 +187,7 @@
 
 -(NSData*)dataRepresentationOfType:(NSString*)type;
 {
-  [XPLog pause:@"Override this to provide the data for your document"];
+  [XPLog error:@"Unimplemented by subclass"];
   return nil;
 }
 

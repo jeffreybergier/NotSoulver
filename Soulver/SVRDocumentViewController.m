@@ -4,16 +4,37 @@
 
 @implementation SVRDocumentViewController
 
-// MARK: Interface Builder
-
--(SVRDocumentModelController*)modelController;
+// MARK: NSDocument Support
+-(void)updateModel:(NSTextStorage*)model;
 {
-  return _modelController;
+  NSLayoutManager *layoutManager = nil;
+  
+  NSAssert([self textView], @"No Text View");
+  
+  // Create new modelController
+  [_modelController release];
+  _modelController = [[SVRDocumentModelController alloc] initWithModel:model];
+  
+  // Configure layoutManager
+  layoutManager = [[[SVRSinglePaneLayoutManager alloc] init] autorelease];
+  [layoutManager setTextStorage:model];
+  [[[self textView] textContainer] replaceLayoutManager:layoutManager];
+  
+  // Configure delegates
+  [model setDelegate:_modelController];
+  [[self textView] setDelegate:_modelController];
 }
+
+// MARK: Interface Builder
 
 -(NSTextView*)textView;
 {
-  return _textView; 
+  return [[_textView retain] autorelease];
+}
+
+-(SVRDocumentModelController*)modelController;
+{
+  return [[_modelController retain] autorelease];
 }
 
 -(IBAction)append:(NSButton*)sender
@@ -78,25 +99,11 @@
   return nil;
 }
 
--(void)awakeFromNib;
-{
-  NSLayoutManager *layoutManager = nil;
-  NSTextStorage *textStorage = nil;
-  
-  textStorage = [[self textView] textStorage];
-  layoutManager = [[[SVRSinglePaneLayoutManager alloc] init] autorelease];
-  [layoutManager setTextStorage:textStorage];
-  [textStorage setDelegate:[self modelController]];
-  [[[self textView] textContainer] replaceLayoutManager:layoutManager];
-  [[self modelController] setModel:textStorage];
-
-  [XPLog debug:@"%@ awakeFromNib", self];
-}
-
 // MARK: Dealloc
 -(void)dealloc;
 {
   [XPLog extra:@"DEALLOC: %@", self];
+  [_modelController release];
   _modelController = nil;
   _textView = nil;
   [super dealloc];

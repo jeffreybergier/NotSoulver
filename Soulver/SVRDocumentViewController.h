@@ -4,13 +4,16 @@
 
 @interface SVRDocumentViewController: NSObject
 {
-  IBOutlet SVRDocumentModelController *_modelController;
   IBOutlet NSTextView *_textView;
+  SVRDocumentModelController *_modelController;
 }
 
+// MARK: NSDocument Support
+-(void)updateModel:(NSTextStorage*)model;
+
 // MARK: Interface Builder
--(SVRDocumentModelController*)modelController;
 -(NSTextView*)textView;
+-(SVRDocumentModelController*)modelController;
 -(IBAction)append:(NSButton*)sender;
 
 // MARK: Private

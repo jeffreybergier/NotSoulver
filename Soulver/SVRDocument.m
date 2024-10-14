@@ -2,6 +2,28 @@
 
 @implementation SVRDocument
 
+// MARK: Properties
+
+-(SVRDocumentViewController*)viewController;
+{
+  return _viewController;
+}
+
+-(NSTextStorage*)model;
+{
+  return _model;
+}
+
+-(NSString*)windowNibName;
+{
+#if OS_OPENSTEP
+  return @"NEXTSTEP_SVRDocument.nib";
+#else
+  return @"MACOSX_SVRDocument.nib";
+#endif
+}
+
+// MARK: INIT
 -(id)initWithContentsOfFile:(NSString*)fileName;
 {
   return [super initWithContentsOfFile:fileName ofType:@"solv"];
@@ -12,24 +34,33 @@
   return [[[SVRDocument alloc] initWithContentsOfFile:fileName] autorelease];
 }
 
-// MARK: Properties
--(NSString*)windowNibName;
+// MARK: NSDocument subclass
+
+-(void)awakeFromNib;
 {
-#if OS_OPENSTEP
-  return @"NEXTSTEP_SVRDocument.nib";
-#else
-  return @"MACOSX_SVRDocument.nib";
-#endif
+  [super awakeFromNib];
+  [[self viewController] updateModel:[self model]];
+  [self updateWindowState];
 }
 
--(NSObject*)viewController;
+-(void)setRawData:(NSData*)rawData;
 {
-  return _viewController;
+  NSString *stringFromData = nil;
+  [super setRawData:rawData];
+  stringFromData = [[[NSString alloc] initWithData:rawData
+                                          encoding:NSUTF8StringEncoding] autorelease];
+  if (stringFromData) {
+    {
+      [ [self model] beginEditing];
+      [[[self model] mutableString] setString:stringFromData];
+      [ [self model] endEditing];
+    }
+  }
 }
 
--(SVRDocumentModelController*)modelController;
+-(NSData*)dataRepresentationOfType:(NSString*)type;
 {
-  return _modelController;
+  return [[[self model] string] dataUsingEncoding:NSUTF8StringEncoding];
 }
 
 -(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
@@ -52,16 +83,16 @@
     case 3003: return YES;
     default:
       [XPLog debug:@"%@ validateMenuItem: Unexpected: (%ld)%@", self, [menuItem tag], [menuItem title]];
-      return NO;
+      return YES;
   }
 }
 
 -(void)dealloc;
 {
   [_viewController release];
-  [_modelController release];
+  [_model release];
   _viewController = nil;
-  _modelController = nil;
+  _model = nil;
   [super dealloc];
 }
 

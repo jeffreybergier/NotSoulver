@@ -1,13 +1,11 @@
 "FirstResponder" = {ACTIONS = {}; OUTLETS = {}; SUPERCLASS = NSObject; };
-"SVRDocumentModelController" = {ACTIONS = {}; OUTLETS = {}; SUPERCLASS = NSObject; };
-"SVRDocumentTextDelegate" = {ACTIONS = {}; OUTLETS = {}; SUPERCLASS = NSObject; };
+"SVRDocument" = {
+    ACTIONS = {}; 
+    OUTLETS = {_viewController = id; _window = id; }; 
+    SUPERCLASS = NSResponder; 
+};
 "SVRDocumentViewController" = {
     ACTIONS = {"append:" = id; }; 
-    OUTLETS = {_model = id; _textDelegate = id; _textView = id; }; 
+    OUTLETS = {_textView = id; }; 
     SUPERCLASS = NSObject; 
-};
-"SVRDocumentWindowController" = {
-    ACTIONS = {}; 
-    OUTLETS = {_model = id; _viewController = id; _window = id; }; 
-    SUPERCLASS = NSResponder; 
 };
