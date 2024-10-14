@@ -50,7 +50,7 @@
       nextC = [SVRDocument documentWithContentsOfFile:nextF];
       [[self openDocuments] addObject:nextC];
     }
-    [[nextC window] makeKeyAndOrderFront:sender];
+    [nextC showWindows];
   }
 }
 

@@ -6,12 +6,12 @@
 
 -(SVRDocumentViewController*)viewController;
 {
-  return _viewController;
+  return [[_viewController retain] autorelease];
 }
 
 -(NSTextStorage*)model;
 {
-  return _model;
+  return [[_model retain] autorelease];
 }
 
 -(NSString*)windowNibName;
@@ -26,7 +26,9 @@
 // MARK: INIT
 -(id)initWithContentsOfFile:(NSString*)fileName;
 {
-  return [super initWithContentsOfFile:fileName ofType:@"solv"];
+  self = [super initWithContentsOfFile:fileName ofType:@"solv"];
+  _model = [NSTextStorage new];
+  return self;
 }
 
 +(id)documentWithContentsOfFile:(NSString*)fileName;

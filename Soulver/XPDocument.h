@@ -15,6 +15,7 @@
   NSString *_fileName;
   NSString *_fileType;
   NSData *_rawData;
+  BOOL _isNibLoaded;
 }
 
 // MARK: Init
@@ -28,7 +29,7 @@
 /// Default implementation throws exception.
 /// File's Owner Should be this Object
 -(NSString*)windowNibName;
-/// Shows the window for this document
+/// Loads the NIB if needed and shows the window
 -(void)showWindows;
 /// Return YES to allow the document to close
 -(BOOL)windowShouldClose:(id)sender;

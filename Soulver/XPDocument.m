@@ -14,7 +14,7 @@
   _fileName = nil;
   _fileType = nil;
   _rawData = nil;
-  [NSBundle loadNibNamed:[self windowNibName] owner:self];
+  _isNibLoaded = NO;
   return self;
 }
 
@@ -23,7 +23,6 @@
   self = [self init];
   _fileName = [fileName copy];
   _fileType = [fileType copy];
-  _rawData = nil;
   [self readFromFile:fileName ofType:fileType];
   return self;
 }
@@ -38,9 +37,13 @@
   return nil;
 }
 
-/// Shows the window for this document
+/// Loads the NIB if needed and shows the window
 -(void)showWindows;
 {
+  if (!_isNibLoaded) {
+    [NSBundle loadNibNamed:[self windowNibName] owner:self];
+    _isNibLoaded = YES;
+  }
   [[self window] makeKeyAndOrderFront:self];
 }
 
