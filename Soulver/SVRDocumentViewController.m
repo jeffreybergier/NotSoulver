@@ -9,20 +9,23 @@
 {
   NSLayoutManager *layoutManager = nil;
   
-  NSAssert([self textView], @"No Text View");
-  
   // Create new modelController
   [_modelController release];
   _modelController = [[SVRDocumentModelController alloc] initWithModel:model];
   
-  // Configure layoutManager
-  layoutManager = [[[SVRSinglePaneLayoutManager alloc] init] autorelease];
-  [layoutManager setTextStorage:model];
-  [[[self textView] textContainer] replaceLayoutManager:layoutManager];
-  
   // Configure delegates
   [model setDelegate:_modelController];
   [[self textView] setDelegate:_modelController];
+  
+  // Configure layoutManager
+  // This ordering is incredibly fragile
+  layoutManager = [[[SVRSinglePaneLayoutManager alloc] init] autorelease];
+  [[[self textView] textContainer] replaceLayoutManager:layoutManager];
+  [layoutManager replaceTextStorage:model];
+
+  if ([[self textView] textStorage] != model) {
+    [XPLog error:@"%@ updateModel: configured incorrectly", self];
+  }
 }
 
 // MARK: Interface Builder
