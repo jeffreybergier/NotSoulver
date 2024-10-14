@@ -83,8 +83,10 @@
 -(void)__windowWillCloseNotification:(NSNotification*)aNotification;
 {
   NSWindow *window = [aNotification object];
-  XPDocument *document = [window delegate];
-  [[self openDocuments] removeObject:document];
+  id document = [window delegate];
+  if (document) {
+    [[self openDocuments] removeObject:document];
+  }
 }
 
 -(void)dealloc;

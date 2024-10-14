@@ -68,4 +68,14 @@
   [SVRSolver styleSolvedAndTaggedAttributedString:storage];
 }
 
+-(void)textDidBeginEditing:(NSNotification *)notification;
+{
+  [XPLog debug:@"%@ textDidBeginEditing:", self];
+}
+
+-(void)textDidEndEditing:(NSNotification *)notification;
+{
+  [XPLog debug:@"%@ textDidEndEditing:", self];
+}
+
 @end

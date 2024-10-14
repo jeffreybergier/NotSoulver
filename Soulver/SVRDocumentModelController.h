@@ -28,5 +28,7 @@
 
 -(void)textStorageWillProcessEditing:(NSNotification*)aNotification;
 -(void)textStorageDidProcessEditing:(NSNotification*)aNotification;
+-(void)textDidBeginEditing:(NSNotification *)notification;
+-(void)textDidEndEditing:(NSNotification *)notification;
 
 @end
