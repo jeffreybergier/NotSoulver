@@ -26,6 +26,7 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
 
 -(BOOL)SVR_setSavePanelLastDirectory:(NSString*)newValue;
 {
+  if (!newValue) { return NO; }
   [self setObject:newValue forKey:XPUserDefaultsSavePanelLastDirectory];
   return [self synchronize];
 }
@@ -37,6 +38,7 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
 
 -(BOOL)SVR_setColorForSolutionPrimary:(XPColor*)newValue;
 {
+  if (!newValue) { return NO; }
   [self setObject:newValue forKey:XPUserDefaultsColorForSolutionPrimary];
   return [self synchronize];
 }
@@ -48,6 +50,7 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
 
 -(BOOL)SVR_setBackgroundColorForSolutionPrimary:(XPColor*)newValue;
 {
+  if (!newValue) { return NO; }
   [self setObject:newValue forKey:XPUserDefaultsBackgroundColorForSolutionPrimary];
   return [self synchronize];
 }
@@ -59,6 +62,7 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
 
 -(BOOL)SVR_setColorForSolutionSecondary:(XPColor*)newValue;
 {
+  if (!newValue) { return NO; }
   [self setObject:newValue forKey:XPUserDefaultsColorForSolutionSecondary];
   return [self synchronize];
 }
@@ -71,6 +75,7 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
 
 -(BOOL)SVR_setColorForBracket:(XPColor*)newValue;
 {
+  if (!newValue) { return NO; }
   [self setObject:newValue forKey:XPUserDefaultsColorForOperator];
   return [self synchronize];
 }
@@ -82,6 +87,7 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
 
 -(BOOL)SVR_setColorForOperator:(XPColor*)newValue;
 {
+  if (!newValue) { return NO; }
   [self setObject:newValue forKey:XPUserDefaultsColorForOperator];
   return [self synchronize];
 }
@@ -93,6 +99,7 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
 
 -(BOOL)SVR_setColorForNumeral:(XPColor*)newValue;
 {
+  if (!newValue) { return NO; }
   [self setObject:newValue forKey:XPUserDefaultsColorForNumeral];
   return [self synchronize];
 }
@@ -104,6 +111,7 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
 
 -(BOOL)SVR_setColorForText:(XPColor*)newValue;
 {
+  if (!newValue) { return NO; }
   [self setObject:newValue forKey:XPUserDefaultsColorForText];
   return [self synchronize];
 }
@@ -114,6 +122,7 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
 }
 -(BOOL)SVR_setFontForText:(NSFont*)newValue;
 {
+  if (!newValue) { return NO; }
   [XPLog error:@"NSUnimplemented"];
   return NO;
 }
