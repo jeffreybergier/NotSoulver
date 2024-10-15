@@ -13,6 +13,7 @@
 -(SVRDocumentViewController*)viewController;
 -(NSTextStorage*)model;
 -(NSString*)windowNibName;
+-(void)replaceModelWithRawData;
 
 // MARK: INIT
 -(id)initWithContentsOfFile:(NSString*)fileName;
@@ -23,5 +24,8 @@
 -(void)setRawData:(NSData*)rawData;
 -(NSData*)dataRepresentationOfType:(NSString*)type;
 -(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
+
+// MARK: Model Changed Notifications
+-(void)modelDidProcessEditingNotification:(NSNotification*)aNotification;
 
 @end

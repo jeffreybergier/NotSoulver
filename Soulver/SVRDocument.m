@@ -26,8 +26,14 @@
 // MARK: INIT
 -(id)initWithContentsOfFile:(NSString*)fileName;
 {
+  NSTextStorage *model = [NSTextStorage new];
   self = [super initWithContentsOfFile:fileName ofType:@"solv"];
-  _model = [NSTextStorage new];
+  _model = model;
+  [self replaceModelWithRawData];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(modelDidProcessEditingNotification:)
+                                               name:NSTextStorageDidProcessEditingNotification
+                                             object:model];
   return self;
 }
 
@@ -40,24 +46,26 @@
 
 -(void)awakeFromNib;
 {
-  [super awakeFromNib];
   [[self viewController] updateModel:[self model]];
-  [self updateWindowState];
+  [super awakeFromNib];
   [XPLog debug:@"awakeFromNib: %@", self];
 }
 
 -(void)setRawData:(NSData*)rawData;
 {
-  NSString *stringFromData = nil;
   [super setRawData:rawData];
-  stringFromData = [[[NSString alloc] initWithData:rawData
+  [self replaceModelWithRawData];
+}
+
+-(void)replaceModelWithRawData;
+{
+  NSString *stringFromData = nil;
+  stringFromData = [[[NSString alloc] initWithData:[self rawData]
                                           encoding:NSUTF8StringEncoding] autorelease];
   if (stringFromData) {
-    {
-      [ [self model] beginEditing];
-      [[[self model] mutableString] setString:stringFromData];
-      [ [self model] endEditing];
-    }
+    [ [self model] beginEditing];
+    [[[self model] mutableString] setString:stringFromData];
+    [ [self model] endEditing];
   }
 }
 
@@ -90,12 +98,19 @@
   }
 }
 
+// MARK: Model Changed Notifications
+-(void)modelDidProcessEditingNotification:(NSNotification*)aNotification;
+{
+  [self updateWindowState];
+}
+
 -(void)dealloc;
 {
   [_viewController release];
   [_model release];
   _viewController = nil;
   _model = nil;
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
 }
 
