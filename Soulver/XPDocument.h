@@ -80,7 +80,7 @@
 
 -(BOOL)prepareSavePanel:(NSSavePanel*)savePanel;
 -(XPInteger)runModalSavePanel:(NSSavePanel*)savePanel;
--(XPInteger)__runModalSavePanelAndSetFileName:(NSSavePanel*)savePanel;
+-(XPInteger)__runModalSavePanelAndSetFileName;
 -(XPAlertReturn)runUnsavedChangesAlert;
 -(XPAlertReturn)runRevertToSavedAlert;
 

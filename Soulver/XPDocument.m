@@ -55,7 +55,7 @@
   alertResult = [self runUnsavedChangesAlert];
   switch (alertResult) {
     case XPAlertReturnDefault:
-      savePanelResult = [self __runModalSavePanelAndSetFileName:nil];
+      savePanelResult = [self __runModalSavePanelAndSetFileName];
       return savePanelResult == NSOKButton;
     case XPAlertReturnAlternate:
       return YES;
@@ -84,6 +84,7 @@
   [[self window] setDelegate:self];
   [[self window] setNextResponder:self];
   [self updateWindowState];
+  
   [XPLog debug:@"awakeFromNib: %@", self];
 }
 
@@ -191,33 +192,44 @@
 
 -(BOOL)writeToFile:(NSString*)__fileName ofType:(NSString*)__type;
 {
-  BOOL writeResult = NO;
   NSString *fileName = (__fileName) ? __fileName : [self fileName];
-  NSString *fileType = (__type) ? __type : [self fileType];
+  NSString *fileType = (__type)     ? __type     : [self fileType];
   NSData *forWriting = [self dataRepresentationOfType:fileType];
   if (fileName && fileType && forWriting) {
-    writeResult = [forWriting writeToFile:fileName atomically:YES];
-    [self setFileName:fileName];
+    return [forWriting writeToFile:fileName atomically:YES];
   }
-  return writeResult;
+  return NO;
 }
 
--(BOOL)readFromFile:(NSString *)fileName ofType:(NSString *)type;
+-(BOOL)readFromFile:(NSString *)__fileName ofType:(NSString *)__type;
 {
   NSData *data = nil;
+  NSString *fileName = (__fileName) ? __fileName : [self fileName];
+  NSString *fileType = (__type)     ? __type     : [self fileType];
   if (!fileName) { return NO; }
   
   data = [NSData dataWithContentsOfFile:fileName];
   if (!data) { return NO; }
-  
-  return [self loadDataRepresentation:data ofType:[self fileType]];
+
+  return [self loadDataRepresentation:data ofType:fileType];
 }
 
 // MARK: Menu Handling
 
 -(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
 {
-  return YES;
+  SEL menuAction = [menuItem action];
+  if        (menuAction == @selector(saveDocument:)) {
+    return [self fileName] == nil || [self isDocumentEdited];
+  } else if (menuAction == @selector(saveDocumentAs:)) {
+    return [self fileName] != nil;
+  } else if (menuAction == @selector(saveDocumentTo:)) {
+    return [self fileName] != nil;
+  } else if (menuAction == @selector(revertDocumentToSaved:)) {
+    return [self fileName] != nil && [self isDocumentEdited];
+  }
+  [XPLog debug:@"validateMenuItem: Unknown Selector: %@", NSStringFromSelector(menuAction)];
+  return NO;
 }
 
 -(IBAction)saveDocument:(id)sender;
@@ -226,13 +238,15 @@
   if (fileName) {
     [self writeToFile:nil ofType:nil];
   } else {
-    [self __runModalSavePanelAndSetFileName:nil];
+    [self __runModalSavePanelAndSetFileName];
   }
+  [self updateWindowState];
 }
 
 -(IBAction)saveDocumentAs:(id)sender;
 {
-  [self __runModalSavePanelAndSetFileName:nil];
+  [self __runModalSavePanelAndSetFileName];
+  [self updateWindowState];
 }
 
 -(IBAction)saveDocumentTo:(id)sender;
@@ -255,6 +269,7 @@
     default:
       [XPLog error:@"Unexpected alert panel result: %ld", result];
   }
+  [self updateWindowState];
 }
 
 // MARK: Panels and Alerts
@@ -266,9 +281,10 @@
   return YES;
 }
 
--(XPInteger)runModalSavePanel:(NSSavePanel*)savePanel;
+-(XPInteger)runModalSavePanel:(NSSavePanel*)_savePanel;
 {
   XPInteger okCancel;
+  NSSavePanel *savePanel = (_savePanel) ? _savePanel : [NSSavePanel savePanel];
   [self prepareSavePanel:savePanel];
   
   okCancel = [savePanel runModal];
@@ -288,9 +304,10 @@
   return okCancel;
 }
 
--(XPInteger)__runModalSavePanelAndSetFileName:(NSSavePanel*)savePanel;
+-(XPInteger)__runModalSavePanelAndSetFileName;
 {
   XPInteger result;
+  NSSavePanel *savePanel = [NSSavePanel savePanel];
   result = [self runModalSavePanel:savePanel];
   if (result == NSOKButton) {
     [self setFileName:[savePanel filename]];

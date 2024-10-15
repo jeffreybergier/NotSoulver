@@ -22,7 +22,6 @@
 -(void)awakeFromNib;
 -(NSData*)dataRepresentationOfType:(NSString*)type;
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
--(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
 
 // MARK: Model Changed Notifications
 -(void)modelDidProcessEditingNotification:(NSNotification*)aNotification;
