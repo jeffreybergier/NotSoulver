@@ -57,25 +57,25 @@
 -(void)textStorageWillProcessEditing:(NSNotification*)aNotification;
 {
   NSTextStorage *storage = [aNotification object];
-  [XPLog debug:@"%@ textStorageWillProcessEditing: `%@`", self, [storage string]];
+  [XPLog extra:@"%@ textStorageWillProcessEditing: `%@`", self, [storage string]];
   [SVRSolver removeAllSolutionsAndTags:storage];
   [SVRSolver solveAndTagAttributedString:storage];
 }
 -(void)textStorageDidProcessEditing:(NSNotification*)aNotification;
 {
   NSTextStorage *storage = [aNotification object];
-  [XPLog debug:@"%@ textStorageDidProcessEditing: `%@`", self, [storage string]];
+  [XPLog extra:@"%@ textStorageDidProcessEditing: `%@`", self, [storage string]];
   [SVRSolver styleSolvedAndTaggedAttributedString:storage];
 }
 
 -(void)textDidBeginEditing:(NSNotification *)notification;
 {
-  [XPLog debug:@"%@ textDidBeginEditing:", self];
+  [XPLog extra:@"%@ textDidBeginEditing:", self];
 }
 
 -(void)textDidEndEditing:(NSNotification *)notification;
 {
-  [XPLog debug:@"%@ textDidEndEditing:", self];
+  [XPLog extra:@"%@ textDidEndEditing:", self];
 }
 
 @end
