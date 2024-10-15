@@ -159,7 +159,7 @@
 
 -(void)setRawData:(NSData*)rawData;
 {
-  if ([rawData isEqualToData:_rawData]) { return; }
+  if ([_rawData isEqualToData:rawData]) { return; }
   [_rawData release];
   _rawData = [rawData copy];
 }

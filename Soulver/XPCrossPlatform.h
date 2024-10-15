@@ -8,11 +8,9 @@
 #if OS_IOS
 #import <UIKit/UIKit.h>
 #define XPColor UIColor
-#define XPPasteboard UIPasteboard
 #else
 #import <AppKit/AppKit.h>
 #define XPColor NSColor
-#define XPPasteboard NSPasteboard
 #endif
 
 // TODO: Consider changing this to NSError in OS X
@@ -25,10 +23,6 @@ typedef unsigned int XPUInteger;
 typedef NSString* XPAttributedStringKey;
 typedef NSRange* XPRangePointer;
 typedef NSNumber** XPErrorPointer;
-#define XPPasteboardTypeString NSStringPboardType
-#define XPPasteboardTypeRTF NSRTFPboardType
-#define XPRTFTextDocumentType @"NSRTF"
-#define XPDocumentTypeDocumentAttribute @"NSDocumentType"
 #define XPLocale NSDictionary
 #else
 typedef CGFloat XPFloat;
@@ -37,10 +31,6 @@ typedef NSUInteger XPUInteger;
 typedef NSRangePointer XPRangePointer;
 typedef NSNumber** XPErrorPointer;
 typedef NSAttributedStringKey XPAttributedStringKey;
-#define XPPasteboardTypeString NSPasteboardTypeString
-#define XPPasteboardTypeRTF NSPasteboardTypeRTF
-#define XPRTFTextDocumentType NSRTFTextDocumentType
-#define XPDocumentTypeDocumentAttribute NSDocumentTypeDocumentAttribute
 #define XPLocale NSLocale
 #endif
 
@@ -96,39 +86,8 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 };
 #endif
 
-@interface XPAlert: NSObject
-
-+(XPAlertReturn)runAppModalWithTitle:(NSString*)title
-                             message:(NSString*)message
-                       defaultButton:(NSString*)defaultButton
-                     alternateButton:(NSString*)alternateButton
-                         otherButton:(NSString*)otherButton;
-/// Returns ENUM NSAlertDefaultReturn
-+(XPAlertReturn)runSheetModalForWindow:(NSWindow*)window
-                             withTitle:(NSString*)title
-                               message:(NSString*)message
-                         defaultButton:(NSString*)defaultButton
-                       alternateButton:(NSString*)alternateButton
-                           otherButton:(NSString*)otherButton;
-
-@end
-
-@interface XPSavePanel: NSObject
-+(NSString*)lastDirectory;
-+(void)setLastDirectory:(NSString*)lastDirectory;
-/// Returns nil if user cancels
-+(NSString*)filenameByRunningSheetModalSavePanelForWindow:(NSWindow*)window;
-/// Returns nil if user cancels
-+(NSString*)filenameByRunningSheetModalSavePanelForWindow:(NSWindow*)window
-                                     withExistingFilename:(NSString*)filename;
-@end
-
-@interface XPOpenPanel: XPSavePanel
-/// Returns empty array if user cancels
-+(NSArray*)filenamesByRunningAppModalOpenPanel;
-/// Returns empty array if user cancels
-+(NSArray*)filenamesByRunningAppModalOpenPanelWithExistingFilename:(NSString*)filename;
-@end
+XPAlertReturn XPRunQuitAlert(void);
+NSArray* XPRunOpenPanel(void);
 
 @interface XPAttributeEnumerator: NSEnumerator
 {
@@ -148,7 +107,6 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 @end
 
 @interface NSAttributedString (CrossPlatform)
--(NSData*)SVR_pasteboardRepresentation;
 -(XPAttributeEnumerator*)SVR_enumeratorForAttribute:(XPAttributedStringKey)key;
 -(XPAttributeEnumerator*)SVR_enumeratorForAttribute:(XPAttributedStringKey)key
                          usingLongestEffectiveRange:(BOOL)useLongest;
@@ -156,14 +114,7 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 
 @interface NSString (CrossPlatform)
 -(NSString*)SVR_descriptionHighlightingRange:(NSRange)range;
--(NSString*)SVR_stringByTrimmingCharactersInSet:(NSCharacterSet*)set;
 -(const char*)XP_UTF8String;
-@end
-
-@interface NSBundle (CrossPlatform)
--(BOOL)SVR_loadNibNamed:(NSString*)nibName
-                  owner:(id)owner
-        topLevelObjects:(NSArray**)topLevelObjects;
 @end
 
 @interface XPColor (CrossPlatform)

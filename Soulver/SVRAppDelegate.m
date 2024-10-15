@@ -17,7 +17,7 @@
                                                name:NSWindowWillCloseNotification
                                              object:nil];
   // Announce
-  [XPLog debug:@"AwakeFromNib:%@", self];
+  [XPLog debug:@"awakeFromNib: %@", self];
 }
 
 // MARK: Properties
@@ -41,7 +41,7 @@
   NSString *nextF;
   SVRDocument *nextC;
   
-  filenames = [XPOpenPanel filenamesByRunningAppModalOpenPanel];
+  filenames = XPRunOpenPanel();
   if ([filenames count] == 0) { [XPLog debug:@"%@ Open Cancelled", self]; return; }
   e = [filenames objectEnumerator];
   while ((nextF = [e nextObject])) {
@@ -55,22 +55,6 @@
 }
 
 -(IBAction)saveAll:(id)sender;
-{
-  // TODO: Is this needed? TextEdit does not do this.
-  XPAlertReturn alertResult = [XPAlert runAppModalWithTitle:@"Save All"
-                                                    message:@"Save all documents? This cannot be undone."
-                                              defaultButton:@"Save All"
-                                            alternateButton:@"Cancel"
-                                                otherButton:nil];
-  
-  switch (alertResult) {
-    case XPAlertReturnDefault: [self __saveAll:sender]; return;
-    case XPAlertReturnAlternate: return;
-    default: [XPLog error:@"%@ Unexpected alert return: %lu", self, alertResult]; return;
-  }
-}
-
--(void)__saveAll:(id)sender;
 {
   NSEnumerator *e;
   SVRDocument *nextC;
@@ -118,11 +102,7 @@
   
   // Ask the user if they want to quit
   if (!aDocumentNeedsSaving) { return YES; }
-  alertResult = [XPAlert runAppModalWithTitle:@"Quit"
-                                      message:@"There are edited windows."
-                                defaultButton:@"Review Unsaved"
-                              alternateButton:@"Quit Anyway"
-                                  otherButton:@"Cancel"];
+  alertResult = XPRunQuitAlert();
   switch (alertResult) {
     case XPAlertReturnDefault:   return NO;
     case XPAlertReturnAlternate: return YES;

@@ -126,114 +126,36 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
 }
 @end
 
-@implementation XPAlert
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-#pragma clang diagnostic ignored "-Wformat-security"
-+(XPAlertReturn)runAppModalWithTitle:(NSString*)title
-                             message:(NSString*)message
-                       defaultButton:(NSString*)defaultButton
-                     alternateButton:(NSString*)alternateButton
-                         otherButton:(NSString*)otherButton;
+XPAlertReturn XPRunQuitAlert(void)
 {
-  return NSRunAlertPanel(title,
-                         message,
-                         defaultButton,
-                         alternateButton,
-                         otherButton);
+  return NSRunAlertPanel(@"Quit",
+                         @"There are edited windows.",
+                         @"Review Unsaved",
+                         @"Quit Anyway",
+                         @"Cancel");
 }
 
-+(XPAlertReturn)runSheetModalForWindow:(NSWindow*)window
-                             withTitle:(NSString*)title
-                               message:(NSString*)message
-                         defaultButton:(NSString*)defaultButton
-                       alternateButton:(NSString*)alternateButton
-                           otherButton:(NSString*)otherButton;
+NSArray* XPRunOpenPanel(void)
 {
-  // TODO: Update to use sheets in Mac OS X
-  return NSRunAlertPanel(title,
-                         message,
-                         defaultButton,
-                         alternateButton,
-                         otherButton);
-}
-#pragma clang diagnostic pop
-
-@end
-
-@implementation XPSavePanel
-
-+(NSString*)lastDirectory;
-{
-  return [[NSUserDefaults standardUserDefaults] SVR_savePanelLastDirectory];
-}
-
-+(void)setLastDirectory:(NSString*)lastDirectory;
-{
-  [[NSUserDefaults standardUserDefaults] SVR_setSavePanelLastDirectory:lastDirectory];
-}
-
-+(NSString*)filenameByRunningSheetModalSavePanelForWindow:(NSWindow*)window;
-{
-  return [self filenameByRunningSheetModalSavePanelForWindow:window
-                                        withExistingFilename:nil];
-}
-
-+(NSString*)filenameByRunningSheetModalSavePanelForWindow:(NSWindow*)window
-                                     withExistingFilename:(NSString*)_filename;
-{
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-  XPInteger result;
-  // OpenStep documentation clearly states that empty string is OK but NIL is not
-  NSString *filename = (_filename) ? _filename : @"";
-  NSSavePanel *panel = [NSSavePanel savePanel];
-  [panel setRequiredFileType:@"solv"];
-  result = [panel runModalForDirectory:[self lastDirectory] file:filename];
-  [self setLastDirectory:[panel directory]];
-  switch (result) {
-    case NSOKButton:     return [panel filename];
-    case NSCancelButton: return nil;
-    default: [XPLog error:@"Impossible NSSavePanel result: %lu", result]; return nil;
-  }
-#pragma clang diagnostic pop
-}
-@end
-
-@implementation XPOpenPanel
-+(NSArray*)filenamesByRunningAppModalOpenPanel;
-{
-  return [self filenamesByRunningAppModalOpenPanelWithExistingFilename:nil];
-}
-
-+(NSArray*)filenamesByRunningAppModalOpenPanelWithExistingFilename:(NSString*)filename;
-{
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
   XPInteger result;
   NSOpenPanel *panel = [NSOpenPanel openPanel];
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   [panel setAllowsMultipleSelection:YES];
-  result = [panel runModalForDirectory:[self lastDirectory]
-                                  file:filename // Unlike NSSavePanel, this can be NIL
+  result = [panel runModalForDirectory:[ud SVR_savePanelLastDirectory]
+                                  file:nil
                                  types:[NSArray arrayWithObject:@"solv"]];
-  [self setLastDirectory:[panel directory]];
+  [ud SVR_setSavePanelLastDirectory:[panel directory]];
   switch (result) {
     case NSOKButton:     return [panel filenames];
     case NSCancelButton: return [[NSArray new] autorelease];
     default: [XPLog error:@"Impossible NSOpenPanel result: %lu", result]; return nil;
   }
-#pragma clang diagnostic pop
 }
-@end
+#pragma clang diagnostic pop
 
 @implementation NSAttributedString (CrossPlatform)
-
--(NSData*)SVR_pasteboardRepresentation;
-{
-  NSDictionary *attribs = [NSDictionary dictionaryWithObject:XPRTFTextDocumentType
-                                                      forKey:XPDocumentTypeDocumentAttribute];
-  return [self RTFFromRange:NSMakeRange(0, [self length]) documentAttributes:attribs];
-}
 
 -(XPAttributeEnumerator*)SVR_enumeratorForAttribute:(XPAttributedStringKey)key;
 {
@@ -261,6 +183,7 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
   _usesLongestEffectiveRange = usesLongest;
   return self;
 }
+
 +(id)enumeratorWithAttributedString:(NSAttributedString*)attributedString
                     forAttributeKey:(XPAttributedStringKey)key
          usingLongestEffectiveRange:(BOOL)usesLongest;
@@ -269,10 +192,12 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
                                                   forAttributeKey:key
                                        usingLongestEffectiveRange:usesLongest] autorelease];
 }
+
 -(id)nextObject;
 {
   return [self nextObjectEffectiveRange:NULL];
 }
+
 -(id)nextObjectEffectiveRange:(XPRangePointer)range;
 {
   XPUInteger length = [_string length];
@@ -311,6 +236,7 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
   _string = nil;
   [super dealloc];
 }
+
 @end
 
 @implementation NSString (CrossPlatform)
@@ -330,16 +256,6 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
   return [[output copy] autorelease];
 }
 
--(NSString*)SVR_stringByTrimmingCharactersInSet:(NSCharacterSet*)set;
-{
-#if OS_OPENSTEP
-  // TOOD: Manual implementation?
-  return self;
-#else
-  return [self stringByTrimmingCharactersInSet:set];
-#endif
-}
-
 -(const char*)XP_UTF8String;
 {
 #if OS_OPENSTEP
@@ -349,19 +265,6 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
 #endif
 }
 
-@end
-
-@implementation NSBundle (CrossPlatform)
--(BOOL)SVR_loadNibNamed:(NSString*)nibName
-                  owner:(id)owner
-        topLevelObjects:(NSArray**)topLevelObjects;
-{
-#if OS_OPENSTEP
-  return [[self class] loadNibNamed:nibName owner:owner];
-#else
-  return [self loadNibNamed:nibName owner:owner topLevelObjects:topLevelObjects];
-#endif
-}
 @end
 
 @implementation XPColor (CrossPlatform)
@@ -431,7 +334,10 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
 
 +(id)SVR_decimalNumberWithString:(NSString*)string;
 {
-  return [NSDecimalNumber decimalNumberWithString:string locale:[[NSUserDefaults standardUserDefaults] SVR_decimalNumberLocale]];
+  return [NSDecimalNumber
+          decimalNumberWithString:string
+          locale:[[NSUserDefaults standardUserDefaults]
+                  SVR_decimalNumberLocale]];
 }
 
 // NSDecimalNumber handles exponents extremely strangely

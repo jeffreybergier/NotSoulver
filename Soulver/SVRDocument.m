@@ -43,6 +43,7 @@
   [super awakeFromNib];
   [[self viewController] updateModel:[self model]];
   [self updateWindowState];
+  [XPLog debug:@"awakeFromNib: %@", self];
 }
 
 -(void)setRawData:(NSData*)rawData;
