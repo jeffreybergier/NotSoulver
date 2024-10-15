@@ -13,7 +13,6 @@
   self = [super init];
   _fileName = nil;
   _fileType = nil;
-  _rawData = nil;
   _isNibLoaded = NO;
   return self;
 }
@@ -116,12 +115,13 @@
 -(BOOL)isDocumentEdited;
 {
   NSData *diskData = nil;
-  NSData *rawData = nil;
+  NSData *documentData = [self dataRepresentationOfType:[self fileType]];
   NSString *fileName = [self fileName];
   if (fileName) {
     diskData = [NSData dataWithContentsOfFile:fileName];
-    rawData = [self rawData];
-    return [diskData isEqualToData:rawData];
+    return ![diskData isEqualToData:documentData];
+  } else if (documentData == nil || [documentData length] == 0) {
+    return NO;
   } else {
     return YES;
   }
@@ -152,18 +152,6 @@
   _fileType = [type copy];
 }
 
--(NSData*)rawData;
-{
-  return [[_rawData retain] autorelease];
-}
-
--(void)setRawData:(NSData*)rawData;
-{
-  if ([_rawData isEqualToData:rawData]) { return; }
-  [_rawData release];
-  _rawData = [rawData copy];
-}
-
 /// Returns hash of the filename or calls super
 -(XPUInteger)hash;
 {
@@ -187,11 +175,18 @@
 }
 
 // MARK: Data reading and writing
-
+// Override to provide data for saving
 -(NSData*)dataRepresentationOfType:(NSString*)type;
 {
-  [XPLog error:@"Unimplemented by subclass"];
+  [XPLog error:@"Unimplemented"];
   return nil;
+}
+
+// Override to convert your model when reading from disk
+-(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
+{
+  [XPLog error:@"Unimplemented"];
+  return NO;
 }
 
 -(BOOL)writeToFile:(NSString*)__fileName ofType:(NSString*)__type;
@@ -207,16 +202,15 @@
   return writeResult;
 }
 
--(BOOL)readFromFile:(NSString*)__fileName ofType:(NSString*)__type;
+-(BOOL)readFromFile:(NSString *)fileName ofType:(NSString *)type;
 {
-  NSString *fileName = (__fileName) ? __fileName : [self fileName];
-  if (fileName) {
-    [self setRawData:[NSData dataWithContentsOfFile:fileName]];
-    [self setFileName:fileName];
-    return YES;
-  } else {
-    return NO;
-  }
+  NSData *data = nil;
+  if (!fileName) { return NO; }
+  
+  data = [NSData dataWithContentsOfFile:fileName];
+  if (!data) { return NO; }
+  
+  return [self loadDataRepresentation:data ofType:[self fileType]];
 }
 
 // MARK: Menu Handling
@@ -265,18 +259,18 @@
 
 // MARK: Panels and Alerts
 
--(NSSavePanel*)savePanelForDocument;
+-(BOOL)prepareSavePanel:(NSSavePanel*)savePanel;
 {
-  NSSavePanel *savePanel = [NSSavePanel savePanel];
   [savePanel setRequiredFileType:[self fileType]];
   [savePanel setDirectory:[[NSUserDefaults standardUserDefaults] SVR_savePanelLastDirectory]];
-  return savePanel;
+  return YES;
 }
 
--(XPInteger)runModalSavePanel:(NSSavePanel*)_savePanel;
+-(XPInteger)runModalSavePanel:(NSSavePanel*)savePanel;
 {
   XPInteger okCancel;
-  NSSavePanel *savePanel = (_savePanel) ? _savePanel : [self savePanelForDocument];
+  [self prepareSavePanel:savePanel];
+  
   okCancel = [savePanel runModal];
   switch (okCancel) {
     case NSOKButton:
@@ -294,10 +288,10 @@
   return okCancel;
 }
 
--(XPInteger)__runModalSavePanelAndSetFileName:(NSSavePanel*)_savePanel;
+-(XPInteger)__runModalSavePanelAndSetFileName:(NSSavePanel*)savePanel;
 {
-  NSSavePanel *savePanel = (_savePanel) ? _savePanel : [self savePanelForDocument];
-  XPInteger result = [self runModalSavePanel:savePanel];
+  XPInteger result;
+  result = [self runModalSavePanel:savePanel];
   if (result == NSOKButton) {
     [self setFileName:[savePanel filename]];
   }
@@ -335,11 +329,9 @@
   [_window   autorelease];
   [_fileName release];
   [_fileType release];
-  [_rawData  release];
   _window   = nil;
   _fileName = nil;
   _fileType = nil;
-  _rawData  = nil;
   [super dealloc];
 }
 

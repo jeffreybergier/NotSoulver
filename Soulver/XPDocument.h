@@ -14,7 +14,6 @@
   IBOutlet NSWindow *_window;
   NSString *_fileName;
   NSString *_fileType;
-  NSData *_rawData;
   BOOL _isNibLoaded;
 }
 
@@ -51,8 +50,6 @@
 -(void)setFileName:(NSString*)fileName;
 -(NSString*)fileType;
 -(void)setFileType:(NSString*)type;
--(NSData*)rawData;
--(void)setRawData:(NSData*)rawData;
 
 // MARK: NSObject basics
 /// Returns hash of the filename or calls super
@@ -61,13 +58,14 @@
 -(BOOL)isEqual:(id)object;
 
 // MARK: Data reading and writing
-
-/// Return NSData object for your document
+// Override to provide data for saving
 -(NSData*)dataRepresentationOfType:(NSString*)type;
-/// If arguments are nil, document values used
+// Override to convert your model when loading
+-(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
+
+// No need to override, uses above 2 methods to read and write data
 -(BOOL)writeToFile:(NSString*)fileName ofType:(NSString*)type;
-/// If arguments are nil, document values used
--(BOOL)readFromFile:(NSString*)fileName ofType:(NSString*)type;
+-(BOOL)readFromFile:(NSString *)fileName ofType:(NSString *)type;
 
 // MARK: Menu Handling
 
@@ -80,7 +78,7 @@
 
 // MARK: Panels and Alerts
 
--(NSSavePanel*)savePanelForDocument;
+-(BOOL)prepareSavePanel:(NSSavePanel*)savePanel;
 -(XPInteger)runModalSavePanel:(NSSavePanel*)savePanel;
 -(XPInteger)__runModalSavePanelAndSetFileName:(NSSavePanel*)savePanel;
 -(XPAlertReturn)runUnsavedChangesAlert;

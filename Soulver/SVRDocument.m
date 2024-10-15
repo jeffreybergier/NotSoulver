@@ -26,14 +26,12 @@
 // MARK: INIT
 -(id)initWithContentsOfFile:(NSString*)fileName;
 {
-  NSTextStorage *model = [NSTextStorage new];
+  _model = [NSTextStorage new]; // need to do before call super init
   self = [super initWithContentsOfFile:fileName ofType:@"solv"];
-  _model = model;
-  [self replaceModelWithRawData];
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(modelDidProcessEditingNotification:)
                                                name:NSTextStorageDidProcessEditingNotification
-                                             object:model];
+                                             object:_model];
   return self;
 }
 
@@ -51,27 +49,25 @@
   [XPLog debug:@"awakeFromNib: %@", self];
 }
 
--(void)setRawData:(NSData*)rawData;
-{
-  [super setRawData:rawData];
-  [self replaceModelWithRawData];
-}
-
--(void)replaceModelWithRawData;
-{
-  NSString *stringFromData = nil;
-  stringFromData = [[[NSString alloc] initWithData:[self rawData]
-                                          encoding:NSUTF8StringEncoding] autorelease];
-  if (stringFromData) {
-    [ [self model] beginEditing];
-    [[[self model] mutableString] setString:stringFromData];
-    [ [self model] endEditing];
-  }
-}
-
 -(NSData*)dataRepresentationOfType:(NSString*)type;
 {
   return [[[self model] string] dataUsingEncoding:NSUTF8StringEncoding];
+}
+
+-(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
+{
+  BOOL success = NO;
+  NSString *string = [
+    [[NSString alloc] initWithData:data
+                          encoding:NSUTF8StringEncoding]
+    autorelease];
+  if (string) {
+    [ [self model] beginEditing];
+    [[[self model] mutableString] setString:string];
+    [ [self model] endEditing];
+    success = YES;
+  }
+  return success;
 }
 
 -(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
