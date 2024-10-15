@@ -1,10 +1,15 @@
 "FirstResponder" = {
-    ACTIONS = {"save:" = id; "saveAs:" = id; }; 
+    ACTIONS = {
+        "revertDocumentToSaved:" = id; 
+        "saveDocument:" = id; 
+        "saveDocumentAs:" = id; 
+        "saveDocumentTo:" = id; 
+    }; 
     OUTLETS = {}; 
     SUPERCLASS = NSObject; 
 };
 "SVRAppDelegate" = {
-    ACTIONS = {"closeDoc:" = id; "newDoc:" = id; "openDoc:" = id; "saveAll:" = id; }; 
+    ACTIONS = {"newDoc:" = id; "openDoc:" = id; "saveAll:" = id; }; 
     OUTLETS = {}; 
     SUPERCLASS = NSObject; 
 };
