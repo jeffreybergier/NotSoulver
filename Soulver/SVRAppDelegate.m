@@ -104,13 +104,33 @@
   if (!aDocumentNeedsSaving) { return YES; }
   alertResult = XPRunQuitAlert();
   switch (alertResult) {
-    case XPAlertReturnDefault:   return NO;
+    case XPAlertReturnDefault:
+      return [self __applicationShouldTerminateAfterReviewingAllWindows:sender];
     case XPAlertReturnAlternate: return YES;
     case XPAlertReturnOther:     return NO;
     default:
       [XPLog error:@"%@ Unexpected alert result: %ld", self, alertResult];
       return NO;
   }
+}
+
+-(BOOL)__applicationShouldTerminateAfterReviewingAllWindows:(NSApplication*)sender;
+{
+  BOOL allDocumentsSaved = YES;
+  NSEnumerator *e = [[self openDocuments] objectEnumerator];
+  XPDocument *next = nil;
+  while ((next = [e nextObject])) {
+    if ([next isDocumentEdited]) {
+      [next saveDocument:sender];
+      allDocumentsSaved = ![next isDocumentEdited];
+    }
+    if (allDocumentsSaved) {
+      [[next window] performClose:sender];
+    } else {
+      break;
+    }
+  }
+  return allDocumentsSaved;
 }
 
 -(BOOL)application:(NSApplication *)sender openFile:(NSString *)filename;

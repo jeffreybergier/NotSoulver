@@ -23,6 +23,7 @@
 
 @interface SVRAppDelegate (NSApplicationDelegate)
 -(BOOL)applicationShouldTerminate:(NSApplication *)sender;
+-(BOOL)__applicationShouldTerminateAfterReviewingAllWindows:(NSApplication*)sender;
 -(BOOL)application:(NSApplication *)sender openFile:(NSString *)filename;
 -(BOOL)applicationOpenUntitledFile:(NSApplication *)sender;
 @end
