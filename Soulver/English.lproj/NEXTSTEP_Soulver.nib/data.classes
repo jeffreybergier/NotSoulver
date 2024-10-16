@@ -1,5 +1,6 @@
 "FirstResponder" = {
     ACTIONS = {
+        "keypadAppend:" = id; 
         "revertDocumentToSaved:" = id; 
         "saveDocument:" = id; 
         "saveDocumentAs:" = id; 
@@ -9,7 +10,7 @@
     SUPERCLASS = NSObject; 
 };
 "SVRAppDelegate" = {
-    ACTIONS = {"newDoc:" = id; "openDoc:" = id; "saveAll:" = id; }; 
-    OUTLETS = {}; 
+    ACTIONS = {"newDoc:" = id; "openDoc:" = id; "saveAll:" = id; "toggleKeypad:" = id; }; 
+    OUTLETS = {_keypadPanel = id; }; 
     SUPERCLASS = NSObject; 
 };

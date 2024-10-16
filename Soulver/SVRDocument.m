@@ -75,6 +75,12 @@
   [self updateWindowState];
 }
 
+// MARK: IBActions
+-(IBAction)keypadAppend:(id)sender;
+{
+  NSLog(@"keypadAppend: %@<%d>", [sender title], [sender tag]);
+}
+
 -(void)dealloc;
 {
   [_viewController release];

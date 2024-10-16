@@ -1,6 +1,6 @@
 "FirstResponder" = {ACTIONS = {}; OUTLETS = {}; SUPERCLASS = NSObject; };
 "SVRDocument" = {
-    ACTIONS = {}; 
+    ACTIONS = {"toggleKeypad:" = id; }; 
     OUTLETS = {_viewController = id; _window = id; }; 
     SUPERCLASS = NSResponder; 
 };

@@ -4,6 +4,7 @@
 @interface SVRAppDelegate: NSObject
 {
   NSMutableSet *_openDocuments;
+  IBOutlet NSPanel *_keypadPanel;
 }
 
 // MARK: Init
@@ -11,11 +12,13 @@
 
 // MARK: Properties
 -(NSMutableSet*)openDocuments;
+-(NSPanel*)keypadPanel;
 
 // MARK: IBActions
 -(IBAction)newDoc:(id)sender;
 -(IBAction)openDoc:(id)sender;
 -(IBAction)saveAll:(id)sender;
+-(IBAction)toggleKeypad:(id)sender;
 
 // MARK: Notifications
 -(void)__windowWillCloseNotification:(NSNotification*)aNotification;

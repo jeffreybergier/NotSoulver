@@ -26,6 +26,11 @@
   return _openDocuments;
 }
 
+-(NSPanel*)keypadPanel;
+{
+  return [[_keypadPanel retain] autorelease];
+}
+
 // MARK: IBActions
 -(void)newDoc:(id)sender
 {
@@ -64,6 +69,16 @@
   }
 }
 
+-(IBAction)toggleKeypad:(id)sender;
+{
+  NSPanel *panel = [self keypadPanel];
+  if ([panel isVisible]) {
+    [panel performClose:sender];
+  } else {
+    [panel makeKeyAndOrderFront:sender];
+  }
+}
+
 -(void)__windowWillCloseNotification:(NSNotification*)aNotification;
 {
   NSWindow *window = [aNotification object];
@@ -77,7 +92,9 @@
 {
   [XPLog extra:@"DEALLOC: %@", self];
   [_openDocuments release];
+  [_keypadPanel release];
   _openDocuments = nil;
+  _keypadPanel = nil;
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
 }
