@@ -1,6 +1,7 @@
 "FirstResponder" = {
     ACTIONS = {
         "keypadAppend:" = id; 
+        "pasteAsPlainText:" = id; 
         "revertDocumentToSaved:" = id; 
         "saveDocument:" = id; 
         "saveDocumentAs:" = id; 
