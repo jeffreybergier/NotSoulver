@@ -34,13 +34,21 @@
 
 -(void)awakeFromNib;
 {
-  NSTextStorage *model = [[[self viewController] modelController] model];
-  NSAssert(model, @"");
+  id previousNextResponder = nil;
+  
+  [super awakeFromNib];
+  
+  // Add view controller into the responder chain
+  previousNextResponder = [[self window] nextResponder];
+  [[self window] setNextResponder:[self viewController]];
+  [[self viewController] setNextResponder:self];
+  [self setNextResponder:previousNextResponder];
+  
+  // Subscribe to model updates
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(modelDidProcessEditingNotification:)
                                                name:NSTextStorageDidProcessEditingNotification
-                                             object:model];
-  [super awakeFromNib];
+                                             object:[[[self viewController] modelController] model]];
 }
 
 -(NSData*)dataRepresentationOfType:(NSString*)type;
@@ -57,12 +65,6 @@
 -(void)modelDidProcessEditingNotification:(NSNotification*)aNotification;
 {
   [self updateWindowState];
-}
-
-// MARK: IBActions
--(IBAction)keypadAppend:(id)sender;
-{
-  NSLog(@"keypadAppend: %@<%d>", [sender title], [sender tag]);
 }
 
 -(void)dealloc;

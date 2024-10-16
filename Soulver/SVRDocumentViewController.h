@@ -2,7 +2,7 @@
 #import "SVRDocumentModelController.h"
 #import "XPCrossPlatform.h"
 
-@interface SVRDocumentViewController: NSObject
+@interface SVRDocumentViewController: NSResponder
 {
   IBOutlet NSTextView *_textView;
   SVRDocumentModelController *_modelController;
@@ -13,6 +13,9 @@
 
 // MARK: awakeFromNib
 -(void)awakeFromNib;
+
+// MARK: IBActions
+-(IBAction)keypadAppend:(id)sender;
 
 // MARK: Interface Builder
 -(NSTextView*)textView;

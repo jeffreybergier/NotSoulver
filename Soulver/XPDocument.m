@@ -82,7 +82,6 @@
     [self readFromFile:fileName ofType:fileType];
   }
   [[self window] setDelegate:self];
-  [[self window] setNextResponder:self];
   [self updateWindowState];
   
   [XPLog debug:@"awakeFromNib: %@", self];
@@ -340,7 +339,6 @@
 {
   [XPLog debug:@"DEALLOC: %@", self];
   [_window setDelegate:nil];
-  [_window setNextResponder:nil];
   // this autorelease (instead of release) is necessary
   // to prevent crashes when the window is closing
   [_window   autorelease];

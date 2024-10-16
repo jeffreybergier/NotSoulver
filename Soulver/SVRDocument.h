@@ -24,7 +24,4 @@
 // MARK: Model Changed Notifications
 -(void)modelDidProcessEditingNotification:(NSNotification*)aNotification;
 
-// MARK: IBActions
--(IBAction)keypadAppend:(id)sender;
-
 @end

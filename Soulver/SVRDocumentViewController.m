@@ -37,6 +37,12 @@
   }
 }
 
+// MARK: IBActions
+-(IBAction)keypadAppend:(id)sender;
+{
+  NSLog(@"VIEW: keypadAppend: %@<%d>", [sender title], [sender tag]);
+}
+
 // MARK: Interface Builder
 
 -(NSTextView*)textView;
