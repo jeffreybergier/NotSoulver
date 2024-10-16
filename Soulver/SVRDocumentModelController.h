@@ -17,10 +17,10 @@
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
 
 // MARK: Usage
--(int)appendCharacter:(NSString*)aString error:(XPErrorPointer)errorPointer;
--(int)backspaceCharacterWithError:(XPErrorPointer)errorPointer;
--(int)backspaceLineWithError:(XPErrorPointer)errorPointer;
--(int)backspaceAllWithError:(XPErrorPointer)errorPointer;
+-(void)appendCharacter:(NSString*)aString;
+-(void)backspaceCharacter;
+-(void)backspaceLine;
+-(void)backspaceAll;
 
 @end
 

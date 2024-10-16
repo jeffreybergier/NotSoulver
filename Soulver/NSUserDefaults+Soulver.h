@@ -23,8 +23,6 @@
 // TODO: These are fake and not stored in UserDefaults
 -(NSFont*)SVR_fontForText;
 -(BOOL)SVR_setFontForText:(NSFont*)newValue;
--(NSDictionary*)SVR_operatorDecodeMap;
--(NSDictionary*)SVR_operatorEncodeMap;
 -(NSNumber*)SVR_errorMismatchedBrackets;
 -(NSNumber*)SVR_errorInvalidCharacter;
 -(NSNumber*)SVR_errorMissingNumber;
@@ -34,6 +32,4 @@
 // MARK: Private
 +(NSDictionary*)__SVR_standardDictionary;
 +(XPLocale*)__SVR_legacyDecimalNumberLocale;
-+(NSDictionary*)__SVR_standardOperatorDecodeMap;
-+(NSDictionary*)__SVR_standardOperatorEncodeMap;
 @end

@@ -40,27 +40,35 @@
 }
 
 // MARK: Usage
--(int)appendCharacter:(NSString*)aString error:(XPErrorPointer)errorPointer;
+-(void)appendCharacter:(NSString*)aString;
 {
-  [XPLog error:@"Unimplemented"];
-  return -1;
-}
--(int)backspaceCharacterWithError:(XPErrorPointer)errorPointer;
-{
-  [XPLog error:@"Unimplemented"];
-  return -1;
+  [ [self model] beginEditing];
+  [[[self model] mutableString] appendString:aString];
+  [ [self model] endEditing];
 }
 
--(int)backspaceLineWithError:(XPErrorPointer)errorPointer;
+-(void)backspaceCharacter;
 {
-  [XPLog error:@"Unimplemented"];
-  return -1;
+  NSRange lastCharacter = XPNotFoundRange;
+  XPUInteger length = [[[self model] mutableString] length];
+  if (length == 0) { return; }
+  
+  lastCharacter = NSMakeRange(length-1, 1);
+  [ [self model] beginEditing];
+  [[[self model] mutableString] deleteCharactersInRange:lastCharacter];
+  [ [self model] endEditing];
 }
 
--(int)backspaceAllWithError:(XPErrorPointer)errorPointer;
+-(void)backspaceLine;
 {
-  [XPLog error:@"Unimplemented"];
-  return -1;
+  [XPLog pause:@"Unimplemented"];
+}
+
+-(void)backspaceAll;
+{
+  [ [self model] beginEditing];
+  [[[self model] mutableString] setString:@""];
+  [ [self model] endEditing];
 }
 
 -(void)dealloc;

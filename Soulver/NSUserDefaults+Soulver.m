@@ -9,8 +9,6 @@ NSString *XPUserDefaultsColorForSolutionSecondary         = @"kColorForSolutionS
 NSString *XPUserDefaultsColorForOperator                  = @"kColorForOperator";
 NSString *XPUserDefaultsColorForNumeral                   = @"kColorForNumeral";
 NSString *XPUserDefaultsColorForText                      = @"kColorForText";
-NSString *XPUserDefaultsDictionaryOperatorDecodeMap       = @"kDictionaryOperatorDecodeMap";
-NSString *XPUserDefaultsDictionaryOperatorEncodeMap       = @"kDictionaryOperatorEncodeMap";
 NSString *XPUserDefaultsNumberErrorMismatchedBrackets     = @"kNumberErrorMismatchedBrackets";
 NSString *XPUserDefaultsNumberErrorInvalidCharacter       = @"kNumberErrorInvalidCharacter";
 NSString *XPUserDefaultsNumberErrorMissingNumber          = @"kNumberErrorMissingNumber";
@@ -127,16 +125,6 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
   return NO;
 }
 
--(NSDictionary*)SVR_operatorDecodeMap;
-{
-  return [self objectForKey:XPUserDefaultsDictionaryOperatorDecodeMap];
-}
-
--(NSDictionary*)SVR_operatorEncodeMap;
-{
-  return [self objectForKey:XPUserDefaultsDictionaryOperatorEncodeMap];
-}
-
 -(NSNumber*)SVR_errorMismatchedBrackets;
 {
   return [self objectForKey:XPUserDefaultsNumberErrorMismatchedBrackets];
@@ -184,8 +172,6 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
           XPUserDefaultsColorForOperator,
           XPUserDefaultsColorForNumeral,
           XPUserDefaultsColorForText,
-          XPUserDefaultsDictionaryOperatorDecodeMap,
-          XPUserDefaultsDictionaryOperatorEncodeMap,
           XPUserDefaultsNumberErrorMismatchedBrackets,
           XPUserDefaultsNumberErrorInvalidCharacter,
           XPUserDefaultsNumberErrorMissingNumber,
@@ -200,8 +186,6 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
           [XPColor SVR_colorWithRed:255/255.0 green:147/255.0 blue:000/255.0 alpha:1.0],
           [XPColor SVR_colorWithRed:000/255.0 green:000/255.0 blue:000/255.0 alpha:1.0],
           [XPColor SVR_colorWithRed:145/255.0 green:145/255.0 blue:145/255.0 alpha:1.0],
-          [self __SVR_standardOperatorDecodeMap],
-          [self __SVR_standardOperatorEncodeMap],
           [NSNumber numberWithInt:-1003],
           [NSNumber numberWithInt:-1002],
           [NSNumber numberWithInt:-1004],
@@ -216,20 +200,6 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
 {
   NSArray *keys   = [NSArray arrayWithObjects:@"kCFLocaleDecimalSeparatorKey", @"NSDecimalSeparator", nil];
   NSArray *values = [NSArray arrayWithObjects:@".", @".", nil];
-  return [[[NSDictionary alloc] initWithObjects:values forKeys:keys] autorelease];
-}
-
-+(NSDictionary*)__SVR_standardOperatorDecodeMap;
-{
-  NSArray *keys   = [NSArray arrayWithObjects:@"a", @"s", @"d", @"m", @"e", nil];
-  NSArray *values = [NSArray arrayWithObjects:@"+", @"-", @"/", @"*", @"^", nil];
-  return [[[NSDictionary alloc] initWithObjects:values forKeys:keys] autorelease];
-}
-
-+(NSDictionary*)__SVR_standardOperatorEncodeMap;
-{
-  NSArray *keys   = [NSArray arrayWithObjects:@"+", @"-", @"/", @"*", @"^", nil];
-  NSArray *values = [NSArray arrayWithObjects:@"a", @"s", @"d", @"m", @"e", nil];
   return [[[NSDictionary alloc] initWithObjects:values forKeys:keys] autorelease];
 }
 

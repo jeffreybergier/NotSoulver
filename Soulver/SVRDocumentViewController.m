@@ -40,7 +40,7 @@
 // MARK: IBActions
 -(IBAction)keypadAppend:(id)sender;
 {
-  NSLog(@"VIEW: keypadAppend: %@<%d>", [sender title], [sender tag]);
+  [self __append:[sender tag]];
 }
 
 // MARK: Interface Builder
@@ -64,22 +64,15 @@
 -(void)__append:(XPInteger)tag;
 {
   int control = 0;
-  NSNumber *error = nil;
   NSString *toAppend = [self __mapKeyWithTag:tag control:&control];
   if (toAppend) {
-    [[self modelController] appendCharacter:toAppend error:&error];
-    if (error != nil) { [
-      XPLog alwys:@"%@ appendString:%@ forTag:%ld error:%@", self, toAppend, tag, error];
-    }
+    [[self modelController] appendCharacter:toAppend];
   } else {
     switch (control) {
-      case -1: [[self modelController] backspaceCharacterWithError:&error]; break;
-      case -2: [[self modelController] backspaceLineWithError:&error]; break;
-      case -3: [[self modelController] backspaceAllWithError:&error]; break;
+      case -1: [[self modelController] backspaceCharacter]; break;
+      case -2: [[self modelController] backspaceLine]; break;
+      case -3: [[self modelController] backspaceAll]; break;
       default: [XPLog error:@"%@ Button with unknown tag: %ld", self, tag];
-    }
-    if (error != nil) {
-      [XPLog alwys:@"%@ backspaceWithTag:%ld error:%@", self, tag, error];
     }
   }
 }
@@ -101,17 +94,26 @@
     case 10: return @"0";
     case 11: return @"-";
     case 12: return @".";
-    case 13: *control = -1; return nil;
-    case 14: return @"=";
-    case 15: return [[[NSUserDefaults standardUserDefaults] SVR_operatorEncodeMap] objectForKey:@"+"];
-    case 16: return [[[NSUserDefaults standardUserDefaults] SVR_operatorEncodeMap] objectForKey:@"-"];
+    case 14: return @"=\n";
+    case 15: return @"+";
+    case 16: return @"-";
     case 17: return @")";
-    case 18: return [[[NSUserDefaults standardUserDefaults] SVR_operatorEncodeMap] objectForKey:@"*"];
-    case 19: return [[[NSUserDefaults standardUserDefaults] SVR_operatorEncodeMap] objectForKey:@"/"];
+    case 18: return @"*";
+    case 19: return @"/";
     case 20: return @"(";
-    case 21: return [[[NSUserDefaults standardUserDefaults] SVR_operatorEncodeMap] objectForKey:@"^"];
-    case 22: *control = -2; return nil;
-    case 23: *control = -3; return nil;
+    case 21: return @"^";
+    case 13:
+      // Backspace Button
+      *control = -1;
+      return nil;
+    case 22:
+      // Clear Line Button
+      *control = -2;
+      return nil;
+    case 23:
+      // Clear All Button
+      *control = -3;
+      return nil;
   }
   [XPLog error:@"<%@> Button with unknown tag: %ld", self, tag];
   return nil;
