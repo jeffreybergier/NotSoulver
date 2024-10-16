@@ -8,8 +8,11 @@
   SVRDocumentModelController *_modelController;
 }
 
-// MARK: NSDocument Support
--(void)updateModel:(NSTextStorage*)model;
+// MARK: Init
+-(id)init;
+
+// MARK: awakeFromNib
+-(void)awakeFromNib;
 
 // MARK: Interface Builder
 -(NSTextView*)textView;

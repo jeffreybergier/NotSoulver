@@ -9,11 +9,6 @@
   return [[_viewController retain] autorelease];
 }
 
--(NSTextStorage*)model;
-{
-  return [[_model retain] autorelease];
-}
-
 -(NSString*)windowNibName;
 {
 #if OS_OPENSTEP
@@ -26,12 +21,7 @@
 // MARK: INIT
 -(id)initWithContentsOfFile:(NSString*)fileName;
 {
-  _model = [NSTextStorage new]; // need to do before call super init
   self = [super initWithContentsOfFile:fileName ofType:@"solv"];
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(modelDidProcessEditingNotification:)
-                                               name:NSTextStorageDidProcessEditingNotification
-                                             object:_model];
   return self;
 }
 
@@ -44,29 +34,23 @@
 
 -(void)awakeFromNib;
 {
-  [[self viewController] updateModel:[self model]];
+  NSTextStorage *model = [[[self viewController] modelController] model];
+  NSAssert(model, @"");
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(modelDidProcessEditingNotification:)
+                                               name:NSTextStorageDidProcessEditingNotification
+                                             object:model];
   [super awakeFromNib];
 }
 
 -(NSData*)dataRepresentationOfType:(NSString*)type;
 {
-  return [[[self model] string] dataUsingEncoding:NSUTF8StringEncoding];
+  return [[[self viewController] modelController] dataRepresentationOfType:type];
 }
 
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
 {
-  BOOL success = NO;
-  NSString *string = [
-    [[NSString alloc] initWithData:data
-                          encoding:NSUTF8StringEncoding]
-    autorelease];
-  if (string) {
-    [ [self model] beginEditing];
-    [[[self model] mutableString] setString:string];
-    [ [self model] endEditing];
-    success = YES;
-  }
-  return success;
+  return [[[self viewController] modelController] loadDataRepresentation:data ofType:type];
 }
 
 // MARK: Model Changed Notifications
@@ -84,9 +68,7 @@
 -(void)dealloc;
 {
   [_viewController release];
-  [_model release];
   _viewController = nil;
-  _model = nil;
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
 }

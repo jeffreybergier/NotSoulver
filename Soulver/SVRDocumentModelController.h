@@ -10,7 +10,11 @@
 -(NSTextStorage*)model;
 
 // MARK: Init
--(id)initWithModel:(NSTextStorage*)model;
+-(id)init;
+
+// MARK: NSDocument Support
+-(NSData*)dataRepresentationOfType:(NSString*)type;
+-(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
 
 // MARK: Usage
 -(int)appendCharacter:(NSString*)aString error:(XPErrorPointer)errorPointer;

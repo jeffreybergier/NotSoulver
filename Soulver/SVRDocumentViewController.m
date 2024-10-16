@@ -4,18 +4,27 @@
 
 @implementation SVRDocumentViewController
 
-// MARK: NSDocument Support
--(void)updateModel:(NSTextStorage*)model;
+// MARK: Init
+-(id)init;
+{
+  self = [super init];
+  _modelController = [[SVRDocumentModelController alloc] init];
+  _textView = nil;
+  return self;
+}
+
+// MARK: awakeFromNib
+-(void)awakeFromNib;
 {
   NSLayoutManager *layoutManager = nil;
+  SVRDocumentModelController *modelController = [self modelController];
+  NSTextStorage *model = [modelController model];
   
-  // Create new modelController
-  [_modelController release];
-  _modelController = [[SVRDocumentModelController alloc] initWithModel:model];
+  NSAssert(modelController, @"");
   
   // Configure delegates
-  [model setDelegate:_modelController];
-  [[self textView] setDelegate:_modelController];
+  [model setDelegate:modelController];
+  [[self textView] setDelegate:modelController];
   
   // Configure layoutManager
   // This ordering is incredibly fragile

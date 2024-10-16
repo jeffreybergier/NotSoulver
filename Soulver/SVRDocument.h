@@ -6,12 +6,10 @@
 @interface SVRDocument: XPDocument
 {
   IBOutlet SVRDocumentViewController *_viewController;
-  NSTextStorage *_model;
 }
 
 // MARK: Properties
 -(SVRDocumentViewController*)viewController;
--(NSTextStorage*)model;
 -(NSString*)windowNibName;
 
 // MARK: INIT

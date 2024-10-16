@@ -10,11 +10,33 @@
 }
 
 // MARK: Init
--(id)initWithModel:(NSTextStorage*)model;
+-(id)init;
 {
   self = [super init];
-  _model = [_model retain];
+  _model = [NSTextStorage new];
   return self;
+}
+
+// MARK: NSDocument Support
+-(NSData*)dataRepresentationOfType:(NSString*)type;
+{
+  return [[[self model] string] dataUsingEncoding:NSUTF8StringEncoding];
+}
+
+-(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
+{
+  BOOL success = NO;
+  NSString *string = [
+    [[NSString alloc] initWithData:data
+                          encoding:NSUTF8StringEncoding]
+    autorelease];
+  if (string) {
+    [ [self model] beginEditing];
+    [[[self model] mutableString] setString:string];
+    [ [self model] endEditing];
+    success = YES;
+  }
+  return success;
 }
 
 // MARK: Usage
