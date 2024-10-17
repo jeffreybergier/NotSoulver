@@ -64,7 +64,7 @@
 // MARK: Model Changed Notifications
 -(void)modelDidProcessEditingNotification:(NSNotification*)aNotification;
 {
-  [self updateWindowState];
+  [self updateWindowChrome];
 }
 
 -(void)dealloc;

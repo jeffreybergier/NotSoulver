@@ -3,7 +3,16 @@
 #import "XPDocument.h"
 #import "NSUserDefaults+Soulver.h"
 
+NSPoint XPDocumentPointForCascading;
+
 @implementation XPDocument
+
+// MARK: Window Placement
+
++(void)load;
+{
+  XPDocumentPointForCascading = NSZeroPoint;
+}
 
 // MARK: Init
 
@@ -78,17 +87,30 @@
 {
   NSString *fileName = [self fileName];
   NSString *fileType = [self fileType];
+  NSWindow *window   = [self window];
+  
+  // Read the data
   if (fileName && fileType) {
     [self readFromFile:fileName ofType:fileType];
-    [[self window] setFrameUsingName:fileName];
   }
-  [[self window] setDelegate:self];
-  [self updateWindowState];
+  
+  // Update window frame
+  if (fileName) {
+    [window setFrameUsingName:fileName];
+  } else {
+    XPDocumentPointForCascading = [window cascadeTopLeftFromPoint:XPDocumentPointForCascading];
+  }
+  
+  // Update window chrome
+  [self updateWindowChrome];
+
+  // Set the delegate
+  [window setDelegate:self];
   
   [XPLog debug:@"awakeFromNib: %@", self];
 }
 
--(void)updateWindowState;
+-(void)updateWindowChrome;
 {
   NSWindow *window = [self window];
   NSString *fileName = [self fileName];
@@ -240,13 +262,13 @@
   } else {
     [self __runModalSavePanelAndSetFileName];
   }
-  [self updateWindowState];
+  [self updateWindowChrome];
 }
 
 -(IBAction)saveDocumentAs:(id)sender;
 {
   [self __runModalSavePanelAndSetFileName];
-  [self updateWindowState];
+  [self updateWindowChrome];
 }
 
 -(IBAction)saveDocumentTo:(id)sender;
@@ -269,7 +291,7 @@
     default:
       [XPLog error:@"Unexpected alert panel result: %ld", result];
   }
-  [self updateWindowState];
+  [self updateWindowChrome];
 }
 
 // MARK: NSWindowDelegate

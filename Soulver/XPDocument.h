@@ -17,6 +17,10 @@
   BOOL _isNibLoaded;
 }
 
+// MARK: Window Placement
+
++(void)load;
+
 // MARK: Init
 
 /// Designated Initializer.  Inits an "empty" document.
@@ -37,7 +41,7 @@
 /// Default implementation populates rawData property if fileName is set
 /// and sets self as window delegate
 -(void)awakeFromNib;
--(void)updateWindowState;
+-(void)updateWindowChrome;
 
 // MARK: Document Status
 
