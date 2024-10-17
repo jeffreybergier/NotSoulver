@@ -76,6 +76,11 @@
 -(IBAction)saveDocumentTo:(id)sender;
 -(IBAction)revertDocumentToSaved:(id)sender;
 
+// MARK: NSWindowDelegate
+
+-(void)windowDidResize:(NSNotification*)aNotification;
+-(void)windowDidMove:(NSNotification*)aNotification;
+
 // MARK: Panels and Alerts
 
 -(BOOL)prepareSavePanel:(NSSavePanel*)savePanel;

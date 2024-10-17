@@ -40,8 +40,8 @@
 -(void)showWindows;
 {
   if (!_isNibLoaded) {
-    [NSBundle loadNibNamed:[self windowNibName] owner:self];
     _isNibLoaded = YES;
+    [NSBundle loadNibNamed:[self windowNibName] owner:self];
   }
   [[self window] makeKeyAndOrderFront:self];
 }
@@ -80,6 +80,7 @@
   NSString *fileType = [self fileType];
   if (fileName && fileType) {
     [self readFromFile:fileName ofType:fileType];
+    [[self window] setFrameUsingName:fileName];
   }
   [[self window] setDelegate:self];
   [self updateWindowState];
@@ -269,6 +270,24 @@
       [XPLog error:@"Unexpected alert panel result: %ld", result];
   }
   [self updateWindowState];
+}
+
+// MARK: NSWindowDelegate
+
+-(void)windowDidResize:(NSNotification*)aNotification;
+{
+  NSString *fileName = [self fileName];
+  if (fileName) {
+    [[self window] saveFrameUsingName:fileName];
+  }
+}
+
+-(void)windowDidMove:(NSNotification*)aNotification;
+{
+  NSString *fileName = [self fileName];
+  if (fileName) {
+    [[self window] saveFrameUsingName:fileName];
+  }
 }
 
 // MARK: Panels and Alerts
