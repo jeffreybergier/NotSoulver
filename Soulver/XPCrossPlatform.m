@@ -139,19 +139,40 @@ XPAlertReturn XPRunQuitAlert(void)
 
 NSArray* XPRunOpenPanel(void)
 {
+  // This method was occasionally causing a crash with NSOpenPanel,
+  // thus I added the additional memory management.
+  // I think the reason was just passing [ud SVR_savePanelLastDirectory]
+  // directly into the open panel. But I added memory
+  // protection around everything just in case.
   XPInteger result;
-  NSOpenPanel *panel = [NSOpenPanel openPanel];
+  NSArray *output;
+  
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  NSOpenPanel *panel = [[NSOpenPanel openPanel] retain];
+  NSString *lastDirectory = [[ud SVR_savePanelLastDirectory] retain];
+  
   [panel setAllowsMultipleSelection:YES];
-  result = [panel runModalForDirectory:[ud SVR_savePanelLastDirectory]
+  result = [panel runModalForDirectory:lastDirectory
                                   file:nil
                                  types:[NSArray arrayWithObject:@"solv"]];
   [ud SVR_setSavePanelLastDirectory:[panel directory]];
+  
   switch (result) {
-    case NSOKButton:     return [panel filenames];
-    case NSCancelButton: return [[NSArray new] autorelease];
-    default: [XPLog error:@"Impossible NSOpenPanel result: %lu", result]; return nil;
+    case NSOKButton:
+      output = [[panel filenames] retain];
+      break;
+    case NSCancelButton:
+      output = [NSArray new];
+      break;
+    default:
+      [XPLog error:@"Impossible NSOpenPanel result: %lu", result];
+      output = nil;
+      break;
   }
+  
+  [lastDirectory autorelease];
+  [panel autorelease];
+  return [output autorelease];
 }
 #pragma clang diagnostic pop
 
