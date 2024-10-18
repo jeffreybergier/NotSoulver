@@ -4,38 +4,40 @@
     FILESTABLE = {
         CLASSES = (
             "NSUserDefaults+Soulver.m", 
-            SVRAppDelegate.m,
-            SVRDocument.m,
-            SVRDocumentModelController.m,
+            SVRAppDelegate.m, 
+            SVRDocument.m, 
+            SVRDocumentModelController.m, 
             SVRDocumentViewController.m, 
-            SVRLegacyRegex.m,
+            SVRLegacyRegex.m, 
             SVRSinglePaneLayoutManager.m, 
             SVRSolver.m, 
             SVRSolverExpressionTagger.m, 
             SVRSolverScanner.m, 
             SVRSolverSolutionTagger.m, 
-            SVRSolverStyler.m, 
-            XPCrossPlatform.m, 
-            XPDocument.m
-        ); 
+            SVRSolverStyler.m,
+            SVRSolverTextAttachment.m,
+            XPCrossPlatform.m,
+            XPDocument.m 
+        );
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
         H_FILES = (
             re.h, 
             "NSUserDefaults+Soulver.h", 
-            SVRAppDelegate.h,
-            SVRDocument.h,
-            SVRDocumentModelController.h,
+            SVRAppDelegate.h, 
+            SVRDocument.h, 
+            SVRDocumentModelController.h, 
             SVRDocumentViewController.h, 
-            SVRLegacyRegex.h,
+            SVRLegacyRegex.h, 
             SVRSinglePaneLayoutManager.h, 
             SVRSolver.h, 
             SVRSolverExpressionTagger.h, 
             SVRSolverScanner.h, 
             SVRSolverSolutionTagger.h, 
-            SVRSolverStyler.h, 
-            XPCrossPlatform.h, 
+            SVRSolverStyler.h,
+            SVRSolverTextAttachment.h,
+            XPCrossPlatform.h,
             XPDocument.h
-        ); 
+        );
         INTERFACES = (NEXTSTEP_Soulver.nib, NEXTSTEP_SVRDocument.nib); 
         OTHER_LINKED = (re.c, Soulver_main.m); 
         OTHER_SOURCES = (
