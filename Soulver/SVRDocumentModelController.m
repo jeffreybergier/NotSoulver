@@ -88,13 +88,15 @@
 {
   NSTextStorage *storage = [aNotification object];
   [XPLog extra:@"%@ textStorageWillProcessEditing: `%@`", self, [storage string]];
-  [SVRSolver removeAllSolutionsAndTags:storage];
-  [SVRSolver solveAndTagAttributedString:storage];
 }
+
 -(void)textStorageDidProcessEditing:(NSNotification*)aNotification;
 {
   NSTextStorage *storage = [aNotification object];
   [XPLog extra:@"%@ textStorageDidProcessEditing: `%@`", self, [storage string]];
+  
+  [SVRSolver removeAllSolutionsAndTags:storage];
+  [SVRSolver solveAndTagAttributedString:storage];
   [SVRSolver styleSolvedAndTaggedAttributedString:storage];
 }
 

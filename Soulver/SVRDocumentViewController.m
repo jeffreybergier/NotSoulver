@@ -16,11 +16,9 @@
 // MARK: awakeFromNib
 -(void)awakeFromNib;
 {
-  NSLayoutManager *layoutManager = nil;
+  NSLayoutManager *layoutManager = [[[SVRSinglePaneLayoutManager alloc] init] autorelease];
   SVRDocumentModelController *modelController = [self modelController];
   NSTextStorage *model = [modelController model];
-  
-  NSAssert(modelController, @"");
   
   // Configure delegates
   [model setDelegate:modelController];
@@ -28,13 +26,8 @@
   
   // Configure layoutManager
   // This ordering is incredibly fragile
-  layoutManager = [[[SVRSinglePaneLayoutManager alloc] init] autorelease];
   [[[self textView] textContainer] replaceLayoutManager:layoutManager];
   [layoutManager replaceTextStorage:model];
-
-  if ([[self textView] textStorage] != model) {
-    [XPLog error:@"%@ updateModel: configured incorrectly", self];
-  }
 }
 
 // MARK: IBActions
