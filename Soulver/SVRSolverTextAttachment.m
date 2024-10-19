@@ -2,6 +2,7 @@
 
 #import "SVRSolverTextAttachment.h"
 #import "XPCrossPlatform.h"
+#import "NSUserDefaults+Soulver.h"
 
 @implementation SVRSolverTextAttachment
 
@@ -10,16 +11,11 @@
   return [[_solution retain] autorelease];
 }
 
--(SVRSolverTextAttachmentCell*)attachmentCell;
-{
-  return [[_cell retain] autorelease];
-}
-
 -(id)initWithSolution:(NSDecimalNumber*)solution;
 {
   self = [super initWithFileWrapper:nil];
   _solution = [solution retain];
-  _cell = [[SVRSolverTextAttachmentCell alloc] init];
+  [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
   return self;
 }
 
@@ -30,11 +26,9 @@
 
 - (void)dealloc
 {
-  [XPLog debug:@"DEALLOC: %@", self];
+  [XPLog debug:@"DEALLOC: Attachment: %@", self];
   [_solution release];
-  [_cell release];
   _solution = nil;
-  _cell = nil;
   [super dealloc];
 }
 
@@ -42,15 +36,33 @@
 
 @implementation SVRSolverTextAttachmentCell
 
--(SVRSolverTextAttachment*)attachment;
+// MARK: Properties
+
+-(NSDecimalNumber*)solution;
 {
-  return [[_attachment retain] autorelease];
+  return [_attachment solution];
 }
+
+-(NSDictionary*)solutionFontAttributes;
+{
+  NSUserDefaults *ud;
+  NSArray *keys;
+  NSArray *vals;
+  
+  if (_solutionFontAttributes) { return _solutionFontAttributes; }
+  ud = [NSUserDefaults standardUserDefaults];
+  keys = [NSArray arrayWithObjects:NSFontAttributeName, nil];
+  vals = [NSArray arrayWithObjects:[ud SVR_fontForText], nil];
+  _solutionFontAttributes = [[NSDictionary alloc] initWithObjects:vals forKeys:keys];
+  return _solutionFontAttributes;
+}
+
+// MARK: Init
 
 -(id)initWithAttachment:(SVRSolverTextAttachment*)attachment;
 {
   self = [super init];
-  _attachment = attachment; // Non retained because the lifecycle is shared with the attachment
+  _attachment = [attachment retain];
   return self;
 }
 
@@ -59,14 +71,65 @@
   return [[[SVRSolverTextAttachmentCell alloc] initWithAttachment:attachment] autorelease];
 }
 
--(void)drawWithFrame:(NSRect)cellFrame inView:(NSView*)controlView;
+// MARK: Protocol (Used)
+
+-(SVRSolverTextAttachment*)attachment;
 {
-  [XPLog debug:@"drawWithFrame:%@ inView:%@", NSStringFromRect(cellFrame), controlView];
+  return [[_attachment retain] autorelease];
 }
 
--(void)highlight:(BOOL)flag withFrame:(NSRect)cellFrame inView:(NSView*)controlView;
+-(void)setAttachment:(SVRSolverTextAttachment*)attachment;
 {
-  [XPLog debug:@"higlight:%d withFrame:%@ inView:%@", flag, NSStringFromRect(cellFrame), controlView];
+  [_attachment release];
+  _attachment = [attachment retain];
+}
+
+-(NSSize)cellSize;
+{
+  return [[[self solution] SVR_description] sizeWithAttributes:[self solutionFontAttributes]];
+}
+
+-(void)drawWithFrame:(NSRect)cellFrame inView:(NSView*)controlView;
+{
+  [XPLog debug:@"drawWithFrame:%@", NSStringFromRect(cellFrame)];
+  NSDrawWhiteBezel(cellFrame, cellFrame);
+  [[[self solution] SVR_description] drawInRect:cellFrame withAttributes:[self solutionFontAttributes]];
+}
+
+-(void)highlight:(BOOL)flag
+       withFrame:(NSRect)cellFrame
+          inView:(NSView*)controlView;
+{
+  [XPLog debug:@"higlight:%d withFrame:%@", flag, NSStringFromRect(cellFrame)];
+  //[[[self solution] SVR_description] drawInRect:cellFrame withAttributes:[self solutionFontAttributes]];
+}
+
+// MARK: Protocol (Unused)
+-(NSPoint)cellBaselineOffset;
+{
+  return NSZeroPoint;
+}
+
+-(BOOL)trackMouse:(NSEvent *)theEvent
+           inRect:(NSRect)cellFrame
+           ofView:(NSView *)controlView
+     untilMouseUp:(BOOL)flag;
+{
+  return NO;
+}
+-(BOOL)wantsToTrackMouse;
+{
+  return NO;
+}
+
+// MARK: Dealloc
+
+-(void)dealloc;
+{
+  [XPLog debug:@"DEALLOC: Cell: %@", self];
+  [_attachment release];
+  _attachment = nil;
+  [super dealloc];
 }
 
 @end

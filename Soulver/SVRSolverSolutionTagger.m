@@ -6,6 +6,7 @@
 //
 
 #import "SVRSolverSolutionTagger.h"
+#import "SVRSolverTextAttachment.h"
 
 @implementation SVRSolverSolutionTagger
 
@@ -32,12 +33,17 @@
     solution = [self __solutionForExpression:[string attributedSubstringFromRange:nextExpressionRange]
                                        error:&error];
     if (solution) {
-      [XPLog extra:@"=: %@←%@", [[string string] SVR_descriptionHighlightingRange:solutionRange], solution];
+      [XPLog extra:@"=: %@<-%@", [[string string] SVR_descriptionHighlightingRange:solutionRange], solution];
       [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)
                      value:solution
                      range:solutionRange];
+      [string replaceCharactersInRange:solutionRange
+                  withAttributedString:
+       [NSAttributedString attributedStringWithAttachment:
+        [SVRSolverTextAttachment attachmentWithSolution:solution]]
+      ];
     } else {
-      [XPLog extra:@"=: %@←%@", [[string string] SVR_descriptionHighlightingRange:solutionRange], error];
+      [XPLog extra:@"=: %@<-%@", [[string string] SVR_descriptionHighlightingRange:solutionRange], error];
       [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)
                      value:error
                      range:solutionRange];
