@@ -1,5 +1,4 @@
 #import "SVRDocumentViewController.h"
-#import "SVRSinglePaneLayoutManager.h"
 #import "NSUserDefaults+Soulver.h"
 
 @implementation SVRDocumentViewController
