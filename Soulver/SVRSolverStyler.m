@@ -123,7 +123,7 @@
   NSAssert([output isEqual:[ud SVR_colorForNumeral]], @"");
   
   output = [input attribute:NSForegroundColorAttributeName atIndex:12 effectiveRange:NULL];
-  NSAssert([output isEqual:[ud SVR_colorForSolutionPrimary]], @"");
+  NSAssert([output isEqual:[ud SVR_colorForOperator]], @"");
   
   [XPLog alwys:@"SVRSolverStyler Tests: Passed"];
 }

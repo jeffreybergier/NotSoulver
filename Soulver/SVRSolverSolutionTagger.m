@@ -157,13 +157,13 @@
   NSRange range = XPNotFoundRange;
   NSValue *lhs = nil;
   NSValue *rhs = nil;
-  NSValue *check = nil;
+  NSString *check = nil;
   XPAttributeEnumerator *e = [input SVR_enumeratorForAttribute:XPAttributedStringKeyForTag(SVRSolverTagBracket)];
   while ((check = [e nextObject])) {
     if (!lhs) {
-      lhs = check;
+      lhs = [NSValue XP_valueWithRange:NSRangeFromString(check)];
     } else if (!rhs) {
-      rhs = check;
+      rhs = [NSValue XP_valueWithRange:NSRangeFromString(check)];
     }
     if (lhs && rhs) {
       range = NSMakeRange([lhs XP_rangeValue].location, NSMaxRange([rhs XP_rangeValue]) - [lhs XP_rangeValue].location);

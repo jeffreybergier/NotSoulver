@@ -123,6 +123,27 @@ SVRSolverTag SVRSolverTagForKey(XPAttributedStringKey string)
   [SVRSolverStyler styleTaggedExpression:input];
 }
 
++(void)__removeAttachmentCharacters:(NSMutableAttributedString*)input;
+{
+  NSMutableString *string = [input mutableString];
+  XPUInteger index = [string length] - 1;
+  unichar lhs = NSAttachmentCharacter;
+  unichar rhs;
+
+  if ([string length] == 0) { return; }
+  
+  while (YES) {
+    rhs = [string characterAtIndex:index];
+    if (lhs == rhs) {
+      [string deleteCharactersInRange:NSMakeRange(index, 1)];
+    }
+    if (index == 0) {
+      break;
+    }
+    index -= 1;
+  }
+}
+
 @end
 
 @implementation SVRSolver (Testing)
