@@ -43,7 +43,12 @@
   return [_attachment solution];
 }
 
--(NSDictionary*)solutionFontAttributes;
+-(NSString*)stringToDraw;
+{
+  return [@"=" stringByAppendingString:[[self solution] SVR_description]];
+}
+
+-(NSDictionary*)drawinAttributes;
 {
   NSUserDefaults *ud;
   NSArray *keys;
@@ -73,6 +78,36 @@
 
 // MARK: Protocol (Used)
 
+-(NSSize)cellSize;
+{
+  return [[self stringToDraw] sizeWithAttributes:[self drawinAttributes]];
+}
+
+-(NSPoint)cellBaselineOffset;
+{
+  // TODO: Remove magic number
+  return NSMakePoint(0, -6);
+}
+
+-(void)drawWithFrame:(NSRect)cellFrame
+              inView:(NSView*)controlView;
+{
+  [XPLog extra:@"drawWithFrame:%@", NSStringFromRect(cellFrame)];
+  NSDrawWhiteBezel(cellFrame, cellFrame);
+  [[self stringToDraw] drawInRect:cellFrame withAttributes:[self drawinAttributes]];
+}
+
+-(void)highlight:(BOOL)flag
+       withFrame:(NSRect)cellFrame
+          inView:(NSView*)controlView;
+{
+  [XPLog pause:@"higlight:%d withFrame:%@", flag, NSStringFromRect(cellFrame)];
+  NSDrawButton(cellFrame, cellFrame);
+  [[self stringToDraw] drawInRect:cellFrame withAttributes:[self drawinAttributes]];
+}
+
+// MARK: Protocol (Unused)
+
 -(SVRSolverTextAttachment*)attachment;
 {
   return [[_attachment retain] autorelease];
@@ -84,40 +119,15 @@
   _attachment = [attachment retain];
 }
 
--(NSSize)cellSize;
+-(BOOL)wantsToTrackMouse;
 {
-  return [[[self solution] SVR_description] sizeWithAttributes:[self solutionFontAttributes]];
-}
-
--(void)drawWithFrame:(NSRect)cellFrame inView:(NSView*)controlView;
-{
-  [XPLog debug:@"drawWithFrame:%@", NSStringFromRect(cellFrame)];
-  NSDrawWhiteBezel(cellFrame, cellFrame);
-  [[[self solution] SVR_description] drawInRect:cellFrame withAttributes:[self solutionFontAttributes]];
-}
-
--(void)highlight:(BOOL)flag
-       withFrame:(NSRect)cellFrame
-          inView:(NSView*)controlView;
-{
-  [XPLog debug:@"higlight:%d withFrame:%@", flag, NSStringFromRect(cellFrame)];
-  //[[[self solution] SVR_description] drawInRect:cellFrame withAttributes:[self solutionFontAttributes]];
-}
-
-// MARK: Protocol (Unused)
--(NSPoint)cellBaselineOffset;
-{
-  return NSZeroPoint;
+  return NO;
 }
 
 -(BOOL)trackMouse:(NSEvent *)theEvent
            inRect:(NSRect)cellFrame
            ofView:(NSView *)controlView
      untilMouseUp:(BOOL)flag;
-{
-  return NO;
-}
--(BOOL)wantsToTrackMouse;
 {
   return NO;
 }

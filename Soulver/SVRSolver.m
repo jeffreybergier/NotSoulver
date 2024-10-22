@@ -83,6 +83,7 @@ SVRSolverTag SVRSolverTagForKey(XPAttributedStringKey string)
   [input retain];
   
   range = NSMakeRange(0, [input length]);
+  [self __decodeExpressionTerminator:input];
   [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagNumber) range:range];
   [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagBracket) range:range];
   [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagOperator) range:range];
@@ -92,6 +93,7 @@ SVRSolverTag SVRSolverTagForKey(XPAttributedStringKey string)
   [input removeAttribute:NSFontAttributeName range:range];
   [input removeAttribute:NSForegroundColorAttributeName range:range];
   [input removeAttribute:NSBackgroundColorAttributeName range:range];
+  [input removeAttribute:NSParagraphStyleAttributeName range:range];
   
   [input autorelease];
 }
@@ -123,25 +125,13 @@ SVRSolverTag SVRSolverTagForKey(XPAttributedStringKey string)
   [SVRSolverStyler styleTaggedExpression:input];
 }
 
-+(void)__removeAttachmentCharacters:(NSMutableAttributedString*)input;
++(void)__decodeExpressionTerminator:(NSMutableAttributedString*)input;
 {
-  NSMutableString *string = [input mutableString];
-  XPUInteger index = [string length] - 1;
-  unichar lhs = NSAttachmentCharacter;
-  unichar rhs;
-
-  if ([string length] == 0) { return; }
-  
-  while (YES) {
-    rhs = [string characterAtIndex:index];
-    if (lhs == rhs) {
-      [string deleteCharactersInRange:NSMakeRange(index, 1)];
-    }
-    if (index == 0) {
-      break;
-    }
-    index -= 1;
-  }
+  unichar attachmentChar = NSAttachmentCharacter;
+  NSString *searchString = [NSString stringWithCharacters:&attachmentChar length:1];
+  NSString *replaceString = @"=";
+  [[input mutableString] XP_replaceOccurrencesOfString:searchString
+                                            withString:replaceString];
 }
 
 @end

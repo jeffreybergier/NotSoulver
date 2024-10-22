@@ -219,7 +219,7 @@ NSArray* XPRunOpenPanel(void)
   return [self nextObjectEffectiveRange:NULL];
 }
 
--(id)nextObjectEffectiveRange:(XPRangePointer)range;
+-(id)nextObjectEffectiveRange:(XPRangePointer)rangePtr;
 {
   XPUInteger length = [_string length];
   id output = nil;
@@ -237,14 +237,14 @@ NSArray* XPRunOpenPanel(void)
                    effectiveRange:&loopRange];
     }
     if (output) {
-      if (range != NULL) { *range = loopRange; }
+      if (rangePtr != NULL) { *rangePtr = loopRange; }
       _index = NSMaxRange(loopRange);
       return output;
     } else {
       _index += 1;
     }
   }
-  if (range != NULL) { *range = XPNotFoundRange; }
+  if (rangePtr != NULL) { *rangePtr = XPNotFoundRange; }
   return nil;
 }
 

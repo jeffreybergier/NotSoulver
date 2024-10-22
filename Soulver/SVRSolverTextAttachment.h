@@ -24,27 +24,29 @@
 // MARK: Properties
 
 -(NSDecimalNumber*)solution;
--(NSDictionary*)solutionFontAttributes;
+-(NSString*)stringToDraw;
+-(NSDictionary*)drawinAttributes;
 
 // MARK: Init
 -(id)initWithAttachment:(SVRSolverTextAttachment*)attachment;
 +(id)cellWithAttachment:(SVRSolverTextAttachment*)attachment;
 
 // MARK: Protocol (Used)
--(SVRSolverTextAttachment*)attachment;
--(void)setAttachment:(SVRSolverTextAttachment*)attachment;
 -(NSSize)cellSize;
--(void)drawWithFrame:(NSRect)cellFrame inView:(NSView*)controlView;
+-(NSPoint)cellBaselineOffset;
+-(void)drawWithFrame:(NSRect)cellFrame
+              inView:(NSView*)controlView;
 -(void)highlight:(BOOL)flag
        withFrame:(NSRect)cellFrame
           inView:(NSView*)controlView;
 
 // MARK: Protocol (Unused)
--(NSPoint)cellBaselineOffset;
+-(SVRSolverTextAttachment*)attachment;
+-(void)setAttachment:(SVRSolverTextAttachment*)attachment;
+-(BOOL)wantsToTrackMouse;
 -(BOOL)trackMouse:(NSEvent *)theEvent
            inRect:(NSRect)cellFrame
            ofView:(NSView *)controlView
      untilMouseUp:(BOOL)flag;
--(BOOL)wantsToTrackMouse;
 
 @end

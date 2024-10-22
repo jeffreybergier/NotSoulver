@@ -15,33 +15,37 @@
 {
   NSNumber *error = nil;
   NSDecimalNumber *solution = nil;
+  NSAttributedString *solutionString = nil;
   NSRange solutionRange = XPNotFoundRange; // range of the equal sign
-  
-  XPAttributeEnumerator *e = [string SVR_enumeratorForAttribute:XPAttributedStringKeyForTag(SVRSolverTagExpression)];
-  NSValue *nextExpressionValue = nil;
-  NSRange nextExpressionRange = XPNotFoundRange;
-  
-  while ((nextExpressionValue = [e nextObject])) {
-    nextExpressionRange = [nextExpressionValue XP_rangeValue];
-    solutionRange = NSMakeRange(NSMaxRange(nextExpressionRange), 1);
+  NSEnumerator *e = nil;
+  NSString *next = nil;
+  NSRange nextRange = XPNotFoundRange;
+
+  [XPLog debug:@"TAGGING SOLUTIONS"];
+  e = [string SVR_enumeratorForAttribute:XPAttributedStringKeyForTag(SVRSolverTagExpression)
+              usingLongestEffectiveRange:YES];
+  while ((next = [e nextObject])) {
+    nextRange = NSRangeFromString(next);
+    [XPLog debug:@"LOOP RANGE: %@", NSStringFromRange(nextRange)];
+    solutionRange = NSMakeRange(NSMaxRange(nextRange), 1);
     if (solution) {
       // For previous solution, add it to the string in case it needs it
       [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagPreviousSolution)
                      value:solution
                      range:solutionRange];
     }
-    solution = [self __solutionForExpression:[string attributedSubstringFromRange:nextExpressionRange]
+    solution = [self __solutionForExpression:[string attributedSubstringFromRange:nextRange]
                                        error:&error];
     if (solution) {
-      [XPLog extra:@"=: %@<-%@", [[string string] SVR_descriptionHighlightingRange:solutionRange], solution];
+      solutionString = [NSAttributedString attributedStringWithAttachment:
+                        [SVRSolverTextAttachment attachmentWithSolution:solution]
+      ];
+      [XPLog debug:@"=: %@<-%@", [[string string] SVR_descriptionHighlightingRange:solutionRange], solution];
+      [string replaceCharactersInRange:solutionRange
+                  withAttributedString:solutionString];
       [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)
                      value:solution
                      range:solutionRange];
-      [string replaceCharactersInRange:solutionRange
-                  withAttributedString:
-       [NSAttributedString attributedStringWithAttachment:
-        [SVRSolverTextAttachment attachmentWithSolution:solution]]
-      ];
     } else {
       [XPLog extra:@"=: %@<-%@", [[string string] SVR_descriptionHighlightingRange:solutionRange], error];
       [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)
@@ -85,12 +89,12 @@
     // Revert patch back to subexpression with brackets
     patchRange = [bracketRange XP_rangeValue];
     if (output) {
-      [XPLog extra:@"(): %@←%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output];
+      [XPLog extra:@"(): %@<-%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output];
       patchString = [self __taggedStringWithNumber:output];
       [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
       output = nil;
     } else {
-      [XPLog pause:@"(): %@←%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], [NSDecimalNumber notANumber]];
+      [XPLog pause:@"(): %@<-%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], [NSDecimalNumber notANumber]];
     }
   }
   
@@ -104,7 +108,7 @@
                                          patchRange:&patchRange
                                               error:errorPtr]))
   {
-    [XPLog extra:@"Op^: %@←%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output];
+    [XPLog extra:@"Op^: %@<-%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output];
     patchString = [self __taggedStringWithNumber:output];
     [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
   }
@@ -119,7 +123,7 @@
                                          patchRange:&patchRange
                                               error:errorPtr]))
   {
-    [XPLog extra:@"Op*: %@←%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output];
+    [XPLog extra:@"Op*: %@<-%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output];
     patchString = [self __taggedStringWithNumber:output];
     [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
   }
@@ -134,7 +138,7 @@
                                          patchRange:&patchRange
                                               error:errorPtr]))
   {
-    [XPLog extra:@"Op+: %@←%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output];
+    [XPLog extra:@"Op+: %@<-%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output];
     patchString = [self __taggedStringWithNumber:output];
     [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
   }

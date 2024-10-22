@@ -16,7 +16,8 @@
 // MARK: awakeFromNib
 -(void)awakeFromNib;
 {
-  NSLayoutManager *layoutManager = [[[SVRSinglePaneLayoutManager alloc] init] autorelease];
+  //NSLayoutManager *layoutManager = [[[SVRSinglePaneLayoutManager alloc] init] autorelease];
+  NSLayoutManager *layoutManager = [[[NSLayoutManager alloc] init] autorelease];
   SVRDocumentModelController *modelController = [self modelController];
   NSTextStorage *model = [modelController model];
   

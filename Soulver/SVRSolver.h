@@ -47,6 +47,8 @@ SVRSolverOperator SVRSolverOperatorForRawString(NSString *string);
 +(void)solveAndTagAttributedString:(NSMutableAttributedString*)input;
 +(void)styleSolvedAndTaggedAttributedString:(NSMutableAttributedString*)input;
 
++(void)__decodeExpressionTerminator:(NSMutableAttributedString*)input;
+
 @end
 
 @interface SVRSolver (Testing)
