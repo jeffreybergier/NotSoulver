@@ -117,6 +117,12 @@ NSArray* XPRunOpenPanel(void);
 -(const char*)XP_UTF8String;
 @end
 
+@interface NSMutableString (CrossPlatform)
+-(void)XP_replaceOccurrencesOfString:(NSString*)searchString
+                          withString:(NSString*)replaceString;
++(void)XPTEST_replaceOccurrencesOfStringWithString;
+@end
+
 @interface XPColor (CrossPlatform)
 +(XPColor*)SVR_colorWithRed:(XPFloat)red
                       green:(XPFloat)green
@@ -140,4 +146,8 @@ NSArray* XPRunOpenPanel(void);
 -(NSString*)SVR_description;
 +(id)SVR_decimalNumberWithString:(NSString*)string;
 -(NSDecimalNumber*)SVR_decimalNumberByRaisingToPower:(NSDecimalNumber*)power;
+@end
+
+@interface CrossPlatform: NSObject
++(void)executeUnitTests;
 @end

@@ -27,6 +27,7 @@ int main(int argc, const char *argv[]) {
 #ifdef TESTING
   [[NSUserDefaults standardUserDefaults] SVR_configure];
   [XPLog alwys:@"<Main> Unit Tests: STARTING"];
+  [CrossPlatform executeUnitTests];
   [SVRSolver executeTests];
   [SVRSolverScanner executeTests];
   [SVRSolverSolutionTagger executeTests];
