@@ -23,10 +23,6 @@
 // TODO: These are fake and not stored in UserDefaults
 -(NSFont*)SVR_fontForText;
 -(BOOL)SVR_setFontForText:(NSFont*)newValue;
--(NSNumber*)SVR_errorMismatchedBrackets;
--(NSNumber*)SVR_errorInvalidCharacter;
--(NSNumber*)SVR_errorMissingNumber;
--(NSNumber*)SVR_errorPatching;
 -(XPLocale*)SVR_decimalNumberLocale;
 -(void)SVR_configure;
 // MARK: Private

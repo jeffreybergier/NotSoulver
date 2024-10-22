@@ -75,6 +75,26 @@ SVRSolverTag SVRSolverTagForKey(XPAttributedStringKey string)
   }
 }
 
+NSString *SVRSolverDescriptionForError(SVRSolverError error)
+{
+  switch (error) {
+    case SVRSolverErrorNone:
+      return nil;
+    case SVRSolverErrorInvalidCharacter:
+      return [NSString stringWithFormat:@"<Error:%d> Incompatible character", error];
+    case SVRSolverErrorMismatchedBrackets:
+      return [NSString stringWithFormat:@"<Error:%d> Parentheses not balanced", error];
+    case SVRSolverErrorMissingOperand:
+      return [NSString stringWithFormat:@"<Error:%d> Missing operand", error];
+    case SVRSolverErrorDivideByZero:
+      return [NSString stringWithFormat:@"<Error:%d> Divide by zero", error];
+    default:
+      NSLog(@"SVRSolverDescriptionForErrorUnknown: %d", error);
+      [XPLog error:@"SVRSolverDescriptionForErrorUnknown: %d", error];
+      return nil;
+  }
+}
+
 @implementation SVRSolver: NSObject
 
 +(void)removeAllSolutionsAndTags:(NSMutableAttributedString*)input;

@@ -345,46 +345,6 @@ NSArray* XPRunOpenPanel(void)
 }
 @end
 
-// MARK: XPError
-// OPENSTEP does not have NSError so I am just using NSNumber
-@implementation XPError (XPError)
-
-+(NSNumber*)SVR_errorMismatchedBrackets;
-{
-  return [[NSUserDefaults standardUserDefaults] SVR_errorMismatchedBrackets];
-}
-
-+(NSNumber*)SVR_errorInvalidCharacter;
-{
-  return [[NSUserDefaults standardUserDefaults] SVR_errorInvalidCharacter];
-}
-
-+(NSNumber*)SVR_errorMissingNumber;
-{
-  return [[NSUserDefaults standardUserDefaults] SVR_errorMissingNumber];
-}
-
-+(NSNumber*)SVR_errorPatching;
-{
-  return [[NSUserDefaults standardUserDefaults] SVR_errorPatching];
-}
-
-+(NSString*)SVR_descriptionForError:(NSNumber*)error;
-{
-  if ([error isEqualToNumber:[XPError SVR_errorInvalidCharacter]]) {
-    return [NSString stringWithFormat:@"<Error:%@> An incompatible character was found", error];
-  } else if ([error isEqualToNumber:[XPError SVR_errorMismatchedBrackets]]) {
-    return [NSString stringWithFormat:@"<Error:%@> Parentheses were unbalanced", error];
-  } else if ([error isEqualToNumber:[XPError SVR_errorMissingNumber]]) {
-    return [NSString stringWithFormat:@"<Error:%@> Operators around the numbers were unbalanced", error];
-  } else if ([error isEqualToNumber:[XPError SVR_errorPatching]]) {
-    return [NSString stringWithFormat:@"<Error:%@> Operators around the parentheses were missing", error];
-  } else {
-    return @"<Error> An Unknown Error Ocurred";
-  }
-}
-@end
-
 // MARK: NSDecimalNumber
 @implementation NSDecimalNumber (Soulver)
 

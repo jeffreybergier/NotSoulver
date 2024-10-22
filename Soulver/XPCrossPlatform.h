@@ -22,14 +22,12 @@ typedef int XPInteger;
 typedef unsigned int XPUInteger;
 typedef NSString* XPAttributedStringKey;
 typedef NSRange* XPRangePointer;
-typedef NSNumber** XPErrorPointer;
 #define XPLocale NSDictionary
 #else
 typedef CGFloat XPFloat;
 typedef NSInteger XPInteger;
 typedef NSUInteger XPUInteger;
 typedef NSRangePointer XPRangePointer;
-typedef NSNumber** XPErrorPointer;
 typedef NSAttributedStringKey XPAttributedStringKey;
 #define XPLocale NSLocale
 #endif
@@ -128,15 +126,6 @@ NSArray* XPRunOpenPanel(void);
                       green:(XPFloat)green
                        blue:(XPFloat)blue
                       alpha:(XPFloat)alpha;
-@end
-
-// MARK: Error Handling
-@interface XPError (XPError)
-+(NSNumber*)SVR_errorInvalidCharacter;
-+(NSNumber*)SVR_errorMismatchedBrackets;
-+(NSNumber*)SVR_errorMissingNumber;
-+(NSNumber*)SVR_errorPatching;
-+(NSString*)SVR_descriptionForError:(NSNumber*)error;
 @end
 
 // MARK: NSDecimalNumber

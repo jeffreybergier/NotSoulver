@@ -34,11 +34,22 @@ typedef enum {
   SVRSolverOperatorAdd,
 } SVRSolverOperator;
 
+typedef enum {
+  SVRSolverErrorNone = -1,
+  SVRSolverErrorInvalidCharacter = -1001,
+  SVRSolverErrorMismatchedBrackets = -1002,
+  SVRSolverErrorMissingOperand = -1003,
+  SVRSolverErrorDivideByZero = -1004,
+} SVRSolverError;
+
+typedef SVRSolverError* SVRSolverErrorPointer;
+
 XPAttributedStringKey XPAttributedStringKeyForTag(SVRSolverTag tag);
 SVRSolverTag SVRSolverTagForKey(XPAttributedStringKey string);
 NSNumber* NSNumberForOperator(SVRSolverOperator operator);
 SVRSolverOperator SVRSolverOperatorForNumber(NSNumber *number);
 SVRSolverOperator SVRSolverOperatorForRawString(NSString *string);
+NSString *SVRSolverDescriptionForError(SVRSolverError error);
 
 @interface SVRSolver: NSObject
 

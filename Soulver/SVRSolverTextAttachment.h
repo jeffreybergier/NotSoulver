@@ -1,19 +1,20 @@
 /* SVRSolverTextAttachment.h created by me on Fri 18-Oct-2024 */
 
 #import <AppKit/AppKit.h>
+#import "SVRSolver.h"
 
 @class SVRSolverTextAttachmentCell;
 
 @interface SVRSolverTextAttachment: NSTextAttachment
 {
   NSDecimalNumber *_solution;
-  NSNumber *_error;
+  SVRSolverError _error;
 }
 
 -(NSDecimalNumber*)solution;
--(NSNumber*)error;
--(id)initWithSolution:(NSDecimalNumber*)solution error:(NSNumber*)error;
-+(id)attachmentWithSolution:(NSDecimalNumber*)solution error:(NSNumber*)error;
+-(SVRSolverError)error;
+-(id)initWithSolution:(NSDecimalNumber*)solution error:(SVRSolverError)error;
++(id)attachmentWithSolution:(NSDecimalNumber*)solution error:(SVRSolverError)error;
 
 @end
 

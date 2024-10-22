@@ -13,7 +13,7 @@
 // MARK: Business Logic
 +(void)tagSolutionsInAttributedString:(NSMutableAttributedString*)string;
 {
-  NSNumber *error = nil;
+  SVRSolverError error = SVRSolverErrorNone;
   NSDecimalNumber *solution = nil;
   NSAttributedString *solutionString = nil;
   NSRange solutionRange = XPNotFoundRange; // range of the equal sign
@@ -38,19 +38,20 @@
       NSAttributedString attributedStringWithAttachment:
         [SVRSolverTextAttachment attachmentWithSolution:solution error:error]
     ];
-    [XPLog extra:@"=: %@<-%@", [[string string] SVR_descriptionHighlightingRange:solutionRange], solution];
+    [XPLog extra:@"=: %@<-%@",
+     [[string string] SVR_descriptionHighlightingRange:solutionRange], solution];
     [string replaceCharactersInRange:solutionRange
                 withAttributedString:solutionString];
     [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)
-                   value:solution
+                   value:(solution) ? solution : [NSNumber numberWithInt:error]
                    range:solutionRange];
-    error = nil;
+    error = SVRSolverErrorNone;
   }
 }
 
 // MARK: Private
 +(NSDecimalNumber*)__solutionForExpression:(NSAttributedString*)input
-                                     error:(XPErrorPointer)errorPtr;
+                                     error:(SVRSolverErrorPointer)errorPtr;
 {
   NSSet *setExponent = [NSSet setWithObject:
                         NSNumberForOperator(SVRSolverOperatorExponent)];
@@ -91,7 +92,7 @@
     }
   }
   
-  if (errorPtr != NULL && *errorPtr != nil) {
+  if (errorPtr != NULL && *errorPtr != SVRSolverErrorNone) {
     return nil;
   }
   
@@ -106,7 +107,7 @@
     [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
   }
   
-  if (errorPtr != NULL && *errorPtr != nil) {
+  if (errorPtr != NULL && *errorPtr != SVRSolverErrorNone) {
     return nil;
   }
   
@@ -121,7 +122,7 @@
     [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
   }
   
-  if (errorPtr != NULL && *errorPtr != nil) {
+  if (errorPtr != NULL && *errorPtr != SVRSolverErrorNone) {
     return nil;
   }
   
@@ -136,20 +137,20 @@
     [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
   }
   
-  if (errorPtr != NULL && *errorPtr != nil) {
+  if (errorPtr != NULL && *errorPtr != SVRSolverErrorNone) {
     return nil;
   }
   
   output = [NSDecimalNumber decimalNumberWithString:[expression string]];
   if ([output SVR_isNotANumber]) {
-    if (errorPtr != NULL) { *errorPtr = [XPError SVR_errorInvalidCharacter]; }
+    if (errorPtr != NULL) { *errorPtr = SVRSolverErrorInvalidCharacter; }
     return nil;
   }
   return output;
 }
 
 +(NSValue*)__rangeOfNextBracketsInExpression:(NSAttributedString*)input
-                                       error:(NSNumber **)errorPtr;
+                                       error:(SVRSolverErrorPointer)errorPtr;
 {
   NSRange range = XPNotFoundRange;
   NSValue *lhs = nil;
@@ -168,7 +169,7 @@
     }
   }
   if (lhs && errorPtr != NULL) {
-    *errorPtr = [XPError SVR_errorMismatchedBrackets];
+    *errorPtr = SVRSolverErrorMismatchedBrackets;
   }
   return nil;
 }
@@ -176,7 +177,7 @@
 +(NSDecimalNumber*)__nextSolutionInExpression:(NSAttributedString*)expression
                             forOperatorsInSet:(NSSet*)operators
                                    patchRange:(XPRangePointer)rangePtr
-                                        error:(XPErrorPointer)errorPtr;
+                                        error:(SVRSolverErrorPointer)errorPtr;
 {
   NSRange operatorRange = NSMakeRange(0, 1);
   NSRange lhsRange = XPNotFoundRange;
@@ -208,7 +209,7 @@
                  effectiveRange:&lhsRange];
   }
   if (lhs == nil) {
-    if (errorPtr != NULL) { *errorPtr = [XPError SVR_errorMissingNumber]; }
+    if (errorPtr != NULL) { *errorPtr = SVRSolverErrorMissingOperand; }
     return nil;
   }
   
@@ -219,7 +220,7 @@
                  effectiveRange:&rhsRange];
   }
   if (rhs == nil) {
-    if (errorPtr != NULL) { *errorPtr = [XPError SVR_errorMissingNumber]; }
+    if (errorPtr != NULL) { *errorPtr = SVRSolverErrorMissingOperand; }
     return nil;
   }
   
@@ -229,7 +230,8 @@
   // TODO: Do the solving
   return [self __solveWithOperator:SVRSolverOperatorForNumber(operator)
                         leftNumber:lhs
-                       rightNumber:rhs];
+                       rightNumber:rhs
+                             error:errorPtr];
 }
 
 +(NSAttributedString*)__taggedStringWithNumber:(NSDecimalNumber*)number;
@@ -242,19 +244,21 @@
 
 +(NSDecimalNumber*)__solveWithOperator:(SVRSolverOperator)operator
                             leftNumber:(NSDecimalNumber*)lhs
-                           rightNumber:(NSDecimalNumber*)rhs;
+                           rightNumber:(NSDecimalNumber*)rhs
+                                 error:(SVRSolverErrorPointer)errorPtr;
 {
+  SVRSolverDecimalBehavior *ohBehave = [SVRSolverDecimalBehavior behaviorWithErrorPtr:errorPtr];
   switch (operator) {
     case SVRSolverOperatorExponent:
       return [lhs SVR_decimalNumberByRaisingToPower:rhs];
     case SVRSolverOperatorDivide:
-      return [lhs decimalNumberByDividingBy:rhs];
+      return [lhs decimalNumberByDividingBy:rhs withBehavior:ohBehave];
     case SVRSolverOperatorMultiply:
-      return [lhs decimalNumberByMultiplyingBy:rhs];
+      return [lhs decimalNumberByMultiplyingBy:rhs withBehavior:ohBehave];
     case SVRSolverOperatorSubtract:
-      return [lhs decimalNumberBySubtracting:rhs];
+      return [lhs decimalNumberBySubtracting:rhs withBehavior:ohBehave];
     case SVRSolverOperatorAdd:
-      return [lhs decimalNumberByAdding:rhs];
+      return [lhs decimalNumberByAdding:rhs withBehavior:ohBehave];
     default:
       [XPLog error:@"__solveWithOperatorUnknown"];
       return nil;
@@ -279,5 +283,61 @@
   NSAssert([expected isEqualToNumber:output], @"");
   [XPLog alwys:@"SVRSolverSolutionTagger Tests: Passed"];
   return taggedUserInput;
+}
+@end
+
+@implementation SVRSolverDecimalBehavior
+
+-(id)initWithErrorPtr:(SVRSolverErrorPointer)errorPtr;
+{
+  self = [super init];
+  _errorPtr = errorPtr;
+  return self;
+}
+
++(id)behaviorWithErrorPtr:(SVRSolverErrorPointer)errorPtr;
+{
+  return [[[SVRSolverDecimalBehavior alloc] initWithErrorPtr:errorPtr] autorelease];
+}
+
+-(NSRoundingMode)roundingMode;
+{
+  return NSRoundPlain;
+}
+
+-(short)scale;
+{
+  return 5;
+}
+
+-(NSDecimalNumber*)exceptionDuringOperation:(SEL)operation
+                                      error:(NSCalculationError)error
+                                leftOperand:(NSDecimalNumber*)leftOperand
+                               rightOperand:(NSDecimalNumber*)rightOperand;
+{
+  switch (error) {
+    case NSCalculationNoError: return nil;
+    case NSCalculationLossOfPrecision:
+      [XPLog pause:@"NSCalculationLossOfPrecision"];
+      return nil;
+    case NSCalculationUnderflow:
+      [XPLog pause:@"NSCalculationUnderflow"];
+      return nil;
+    case NSCalculationOverflow:
+      [XPLog pause:@"NSCalculationOverflow"];
+      return nil;
+    case NSCalculationDivideByZero:
+      if (_errorPtr != NULL) { *_errorPtr = SVRSolverErrorDivideByZero; }
+      [XPLog debug:@"NSCalculationDivideByZero"];
+      return [NSDecimalNumber notANumber];
+  }
+  return nil;
+}
+
+-(void)dealloc;
+{
+  [XPLog extra:@"DEALLOC: %@", self];
+  _errorPtr = NULL;
+  [super dealloc];
 }
 @end

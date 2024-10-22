@@ -16,20 +16,35 @@
 
 // MARK: Private
 +(NSDecimalNumber*)__solutionForExpression:(NSAttributedString*)string
-                                     error:(XPErrorPointer)errorPtr;
+                                     error:(SVRSolverErrorPointer)errorPtr;
 +(NSValue*)__rangeOfNextBracketsInExpression:(NSAttributedString*)input
-                                       error:(XPErrorPointer)errorPtr;
+                                       error:(SVRSolverErrorPointer)errorPtr;
 +(NSDecimalNumber*)__nextSolutionInExpression:(NSAttributedString*)expression
                             forOperatorsInSet:(NSSet*)operators
                                    patchRange:(XPRangePointer)rangePtr
-                                        error:(XPErrorPointer)errorPtr;
+                                        error:(SVRSolverErrorPointer)errorPtr;
 +(NSAttributedString*)__taggedStringWithNumber:(NSDecimalNumber*)number;
 +(NSDecimalNumber*)__solveWithOperator:(SVRSolverOperator)operator
                             leftNumber:(NSDecimalNumber*)lhs
-                           rightNumber:(NSDecimalNumber*)rhs;
+                           rightNumber:(NSDecimalNumber*)rhs
+                                 error:(SVRSolverErrorPointer)errorPtr;
 
 @end
 
 @interface SVRSolverSolutionTagger (Tests)
 +(NSMutableAttributedString*)executeTests;
+@end
+
+@interface SVRSolverDecimalBehavior: NSObject <NSDecimalNumberBehaviors>
+{
+  SVRSolverErrorPointer _errorPtr;
+}
+-(id)initWithErrorPtr:(SVRSolverErrorPointer)errorPtr;
++(id)behaviorWithErrorPtr:(SVRSolverErrorPointer)errorPtr;
+-(NSRoundingMode)roundingMode;
+-(short)scale;
+-(NSDecimalNumber*)exceptionDuringOperation:(SEL)operation
+                                      error:(NSCalculationError)error
+                                leftOperand:(NSDecimalNumber*)leftOperand
+                               rightOperand:(NSDecimalNumber*)rightOperand;
 @end

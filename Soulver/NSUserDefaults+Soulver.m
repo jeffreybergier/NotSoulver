@@ -9,10 +9,6 @@ NSString *XPUserDefaultsColorForSolutionSecondary         = @"kColorForSolutionS
 NSString *XPUserDefaultsColorForOperator                  = @"kColorForOperator";
 NSString *XPUserDefaultsColorForNumeral                   = @"kColorForNumeral";
 NSString *XPUserDefaultsColorForText                      = @"kColorForText";
-NSString *XPUserDefaultsNumberErrorMismatchedBrackets     = @"kNumberErrorMismatchedBrackets";
-NSString *XPUserDefaultsNumberErrorInvalidCharacter       = @"kNumberErrorInvalidCharacter";
-NSString *XPUserDefaultsNumberErrorMissingNumber          = @"kNumberErrorMissingNumber";
-NSString *XPUserDefaultsNumberErrorPatching               = @"kNumberErrorPatching";
 NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumberLocale";
 
 @implementation NSUserDefaults (Soulver)
@@ -125,26 +121,6 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
   return NO;
 }
 
--(NSNumber*)SVR_errorMismatchedBrackets;
-{
-  return [self objectForKey:XPUserDefaultsNumberErrorMismatchedBrackets];
-}
-
--(NSNumber*)SVR_errorInvalidCharacter;
-{
-  return [self objectForKey:XPUserDefaultsNumberErrorInvalidCharacter];
-}
-
--(NSNumber*)SVR_errorMissingNumber;
-{
-  return [self objectForKey:XPUserDefaultsNumberErrorMissingNumber];
-}
-
--(NSNumber*)SVR_errorPatching;
-{
-  return [self objectForKey:XPUserDefaultsNumberErrorPatching];
-}
-
 -(XPLocale*)SVR_decimalNumberLocale;
 {
 #if OS_OPENSTEP
@@ -172,10 +148,6 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
           XPUserDefaultsColorForOperator,
           XPUserDefaultsColorForNumeral,
           XPUserDefaultsColorForText,
-          XPUserDefaultsNumberErrorMismatchedBrackets,
-          XPUserDefaultsNumberErrorInvalidCharacter,
-          XPUserDefaultsNumberErrorMissingNumber,
-          XPUserDefaultsNumberErrorPatching,
           XPUserDefaultsLegacyDecimalNumberLocale,
           nil];
   vals = [NSArray arrayWithObjects:
@@ -186,10 +158,6 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
           [XPColor SVR_colorWithRed:255/255.0 green:147/255.0 blue:000/255.0 alpha:1.0],
           [XPColor SVR_colorWithRed:000/255.0 green:000/255.0 blue:000/255.0 alpha:1.0],
           [XPColor SVR_colorWithRed:145/255.0 green:145/255.0 blue:145/255.0 alpha:1.0],
-          [NSNumber numberWithInt:-1003],
-          [NSNumber numberWithInt:-1002],
-          [NSNumber numberWithInt:-1004],
-          [NSNumber numberWithInt:-1005],
           [self __SVR_legacyDecimalNumberLocale],
           nil];
   
