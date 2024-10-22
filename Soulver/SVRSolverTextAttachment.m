@@ -11,24 +11,32 @@
   return [[_solution retain] autorelease];
 }
 
--(id)initWithSolution:(NSDecimalNumber*)solution;
+-(NSNumber*)error;
+{
+  return [[_error retain] autorelease];
+}
+
+-(id)initWithSolution:(NSDecimalNumber*)solution error:(NSNumber*)error;
 {
   self = [super initWithFileWrapper:nil];
   _solution = [solution retain];
+  _error = [error retain];
   [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
   return self;
 }
 
-+(id)attachmentWithSolution:(NSDecimalNumber*)solution;
++(id)attachmentWithSolution:(NSDecimalNumber*)solution error:(NSNumber*)error;
 {
-  return [[[SVRSolverTextAttachment alloc] initWithSolution:solution] autorelease];
+  return [[[SVRSolverTextAttachment alloc] initWithSolution:solution error:error] autorelease];
 }
 
 - (void)dealloc
 {
   [XPLog debug:@"DEALLOC: Attachment: %@", self];
   [_solution release];
+  [_error release];
   _solution = nil;
+  _error = nil;
   [super dealloc];
 }
 
@@ -38,14 +46,18 @@
 
 // MARK: Properties
 
--(NSDecimalNumber*)solution;
-{
-  return [_attachment solution];
-}
-
 -(NSString*)stringToDraw;
 {
-  return [@"=" stringByAppendingString:[[self solution] SVR_description]];
+  NSDecimalNumber *solution = [[self attachment] solution];
+  NSNumber *error = [[self attachment] error];
+  if (solution != nil) {
+    return [@"=" stringByAppendingString:[solution SVR_description]];
+  } else if (error != nil) {
+    return [NSString stringWithFormat:@"Error<%@>", error];
+  } else {
+    [XPLog error:@"Both Solution and Error were NIL"];
+    return nil;
+  }
 }
 
 -(NSDictionary*)drawingAttributes;

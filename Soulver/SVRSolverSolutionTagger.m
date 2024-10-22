@@ -34,22 +34,17 @@
     }
     solution = [self __solutionForExpression:[string attributedSubstringFromRange:nextRange]
                                        error:&error];
-    if (solution) {
-      solutionString = [NSAttributedString attributedStringWithAttachment:
-                        [SVRSolverTextAttachment attachmentWithSolution:solution]
-      ];
-      [XPLog extra:@"=: %@<-%@", [[string string] SVR_descriptionHighlightingRange:solutionRange], solution];
-      [string replaceCharactersInRange:solutionRange
-                  withAttributedString:solutionString];
-      [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)
-                     value:solution
-                     range:solutionRange];
-    } else {
-      [XPLog extra:@"=: %@<-%@", [[string string] SVR_descriptionHighlightingRange:solutionRange], error];
-      [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)
-                     value:error
-                     range:solutionRange];
-    }
+    solutionString = [
+      NSAttributedString attributedStringWithAttachment:
+        [SVRSolverTextAttachment attachmentWithSolution:solution error:error]
+    ];
+    [XPLog extra:@"=: %@<-%@", [[string string] SVR_descriptionHighlightingRange:solutionRange], solution];
+    [string replaceCharactersInRange:solutionRange
+                withAttributedString:solutionString];
+    [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)
+                   value:solution
+                   range:solutionRange];
+    error = nil;
   }
 }
 

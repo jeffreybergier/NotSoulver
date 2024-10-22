@@ -7,11 +7,13 @@
 @interface SVRSolverTextAttachment: NSTextAttachment
 {
   NSDecimalNumber *_solution;
+  NSNumber *_error;
 }
 
 -(NSDecimalNumber*)solution;
--(id)initWithSolution:(NSDecimalNumber*)solution;
-+(id)attachmentWithSolution:(NSDecimalNumber*)solution;
+-(NSNumber*)error;
+-(id)initWithSolution:(NSDecimalNumber*)solution error:(NSNumber*)error;
++(id)attachmentWithSolution:(NSDecimalNumber*)solution error:(NSNumber*)error;
 
 @end
 
@@ -23,7 +25,6 @@
 
 // MARK: Properties
 
--(NSDecimalNumber*)solution;
 -(NSString*)stringToDraw;
 -(NSDictionary*)drawingAttributes;
 
