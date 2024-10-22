@@ -21,12 +21,10 @@
   NSString *next = nil;
   NSRange nextRange = XPNotFoundRange;
 
-  [XPLog debug:@"TAGGING SOLUTIONS"];
   e = [string SVR_enumeratorForAttribute:XPAttributedStringKeyForTag(SVRSolverTagExpression)
               usingLongestEffectiveRange:YES];
   while ((next = [e nextObject])) {
     nextRange = NSRangeFromString(next);
-    [XPLog debug:@"LOOP RANGE: %@", NSStringFromRange(nextRange)];
     solutionRange = NSMakeRange(NSMaxRange(nextRange), 1);
     if (solution) {
       // For previous solution, add it to the string in case it needs it
@@ -40,7 +38,7 @@
       solutionString = [NSAttributedString attributedStringWithAttachment:
                         [SVRSolverTextAttachment attachmentWithSolution:solution]
       ];
-      [XPLog debug:@"=: %@<-%@", [[string string] SVR_descriptionHighlightingRange:solutionRange], solution];
+      [XPLog extra:@"=: %@<-%@", [[string string] SVR_descriptionHighlightingRange:solutionRange], solution];
       [string replaceCharactersInRange:solutionRange
                   withAttributedString:solutionString];
       [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)

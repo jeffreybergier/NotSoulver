@@ -16,19 +16,22 @@
 // MARK: awakeFromNib
 -(void)awakeFromNib;
 {
-  //NSLayoutManager *layoutManager = [[[SVRSinglePaneLayoutManager alloc] init] autorelease];
   NSLayoutManager *layoutManager = [[[NSLayoutManager alloc] init] autorelease];
   SVRDocumentModelController *modelController = [self modelController];
   NSTextStorage *model = [modelController model];
+  NSTextView *textView = [self textView];
   
   // Configure delegates
-  [model setDelegate:modelController];
-  [[self textView] setDelegate:modelController];
+  [modelController setTextView:textView];
+  [textView setDelegate:modelController];
   
   // Configure layoutManager
   // This ordering is incredibly fragile
-  [[[self textView] textContainer] replaceLayoutManager:layoutManager];
+  [[textView textContainer] replaceLayoutManager:layoutManager];
   [layoutManager replaceTextStorage:model];
+  
+  // Configure the text view
+  [textView setTypingAttributes:[self __typingAttributes]];
 }
 
 // MARK: IBActions
@@ -111,6 +114,24 @@
   }
   [XPLog error:@"<%@> Button with unknown tag: %ld", self, tag];
   return nil;
+}
+
+-(NSDictionary*)__typingAttributes;
+{
+  NSUserDefaults *ud;
+  NSArray *keys;
+  NSArray *vals;
+  
+  ud = [NSUserDefaults standardUserDefaults];
+  keys = [NSArray arrayWithObjects:
+          NSFontAttributeName,
+          NSForegroundColorAttributeName,
+          nil];
+  vals = [NSArray arrayWithObjects:
+          [ud SVR_fontForText],
+          [ud SVR_colorForText],
+          nil];
+  return [NSDictionary dictionaryWithObjects:vals forKeys:keys];
 }
 
 // MARK: Dealloc

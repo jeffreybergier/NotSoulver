@@ -25,5 +25,6 @@
 // MARK: Private
 -(void)__append:(XPInteger)tag;
 -(NSString*)__mapKeyWithTag:(XPInteger)tag control:(int*)control;
+-(NSDictionary*)__typingAttributes;
 
 @end

@@ -25,7 +25,7 @@
 
 -(NSDecimalNumber*)solution;
 -(NSString*)stringToDraw;
--(NSDictionary*)drawinAttributes;
+-(NSDictionary*)drawingAttributes;
 
 // MARK: Init
 -(id)initWithAttachment:(SVRSolverTextAttachment*)attachment;

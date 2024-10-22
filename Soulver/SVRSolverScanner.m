@@ -341,7 +341,7 @@
               [NSValue XP_valueWithRange:NSMakeRange( 0, 4)],
               [NSValue XP_valueWithRange:NSMakeRange( 5, 3)],
               [NSValue XP_valueWithRange:NSMakeRange( 9, 2)],
-              [NSValue XP_valueWithRange:NSMakeRange(12, 5)], // TODO: This is wrong!!! 5→4
+              [NSValue XP_valueWithRange:NSMakeRange(12, 5)], // TODO: This is wrong!!! 5->4
               [NSValue XP_valueWithRange:NSMakeRange(17, 1)],
               nil];
   output = [[SVRSolverScanner scannerWithString:input] numberRanges];

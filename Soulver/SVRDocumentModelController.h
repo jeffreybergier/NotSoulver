@@ -3,11 +3,15 @@
 
 @interface SVRDocumentModelController: NSObject
 {
-  IBOutlet NSTextStorage *_model;
+  NSTextView *_textView;
+  NSTextStorage *_model;
+  NSTimer *_waitTimer;
 }
 
 // MARK: Properties
 -(NSTextStorage*)model;
+-(NSTextView*)textView;
+-(void)setTextView:(NSTextView*)textView;
 
 // MARK: Init
 -(id)init;
@@ -27,12 +31,11 @@
 #if OS_OPENSTEP
 @interface SVRDocumentModelController (TextDelegate)
 #else
-@interface SVRDocumentModelController (TextDelegate) <NSTextStorageDelegate, NSTextViewDelegate>
+@interface SVRDocumentModelController (TextDelegate) <NSTextViewDelegate>
 #endif
 
--(void)textStorageWillProcessEditing:(NSNotification*)aNotification;
--(void)textStorageDidProcessEditing:(NSNotification*)aNotification;
--(void)textDidBeginEditing:(NSNotification *)notification;
--(void)textDidEndEditing:(NSNotification *)notification;
+-(void)resetWaitTimer;
+-(void)waitTimerFired:(NSTimer*)timer;
+-(void)textDidChange:(NSNotification*)notification;
 
 @end

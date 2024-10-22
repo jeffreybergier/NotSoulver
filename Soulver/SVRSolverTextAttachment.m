@@ -48,7 +48,7 @@
   return [@"=" stringByAppendingString:[[self solution] SVR_description]];
 }
 
--(NSDictionary*)drawinAttributes;
+-(NSDictionary*)drawingAttributes;
 {
   NSUserDefaults *ud;
   NSArray *keys;
@@ -80,7 +80,7 @@
 
 -(NSSize)cellSize;
 {
-  return [[self stringToDraw] sizeWithAttributes:[self drawinAttributes]];
+  return [[self stringToDraw] sizeWithAttributes:[self drawingAttributes]];
 }
 
 -(NSPoint)cellBaselineOffset;
@@ -94,7 +94,7 @@
 {
   [XPLog extra:@"drawWithFrame:%@", NSStringFromRect(cellFrame)];
   NSDrawWhiteBezel(cellFrame, cellFrame);
-  [[self stringToDraw] drawInRect:cellFrame withAttributes:[self drawinAttributes]];
+  [[self stringToDraw] drawInRect:cellFrame withAttributes:[self drawingAttributes]];
 }
 
 -(void)highlight:(BOOL)flag
@@ -103,7 +103,7 @@
 {
   [XPLog pause:@"higlight:%d withFrame:%@", flag, NSStringFromRect(cellFrame)];
   NSDrawButton(cellFrame, cellFrame);
-  [[self stringToDraw] drawInRect:cellFrame withAttributes:[self drawinAttributes]];
+  [[self stringToDraw] drawInRect:cellFrame withAttributes:[self drawingAttributes]];
 }
 
 // MARK: Protocol (Unused)

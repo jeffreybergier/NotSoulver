@@ -9,11 +9,24 @@
   return [[_model retain] autorelease];
 }
 
+-(NSTextView*)textView;
+{
+  return [[_textView retain] autorelease];
+}
+
+-(void)setTextView:(NSTextView*)textView;
+{
+  [_textView release];
+  _textView = [textView retain];
+}
+
 // MARK: Init
 -(id)init;
 {
   self = [super init];
   _model = [NSTextStorage new];
+  _textView = nil;
+  _waitTimer = nil;
   return self;
 }
 
@@ -26,14 +39,19 @@
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
 {
   BOOL success = NO;
+  NSTextStorage *model = [self model];
   NSString *string = [
     [[NSString alloc] initWithData:data
                           encoding:NSUTF8StringEncoding]
     autorelease];
   if (string) {
-    [ [self model] beginEditing];
-    [[[self model] mutableString] setString:string];
-    [ [self model] endEditing];
+    [XPLog debug:@"%@ loadDataRepresentation: Rendering", self];
+    [model beginEditing];
+    [[model mutableString] setString:string];
+    [SVRSolver removeAllSolutionsAndTags:model];
+    [SVRSolver solveAndTagAttributedString:model];
+    [SVRSolver styleSolvedAndTaggedAttributedString:model];
+    [model endEditing];
     success = YES;
   }
   return success;
@@ -42,21 +60,23 @@
 // MARK: Usage
 -(void)appendCharacter:(NSString*)aString;
 {
-  [ [self model] beginEditing];
-  [[[self model] mutableString] appendString:aString];
-  [ [self model] endEditing];
+  NSTextStorage *model = [self model];
+  [ model beginEditing];
+  [[model mutableString] appendString:aString];
+  [ model endEditing];
 }
 
 -(void)backspaceCharacter;
 {
   NSRange lastCharacter = XPNotFoundRange;
-  XPUInteger length = [[[self model] mutableString] length];
+  NSTextStorage *model = [self model];
+  XPUInteger length = [[model mutableString] length];
   if (length == 0) { return; }
   
   lastCharacter = NSMakeRange(length-1, 1);
-  [ [self model] beginEditing];
-  [[[self model] mutableString] deleteCharactersInRange:lastCharacter];
-  [ [self model] endEditing];
+  [ model beginEditing];
+  [[model mutableString] deleteCharactersInRange:lastCharacter];
+  [ model endEditing];
 }
 
 -(void)backspaceLine;
@@ -66,15 +86,21 @@
 
 -(void)backspaceAll;
 {
-  [ [self model] beginEditing];
-  [[[self model] mutableString] setString:@""];
-  [ [self model] endEditing];
+  NSTextStorage *model = [self model];
+  [ model beginEditing];
+  [[model mutableString] setString:@""];
+  [ model endEditing];
 }
 
 -(void)dealloc;
 {
   [XPLog extra:@"DEALLOC: %@", self];
+  [_waitTimer invalidate];
+  [_waitTimer release];
+  [_textView release];
   [_model release];
+  _textView = nil;
+  _waitTimer = nil;
   _model = nil;
   [super dealloc];
 }
@@ -84,30 +110,44 @@
 
 @implementation SVRDocumentModelController (TextDelegate)
 
--(void)textStorageWillProcessEditing:(NSNotification*)aNotification;
+-(void)resetWaitTimer;
 {
-  NSTextStorage *storage = [aNotification object];
-  [XPLog extra:@"%@ textStorageWillProcessEditing: `%@`", self, [storage string]];
+  [_waitTimer invalidate];
+  [_waitTimer release];
+  _waitTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                target:self
+                                              selector:@selector(waitTimerFired:)
+                                              userInfo:nil
+                                               repeats:NO];
+  [_waitTimer retain];
 }
 
--(void)textStorageDidProcessEditing:(NSNotification*)aNotification;
+-(void)waitTimerFired:(NSTimer*)timer;
 {
-  NSTextStorage *storage = [aNotification object];
-  [XPLog extra:@"%@ textStorageDidProcessEditing: `%@`", self, [storage string]];
+  NSTextStorage *model = [self model];
+  NSRange selection = [[self textView] selectedRange];
   
-  [SVRSolver removeAllSolutionsAndTags:storage];
-  [SVRSolver solveAndTagAttributedString:storage];
-  [SVRSolver styleSolvedAndTaggedAttributedString:storage];
+  [XPLog debug:@"%@ waitTimerFired: Rendering", self];
+  [timer invalidate];
+  
+  [model beginEditing];
+  [SVRSolver removeAllSolutionsAndTags:model];
+  [SVRSolver solveAndTagAttributedString:model];
+  [SVRSolver styleSolvedAndTaggedAttributedString:model];
+  [model endEditing];
+  [[self textView] setSelectedRange:selection];
 }
 
--(void)textDidBeginEditing:(NSNotification *)notification;
+-(void)textDidChange:(NSNotification*)notification;
 {
-  [XPLog extra:@"%@ textDidBeginEditing:", self];
-}
-
--(void)textDidEndEditing:(NSNotification *)notification;
-{
-  [XPLog extra:@"%@ textDidEndEditing:", self];
+  NSTextView *textView = [notification object];
+  NSTextStorage *storage = [textView textStorage];
+  [XPLog extra:@"textDidChange:"];
+  if (textView != [self textView] || storage != [self model]) {
+    [XPLog error:@"Wrong TextView or TextStorage"];
+    return;
+  }
+  [self resetWaitTimer];
 }
 
 @end
