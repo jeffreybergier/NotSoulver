@@ -157,14 +157,15 @@
   NSValue *rhs = nil;
   NSString *check = nil;
   XPAttributeEnumerator *e = [input SVR_enumeratorForAttribute:XPAttributedStringKeyForTag(SVRSolverTagBracket)];
-  while ((check = [e nextObject])) {
+  while ((check = [e nextObjectEffectiveRange:&range])) {
     if (!lhs) {
-      lhs = [NSValue XP_valueWithRange:NSRangeFromString(check)];
+      lhs = [NSValue XP_valueWithRange:range];
     } else if (!rhs) {
-      rhs = [NSValue XP_valueWithRange:NSRangeFromString(check)];
+      rhs = [NSValue XP_valueWithRange:range];
     }
     if (lhs && rhs) {
-      range = NSMakeRange([lhs XP_rangeValue].location, NSMaxRange([rhs XP_rangeValue]) - [lhs XP_rangeValue].location);
+      range = NSMakeRange([lhs XP_rangeValue].location,
+                          NSMaxRange([rhs XP_rangeValue]) - [lhs XP_rangeValue].location);
       return [NSValue XP_valueWithRange:range];
     }
   }
