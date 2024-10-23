@@ -64,6 +64,7 @@
   [ model beginEditing];
   [[model mutableString] appendString:aString];
   [ model endEditing];
+  [self textDidChange:nil];
 }
 
 -(void)backspaceCharacter;
@@ -77,6 +78,7 @@
   [ model beginEditing];
   [[model mutableString] deleteCharactersInRange:lastCharacter];
   [ model endEditing];
+  [self textDidChange:nil];
 }
 
 -(void)backspaceLine;
@@ -90,11 +92,12 @@
   [ model beginEditing];
   [[model mutableString] setString:@""];
   [ model endEditing];
+  [self textDidChange:nil];
 }
 
 -(void)dealloc;
 {
-  [XPLog extra:@"DEALLOC: %@", self];
+  [XPLog debug:@"DEALLOC: %@", self];
   [_waitTimer invalidate];
   [_waitTimer release];
   [_textView release];
@@ -125,28 +128,26 @@
 -(void)waitTimerFired:(NSTimer*)timer;
 {
   NSTextStorage *model = [self model];
-  NSRange selection = [[self textView] selectedRange];
+  NSTextView *textView = [self textView];
+  NSRange selection = [textView selectedRange];
   
   [XPLog debug:@"%@ waitTimerFired: Rendering", self];
-  [timer invalidate];
   
   [model beginEditing];
   [SVRSolver removeAllSolutionsAndTags:model];
   [SVRSolver solveAndTagAttributedString:model];
   [SVRSolver styleSolvedAndTaggedAttributedString:model];
   [model endEditing];
-  [[self textView] setSelectedRange:selection];
+  [textView setSelectedRange:selection];
+
+  // Invalidating at the end is important.
+  // Otherwise, self could get deallocated mid-method 
+  [timer invalidate];
 }
 
 -(void)textDidChange:(NSNotification*)notification;
 {
-  NSTextView *textView = [notification object];
-  NSTextStorage *storage = [textView textStorage];
   [XPLog extra:@"textDidChange:"];
-  if (textView != [self textView] || storage != [self model]) {
-    [XPLog error:@"Wrong TextView or TextStorage"];
-    return;
-  }
   [self resetWaitTimer];
 }
 
