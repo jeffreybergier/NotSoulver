@@ -31,6 +31,9 @@
   
   // Configure the text view
   [textView setTypingAttributes:[self __typingAttributes]];
+  
+  // Announce
+  [XPLog debug:@"awakeFromNib: %@", self];
 }
 
 // MARK: IBActions
@@ -136,7 +139,7 @@
 // MARK: Dealloc
 -(void)dealloc;
 {
-  [XPLog extra:@"DEALLOC: %@", self];
+  [XPLog debug:@"DEALLOC: %@", self];
   [_modelController release];
   _modelController = nil;
   _textView = nil;

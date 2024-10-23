@@ -3,8 +3,8 @@
 
 @interface SVRAppDelegate: NSObject
 {
-  NSMutableSet *_openDocuments;
-  IBOutlet NSPanel *_keypadPanel;
+  mm_new NSMutableSet *_openDocuments;
+  mm_unretain IBOutlet NSPanel *_keypadPanel;
 }
 
 // MARK: Init

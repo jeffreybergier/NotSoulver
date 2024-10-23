@@ -6,7 +6,6 @@
 //
 
 #import "SVRSolverScanner.h"
-#import "XPCrossPlatform.h"
 #import "SVRLegacyRegex.h"
 
 @implementation SVRSolverScanner
@@ -225,6 +224,7 @@
 // MARK: Dealloc
 -(void)dealloc;
 {
+  [XPLog extra:@"DEALLOC: %@", self];
   [_string release];
   [_numbers release];
   [_operators release];

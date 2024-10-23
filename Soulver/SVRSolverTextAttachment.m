@@ -1,7 +1,6 @@
 /* SVRSolverTextAttachment.m created by me on Fri 18-Oct-2024 */
 
 #import "SVRSolverTextAttachment.h"
-#import "XPCrossPlatform.h"
 #import "NSUserDefaults+Soulver.h"
 
 @implementation SVRSolverTextAttachment
@@ -64,12 +63,10 @@
   NSArray *keys;
   NSArray *vals;
   
-  if (_solutionFontAttributes) { return _solutionFontAttributes; }
-  ud = [NSUserDefaults standardUserDefaults];
+  ud   = [NSUserDefaults standardUserDefaults];
   keys = [NSArray arrayWithObjects:NSFontAttributeName, nil];
   vals = [NSArray arrayWithObjects:[ud SVR_fontForText], nil];
-  _solutionFontAttributes = [[NSDictionary alloc] initWithObjects:vals forKeys:keys];
-  return _solutionFontAttributes;
+  return [[NSDictionary alloc] initWithObjects:vals forKeys:keys];
 }
 
 // MARK: Init
@@ -77,7 +74,7 @@
 -(id)initWithAttachment:(SVRSolverTextAttachment*)attachment;
 {
   self = [super init];
-  _attachment = [attachment retain];
+  _attachment = attachment;
   return self;
 }
 
@@ -125,8 +122,7 @@
 
 -(void)setAttachment:(SVRSolverTextAttachment*)attachment;
 {
-  [_attachment release];
-  _attachment = [attachment retain];
+  _attachment = attachment;
 }
 
 -(BOOL)wantsToTrackMouse;
@@ -146,8 +142,7 @@
 
 -(void)dealloc;
 {
-  [XPLog debug:@"DEALLOC: Cell: %@", self];
-  [_attachment release];
+  [XPLog debug:@"DEALLOC: %@", self];
   _attachment = nil;
   [super dealloc];
 }

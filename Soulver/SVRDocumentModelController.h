@@ -3,9 +3,9 @@
 
 @interface SVRDocumentModelController: NSObject
 {
-  NSTextView *_textView;
-  NSTextStorage *_model;
-  NSTimer *_waitTimer;
+  mm_new      NSTextStorage *_model;
+  mm_new      NSTimer       *_waitTimer;
+  mm_unretain NSTextView    *_textView;
 }
 
 // MARK: Properties

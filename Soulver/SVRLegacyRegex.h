@@ -6,14 +6,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "XPCrossPlatform.h"
 #import "re.h"
 
 @interface SVRLegacyRegex: NSEnumerator
 {
-  BOOL _forceIteration;
-  NSString *_pattern;
-  NSString *_string;
+  mm_copy NSString *_pattern;
+  mm_copy NSString *_string;
+  
   NSRange _last;
+  BOOL _forceIteration;
   const char *_cursor;
   re_t _rx;
 }

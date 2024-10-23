@@ -2,12 +2,13 @@
 
 #import <AppKit/AppKit.h>
 #import "SVRSolver.h"
+#import "XPCrossPlatform.h"
 
 @class SVRSolverTextAttachmentCell;
 
 @interface SVRSolverTextAttachment: NSTextAttachment
 {
-  NSDecimalNumber *_solution;
+  mm_retain NSDecimalNumber *_solution;
   SVRSolverError _error;
 }
 
@@ -20,8 +21,7 @@
 
 @interface SVRSolverTextAttachmentCell: NSObject <NSTextAttachmentCell>
 {
-  SVRSolverTextAttachment *_attachment;
-  NSDictionary *_solutionFontAttributes;
+  mm_unretain SVRSolverTextAttachment *_attachment;
 }
 
 // MARK: Properties

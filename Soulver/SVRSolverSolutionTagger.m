@@ -43,7 +43,7 @@
     [string replaceCharactersInRange:solutionRange
                 withAttributedString:solutionString];
     [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)
-                   value:(solution) ? solution : [NSNumber numberWithInt:error]
+                   value:(solution) ? (NSNumber*)solution : [NSNumber numberWithInt:error]
                    range:solutionRange];
     error = SVRSolverErrorNone;
   }
@@ -155,9 +155,8 @@
   NSRange range = XPNotFoundRange;
   NSValue *lhs = nil;
   NSValue *rhs = nil;
-  NSString *check = nil;
   XPAttributeEnumerator *e = [input SVR_enumeratorForAttribute:XPAttributedStringKeyForTag(SVRSolverTagBracket)];
-  while ((check = [e nextObjectEffectiveRange:&range])) {
+  while ([e nextObjectEffectiveRange:&range]) {
     if (!lhs) {
       lhs = [NSValue XP_valueWithRange:range];
     } else if (!rhs) {

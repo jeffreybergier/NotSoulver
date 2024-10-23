@@ -23,7 +23,7 @@
 // MARK: Properties
 -(NSMutableSet*)openDocuments;
 {
-  return _openDocuments;
+  return [[_openDocuments retain] autorelease];
 }
 
 -(NSPanel*)keypadPanel;
@@ -90,9 +90,8 @@
 
 -(void)dealloc;
 {
-  [XPLog extra:@"DEALLOC: %@", self];
+  [XPLog debug:@"DEALLOC: %@", self];
   [_openDocuments release];
-  [_keypadPanel release];
   _openDocuments = nil;
   _keypadPanel = nil;
   [[NSNotificationCenter defaultCenter] removeObserver:self];

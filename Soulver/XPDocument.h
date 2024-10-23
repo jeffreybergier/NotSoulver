@@ -11,9 +11,9 @@
 @interface XPDocument: NSResponder <NSWindowDelegate>
 #endif
 {
-  IBOutlet NSWindow *_window;
-  NSString *_fileName;
-  NSString *_fileType;
+  mm_retain IBOutlet NSWindow *_window;
+  mm_copy   NSString *_fileName;
+  mm_copy   NSString *_fileType;
   BOOL _isNibLoaded;
 }
 

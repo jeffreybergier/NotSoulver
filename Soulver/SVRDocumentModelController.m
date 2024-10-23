@@ -16,8 +16,7 @@
 
 -(void)setTextView:(NSTextView*)textView;
 {
-  [_textView release];
-  _textView = [textView retain];
+  _textView = textView;
 }
 
 // MARK: Init
@@ -100,7 +99,6 @@
   [XPLog debug:@"DEALLOC: %@", self];
   [_waitTimer invalidate];
   [_waitTimer release];
-  [_textView release];
   [_model release];
   _textView = nil;
   _waitTimer = nil;

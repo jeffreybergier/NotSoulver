@@ -6,7 +6,6 @@
 //
 
 #import "SVRLegacyRegex.h"
-#import "XPCrossPlatform.h"
 
 @implementation SVRLegacyRegex
 
@@ -126,6 +125,7 @@
 // MARK: Dealloc
 -(void)dealloc;
 {
+  [XPLog extra:@"DEALLOC: %@", self];
   [_pattern release];
   [_string  release];
   _pattern = nil;

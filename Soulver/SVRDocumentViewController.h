@@ -4,8 +4,8 @@
 
 @interface SVRDocumentViewController: NSResponder
 {
-  IBOutlet NSTextView *_textView;
-  SVRDocumentModelController *_modelController;
+  mm_unretain IBOutlet NSTextView *_textView;
+  mm_new SVRDocumentModelController *_modelController;
 }
 
 // MARK: Init

@@ -5,7 +5,7 @@
 
 @interface SVRDocument: XPDocument
 {
-  IBOutlet SVRDocumentViewController *_viewController;
+  mm_retain IBOutlet SVRDocumentViewController *_viewController;
 }
 
 // MARK: Properties

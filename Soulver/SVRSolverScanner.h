@@ -6,14 +6,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "XPCrossPlatform.h"
 
 @interface SVRSolverScanner: NSObject
 {
-  NSString *_string;
-  NSSet    *_numbers;
-  NSSet    *_operators;
-  NSSet    *_expressions;
-  NSSet    *_brackets;
+  mm_copy NSString *_string;
+  mm_new  NSSet    *_numbers;
+  mm_new  NSSet    *_operators;
+  mm_new  NSSet    *_expressions;
+  mm_new  NSSet    *_brackets;
 }
 
 // MARK: Initialization

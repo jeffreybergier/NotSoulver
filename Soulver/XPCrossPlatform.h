@@ -13,8 +13,17 @@
 #define XPColor NSColor
 #endif
 
-// TODO: Consider changing this to NSError in OS X
-#define XPError NSNumber
+// Memory management annotations
+// These just help me keep the ownership clear
+// They don't do anything
+/// The object creates this itself and owns it
+#define mm_new
+/// The object copies the original
+#define mm_copy
+/// The object retains the original
+#define mm_retain
+/// The object keeps an unsafe unretained reference to the original
+#define mm_unretain
 
 #if OS_OPENSTEP
 typedef float XPFloat;
