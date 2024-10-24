@@ -15,17 +15,20 @@
   return _error;
 }
 
--(NSString*)description;
+-(NSString*)stringForDrawing;
 {
-  return [NSString stringWithFormat:@"<%@> {solution:`%@`, error:%@}",
-    [self class], [self solution], SVRSolverDebugDescriptionForError([self error])];
+  return ([self error] == SVRSolverErrorNone)
+  ? [@"=" stringByAppendingString:[[self solution] SVR_description]]
+  : [@"=" stringByAppendingString:SVRSolverDescriptionForError([self error])];
 }
 
 -(id)initWithSolution:(NSDecimalNumber*)solution error:(SVRSolverError)error;
 {
-  self = [super initWithFileWrapper:nil];
+  NSFileWrapper *wrapper = [[[NSFileWrapper alloc] init] autorelease];
+  self = [super initWithFileWrapper:wrapper];
   _solution = [solution retain];
   _error = error;
+  [wrapper setPreferredFilename:[self stringForDrawing]];
   [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
   return self;
 }
@@ -35,9 +38,15 @@
   return [[[SVRSolverTextAttachment alloc] initWithSolution:solution error:error] autorelease];
 }
 
+-(NSString*)description;
+{
+  return [NSString stringWithFormat:@"<%@> {solution:`%@`, error:%@}",
+    [self class], [self solution], SVRSolverDebugDescriptionForError([self error])];
+}
+
 - (void)dealloc
 {
-  [XPLog debug:@"DEALLOC: %@", self];
+  [XPLog extra:@"DEALLOC: %@", self];
   [_solution release];
   _solution = nil;
   [super dealloc];
@@ -77,36 +86,12 @@
 
 // MARK: Custom Drawing
 
--(NSString*)__sol_drawableString;
-{
-  return [@"=" stringByAppendingString:[[[self attachment] solution] SVR_description]];
-}
-
--(NSString*)__err_drawableString;
-{
-  return [@"=" stringByAppendingString:SVRSolverDescriptionForError([[self attachment] error])];
-}
-
--(NSSize)__sol_cellSize;
-{
-  NSSize size = [[self __sol_drawableString] sizeWithAttributes:[self __sol_attributes]];
-  size.width += 8;
-  return size;
-}
-
--(NSSize)__err_cellSize;
-{
-  NSSize size = [[self __err_drawableString] sizeWithAttributes:[self __err_attributes]];
-  size.width += 8;
-  return size;
-}
-
 -(void)__sol_drawWithFrame:(NSRect)cellFrame
                     inView:(NSView*)controlView;
 {
   [XPLog extra:@"__solut_drawWithFrame:%@", NSStringFromRect(cellFrame)];
   NSDrawWhiteBezel(cellFrame, cellFrame);
-  [[self __sol_drawableString] drawInRect:cellFrame withAttributes:[self __sol_attributes]];
+  [[[self attachment] stringForDrawing] drawInRect:cellFrame withAttributes:[self __sol_attributes]];
 }
 
 -(void)__err_drawWithFrame:(NSRect)cellFrame
@@ -114,7 +99,7 @@
 {
   [XPLog extra:@"__error_drawWithFrame:%@", NSStringFromRect(cellFrame)];
   NSDrawGrayBezel(cellFrame, cellFrame);
-  [[self __err_drawableString] drawInRect:cellFrame withAttributes:[self __err_attributes]];
+  [[[self attachment] stringForDrawing] drawInRect:cellFrame withAttributes:[self __err_attributes]];
 }
 
 -(NSDictionary*)__sol_attributes;
@@ -169,9 +154,9 @@
 
 -(NSSize)cellSize;
 {
-  return ([self shouldDrawError])
-        ? [self __err_cellSize]
-        : [self __sol_cellSize];
+  NSSize size = [[[self attachment] stringForDrawing] sizeWithAttributes:[self __sol_attributes]];
+  size.width += 8;
+  return size;
 }
 
 -(NSPoint)cellBaselineOffset;
@@ -225,7 +210,7 @@
 
 -(void)dealloc;
 {
-  [XPLog debug:@"DEALLOC: %@", self];
+  [XPLog extra:@"DEALLOC: %@", self];
   [_description release];
   _description = nil;
   _attachment = nil;

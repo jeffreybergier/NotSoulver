@@ -14,9 +14,10 @@
 
 -(NSDecimalNumber*)solution;
 -(SVRSolverError)error;
--(NSString*)description;
+-(NSString*)stringForDrawing;
 -(id)initWithSolution:(NSDecimalNumber*)solution error:(SVRSolverError)error;
 +(id)attachmentWithSolution:(NSDecimalNumber*)solution error:(SVRSolverError)error;
+-(NSString*)description;
 
 @end
 
@@ -27,7 +28,6 @@
 }
 
 // MARK: Properties
-
 -(BOOL)shouldDrawError;
 -(NSString*)description;
 
@@ -36,10 +36,6 @@
 +(id)cellWithAttachment:(SVRSolverTextAttachment*)attachment;
 
 // MARK: Custom Drawing
--(NSString*)__sol_drawableString;
--(NSString*)__err_drawableString;
--(NSSize)__sol_cellSize;
--(NSSize)__err_cellSize;
 -(void)__sol_drawWithFrame:(NSRect)cellFrame
                     inView:(NSView*)controlView;
 -(void)__err_drawWithFrame:(NSRect)cellFrame
