@@ -8,10 +8,10 @@
 -(BOOL)SVR_setSavePanelLastDirectory:(NSString*)newValue;
 -(XPColor*)SVR_colorForSolutionPrimary;
 -(BOOL)SVR_setColorForSolutionPrimary:(XPColor*)newValue;
--(XPColor*)SVR_backgroundColorForSolutionPrimary;
--(BOOL)SVR_setBackgroundColorForSolutionPrimary:(XPColor*)newValue;
 -(XPColor*)SVR_colorForSolutionSecondary;
 -(BOOL)SVR_setColorForSolutionSecondary:(XPColor*)newValue;
+-(XPColor*)SVR_colorForError;
+-(BOOL)SVR_setColorForError:(XPColor*)newValue;
 -(XPColor*)SVR_colorForBracket;
 -(BOOL)SVR_setColorForBracket:(XPColor*)newValue;
 -(XPColor*)SVR_colorForOperator;

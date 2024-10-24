@@ -4,8 +4,9 @@
 
 NSString *XPUserDefaultsSavePanelLastDirectory            = @"kSavePanelLastDirectory";
 NSString *XPUserDefaultsColorForSolutionPrimary           = @"kColorForSolutionPrimary";
-NSString *XPUserDefaultsBackgroundColorForSolutionPrimary = @"kBackgroundColorForSolutionPrimary";
+NSString *XPUserDefaultsColorForError                     = @"kColorForError";
 NSString *XPUserDefaultsColorForSolutionSecondary         = @"kColorForSolutionSecondary";
+NSString *XPUserDefaultsColorForBracket                   = @"kColorForBracket";
 NSString *XPUserDefaultsColorForOperator                  = @"kColorForOperator";
 NSString *XPUserDefaultsColorForNumeral                   = @"kColorForNumeral";
 NSString *XPUserDefaultsColorForText                      = @"kColorForText";
@@ -20,7 +21,6 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
 
 -(BOOL)SVR_setSavePanelLastDirectory:(NSString*)newValue;
 {
-  if (!newValue) { return NO; }
   [self setObject:newValue forKey:XPUserDefaultsSavePanelLastDirectory];
   return [self synchronize];
 }
@@ -32,20 +32,7 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
 
 -(BOOL)SVR_setColorForSolutionPrimary:(XPColor*)newValue;
 {
-  if (!newValue) { return NO; }
   [self setObject:newValue forKey:XPUserDefaultsColorForSolutionPrimary];
-  return [self synchronize];
-}
-
--(XPColor*)SVR_backgroundColorForSolutionPrimary;
-{
-  return [self objectForKey:XPUserDefaultsBackgroundColorForSolutionPrimary];
-}
-
--(BOOL)SVR_setBackgroundColorForSolutionPrimary:(XPColor*)newValue;
-{
-  if (!newValue) { return NO; }
-  [self setObject:newValue forKey:XPUserDefaultsBackgroundColorForSolutionPrimary];
   return [self synchronize];
 }
 
@@ -56,21 +43,31 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
 
 -(BOOL)SVR_setColorForSolutionSecondary:(XPColor*)newValue;
 {
-  if (!newValue) { return NO; }
   [self setObject:newValue forKey:XPUserDefaultsColorForSolutionSecondary];
+  return [self synchronize];
+}
+
+-(XPColor*)SVR_colorForError;
+{
+  return [self objectForKey:XPUserDefaultsColorForError];
+}
+
+-(BOOL)SVR_setColorForError:(XPColor*)newValue;
+{
+  if (!newValue) { return NO; }
+  [self setObject:newValue forKey:XPUserDefaultsColorForError];
   return [self synchronize];
 }
 
 -(XPColor*)SVR_colorForBracket;
 {
-  // TODO: Make separate color for brackets
-  return [self objectForKey:XPUserDefaultsColorForOperator];
+  return [self objectForKey:XPUserDefaultsColorForBracket];
 }
 
 -(BOOL)SVR_setColorForBracket:(XPColor*)newValue;
 {
   if (!newValue) { return NO; }
-  [self setObject:newValue forKey:XPUserDefaultsColorForOperator];
+  [self setObject:newValue forKey:XPUserDefaultsColorForBracket];
   return [self synchronize];
 }
 
@@ -81,7 +78,6 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
 
 -(BOOL)SVR_setColorForOperator:(XPColor*)newValue;
 {
-  if (!newValue) { return NO; }
   [self setObject:newValue forKey:XPUserDefaultsColorForOperator];
   return [self synchronize];
 }
@@ -93,7 +89,6 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
 
 -(BOOL)SVR_setColorForNumeral:(XPColor*)newValue;
 {
-  if (!newValue) { return NO; }
   [self setObject:newValue forKey:XPUserDefaultsColorForNumeral];
   return [self synchronize];
 }
@@ -105,7 +100,6 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
 
 -(BOOL)SVR_setColorForText:(XPColor*)newValue;
 {
-  if (!newValue) { return NO; }
   [self setObject:newValue forKey:XPUserDefaultsColorForText];
   return [self synchronize];
 }
@@ -116,7 +110,6 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
 }
 -(BOOL)SVR_setFontForText:(NSFont*)newValue;
 {
-  if (!newValue) { return NO; }
   [XPLog error:@"NSUnimplemented"];
   return NO;
 }
@@ -143,8 +136,9 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
   keys = [NSArray arrayWithObjects:
           XPUserDefaultsSavePanelLastDirectory,
           XPUserDefaultsColorForSolutionPrimary,
-          XPUserDefaultsBackgroundColorForSolutionPrimary,
           XPUserDefaultsColorForSolutionSecondary,
+          XPUserDefaultsColorForError,
+          XPUserDefaultsColorForBracket,
           XPUserDefaultsColorForOperator,
           XPUserDefaultsColorForNumeral,
           XPUserDefaultsColorForText,
@@ -152,11 +146,12 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
           nil];
   vals = [NSArray arrayWithObjects:
           NSHomeDirectory(),
-          [XPColor SVR_colorWithRed:004/255.0 green:051/255.0 blue:255/255.0 alpha:1.0],
+          [XPColor SVR_colorWithRed:  4/255.0 green: 51/255.0 blue:255/255.0 alpha:1.0],
           [XPColor SVR_colorWithRed:184/255.0 green:197/255.0 blue:255/255.0 alpha:1.0],
-          [XPColor SVR_colorWithRed:004/255.0 green:051/255.0 blue:255/255.0 alpha:1.0],
-          [XPColor SVR_colorWithRed:255/255.0 green:147/255.0 blue:000/255.0 alpha:1.0],
-          [XPColor SVR_colorWithRed:000/255.0 green:000/255.0 blue:000/255.0 alpha:1.0],
+          [XPColor SVR_colorWithRed:148/255.0 green: 17/255.0 blue:  0/255.0 alpha:1.0],
+          [XPColor SVR_colorWithRed:148/255.0 green: 82/255.0 blue:  0/255.0 alpha:1.0],
+          [XPColor SVR_colorWithRed:255/255.0 green:147/255.0 blue:  0/255.0 alpha:1.0],
+          [XPColor SVR_colorWithRed:  0/255.0 green:  0/255.0 blue:  0/255.0 alpha:1.0],
           [XPColor SVR_colorWithRed:145/255.0 green:145/255.0 blue:145/255.0 alpha:1.0],
           [self __SVR_legacyDecimalNumberLocale],
           nil];

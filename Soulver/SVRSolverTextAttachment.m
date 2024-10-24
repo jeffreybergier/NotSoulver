@@ -159,7 +159,7 @@
           nil];
   vals = [NSArray arrayWithObjects:
           [ud SVR_fontForText],
-          [ud SVR_colorForNumeral], // TODO: Create colors for errors
+          [ud SVR_colorForError],
           style,
           nil];
   return [NSDictionary dictionaryWithObjects:vals forKeys:keys];
