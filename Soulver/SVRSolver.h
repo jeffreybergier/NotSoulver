@@ -8,6 +8,29 @@
 #import <Foundation/Foundation.h>
 #import "XPCrossPlatform.h"
 
+// MARK: SVRSolver
+
+@interface SVRSolver: NSObject
+
+// MARK: Business Logic
++(void)solveAttributedString:(NSMutableAttributedString*)input;
+
+// MARK: Private
++(void)__step1_decodeExpressionTerminator:(NSMutableAttributedString*)input;
++(void)__step2_removeAllTags:(NSMutableAttributedString*)input;
++(void)__step3_scanAndTag:(NSMutableAttributedString*)input;
++(void)__step4_solveAndTag:(NSMutableAttributedString*)input;
++(void)__step5_styleAndTag:(NSMutableAttributedString*)input;
+
+
+@end
+
+@interface SVRSolver (Testing)
++(void)executeTests;
+@end
+
+// MARK: Enumerations
+
 typedef enum {
   // Stores NSDecimalNumber
   SVRSolverTagNumber,
@@ -44,25 +67,12 @@ typedef enum {
 
 typedef SVRSolverError* SVRSolverErrorPointer;
 
+// MARK: Enumeration Helper Functions
+
 XPAttributedStringKey XPAttributedStringKeyForTag(SVRSolverTag tag);
-SVRSolverTag SVRSolverTagForKey(XPAttributedStringKey string);
-NSNumber* NSNumberForOperator(SVRSolverOperator operator);
-SVRSolverOperator SVRSolverOperatorForNumber(NSNumber *number);
-SVRSolverOperator SVRSolverOperatorForRawString(NSString *string);
-NSString *SVRSolverDescriptionForError(SVRSolverError error);
-NSString *SVRSolverDebugDescriptionForError(SVRSolverError error);
-
-@interface SVRSolver: NSObject
-
-// MARK: Business Logic
-+(void)removeAllSolutionsAndTags:(NSMutableAttributedString*)input;
-+(void)solveAndTagAttributedString:(NSMutableAttributedString*)input;
-+(void)styleSolvedAndTaggedAttributedString:(NSMutableAttributedString*)input;
-
-+(void)__decodeExpressionTerminator:(NSMutableAttributedString*)input;
-
-@end
-
-@interface SVRSolver (Testing)
-+(void)executeTests;
-@end
+SVRSolverTag          SVRSolverTagForKey(XPAttributedStringKey string);
+NSNumber             *NSNumberForOperator(SVRSolverOperator operator);
+SVRSolverOperator     SVRSolverOperatorForNumber(NSNumber *number);
+SVRSolverOperator     SVRSolverOperatorForRawString(NSString *string);
+NSString             *SVRSolverDescriptionForError(SVRSolverError error);
+NSString             *SVRSolverDebugDescriptionForError(SVRSolverError error);

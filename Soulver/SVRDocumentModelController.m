@@ -48,9 +48,7 @@
     [XPLog debug:@"%@ loadDataRepresentation: Rendering", self];
     [model beginEditing];
     [[model mutableString] setString:string];
-    [SVRSolver removeAllSolutionsAndTags:model];
-    [SVRSolver solveAndTagAttributedString:model];
-    [SVRSolver styleSolvedAndTaggedAttributedString:model];
+    [SVRSolver solveAttributedString:model];
     [model endEditing];
     success = YES;
   }
@@ -134,9 +132,7 @@
   [XPLog debug:@"%@ waitTimerFired: Rendering", self];
   
   [model beginEditing];
-  [SVRSolver removeAllSolutionsAndTags:model];
-  [SVRSolver solveAndTagAttributedString:model];
-  [SVRSolver styleSolvedAndTaggedAttributedString:model];
+  [SVRSolver solveAttributedString:model];
   [model endEditing];
   [textView setSelectedRange:selection];
 
