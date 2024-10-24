@@ -32,6 +32,7 @@ typedef unsigned int XPUInteger;
 typedef NSString* XPAttributedStringKey;
 typedef NSRange* XPRangePointer;
 #define XPLocale NSDictionary
+#define XPTextAlignmentCenter NSCenterTextAlignment
 #else
 typedef CGFloat XPFloat;
 typedef NSInteger XPInteger;
@@ -39,6 +40,7 @@ typedef NSUInteger XPUInteger;
 typedef NSRangePointer XPRangePointer;
 typedef NSAttributedStringKey XPAttributedStringKey;
 #define XPLocale NSLocale
+#define XPTextAlignmentCenter NSTextAlignmentCenter
 #endif
 
 extern const NSRange XPNotFoundRange;

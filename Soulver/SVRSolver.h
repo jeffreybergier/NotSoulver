@@ -50,6 +50,7 @@ NSNumber* NSNumberForOperator(SVRSolverOperator operator);
 SVRSolverOperator SVRSolverOperatorForNumber(NSNumber *number);
 SVRSolverOperator SVRSolverOperatorForRawString(NSString *string);
 NSString *SVRSolverDescriptionForError(SVRSolverError error);
+NSString *SVRSolverDebugDescriptionForError(SVRSolverError error);
 
 @interface SVRSolver: NSObject
 

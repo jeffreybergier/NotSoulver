@@ -89,7 +89,25 @@ NSString *SVRSolverDescriptionForError(SVRSolverError error)
     case SVRSolverErrorDivideByZero:
       return [NSString stringWithFormat:@"<Error:%d> Divide by zero", error];
     default:
-      NSLog(@"SVRSolverDescriptionForErrorUnknown: %d", error);
+      [XPLog error:@"SVRSolverDescriptionForErrorUnknown: %d", error];
+      return nil;
+  }
+}
+
+NSString *SVRSolverDebugDescriptionForError(SVRSolverError error)
+{
+  switch (error) {
+    case SVRSolverErrorNone:
+      return @"none";
+    case SVRSolverErrorInvalidCharacter:
+      return @"invalidCharacter";
+    case SVRSolverErrorMismatchedBrackets:
+      return @"mismatchedBrackets";
+    case SVRSolverErrorMissingOperand:
+      return @"missingOperand";
+    case SVRSolverErrorDivideByZero:
+      return @"divideByZero";
+    default:
       [XPLog error:@"SVRSolverDescriptionForErrorUnknown: %d", error];
       return nil;
   }

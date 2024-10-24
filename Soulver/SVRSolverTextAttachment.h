@@ -14,6 +14,7 @@
 
 -(NSDecimalNumber*)solution;
 -(SVRSolverError)error;
+-(NSString*)description;
 -(id)initWithSolution:(NSDecimalNumber*)solution error:(SVRSolverError)error;
 +(id)attachmentWithSolution:(NSDecimalNumber*)solution error:(SVRSolverError)error;
 
@@ -22,16 +23,29 @@
 @interface SVRSolverTextAttachmentCell: NSObject <NSTextAttachmentCell>
 {
   mm_unretain SVRSolverTextAttachment *_attachment;
+  mm_new NSString *_description;
 }
 
 // MARK: Properties
 
--(NSString*)stringToDraw;
--(NSDictionary*)drawingAttributes;
+-(BOOL)shouldDrawError;
+-(NSString*)description;
 
 // MARK: Init
 -(id)initWithAttachment:(SVRSolverTextAttachment*)attachment;
 +(id)cellWithAttachment:(SVRSolverTextAttachment*)attachment;
+
+// MARK: Custom Drawing
+-(NSString*)__sol_drawableString;
+-(NSString*)__err_drawableString;
+-(NSSize)__sol_cellSize;
+-(NSSize)__err_cellSize;
+-(void)__sol_drawWithFrame:(NSRect)cellFrame
+                    inView:(NSView*)controlView;
+-(void)__err_drawWithFrame:(NSRect)cellFrame
+                    inView:(NSView*)controlView;
+-(NSDictionary*)__sol_attributes;
+-(NSDictionary*)__err_attributes;
 
 // MARK: Protocol (Used)
 -(NSSize)cellSize;

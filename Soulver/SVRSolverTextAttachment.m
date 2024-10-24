@@ -15,6 +15,12 @@
   return _error;
 }
 
+-(NSString*)description;
+{
+  return [NSString stringWithFormat:@"<%@> {solution:`%@`, error:%@}",
+    [self class], [self solution], SVRSolverDebugDescriptionForError([self error])];
+}
+
 -(id)initWithSolution:(NSDecimalNumber*)solution error:(SVRSolverError)error;
 {
   self = [super initWithFileWrapper:nil];
@@ -31,7 +37,7 @@
 
 - (void)dealloc
 {
-  [XPLog debug:@"DEALLOC: Attachment: %@", self];
+  [XPLog debug:@"DEALLOC: %@", self];
   [_solution release];
   _solution = nil;
   [super dealloc];
@@ -43,30 +49,14 @@
 
 // MARK: Properties
 
--(NSString*)stringToDraw;
+-(BOOL)shouldDrawError;
 {
-  NSDecimalNumber *solution = [[self attachment] solution];
-  SVRSolverError error = [[self attachment] error];
-  if (solution != nil) {
-    return [@"=" stringByAppendingString:[solution SVR_description]];
-  } else if (error != SVRSolverErrorNone) {
-    return [@"=" stringByAppendingString:SVRSolverDescriptionForError(error)];
-  } else {
-    [XPLog error:@"Both Solution and Error were NIL"];
-    return nil;
-  }
+  return [[self attachment] error] != SVRSolverErrorNone;
 }
 
--(NSDictionary*)drawingAttributes;
+-(NSString*)description;
 {
-  NSUserDefaults *ud;
-  NSArray *keys;
-  NSArray *vals;
-  
-  ud   = [NSUserDefaults standardUserDefaults];
-  keys = [NSArray arrayWithObjects:NSFontAttributeName, nil];
-  vals = [NSArray arrayWithObjects:[ud SVR_fontForText], nil];
-  return [[NSDictionary alloc] initWithObjects:vals forKeys:keys];
+  return [[_description retain] autorelease];
 }
 
 // MARK: Init
@@ -75,6 +65,8 @@
 {
   self = [super init];
   _attachment = attachment;
+  _description = [[NSString alloc] initWithFormat:@"<%@> {solution:`%@`, error:%@}",
+      [self class], [attachment solution], SVRSolverDebugDescriptionForError([attachment error])];
   return self;
 }
 
@@ -83,11 +75,103 @@
   return [[[SVRSolverTextAttachmentCell alloc] initWithAttachment:attachment] autorelease];
 }
 
+// MARK: Custom Drawing
+
+-(NSString*)__sol_drawableString;
+{
+  return [@"=" stringByAppendingString:[[[self attachment] solution] SVR_description]];
+}
+
+-(NSString*)__err_drawableString;
+{
+  return [@"=" stringByAppendingString:SVRSolverDescriptionForError([[self attachment] error])];
+}
+
+-(NSSize)__sol_cellSize;
+{
+  NSSize size = [[self __sol_drawableString] sizeWithAttributes:[self __sol_attributes]];
+  size.width += 8;
+  return size;
+}
+
+-(NSSize)__err_cellSize;
+{
+  NSSize size = [[self __err_drawableString] sizeWithAttributes:[self __err_attributes]];
+  size.width += 8;
+  return size;
+}
+
+-(void)__sol_drawWithFrame:(NSRect)cellFrame
+                    inView:(NSView*)controlView;
+{
+  [XPLog extra:@"__solut_drawWithFrame:%@", NSStringFromRect(cellFrame)];
+  NSDrawWhiteBezel(cellFrame, cellFrame);
+  [[self __sol_drawableString] drawInRect:cellFrame withAttributes:[self __sol_attributes]];
+}
+
+-(void)__err_drawWithFrame:(NSRect)cellFrame
+                    inView:(NSView*)controlView;
+{
+  [XPLog extra:@"__error_drawWithFrame:%@", NSStringFromRect(cellFrame)];
+  NSDrawGrayBezel(cellFrame, cellFrame);
+  [[self __err_drawableString] drawInRect:cellFrame withAttributes:[self __err_attributes]];
+}
+
+-(NSDictionary*)__sol_attributes;
+{
+  NSUserDefaults *ud;
+  NSArray *keys;
+  NSArray *vals;
+  NSMutableParagraphStyle *style;
+  
+  style = [[[NSMutableParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
+  [style setAlignment:XPTextAlignmentCenter];
+  
+  ud   = [NSUserDefaults standardUserDefaults];
+  keys = [NSArray arrayWithObjects:
+          NSFontAttributeName,
+          NSForegroundColorAttributeName,
+          NSParagraphStyleAttributeName,
+          nil];
+  vals = [NSArray arrayWithObjects:
+          [ud SVR_fontForText],
+          [ud SVR_colorForSolutionPrimary],
+          style,
+          nil];
+  return [NSDictionary dictionaryWithObjects:vals forKeys:keys];
+}
+
+-(NSDictionary*)__err_attributes;
+{
+  NSUserDefaults *ud;
+  NSArray *keys;
+  NSArray *vals;
+  NSMutableParagraphStyle *style;
+  
+  style = [[[NSMutableParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
+  [style setAlignment:XPTextAlignmentCenter];
+  
+  ud   = [NSUserDefaults standardUserDefaults];
+  keys = [NSArray arrayWithObjects:
+          NSFontAttributeName,
+          NSForegroundColorAttributeName,
+          NSParagraphStyleAttributeName,
+          nil];
+  vals = [NSArray arrayWithObjects:
+          [ud SVR_fontForText],
+          [ud SVR_colorForNumeral], // TODO: Create colors for errors
+          style,
+          nil];
+  return [NSDictionary dictionaryWithObjects:vals forKeys:keys];
+}
+
 // MARK: Protocol (Used)
 
 -(NSSize)cellSize;
 {
-  return [[self stringToDraw] sizeWithAttributes:[self drawingAttributes]];
+  return ([self shouldDrawError])
+        ? [self __err_cellSize]
+        : [self __sol_cellSize];
 }
 
 -(NSPoint)cellBaselineOffset;
@@ -99,18 +183,17 @@
 -(void)drawWithFrame:(NSRect)cellFrame
               inView:(NSView*)controlView;
 {
-  [XPLog extra:@"drawWithFrame:%@", NSStringFromRect(cellFrame)];
-  NSDrawWhiteBezel(cellFrame, cellFrame);
-  [[self stringToDraw] drawInRect:cellFrame withAttributes:[self drawingAttributes]];
+  return ([self shouldDrawError])
+        ? [self __err_drawWithFrame:cellFrame inView:controlView]
+        : [self __sol_drawWithFrame:cellFrame inView:controlView];
 }
 
 -(void)highlight:(BOOL)flag
        withFrame:(NSRect)cellFrame
           inView:(NSView*)controlView;
 {
-  [XPLog pause:@"higlight:%d withFrame:%@", flag, NSStringFromRect(cellFrame)];
-  NSDrawButton(cellFrame, cellFrame);
-  [[self stringToDraw] drawInRect:cellFrame withAttributes:[self drawingAttributes]];
+  [XPLog pause:@"higlight:%@ withFrame:%@",
+   (flag) ? @"YES" : @"NO", NSStringFromRect(cellFrame)];
 }
 
 // MARK: Protocol (Unused)
@@ -143,6 +226,8 @@
 -(void)dealloc;
 {
   [XPLog debug:@"DEALLOC: %@", self];
+  [_description release];
+  _description = nil;
   _attachment = nil;
   [super dealloc];
 }
