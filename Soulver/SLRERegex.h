@@ -7,7 +7,6 @@
 
 #import <Foundation/Foundation.h>
 #import "XPCrossPlatform.h"
-#import "re.h"
 #import "slre.h"
 
 @interface SLRERegex: NSEnumerator
@@ -15,17 +14,14 @@
   mm_copy NSString *_pattern;
   mm_copy NSString *_string;
   
-  NSRange _last;
-  BOOL _forceIteration;
-  const char *_cursor;
-  re_t _rx;
+  int _bufferIndex;
+  int _bufferLength;
+  struct slre _engine;
 }
 
 // MARK: Initialization
 -(id)initWithString:(NSString*)string pattern:(NSString*)pattern;
--(id)initWithString:(NSString*)string pattern:(NSString*)pattern forceIteration:(BOOL)forceIteration;
 +(id)regexWithString:(NSString*)string pattern:(NSString*)pattern;
-+(id)regexWithString:(NSString*)string pattern:(NSString*)pattern forceIteration:(BOOL)forceIteration;
 
 // MARK: Core Functionality
 /// Returns NSNotFound for location when there are no more matches
@@ -39,8 +35,6 @@
 // MARK: Convenience Properties
 -(NSString*)string;
 -(NSString*)pattern;
--(NSRange)lastMatch;
--(BOOL)forceIteration;
 -(NSString*)description;
 
 @end

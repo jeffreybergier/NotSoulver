@@ -10,21 +10,17 @@
 @implementation SLRERegex
 
 // MARK: Initialization
+
 -(id)initWithString:(NSString*)string pattern:(NSString*)pattern;
 {
-  return [self initWithString:string pattern:pattern forceIteration:NO];
-}
-
--(id)initWithString:(NSString*)string pattern:(NSString*)pattern forceIteration:(BOOL)forceIteration;
-{
+  BOOL isCompiled = NO;
   self = [super init];
-  _forceIteration = forceIteration;
-  _last = NSMakeRange(NSNotFound, 0);
   _pattern = [pattern copy];
   _string = [string copy];
-  _cursor = [_string XP_UTF8String];
-  _rx = re_compile([_pattern XP_UTF8String]);
-  NSAssert2(_rx != NULL, @"%@ Failed to compile pattern: %@", self, pattern);
+  _bufferIndex = 0;
+  _bufferLength = (int)[string length];
+  isCompiled = slre_compile(&_engine, [_pattern XP_UTF8String]);
+  NSAssert2(isCompiled, @"%@ Failed to compile pattern: %@", self, pattern);
   return self;
 }
 
@@ -33,49 +29,37 @@
   return [[[SLRERegex alloc] initWithString:string pattern:pattern] autorelease];
 }
 
-+(id)regexWithString:(NSString*)string pattern:(NSString*)pattern forceIteration:(BOOL)forceIteration;
-{
-  return [[[SLRERegex alloc] initWithString:string pattern:pattern forceIteration:forceIteration] autorelease];
-}
-
 // MARK: Core Functionality
 -(BOOL)containsMatch;
 {
-  int location = (int)NSNotFound;
-  int length = 0;
-  location = re_matchp(_rx, _cursor, &length);
-  return location == -1 ? NO : YES;
+  BOOL containsMatch = NO;
+  const char* buffer = [_string XP_UTF8String];
+  containsMatch = slre_match(&_engine,
+                             buffer + _bufferIndex,
+                             _bufferLength - _bufferIndex,
+                             NULL);
+  return containsMatch;
 }
 
 -(NSRange)nextMatch;
 {
-  int location = (int)NSNotFound;
-  int length = 0;
-  int lastLength = (_forceIteration) ? 1 : (int)_last.length;
+  NSRange output = XPNotFoundRange;
+  BOOL containsMatch = NO;
+  const char* buffer = [_string XP_UTF8String];
+  struct cap capture;
   
-  // Perform Regex
-  location = re_matchp(_rx, _cursor, &length);
+  containsMatch = slre_match(&_engine,
+                             buffer + _bufferIndex,
+                             _bufferLength - _bufferIndex,
+                             &capture);
   
-  // Check for NotFound
-  if (location == -1) {
-    _last = NSMakeRange(NSNotFound, 0);
-    return _last;
-  }
-
-  // Calculate the range and update ivar
-  _last.location = (_last.location == NSNotFound)
-                 ? (XPUInteger)location
-                 : (XPUInteger)location + _last.location + (XPUInteger)lastLength;
-  _last.length   = (XPUInteger)length;
-
-  // Update cursor for next iteration
-  if (_forceIteration) {
-    _cursor += location + 1;
-  } else {
-    _cursor += location + length;
-  }
-
-  return _last;
+  if (!containsMatch) { return output; }
+  
+  output.location = (XPUInteger)(capture.ptr - buffer);
+  output.length = (XPUInteger)capture.len;
+  _bufferIndex = (int)NSMaxRange(output);
+    
+  return output;
 }
 
 // MARK: NSEnumerator
@@ -106,19 +90,10 @@
   return [[_pattern retain] autorelease];
 }
 
--(NSRange)lastMatch;
-{
-  return _last;
-}
-
--(BOOL)forceIteration;
-{
-  return _forceIteration;
-}
-
 -(NSString*)description;
 {
-  return [NSString stringWithFormat:@"%@ `%@` -> `%@`", [super description], _pattern, _string];
+  return [NSString stringWithFormat:@"%@`%@`->`%@`",
+          [super description], _pattern, _string];
 }
 
 // MARK: Dealloc
@@ -129,8 +104,6 @@
   [_string  release];
   _pattern = nil;
   _string  = nil;
-  _cursor  = NULL;
-  _rx      = NULL;
   [super dealloc];
 }
 
@@ -207,14 +180,14 @@
   NSAssert(![regex containsMatch], @"");
   
   // MARK: Test Multiple Operators
-  regex = [SLRERegex regexWithString:@"5+7+3" pattern:@"[\\d\\)][\\*\\-\\+\\/\\^][\\-\\d\\(]" forceIteration:YES];
+  regex = [SLRERegex regexWithString:@"5+7+3" pattern:@"[\\*\\-\\+\\/\\^]"];
   NSAssert([regex containsMatch], @"");
   range = [regex nextMatch];
-  NSAssert(range.location == 0, @"");
-  NSAssert(range.length == 3, @"");
+  NSAssert(range.location == 1, @"");
+  NSAssert(range.length == 1, @"");
   range = [regex nextMatch];
-  NSAssert(range.location == 2, @"");
-  NSAssert(range.length == 3, @"");
+  NSAssert(range.location == 3, @"");
+  NSAssert(range.length == 1, @"");
   range = [regex nextMatch];
   NSAssert(range.location == NSNotFound, @"");
   
@@ -229,14 +202,14 @@
   range = [regex nextMatch];
   NSAssert(range.location == NSNotFound, @"");
   NSAssert(range.length == 0, @"");
-  regex = [SLRERegex regexWithString:@"3*5^2" pattern:@"\\d[\\^\\*]\\d" forceIteration:YES];
+  regex = [SLRERegex regexWithString:@"3*5^2" pattern:@"[\\^\\*]"];
   NSAssert([regex containsMatch], @"");
   range = [regex nextMatch];
-  NSAssert(range.location == 0, @"");
-  NSAssert(range.length == 3, @"");
+  NSAssert(range.location == 1, @"");
+  NSAssert(range.length == 1, @"");
   range = [regex nextMatch];
-  NSAssert(range.location == 2, @"");
-  NSAssert(range.length == 3, @"");
+  NSAssert(range.location == 3, @"");
+  NSAssert(range.length == 1, @"");
 }
 
 +(void)__executeTests_values;
@@ -317,16 +290,16 @@
   NSAssert(![regex containsMatch], @"");
   value = [regex nextObject];
   NSAssert(!value, @"");
-  regex = [SLRERegex regexWithString:@"3*5^2" pattern:@"\\d[\\^\\*]\\d" forceIteration:YES];
+  regex = [SLRERegex regexWithString:@"3*5^2" pattern:@"[\\^\\*]"];
   NSAssert([regex containsMatch], @"");
   value = [regex nextObject];
   [value getValue:&range];
-  NSAssert(range.location == 0, @"");
-  NSAssert(range.length == 3, @"");
+  NSAssert(range.location == 1, @"");
+  NSAssert(range.length == 1, @"");
   value = [regex nextObject];
   [value getValue:&range];
-  NSAssert(range.location == 2, @"");
-  NSAssert(range.length == 3, @"");
+  NSAssert(range.location == 3, @"");
+  NSAssert(range.length == 1, @"");
 }
 
 @end
