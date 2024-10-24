@@ -1,4 +1,5 @@
 #import "SVRDocumentModelController.h"
+#import "NSUserDefaults+Soulver.h"
 #import "SVRSolver.h"
 
 @implementation SVRDocumentModelController
@@ -113,9 +114,10 @@
 
 -(void)resetWaitTimer;
 {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   [_waitTimer invalidate];
   [_waitTimer release];
-  _waitTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+  _waitTimer = [NSTimer scheduledTimerWithTimeInterval:[ud SVR_waitTimeForRendering]
                                                 target:self
                                               selector:@selector(waitTimerFired:)
                                               userInfo:nil

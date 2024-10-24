@@ -23,6 +23,8 @@
 // TODO: These are fake and not stored in UserDefaults
 -(NSFont*)SVR_fontForText;
 -(BOOL)SVR_setFontForText:(NSFont*)newValue;
+-(NSTimeInterval)SVR_waitTimeForRendering;
+-(BOOL)SVR_setWaitTimeForRendering:(NSTimeInterval)newValue;
 -(XPLocale*)SVR_decimalNumberLocale;
 -(void)SVR_configure;
 // MARK: Private

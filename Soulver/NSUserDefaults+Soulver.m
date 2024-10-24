@@ -10,6 +10,7 @@ NSString *XPUserDefaultsColorForBracket                   = @"kColorForBracket";
 NSString *XPUserDefaultsColorForOperator                  = @"kColorForOperator";
 NSString *XPUserDefaultsColorForNumeral                   = @"kColorForNumeral";
 NSString *XPUserDefaultsColorForText                      = @"kColorForText";
+NSString *XPUserDefaultsWaitTimeForRendering              = @"kWaitTimeForRendering";
 NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumberLocale";
 
 @implementation NSUserDefaults (Soulver)
@@ -114,6 +115,19 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
   return NO;
 }
 
+-(NSTimeInterval)SVR_waitTimeForRendering;
+{
+  NSNumber *value = [self objectForKey:XPUserDefaultsWaitTimeForRendering];
+  return [value doubleValue];
+}
+
+-(BOOL)SVR_setWaitTimeForRendering:(NSTimeInterval)newValue;
+{
+  NSNumber *value = [NSNumber numberWithDouble:newValue];
+  [self setObject:value forKey:XPUserDefaultsWaitTimeForRendering];
+  return [self synchronize];
+}
+
 -(XPLocale*)SVR_decimalNumberLocale;
 {
 #if OS_OPENSTEP
@@ -142,6 +156,7 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
           XPUserDefaultsColorForOperator,
           XPUserDefaultsColorForNumeral,
           XPUserDefaultsColorForText,
+          XPUserDefaultsWaitTimeForRendering,
           XPUserDefaultsLegacyDecimalNumberLocale,
           nil];
   vals = [NSArray arrayWithObjects:
@@ -153,6 +168,7 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
           [XPColor SVR_colorWithRed:255/255.0 green:147/255.0 blue:  0/255.0 alpha:1.0],
           [XPColor SVR_colorWithRed:  0/255.0 green:  0/255.0 blue:  0/255.0 alpha:1.0],
           [XPColor SVR_colorWithRed:145/255.0 green:145/255.0 blue:145/255.0 alpha:1.0],
+          [NSNumber numberWithDouble:2.0],
           [self __SVR_legacyDecimalNumberLocale],
           nil];
   
