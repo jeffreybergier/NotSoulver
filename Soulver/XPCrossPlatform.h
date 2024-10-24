@@ -149,7 +149,8 @@ NSArray* XPRunOpenPanel(void);
 -(BOOL)SVR_isNotANumber;
 -(NSString*)SVR_description;
 +(id)SVR_decimalNumberWithString:(NSString*)string;
--(NSDecimalNumber*)SVR_decimalNumberByRaisingToPower:(NSDecimalNumber*)power;
+-(NSDecimalNumber*)SVR_decimalNumberByRaisingToPower:(NSDecimalNumber*)power
+                                        withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
 @end
 
 @interface CrossPlatform: NSObject

@@ -250,7 +250,7 @@
   SVRSolverDecimalBehavior *ohBehave = [SVRSolverDecimalBehavior behaviorWithErrorPtr:errorPtr];
   switch (operator) {
     case SVRSolverOperatorExponent:
-      return [lhs SVR_decimalNumberByRaisingToPower:rhs];
+      return [lhs SVR_decimalNumberByRaisingToPower:rhs withBehavior:ohBehave];
     case SVRSolverOperatorDivide:
       return [lhs decimalNumberByDividingBy:rhs withBehavior:ohBehave];
     case SVRSolverOperatorMultiply:
@@ -318,13 +318,13 @@
   switch (error) {
     case NSCalculationNoError: return nil;
     case NSCalculationLossOfPrecision:
-      [XPLog pause:@"NSCalculationLossOfPrecision"];
+      [XPLog debug:@"exceptionDuringOperation: NSCalculationLossOfPrecision"];
       return nil;
     case NSCalculationUnderflow:
-      [XPLog pause:@"NSCalculationUnderflow"];
+      [XPLog debug:@"exceptionDuringOperation: NSCalculationUnderflow"];
       return nil;
     case NSCalculationOverflow:
-      [XPLog pause:@"NSCalculationOverflow"];
+      [XPLog debug:@"exceptionDuringOperation: NSCalculationOverflow"];
       return nil;
     case NSCalculationDivideByZero:
       if (_errorPtr != NULL) { *_errorPtr = SVRSolverErrorDivideByZero; }

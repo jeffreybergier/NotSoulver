@@ -370,20 +370,26 @@ NSArray* XPRunOpenPanel(void)
 
 // NSDecimalNumber handles exponents extremely strangely
 // This provides a little wrapper around the oddities
--(NSDecimalNumber*)SVR_decimalNumberByRaisingToPower:(NSDecimalNumber*)power;
+-(NSDecimalNumber*)SVR_decimalNumberByRaisingToPower:(NSDecimalNumber*)power
+                                        withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
 {
   NSDecimalNumber *output = nil;
   BOOL powerIsNegative = ([power compare:[NSDecimalNumber zero]] == NSOrderedAscending);
   BOOL selfIsNegative = ([self compare:[NSDecimalNumber zero]] == NSOrderedAscending);
   
   if (powerIsNegative) {
-    output = [[NSDecimalNumber one] decimalNumberByDividingBy:[self decimalNumberByRaisingToPower:(XPUInteger)abs([power intValue])]];
+    output = [[NSDecimalNumber one] decimalNumberByDividingBy:
+                          [self decimalNumberByRaisingToPower:(XPUInteger)abs([power intValue])
+                                                 withBehavior:behavior]
+                                                 withBehavior:behavior];
   } else {
-    output = [self decimalNumberByRaisingToPower:(XPUInteger)[power unsignedIntValue]];
+    output = [self decimalNumberByRaisingToPower:(XPUInteger)[power unsignedIntValue]
+                                    withBehavior:behavior];
   }
   
   if (selfIsNegative) {
-    output = [output decimalNumberByMultiplyingBy:[NSDecimalNumber decimalNumberWithString:@"-1"]];
+    output = [output decimalNumberByMultiplyingBy:[NSDecimalNumber decimalNumberWithString:@"-1"]
+                                     withBehavior:behavior];
   }
   
   return output;
