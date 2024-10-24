@@ -39,11 +39,3 @@
 -(void)__addRange:(NSRange)range toSet:(NSMutableSet*)set;
 
 @end
-
-@interface SVRSolverScanner (Tests)
-+(void)executeTests;
-+(void)__executeNumberTests;
-+(void)__executeOperatorTests;
-+(void)__executeExpressionTests;
-+(void)__executeBracketTests;
-@end

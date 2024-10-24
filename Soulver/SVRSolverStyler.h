@@ -12,7 +12,3 @@
 +(void)styleTaggedExpression:(NSMutableAttributedString*)input;
 
 @end
-
-@interface SVRSolverStyler (Tests)
-+(void)executeTests;
-@end

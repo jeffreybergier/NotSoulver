@@ -31,10 +31,6 @@
 
 @end
 
-@interface SVRSolverSolutionTagger (Tests)
-+(NSMutableAttributedString*)executeTests;
-@end
-
 @interface SVRSolverDecimalBehavior: NSObject <NSDecimalNumberBehaviors>
 {
   SVRSolverErrorPointer _errorPtr;

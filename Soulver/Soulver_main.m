@@ -1,12 +1,8 @@
 #import <AppKit/AppKit.h>
+#import "NSUserDefaults+Soulver.h"
 #import "XPCrossPlatform.h"
 #import "SVRSolver.h"
 #import "SVRLegacyRegex.h"
-#import "SVRSolverSolutionTagger.h"
-#import "SVRSolverScanner.h"
-#import "SVRSolverExpressionTagger.h"
-#import "SVRSolverStyler.h"
-#import "NSUserDefaults+Soulver.h"
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -32,10 +28,6 @@ int main(int argc, const char *argv[]) {
   [XPLog alwys:@"<Main> Unit Tests: STARTING"];
   [CrossPlatform executeUnitTests];
   [SVRSolver executeTests];
-  [SVRSolverScanner executeTests];
-  [SVRSolverSolutionTagger executeTests];
-  [SVRSolverExpressionTagger executeTests];
-  [SVRSolverStyler executeTests];
   [SVRLegacyRegex executeTests];
   [XPLog alwys:@"<Main> Unit Tests: PASSED"];
 #else

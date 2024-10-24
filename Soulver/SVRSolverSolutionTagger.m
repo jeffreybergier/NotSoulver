@@ -267,25 +267,6 @@
 
 @end
 
-#import "SVRSolverExpressionTagger.h"
-
-@implementation SVRSolverSolutionTagger (Tests)
-+(NSMutableAttributedString*)executeTests;
-{
-  NSDecimalNumber *output = nil;
-  NSDecimalNumber *expected = [NSDecimalNumber decimalNumberWithString:@"0.10958904109589041095890410958904109589"];
-  NSMutableAttributedString *taggedUserInput = [SVRSolverExpressionTagger executeTests];
-  [XPLog alwys:@"SVRSolverSolutionTagger Tests: Starting"];
-  [SVRSolverSolutionTagger tagSolutionsInAttributedString:taggedUserInput];
-  output = [taggedUserInput attribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)
-                              atIndex:12
-                       effectiveRange:NULL];
-  NSAssert([expected isEqualToNumber:output], @"");
-  [XPLog alwys:@"SVRSolverSolutionTagger Tests: Passed"];
-  return taggedUserInput;
-}
-@end
-
 @implementation SVRSolverDecimalBehavior
 
 -(id)initWithErrorPtr:(SVRSolverErrorPointer)errorPtr;

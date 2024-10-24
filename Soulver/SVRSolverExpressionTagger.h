@@ -19,7 +19,3 @@
         inAttributedString:(NSMutableAttributedString*)string;
 
 @end
-
-@interface SVRSolverExpressionTagger (Tests)
-+(NSMutableAttributedString*)executeTests;
-@end

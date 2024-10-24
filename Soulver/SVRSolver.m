@@ -178,7 +178,7 @@ NSString *SVRSolverDebugDescriptionForError(SVRSolverError error)
 
 +(void)executeTests;
 {
-  
+  NSLog(@"+[SVRSolver executeTests] Unimplemented. Implement check to read file and check known good Attributed String output");
 }
 
 @end

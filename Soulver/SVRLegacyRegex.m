@@ -118,8 +118,7 @@
 
 -(NSString*)description;
 {
-  return [NSString stringWithFormat:@"%@ string: `%@` pattern: `%@`",
-                                    [super description], _string, _pattern];
+  return [NSString stringWithFormat:@"%@ `%@` -> `%@`", [super description], _pattern, _string];
 }
 
 // MARK: Dealloc
