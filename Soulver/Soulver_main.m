@@ -2,7 +2,8 @@
 #import "NSUserDefaults+Soulver.h"
 #import "XPCrossPlatform.h"
 #import "SVRSolver.h"
-#import "SVRLegacyRegex.h"
+#import "TinyRegex.h"
+#import "SLRERegex.h"
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -28,7 +29,8 @@ int main(int argc, const char *argv[]) {
   [XPLog alwys:@"<Main> Unit Tests: STARTING"];
   [CrossPlatform executeUnitTests];
   [SVRSolver executeTests];
-  [SVRLegacyRegex executeTests];
+  [TinyRegex executeTests];
+  [SLRERegex executeTests];
   [XPLog alwys:@"<Main> Unit Tests: PASSED"];
 #else
   [XPLog alwys:@"<Main> Unit Tests: SKIPPED"];

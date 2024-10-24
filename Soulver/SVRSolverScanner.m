@@ -6,7 +6,7 @@
 //
 
 #import "SVRSolverScanner.h"
-#import "SVRLegacyRegex.h"
+#import "TinyRegex.h"
 
 @implementation SVRSolverScanner
 
@@ -77,20 +77,20 @@
   NSMutableSet *output = [[NSMutableSet new] autorelease];
   NSRange range = XPNotFoundRange;
   NSValue *rangeV = nil;
-  SVRLegacyRegex *regex = nil;
-  SVRLegacyRegex *n_regex = nil; // for testing negative numbers to make sure they are preceded by an operator
+  TinyRegex *regex = nil;
+  TinyRegex *n_regex = nil; // for testing negative numbers to make sure they are preceded by an operator
 
   NSAssert(!_numbers, @"This is a lazy init method, it assumes _numbers is NIL");
   
   // Find negative floats
-  regex = [SVRLegacyRegex regexWithString:_string pattern:@"\\-\\d+\\.\\d+"];
+  regex = [TinyRegex regexWithString:_string pattern:@"\\-\\d+\\.\\d+"];
   while ((rangeV = [regex nextObject])) {
     range = [rangeV XP_rangeValue];
     if (range.location == 0) { // If we're at the beginning of the string the negative number needs no checks
       [XPLog extra:@"<#> %@", [_string SVR_descriptionHighlightingRange:range]];
       [self __addRange:range toSet:output];
     } else {
-      n_regex = [SVRLegacyRegex regexWithString:[_string substringWithRange:NSMakeRange(range.location-1, 1)]
+      n_regex = [TinyRegex regexWithString:[_string substringWithRange:NSMakeRange(range.location-1, 1)]
                                         pattern:@"[\\=\\(\\+\\-\\*\\/\\^]"];
       if ([n_regex nextObject]) {
         [XPLog extra:@"<#> %@", [_string SVR_descriptionHighlightingRange:range]];
@@ -100,14 +100,14 @@
   }
   
   // Find negative integers
-  regex = [SVRLegacyRegex regexWithString:_string pattern:@"\\-\\d+"];
+  regex = [TinyRegex regexWithString:_string pattern:@"\\-\\d+"];
   while ((rangeV = [regex nextObject])) {
     range = [rangeV XP_rangeValue];
     if (range.location == 0) { // If we're at the beginning of the string the negative number needs no checks
       [XPLog extra:@"<#> %@", [_string SVR_descriptionHighlightingRange:range]];
       [self __addRange:range toSet:output];
     } else {
-      n_regex = [SVRLegacyRegex regexWithString:[_string substringWithRange:NSMakeRange(range.location-1, 1)]
+      n_regex = [TinyRegex regexWithString:[_string substringWithRange:NSMakeRange(range.location-1, 1)]
                                         pattern:@"[\\=\\(\\+\\-\\*\\/\\^]"];
       if ([n_regex nextObject]) {
         [XPLog extra:@"<#> %@", [_string SVR_descriptionHighlightingRange:range]];
@@ -117,7 +117,7 @@
   }
   
   // Find positive floats
-  regex = [SVRLegacyRegex regexWithString:_string pattern:@"\\d+\\.\\d+"];
+  regex = [TinyRegex regexWithString:_string pattern:@"\\d+\\.\\d+"];
   while ((rangeV = [regex nextObject])) {
     range = [rangeV XP_rangeValue];
     [XPLog extra:@"<#> %@", [_string SVR_descriptionHighlightingRange:range]];
@@ -125,7 +125,7 @@
   }
   
   // Find positive integers
-  regex = [SVRLegacyRegex regexWithString:_string pattern:@"\\d+"];
+  regex = [TinyRegex regexWithString:_string pattern:@"\\d+"];
   while ((rangeV = [regex nextObject])) {
     range = [rangeV XP_rangeValue];
     [XPLog extra:@"<#> %@", [_string SVR_descriptionHighlightingRange:range]];
@@ -157,7 +157,7 @@
   NSRange range;
   NSValue *value;
   NSMutableSet *output = [[NSMutableSet new] autorelease];
-  SVRLegacyRegex *regex = [SVRLegacyRegex regexWithString:_string
+  TinyRegex *regex = [TinyRegex regexWithString:_string
                                                   pattern:@"[\\d\\)][\\*\\-\\+\\/\\^][\\-\\d\\(]"
                                            forceIteration:YES];
   NSAssert(!_operators, @"This is a lazy init method, it assumes _operators is NIL");
@@ -178,7 +178,7 @@
   NSRange range = XPNotFoundRange;
   NSValue *value = nil;
   NSMutableSet *output = [[NSMutableSet new] autorelease];
-  SVRLegacyRegex *regex = [SVRLegacyRegex regexWithString:_string
+  TinyRegex *regex = [TinyRegex regexWithString:_string
                                                   pattern:@"[\\d\\.\\^\\*\\-\\+\\/\\(\\)]+\\="];
   NSAssert(!_expressions, @"This is a lazy init method, it assumes _expressions is NIL");
   while ((value = [regex nextObject])) {
@@ -195,12 +195,12 @@
 {
   NSRange range;
   NSValue *value;
-  SVRLegacyRegex *regex = nil;
+  TinyRegex *regex = nil;
   NSMutableSet *output = [[NSMutableSet new] autorelease];
   NSAssert(!_brackets, @"This is a lazy init method, it assumes _brackets is NIL");
 
   // Check for opening brackets
-  regex = [SVRLegacyRegex regexWithString:_string pattern:@"\\([\\-\\d]"];
+  regex = [TinyRegex regexWithString:_string pattern:@"\\([\\-\\d]"];
   while ((value = [regex nextObject])) {
     range = [value XP_rangeValue];
     range.length = 1;
@@ -209,7 +209,7 @@
   }
   
   // Check for closing brackets
-  regex = [SVRLegacyRegex regexWithString:_string pattern:@"\\d\\)[\\^\\*\\/\\+\\-\\=]"];
+  regex = [TinyRegex regexWithString:_string pattern:@"\\d\\)[\\^\\*\\/\\+\\-\\=]"];
   while ((value = [regex nextObject])) {
     range = [value XP_rangeValue];
     range.location += 1;

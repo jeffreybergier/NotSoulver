@@ -8,8 +8,9 @@
 #import <Foundation/Foundation.h>
 #import "XPCrossPlatform.h"
 #import "re.h"
+#import "slre.h"
 
-@interface SVRLegacyRegex: NSEnumerator
+@interface SLRERegex: NSEnumerator
 {
   mm_copy NSString *_pattern;
   mm_copy NSString *_string;
@@ -44,7 +45,7 @@
 
 @end
 
-@interface SVRLegacyRegex (Tests)
+@interface SLRERegex (Tests)
 +(void)executeTests;
 +(void)__executeTests_ranges;
 +(void)__executeTests_values;

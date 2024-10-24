@@ -21,19 +21,19 @@ LOCAL_RESOURCES = NEXTSTEP_Soulver.nib NEXTSTEP_SVRDocument.nib
 
 CLASSES = NSUserDefaults+Soulver.m SVRAppDelegate.m SVRDocument.m\
           SVRDocumentModelController.m SVRDocumentViewController.m\
-          SVRLegacyRegex.m SVRSolver.m SVRSolverExpressionTagger.m\
+          TinyRegex.m SLRERegex.m SVRSolver.m SVRSolverExpressionTagger.m\
           SVRSolverScanner.m SVRSolverSolutionTagger.m SVRSolverStyler.m\
           SVRSolverTextAttachment.m XPCrossPlatform.m XPDocument.m
 
 HFILES = re.h NSUserDefaults+Soulver.h SVRAppDelegate.h SVRDocument.h\
          SVRDocumentModelController.h SVRDocumentViewController.h\
-         SVRLegacyRegex.h SVRSolver.h SVRSolverExpressionTagger.h\
+         TinyRegex.h SLRERegex.h SVRSolver.h SVRSolverExpressionTagger.h\
          SVRSolverScanner.h SVRSolverSolutionTagger.h SVRSolverStyler.h\
          SVRSolverTextAttachment.h XPCrossPlatform.h XPDocument.h
 
 MFILES = Soulver_main.m
 
-CFILES = re.c
+CFILES = re.c slre.c
 
 OTHERSRCS = Makefile.preamble Makefile Makefile.postamble m.template\
             h.template .gdbinit

@@ -8,36 +8,39 @@
             SVRDocument.m, 
             SVRDocumentModelController.m, 
             SVRDocumentViewController.m, 
-            SVRLegacyRegex.m, 
-            SVRSolver.m, 
+            SVRSolver.m,
             SVRSolverExpressionTagger.m, 
             SVRSolverScanner.m, 
             SVRSolverSolutionTagger.m, 
             SVRSolverStyler.m, 
             SVRSolverTextAttachment.m, 
             XPCrossPlatform.m, 
-            XPDocument.m
-        ); 
+            XPDocument.m,
+            SLRERegex.m,
+            TinyRegex.m
+        );
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
         H_FILES = (
-            re.h, 
-            "NSUserDefaults+Soulver.h", 
+            re.h,
+            slre.h,
+            "NSUserDefaults+Soulver.h",
             SVRAppDelegate.h, 
             SVRDocument.h, 
             SVRDocumentModelController.h, 
             SVRDocumentViewController.h, 
-            SVRLegacyRegex.h, 
-            SVRSolver.h, 
+            SVRSolver.h,
             SVRSolverExpressionTagger.h, 
             SVRSolverScanner.h, 
             SVRSolverSolutionTagger.h, 
             SVRSolverStyler.h, 
             SVRSolverTextAttachment.h, 
             XPCrossPlatform.h, 
-            XPDocument.h
-        ); 
+            XPDocument.h,
+            SLRERegex.h,
+            TinyRegex.h
+        );
         INTERFACES = (NEXTSTEP_Soulver.nib, NEXTSTEP_SVRDocument.nib); 
-        OTHER_LINKED = (re.c, Soulver_main.m); 
+        OTHER_LINKED = (re.c, slre.c, Soulver_main.m); 
         OTHER_SOURCES = (
             Makefile.preamble, 
             Makefile, 
