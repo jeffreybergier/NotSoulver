@@ -60,7 +60,8 @@
 
 -(BOOL)shouldDrawError;
 {
-  return [[self attachment] error] != SVRSolverErrorNone;
+  SVRSolverTextAttachment *attachment = (SVRSolverTextAttachment*)[self attachment];
+  return [attachment error] != SVRSolverErrorNone;
 }
 
 -(NSString*)description;
@@ -73,9 +74,9 @@
 -(id)initWithAttachment:(SVRSolverTextAttachment*)attachment;
 {
   self = [super init];
-  _attachment = attachment;
   _description = [[NSString alloc] initWithFormat:@"<%@> {solution:`%@`, error:%@}",
       [self class], [attachment solution], SVRSolverDebugDescriptionForError([attachment error])];
+  [self setAttachment:attachment];
   return self;
 }
 
@@ -89,17 +90,19 @@
 -(void)__sol_drawWithFrame:(NSRect)cellFrame
                     inView:(NSView*)controlView;
 {
+  SVRSolverTextAttachment *attachment = (SVRSolverTextAttachment*)[self attachment];
   [XPLog extra:@"__solut_drawWithFrame:%@", NSStringFromRect(cellFrame)];
   NSDrawWhiteBezel(cellFrame, cellFrame);
-  [[[self attachment] stringForDrawing] drawInRect:cellFrame withAttributes:[self __sol_attributes]];
+  [[attachment stringForDrawing] drawInRect:cellFrame withAttributes:[self __sol_attributes]];
 }
 
 -(void)__err_drawWithFrame:(NSRect)cellFrame
                     inView:(NSView*)controlView;
 {
+  SVRSolverTextAttachment *attachment = (SVRSolverTextAttachment*)[self attachment];
   [XPLog extra:@"__error_drawWithFrame:%@", NSStringFromRect(cellFrame)];
   NSDrawGrayBezel(cellFrame, cellFrame);
-  [[[self attachment] stringForDrawing] drawInRect:cellFrame withAttributes:[self __err_attributes]];
+  [[attachment stringForDrawing] drawInRect:cellFrame withAttributes:[self __err_attributes]];
 }
 
 -(NSDictionary*)__sol_attributes;
@@ -154,7 +157,8 @@
 
 -(NSSize)cellSize;
 {
-  NSSize size = [[[self attachment] stringForDrawing] sizeWithAttributes:[self __sol_attributes]];
+  SVRSolverTextAttachment *attachment = (SVRSolverTextAttachment*)[self attachment];
+  NSSize size = [[attachment stringForDrawing] sizeWithAttributes:[self __sol_attributes]];
   size.width += 8;
   return size;
 }
@@ -181,30 +185,6 @@
    (flag) ? @"YES" : @"NO", NSStringFromRect(cellFrame)];
 }
 
-// MARK: Protocol (Unused)
-
--(SVRSolverTextAttachment*)attachment;
-{
-  return [[_attachment retain] autorelease];
-}
-
--(void)setAttachment:(SVRSolverTextAttachment*)attachment;
-{
-  _attachment = attachment;
-}
-
--(BOOL)wantsToTrackMouse;
-{
-  return NO;
-}
-
--(BOOL)trackMouse:(NSEvent *)theEvent
-           inRect:(NSRect)cellFrame
-           ofView:(NSView *)controlView
-     untilMouseUp:(BOOL)flag;
-{
-  return NO;
-}
 
 // MARK: Dealloc
 
@@ -213,7 +193,6 @@
   [XPLog extra:@"DEALLOC: %@", self];
   [_description release];
   _description = nil;
-  _attachment = nil;
   [super dealloc];
 }
 

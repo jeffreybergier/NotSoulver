@@ -8,7 +8,10 @@
 #import "SVRSolverStyler.h"
 #import "NSUserDefaults+Soulver.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-parameter"
 int main(int argc, const char *argv[]) {
+#pragma clang diagnostic pop
   
   // MARK: Boot Sequence
   // And document support CFLAGS

@@ -33,6 +33,8 @@ typedef NSString* XPAttributedStringKey;
 typedef NSRange* XPRangePointer;
 #define XPLocale NSDictionary
 #define XPTextAlignmentCenter NSCenterTextAlignment
+#define XPModalResponseOK NSOKButton
+#define XPModalResponseCancel NSCancelButton
 #else
 typedef CGFloat XPFloat;
 typedef NSInteger XPInteger;
@@ -41,6 +43,8 @@ typedef NSRangePointer XPRangePointer;
 typedef NSAttributedStringKey XPAttributedStringKey;
 #define XPLocale NSLocale
 #define XPTextAlignmentCenter NSTextAlignmentCenter
+#define XPModalResponseOK NSModalResponseOK
+#define XPModalResponseCancel NSModalResponseCancel
 #endif
 
 extern const NSRange XPNotFoundRange;

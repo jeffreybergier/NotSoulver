@@ -21,9 +21,8 @@
 
 @end
 
-@interface SVRSolverTextAttachmentCell: NSObject <NSTextAttachmentCell>
+@interface SVRSolverTextAttachmentCell: NSTextAttachmentCell
 {
-  mm_unretain SVRSolverTextAttachment *_attachment;
   mm_new NSString *_description;
 }
 
@@ -45,20 +44,10 @@
 
 // MARK: Protocol (Used)
 -(NSSize)cellSize;
--(NSPoint)cellBaselineOffset;
 -(void)drawWithFrame:(NSRect)cellFrame
               inView:(NSView*)controlView;
 -(void)highlight:(BOOL)flag
        withFrame:(NSRect)cellFrame
           inView:(NSView*)controlView;
-
-// MARK: Protocol (Unused)
--(SVRSolverTextAttachment*)attachment;
--(void)setAttachment:(SVRSolverTextAttachment*)attachment;
--(BOOL)wantsToTrackMouse;
--(BOOL)trackMouse:(NSEvent *)theEvent
-           inRect:(NSRect)cellFrame
-           ofView:(NSView *)controlView
-     untilMouseUp:(BOOL)flag;
 
 @end

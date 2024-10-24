@@ -50,7 +50,10 @@ NSPoint XPDocumentPointForCascading;
 {
   if (!_isNibLoaded) {
     _isNibLoaded = YES;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [NSBundle loadNibNamed:[self windowNibName] owner:self];
+#pragma clang diagnostic pop
   }
   [[self window] makeKeyAndOrderFront:self];
 }
@@ -65,7 +68,7 @@ NSPoint XPDocumentPointForCascading;
   switch (alertResult) {
     case XPAlertReturnDefault:
       savePanelResult = [self __runModalSavePanelAndSetFileName];
-      return savePanelResult == NSOKButton;
+      return savePanelResult == XPModalResponseOK;
     case XPAlertReturnAlternate:
       return YES;
     case XPAlertReturnOther:
@@ -313,7 +316,8 @@ NSPoint XPDocumentPointForCascading;
 }
 
 // MARK: Panels and Alerts
-
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 -(BOOL)prepareSavePanel:(NSSavePanel*)savePanel;
 {
   [savePanel setRequiredFileType:[self fileType]];
@@ -329,11 +333,11 @@ NSPoint XPDocumentPointForCascading;
   
   okCancel = [savePanel runModal];
   switch (okCancel) {
-    case NSOKButton:
+    case XPModalResponseOK:
       // TODO: Consider trying to return error value if this fails
       [self writeToFile:[savePanel filename] ofType:nil];
       break;
-    case NSCancelButton:
+    case XPModalResponseCancel:
       [XPLog debug:@"User cancelled save"];
       break;
     default:
@@ -349,7 +353,7 @@ NSPoint XPDocumentPointForCascading;
   XPInteger result;
   NSSavePanel *savePanel = [NSSavePanel savePanel];
   result = [self runModalSavePanel:savePanel];
-  if (result == NSOKButton) {
+  if (result == XPModalResponseOK) {
     [self setFileName:[savePanel filename]];
   }
   return result;
@@ -390,6 +394,5 @@ NSPoint XPDocumentPointForCascading;
   _fileType = nil;
   [super dealloc];
 }
-
-
+#pragma clang diagnostic pop
 @end
