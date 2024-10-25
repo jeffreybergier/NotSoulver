@@ -79,19 +79,23 @@
                              _bufferLength - _bufferIndex,
                              captures);
   
-  if (!containsMatch) { return nil; }
+  if (!containsMatch) {
+    return nil;
+  }
   
   for (idx = 0; idx<_groupCount; idx++) {
     // pull out the full range and update the bufferIndex for next iteration
     if (idx == 0) {
       matchRange.location = (XPUInteger)(captures[idx].ptr - buffer);
       matchRange.length = (XPUInteger)captures[idx].len;
-      NSLog(@"%@",[_string SVR_descriptionHighlightingRange:matchRange]);
+      [XPLog extra:@"%@ Pattern:`%@` Match[0]:`%@`",
+       [super description], _pattern, [_string SVR_descriptionHighlightingRange:matchRange]];
       _bufferIndex = (int)NSMaxRange(matchRange);
     } else {
       groupRange.location = (XPUInteger)(captures[idx].ptr - buffer);
       groupRange.length = (XPUInteger)captures[idx].len;
-      NSLog(@"%@",[_string SVR_descriptionHighlightingRange:groupRange]);
+      [XPLog extra:@"%@ Pattern:`%@` Group[%d]:`%@`",
+       [super description], _pattern, idx, [_string SVR_descriptionHighlightingRange:groupRange]];
       [groupRanges addObject:[NSValue XP_valueWithRange:groupRange]];
     }
   }
@@ -187,6 +191,8 @@
   NSLog(@"%@ Unit Tests: STARTING", self);
   
   // MARK: Test Capture Groups
+  
+  // Super basic operator finding
   regex = [SLRERegex regexWithString:@"and 5+5 and 4-4 and 6*6 and 7/6 and 8^8 and"
                              pattern:@"\\d(\\+|\\-|\\/|\\*|\\^)\\d"
                           groupCount:1];
@@ -211,6 +217,39 @@
   NSAssert([[match groupRanges] count] == 1, @"");
   NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"8^8"], @"");
   NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@"^"], @"");
+  match = [regex nextObject];
+  NSAssert(match == nil, @"");
+  
+  // More complete operator finding
+  // TODO: For some reason \d is not working in place of digits
+  regex = [SLRERegex regexWithString:@"and (1+2)^(6*7)-3*4*(7) and 9-(4) and"
+                             pattern:@"[\\)0123456789](\\+|\\-|\\/|\\*|\\^)[\\(0123456789]"
+                          groupCount:1];
+  NSAssert([regex containsMatch], @"");
+  match = [regex nextObject];
+  NSAssert([[match groupRanges] count] == 1, @"");
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"1+2"], @"");
+  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@"+"], @"");
+  match = [regex nextObject];
+  NSAssert([[match groupRanges] count] == 1, @"");
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@")^("], @"");
+  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@"^"], @"");
+  match = [regex nextObject];
+  NSAssert([[match groupRanges] count] == 1, @"");
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"6*7"], @"");
+  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@"*"], @"");
+  match = [regex nextObject];
+  NSAssert([[match groupRanges] count] == 1, @"");
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@")-3"], @"");
+  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@"-"], @"");
+  match = [regex nextObject];
+  NSAssert([[match groupRanges] count] == 1, @"");
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"4*("], @"");
+  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@"*"], @"");
+  match = [regex nextObject];
+  NSAssert([[match groupRanges] count] == 1, @"");
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"9-("], @"");
+  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@"-"], @"");
   match = [regex nextObject];
   NSAssert(match == nil, @"");
   
