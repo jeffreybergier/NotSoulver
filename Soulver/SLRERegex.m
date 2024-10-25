@@ -206,8 +206,6 @@
   
   NSLog(@"%@ Unit Tests: STARTING", self);
   
-  // MARK: Test Capture Groups
-  
   // Super basic operator finding
   regex = [SLRERegex regexWithString:@"and 5+5 and 4-4 and 6*6 and 7/6 and 8^8 and"
                              pattern:@"\\d(\\+|\\-|\\/|\\*|\\^)\\d"
@@ -303,97 +301,61 @@
   match = [regex nextObject];
   NSAssert(match == nil, @"");
   
+  
+  // Left Bracket Finding
+  regex = [SLRERegex regexWithString:@"and (-102.34+243.333)^(666*-700)-33.44*-4.444*(7...888) and -9-(400) and"
+                             pattern:@"(\\()[\\-0123456789]"
+                          groupCount:1
+                                mode:SLRERegexAdvanceAfterGroup];
+  match = [regex nextObject];
+   NSAssert([[match groupRanges] count] == 1, @"");
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"(-"], @"");
+  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@"("], @"");
+  match = [regex nextObject];
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"(6"], @"");
+  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@"("], @"");
+  match = [regex nextObject];
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"(7"], @"");
+  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@"("], @"");
+  match = [regex nextObject];
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"(4"], @"");
+  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@"("], @"");
+  match = [regex nextObject];
+  NSAssert(match == nil, @"");
+  
+  // Right Bracket Finding
+  regex = [SLRERegex regexWithString:@"and (-102.34+243.333)^(666*-700)-33.44*-4.444*(7...888)= and -9-(400) and"
+                             pattern:@"\\d(\\))"
+                          groupCount:1
+                                mode:SLRERegexAdvanceAfterGroup];
+  match = [regex nextObject];
+   NSAssert([[match groupRanges] count] == 1, @"");
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"3)"], @"");
+  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@")"], @"");
+  match = [regex nextObject];
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"0)"], @"");
+  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@")"], @"");
+  match = [regex nextObject];
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"8)"], @"");
+  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@")"], @"");
+  match = [regex nextObject];
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"0)"], @"");
+  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@")"], @"");
+  match = [regex nextObject];
+  NSAssert(match == nil, @"");
+  
+  // Expression Finding
+  regex = [SLRERegex regexWithString:@"and (-102.34+243.333)^(666*-700)-33.44*-4.444*(7...888)= and -9-(400)= and"
+                             pattern:@"[0123456789\\.\\^\\*\\-\\+\\/\\(\\)]+\\="];
+  match = [regex nextObject];
+  NSAssert([[match groupRanges] count] == 0, @"");
+  NSAssert([[[regex string] substringWithRange:[match range]]
+            isEqualToString:@"(-102.34+243.333)^(666*-700)-33.44*-4.444*(7...888)="], @"");
+  match = [regex nextObject];
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"-9-(400)="], @"");
+  match = [regex nextObject];
+  NSAssert(match == nil, @"");
+  
   NSLog(@"%@ Unit Tests: PASSED", self);
 }
-  
-  /*
-  // MARK: Test basic string matching
-  regex = [SLRERegex regexWithString:@"this is a verb for other cool verbs" pattern:@"verb"];
-  NSAssert(regex, @"");
-  NSAssert([regex containsMatch], @"");
-  range = [regex nextMatch];
-  NSAssert(range.location == 10, @"");
-  NSAssert(range.length == 4, @"");
-  NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"verb"], @"");
-  range = [regex nextMatch];
-  NSAssert(range.location == 30, @"");
-  NSAssert(range.length == 4, @"");
-  NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"verb"], @"");
-  
-  // MARK: Test simple numbers
-  regex = [SLRERegex regexWithString:@"12.34a5678m-90.12s-3456" pattern:@"-?\\d+\\.?\\d+"];
-  NSAssert([regex containsMatch], @"");
-  range = [regex nextMatch];
-  NSAssert(range.location == 0, @"");
-  NSAssert(range.length == 5, @"");
-  NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"12.34"], @"");
-  range = [regex nextMatch];
-  NSAssert(range.location == 6, @"");
-  NSAssert(range.length == 4, @"");
-  NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"5678"], @"");
-  range = [regex nextMatch];
-  NSAssert(range.location == 11, @"");
-  NSAssert(range.length == 6, @"");
-  NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"-90.12"], @"");
-  range = [regex nextMatch];
-  NSAssert(range.location == 18, @"");
-  NSAssert(range.length == 5, @"");
-  NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"-3456"], @"");
-  range = [regex nextMatch];
-  NSAssert(range.location == NSNotFound, @"");
-  NSAssert(range.length == 0, @"");
-  
-  // MARK: Test expression finding
-  regex = [SLRERegex regexWithString:@"12.34a5678m999m-90.12s-3456" pattern:@"-?\\d+\\.?\\d+[ma]-?\\d+\\.?\\d+"];
-  NSAssert([regex containsMatch], @"");
-  range = [regex nextMatch];
-  NSAssert(range.location == 0, @"");
-  NSAssert(range.length == 10, @"");
-  NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"12.34a5678"], @"");
-  range = [regex nextMatch];
-  NSAssert(range.location == 11, @"");
-  NSAssert(range.length == 10, @"");
-  NSAssert([[[regex string] substringWithRange:range] isEqualToString:@"999m-90.12"], @"");
-  range = [regex nextMatch];
-  NSAssert(range.location == NSNotFound, @"");
-  NSAssert(range.length == 0, @"");
-  
-  // MARK: Test expressions with bad numbers
-  regex = [SLRERegex regexWithString:@"12.m56...78m--90.12" pattern:@"-?\\d+\\.?\\d+m-?\\d+\\.?\\d+"];
-  NSAssert(![regex containsMatch], @"");
-  
-  // MARK: Test Multiple Operators
-  regex = [SLRERegex regexWithString:@"5+7+3" pattern:@"[\\*\\-\\+\\/\\^]"];
-  NSAssert([regex containsMatch], @"");
-  range = [regex nextMatch];
-  NSAssert(range.location == 1, @"");
-  NSAssert(range.length == 1, @"");
-  range = [regex nextMatch];
-  NSAssert(range.location == 3, @"");
-  NSAssert(range.length == 1, @"");
-  range = [regex nextMatch];
-  NSAssert(range.location == NSNotFound, @"");
-  
-  // MARK: Test finding exponent
-  regex = [SLRERegex regexWithString:@"3*5^2+7" pattern:@"\\d\\^\\d"];
-  NSAssert([regex containsMatch], @"");
-  range = [regex nextMatch];
-  NSAssert(range.location == 2, @"");
-  NSAssert(range.length == 3, @"");
-  regex = [SLRERegex regexWithString:@"3*5/2+7" pattern:@"\\d\\^\\d"];
-  NSAssert(![regex containsMatch], @"");
-  range = [regex nextMatch];
-  NSAssert(range.location == NSNotFound, @"");
-  NSAssert(range.length == 0, @"");
-  regex = [SLRERegex regexWithString:@"3*5^2" pattern:@"[\\^\\*]"];
-  NSAssert([regex containsMatch], @"");
-  range = [regex nextMatch];
-  NSAssert(range.location == 1, @"");
-  NSAssert(range.length == 1, @"");
-  range = [regex nextMatch];
-  NSAssert(range.location == 3, @"");
-  NSAssert(range.length == 1, @"");
-}
-
-*/
 @end
