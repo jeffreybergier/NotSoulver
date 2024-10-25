@@ -11,11 +11,23 @@
 
 @class SLRERegexMatch;
 
+typedef enum {
+  /// Default regex advance mode. Once a match is found,
+  /// it advances the search to after that match.
+  SLRERegexAdvanceAfterMatch,
+  /// This advances the next search to after the last capture group.
+  SLRERegexAdvanceAfterGroup,
+  /// This advances one character at a time.
+  /// Note that this can cause many repeated matches.
+  SLRERegexAdvanceAfterChar,
+} SLRERegexAdvanceMode;
+
 @interface SLRERegex: NSEnumerator
 {
   mm_copy NSString *_pattern;
   mm_copy NSString *_string;
   
+  SLRERegexAdvanceMode _mode;
   int _groupCount;
   int _bufferIndex;
   int _bufferLength;
@@ -25,12 +37,17 @@
 // MARK: Initialization
 -(id)initWithString:(NSString*)string
             pattern:(NSString*)pattern
-         groupCount:(int)groupCount;
+         groupCount:(int)groupCount
+               mode:(SLRERegexAdvanceMode)mode;
+
 -(id)initWithString:(NSString*)string
             pattern:(NSString*)pattern;
+
 +(id)regexWithString:(NSString*)string
              pattern:(NSString*)pattern
-          groupCount:(int)groupCount;
+          groupCount:(int)groupCount
+                mode:(SLRERegexAdvanceMode)mode;
+
 +(id)regexWithString:(NSString*)string
              pattern:(NSString*)pattern;
 
