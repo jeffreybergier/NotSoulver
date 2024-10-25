@@ -323,7 +323,7 @@
   // Right Bracket Finding
   regex = [SLRERegex SVR_regexForRightBracketsInString:@"and (-102.34+243.333)^(666*-700)-33.44*-4.444*(7...888)= and -9-(400) and"];
   match = [regex nextObject];
-   NSAssert([[match groupRanges] count] == 1, @"");
+  NSAssert([[match groupRanges] count] == 1, @"");
   NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"3)"], @"");
   NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@")"], @"");
   match = [regex nextObject];
