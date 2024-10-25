@@ -275,6 +275,34 @@
   match = [regex nextObject];
   NSAssert(match == nil, @"");
   
+  // Number finding
+  regex = [SLRERegex regexWithString:@"and (-102.34+243.333)^(666*-700)-33.44*-4.444*(7...888) and -9-(400) and"
+                             pattern:@"\\-?\\d+(\\.\\d+)*"];
+  match = [regex nextObject];
+  NSAssert([[match groupRanges] count] == 0, @"");
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"-102.34"], @"");
+  match = [regex nextObject];
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"243.333"], @"");
+  match = [regex nextObject];
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"666"], @"");
+  match = [regex nextObject];
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"-700"], @"");
+  match = [regex nextObject];
+  // TODO: this is an error that needs to be manually managed
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"-33.44"], @"");
+  match = [regex nextObject];
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"-4.444"], @"");
+  match = [regex nextObject];
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"7"], @"");
+  match = [regex nextObject];
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"888"], @"");
+  match = [regex nextObject];
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"-9"], @"");
+  match = [regex nextObject];
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"400"], @"");
+  match = [regex nextObject];
+  NSAssert(match == nil, @"");
+  
   NSLog(@"%@ Unit Tests: PASSED", self);
 }
   
