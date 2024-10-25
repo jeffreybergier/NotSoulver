@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "XPCrossPlatform.h"
+#import "SLRERegex.h"
 
 @interface SVRSolverScanner: NSObject
 {
@@ -37,5 +38,15 @@
 -(void)__populateExpressions;
 -(void)__populateBrackets;
 -(void)__addRange:(NSRange)range toSet:(NSMutableSet*)set;
+
+@end
+
+@interface SLRERegex (Soulver)
+
++(id)SVR_regexForNumbersInString:(NSString*)string;
++(id)SVR_regexForOperatorsInString:(NSString*)string;
++(id)SVR_regexForExpressionsInString:(NSString*)string;
++(id)SVR_regexForLeftBracketsInString:(NSString*)string;
++(id)SVR_regexForRightBracketsInString:(NSString*)string;
 
 @end

@@ -197,6 +197,10 @@
 
 @end
 
+// A little unorthodox, but importing this just for testing.
+// This ensures I test the patterns that the App Uses
+#import "SVRSolverScanner.h"
+
 @implementation SLRERegex (Tests)
 
 +(void)executeTests;
@@ -237,10 +241,7 @@
   
   // More complete operator finding
   // TODO: For some reason \d is not working in place of digits
-  regex = [SLRERegex regexWithString:@"and (1+2)^(6*7)-3*4*(7) and 9-(4) and"
-                             pattern:@"[\\)0123456789](\\+|\\-|\\/|\\*|\\^)[\\(0123456789]"
-                          groupCount:1
-                                mode:SLRERegexAdvanceAfterGroup];
+  regex = [SLRERegex SVR_regexForOperatorsInString:@"and (1+2)^(6*7)-3*4*(7) and 9-(4) and"];
   NSAssert([regex containsMatch], @"");
   match = [regex nextObject];
   NSAssert([[match groupRanges] count] == 1, @"");
@@ -274,8 +275,7 @@
   NSAssert(match == nil, @"");
   
   // Number finding
-  regex = [SLRERegex regexWithString:@"and (-102.34+243.333)^(666*-700)-33.44*-4.444*(7...888) and -9-(400) and"
-                             pattern:@"\\-?\\d+(\\.\\d+)*"];
+  regex = [SLRERegex SVR_regexForNumbersInString:@"and (-102.34+243.333)^(666*-700)-33.44*-4.444*(7...888) and -9-(400) and"];
   match = [regex nextObject];
   NSAssert([[match groupRanges] count] == 0, @"");
   NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"-102.34"], @"");
@@ -303,10 +303,7 @@
   
   
   // Left Bracket Finding
-  regex = [SLRERegex regexWithString:@"and (-102.34+243.333)^(666*-700)-33.44*-4.444*(7...888) and -9-(400) and"
-                             pattern:@"(\\()[\\-0123456789]"
-                          groupCount:1
-                                mode:SLRERegexAdvanceAfterGroup];
+  regex = [SLRERegex SVR_regexForLeftBracketsInString:@"and (-102.34+243.333)^(666*-700)-33.44*-4.444*(7...888) and -9-(400) and"];
   match = [regex nextObject];
    NSAssert([[match groupRanges] count] == 1, @"");
   NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"(-"], @"");
@@ -324,10 +321,7 @@
   NSAssert(match == nil, @"");
   
   // Right Bracket Finding
-  regex = [SLRERegex regexWithString:@"and (-102.34+243.333)^(666*-700)-33.44*-4.444*(7...888)= and -9-(400) and"
-                             pattern:@"\\d(\\))"
-                          groupCount:1
-                                mode:SLRERegexAdvanceAfterGroup];
+  regex = [SLRERegex SVR_regexForRightBracketsInString:@"and (-102.34+243.333)^(666*-700)-33.44*-4.444*(7...888)= and -9-(400) and"];
   match = [regex nextObject];
    NSAssert([[match groupRanges] count] == 1, @"");
   NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"3)"], @"");
@@ -345,8 +339,7 @@
   NSAssert(match == nil, @"");
   
   // Expression Finding
-  regex = [SLRERegex regexWithString:@"and (-102.34+243.333)^(666*-700)-33.44*-4.444*(7...888)= and -9-(400)= and"
-                             pattern:@"[0123456789\\.\\^\\*\\-\\+\\/\\(\\)]+\\="];
+  regex = [SLRERegex SVR_regexForExpressionsInString:@"and (-102.34+243.333)^(666*-700)-33.44*-4.444*(7...888)= and -9-(400)= and"];
   match = [regex nextObject];
   NSAssert([[match groupRanges] count] == 0, @"");
   NSAssert([[[regex string] substringWithRange:[match range]]

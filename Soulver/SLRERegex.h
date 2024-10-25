@@ -55,8 +55,7 @@ typedef enum {
 -(BOOL)containsMatch;
 
 // MARK: NSEnumerator
-// TODO: Change this type to SLRERegexMatch
--(id)nextObject;
+-(SLRERegexMatch*)nextObject;
 
 // MARK: Convenience Properties
 -(NSString*)string;

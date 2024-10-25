@@ -76,60 +76,18 @@
 {
   NSMutableSet *output = [[NSMutableSet new] autorelease];
   NSRange range = XPNotFoundRange;
-  NSValue *rangeV = nil;
-  TinyRegex *regex = nil;
-  TinyRegex *n_regex = nil; // for testing negative numbers to make sure they are preceded by an operator
+  SLRERegex *regex = nil;
+  SLRERegexMatch *match = nil;
 
   NSAssert(!_numbers, @"This is a lazy init method, it assumes _numbers is NIL");
   
   // Find negative floats
-  regex = [TinyRegex regexWithString:_string pattern:@"\\-\\d+\\.\\d+"];
-  while ((rangeV = [regex nextObject])) {
-    range = [rangeV XP_rangeValue];
-    if (range.location == 0) { // If we're at the beginning of the string the negative number needs no checks
-      [XPLog extra:@"<#> %@", [_string SVR_descriptionHighlightingRange:range]];
-      [self __addRange:range toSet:output];
-    } else {
-      n_regex = [TinyRegex regexWithString:[_string substringWithRange:NSMakeRange(range.location-1, 1)]
-                                        pattern:@"[\\=\\(\\+\\-\\*\\/\\^]"];
-      if ([n_regex nextObject]) {
-        [XPLog extra:@"<#> %@", [_string SVR_descriptionHighlightingRange:range]];
-        [self __addRange:range toSet:output];
-      }
-    }
-  }
-  
-  // Find negative integers
-  regex = [TinyRegex regexWithString:_string pattern:@"\\-\\d+"];
-  while ((rangeV = [regex nextObject])) {
-    range = [rangeV XP_rangeValue];
-    if (range.location == 0) { // If we're at the beginning of the string the negative number needs no checks
-      [XPLog extra:@"<#> %@", [_string SVR_descriptionHighlightingRange:range]];
-      [self __addRange:range toSet:output];
-    } else {
-      n_regex = [TinyRegex regexWithString:[_string substringWithRange:NSMakeRange(range.location-1, 1)]
-                                        pattern:@"[\\=\\(\\+\\-\\*\\/\\^]"];
-      if ([n_regex nextObject]) {
-        [XPLog extra:@"<#> %@", [_string SVR_descriptionHighlightingRange:range]];
-        [self __addRange:range toSet:output];
-      }
-    }
-  }
-  
-  // Find positive floats
-  regex = [TinyRegex regexWithString:_string pattern:@"\\d+\\.\\d+"];
-  while ((rangeV = [regex nextObject])) {
-    range = [rangeV XP_rangeValue];
-    [XPLog extra:@"<#> %@", [_string SVR_descriptionHighlightingRange:range]];
-    [self __addRange:range toSet:output];
-  }
-  
-  // Find positive integers
-  regex = [TinyRegex regexWithString:_string pattern:@"\\d+"];
-  while ((rangeV = [regex nextObject])) {
-    range = [rangeV XP_rangeValue];
-    [XPLog extra:@"<#> %@", [_string SVR_descriptionHighlightingRange:range]];
-    [self __addRange:range toSet:output];
+  regex = [SLRERegex SVR_regexForNumbersInString:_string];
+  while ((match = [regex nextObject])) {
+    range = [match range];
+    // TODO: Check for the case of )-400 counting as negative 400
+    [XPLog debug:@"<#> %@", [_string SVR_descriptionHighlightingRange:range]];
+    [output addObject:[NSValue XP_valueWithRange:range]];
   }
   
   _numbers = [output copy];
@@ -158,8 +116,8 @@
   NSValue *value;
   NSMutableSet *output = [[NSMutableSet new] autorelease];
   TinyRegex *regex = [TinyRegex regexWithString:_string
-                                                  pattern:@"[\\d\\)][\\*\\-\\+\\/\\^][\\-\\d\\(]"
-                                           forceIteration:YES];
+                                        pattern:@"[\\d\\)][\\*\\-\\+\\/\\^][\\-\\d\\(]"
+                                 forceIteration:YES];
   NSAssert(!_operators, @"This is a lazy init method, it assumes _operators is NIL");
   while ((value = [regex nextObject])) {
     range = [value XP_rangeValue];
@@ -236,6 +194,45 @@
   _expressions = nil;
   _brackets = nil;
   [super dealloc];
+}
+
+@end
+
+@implementation SLRERegex (Soulver)
+
++(id)SVR_regexForNumbersInString:(NSString*)string;
+{
+  return [self regexWithString:string
+                       pattern:@"\\-?\\d+(\\.\\d+)*"];
+}
++(id)SVR_regexForOperatorsInString:(NSString*)string;
+{
+  return [self regexWithString:string
+                       pattern:@"[\\)0123456789](\\+|\\-|\\/|\\*|\\^)[\\(0123456789]"
+                    groupCount:1
+                          mode:SLRERegexAdvanceAfterGroup];
+}
+
++(id)SVR_regexForExpressionsInString:(NSString*)string;
+{
+  return [self regexWithString:string
+                       pattern:@"[0123456789\\.\\^\\*\\-\\+\\/\\(\\)]+\\="];
+}
+
++(id)SVR_regexForLeftBracketsInString:(NSString*)string;
+{
+  return [self regexWithString:string
+                       pattern:@"(\\()[\\-0123456789]"
+                    groupCount:1
+                          mode:SLRERegexAdvanceAfterGroup];
+}
+
++(id)SVR_regexForRightBracketsInString:(NSString*)string;
+{
+  return [self regexWithString:string
+                       pattern:@"\\d(\\))"
+                    groupCount:1
+                          mode:SLRERegexAdvanceAfterGroup];
 }
 
 @end
