@@ -3,44 +3,41 @@
     DYNAMIC_CODE_GEN = YES; 
     FILESTABLE = {
         CLASSES = (
-            "NSUserDefaults+Soulver.m", 
             SVRAppDelegate.m, 
             SVRDocument.m, 
             SVRDocumentModelController.m, 
             SVRDocumentViewController.m, 
-            SVRSolver.m,
+            SVRSolver.m, 
             SVRSolverExpressionTagger.m, 
             SVRSolverScanner.m, 
             SVRSolverSolutionTagger.m, 
             SVRSolverStyler.m, 
             SVRSolverTextAttachment.m, 
             XPCrossPlatform.m, 
-            XPDocument.m,
+            XPDocument.m, 
             SLRERegex.m,
-            TinyRegex.m
-        );
+            "NSUserDefaults+Soulver.m"
+        ); 
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
         H_FILES = (
-            re.h,
-            slre.h,
-            "NSUserDefaults+Soulver.h",
             SVRAppDelegate.h, 
             SVRDocument.h, 
             SVRDocumentModelController.h, 
             SVRDocumentViewController.h, 
-            SVRSolver.h,
+            SVRSolver.h, 
             SVRSolverExpressionTagger.h, 
             SVRSolverScanner.h, 
             SVRSolverSolutionTagger.h, 
             SVRSolverStyler.h, 
             SVRSolverTextAttachment.h, 
             XPCrossPlatform.h, 
-            XPDocument.h,
+            XPDocument.h, 
+            slre.h, 
             SLRERegex.h,
-            TinyRegex.h
-        );
+            "NSUserDefaults+Soulver.h"
+        ); 
         INTERFACES = (NEXTSTEP_Soulver.nib, NEXTSTEP_SVRDocument.nib); 
-        OTHER_LINKED = (re.c, slre.c, Soulver_main.m); 
+        OTHER_LINKED = (slre.c, Soulver_main.m); 
         OTHER_SOURCES = (
             Makefile.preamble, 
             Makefile, 

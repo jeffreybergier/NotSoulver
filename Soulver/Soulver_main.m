@@ -2,7 +2,6 @@
 #import "NSUserDefaults+Soulver.h"
 #import "XPCrossPlatform.h"
 #import "SVRSolver.h"
-#import "TinyRegex.h"
 #import "SLRERegex.h"
 
 #pragma clang diagnostic push
@@ -29,7 +28,6 @@ int main(int argc, const char *argv[]) {
   [XPLog alwys:@"<Main> Unit Tests: STARTING"];
   [CrossPlatform executeUnitTests];
   [SVRSolver executeTests];
-  [TinyRegex executeTests];
   [SLRERegex executeTests];
   [XPLog alwys:@"<Main> Unit Tests: PASSED"];
 #else

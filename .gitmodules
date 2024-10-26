@@ -1,3 +1,0 @@
-[submodule "Submodules/tiny-regex-c"]
-	path = Submodules/tiny-regex-c
-	url = https://github.com/kokke/tiny-regex-c.git
