@@ -13,7 +13,6 @@
 
 -(id)initWithString:(NSString*)string
             pattern:(NSString*)pattern
-         groupCount:(int)groupCount
                mode:(SLRERegexAdvanceMode)mode;
 {
   BOOL isCompiled = NO;
@@ -21,7 +20,6 @@
   _pattern = [pattern copy];
   _string = [string copy];
   _mode = mode;
-  _groupCount = groupCount + 1; // according to documentation in slre.h
   _bufferIndex = 0;
   _bufferLength = (int)[string length];
   isCompiled = slre_compile(&_engine, [_pattern XP_UTF8String]);
@@ -29,33 +27,13 @@
   return self;
 }
 
--(id)initWithString:(NSString*)string
-            pattern:(NSString*)pattern;
-{
-  return [self initWithString:string
-                      pattern:pattern
-                   groupCount:0
-                         mode:SLRERegexAdvanceAfterMatch];
-}
-
 +(id)regexWithString:(NSString*)string
              pattern:(NSString*)pattern
-          groupCount:(int)groupCount
                 mode:(SLRERegexAdvanceMode)mode;
 {
   return [[[SLRERegex alloc] initWithString:string
                                     pattern:pattern
-                                 groupCount:groupCount
                                        mode:mode] autorelease];
-}
-
-+(id)regexWithString:(NSString*)string
-             pattern:(NSString*)pattern;
-{
-  return [self regexWithString:string
-                       pattern:pattern
-                    groupCount:0
-                          mode:SLRERegexAdvanceAfterMatch];
 }
 
 // MARK: Core Functionality
@@ -63,11 +41,10 @@
 {
   BOOL containsMatch = NO;
   const char* buffer = [_string XP_UTF8String];
-  struct cap captures[_groupCount];
   containsMatch = slre_match(&_engine,
                              buffer + _bufferIndex,
                              _bufferLength - _bufferIndex,
-                             captures);
+                             NULL);
   return containsMatch;
 }
 
@@ -78,7 +55,8 @@
   NSMutableArray *groupRanges = [[NSMutableArray new] autorelease];
   BOOL containsMatch = NO;
   const char* buffer = [_string XP_UTF8String];
-  struct cap captures[_groupCount];
+  int captureCount = _engine.num_caps + 1; // according to documentation in slre.h
+  struct cap captures[captureCount];
   int idx;
   
   containsMatch = slre_match(&_engine,
@@ -88,7 +66,7 @@
   
   if (!containsMatch) { return nil; }
   
-  for (idx = 0; idx<_groupCount; idx++) {
+  for (idx = 0; idx < captureCount; idx++) {
     // pull out the full range and update the bufferIndex for next iteration
     if (idx == 0) {
       matchRange.location = (XPUInteger)(captures[idx].ptr - buffer);
@@ -98,6 +76,7 @@
     } else {
       groupRange.location = (XPUInteger)(captures[idx].ptr - buffer);
       groupRange.length = (XPUInteger)captures[idx].len;
+      if (NSMaxRange(groupRange) >= [_string length]) { continue; }
       [groupRanges addObject:[NSValue XP_valueWithRange:groupRange]];
       [XPLog extra:@"%@ Pattern:`%@` Group[%d]:`%@`",
        [super description], _pattern, idx, [_string SVR_descriptionHighlightingRange:groupRange]];
@@ -213,7 +192,6 @@
   // Super basic operator finding
   regex = [SLRERegex regexWithString:@"and 5+5 and 4-4 and 6*6 and 7/6 and 8^8 and"
                              pattern:@"\\d(\\+|\\-|\\/|\\*|\\^)\\d"
-                          groupCount:1
                                 mode:SLRERegexAdvanceAfterMatch];
   NSAssert([regex containsMatch], @"");
   match = [regex nextObject];

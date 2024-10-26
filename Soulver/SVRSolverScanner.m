@@ -177,27 +177,27 @@
 +(id)SVR_regexForNumbersInString:(NSString*)string;
 {
   return [self regexWithString:string
-                       pattern:@"\\-?\\d+(\\.\\d+)*"];
+                       pattern:@"\\-?\\d+(\\.\\d+)*"
+                          mode:SLRERegexAdvanceAfterMatch];
 }
 +(id)SVR_regexForOperatorsInString:(NSString*)string;
 {
   return [self regexWithString:string
                        pattern:@"[\\)0123456789](\\+|\\-|\\/|\\*|\\^)[\\(0123456789]"
-                    groupCount:1
                           mode:SLRERegexAdvanceAfterGroup];
 }
 
 +(id)SVR_regexForExpressionsInString:(NSString*)string;
 {
   return [self regexWithString:string
-                       pattern:@"[0123456789\\.\\^\\*\\-\\+\\/\\(\\)]+\\="];
+                       pattern:@"[0123456789\\.\\^\\*\\-\\+\\/\\(\\)]+\\="
+                          mode:SLRERegexAdvanceAfterMatch];
 }
 
 +(id)SVR_regexForLeftBracketsInString:(NSString*)string;
 {
   return [self regexWithString:string
                        pattern:@"(\\()[\\-0123456789]"
-                    groupCount:1
                           mode:SLRERegexAdvanceAfterGroup];
 }
 
@@ -205,7 +205,6 @@
 {
   return [self regexWithString:string
                        pattern:@"\\d(\\))"
-                    groupCount:1
                           mode:SLRERegexAdvanceAfterGroup];
 }
 

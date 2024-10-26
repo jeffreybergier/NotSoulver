@@ -28,7 +28,6 @@ typedef enum {
   mm_copy NSString *_string;
   
   SLRERegexAdvanceMode _mode;
-  int _groupCount;
   int _bufferIndex;
   int _bufferLength;
   struct slre _engine;
@@ -37,19 +36,11 @@ typedef enum {
 // MARK: Initialization
 -(id)initWithString:(NSString*)string
             pattern:(NSString*)pattern
-         groupCount:(int)groupCount
                mode:(SLRERegexAdvanceMode)mode;
-
--(id)initWithString:(NSString*)string
-            pattern:(NSString*)pattern;
 
 +(id)regexWithString:(NSString*)string
              pattern:(NSString*)pattern
-          groupCount:(int)groupCount
                 mode:(SLRERegexAdvanceMode)mode;
-
-+(id)regexWithString:(NSString*)string
-             pattern:(NSString*)pattern;
 
 // MARK: Core Functionality
 -(BOOL)containsMatch;
