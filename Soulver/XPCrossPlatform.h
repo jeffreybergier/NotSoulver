@@ -35,6 +35,8 @@ typedef NSRange* XPRangePointer;
 #define XPTextAlignmentCenter NSCenterTextAlignment
 #define XPModalResponseOK NSOKButton
 #define XPModalResponseCancel NSCancelButton
+#define XPKeyedArchiver NSArchiver
+#define XPKeyedUnarchiver NSUnarchiver
 #else
 typedef CGFloat XPFloat;
 typedef NSInteger XPInteger;
@@ -45,6 +47,8 @@ typedef NSAttributedStringKey XPAttributedStringKey;
 #define XPTextAlignmentCenter NSTextAlignmentCenter
 #define XPModalResponseOK NSModalResponseOK
 #define XPModalResponseCancel NSModalResponseCancel
+#define XPKeyedArchiver NSKeyedArchiver
+#define XPKeyedUnarchiver NSKeyedUnarchiver
 #endif
 
 extern const NSRange XPNotFoundRange;
@@ -143,7 +147,6 @@ NSArray* XPRunOpenPanel(void);
                       alpha:(XPFloat)alpha;
 @end
 
-// MARK: NSDecimalNumber
 @interface NSDecimalNumber (Soulver)
 /// In OpenStep, NaN comparisons are weird, so this uses a string comparison
 -(BOOL)SVR_isNotANumber;
@@ -153,6 +156,20 @@ NSArray* XPRunOpenPanel(void);
                                         withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
 @end
 
+/// NSFont is stored in UserDefaults as archived Data.
+/// The recommended way to do this is with NSFontDescriptor, however
+/// systems before 10.3 that did not have NSFontDescriptor will just
+/// fallback to the archiving and unarchiving the NSFont itself
+@interface NSFont (CrossPlatform)
+/// If font responds to fontDescriptor returns NSFontDescriptor.
+/// Otherwise returns self (NSFont)
+-(id)XP_fontDescriptor;
+/// If descriptor is NSFontDescriptor, inits a font with descriptor
+/// Otherwise, returns the descriptor directly (assuming its a font)
++(id)XP_fontWithDescriptor:(id)descriptor;
+@end
+
 @interface CrossPlatform: NSObject
 +(void)executeUnitTests;
 @end
+

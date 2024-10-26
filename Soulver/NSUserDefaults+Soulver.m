@@ -10,6 +10,7 @@ NSString *XPUserDefaultsColorForBracket                   = @"kColorForBracket";
 NSString *XPUserDefaultsColorForOperator                  = @"kColorForOperator";
 NSString *XPUserDefaultsColorForNumeral                   = @"kColorForNumeral";
 NSString *XPUserDefaultsColorForText                      = @"kColorForText";
+NSString *XPUserDefaultsFontDescriptor                    = @"kFontDescriptor";
 NSString *XPUserDefaultsWaitTimeForRendering              = @"kWaitTimeForRendering";
 NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumberLocale";
 
@@ -107,12 +108,27 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
 
 -(NSFont*)SVR_fontForText;
 {
-  return [NSFont userFixedPitchFontOfSize:16];
+  NSData *data = [self dataForKey:XPUserDefaultsFontDescriptor];
+  id descriptor = [XPKeyedUnarchiver unarchiveObjectWithData:data];
+  NSFont *font = [NSFont XP_fontWithDescriptor:descriptor];
+  if (font) {
+    return font;
+  } else {
+    [XPLog debug:@"-[NSFont fontDescriptor]: Not implemented", self];
+    return [NSFont userFixedPitchFontOfSize:16];
+  }
 }
 -(BOOL)SVR_setFontForText:(NSFont*)newValue;
 {
-  [XPLog error:@"NSUnimplemented"];
-  return NO;
+  id descriptor = [newValue XP_fontDescriptor];
+  if (descriptor) {
+    NSData *data = [XPKeyedArchiver archivedDataWithRootObject:descriptor];
+    [self setObject:data forKey:XPUserDefaultsFontDescriptor];
+    return [self synchronize];
+  } else {
+    [XPLog alwys:@"-[NSFont fontDescriptor]: Not implemented", self];
+    return NO;
+  }
 }
 
 -(NSTimeInterval)SVR_waitTimeForRendering;
@@ -156,6 +172,7 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
           XPUserDefaultsColorForOperator,
           XPUserDefaultsColorForNumeral,
           XPUserDefaultsColorForText,
+          XPUserDefaultsFontDescriptor,
           XPUserDefaultsWaitTimeForRendering,
           XPUserDefaultsLegacyDecimalNumberLocale,
           nil];
@@ -168,6 +185,7 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
           [XPColor SVR_colorWithRed:255/255.0 green:147/255.0 blue:  0/255.0 alpha:1.0],
           [XPColor SVR_colorWithRed:  0/255.0 green:  0/255.0 blue:  0/255.0 alpha:1.0],
           [XPColor SVR_colorWithRed:145/255.0 green:145/255.0 blue:145/255.0 alpha:1.0],
+          [XPKeyedArchiver archivedDataWithRootObject:[[NSFont userFixedPitchFontOfSize:16] XP_fontDescriptor]],
           [NSNumber numberWithDouble:2.0],
           [self __SVR_legacyDecimalNumberLocale],
           nil];

@@ -20,7 +20,6 @@
 -(BOOL)SVR_setColorForNumeral:(XPColor*)newValue;
 -(XPColor*)SVR_colorForText;
 -(BOOL)SVR_setColorForText:(XPColor*)newValue;
-// TODO: These are fake and not stored in UserDefaults
 -(NSFont*)SVR_fontForText;
 -(BOOL)SVR_setFontForText:(NSFont*)newValue;
 -(NSTimeInterval)SVR_waitTimeForRendering;

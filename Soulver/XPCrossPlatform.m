@@ -397,6 +397,34 @@ NSArray* XPRunOpenPanel(void)
 
 @end
 
+@implementation NSFont (CrossPlatform)
+
+-(id)XP_fontDescriptor;
+{
+  SEL selector = @selector(fontDescriptor);
+  if ([self respondsToSelector:selector]) {
+    return [self performSelector:selector];
+  } else {
+    return self;
+  }
+}
+
++(id)XP_fontWithDescriptor:(id)descriptor;
+{
+  Class fontClass = [NSFont class];
+  Class descriptorClass = NSClassFromString(@"NSFontDescriptor");
+  if ([descriptor isKindOfClass:descriptorClass]) {
+    return [self fontWithDescriptor:descriptor size:0];
+  } else if ([descriptor isKindOfClass:fontClass]) {
+    return descriptor;
+  } else {
+    [XPLog error:@"XP_fontWithDescriptor: Unexpected: %@", descriptor];
+    return nil;
+  }
+}
+
+@end
+
 @implementation CrossPlatform
 +(void)executeUnitTests;
 {
