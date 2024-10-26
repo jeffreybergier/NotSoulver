@@ -3,8 +3,9 @@
     DYNAMIC_CODE_GEN = YES; 
     FILESTABLE = {
         CLASSES = (
-            SVRAppDelegate.m, 
-            SVRDocument.m, 
+            SVRAppDelegate.m,
+            SVRAccessoryWindowsOwner.m, 
+            SVRDocument.m,
             SVRDocumentModelController.m, 
             SVRDocumentViewController.m, 
             SVRSolver.m, 
@@ -15,14 +16,15 @@
             SVRSolverTextAttachment.m, 
             XPCrossPlatform.m, 
             XPDocument.m, 
-            SLRERegex.m,
+            SLRERegex.m, 
             "NSUserDefaults+Soulver.m"
-        ); 
+        );
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
         H_FILES = (
             SVRAppDelegate.h, 
-            SVRDocument.h, 
-            SVRDocumentModelController.h, 
+            SVRDocument.h,
+            SVRAccessoryWindowsOwner.h,
+            SVRDocumentModelController.h,
             SVRDocumentViewController.h, 
             SVRSolver.h, 
             SVRSolverExpressionTagger.h, 
@@ -33,10 +35,10 @@
             XPCrossPlatform.h, 
             XPDocument.h, 
             slre.h, 
-            SLRERegex.h,
+            SLRERegex.h, 
             "NSUserDefaults+Soulver.h"
-        ); 
-        INTERFACES = (NEXTSTEP_Soulver.nib, NEXTSTEP_SVRDocument.nib); 
+        );
+        INTERFACES = (NEXTSTEP_AccessoryWindows.nib, NEXTSTEP_Soulver.nib, NEXTSTEP_SVRDocument.nib); 
         OTHER_LINKED = (slre.c, Soulver_main.m); 
         OTHER_SOURCES = (
             Makefile.preamble, 
@@ -52,6 +54,7 @@
     }; 
     LANGUAGE = English; 
     LOCALIZABLE_FILES = {
+        NEXTSTEP_AccessoryWindows.nib = NEXTSTEP_AccessoryWindows.nib; 
         NEXTSTEP_SVRDocument.nib = NEXTSTEP_SVRDocument.nib; 
         NEXTSTEP_Soulver.nib = NEXTSTEP_Soulver.nib; 
     }; 

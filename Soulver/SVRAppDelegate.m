@@ -26,9 +26,9 @@
   return [[_openDocuments retain] autorelease];
 }
 
--(NSPanel*)keypadPanel;
+-(SVRAccessoryWindowsOwner*)accessoryWindowsOwner;
 {
-  return [[_keypadPanel retain] autorelease];
+  return [[_accessoryWindowsOwner retain] autorelease];
 }
 
 // MARK: IBActions
@@ -69,14 +69,19 @@
   }
 }
 
--(IBAction)toggleKeypad:(id)sender;
+-(IBAction)toggleKeypadPanel:(id)sender;
 {
-  NSPanel *panel = [self keypadPanel];
-  if ([panel isVisible]) {
-    [panel performClose:sender];
-  } else {
-    [panel makeKeyAndOrderFront:sender];
-  }
+  [[self accessoryWindowsOwner] toggleKeypadPanel:sender];
+}
+
+-(IBAction)showSettingsWindow:(id)sender;
+{
+  [[self accessoryWindowsOwner] showSettingsWindow:sender];
+}
+
+-(IBAction)showAboutWindow:(id)sender;
+{
+  [[self accessoryWindowsOwner] showAboutWindow:sender];
 }
 
 -(void)__windowWillCloseNotification:(NSNotification*)aNotification;
@@ -92,8 +97,9 @@
 {
   [XPLog debug:@"DEALLOC: %@", self];
   [_openDocuments release];
+  [_accessoryWindowsOwner release];
   _openDocuments = nil;
-  _keypadPanel = nil;
+  _accessoryWindowsOwner = nil;
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
 }
@@ -102,6 +108,13 @@
 
 
 @implementation SVRAppDelegate (NSApplicationDelegate)
+
+-(void)applicationDidFinishLaunching:(NSNotification*)notification;
+{
+  _accessoryWindowsOwner = [[SVRAccessoryWindowsOwner alloc] init];
+  [XPLog debug:@"%@ applicationDidFinishLaunching:", self];
+}
+
 -(BOOL)applicationShouldTerminate:(NSApplication *)sender;
 {
   XPAlertReturn alertResult = NSNotFound;
