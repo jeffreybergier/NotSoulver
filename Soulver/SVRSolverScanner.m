@@ -80,28 +80,18 @@
   NSAssert(!_numbers, @"This is a lazy init method, it assumes _numbers is NIL");
   while ((match = [regex nextObject])) {
     range = [match range];
-    // TODO: Check for the case of )-400 counting as negative 400
+    if (range.location > 0
+       && [[_string substringWithRange:NSMakeRange(range.location-1, 1)] isEqualToString:@")"])
+    {
+      // The regex matches (5+5)-7 as 3 numbers 5,5,-7 but the -7 is actually 7
+      // This check adjusts for this edge case
+      range.location += 1;
+      range.length -= 1;
+    }
     [XPLog extra:@"<#> %@", [_string SVR_descriptionHighlightingRange:range]];
     [output addObject:[NSValue XP_valueWithRange:range]];
   }
   _numbers = [output copy];
-}
-
--(void)__addRange:(NSRange)rhs toSet:(NSMutableSet*)set;
-{
-  BOOL shouldAdd = YES;
-  NSEnumerator *e = nil;
-  NSValue *next = nil;
-  NSRange lhs = XPNotFoundRange;
-  e = [set objectEnumerator];
-  while ((next = [e nextObject])) {
-    lhs = [next XP_rangeValue];
-    shouldAdd = !XPContainsRange(lhs, rhs);
-    if (!shouldAdd) { break; }
-  }
-  if (shouldAdd) {
-    [set addObject:[NSValue XP_valueWithRange:rhs]];
-  }
 }
 
 -(void)__populateOperators;
@@ -148,7 +138,7 @@
   regex = [SLRERegex SVR_regexForLeftBracketsInString:_string];
   while ((match = [regex nextObject])) {
     range = [match groupRangeAtIndex:0];
-    [XPLog debug:@"<(> %@", [_string SVR_descriptionHighlightingRange:range]];
+    [XPLog extra:@"<(> %@", [_string SVR_descriptionHighlightingRange:range]];
     [output addObject:[NSValue XP_valueWithRange:range]];
   }
   
@@ -156,7 +146,7 @@
   regex = [SLRERegex SVR_regexForRightBracketsInString:_string];
   while ((match = [regex nextObject])) {
     range = [match groupRangeAtIndex:0];
-    [XPLog debug:@"<)> %@", [_string SVR_descriptionHighlightingRange:range]];
+    [XPLog extra:@"<)> %@", [_string SVR_descriptionHighlightingRange:range]];
     [output addObject:[NSValue XP_valueWithRange:range]];
   }
   

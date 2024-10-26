@@ -286,7 +286,7 @@
   match = [regex nextObject];
   NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"-700"], @"");
   match = [regex nextObject];
-  // TODO: this is an error that needs to be manually managed
+  // This is a known issue that is adjusted for in -[SVRSolverScanner SVR_regexForNumbersInString:]
   NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"-33.44"], @"");
   match = [regex nextObject];
   NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"-4.444"], @"");

@@ -37,7 +37,6 @@
 -(void)__populateOperators;
 -(void)__populateExpressions;
 -(void)__populateBrackets;
--(void)__addRange:(NSRange)range toSet:(NSMutableSet*)set;
 
 @end
 
