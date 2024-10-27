@@ -28,8 +28,15 @@
 -(NSString*)__stateRestorationKeyForWindow:(NSWindow*)window;
 
 // MARK: Notifications (Save window state)
+/// Set the User Defaults to YES for this Window
+-(void)__windowDidBecomeKey:(NSNotification*)aNotification;
+/// Set the User Defaults to NO for this Window
 -(void)__windowWillCloseNotification:(NSNotification*)aNotification;
+/// Save the Frame in User Defaults
 -(void)__windowDidResize:(NSNotification*)aNotification;
+/// Save the Frame in User Defaults
 -(void)__windowDidMove:(NSNotification*)aNotification;
+/// Unsubscribe from Notifications so that windowWillCloseNotification is not called
+-(void)__applicationWillTerminate:(NSNotification*)aNotification;
 
 @end

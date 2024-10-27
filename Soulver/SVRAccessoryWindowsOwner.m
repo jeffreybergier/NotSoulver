@@ -29,6 +29,10 @@
   [NSBundle loadNibNamed:@"NEXTSTEP_AccessoryWindows" owner:self];
   [self __restoreWindowState];
   [nc addObserver:self
+         selector:@selector(__windowDidBecomeKey:)
+             name:NSWindowDidBecomeKeyNotification
+           object:nil];
+  [nc addObserver:self
          selector:@selector(__windowWillCloseNotification:)
              name:NSWindowWillCloseNotification
            object:nil];
@@ -40,6 +44,10 @@
          selector:@selector(__windowDidResize:)
              name:NSWindowDidResizeNotification
            object:nil];
+  [nc addObserver:self
+         selector:@selector(__applicationWillTerminate:)
+             name:NSApplicationWillTerminateNotification
+           object:nil];
   return self;
 }
 
@@ -47,27 +55,22 @@
 // Invoked by AppDelegate
 -(IBAction)toggleKeypadPanel:(id)sender;
 {
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   NSPanel *panel = [self keypadPanel];
   if ([panel isVisible]) {
     [panel performClose:sender];
-    [ud SVR_setKeypadPanelVisible:NO];
   } else {
     [panel makeKeyAndOrderFront:sender];
-    [ud SVR_setKeypadPanelVisible:YES];
   }
 }
 
 -(IBAction)showSettingsWindow:(id)sender;
 {
   [[self settingsWindow] makeKeyAndOrderFront:sender];
-  [[NSUserDefaults standardUserDefaults] SVR_setSettingsWindowVisible:YES];
 }
 
 -(IBAction)showAboutWindow:(id)sender;
 {
   [[self aboutWindow] makeKeyAndOrderFront:sender];
-  [[NSUserDefaults standardUserDefaults] SVR_setAboutWindowVisible:YES];
 }
 
 // MARK: Restore Window State
@@ -84,9 +87,9 @@
   [settings setFrameUsingName:[self __stateRestorationKeyForWindow:settings]];
   
   // Restore Visibility
-  if      ([ud SVR_keypadPanelVisible])    { [self  toggleKeypadPanel:ud]; }
-  else if ([ud SVR_aboutWindowVisible])    { [self    showAboutWindow:ud]; }
-  else if ([ud SVR_settingsWindowVisible]) { [self showSettingsWindow:ud]; }
+  if ([ud SVR_keypadPanelVisible])    { [self  toggleKeypadPanel:ud]; }
+  if ([ud SVR_aboutWindowVisible])    { [self    showAboutWindow:ud]; }
+  if ([ud SVR_settingsWindowVisible]) { [self showSettingsWindow:ud]; }
 }
 
 -(NSString*)__stateRestorationKeyForWindow:(NSWindow*)window;
@@ -98,6 +101,16 @@
 }
 
 // MARK: Notifications (Save window state)
+
+-(void)__windowDidBecomeKey:(NSNotification*)aNotification;
+{
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  NSWindow *window = [aNotification object];
+  if      (window == [self keypadPanel])    { [ud    SVR_setKeypadPanelVisible:YES]; }
+  else if (window == [self aboutWindow])    { [ud    SVR_setAboutWindowVisible:YES]; }
+  else if (window == [self settingsWindow]) { [ud SVR_setSettingsWindowVisible:YES]; }
+}
+
 -(void)__windowWillCloseNotification:(NSNotification*)aNotification;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
@@ -121,6 +134,11 @@
   NSString *key = [self __stateRestorationKeyForWindow:window];
   if (!key) { return; }
   [window saveFrameUsingName:key];
+}
+
+-(void)__applicationWillTerminate:(NSNotification*)aNotification;
+{
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)dealloc
