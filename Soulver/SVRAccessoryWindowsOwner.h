@@ -23,4 +23,13 @@
 -(IBAction)showSettingsWindow:(id)sender;
 -(IBAction)showAboutWindow:(id)sender;
 
+// MARK: Restore Window State
+-(void)__restoreWindowState;
+-(NSString*)__stateRestorationKeyForWindow:(NSWindow*)window;
+
+// MARK: Notifications (Save window state)
+-(void)__windowWillCloseNotification:(NSNotification*)aNotification;
+-(void)__windowDidResize:(NSNotification*)aNotification;
+-(void)__windowDidMove:(NSNotification*)aNotification;
+
 @end

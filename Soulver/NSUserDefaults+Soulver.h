@@ -22,6 +22,12 @@
 -(BOOL)SVR_setColorForText:(XPColor*)newValue;
 -(NSFont*)SVR_fontForText;
 -(BOOL)SVR_setFontForText:(NSFont*)newValue;
+-(BOOL)SVR_settingsWindowVisible;
+-(BOOL)SVR_setSettingsWindowVisible:(BOOL)isVisible;
+-(BOOL)SVR_aboutWindowVisible;
+-(BOOL)SVR_setAboutWindowVisible:(BOOL)isVisible;
+-(BOOL)SVR_keypadPanelVisible;
+-(BOOL)SVR_setKeypadPanelVisible:(BOOL)isVisible;
 -(NSTimeInterval)SVR_waitTimeForRendering;
 -(BOOL)SVR_setWaitTimeForRendering:(NSTimeInterval)newValue;
 -(XPLocale*)SVR_decimalNumberLocale;

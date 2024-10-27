@@ -2,17 +2,20 @@
 
 #import "NSUserDefaults+Soulver.h"
 
-NSString *XPUserDefaultsSavePanelLastDirectory            = @"kSavePanelLastDirectory";
-NSString *XPUserDefaultsColorForSolutionPrimary           = @"kColorForSolutionPrimary";
-NSString *XPUserDefaultsColorForError                     = @"kColorForError";
-NSString *XPUserDefaultsColorForSolutionSecondary         = @"kColorForSolutionSecondary";
-NSString *XPUserDefaultsColorForBracket                   = @"kColorForBracket";
-NSString *XPUserDefaultsColorForOperator                  = @"kColorForOperator";
-NSString *XPUserDefaultsColorForNumeral                   = @"kColorForNumeral";
-NSString *XPUserDefaultsColorForText                      = @"kColorForText";
-NSString *XPUserDefaultsFontDescriptor                    = @"kFontDescriptor";
-NSString *XPUserDefaultsWaitTimeForRendering              = @"kWaitTimeForRendering";
-NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumberLocale";
+NSString *XPUserDefaultsSavePanelLastDirectory    = @"kSavePanelLastDirectory";
+NSString *XPUserDefaultsColorForSolutionPrimary   = @"kColorForSolutionPrimary";
+NSString *XPUserDefaultsColorForError             = @"kColorForError";
+NSString *XPUserDefaultsColorForSolutionSecondary = @"kColorForSolutionSecondary";
+NSString *XPUserDefaultsColorForBracket           = @"kColorForBracket";
+NSString *XPUserDefaultsColorForOperator          = @"kColorForOperator";
+NSString *XPUserDefaultsColorForNumeral           = @"kColorForNumeral";
+NSString *XPUserDefaultsColorForText              = @"kColorForText";
+NSString *XPUserDefaultsFontDescriptor            = @"kFontDescriptor";
+NSString *XPUserDefaultsKeypadVisible             = @"kKeypadVisible";
+NSString *XPUserDefaultsSettingsVisible           = @"kSettingsVisible";
+NSString *XPUserDefaultsAboutVisible              = @"kAboutVisible";
+NSString *XPUserDefaultsWaitTimeForRendering      = @"kWaitTimeForRendering";
+NSString *XPUserDefaultsLegacyDecimalNumberLocale = @"kLegacyDecimalNumberLocale";
 
 @implementation NSUserDefaults (Soulver)
 
@@ -131,6 +134,39 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
   }
 }
 
+-(BOOL)SVR_settingsWindowVisible;
+{
+  return [self boolForKey:XPUserDefaultsSettingsVisible];
+}
+
+-(BOOL)SVR_setSettingsWindowVisible:(BOOL)isVisible;
+{
+  [self setBool:isVisible forKey:XPUserDefaultsSettingsVisible];
+  return [self synchronize];
+}
+
+-(BOOL)SVR_aboutWindowVisible;
+{
+  return [self boolForKey:XPUserDefaultsAboutVisible];
+}
+
+-(BOOL)SVR_setAboutWindowVisible:(BOOL)isVisible;
+{
+  [self setBool:isVisible forKey:XPUserDefaultsAboutVisible];
+  return [self synchronize];
+}
+
+-(BOOL)SVR_keypadPanelVisible;
+{
+  return [self boolForKey:XPUserDefaultsKeypadVisible];
+}
+
+-(BOOL)SVR_setKeypadPanelVisible:(BOOL)isVisible;
+{
+  [self setBool:isVisible forKey:XPUserDefaultsKeypadVisible];
+  return [self synchronize];
+}
+
 -(NSTimeInterval)SVR_waitTimeForRendering;
 {
   NSNumber *value = [self objectForKey:XPUserDefaultsWaitTimeForRendering];
@@ -173,6 +209,9 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
           XPUserDefaultsColorForNumeral,
           XPUserDefaultsColorForText,
           XPUserDefaultsFontDescriptor,
+          XPUserDefaultsSettingsVisible,
+          XPUserDefaultsAboutVisible,
+          XPUserDefaultsKeypadVisible,
           XPUserDefaultsWaitTimeForRendering,
           XPUserDefaultsLegacyDecimalNumberLocale,
           nil];
@@ -186,6 +225,9 @@ NSString *XPUserDefaultsLegacyDecimalNumberLocale         = @"kLegacyDecimalNumb
           [XPColor SVR_colorWithRed:  0/255.0 green:  0/255.0 blue:  0/255.0 alpha:1.0],
           [XPColor SVR_colorWithRed:145/255.0 green:145/255.0 blue:145/255.0 alpha:1.0],
           [XPKeyedArchiver archivedDataWithRootObject:[[NSFont userFixedPitchFontOfSize:16] XP_fontDescriptor]],
+          [NSNumber numberWithBool:NO],
+          [NSNumber numberWithBool:NO],
+          [NSNumber numberWithBool:YES],
           [NSNumber numberWithDouble:2.0],
           [self __SVR_legacyDecimalNumberLocale],
           nil];
