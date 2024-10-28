@@ -103,6 +103,20 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 };
 #endif
 
+#if OS_OPENSTEP
+typedef enum XPUserInterfaceStyle: XPInteger {
+  XPUserInterfaceStyleUnspecified,
+  XPUserInterfaceStyleLight,
+  XPUserInterfaceStyleDark
+} XPUserInterfaceStyle;
+#else
+typedef NS_ENUM(XPInteger, XPUserInterfaceStyle) {
+  XPUserInterfaceStyleUnspecified,
+  XPUserInterfaceStyleLight,
+  XPUserInterfaceStyleDark
+};
+#endif
+
 XPAlertReturn XPRunQuitAlert(void);
 NSArray* XPRunOpenPanel(void);
 

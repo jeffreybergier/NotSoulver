@@ -3,7 +3,43 @@
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
 
+// TODO: Implement from here ---->
+typedef enum SVRThemeTarget: XPInteger {
+  SVRThemeTargetOperand,
+  SVRThemeTargetOperator,
+  SVRThemeTargetBracket,
+  SVRThemeTargetSolution,
+  SVRThemeTargetSolutionSecondary,
+  SVRThemeTargetOther,
+  SVRThemeTargetBackground
+} SVRThemeTarget;
+
+@interface SVRTheme: NSObject
+{
+  NSUserDefaults *_ud;
+  XPUserInterfaceStyle _style;
+}
+
++(id)currentTheme;
+-(XPColor*)colorForTarget:(SVRThemeTarget)target;
+-(BOOL)setColor:(XPColor*)color forTarget:(SVRThemeTarget)target;
+-(NSFont*)fontForTarget:(SVRThemeTarget)target;
+-(BOOL)setFont:(NSFont*)font forTarget:(SVRThemeTarget)target;
+
+@end
+
+typedef enum SVRAccessoryWindow: XPInteger {
+  SVRAccessoryWindowSettings,
+  SVRAccessoryWindowAbout,
+  SVRAccessoryWindowKeypad
+} SVRAccessoryWindow;
+
 @interface NSUserDefaults (Soulver)
+-(NSString*)SVR_frameKeyForWindow:(SVRAccessoryWindow)window;
+-(NSString*)SVR_visibilityForWindow:(SVRAccessoryWindow)window;
+-(BOOL)SVR_setVisibility:(BOOL)isVisible forWindow:(SVRAccessoryWindow)window;
+// TODO: To here <---------
+
 -(NSString*)SVR_savePanelLastDirectory;
 -(BOOL)SVR_setSavePanelLastDirectory:(NSString*)newValue;
 -(XPColor*)SVR_colorForSolutionPrimary;
