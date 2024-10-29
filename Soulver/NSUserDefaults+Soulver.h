@@ -4,15 +4,20 @@
 #import "XPCrossPlatform.h"
 
 // TODO: Implement from here ---->
-typedef enum SVRThemeTarget: XPInteger {
-  SVRThemeTargetOperand,
-  SVRThemeTargetOperator,
-  SVRThemeTargetBracket,
-  SVRThemeTargetSolution,
-  SVRThemeTargetSolutionSecondary,
-  SVRThemeTargetOther,
-  SVRThemeTargetBackground
-} SVRThemeTarget;
+typedef enum SVRThemeColor: XPInteger {
+  SVRThemeColorOperand,
+  SVRThemeColorOperator,
+  SVRThemeColorBracket,
+  SVRThemeColorSolution,
+  SVRThemeColorSolutionSecondary,
+  SVRThemeColorOtherText,
+  SVRThemeColorBackground
+} SVRThemeColor;
+
+typedef enum SVRThemeFont: XPInteger {
+  SVRThemeFontOtherText,
+  SVRThemeFontMathText
+} SVRThemeFont;
 
 @interface SVRTheme: NSObject
 {
@@ -21,10 +26,10 @@ typedef enum SVRThemeTarget: XPInteger {
 }
 
 +(id)currentTheme;
--(XPColor*)colorForTarget:(SVRThemeTarget)target;
--(BOOL)setColor:(XPColor*)color forTarget:(SVRThemeTarget)target;
--(NSFont*)fontForTarget:(SVRThemeTarget)target;
--(BOOL)setFont:(NSFont*)font forTarget:(SVRThemeTarget)target;
+-(XPColor*)colorForTarget:(SVRThemeColor)color;
+-(BOOL)setColor:(XPColor*)color forTarget:(SVRThemeColor)color;
+-(NSFont*)fontForTarget:(SVRThemeFont)font;
+-(BOOL)setFont:(NSFont*)font forTarget:(SVRThemeFont)font;
 
 @end
 

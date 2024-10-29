@@ -21,6 +21,24 @@ NSString *SVRAccessoryWindowSettingsVisibility    = @"kSVRAccessoryWindowSetting
 NSString *SVRAccessoryWindowAboutVisibility       = @"kSVRAccessoryWindowAboutVisibilityKey";
 NSString *SVRAccessoryWindowKeypadVisibility      = @"kSVRAccessoryWindowKeypadVisibilityKey";
 
+NSString *SVRThemeLightOperandColor               = @"kSVRThemeLightOperandColorKey";
+NSString *SVRThemeLightOperatorColor              = @"kSVRThemeLightOperatorColorKey";
+NSString *SVRThemeLightBracketColor               = @"kSVRThemeLightBracketColorKey";
+NSString *SVRThemeLightSolutionColor              = @"kSVRThemeLightSolutionColorKey";
+NSString *SVRThemeLightSolutionSecondaryColor     = @"kSVRThemeLightSolutionSecondaryColorKey";
+NSString *SVRThemeLightOtherTextColor             = @"kSVRThemeLightOtherTextColorKey";
+NSString *SVRThemeLightBackgroundColor            = @"kSVRThemeLightBackgroundColorKey";
+
+NSString *SVRThemeDarkOperandColor               = @"kSVRThemeDarkOperandColorKey";
+NSString *SVRThemeDarkOperatorColor              = @"kSVRThemeDarkOperatorColorKey";
+NSString *SVRThemeDarkBracketColor               = @"kSVRThemeDarkBracketColorKey";
+NSString *SVRThemeDarkSolutionColor              = @"kSVRThemeDarkSolutionColorKey";
+NSString *SVRThemeDarkSolutionSecondaryColor     = @"kSVRThemeDarkSolutionSecondaryColorKey";
+NSString *SVRThemeDarkOtherTextColor             = @"kSVRThemeDarkOtherTextColorKey";
+NSString *SVRThemeDarkBackgroundColor            = @"kSVRThemeDarkBackgroundColorKey";
+
+NSString *SVRThemeOtherTextFont                  = @"kSVRThemeOtherTextFontKey";
+NSString *SVRThemeMathTextFont                   = @"kSVRThemeMathTextFontKey";
 
 @implementation NSUserDefaults (Soulver)
 
