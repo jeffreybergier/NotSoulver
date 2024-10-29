@@ -1,17 +1,10 @@
 /* SVRCrossPlatform.h created by me on Fri 06-Sep-2024 */
+#import <AppKit/AppKit.h>
 
 // MARK: Forward Declarations
 @class SVRMathString;
 
 /// MARK: Simple Typedefs
-
-#if OS_IOS
-#import <UIKit/UIKit.h>
-#define XPColor UIColor
-#else
-#import <AppKit/AppKit.h>
-#define XPColor NSColor
-#endif
 
 // Memory management annotations
 // These just help me keep the ownership clear
@@ -152,13 +145,6 @@ NSArray* XPRunOpenPanel(void);
 -(void)XP_replaceOccurrencesOfString:(NSString*)searchString
                           withString:(NSString*)replaceString;
 +(void)XPTEST_replaceOccurrencesOfStringWithString;
-@end
-
-@interface XPColor (CrossPlatform)
-+(XPColor*)SVR_colorWithRed:(XPFloat)red
-                      green:(XPFloat)green
-                       blue:(XPFloat)blue
-                      alpha:(XPFloat)alpha;
 @end
 
 @interface NSDecimalNumber (Soulver)

@@ -335,16 +335,6 @@ NSArray* XPRunOpenPanel(void)
 }
 @end
 
-@implementation XPColor (CrossPlatform)
-+(XPColor*)SVR_colorWithRed:(XPFloat)red
-                      green:(XPFloat)green
-                       blue:(XPFloat)blue
-                      alpha:(XPFloat)alpha;
-{
-  return [NSColor colorWithDeviceRed:red green:green blue:blue alpha:alpha];
-}
-@end
-
 // MARK: NSDecimalNumber
 @implementation NSDecimalNumber (Soulver)
 

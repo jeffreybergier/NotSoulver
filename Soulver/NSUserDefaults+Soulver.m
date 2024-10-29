@@ -3,14 +3,6 @@
 #import "NSUserDefaults+Soulver.h"
 
 NSString *XPUserDefaultsSavePanelLastDirectory    = @"kSavePanelLastDirectory";
-NSString *XPUserDefaultsColorForSolutionPrimary   = @"kColorForSolutionPrimary";
-NSString *XPUserDefaultsColorForError             = @"kColorForError";
-NSString *XPUserDefaultsColorForSolutionSecondary = @"kColorForSolutionSecondary";
-NSString *XPUserDefaultsColorForBracket           = @"kColorForBracket";
-NSString *XPUserDefaultsColorForOperator          = @"kColorForOperator";
-NSString *XPUserDefaultsColorForNumeral           = @"kColorForNumeral";
-NSString *XPUserDefaultsColorForText              = @"kColorForText";
-NSString *XPUserDefaultsFontDescriptor            = @"kFontDescriptor";
 NSString *XPUserDefaultsWaitTimeForRendering      = @"kWaitTimeForRendering";
 NSString *XPUserDefaultsLegacyDecimalNumberLocale = @"kLegacyDecimalNumberLocale";
 
@@ -26,6 +18,7 @@ NSString *SVRThemeLightOperatorColor              = @"kSVRThemeLightOperatorColo
 NSString *SVRThemeLightBracketColor               = @"kSVRThemeLightBracketColorKey";
 NSString *SVRThemeLightSolutionColor              = @"kSVRThemeLightSolutionColorKey";
 NSString *SVRThemeLightSolutionSecondaryColor     = @"kSVRThemeLightSolutionSecondaryColorKey";
+NSString *SVRThemeLightErrorTextColor             = @"kSVRThemeLightErrorTextColorKey";
 NSString *SVRThemeLightOtherTextColor             = @"kSVRThemeLightOtherTextColorKey";
 NSString *SVRThemeLightBackgroundColor            = @"kSVRThemeLightBackgroundColorKey";
 
@@ -40,7 +33,46 @@ NSString *SVRThemeDarkBackgroundColor            = @"kSVRThemeDarkBackgroundColo
 NSString *SVRThemeOtherTextFont                  = @"kSVRThemeOtherTextFontKey";
 NSString *SVRThemeMathTextFont                   = @"kSVRThemeMathTextFontKey";
 
+NSString *SVRThemeUserInterfaceStyle             = @"kSVRThemeUserInterfaceStyleKey";
+
 @implementation NSUserDefaults (Soulver)
+
+// MARK: Basics
+
+-(NSString*)SVR_savePanelLastDirectory;
+{
+  return [self objectForKey:XPUserDefaultsSavePanelLastDirectory];
+}
+
+-(BOOL)SVR_setSavePanelLastDirectory:(NSString*)newValue;
+{
+  [self setObject:newValue forKey:XPUserDefaultsSavePanelLastDirectory];
+  return [self synchronize];
+}
+
+-(NSTimeInterval)SVR_waitTimeForRendering;
+{
+  NSNumber *value = [self objectForKey:XPUserDefaultsWaitTimeForRendering];
+  return [value doubleValue];
+}
+
+-(BOOL)SVR_setWaitTimeForRendering:(NSTimeInterval)newValue;
+{
+  NSNumber *value = [NSNumber numberWithDouble:newValue];
+  [self setObject:value forKey:XPUserDefaultsWaitTimeForRendering];
+  return [self synchronize];
+}
+
+-(XPLocale*)SVR_decimalNumberLocale;
+{
+#if OS_OPENSTEP
+  return [self objectForKey:XPUserDefaultsLegacyDecimalNumberLocale];
+#else
+  return [NSLocale currentLocale];
+#endif
+}
+
+// MARK: Accessory Window Visibility
 
 +(NSString*)SVR_frameKeyForWindow:(SVRAccessoryWindow)window;
 {
@@ -80,148 +112,99 @@ NSString *SVRThemeMathTextFont                   = @"kSVRThemeMathTextFontKey";
   return [self synchronize];
 }
 
--(NSString*)SVR_savePanelLastDirectory;
+// MARK: Theming
+
+-(XPUserInterfaceStyle)SVR_userInterfaceStyle;
 {
-  return [self objectForKey:XPUserDefaultsSavePanelLastDirectory];
+  return (XPUserInterfaceStyle)[self integerForKey:SVRThemeUserInterfaceStyle];
 }
 
--(BOOL)SVR_setSavePanelLastDirectory:(NSString*)newValue;
+-(NSColor*)SVR_colorForTheme:(SVRThemeColor)theme;
 {
-  [self setObject:newValue forKey:XPUserDefaultsSavePanelLastDirectory];
+  return [self SVR_colorForTheme:theme withStyle:[self SVR_userInterfaceStyle]];
+}
+
+-(NSColor*)SVR_colorForTheme:(SVRThemeColor)theme
+                   withStyle:(XPUserInterfaceStyle)style;
+{
+  NSColor *output = [self objectForKey:[self __SVR_keyForThemeColor:theme withStyle:style]];
+  if (!output) { [XPLog error:@"Color Not Found"]; return nil; }
+  return output;
+}
+
+-(BOOL)SVR_setColor:(NSColor*)color
+           forTheme:(SVRThemeColor)theme
+          withStyle:(XPUserInterfaceStyle)style;
+{
+  [self setObject:color forKey:[self __SVR_keyForThemeColor:theme withStyle:style]];
   return [self synchronize];
 }
 
--(XPColor*)SVR_colorForSolutionPrimary;
+-(NSFont*)SVR_fontForTheme:(SVRThemeFont)theme;
 {
-  return [self objectForKey:XPUserDefaultsColorForSolutionPrimary];
-}
-
--(BOOL)SVR_setColorForSolutionPrimary:(XPColor*)newValue;
-{
-  [self setObject:newValue forKey:XPUserDefaultsColorForSolutionPrimary];
-  return [self synchronize];
-}
-
--(XPColor*)SVR_colorForSolutionSecondary;
-{
-  return [self objectForKey:XPUserDefaultsColorForSolutionSecondary];
-}
-
--(BOOL)SVR_setColorForSolutionSecondary:(XPColor*)newValue;
-{
-  [self setObject:newValue forKey:XPUserDefaultsColorForSolutionSecondary];
-  return [self synchronize];
-}
-
--(XPColor*)SVR_colorForError;
-{
-  return [self objectForKey:XPUserDefaultsColorForError];
-}
-
--(BOOL)SVR_setColorForError:(XPColor*)newValue;
-{
-  if (!newValue) { return NO; }
-  [self setObject:newValue forKey:XPUserDefaultsColorForError];
-  return [self synchronize];
-}
-
--(XPColor*)SVR_colorForBracket;
-{
-  return [self objectForKey:XPUserDefaultsColorForBracket];
-}
-
--(BOOL)SVR_setColorForBracket:(XPColor*)newValue;
-{
-  if (!newValue) { return NO; }
-  [self setObject:newValue forKey:XPUserDefaultsColorForBracket];
-  return [self synchronize];
-}
-
--(XPColor*)SVR_colorForOperator;
-{
-  return [self objectForKey:XPUserDefaultsColorForOperator];
-}
-
--(BOOL)SVR_setColorForOperator:(XPColor*)newValue;
-{
-  [self setObject:newValue forKey:XPUserDefaultsColorForOperator];
-  return [self synchronize];
-}
-
--(XPColor*)SVR_colorForNumeral;
-{
-  return [self objectForKey:XPUserDefaultsColorForNumeral];
-}
-
--(BOOL)SVR_setColorForNumeral:(XPColor*)newValue;
-{
-  [self setObject:newValue forKey:XPUserDefaultsColorForNumeral];
-  return [self synchronize];
-}
-
--(XPColor*)SVR_colorForText;
-{
-  return [self objectForKey:XPUserDefaultsColorForText];
-}
-
--(BOOL)SVR_setColorForText:(XPColor*)newValue;
-{
-  [self setObject:newValue forKey:XPUserDefaultsColorForText];
-  return [self synchronize];
-}
-
--(NSFont*)SVR_fontForText;
-{
-  NSData *data = [self dataForKey:XPUserDefaultsFontDescriptor];
+  NSData *data = [self dataForKey:[self __SVR_keyForThemeFont:theme]];
+  if (!data) { [XPLog error:@"Font Not Found"]; return nil; }
   id descriptor = [XPKeyedUnarchiver unarchiveObjectWithData:data];
   NSFont *font = [NSFont XP_fontWithDescriptor:descriptor];
-  if (font) {
-    return font;
-  } else {
-    [XPLog debug:@"-[NSFont fontDescriptor]: Not implemented", self];
-    return [NSFont userFixedPitchFontOfSize:16];
-  }
-}
--(BOOL)SVR_setFontForText:(NSFont*)newValue;
-{
-  id descriptor = [newValue XP_fontDescriptor];
-  if (descriptor) {
-    NSData *data = [XPKeyedArchiver archivedDataWithRootObject:descriptor];
-    [self setObject:data forKey:XPUserDefaultsFontDescriptor];
-    return [self synchronize];
-  } else {
-    [XPLog alwys:@"-[NSFont fontDescriptor]: Not implemented", self];
-    return NO;
-  }
+  if (!font) { [XPLog error:@"Font Not Found"]; return nil; }
+  return font;
 }
 
--(NSTimeInterval)SVR_waitTimeForRendering;
+-(BOOL)SVR_setFont:(NSFont*)font
+          forTheme:(SVRThemeFont)theme;
 {
-  NSNumber *value = [self objectForKey:XPUserDefaultsWaitTimeForRendering];
-  return [value doubleValue];
-}
-
--(BOOL)SVR_setWaitTimeForRendering:(NSTimeInterval)newValue;
-{
-  NSNumber *value = [NSNumber numberWithDouble:newValue];
-  [self setObject:value forKey:XPUserDefaultsWaitTimeForRendering];
+  id descriptor = [font XP_fontDescriptor];
+  NSData *data = [XPKeyedArchiver archivedDataWithRootObject:descriptor];
+  [self setObject:data forKey:[self __SVR_keyForThemeFont:theme]];
   return [self synchronize];
 }
 
--(XPLocale*)SVR_decimalNumberLocale;
+-(NSString*)__SVR_keyForThemeColor:(SVRThemeColor)theme
+                         withStyle:(XPUserInterfaceStyle)style;
 {
-#if OS_OPENSTEP
-  return [self objectForKey:XPUserDefaultsLegacyDecimalNumberLocale];
-#else
-  return [NSLocale currentLocale];
-#endif
+  switch (style) {
+    case XPUserInterfaceStyleDark:
+      switch (theme) {
+        case SVRThemeColorOperand:           return SVRThemeLightOperandColor;
+        case SVRThemeColorOperator:          return SVRThemeLightOperatorColor;
+        case SVRThemeColorBracket:           return SVRThemeLightBracketColor;
+        case SVRThemeColorSolution:          return SVRThemeLightSolutionColor;
+        case SVRThemeColorSolutionSecondary: return SVRThemeLightSolutionSecondaryColor;
+        case SVRThemeColorOtherText:         return SVRThemeLightOtherTextColor;
+        case SVRThemeColorBackground:        return SVRThemeLightBackgroundColor;
+      }
+    case XPUserInterfaceStyleUnspecified:
+    case XPUserInterfaceStyleLight:
+    default:
+      switch (theme) {
+        case SVRThemeColorOperand:           return SVRThemeDarkOperandColor;
+        case SVRThemeColorOperator:          return SVRThemeDarkOperatorColor;
+        case SVRThemeColorBracket:           return SVRThemeDarkBracketColor;
+        case SVRThemeColorSolution:          return SVRThemeDarkSolutionColor;
+        case SVRThemeColorSolutionSecondary: return SVRThemeDarkSolutionSecondaryColor;
+        case SVRThemeColorOtherText:         return SVRThemeDarkOtherTextColor;
+        case SVRThemeColorBackground:        return SVRThemeDarkBackgroundColor;
+      }
+  }
 }
+
+-(NSString*)__SVR_keyForThemeFont:(SVRThemeFont)theme;
+{
+  switch (theme) {
+    case SVRThemeFontMathText: return SVRThemeMathTextFont;
+    case SVRThemeFontOtherText:
+    default: return SVRThemeOtherTextFont;
+  }
+}
+
+// MARK: Configuration
 
 -(void)SVR_configure;
 {
   return [self registerDefaults:[NSUserDefaults __SVR_standardDictionary]];
 }
 
+// TODO: Add colors for all of the themes
 +(NSDictionary*)__SVR_standardDictionary;
 {
   NSArray *keys;
@@ -229,26 +212,28 @@ NSString *SVRThemeMathTextFont                   = @"kSVRThemeMathTextFontKey";
   
   keys = [NSArray arrayWithObjects:
           XPUserDefaultsSavePanelLastDirectory,
-          XPUserDefaultsColorForSolutionPrimary,
-          XPUserDefaultsColorForSolutionSecondary,
-          XPUserDefaultsColorForError,
-          XPUserDefaultsColorForBracket,
-          XPUserDefaultsColorForOperator,
-          XPUserDefaultsColorForNumeral,
-          XPUserDefaultsColorForText,
-          XPUserDefaultsFontDescriptor,
+          SVRThemeLightSolutionColor,
+          SVRThemeLightSolutionSecondaryColor,
+          SVRThemeLightErrorTextColor,
+          SVRThemeLightBracketColor,
+          SVRThemeLightOperatorColor,
+          SVRThemeLightOperandColor,
+          SVRThemeLightOtherTextColor,
+          SVRThemeOtherTextFont,
+          SVRThemeMathTextFont,
           XPUserDefaultsWaitTimeForRendering,
           XPUserDefaultsLegacyDecimalNumberLocale,
           nil];
   vals = [NSArray arrayWithObjects:
           NSHomeDirectory(),
-          [XPColor SVR_colorWithRed:  4/255.0 green: 51/255.0 blue:255/255.0 alpha:1.0],
-          [XPColor SVR_colorWithRed:184/255.0 green:197/255.0 blue:255/255.0 alpha:1.0],
-          [XPColor SVR_colorWithRed:148/255.0 green: 17/255.0 blue:  0/255.0 alpha:1.0],
-          [XPColor SVR_colorWithRed:148/255.0 green: 82/255.0 blue:  0/255.0 alpha:1.0],
-          [XPColor SVR_colorWithRed:255/255.0 green:147/255.0 blue:  0/255.0 alpha:1.0],
-          [XPColor SVR_colorWithRed:  0/255.0 green:  0/255.0 blue:  0/255.0 alpha:1.0],
-          [XPColor SVR_colorWithRed:145/255.0 green:145/255.0 blue:145/255.0 alpha:1.0],
+          [NSColor colorWithRed:  4/255.0 green: 51/255.0 blue:255/255.0 alpha:1.0],
+          [NSColor colorWithRed:184/255.0 green:197/255.0 blue:255/255.0 alpha:1.0],
+          [NSColor colorWithRed:148/255.0 green: 17/255.0 blue:  0/255.0 alpha:1.0],
+          [NSColor colorWithRed:148/255.0 green: 82/255.0 blue:  0/255.0 alpha:1.0],
+          [NSColor colorWithRed:255/255.0 green:147/255.0 blue:  0/255.0 alpha:1.0],
+          [NSColor colorWithRed:  0/255.0 green:  0/255.0 blue:  0/255.0 alpha:1.0],
+          [NSColor colorWithRed:145/255.0 green:145/255.0 blue:145/255.0 alpha:1.0],
+          [XPKeyedArchiver archivedDataWithRootObject:[[NSFont userFixedPitchFontOfSize:16] XP_fontDescriptor]],
           [XPKeyedArchiver archivedDataWithRootObject:[[NSFont userFixedPitchFontOfSize:16] XP_fontDescriptor]],
           [NSNumber numberWithDouble:2.0],
           [self __SVR_legacyDecimalNumberLocale],
