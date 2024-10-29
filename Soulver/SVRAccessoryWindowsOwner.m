@@ -77,53 +77,52 @@
 -(void)__restoreWindowState;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  NSPanel  *keypad   = [self keypadPanel];
-  NSWindow *about    = [self aboutWindow];
-  NSWindow *settings = [self settingsWindow];
+  
+  NSPanel  *keypadWindow   = [self keypadPanel];
+  NSWindow *aboutWindow    = [self aboutWindow];
+  NSWindow *settingsWindow = [self settingsWindow];
+  
+  SVRAccessoryWindow keypad   = [self __accessoryWindowForWindow:keypadWindow  ];
+  SVRAccessoryWindow about    = [self __accessoryWindowForWindow:aboutWindow   ];
+  SVRAccessoryWindow settings = [self __accessoryWindowForWindow:settingsWindow];
   
   // Restore Frames
-  [keypad   setFrameUsingName:[self __stateRestorationKeyForWindow:keypad  ]];
-  [about    setFrameUsingName:[self __stateRestorationKeyForWindow:about   ]];
-  [settings setFrameUsingName:[self __stateRestorationKeyForWindow:settings]];
+  [keypadWindow   setFrameUsingName:[NSUserDefaults SVR_frameKeyForWindow:keypad]  ];
+  [aboutWindow    setFrameUsingName:[NSUserDefaults SVR_frameKeyForWindow:about]   ];
+  [settingsWindow setFrameUsingName:[NSUserDefaults SVR_frameKeyForWindow:settings]];
   
   // Restore Visibility
-  if ([ud SVR_keypadPanelVisible])    { [self  toggleKeypadPanel:ud]; }
-  if ([ud SVR_aboutWindowVisible])    { [self    showAboutWindow:ud]; }
-  if ([ud SVR_settingsWindowVisible]) { [self showSettingsWindow:ud]; }
+  if ([ud SVR_visibilityForWindow:keypad])   { [self  toggleKeypadPanel:ud]; }
+  if ([ud SVR_visibilityForWindow:about])    { [self    showAboutWindow:ud]; }
+  if ([ud SVR_visibilityForWindow:settings]) { [self showSettingsWindow:ud]; }
 }
 
--(NSString*)__stateRestorationKeyForWindow:(NSWindow*)window;
+-(SVRAccessoryWindow)__accessoryWindowForWindow:(NSWindow*)window;
 {
-  if      (window == [self keypadPanel])    { return @"SVRAccessoryWindowsOwnerKeypadPanel";   }
-  else if (window == [self aboutWindow])    { return @"SVRAccessoryWindowsOwnerAboutWindow";   }
-  else if (window == [self settingsWindow]) { return @"SVRAccessoryWindowsOwnerSettingsWindow"; }
-  return nil;
+  if      (window == [self keypadPanel])    { return SVRAccessoryWindowKeypad;   }
+  else if (window == [self aboutWindow])    { return SVRAccessoryWindowAbout;    }
+  else if (window == [self settingsWindow]) { return SVRAccessoryWindowSettings; }
+  return SVRAccessoryWindowNone;
 }
 
 // MARK: Notifications (Save window state)
 
 -(void)__windowDidBecomeKey:(NSNotification*)aNotification;
 {
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  NSWindow *window = [aNotification object];
-  if      (window == [self keypadPanel])    { [ud    SVR_setKeypadPanelVisible:YES]; }
-  else if (window == [self aboutWindow])    { [ud    SVR_setAboutWindowVisible:YES]; }
-  else if (window == [self settingsWindow]) { [ud SVR_setSettingsWindowVisible:YES]; }
+  SVRAccessoryWindow window = [self __accessoryWindowForWindow:[aNotification object]];
+  [[NSUserDefaults standardUserDefaults] SVR_setVisibility:YES forWindow:window];
 }
 
 -(void)__windowWillCloseNotification:(NSNotification*)aNotification;
 {
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  NSWindow *window = [aNotification object];
-  if      (window == [self keypadPanel])    { [ud    SVR_setKeypadPanelVisible:NO]; }
-  else if (window == [self aboutWindow])    { [ud    SVR_setAboutWindowVisible:NO]; }
-  else if (window == [self settingsWindow]) { [ud SVR_setSettingsWindowVisible:NO]; }
+  SVRAccessoryWindow window = [self __accessoryWindowForWindow:[aNotification object]];
+  [[NSUserDefaults standardUserDefaults] SVR_setVisibility:NO forWindow:window];
 }
 
 -(void)__windowDidResize:(NSNotification*)aNotification;
 {
   NSWindow *window = [aNotification object];
-  NSString *key = [self __stateRestorationKeyForWindow:window];
+  NSString *key = [NSUserDefaults SVR_frameKeyForWindow:[self __accessoryWindowForWindow:window]];
   if (!key) { return; }
   [window saveFrameUsingName:key];
 }
@@ -131,7 +130,7 @@
 -(void)__windowDidMove:(NSNotification*)aNotification;
 {
   NSWindow *window = [aNotification object];
-  NSString *key = [self __stateRestorationKeyForWindow:window];
+  NSString *key = [NSUserDefaults SVR_frameKeyForWindow:[self __accessoryWindowForWindow:window]];
   if (!key) { return; }
   [window saveFrameUsingName:key];
 }

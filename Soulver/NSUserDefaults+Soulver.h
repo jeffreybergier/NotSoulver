@@ -28,17 +28,19 @@ typedef enum SVRThemeTarget: XPInteger {
 
 @end
 
+// TODO: To here <---------
+
 typedef enum SVRAccessoryWindow: XPInteger {
   SVRAccessoryWindowSettings,
   SVRAccessoryWindowAbout,
-  SVRAccessoryWindowKeypad
+  SVRAccessoryWindowKeypad,
+  SVRAccessoryWindowNone
 } SVRAccessoryWindow;
 
 @interface NSUserDefaults (Soulver)
--(NSString*)SVR_frameKeyForWindow:(SVRAccessoryWindow)window;
--(NSString*)SVR_visibilityForWindow:(SVRAccessoryWindow)window;
++(NSString*)SVR_frameKeyForWindow:(SVRAccessoryWindow)window;
+-(BOOL)SVR_visibilityForWindow:(SVRAccessoryWindow)window;
 -(BOOL)SVR_setVisibility:(BOOL)isVisible forWindow:(SVRAccessoryWindow)window;
-// TODO: To here <---------
 
 -(NSString*)SVR_savePanelLastDirectory;
 -(BOOL)SVR_setSavePanelLastDirectory:(NSString*)newValue;
@@ -58,12 +60,6 @@ typedef enum SVRAccessoryWindow: XPInteger {
 -(BOOL)SVR_setColorForText:(XPColor*)newValue;
 -(NSFont*)SVR_fontForText;
 -(BOOL)SVR_setFontForText:(NSFont*)newValue;
--(BOOL)SVR_settingsWindowVisible;
--(BOOL)SVR_setSettingsWindowVisible:(BOOL)isVisible;
--(BOOL)SVR_aboutWindowVisible;
--(BOOL)SVR_setAboutWindowVisible:(BOOL)isVisible;
--(BOOL)SVR_keypadPanelVisible;
--(BOOL)SVR_setKeypadPanelVisible:(BOOL)isVisible;
 -(NSTimeInterval)SVR_waitTimeForRendering;
 -(BOOL)SVR_setWaitTimeForRendering:(NSTimeInterval)newValue;
 -(XPLocale*)SVR_decimalNumberLocale;

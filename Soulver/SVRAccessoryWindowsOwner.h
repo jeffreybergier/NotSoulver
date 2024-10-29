@@ -2,6 +2,7 @@
 
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
+#import "NSUserDefaults+Soulver.h"
 
 @interface SVRAccessoryWindowsOwner : NSObject
 {
@@ -25,7 +26,7 @@
 
 // MARK: Restore Window State
 -(void)__restoreWindowState;
--(NSString*)__stateRestorationKeyForWindow:(NSWindow*)window;
+-(SVRAccessoryWindow)__accessoryWindowForWindow:(NSWindow*)window;
 
 // MARK: Notifications (Save window state)
 /// Set the User Defaults to YES for this Window
