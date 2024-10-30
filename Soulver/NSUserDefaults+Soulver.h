@@ -3,7 +3,7 @@
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
 
-typedef enum SVRThemeColor: XPInteger {
+typedef enum {
   SVRThemeColorOperand,
   SVRThemeColorOperator,
   SVRThemeColorBracket,
@@ -13,12 +13,12 @@ typedef enum SVRThemeColor: XPInteger {
   SVRThemeColorBackground
 } SVRThemeColor;
 
-typedef enum SVRThemeFont: XPInteger {
+typedef enum {
   SVRThemeFontOtherText,
   SVRThemeFontMathText
 } SVRThemeFont;
 
-typedef enum SVRAccessoryWindow: XPInteger {
+typedef enum {
   SVRAccessoryWindowSettings,
   SVRAccessoryWindowAbout,
   SVRAccessoryWindowKeypad,

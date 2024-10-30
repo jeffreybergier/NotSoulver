@@ -97,7 +97,7 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 #endif
 
 #if OS_OPENSTEP
-typedef enum XPUserInterfaceStyle: XPInteger {
+typedef enum {
   XPUserInterfaceStyleUnspecified,
   XPUserInterfaceStyleLight,
   XPUserInterfaceStyleDark

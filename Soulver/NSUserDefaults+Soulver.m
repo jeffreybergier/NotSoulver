@@ -82,6 +82,7 @@ NSString *SVRThemeUserInterfaceStyle             = @"kSVRThemeUserInterfaceStyle
     case SVRAccessoryWindowKeypad:   return SVRAccessoryWindowKeypadFrame;
     case SVRAccessoryWindowNone:     return nil;
   }
+  return nil;
 }
 
 -(BOOL)SVR_visibilityForWindow:(SVRAccessoryWindow)window;
@@ -92,6 +93,7 @@ NSString *SVRThemeUserInterfaceStyle             = @"kSVRThemeUserInterfaceStyle
     case SVRAccessoryWindowKeypad:   return [self boolForKey:SVRAccessoryWindowKeypadVisibility];
     case SVRAccessoryWindowNone:     return NO;
   }
+  return NO;
 }
 
 -(BOOL)SVR_setVisibility:(BOOL)isVisible forWindow:(SVRAccessoryWindow)window;
@@ -142,10 +144,12 @@ NSString *SVRThemeUserInterfaceStyle             = @"kSVRThemeUserInterfaceStyle
 
 -(NSFont*)SVR_fontForTheme:(SVRThemeFont)theme;
 {
+  id descriptor = nil;
+  NSFont *font = nil;
   NSData *data = [self dataForKey:[self __SVR_keyForThemeFont:theme]];
   if (!data) { [XPLog error:@"Font Not Found"]; return nil; }
-  id descriptor = [XPKeyedUnarchiver unarchiveObjectWithData:data];
-  NSFont *font = [NSFont XP_fontWithDescriptor:descriptor];
+  descriptor = [XPKeyedUnarchiver unarchiveObjectWithData:data];
+  font = [NSFont XP_fontWithDescriptor:descriptor];
   if (!font) { [XPLog error:@"Font Not Found"]; return nil; }
   return font;
 }
@@ -186,6 +190,7 @@ NSString *SVRThemeUserInterfaceStyle             = @"kSVRThemeUserInterfaceStyle
         case SVRThemeColorBackground:        return SVRThemeDarkBackgroundColor;
       }
   }
+  return nil;
 }
 
 -(NSString*)__SVR_keyForThemeFont:(SVRThemeFont)theme;
@@ -226,13 +231,13 @@ NSString *SVRThemeUserInterfaceStyle             = @"kSVRThemeUserInterfaceStyle
           nil];
   vals = [NSArray arrayWithObjects:
           NSHomeDirectory(),
-          [NSColor colorWithRed:  4/255.0 green: 51/255.0 blue:255/255.0 alpha:1.0],
-          [NSColor colorWithRed:184/255.0 green:197/255.0 blue:255/255.0 alpha:1.0],
-          [NSColor colorWithRed:148/255.0 green: 17/255.0 blue:  0/255.0 alpha:1.0],
-          [NSColor colorWithRed:148/255.0 green: 82/255.0 blue:  0/255.0 alpha:1.0],
-          [NSColor colorWithRed:255/255.0 green:147/255.0 blue:  0/255.0 alpha:1.0],
-          [NSColor colorWithRed:  0/255.0 green:  0/255.0 blue:  0/255.0 alpha:1.0],
-          [NSColor colorWithRed:145/255.0 green:145/255.0 blue:145/255.0 alpha:1.0],
+          [NSColor colorWithCalibratedRed:  4/255.0 green: 51/255.0 blue:255/255.0 alpha:1.0],
+          [NSColor colorWithCalibratedRed:184/255.0 green:197/255.0 blue:255/255.0 alpha:1.0],
+          [NSColor colorWithCalibratedRed:148/255.0 green: 17/255.0 blue:  0/255.0 alpha:1.0],
+          [NSColor colorWithCalibratedRed:148/255.0 green: 82/255.0 blue:  0/255.0 alpha:1.0],
+          [NSColor colorWithCalibratedRed:255/255.0 green:147/255.0 blue:  0/255.0 alpha:1.0],
+          [NSColor colorWithCalibratedRed:  0/255.0 green:  0/255.0 blue:  0/255.0 alpha:1.0],
+          [NSColor colorWithCalibratedRed:145/255.0 green:145/255.0 blue:145/255.0 alpha:1.0],
           [XPKeyedArchiver archivedDataWithRootObject:[[NSFont userFixedPitchFontOfSize:16] XP_fontDescriptor]],
           [XPKeyedArchiver archivedDataWithRootObject:[[NSFont userFixedPitchFontOfSize:16] XP_fontDescriptor]],
           [NSNumber numberWithDouble:2.0],
