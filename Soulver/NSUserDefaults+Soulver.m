@@ -27,6 +27,7 @@ NSString *SVRThemeDarkOperatorColor              = @"kSVRThemeDarkOperatorColorK
 NSString *SVRThemeDarkBracketColor               = @"kSVRThemeDarkBracketColorKey";
 NSString *SVRThemeDarkSolutionColor              = @"kSVRThemeDarkSolutionColorKey";
 NSString *SVRThemeDarkSolutionSecondaryColor     = @"kSVRThemeDarkSolutionSecondaryColorKey";
+NSString *SVRThemeDarkErrorTextColor             = @"kSVRThemeDarkErrorTextColorKey";
 NSString *SVRThemeDarkOtherTextColor             = @"kSVRThemeDarkOtherTextColorKey";
 NSString *SVRThemeDarkBackgroundColor            = @"kSVRThemeDarkBackgroundColorKey";
 
@@ -174,6 +175,7 @@ NSString *SVRThemeUserInterfaceStyle             = @"kSVRThemeUserInterfaceStyle
         case SVRThemeColorBracket:           return SVRThemeLightBracketColor;
         case SVRThemeColorSolution:          return SVRThemeLightSolutionColor;
         case SVRThemeColorSolutionSecondary: return SVRThemeLightSolutionSecondaryColor;
+        case SVRThemeColorErrorText:         return SVRThemeLightErrorTextColor;
         case SVRThemeColorOtherText:         return SVRThemeLightOtherTextColor;
         case SVRThemeColorBackground:        return SVRThemeLightBackgroundColor;
       }
@@ -186,6 +188,7 @@ NSString *SVRThemeUserInterfaceStyle             = @"kSVRThemeUserInterfaceStyle
         case SVRThemeColorBracket:           return SVRThemeDarkBracketColor;
         case SVRThemeColorSolution:          return SVRThemeDarkSolutionColor;
         case SVRThemeColorSolutionSecondary: return SVRThemeDarkSolutionSecondaryColor;
+        case SVRThemeColorErrorText:         return SVRThemeDarkErrorTextColor;
         case SVRThemeColorOtherText:         return SVRThemeDarkOtherTextColor;
         case SVRThemeColorBackground:        return SVRThemeDarkBackgroundColor;
       }
@@ -216,30 +219,58 @@ NSString *SVRThemeUserInterfaceStyle             = @"kSVRThemeUserInterfaceStyle
   NSArray *vals;
   
   keys = [NSArray arrayWithObjects:
-          XPUserDefaultsSavePanelLastDirectory,
+          // Light Theme
+          SVRThemeLightOperandColor,
+          SVRThemeLightOperatorColor,
+          SVRThemeLightBracketColor,
           SVRThemeLightSolutionColor,
           SVRThemeLightSolutionSecondaryColor,
           SVRThemeLightErrorTextColor,
-          SVRThemeLightBracketColor,
-          SVRThemeLightOperatorColor,
-          SVRThemeLightOperandColor,
           SVRThemeLightOtherTextColor,
+          SVRThemeLightBackgroundColor,
+          // Dark Theme
+          SVRThemeDarkOperandColor,
+          SVRThemeDarkOperatorColor,
+          SVRThemeDarkBracketColor,
+          SVRThemeDarkSolutionColor,
+          SVRThemeDarkSolutionSecondaryColor,
+          SVRThemeDarkErrorTextColor,
+          SVRThemeDarkOtherTextColor,
+          SVRThemeDarkBackgroundColor,
+          // Fonts
           SVRThemeOtherTextFont,
           SVRThemeMathTextFont,
+          // Other
+          XPUserDefaultsSavePanelLastDirectory,
+          SVRAccessoryWindowKeypadVisibility,
           XPUserDefaultsWaitTimeForRendering,
           XPUserDefaultsLegacyDecimalNumberLocale,
           nil];
   vals = [NSArray arrayWithObjects:
-          NSHomeDirectory(),
+          // Light Theme
+          [NSColor colorWithCalibratedRed:  0/255.0 green:  0/255.0 blue:  0/255.0 alpha:1.0],
+          [NSColor colorWithCalibratedRed:255/255.0 green:147/255.0 blue:  0/255.0 alpha:1.0],
+          [NSColor colorWithCalibratedRed:148/255.0 green: 82/255.0 blue:  0/255.0 alpha:1.0],
           [NSColor colorWithCalibratedRed:  4/255.0 green: 51/255.0 blue:255/255.0 alpha:1.0],
           [NSColor colorWithCalibratedRed:184/255.0 green:197/255.0 blue:255/255.0 alpha:1.0],
           [NSColor colorWithCalibratedRed:148/255.0 green: 17/255.0 blue:  0/255.0 alpha:1.0],
-          [NSColor colorWithCalibratedRed:148/255.0 green: 82/255.0 blue:  0/255.0 alpha:1.0],
-          [NSColor colorWithCalibratedRed:255/255.0 green:147/255.0 blue:  0/255.0 alpha:1.0],
-          [NSColor colorWithCalibratedRed:  0/255.0 green:  0/255.0 blue:  0/255.0 alpha:1.0],
           [NSColor colorWithCalibratedRed:145/255.0 green:145/255.0 blue:145/255.0 alpha:1.0],
+          [NSColor colorWithCalibratedRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0],
+          // Dark Theme
+          [NSColor colorWithCalibratedRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0],
+          [NSColor colorWithCalibratedRed:255/255.0 green:147/255.0 blue:  0/255.0 alpha:1.0],
+          [NSColor colorWithCalibratedRed:255/255.0 green:142/255.0 blue:  0/255.0 alpha:1.0],
+          [NSColor colorWithCalibratedRed:118/255.0 green:214/255.0 blue:255/255.0 alpha:1.0],
+          [NSColor colorWithCalibratedRed:192/255.0 green:236/255.0 blue:255/255.0 alpha:1.0],
+          [NSColor colorWithCalibratedRed:255/255.0 green: 89/255.0 blue: 68/255.0 alpha:1.0],
+          [NSColor colorWithCalibratedRed:235/255.0 green:235/255.0 blue:235/255.0 alpha:1.0],
+          [NSColor colorWithCalibratedRed:  0/255.0 green:  0/255.0 blue:  0/255.0 alpha:1.0],
+          // Fonts
+          [XPKeyedArchiver archivedDataWithRootObject:[[NSFont userFontOfSize:16] XP_fontDescriptor]],
           [XPKeyedArchiver archivedDataWithRootObject:[[NSFont userFixedPitchFontOfSize:16] XP_fontDescriptor]],
-          [XPKeyedArchiver archivedDataWithRootObject:[[NSFont userFixedPitchFontOfSize:16] XP_fontDescriptor]],
+          // Other
+          NSHomeDirectory(),
+          [NSNumber numberWithBool:YES],
           [NSNumber numberWithDouble:2.0],
           [self __SVR_legacyDecimalNumberLocale],
           nil];

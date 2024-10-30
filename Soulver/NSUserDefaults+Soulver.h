@@ -9,6 +9,7 @@ typedef enum {
   SVRThemeColorBracket,
   SVRThemeColorSolution,
   SVRThemeColorSolutionSecondary,
+  SVRThemeColorErrorText,
   SVRThemeColorOtherText,
   SVRThemeColorBackground
 } SVRThemeColor;
