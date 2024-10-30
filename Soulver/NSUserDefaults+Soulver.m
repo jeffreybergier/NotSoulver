@@ -242,6 +242,7 @@ NSString *SVRThemeUserInterfaceStyle             = @"kSVRThemeUserInterfaceStyle
           SVRThemeMathTextFont,
           // Other
           XPUserDefaultsSavePanelLastDirectory,
+          SVRThemeUserInterfaceStyle,
           SVRAccessoryWindowKeypadVisibility,
           XPUserDefaultsWaitTimeForRendering,
           XPUserDefaultsLegacyDecimalNumberLocale,
@@ -271,6 +272,7 @@ NSString *SVRThemeUserInterfaceStyle             = @"kSVRThemeUserInterfaceStyle
           // Other
           NSHomeDirectory(),
           [NSNumber numberWithBool:YES],
+          [NSNumber numberWithInt:0],
           [NSNumber numberWithDouble:2.0],
           [self __SVR_legacyDecimalNumberLocale],
           nil];

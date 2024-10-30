@@ -22,10 +22,10 @@
   
   // Give everything default appearance
   [input addAttribute:NSFontAttributeName
-                value:[ud SVR_fontForText]
+                value:[ud SVR_fontForTheme:SVRThemeFontOtherText]
                 range:NSMakeRange(0, [input length])];
   [input addAttribute:NSForegroundColorAttributeName
-                value:[ud SVR_colorForText]
+                value:[ud SVR_colorForTheme:SVRThemeColorOtherText]
                 range:NSMakeRange(0, [input length])];
   
   while (index < [input length]) {
@@ -33,32 +33,44 @@
                      atIndex:index
               effectiveRange:&checkRange];
     if (check) {
+      [input addAttribute:NSFontAttributeName
+                    value:[ud SVR_fontForTheme:SVRThemeFontMathText]
+                    range:checkRange];
       [input addAttribute:NSForegroundColorAttributeName
-                    value:[ud SVR_colorForNumeral]
+                    value:[ud SVR_colorForTheme:SVRThemeColorOperand]
                     range:checkRange];
     } else {
       check = [input attribute:XPAttributedStringKeyForTag(SVRSolverTagBracket)
                        atIndex:index
                 effectiveRange:&checkRange];
       if (check) {
+        [input addAttribute:NSFontAttributeName
+                      value:[ud SVR_fontForTheme:SVRThemeFontMathText]
+                      range:checkRange];
         [input addAttribute:NSForegroundColorAttributeName
-                      value:[ud SVR_colorForBracket]
+                      value:[ud SVR_colorForTheme:SVRThemeColorBracket]
                       range:checkRange];
       } else {
         check = [input attribute:XPAttributedStringKeyForTag(SVRSolverTagOperator)
                          atIndex:index
                   effectiveRange:&checkRange];
         if (check) {
+          [input addAttribute:NSFontAttributeName
+                        value:[ud SVR_fontForTheme:SVRThemeFontMathText]
+                        range:checkRange];
           [input addAttribute:NSForegroundColorAttributeName
-                        value:[ud SVR_colorForOperator]
+                        value:[ud SVR_colorForTheme:SVRThemeColorOperator]
                         range:checkRange];
         } else {
-          check = [input attribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)
+          check = [input attribute:XPAttributedStringKeyForTag(SVRSolverTagPreviousSolution)
                            atIndex:index
                     effectiveRange:&checkRange];
           if (check) {
+            [input addAttribute:NSFontAttributeName
+                          value:[ud SVR_fontForTheme:SVRThemeFontMathText]
+                          range:checkRange];
             [input addAttribute:NSForegroundColorAttributeName
-                          value:[ud SVR_colorForOperator]
+                          value:[ud SVR_colorForTheme:SVRThemeColorSolutionSecondary]
                           range:checkRange];
           }
         }

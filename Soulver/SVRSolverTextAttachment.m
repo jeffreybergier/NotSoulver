@@ -122,8 +122,8 @@
           NSParagraphStyleAttributeName,
           nil];
   vals = [NSArray arrayWithObjects:
-          [ud SVR_fontForText],
-          [ud SVR_colorForSolutionPrimary],
+          [ud SVR_fontForTheme:SVRThemeFontMathText],
+          [ud SVR_colorForTheme:SVRThemeColorSolution],
           style,
           nil];
   return [NSDictionary dictionaryWithObjects:vals forKeys:keys];
@@ -146,8 +146,8 @@
           NSParagraphStyleAttributeName,
           nil];
   vals = [NSArray arrayWithObjects:
-          [ud SVR_fontForText],
-          [ud SVR_colorForError],
+          [ud SVR_fontForTheme:SVRThemeFontOtherText],
+          [ud SVR_colorForTheme:SVRThemeColorErrorText],
           style,
           nil];
   return [NSDictionary dictionaryWithObjects:vals forKeys:keys];
@@ -157,8 +157,11 @@
 
 -(NSSize)cellSize;
 {
+  NSDictionary *attributes = ([self shouldDrawError])
+                            ? [self __err_attributes]
+                            : [self __sol_attributes];
   SVRSolverTextAttachment *attachment = (SVRSolverTextAttachment*)[self attachment];
-  NSSize size = [[attachment stringForDrawing] sizeWithAttributes:[self __sol_attributes]];
+  NSSize size = [[attachment stringForDrawing] sizeWithAttributes:attributes];
   size.width += 8;
   return size;
 }

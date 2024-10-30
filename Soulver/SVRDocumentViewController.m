@@ -15,6 +15,7 @@
 // MARK: awakeFromNib
 -(void)awakeFromNib;
 {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   NSLayoutManager *layoutManager = [[[NSLayoutManager alloc] init] autorelease];
   SVRDocumentModelController *modelController = [self modelController];
   NSTextStorage *model = [modelController model];
@@ -31,6 +32,9 @@
   
   // Configure the text view
   [textView setTypingAttributes:[self __typingAttributes]];
+  [textView setBackgroundColor:[ud SVR_colorForTheme:SVRThemeColorBackground]];
+  // TODO: Add insertion point color to UD
+  // [textView setInsertionPointColor:]
   
   // Announce
   [XPLog debug:@"awakeFromNib: %@", self];
@@ -130,8 +134,8 @@
           NSForegroundColorAttributeName,
           nil];
   vals = [NSArray arrayWithObjects:
-          [ud SVR_fontForText],
-          [ud SVR_colorForText],
+          [ud SVR_fontForTheme:SVRThemeFontOtherText],
+          [ud SVR_colorForTheme:SVRThemeColorOtherText],
           nil];
   return [NSDictionary dictionaryWithObjects:vals forKeys:keys];
 }
