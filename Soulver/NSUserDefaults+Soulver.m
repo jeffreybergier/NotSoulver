@@ -53,14 +53,12 @@ NSString *SVRThemeUserInterfaceStyle             = @"kSVRThemeUserInterfaceStyle
 
 -(NSTimeInterval)SVR_waitTimeForRendering;
 {
-  NSNumber *value = [self objectForKey:XPUserDefaultsWaitTimeForRendering];
-  return [value doubleValue];
+  return (NSTimeInterval)[self floatForKey:XPUserDefaultsWaitTimeForRendering];
 }
 
 -(BOOL)SVR_setWaitTimeForRendering:(NSTimeInterval)newValue;
 {
-  NSNumber *value = [NSNumber numberWithDouble:newValue];
-  [self setObject:value forKey:XPUserDefaultsWaitTimeForRendering];
+  [self setFloat:(float)newValue forKey:XPUserDefaultsWaitTimeForRendering];
   return [self synchronize];
 }
 
@@ -170,19 +168,6 @@ NSString *SVRThemeUserInterfaceStyle             = @"kSVRThemeUserInterfaceStyle
   switch (style) {
     case XPUserInterfaceStyleDark:
       switch (theme) {
-        case SVRThemeColorOperand:           return SVRThemeLightOperandColor;
-        case SVRThemeColorOperator:          return SVRThemeLightOperatorColor;
-        case SVRThemeColorBracket:           return SVRThemeLightBracketColor;
-        case SVRThemeColorSolution:          return SVRThemeLightSolutionColor;
-        case SVRThemeColorSolutionSecondary: return SVRThemeLightSolutionSecondaryColor;
-        case SVRThemeColorErrorText:         return SVRThemeLightErrorTextColor;
-        case SVRThemeColorOtherText:         return SVRThemeLightOtherTextColor;
-        case SVRThemeColorBackground:        return SVRThemeLightBackgroundColor;
-      }
-    case XPUserInterfaceStyleUnspecified:
-    case XPUserInterfaceStyleLight:
-    default:
-      switch (theme) {
         case SVRThemeColorOperand:           return SVRThemeDarkOperandColor;
         case SVRThemeColorOperator:          return SVRThemeDarkOperatorColor;
         case SVRThemeColorBracket:           return SVRThemeDarkBracketColor;
@@ -191,6 +176,19 @@ NSString *SVRThemeUserInterfaceStyle             = @"kSVRThemeUserInterfaceStyle
         case SVRThemeColorErrorText:         return SVRThemeDarkErrorTextColor;
         case SVRThemeColorOtherText:         return SVRThemeDarkOtherTextColor;
         case SVRThemeColorBackground:        return SVRThemeDarkBackgroundColor;
+      }
+    case XPUserInterfaceStyleUnspecified:
+    case XPUserInterfaceStyleLight:
+    default:
+      switch (theme) {
+        case SVRThemeColorOperand:           return SVRThemeLightOperandColor;
+        case SVRThemeColorOperator:          return SVRThemeLightOperatorColor;
+        case SVRThemeColorBracket:           return SVRThemeLightBracketColor;
+        case SVRThemeColorSolution:          return SVRThemeLightSolutionColor;
+        case SVRThemeColorSolutionSecondary: return SVRThemeLightSolutionSecondaryColor;
+        case SVRThemeColorErrorText:         return SVRThemeLightErrorTextColor;
+        case SVRThemeColorOtherText:         return SVRThemeLightOtherTextColor;
+        case SVRThemeColorBackground:        return SVRThemeLightBackgroundColor;
       }
   }
   return nil;
@@ -271,9 +269,9 @@ NSString *SVRThemeUserInterfaceStyle             = @"kSVRThemeUserInterfaceStyle
           [XPKeyedArchiver archivedDataWithRootObject:[[NSFont userFixedPitchFontOfSize:16] XP_fontDescriptor]],
           // Other
           NSHomeDirectory(),
-          [NSNumber numberWithBool:YES],
-          [NSNumber numberWithInt:0],
-          [NSNumber numberWithDouble:2.0],
+          @"0",
+          @"YES",
+          @"2.0",
           [self __SVR_legacyDecimalNumberLocale],
           nil];
   
