@@ -3,12 +3,13 @@
     DYNAMIC_CODE_GEN = YES; 
     FILESTABLE = {
         CLASSES = (
-            SVRAppDelegate.m,
+            SVRAppDelegate.m, 
             SVRAccessoryWindowsOwner.m, 
-            SVRDocument.m,
+            SVRDocument.m, 
             SVRDocumentModelController.m, 
-            SVRDocumentViewController.m, 
-            SVRSolver.m, 
+            SVRDocumentViewController.m,
+            SVRSettingsViewController.m, 
+            SVRSolver.m,
             SVRSolverExpressionTagger.m, 
             SVRSolverScanner.m, 
             SVRSolverSolutionTagger.m, 
@@ -22,11 +23,12 @@
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
         H_FILES = (
             SVRAppDelegate.h, 
-            SVRDocument.h,
-            SVRAccessoryWindowsOwner.h,
-            SVRDocumentModelController.h,
-            SVRDocumentViewController.h, 
-            SVRSolver.h, 
+            SVRDocument.h, 
+            SVRAccessoryWindowsOwner.h, 
+            SVRDocumentModelController.h, 
+            SVRDocumentViewController.h,
+            SVRSettingsViewController.h,
+            SVRSolver.h,
             SVRSolverExpressionTagger.h, 
             SVRSolverScanner.h, 
             SVRSolverSolutionTagger.h, 

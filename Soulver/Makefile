@@ -20,21 +20,21 @@ ICONSECTIONS =	-sectcreate __ICON app /NextLibrary/Frameworks/AppKit.framework/R
 LOCAL_RESOURCES = NEXTSTEP_AccessoryWindows.nib NEXTSTEP_Soulver.nib\
                   NEXTSTEP_SVRDocument.nib
 
-CLASSES = SVRAppDelegate.m SVRDocument.m SVRDocumentModelController.m\
-          SVRDocumentViewController.m SVRSolver.m\
-          SVRSolverExpressionTagger.m SVRSolverScanner.m\
+CLASSES = SVRAppDelegate.m SVRAccessoryWindowsOwner.m SVRDocument.m\
+          SVRDocumentModelController.m SVRDocumentViewController.m\
+          SVRSolver.m SVRSolverExpressionTagger.m SVRSolverScanner.m\
           SVRSolverSolutionTagger.m SVRSolverStyler.m\
           SVRSolverTextAttachment.m XPCrossPlatform.m XPDocument.m\
           SLRERegex.m NSUserDefaults+Soulver.m\
-          SVRAccessoryWindowsOwner.m
+          SVRSettingsViewController.m
 
-HFILES = SVRAppDelegate.h SVRDocument.h SVRDocumentModelController.h\
-         SVRDocumentViewController.h SVRSolver.h\
-         SVRSolverExpressionTagger.h SVRSolverScanner.h\
+HFILES = SVRAppDelegate.h SVRDocument.h SVRAccessoryWindowsOwner.h\
+         SVRDocumentModelController.h SVRDocumentViewController.h\
+         SVRSolver.h SVRSolverExpressionTagger.h SVRSolverScanner.h\
          SVRSolverSolutionTagger.h SVRSolverStyler.h\
          SVRSolverTextAttachment.h XPCrossPlatform.h XPDocument.h\
          slre.h SLRERegex.h NSUserDefaults+Soulver.h\
-         SVRAccessoryWindowsOwner.h
+         SVRSettingsViewController.h
 
 MFILES = Soulver_main.m
 

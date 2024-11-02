@@ -4,3 +4,28 @@
     OUTLETS = {_aboutWindow = id; _keypadPanel = id; _settingsWindow = id; }; 
     SUPERCLASS = NSObject; 
 };
+"SVRSettingsViewController" = {
+    ACTIONS = {"choiceChanged:" = id; "valueChanged:" = id; "valueReset:" = id; }; 
+    OUTLETS = {
+        _groupColorView = id; 
+        _groupFontView = id; 
+        _groupGeneralView = id; 
+        _settingsChooser = id; 
+        _wellDarkBackground = id; 
+        _wellDarkInsertionPoint = id; 
+        _wellDarkOperand = id; 
+        _wellDarkOperator = id; 
+        _wellDarkOther = id; 
+        _wellDarkParenthesis = id; 
+        _wellDarkSolution = id; 
+        _wellLightBackground = id; 
+        _wellLightError = id; 
+        _wellLightInsertionPoint = id; 
+        _wellLightOperand = id; 
+        _wellLightOperator = id; 
+        _wellLightOther = id; 
+        _wellLightParenthesis = id; 
+        _wellLightSolution = id; 
+    }; 
+    SUPERCLASS = NSResponder; 
+};
