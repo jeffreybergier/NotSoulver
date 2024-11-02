@@ -5,7 +5,16 @@
     SUPERCLASS = NSObject; 
 };
 "SVRSettingsViewController" = {
-    ACTIONS = {"choiceChanged:" = id; "valueChanged:" = id; "valueReset:" = id; }; 
+    ACTIONS = {
+        "choiceChanged:" = id; 
+        "colorChanged:" = id; 
+        "colorReset:" = id; 
+        "fontChangeRequest:" = id; 
+        "fontReset:" = id; 
+        "themeChanged:" = id; 
+        "timeChanged:" = id; 
+        "timeReset:" = id; 
+    }; 
     OUTLETS = {
         _groupColorView = id; 
         _groupFontView = id; 
