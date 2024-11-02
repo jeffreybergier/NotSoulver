@@ -8,8 +8,8 @@
   mm_retain   IBOutlet NSView   *_groupGeneralView;
   mm_retain   IBOutlet NSView   *_groupColorView;
   mm_retain   IBOutlet NSView   *_groupFontView;
-  mm_unretain IBOutlet NSPopUpButton *_settingsChooser;
   mm_unretain IBOutlet NSColorWell *_wellDarkBackground;
+  mm_unretain IBOutlet NSColorWell *_wellDarkError;
   mm_unretain IBOutlet NSColorWell *_wellDarkInsertionPoint;
   mm_unretain IBOutlet NSColorWell *_wellDarkOperand;
   mm_unretain IBOutlet NSColorWell *_wellDarkOperator;
@@ -24,15 +24,22 @@
   mm_unretain IBOutlet NSColorWell *_wellLightOther;
   mm_unretain IBOutlet NSColorWell *_wellLightParenthesis;
   mm_unretain IBOutlet NSColorWell *_wellLightSolution;
+  mm_unretain IBOutlet NSTextField *_fieldTime;
+  mm_unretain IBOutlet NSTextField *_fieldTextMath;
+  mm_unretain IBOutlet NSTextField *_fieldTextOther;
+  mm_unretain IBOutlet NSTextField *_fieldTextError;
+  mm_unretain IBOutlet NSPopUpButton *_popUpTheme;
 }
 
 -(void)awakeFromNib;
+-(void)populateUI;
+-(NSString*)__descriptionForFont:(NSFont*)font;
 
 -(IBAction)choiceChanged:(NSPopUpButton*)sender;
--(IBAction)fontChangeRequest:(NSButton*)sender;
+-(IBAction)themeChanged:(NSPopUpButton*)sender;
 -(IBAction)colorChanged:(NSColorWell*)sender;
 -(IBAction)timeChanged:(NSTextField*)sender;
--(IBAction)themeChanged:(NSPopUpButton*)sender;
+-(IBAction)fontChangeRequest:(NSButton*)sender;
 
 -(IBAction)fontReset:(NSButton*)sender;
 -(IBAction)colorReset:(NSButton*)sender;
@@ -40,10 +47,10 @@
 
 -(BOOL)themeColor:(SVRThemeColor*)colorPointer
    interfaceStyle:(XPUserInterfaceStyle*)stylePointer
-     forColorWell:(NSColorWell*)sender;
+        forSender:(id)sender;
 
 -(BOOL)themeFont:(SVRThemeFont*)fontPointer
-       forButton:(NSButton*)sender;
+       forSender:(id)sender;
 
 
 @end

@@ -16,11 +16,16 @@
         "timeReset:" = id; 
     }; 
     OUTLETS = {
+        _fieldTextError = id; 
+        _fieldTextMath = id; 
+        _fieldTextOther = id; 
+        _fieldTime = id; 
         _groupColorView = id; 
         _groupFontView = id; 
         _groupGeneralView = id; 
-        _settingsChooser = id; 
+        _popUpTheme = id; 
         _wellDarkBackground = id; 
+        _wellDarkError = id; 
         _wellDarkInsertionPoint = id; 
         _wellDarkOperand = id; 
         _wellDarkOperator = id; 
