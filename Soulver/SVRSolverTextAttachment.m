@@ -87,25 +87,39 @@
 
 // MARK: Custom Drawing
 
--(void)__sol_drawWithFrame:(NSRect)cellFrame
-                    inView:(NSView*)controlView;
+-(void)drawSolutionWithFrame:(NSRect)cellFrame
+                   textFrame:(NSRect)textFrame
+                      inView:(NSView*)controlView;
 {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   SVRSolverTextAttachment *attachment = (SVRSolverTextAttachment*)[self attachment];
-  [XPLog extra:@"__solut_drawWithFrame:%@", NSStringFromRect(cellFrame)];
-  NSDrawWhiteBezel(cellFrame, cellFrame);
-  [[attachment stringForDrawing] drawInRect:cellFrame withAttributes:[self __sol_attributes]];
+  if ([ud SVR_userInterfaceStyle] == XPUserInterfaceStyleDark) {
+    NSDrawGrayBezel(cellFrame, cellFrame);
+  } else {
+    NSDrawWhiteBezel(cellFrame, cellFrame);
+  }
+  [[attachment stringForDrawing] drawInRect:textFrame
+                             withAttributes:[self attributesForDrawingSolution]];
+  [XPLog extra:@"drawSolutionWithFrame:%@", NSStringFromRect(cellFrame)];
 }
 
--(void)__err_drawWithFrame:(NSRect)cellFrame
-                    inView:(NSView*)controlView;
+-(void)drawErrorWithFrame:(NSRect)cellFrame
+                textFrame:(NSRect)textFrame
+                   inView:(NSView*)controlView;
 {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   SVRSolverTextAttachment *attachment = (SVRSolverTextAttachment*)[self attachment];
-  [XPLog extra:@"__error_drawWithFrame:%@", NSStringFromRect(cellFrame)];
-  NSDrawGrayBezel(cellFrame, cellFrame);
-  [[attachment stringForDrawing] drawInRect:cellFrame withAttributes:[self __err_attributes]];
+  if ([ud SVR_userInterfaceStyle] == XPUserInterfaceStyleDark) {
+    NSDrawGrayBezel(cellFrame, cellFrame);
+  } else {
+    NSDrawWhiteBezel(cellFrame, cellFrame);
+  }
+  [[attachment stringForDrawing] drawInRect:textFrame
+                             withAttributes:[self attributesForDrawingError]];
+  [XPLog extra:@"drawErrorWithFrame:%@", NSStringFromRect(cellFrame)];
 }
 
--(NSDictionary*)__sol_attributes;
+-(NSDictionary*)attributesForDrawingSolution;
 {
   NSUserDefaults *ud;
   NSArray *keys;
@@ -122,14 +136,14 @@
           NSParagraphStyleAttributeName,
           nil];
   vals = [NSArray arrayWithObjects:
-          [ud SVR_fontForTheme:SVRThemeFontMathText],
+          [ud SVR_fontForTheme:SVRThemeFontMath],
           [ud SVR_colorForTheme:SVRThemeColorSolution],
           style,
           nil];
   return [NSDictionary dictionaryWithObjects:vals forKeys:keys];
 }
 
--(NSDictionary*)__err_attributes;
+-(NSDictionary*)attributesForDrawingError;
 {
   NSUserDefaults *ud;
   NSArray *keys;
@@ -146,7 +160,7 @@
           NSParagraphStyleAttributeName,
           nil];
   vals = [NSArray arrayWithObjects:
-          [ud SVR_fontForTheme:SVRThemeFontOtherText],
+          [ud SVR_fontForTheme:SVRThemeFontError],
           [ud SVR_colorForTheme:SVRThemeColorErrorText],
           style,
           nil];
@@ -158,8 +172,8 @@
 -(NSSize)cellSize;
 {
   NSDictionary *attributes = ([self shouldDrawError])
-                            ? [self __err_attributes]
-                            : [self __sol_attributes];
+                            ? [self attributesForDrawingError]
+                            : [self attributesForDrawingSolution];
   SVRSolverTextAttachment *attachment = (SVRSolverTextAttachment*)[self attachment];
   NSSize size = [[attachment stringForDrawing] sizeWithAttributes:attributes];
   size.width += 8;
@@ -168,16 +182,24 @@
 
 -(NSPoint)cellBaselineOffset;
 {
-  // TODO: Remove magic number
-  return NSMakePoint(0, -6);
+  NSFont *font = [[self attributesForDrawingSolution] objectForKey:NSFontAttributeName];
+  XPFloat capHeight = [font capHeight];
+  XPFloat underline = fabs([font underlinePosition]);
+  XPFloat calculation = 0-((capHeight/2)+underline);
+  return NSMakePoint(0, calculation);
 }
 
 -(void)drawWithFrame:(NSRect)cellFrame
               inView:(NSView*)controlView;
 {
+  NSFont *font = [[self attributesForDrawingSolution] objectForKey:NSFontAttributeName];
+  NSRect textFrame = NSMakeRect(cellFrame.origin.x,
+                                cellFrame.origin.y - [font underlinePosition],
+                                cellFrame.size.width,
+                                cellFrame.size.height);
   return ([self shouldDrawError])
-        ? [self __err_drawWithFrame:cellFrame inView:controlView]
-        : [self __sol_drawWithFrame:cellFrame inView:controlView];
+        ? [self drawErrorWithFrame:cellFrame    textFrame:textFrame inView:controlView]
+        : [self drawSolutionWithFrame:cellFrame textFrame:textFrame inView:controlView];
 }
 
 -(void)highlight:(BOOL)flag
@@ -187,7 +209,6 @@
   [XPLog pause:@"higlight:%@ withFrame:%@",
    (flag) ? @"YES" : @"NO", NSStringFromRect(cellFrame)];
 }
-
 
 // MARK: Dealloc
 

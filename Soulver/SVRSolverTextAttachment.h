@@ -35,15 +35,18 @@
 +(id)cellWithAttachment:(SVRSolverTextAttachment*)attachment;
 
 // MARK: Custom Drawing
--(void)__sol_drawWithFrame:(NSRect)cellFrame
-                    inView:(NSView*)controlView;
--(void)__err_drawWithFrame:(NSRect)cellFrame
-                    inView:(NSView*)controlView;
--(NSDictionary*)__sol_attributes;
--(NSDictionary*)__err_attributes;
+-(void)drawSolutionWithFrame:(NSRect)cellFrame
+                   textFrame:(NSRect)textFrame
+                      inView:(NSView*)controlView;
+-(void)drawErrorWithFrame:(NSRect)cellFrame
+                textFrame:(NSRect)textFrame
+                   inView:(NSView*)controlView;
+-(NSDictionary*)attributesForDrawingSolution;
+-(NSDictionary*)attributesForDrawingError;
 
 // MARK: Protocol (Used)
 -(NSSize)cellSize;
+-(NSPoint)cellBaselineOffset;
 -(void)drawWithFrame:(NSRect)cellFrame
               inView:(NSView*)controlView;
 -(void)highlight:(BOOL)flag

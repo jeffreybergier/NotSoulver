@@ -11,12 +11,14 @@ typedef enum {
   SVRThemeColorSolutionSecondary,
   SVRThemeColorErrorText,
   SVRThemeColorOtherText,
-  SVRThemeColorBackground
+  SVRThemeColorBackground,
+  SVRThemeColorInsertionPoint
 } SVRThemeColor;
 
 typedef enum {
-  SVRThemeFontOtherText,
-  SVRThemeFontMathText
+  SVRThemeFontOther,
+  SVRThemeFontMath,
+  SVRThemeFontError
 } SVRThemeFont;
 
 typedef enum {

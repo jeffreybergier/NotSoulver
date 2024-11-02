@@ -22,7 +22,7 @@
   
   // Give everything default appearance
   [input addAttribute:NSFontAttributeName
-                value:[ud SVR_fontForTheme:SVRThemeFontOtherText]
+                value:[ud SVR_fontForTheme:SVRThemeFontOther]
                 range:NSMakeRange(0, [input length])];
   [input addAttribute:NSForegroundColorAttributeName
                 value:[ud SVR_colorForTheme:SVRThemeColorOtherText]
@@ -34,7 +34,7 @@
               effectiveRange:&checkRange];
     if (check) {
       [input addAttribute:NSFontAttributeName
-                    value:[ud SVR_fontForTheme:SVRThemeFontMathText]
+                    value:[ud SVR_fontForTheme:SVRThemeFontMath]
                     range:checkRange];
       [input addAttribute:NSForegroundColorAttributeName
                     value:[ud SVR_colorForTheme:SVRThemeColorOperand]
@@ -45,7 +45,7 @@
                 effectiveRange:&checkRange];
       if (check) {
         [input addAttribute:NSFontAttributeName
-                      value:[ud SVR_fontForTheme:SVRThemeFontMathText]
+                      value:[ud SVR_fontForTheme:SVRThemeFontMath]
                       range:checkRange];
         [input addAttribute:NSForegroundColorAttributeName
                       value:[ud SVR_colorForTheme:SVRThemeColorBracket]
@@ -56,7 +56,7 @@
                   effectiveRange:&checkRange];
         if (check) {
           [input addAttribute:NSFontAttributeName
-                        value:[ud SVR_fontForTheme:SVRThemeFontMathText]
+                        value:[ud SVR_fontForTheme:SVRThemeFontMath]
                         range:checkRange];
           [input addAttribute:NSForegroundColorAttributeName
                         value:[ud SVR_colorForTheme:SVRThemeColorOperator]
@@ -67,7 +67,7 @@
                     effectiveRange:&checkRange];
           if (check) {
             [input addAttribute:NSFontAttributeName
-                          value:[ud SVR_fontForTheme:SVRThemeFontMathText]
+                          value:[ud SVR_fontForTheme:SVRThemeFontMath]
                           range:checkRange];
             [input addAttribute:NSForegroundColorAttributeName
                           value:[ud SVR_colorForTheme:SVRThemeColorSolutionSecondary]
