@@ -1,29 +1,35 @@
 #import <AppKit/AppKit.h>
+#import "XPCrossPlatform.h"
 
 @interface SVRSettingsViewController: NSResponder
 {
-  id _groupGeneralView;
-  id _groupColorView;
-  id _groupFontView;
-  id _settingsChooser;
-  id _wellDarkBackground;
-  id _wellDarkInsertionPoint;
-  id _wellDarkOperand;
-  id _wellDarkOperator;
-  id _wellDarkOther;
-  id _wellDarkParenthesis;
-  id _wellDarkSolution;
-  id _wellLightBackground;
-  id _wellLightError;
-  id _wellLightInsertionPoint;
-  id _wellLightOperand;
-  id _wellLightOperator;
-  id _wellLightOther;
-  id _wellLightParenthesis;
-  id _wellLightSolution;
+  mm_unretain IBOutlet NSWindow  *_window;
+  mm_retain   IBOutlet NSView    *_groupGeneralView;
+  mm_retain   IBOutlet NSView    *_groupColorView;
+  mm_retain   IBOutlet NSView    *_groupFontView;
+  mm_unretain IBOutlet NSControl *_settingsChooser;
+  mm_unretain IBOutlet NSControl *_wellDarkBackground;
+  mm_unretain IBOutlet NSControl *_wellDarkInsertionPoint;
+  mm_unretain IBOutlet NSControl *_wellDarkOperand;
+  mm_unretain IBOutlet NSControl *_wellDarkOperator;
+  mm_unretain IBOutlet NSControl *_wellDarkOther;
+  mm_unretain IBOutlet NSControl *_wellDarkParenthesis;
+  mm_unretain IBOutlet NSControl *_wellDarkSolution;
+  mm_unretain IBOutlet NSControl *_wellLightBackground;
+  mm_unretain IBOutlet NSControl *_wellLightError;
+  mm_unretain IBOutlet NSControl *_wellLightInsertionPoint;
+  mm_unretain IBOutlet NSControl *_wellLightOperand;
+  mm_unretain IBOutlet NSControl *_wellLightOperator;
+  mm_unretain IBOutlet NSControl *_wellLightOther;
+  mm_unretain IBOutlet NSControl *_wellLightParenthesis;
+  mm_unretain IBOutlet NSControl *_wellLightSolution;
 }
--(void)choiceChanged:(id)sender;
--(void)valueChanged:(id)sender;
--(void)valueReset:(id)sender;
+
+-(void)awakeFromNib;
+-(IBAction)choiceChanged:(NSControl*)sender;
+-(IBAction)valueChanged:(NSControl*)sender;
+-(IBAction)valueReset:(NSControl*)sender;
+
+
 
 @end

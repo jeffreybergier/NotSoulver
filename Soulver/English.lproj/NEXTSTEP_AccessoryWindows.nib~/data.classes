@@ -26,6 +26,7 @@
         _wellLightOther = id; 
         _wellLightParenthesis = id; 
         _wellLightSolution = id; 
+        _window = id; 
     }; 
     SUPERCLASS = NSResponder; 
 };
