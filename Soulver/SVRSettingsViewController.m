@@ -10,8 +10,48 @@
   
   [self choiceChanged:nil];
   [self populateUI];
+  [self configureWellTags];
   
   NSLog(@"%@ awakeFromNib", self);
+}
+
+-(void)configureWellTags;
+{
+  // Uses Bitwise Packing to store both enumerations within the tag.
+  // I got the info for how to do this from ChatGPT so can't provide attributions :-/
+  short int dkBG = (SVRThemeColorBackground     & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
+  short int dkER = (SVRThemeColorErrorText      & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
+  short int dkIP = (SVRThemeColorInsertionPoint & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
+  short int dkOD = (SVRThemeColorOperand        & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
+  short int dkOR = (SVRThemeColorOperator       & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
+  short int dkOT = (SVRThemeColorOtherText      & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
+  short int dkPS = (SVRThemeColorBracket        & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
+  short int dkSL = (SVRThemeColorSolution       & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
+  short int ltBG = (SVRThemeColorBackground     & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
+  short int ltER = (SVRThemeColorErrorText      & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
+  short int ltIP = (SVRThemeColorInsertionPoint & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
+  short int ltOD = (SVRThemeColorOperand        & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
+  short int ltOR = (SVRThemeColorOperator       & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
+  short int ltOT = (SVRThemeColorOtherText      & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
+  short int ltPS = (SVRThemeColorBracket        & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
+  short int ltSL = (SVRThemeColorSolution       & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
+  
+  [_wellDarkBackground      setTag:dkBG];
+  [_wellDarkError           setTag:dkER];
+  [_wellDarkInsertionPoint  setTag:dkIP];
+  [_wellDarkOperand         setTag:dkOD];
+  [_wellDarkOperator        setTag:dkOR];
+  [_wellDarkOther           setTag:dkOT];
+  [_wellDarkParenthesis     setTag:dkPS];
+  [_wellDarkSolution        setTag:dkSL];
+  [_wellLightBackground     setTag:ltBG];
+  [_wellLightError          setTag:ltER];
+  [_wellLightInsertionPoint setTag:ltIP];
+  [_wellLightOperand        setTag:ltOD];
+  [_wellLightOperator       setTag:ltOR];
+  [_wellLightOther          setTag:ltOT];
+  [_wellLightParenthesis    setTag:ltPS];
+  [_wellLightSolution       setTag:ltSL];
 }
 
 -(void)populateUI;
@@ -105,7 +145,15 @@
 
 -(IBAction)colorChanged:(NSColorWell*)sender;
 {
-  NSLog(@"colorChanged:%@", sender);
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  SVRThemeColor color = -2;
+  XPUserInterfaceStyle style = -2;
+  NSColor *wellColor = [sender color];
+  BOOL decoded = [self decodeThemeColor:&color
+                         interfaceStyle:&style
+                          fromColorWell:sender];
+  if (!decoded) { [XPLog pause:@"colorChanged:%@ Failed", sender]; return; }
+  [ud SVR_setColor:wellColor forTheme:color withStyle:style];
 }
 
 -(IBAction)timeChanged:(NSTextField*)sender;
@@ -120,12 +168,23 @@
 
 -(IBAction)fontReset:(NSButton*)sender;
 {
-  NSLog(@"fontReset:%@", sender);
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  SVRThemeFont font = -2;
+  BOOL decoded = [self decodeThemeFont:&font fromButton:sender];
+  if (!decoded) { [XPLog pause:@"fontReset:%@ Failed", sender]; return; }
+  [ud SVR_setFont:nil forTheme:font];
+  [self populateUI];
 }
 
 -(IBAction)colorReset:(NSButton*)sender;
 {
-  NSLog(@"colorReset:%@", sender);
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  SVRThemeColor color = -2;
+  BOOL decoded = [self decodeThemeColor:&color fromResetButton:sender];
+  if (!decoded) { [XPLog pause:@"colorReset:%@ Failed", sender]; return; }
+  [ud SVR_setColor:nil forTheme:color withStyle:XPUserInterfaceStyleLight];
+  [ud SVR_setColor:nil forTheme:color withStyle:XPUserInterfaceStyleDark];
+  [self populateUI];
 }
 
 -(IBAction)timeReset:(NSButton*)sender;
@@ -133,81 +192,83 @@
   NSLog(@"timeReset:%@", sender);
 }
 
--(BOOL)themeColor:(SVRThemeColor*)colorPointer
-   interfaceStyle:(XPUserInterfaceStyle*)stylePointer
-        forSender:(id)sender;
+-(BOOL)decodeThemeColor:(SVRThemeColor*)colorPointer
+         interfaceStyle:(XPUserInterfaceStyle*)stylePointer
+          fromColorWell:(NSColorWell*)sender;
 {
-  *colorPointer = -2;
-  *stylePointer = -2;
+  // See configureWellTags for more info about this bitwise packing
+  short int packed = (short int)[sender tag];
+  SVRThemeColor        color = packed & 0xFF;
+  XPUserInterfaceStyle style = (packed >> 8) & 0xFF;
   
-  if        (sender == _wellDarkBackground) {
-    *colorPointer = SVRThemeColorBackground;
-    *stylePointer = XPUserInterfaceStyleDark;
-    return YES;
-  } else if (sender == _wellDarkInsertionPoint) {
-    *colorPointer = SVRThemeColorInsertionPoint;
-    *stylePointer = XPUserInterfaceStyleDark;
-    return YES;
-  } else if (sender == _wellDarkOperand) {
-    *colorPointer = SVRThemeColorOperand;
-    *stylePointer = XPUserInterfaceStyleDark;
-    return YES;
-  } else if (sender == _wellDarkOperator) {
-    *colorPointer = SVRThemeColorOperator;
-    *stylePointer = XPUserInterfaceStyleDark;
-    return YES;
-  } else if (sender == _wellDarkOther) {
-    *colorPointer = SVRThemeColorOtherText;
-    *stylePointer = XPUserInterfaceStyleDark;
-    return YES;
-  } else if (sender == _wellDarkParenthesis) {
-    *colorPointer = SVRThemeColorBracket;
-    *stylePointer = XPUserInterfaceStyleDark;
-    return YES;
-  } else if (sender == _wellDarkSolution) {
-    *colorPointer = SVRThemeColorSolution;
-    *stylePointer = XPUserInterfaceStyleDark;
-    return YES;
-  } else if (sender == _wellLightBackground) {
-    *colorPointer = SVRThemeColorBackground;
-    *stylePointer = XPUserInterfaceStyleLight;
-    return YES;
-  } else if (sender == _wellLightError) {
-    *colorPointer = SVRThemeColorErrorText;
-    *stylePointer = XPUserInterfaceStyleLight;
-    return YES;
-  } else if (sender == _wellLightInsertionPoint) {
-    *colorPointer = SVRThemeColorInsertionPoint;
-    *stylePointer = XPUserInterfaceStyleLight;
-    return YES;
-  } else if (sender == _wellLightOperand) {
-    *colorPointer = SVRThemeColorOperand;
-    *stylePointer = XPUserInterfaceStyleLight;
-    return YES;
-  } else if (sender == _wellLightOperator) {
-    *colorPointer = SVRThemeColorOperator;
-    *stylePointer = XPUserInterfaceStyleLight;
-    return YES;
-  } else if (sender == _wellLightOther) {
-    *colorPointer = SVRThemeColorOtherText;
-    *stylePointer = XPUserInterfaceStyleLight;
-    return YES;
-  } else if (sender == _wellLightParenthesis) {
-    *colorPointer = SVRThemeColorBracket;
-    *stylePointer = XPUserInterfaceStyleLight;
-    return YES;
-  } else if (sender == _wellLightSolution) {
-    *colorPointer = SVRThemeColorSolution;
-    *stylePointer = XPUserInterfaceStyleLight;
-    return YES;
+  // Set Defaults for Failure
+  *colorPointer = -1;
+  *stylePointer = -1;
+  
+  // Do basic validation of the received values
+  switch (color) {
+    case SVRThemeColorOperand:
+    case SVRThemeColorOperator:
+    case SVRThemeColorBracket:
+    case SVRThemeColorSolution:
+    case SVRThemeColorSolutionSecondary:
+    case SVRThemeColorErrorText:
+    case SVRThemeColorOtherText:
+    case SVRThemeColorBackground:
+    case SVRThemeColorInsertionPoint:
+      *colorPointer = color;
+      break;
+    default:
+      return NO;
   }
-  return NO;
+  switch (style) {
+    case XPUserInterfaceStyleLight:
+    case XPUserInterfaceStyleDark:
+      *stylePointer = style;
+      break;
+    case XPUserInterfaceStyleUnspecified:
+    default:
+      return NO;
+  }
+  return YES;
 }
 
--(BOOL)themeFont:(SVRThemeFont*)fontPointer
-       forSender:(id)sender;
+-(BOOL)decodeThemeColor:(SVRThemeColor*)colorPointer
+        fromResetButton:(NSButton*)sender;
 {
-  return NO;
+  SVRThemeColor tag = [sender tag];
+  switch (tag) {
+    case SVRThemeColorOperand:
+    case SVRThemeColorOperator:
+    case SVRThemeColorBracket:
+    case SVRThemeColorSolution:
+    case SVRThemeColorSolutionSecondary:
+    case SVRThemeColorErrorText:
+    case SVRThemeColorOtherText:
+    case SVRThemeColorBackground:
+    case SVRThemeColorInsertionPoint:
+      *colorPointer = tag;
+      return YES;
+    default:
+      *colorPointer = -1;
+      return NO;
+  }
+}
+
+-(BOOL)decodeThemeFont:(SVRThemeFont*)fontPointer
+            fromButton:(NSButton*)sender;
+{
+  SVRThemeFont tag = [sender tag];
+  switch (tag) {
+    case SVRThemeFontOther:
+    case SVRThemeFontMath:
+    case SVRThemeFontError:
+      *fontPointer = tag;
+      return YES;
+    default:
+      *fontPointer = -1;
+      return NO;
+  }
 }
 
 -(void)dealloc;

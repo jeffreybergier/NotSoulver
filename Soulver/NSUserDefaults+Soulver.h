@@ -4,28 +4,28 @@
 #import "XPCrossPlatform.h"
 
 typedef enum {
-  SVRThemeColorOperand,
-  SVRThemeColorOperator,
-  SVRThemeColorBracket,
-  SVRThemeColorSolution,
-  SVRThemeColorSolutionSecondary,
-  SVRThemeColorErrorText,
-  SVRThemeColorOtherText,
-  SVRThemeColorBackground,
-  SVRThemeColorInsertionPoint
+  SVRThemeColorOperand = 0,
+  SVRThemeColorOperator = 1,
+  SVRThemeColorBracket = 2,
+  SVRThemeColorSolution = 3,
+  SVRThemeColorSolutionSecondary = 4,
+  SVRThemeColorErrorText = 5,
+  SVRThemeColorOtherText = 6,
+  SVRThemeColorBackground = 7,
+  SVRThemeColorInsertionPoint = 8
 } SVRThemeColor;
 
 typedef enum {
-  SVRThemeFontOther,
-  SVRThemeFontMath,
-  SVRThemeFontError
+  SVRThemeFontOther = 0,
+  SVRThemeFontMath = 1,
+  SVRThemeFontError = 2
 } SVRThemeFont;
 
 typedef enum {
-  SVRAccessoryWindowSettings,
-  SVRAccessoryWindowAbout,
-  SVRAccessoryWindowKeypad,
-  SVRAccessoryWindowNone
+  SVRAccessoryWindowSettings = 0,
+  SVRAccessoryWindowAbout = 1,
+  SVRAccessoryWindowKeypad = 2,
+  SVRAccessoryWindowNone = 3
 } SVRAccessoryWindow;
 
 @interface NSUserDefaults (Soulver)

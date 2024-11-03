@@ -32,6 +32,7 @@
 }
 
 -(void)awakeFromNib;
+-(void)configureWellTags;
 -(void)populateUI;
 -(NSString*)__descriptionForFont:(NSFont*)font;
 
@@ -45,12 +46,15 @@
 -(IBAction)colorReset:(NSButton*)sender;
 -(IBAction)timeReset:(NSButton*)sender;
 
--(BOOL)themeColor:(SVRThemeColor*)colorPointer
-   interfaceStyle:(XPUserInterfaceStyle*)stylePointer
-        forSender:(id)sender;
+-(BOOL)decodeThemeColor:(SVRThemeColor*)colorPointer
+         interfaceStyle:(XPUserInterfaceStyle*)stylePointer
+          fromColorWell:(NSColorWell*)sender;
 
--(BOOL)themeFont:(SVRThemeFont*)fontPointer
-       forSender:(id)sender;
+-(BOOL)decodeThemeColor:(SVRThemeColor*)colorPointer
+        fromResetButton:(NSButton*)sender;
+
+-(BOOL)decodeThemeFont:(SVRThemeFont*)fontPointer
+            fromButton:(NSButton*)sender;
 
 
 @end

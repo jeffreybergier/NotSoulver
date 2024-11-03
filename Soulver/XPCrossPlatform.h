@@ -98,15 +98,15 @@ typedef NS_ENUM(XPInteger, XPAlertReturn) {
 
 #if OS_OPENSTEP
 typedef enum {
-  XPUserInterfaceStyleUnspecified,
-  XPUserInterfaceStyleLight,
-  XPUserInterfaceStyleDark
+  XPUserInterfaceStyleUnspecified = 0,
+  XPUserInterfaceStyleLight = 1,
+  XPUserInterfaceStyleDark = 2
 } XPUserInterfaceStyle;
 #else
 typedef NS_ENUM(XPInteger, XPUserInterfaceStyle) {
-  XPUserInterfaceStyleUnspecified,
-  XPUserInterfaceStyleLight,
-  XPUserInterfaceStyleDark
+  XPUserInterfaceStyleUnspecified = 0,
+  XPUserInterfaceStyleLight = 1,
+  XPUserInterfaceStyleDark = 2
 };
 #endif
 
@@ -161,12 +161,13 @@ NSArray* XPRunOpenPanel(void);
 /// systems before 10.3 that did not have NSFontDescriptor will just
 /// fallback to the archiving and unarchiving the NSFont itself
 @interface NSFont (CrossPlatform)
-/// If font responds to fontDescriptor returns NSFontDescriptor.
-/// Otherwise returns self (NSFont)
--(id)XP_fontDescriptor;
-/// If descriptor is NSFontDescriptor, inits a font with descriptor
-/// Otherwise, returns the descriptor directly (assuming its a font)
-+(id)XP_fontWithDescriptor:(id)descriptor;
+-(NSData*)XP_data;
++(id)XP_fontWithData:(NSData*)data;
+@end
+
+@interface NSColor (CrossPlatform)
+-(NSData*)XP_data;
++(id)XP_colorWithData:(NSData*)data;
 @end
 
 @interface CrossPlatform: NSObject

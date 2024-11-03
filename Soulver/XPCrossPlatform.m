@@ -389,28 +389,50 @@ NSArray* XPRunOpenPanel(void)
 
 @implementation NSFont (CrossPlatform)
 
--(id)XP_fontDescriptor;
+-(NSData*)XP_data;
 {
+  id forArchiving = nil;
   SEL selector = @selector(fontDescriptor);
   if ([self respondsToSelector:selector]) {
-    return [self performSelector:selector];
+    forArchiving = [self performSelector:selector];
   } else {
-    return self;
+    forArchiving = self;
   }
+  return [XPKeyedArchiver archivedDataWithRootObject:forArchiving];
 }
 
-+(id)XP_fontWithDescriptor:(id)descriptor;
++(id)XP_fontWithData:(NSData*)data;
 {
-  Class fontClass = [NSFont class];
+  NSFont *output = nil;
+  id unarchived = nil;
   Class descriptorClass = NSClassFromString(@"NSFontDescriptor");
-  if ([descriptor isKindOfClass:descriptorClass]) {
-    return [self fontWithDescriptor:descriptor size:0];
-  } else if ([descriptor isKindOfClass:fontClass]) {
-    return descriptor;
+  if (!data) { return nil; }
+  unarchived = [XPKeyedUnarchiver unarchiveObjectWithData:data];
+  if ([unarchived isKindOfClass:descriptorClass]) {
+    output = [self fontWithDescriptor:unarchived size:0];
   } else {
-    [XPLog error:@"XP_fontWithDescriptor: Unexpected: %@", descriptor];
-    return nil;
+    output = unarchived;
   }
+  if (![output isKindOfClass:[NSFont class]]) { [XPLog error:@""]; return nil; }
+  return output;
+}
+
+@end
+
+@implementation NSColor (CrossPlatform)
+
+-(NSData*)XP_data;
+{
+  return [XPKeyedArchiver archivedDataWithRootObject:self];
+}
+
++(id)XP_colorWithData:(NSData*)data;
+{
+  NSColor *output = nil;
+  if (!data) { return nil; }
+  output = [XPKeyedUnarchiver unarchiveObjectWithData:data];
+  if (![output isKindOfClass:[NSColor class]]) { [XPLog error:@""]; return nil; }
+  return output;
 }
 
 @end
@@ -423,3 +445,4 @@ NSArray* XPRunOpenPanel(void)
   [XPLog alwys:@"XPTESTS: Pass"];
 }
 @end
+
