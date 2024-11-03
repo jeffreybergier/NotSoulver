@@ -4,7 +4,17 @@
 #import "XPCrossPlatform.h"
 #import "NSUserDefaults+Soulver.h"
 
-@interface SVRAccessoryWindowsOwner : NSObject
+@interface SVRFontManager: NSFontManager
+{
+  SVRThemeFont _themeFont;
+}
+
+-(SVRThemeFont)themeFont;
+-(void)setThemeFont:(SVRThemeFont)themeFont;
+
+@end
+
+@interface SVRAccessoryWindowsOwner: NSObject
 {
   mm_retain IBOutlet NSPanel  *_keypadPanel;
   mm_retain IBOutlet NSWindow *_aboutWindow;

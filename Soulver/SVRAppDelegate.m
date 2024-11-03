@@ -4,20 +4,13 @@
 
 @implementation SVRAppDelegate
 
-// MARK: Init
--(void)awakeFromNib;
+// MARK: Init;
+-(id)init;
 {
-  // Initialize Properties
+  self = [super init];
   _openDocuments = [NSMutableSet new];
-  // Prepare UserDefaults
-  [[NSUserDefaults standardUserDefaults] SVR_configure];
-  // Register for Notifications
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(__windowWillCloseNotification:)
-                                               name:NSWindowWillCloseNotification
-                                             object:nil];
-  // Announce
-  [XPLog debug:@"awakeFromNib: %@", self];
+  _accessoryWindowsOwner = nil; // Set in applicationDidFinishLaunching:
+  return self;
 }
 
 // MARK: Properties
@@ -108,6 +101,20 @@
 
 
 @implementation SVRAppDelegate (NSApplicationDelegate)
+
+-(void)applicationWillFinishLaunching:(NSNotification*)aNotification;
+{
+  // Prepare UserDefaults
+  [[NSUserDefaults standardUserDefaults] SVR_configure];
+  // Prepare FontManager
+  [NSFontManager setFontManagerFactory:[SVRFontManager class]];
+  // Register for Notifications
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(__windowWillCloseNotification:)
+                                               name:NSWindowWillCloseNotification
+                                             object:nil];
+  [XPLog debug:@"%@ applicationWillFinishLaunching:", self];
+}
 
 -(void)applicationDidFinishLaunching:(NSNotification*)notification;
 {

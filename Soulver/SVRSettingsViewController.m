@@ -1,9 +1,14 @@
 #import "SVRSettingsViewController.h"
+#import "SVRAccessoryWindowsOwner.h"
 
 @implementation SVRSettingsViewController
 
 -(void)awakeFromNib;
 {
+  // Configure Responder Chain
+  [self setNextResponder:[_window nextResponder]];
+  [_window setNextResponder:self];
+  
   [_groupFontView retain];
   [_groupColorView retain];
   [_groupGeneralView retain];
@@ -163,7 +168,29 @@
 
 -(IBAction)fontChangeRequest:(NSButton*)sender;
 {
-  NSLog(@"fontChangeRequest:%@", sender);
+  BOOL decoded = NO;
+  SVRThemeFont theme = -1;
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  SVRFontManager *fm = (SVRFontManager*)[NSFontManager sharedFontManager];
+  if (![fm isKindOfClass:[SVRFontManager class]]) { [XPLog error:@""]; return; }
+  decoded = [self decodeThemeFont:&theme fromButton:sender];
+  if (!decoded) { [XPLog pause:@"fontChangeRequest:%@ Failed", sender]; return; }
+  [fm setSelectedFont:[ud SVR_fontForTheme:theme] isMultiple:NO];
+  [fm setThemeFont:theme];
+  [fm orderFrontFontPanel:sender];
+}
+
+-(IBAction)changeFont:(NSFontManager*)sender;
+{
+  NSFont *font = nil;
+  SVRThemeFont theme = -1;
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  if (![sender isKindOfClass:[SVRFontManager class]]) { [XPLog error:@""]; return; }
+  font = [sender convertFont:[sender selectedFont]];
+  theme = [(SVRFontManager*)sender themeFont];
+  [ud SVR_setFont:font forTheme:theme];
+  [self populateUI];
+  NSLog(@"fontChanged:%@", sender);
 }
 
 -(IBAction)fontReset:(NSButton*)sender;

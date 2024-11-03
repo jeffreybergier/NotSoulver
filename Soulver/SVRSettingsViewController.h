@@ -41,6 +41,8 @@
 -(IBAction)colorChanged:(NSColorWell*)sender;
 -(IBAction)timeChanged:(NSTextField*)sender;
 -(IBAction)fontChangeRequest:(NSButton*)sender;
+// FirstResponder message from NSFontManager
+-(IBAction)changeFont:(NSFontManager*)sender;
 
 -(IBAction)fontReset:(NSButton*)sender;
 -(IBAction)colorReset:(NSButton*)sender;

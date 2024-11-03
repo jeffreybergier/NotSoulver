@@ -3,6 +3,19 @@
 #import "SVRAccessoryWindowsOwner.h"
 #import "NSUserDefaults+Soulver.h"
 
+@implementation SVRFontManager
+
+-(SVRThemeFont)themeFont;
+{
+  return _themeFont;
+}
+-(void)setThemeFont:(SVRThemeFont)themeFont;
+{
+  _themeFont = themeFont;
+}
+
+@end
+
 @implementation SVRAccessoryWindowsOwner
 
 // MARK: IBOutlets
