@@ -181,7 +181,17 @@
 
 -(IBAction)timeChanged:(NSTextField*)sender;
 {
-  NSLog(@"timeChanged:%@", sender);
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  XPFloat userTime = [sender floatValue];
+  XPFloat newUDTime;
+  [ud SVR_setWaitTimeForRendering:userTime];
+  newUDTime = [ud SVR_waitTimeForRendering];
+  if (userTime != newUDTime) {
+    [sender setTextColor:[ud SVR_colorForTheme:SVRThemeColorErrorText]];
+    NSBeep();
+  } else {
+    [sender setTextColor:[NSColor controlTextColor]];
+  }
 }
 
 -(IBAction)fontChangeRequest:(NSButton*)sender;
@@ -235,7 +245,9 @@
 
 -(IBAction)timeReset:(NSButton*)sender;
 {
-  NSLog(@"timeReset:%@", sender);
+  [_fieldTime setTextColor:[NSColor controlTextColor]];
+  [[NSUserDefaults standardUserDefaults] SVR_setWaitTimeForRendering:-1];
+  [self populateUI];
 }
 
 -(BOOL)decodeThemeColor:(SVRThemeColor*)colorPointer

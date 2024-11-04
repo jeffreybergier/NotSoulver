@@ -61,7 +61,11 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 
 -(BOOL)SVR_setWaitTimeForRendering:(NSTimeInterval)newValue;
 {
-  [self setFloat:(float)newValue forKey:XPUserDefaultsWaitTimeForRendering];
+  if (newValue < 0) {
+    [self removeObjectForKey:XPUserDefaultsWaitTimeForRendering];
+  } else {
+    [self setFloat:(float)newValue forKey:XPUserDefaultsWaitTimeForRendering];
+  }
   return [self synchronize];
 }
 
