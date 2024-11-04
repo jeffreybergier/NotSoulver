@@ -29,7 +29,6 @@
 
 @interface SVRAppDelegate (NSApplicationDelegate)
 -(void)applicationWillFinishLaunching:(NSNotification*)aNotification;
--(void)applicationDidFinishLaunching:(NSNotification*)notification;
 -(BOOL)applicationShouldTerminate:(NSApplication *)sender;
 -(BOOL)__applicationShouldTerminateAfterReviewingAllWindows:(NSApplication*)sender;
 -(BOOL)application:(NSApplication *)sender openFile:(NSString *)filename;

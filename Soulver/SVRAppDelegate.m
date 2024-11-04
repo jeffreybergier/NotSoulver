@@ -113,13 +113,10 @@
                                            selector:@selector(__windowWillCloseNotification:)
                                                name:NSWindowWillCloseNotification
                                              object:nil];
-  [XPLog debug:@"%@ applicationWillFinishLaunching:", self];
-}
-
--(void)applicationDidFinishLaunching:(NSNotification*)notification;
-{
+  // Configure Accessory Windows
   _accessoryWindowsOwner = [[SVRAccessoryWindowsOwner alloc] init];
-  [XPLog debug:@"%@ applicationDidFinishLaunching:", self];
+  // Announce
+  [XPLog debug:@"%@ applicationWillFinishLaunching:", self];
 }
 
 -(BOOL)applicationShouldTerminate:(NSApplication *)sender;

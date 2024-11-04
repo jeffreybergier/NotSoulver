@@ -9,14 +9,17 @@
   [self setNextResponder:[_window nextResponder]];
   [_window setNextResponder:self];
   
+  // Retain these views so I can remove them from the view hierarchy ad-hoc
   [_groupFontView retain];
   [_groupColorView retain];
   [_groupGeneralView retain];
   
+  // Configure the screen
   [self choiceChanged:nil];
   [self populateUI];
   [self configureWellTags];
   
+  // Announce
   NSLog(@"%@ awakeFromNib", self);
 }
 
@@ -62,6 +65,10 @@
 -(void)populateUI;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  NSFont *currentFont = nil;
+  NSAttributedString *currentFontString = nil;
+  NSMutableDictionary *currentFontAttribs = [[NSMutableDictionary new] autorelease];
+  
   // Dark Theme Colors
   [_wellDarkBackground setColor:[ud SVR_colorForTheme:SVRThemeColorBackground
                                             withStyle:XPUserInterfaceStyleDark]];
@@ -96,18 +103,29 @@
                                               withStyle:XPUserInterfaceStyleLight]];
   [_wellLightSolution setColor:[ud SVR_colorForTheme:SVRThemeColorSolution
                                            withStyle:XPUserInterfaceStyleLight]];
-  // Font Text Fields
-  [_fieldTextMath setStringValue:[NSString stringWithFormat:@"%@",
-    [self __descriptionForFont:[ud SVR_fontForTheme:SVRThemeFontMath]]]
-  ];
-  [_fieldTextOther setStringValue:[NSString stringWithFormat:@"%@",
-    [self __descriptionForFont:[ud SVR_fontForTheme:SVRThemeFontOther]]]
-  ];
-  [_fieldTextError setStringValue:[NSString stringWithFormat:@"%@",
-    [self __descriptionForFont:[ud SVR_fontForTheme:SVRThemeFontError]]]
-  ];
   // Time Text Field
   [_fieldTime setStringValue:[NSString stringWithFormat:@"%.1f", [ud SVR_waitTimeForRendering]]];
+  
+  // Configure Math Text Font Field
+  currentFont = [ud SVR_fontForTheme:SVRThemeFontMath];
+  [currentFontAttribs setObject:currentFont forKey:NSFontAttributeName];
+  currentFontString = [[NSAttributedString alloc] initWithString:[self __descriptionForFont:currentFont]
+                                                      attributes:currentFontAttribs];
+  [_fieldTextMath setAttributedStringValue:currentFontString];
+  
+  // Configure Other Text Font Field
+  currentFont = [ud SVR_fontForTheme:SVRThemeFontOther];
+  [currentFontAttribs setObject:currentFont forKey:NSFontAttributeName];
+  currentFontString = [[NSAttributedString alloc] initWithString:[self __descriptionForFont:currentFont]
+                                                      attributes:currentFontAttribs];
+  [_fieldTextOther setAttributedStringValue:currentFontString];
+  
+  // Configure Error Text Font Field
+  currentFont = [ud SVR_fontForTheme:SVRThemeFontError];
+  [currentFontAttribs setObject:currentFont forKey:NSFontAttributeName];
+  currentFontString = [[NSAttributedString alloc] initWithString:[self __descriptionForFont:currentFont]
+                                                      attributes:currentFontAttribs];
+  [_fieldTextError setAttributedStringValue:currentFontString];
 }
 
 -(NSString*)__descriptionForFont:(NSFont*)font;
@@ -189,6 +207,7 @@
   font = [sender convertFont:[sender selectedFont]];
   theme = [(SVRFontManager*)sender themeFont];
   [ud SVR_setFont:font forTheme:theme];
+  [[sender fontPanel:NO] performClose:sender];
   [self populateUI];
   NSLog(@"fontChanged:%@", sender);
 }

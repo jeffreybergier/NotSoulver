@@ -6,7 +6,6 @@ fb +[XPLog pause:]
 fb -[SVRSettingsViewController themeChanged:]
 fb -[SVRSettingsViewController timeChanged:]
 fb -[SVRSettingsViewController timeReset:]
-fb -[SVRSettingsViewController fontReset:]
 
 ## Run automatically
 run
