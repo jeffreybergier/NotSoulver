@@ -2,6 +2,8 @@
 
 #import "NSUserDefaults+Soulver.h"
 
+NSString * const SVRThemeDidChangeNotificationName = @"kSVRThemeDidChangeNotificationNameKey";
+
 NSString *XPUserDefaultsSavePanelLastDirectory    = @"kSavePanelLastDirectory";
 NSString *XPUserDefaultsWaitTimeForRendering      = @"kWaitTimeForRendering";
 NSString *XPUserDefaultsLegacyDecimalNumberLocale = @"kLegacyDecimalNumberLocale";
@@ -122,6 +124,13 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 
 // MARK: Theming
 
+-(void)__postChangeNotification;
+{
+  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+  [nc postNotificationName:SVRThemeDidChangeNotificationName
+                    object:self];
+}
+
 -(XPUserInterfaceStyle)SVR_userInterfaceStyle;
 {
   return (XPUserInterfaceStyle)[self integerForKey:SVRThemeUserInterfaceStyle];
@@ -129,8 +138,13 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 
 -(BOOL)SVR_setUserInterfaceStyle:(XPUserInterfaceStyle)style;
 {
+  BOOL success = NO;
+  XPUserInterfaceStyle oldStyle = [self SVR_userInterfaceStyle];
+  if (oldStyle == style) { return YES; }
   [self setInteger:style forKey:SVRThemeUserInterfaceStyle];
-  return [self synchronize];
+  success = [self synchronize];
+  if (success) { [self __postChangeNotification]; }
+  return success;
 }
 
 -(NSColor*)SVR_colorForTheme:(SVRThemeColor)theme;
@@ -151,13 +165,18 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
            forTheme:(SVRThemeColor)theme
           withStyle:(XPUserInterfaceStyle)style;
 {
+  BOOL success = NO;
   NSString *key = [self __SVR_keyForThemeColor:theme withStyle:style];
+  NSColor *oldColor = [self SVR_colorForTheme:theme withStyle:style];
+  if ([oldColor isEqual:color]) { return YES; }
   if (color) {
     [self setObject:[color XP_data] forKey:key];
   } else {
     [self removeObjectForKey:key];
   }
-  return [self synchronize];
+  success = [self synchronize];
+  if (success) { [self __postChangeNotification]; }
+  return success;
 }
 
 -(NSFont*)SVR_fontForTheme:(SVRThemeFont)theme;
@@ -171,13 +190,18 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 -(BOOL)SVR_setFont:(NSFont*)font
           forTheme:(SVRThemeFont)theme;
 {
+  BOOL success = NO;
   NSString *key = [self __SVR_keyForThemeFont:theme];
+  NSFont *oldFont = [self SVR_fontForTheme:theme];
+  if ([oldFont isEqual:font]) { return YES; }
   if (font) {
     [self setObject:[font XP_data] forKey:key];
   } else {
     [self removeObjectForKey:key];
   }
-  return [self synchronize];
+  success = [self synchronize];
+  if (success) { [self __postChangeNotification]; }
+  return success;
 }
 
 -(NSString*)__SVR_keyForThemeColor:(SVRThemeColor)theme

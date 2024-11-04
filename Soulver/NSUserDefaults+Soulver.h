@@ -3,6 +3,8 @@
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
 
+extern NSString * const SVRThemeDidChangeNotificationName;
+
 typedef enum {
   SVRThemeColorOperand = 0,
   SVRThemeColorOperator = 1,
@@ -42,6 +44,7 @@ typedef enum {
 -(BOOL)SVR_setVisibility:(BOOL)isVisible forWindow:(SVRAccessoryWindow)window;
 
 // MARK: Theming
+-(void)__postChangeNotification;
 -(XPUserInterfaceStyle)SVR_userInterfaceStyle;
 -(BOOL)SVR_setUserInterfaceStyle:(XPUserInterfaceStyle)style;
 -(NSColor*)SVR_colorForTheme:(SVRThemeColor)theme;

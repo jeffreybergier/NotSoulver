@@ -15,7 +15,6 @@
 // MARK: awakeFromNib
 -(void)awakeFromNib;
 {
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   NSLayoutManager *layoutManager = [[[NSLayoutManager alloc] init] autorelease];
   SVRDocumentModelController *modelController = [self modelController];
   NSTextStorage *model = [modelController model];
@@ -31,12 +30,27 @@
   [layoutManager replaceTextStorage:model];
   
   // Configure the text view
-  [textView setTypingAttributes:[self __typingAttributes]];
-  [textView setBackgroundColor:[ud SVR_colorForTheme:SVRThemeColorBackground]];
-  [textView setInsertionPointColor:[ud SVR_colorForTheme:SVRThemeColorInsertionPoint]];
+  [self themeDidChangeNotification:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(themeDidChangeNotification:)
+                                               name:SVRThemeDidChangeNotificationName
+                                             object:nil];
   
   // Announce
   [XPLog debug:@"awakeFromNib: %@", self];
+}
+
+-(void)themeDidChangeNotification:(NSNotification*)aNotification;
+{
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  NSTextView *textView = [self textView];
+  [textView setTypingAttributes:[self __typingAttributes]];
+  [textView setBackgroundColor:[ud SVR_colorForTheme:SVRThemeColorBackground]];
+  [textView setInsertionPointColor:[ud SVR_colorForTheme:SVRThemeColorInsertionPoint]];
+  if (aNotification){
+    [[self modelController] waitTimerFired:nil];
+  }
+  [textView setNeedsDisplay:YES];
 }
 
 // MARK: IBActions
@@ -143,6 +157,7 @@
 -(void)dealloc;
 {
   [XPLog debug:@"DEALLOC: %@", self];
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
   [_modelController release];
   _modelController = nil;
   _textView = nil;

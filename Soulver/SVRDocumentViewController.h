@@ -13,6 +13,7 @@
 
 // MARK: awakeFromNib
 -(void)awakeFromNib;
+-(void)themeDidChangeNotification:(NSNotification*)aNotification;
 
 // MARK: IBActions
 -(IBAction)keypadAppend:(id)sender;
