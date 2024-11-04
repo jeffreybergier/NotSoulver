@@ -140,11 +140,7 @@
 {
   NSView *contentView = [_window contentView];
   XPInteger selection = (sender) ? [sender indexOfSelectedItem] : 0;
-  
-  [XPLog debug:@"choiceChanged:%@(%ld)", sender, selection];
-  
-  return;
-  
+      
   [_groupFontView removeFromSuperview];
   [_groupColorView removeFromSuperview];
   [_groupGeneralView removeFromSuperview];
