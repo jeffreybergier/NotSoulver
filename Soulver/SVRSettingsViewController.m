@@ -69,6 +69,9 @@
   NSAttributedString *currentFontString = nil;
   NSMutableDictionary *currentFontAttribs = [[NSMutableDictionary new] autorelease];
   
+  // Configure theme
+  [_popUpTheme selectItemAtIndex:[ud SVR_userInterfaceStyle]];
+  
   // Dark Theme Colors
   [_wellDarkBackground setColor:[ud SVR_colorForTheme:SVRThemeColorBackground
                                             withStyle:XPUserInterfaceStyleDark]];
@@ -163,7 +166,18 @@
 
 -(IBAction)themeChanged:(NSPopUpButton*)sender;
 {
-  NSLog(@"themeChanged:%@", sender);
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  XPUserInterfaceStyle newStyle = [sender indexOfSelectedItem];
+  switch (newStyle) {
+    case XPUserInterfaceStyleUnspecified:
+    case XPUserInterfaceStyleLight:
+    case XPUserInterfaceStyleDark:
+      [ud SVR_setUserInterfaceStyle:newStyle];
+      break;
+    default:
+      NSBeep();
+      break;
+  }
 }
 
 -(IBAction)colorChanged:(NSColorWell*)sender;

@@ -43,6 +43,7 @@ typedef enum {
 
 // MARK: Theming
 -(XPUserInterfaceStyle)SVR_userInterfaceStyle;
+-(BOOL)SVR_setUserInterfaceStyle:(XPUserInterfaceStyle)style;
 -(NSColor*)SVR_colorForTheme:(SVRThemeColor)theme;
 -(NSColor*)SVR_colorForTheme:(SVRThemeColor)theme
                    withStyle:(XPUserInterfaceStyle)style;

@@ -127,6 +127,12 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
   return (XPUserInterfaceStyle)[self integerForKey:SVRThemeUserInterfaceStyle];
 }
 
+-(BOOL)SVR_setUserInterfaceStyle:(XPUserInterfaceStyle)style;
+{
+  [self setInteger:style forKey:SVRThemeUserInterfaceStyle];
+  return [self synchronize];
+}
+
 -(NSColor*)SVR_colorForTheme:(SVRThemeColor)theme;
 {
   return [self SVR_colorForTheme:theme withStyle:[self SVR_userInterfaceStyle]];
