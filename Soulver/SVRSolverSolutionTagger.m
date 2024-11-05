@@ -259,7 +259,7 @@
     case SVRSolverOperatorAdd:
       return [lhs decimalNumberByAdding:rhs withBehavior:ohBehave];
     default:
-      [XPLog error:@"__solveWithOperatorUnknown"];
+      XPLogRaise1(@"__solveWithOperatorUnknown:%d", operator);
       return nil;
   }
 }

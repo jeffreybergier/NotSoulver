@@ -209,6 +209,10 @@ NSArray* XPRunOpenPanel(void);
 #define C99 0
 #endif
 
+#ifndef DEBUG
+#define DEBUG 0
+#endif
+
 #ifndef LOGLEVEL
 #define LOGLEVEL 0
 #endif
@@ -227,7 +231,7 @@ NSArray* XPRunOpenPanel(void);
 #define XPLogAlwys3(_formatString, ...) NSLog(_formatString, __VA_ARGS__)
 #define XPLogAlwys4(_formatString, ...) NSLog(_formatString, __VA_ARGS__)
 #endif
-#if (DEBUG || LOGLEVEL >= 1) && C99 == 0
+#if (DEBUG > 0 || LOGLEVEL >= 1) && C99 == 0
 #define XPLogDebug(_formatString) NSLog(@"%@", _formatString)
 #define XPLogDebug1(_formatString, _one) NSLog(_formatString, _one)
 #define XPLogDebug2(_formatString, _one, _two) NSLog(_formatString, _one, _two)
@@ -240,7 +244,7 @@ NSArray* XPRunOpenPanel(void);
 #define XPLogPause4(_formatString, _one, _two, _three, _four) NSLog([@"LOG-PAUSE: " stringByAppendingString:_formatString], _one, _two, _three, _four); [XPLog pause]
 #endif
 
-#if (DEBUG || LOGLEVEL >= 1) && C99 == 1
+#if (DEBUG > 0 || LOGLEVEL >= 1) && C99 == 1
 #define XPLogDebug(_formatString) NSLog(@"%@", _formatString)
 #define XPLogDebug1(_formatString, ...) NSLog(_formatString, __VA_ARGS__)
 #define XPLogDebug2(_formatString, ...) NSLog(_formatString, __VA_ARGS__)
@@ -312,6 +316,4 @@ NSArray* XPRunOpenPanel(void);
 /// Requires `fb +[XPLog pause]` in GDB to Pause Debugger
 +(void)pause;
 +(void)executeUnitTests;
-/// Raises an exception with format (crashes in production)
-+(void)error:(NSString*)formatString, ...;
 @end

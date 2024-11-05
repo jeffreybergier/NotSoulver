@@ -99,7 +99,7 @@ NSString *XPAttributedStringKeyForTag(SVRSolverTag tag)
     case SVRSolverTagSolution:         return @"kSVRSolverTagSolutionKey";
     case SVRSolverTagPreviousSolution: return @"kSVRSolverTagPreviousSolutionKey";
     default:
-      [XPLog error:@"SVR_stringForTagUnknown: %d", tag];
+      XPLogRaise1(@"SVR_stringForTagUnknown: %d", tag);
       return nil;
   }
 }
@@ -119,7 +119,7 @@ SVRSolverTag SVRSolverTagForKey(XPAttributedStringKey string)
   } else if ([string isEqualToString:XPAttributedStringKeyForTag(SVRSolverTagPreviousSolution)]) {
     return SVRSolverTagPreviousSolution;
   } else {
-    [XPLog error:@"SVR_tagForStringUnknown: %@", string];
+    XPLogRaise1(@"SVR_tagForStringUnknown: %@", string);
     return (SVRSolverTag)-1;
   }
 }
@@ -147,7 +147,7 @@ SVRSolverOperator SVRSolverOperatorForRawString(NSString *string)
   } else if ([string isEqualToString:@"+"]) {
     return SVRSolverOperatorAdd;
   } else {
-    [XPLog error:@"SVR_operatorForRawStringUnknown: %@", string];
+    XPLogRaise1(@"SVR_operatorForRawStringUnknown: %@", string);
     return (SVRSolverOperator)-1;
   }
 }
@@ -166,7 +166,7 @@ NSString *SVRSolverDescriptionForError(SVRSolverError error)
     case SVRSolverErrorDivideByZero:
       return [NSString stringWithFormat:@"<Error:%d> Divide by zero", error];
     default:
-      [XPLog error:@"SVRSolverDescriptionForErrorUnknown: %d", error];
+      XPLogRaise1(@"SVRSolverDescriptionForErrorUnknown: %d", error);
       return nil;
   }
 }
@@ -185,7 +185,7 @@ NSString *SVRSolverDebugDescriptionForError(SVRSolverError error)
     case SVRSolverErrorDivideByZero:
       return @"divideByZero";
     default:
-      [XPLog error:@"SVRSolverDescriptionForErrorUnknown: %d", error];
+      XPLogRaise1(@"SVRSolverDescriptionForErrorUnknown: %d", error);
       return nil;
   }
 }

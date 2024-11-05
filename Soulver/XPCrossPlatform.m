@@ -106,7 +106,7 @@ NSArray* XPRunOpenPanel(void)
       output = [NSArray new];
       break;
     default:
-      [XPLog error:@"Impossible NSOpenPanel result: %lu", result];
+      XPLogRaise1(@"Impossible NSOpenPanel result: %lu", result);
       output = nil;
       break;
   }
@@ -233,7 +233,7 @@ NSArray* XPRunOpenPanel(void)
   NSRange foundRange = XPNotFoundRange;
   
   if ([searchString length] != [replaceString length]) {
-    [XPLog error:@"Precondition Failure: searchString and replaceString must be same length"];
+    XPLogRaise(@"Precondition Failure: searchString and replaceString must be same length");
     return;
   }
   
@@ -370,7 +370,7 @@ NSArray* XPRunOpenPanel(void)
   if (!data) { return nil; }
   output = [XPKeyedUnarchiver XP_unarchivedObjectOfClass:[NSColor class]
                                                 fromData:data];
-  if (![output isKindOfClass:[NSColor class]]) { [XPLog error:@""]; return nil; }
+  if (![output isKindOfClass:[NSColor class]]) { XPLogRaise(@""); return nil; }
   return output;
 }
 
@@ -415,7 +415,7 @@ NSArray* XPRunOpenPanel(void)
     if ([output isKindOfClass:cls]) {
       return output;
     } else {
-      [XPLog error:@"XP_unarchivedObject:%@ notKindOfClass %@", output, cls];
+      XPLogRaise2(@"XP_unarchivedObject:%@ notKindOfClass %@", output, cls);
       return nil;
     }
   }
@@ -466,17 +466,6 @@ NSArray* XPRunOpenPanel(void)
   XPLogRaise3(@"XPLogRaise3: %d, %d, %d", 1, 2, 3);
   XPLogRaise4(@"XPLogRaise4: %d, %d, %d, %d", 1, 2, 3, 4);
   */
-}
-
-+(void)error:(NSString*)_formatString, ...;
-{
-  va_list args;
-  NSString *formatString = (_formatString) ? _formatString : @"NO ERROR PROVIDED";
-  va_start(args, _formatString);
-  formatString = [@"LOG-ERROR: " stringByAppendingString:formatString];
-  NSLogv(formatString, args);
-  [NSException raise:@"SVRException" format:formatString arguments:args];
-  va_end(args);
 }
 
 @end

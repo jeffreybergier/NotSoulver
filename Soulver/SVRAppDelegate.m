@@ -142,7 +142,7 @@
     case XPAlertReturnAlternate: return YES;
     case XPAlertReturnOther:     return NO;
     default:
-      [XPLog error:@"%@ Unexpected alert result: %ld", self, alertResult];
+      XPLogRaise2(@"%@ Unexpected alert result: %ld", self, alertResult);
       return NO;
   }
 }

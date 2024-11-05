@@ -88,7 +88,7 @@
       case -1: [[self modelController] backspaceCharacter]; break;
       case -2: [[self modelController] backspaceLine]; break;
       case -3: [[self modelController] backspaceAll]; break;
-      default: [XPLog error:@"%@ Button with unknown tag: %ld", self, tag];
+      default: XPLogRaise2(@"%@ Button with unknown tag: %ld", self, tag);
     }
   }
 }
@@ -131,7 +131,7 @@
       *control = -3;
       return nil;
   }
-  [XPLog error:@"<%@> Button with unknown tag: %ld", self, tag];
+  XPLogRaise2(@"<%@> Button with unknown tag: %ld", self, tag);
   return nil;
 }
 

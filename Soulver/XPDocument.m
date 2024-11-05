@@ -41,7 +41,7 @@ NSPoint XPDocumentPointForCascading;
 /// File's Owner Should be this Object
 -(NSString*)windowNibName;
 {
-  [XPLog error:@"Unimplemented"];
+  XPLogRaise(@"Unimplemented");
   return nil;
 }
 
@@ -75,7 +75,7 @@ NSPoint XPDocumentPointForCascading;
       return NO;
     case XPAlertReturnError:
     default:
-      [XPLog error:@"Unexpected alert panel result: %ld", alertResult];
+      XPLogRaise1(@"Unexpected alert panel result: %ld", alertResult);
       return NO;
   }
 }
@@ -204,14 +204,14 @@ NSPoint XPDocumentPointForCascading;
 // Override to provide data for saving
 -(NSData*)dataRepresentationOfType:(NSString*)type;
 {
-  [XPLog error:@"Unimplemented"];
+  XPLogRaise(@"Unimplemented");
   return nil;
 }
 
 // Override to convert your model when reading from disk
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
 {
-  [XPLog error:@"Unimplemented"];
+  XPLogRaise(@"Unimplemented");
   return NO;
 }
 
@@ -292,7 +292,7 @@ NSPoint XPDocumentPointForCascading;
     case XPAlertReturnOther:
     case XPAlertReturnError:
     default:
-      [XPLog error:@"Unexpected alert panel result: %ld", result];
+      XPLogRaise1(@"Unexpected alert panel result: %ld", result);
   }
   [self updateWindowChrome];
 }
@@ -341,7 +341,7 @@ NSPoint XPDocumentPointForCascading;
       XPLogDebug(@"User cancelled save");
       break;
     default:
-      [XPLog error:@"Unexpected save panel result: %ld", okCancel];
+      XPLogRaise1(@"Unexpected save panel result: %ld", okCancel);
       break;
   }
   [[NSUserDefaults standardUserDefaults] SVR_setSavePanelLastDirectory:[savePanel directory]];
