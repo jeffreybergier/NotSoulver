@@ -5,19 +5,7 @@
 
 extern NSString * const SVRThemeDidChangeNotificationName;
 
-#if OS_OPENSTEP
-typedef enum {
-  SVRThemeColorOperand = 0,
-  SVRThemeColorOperator = 1,
-  SVRThemeColorBracket = 2,
-  SVRThemeColorSolution = 3,
-  SVRThemeColorSolutionSecondary = 4,
-  SVRThemeColorErrorText = 5,
-  SVRThemeColorOtherText = 6,
-  SVRThemeColorBackground = 7,
-  SVRThemeColorInsertionPoint = 8
-} SVRThemeColor;
-#else
+#ifdef NS_ENUM
 typedef NS_ENUM(XPInteger, SVRThemeColor) {
   SVRThemeColorOperand = 0,
   SVRThemeColorOperator = 1,
@@ -29,36 +17,48 @@ typedef NS_ENUM(XPInteger, SVRThemeColor) {
   SVRThemeColorBackground = 7,
   SVRThemeColorInsertionPoint = 8
 };
+#else
+typedef enum {
+  SVRThemeColorOperand = 0,
+  SVRThemeColorOperator = 1,
+  SVRThemeColorBracket = 2,
+  SVRThemeColorSolution = 3,
+  SVRThemeColorSolutionSecondary = 4,
+  SVRThemeColorErrorText = 5,
+  SVRThemeColorOtherText = 6,
+  SVRThemeColorBackground = 7,
+  SVRThemeColorInsertionPoint = 8
+} SVRThemeColor;
 #endif
 
-#if OS_OPENSTEP
-typedef enum {
-  SVRThemeFontOther = 0,
-  SVRThemeFontMath = 1,
-  SVRThemeFontError = 2
-} SVRThemeFont;
-#else
+#ifdef NS_ENUM
 typedef NS_ENUM(XPInteger, SVRThemeFont) {
   SVRThemeFontOther = 0,
   SVRThemeFontMath = 1,
   SVRThemeFontError = 2
 };
+#else
+typedef enum {
+  SVRThemeFontOther = 0,
+  SVRThemeFontMath = 1,
+  SVRThemeFontError = 2
+} SVRThemeFont;
 #endif
 
-#if OS_OPENSTEP
-typedef enum {
-  SVRAccessoryWindowSettings = 0,
-  SVRAccessoryWindowAbout = 1,
-  SVRAccessoryWindowKeypad = 2,
-  SVRAccessoryWindowNone = 3
-} SVRAccessoryWindow;
-#else
+#ifdef NS_ENUM
 typedef NS_ENUM(XPInteger, SVRAccessoryWindow) {
   SVRAccessoryWindowSettings = 0,
   SVRAccessoryWindowAbout = 1,
   SVRAccessoryWindowKeypad = 2,
   SVRAccessoryWindowNone = 3
 };
+#else
+typedef enum {
+  SVRAccessoryWindowSettings = 0,
+  SVRAccessoryWindowAbout = 1,
+  SVRAccessoryWindowKeypad = 2,
+  SVRAccessoryWindowNone = 3
+} SVRAccessoryWindow;
 #endif
 
 @interface NSUserDefaults (Soulver)

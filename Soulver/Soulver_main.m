@@ -39,9 +39,9 @@ int main(int argc, const char *argv[]) {
   pool = nil;
   
   // 4. Load NSApplication
-#ifdef OS_OPENSTEP
-  return NSApplicationMain(argc, argv);
-#else
+#ifdef __MAC_10_0
   return 0;
+#else
+  return NSApplicationMain(argc, argv);
 #endif
 }

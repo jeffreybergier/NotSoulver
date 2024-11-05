@@ -73,11 +73,12 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 
 -(XPLocale*)SVR_decimalNumberLocale;
 {
-#if OS_OPENSTEP
-  return [self objectForKey:XPUserDefaultsLegacyDecimalNumberLocale];
-#else
-  return [NSLocale currentLocale];
-#endif
+  Class Locale = NSClassFromString(@"NSLocale");
+  if (Locale) {
+    return [Locale currentLocale];
+  } else {
+    return [self objectForKey:XPUserDefaultsLegacyDecimalNumberLocale];
+  }
 }
 
 // MARK: Accessory Window Visibility

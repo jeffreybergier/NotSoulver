@@ -1,6 +1,10 @@
 /* SVRCrossPlatform.h created by me on Fri 06-Sep-2024 */
 #import <AppKit/AppKit.h>
 
+// Uncomment these to see how to use them
+// NSLog(@"%d", __MAC_OS_X_VERSION_MIN_REQUIRED);
+// NSLog(@"%d", __MAC_10_4);
+
 // MARK: Forward Declarations
 @class SVRMathString;
 
@@ -18,30 +22,54 @@
 /// The object keeps an unsafe unretained reference to the original
 #define mm_unretain
 
-#if OS_OPENSTEP
-typedef float XPFloat;
-typedef int XPInteger;
-typedef unsigned int XPUInteger;
-typedef NSString* XPAttributedStringKey;
-typedef NSRange* XPRangePointer;
-#define XPLocale NSDictionary
-#define XPTextAlignmentCenter NSCenterTextAlignment
-#define XPModalResponseOK NSOKButton
-#define XPModalResponseCancel NSCancelButton
-#define XPKeyedArchiver NSArchiver
-#define XPKeyedUnarchiver NSUnarchiver
-#else
-typedef CGFloat XPFloat;
+#ifdef NSIntegerMax
 typedef NSInteger XPInteger;
 typedef NSUInteger XPUInteger;
+#else
+typedef int XPInteger;
+typedef unsigned int XPUInteger;
+#endif
+
+#ifdef CGFLOAT_MAX
+typedef CGFloat XPFloat;
+#else
+typedef float XPFloat;
+#endif
+
+#ifdef __MAC_10_0
 typedef NSRangePointer XPRangePointer;
-typedef NSAttributedStringKey XPAttributedStringKey;
-#define XPLocale NSLocale
 #define XPTextAlignmentCenter NSTextAlignmentCenter
-#define XPModalResponseOK NSModalResponseOK
-#define XPModalResponseCancel NSModalResponseCancel
+#else
+typedef NSRange* XPRangePointer;
+#define XPTextAlignmentCenter NSCenterTextAlignment
+#endif
+
+#ifdef __MAC_10_2
 #define XPKeyedArchiver NSKeyedArchiver
 #define XPKeyedUnarchiver NSKeyedUnarchiver
+#else
+#define XPKeyedArchiver NSArchiver
+#define XPKeyedUnarchiver NSUnarchiver
+#endif
+
+#ifdef __MAC_10_4
+#define XPLocale NSLocale
+#else
+#define XPLocale NSDictionary
+#endif
+
+#ifdef __MAC_10_9
+#define XPModalResponseOK NSModalResponseOK
+#define XPModalResponseCancel NSModalResponseCancel
+#else
+#define XPModalResponseOK NSOKButton
+#define XPModalResponseCancel NSCancelButton
+#endif
+
+#ifdef __MAC_10_13
+typedef NSAttributedStringKey XPAttributedStringKey;
+#else
+typedef NSString* XPAttributedStringKey;
 #endif
 
 extern const NSRange XPNotFoundRange;
@@ -78,36 +106,36 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs);
 -(NSString*)SVR_descriptionForDrawing;
 @end
 
-#if OS_OPENSTEP
+#ifdef NS_ENUM
 /// These match XPAlertButtonDefault
 /// NSAlertDefaultReturn
+typedef NS_ENUM(XPInteger, XPAlertReturn) {
+XPAlertReturnDefault   =  1,
+XPAlertReturnAlternate =  0,
+XPAlertReturnOther     = -1,
+XPAlertReturnError     = -2
+};
+#else
 typedef enum {
   XPAlertReturnDefault   = (XPInteger)1,
   XPAlertReturnAlternate = (XPInteger)0,
   XPAlertReturnOther     = (XPInteger)-1,
   XPAlertReturnError     = (XPInteger)-2
 } XPAlertReturn;
-#else
-typedef NS_ENUM(XPInteger, XPAlertReturn) {
-  XPAlertReturnDefault   =  1,
-  XPAlertReturnAlternate =  0,
-  XPAlertReturnOther     = -1,
-  XPAlertReturnError     = -2
-};
 #endif
 
-#if OS_OPENSTEP
-typedef enum {
-  XPUserInterfaceStyleUnspecified = 0,
-  XPUserInterfaceStyleLight = 1,
-  XPUserInterfaceStyleDark = 2
-} XPUserInterfaceStyle;
-#else
+#ifdef NS_ENUM
 typedef NS_ENUM(XPInteger, XPUserInterfaceStyle) {
   XPUserInterfaceStyleUnspecified = 0,
   XPUserInterfaceStyleLight = 1,
   XPUserInterfaceStyleDark = 2
 };
+#else
+typedef enum {
+  XPUserInterfaceStyleUnspecified = 0,
+  XPUserInterfaceStyleLight = 1,
+  XPUserInterfaceStyleDark = 2
+} XPUserInterfaceStyle;
 #endif
 
 XPAlertReturn XPRunQuitAlert(void);

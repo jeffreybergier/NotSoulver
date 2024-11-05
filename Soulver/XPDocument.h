@@ -5,10 +5,10 @@
 
 // This is a best effort implementation of NSDocument only for use in OpenStep.
 // Its insanely minimal because it won't be used once Mac OS X Ships
-#if OS_OPENSTEP
-@interface XPDocument: NSResponder
-#else
+#ifdef __MAC_10_6
 @interface XPDocument: NSResponder <NSWindowDelegate>
+#else
+@interface XPDocument: NSResponder
 #endif
 {
   mm_retain IBOutlet NSWindow *_window;

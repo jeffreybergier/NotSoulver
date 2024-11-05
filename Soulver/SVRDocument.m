@@ -11,10 +11,10 @@
 
 -(NSString*)windowNibName;
 {
-#if OS_OPENSTEP
-  return @"NEXTSTEP_SVRDocument.nib";
-#else
+#ifdef __MAC_10_0
   return @"MACOSX_SVRDocument.nib";
+#else
+  return @"NEXTSTEP_SVRDocument.nib";
 #endif
 }
 

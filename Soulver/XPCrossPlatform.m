@@ -100,19 +100,19 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
 
 +(NSNumber*)XP_numberWithInteger:(XPInteger)integer;
 {
-#if OS_OPENSTEP
-  return [NSNumber numberWithInt:integer];
-#else
+#ifdef NSIntegerMax
   return [NSNumber numberWithInteger:integer];
+#else
+  return [NSNumber numberWithInt:integer];
 #endif
 }
 
 -(XPInteger)XP_integerValue;
 {
-#if OS_OPENSTEP
-  return [self intValue];
-#else
+#ifdef NSIntegerMax
   return [self integerValue];
+#else
+  return [self intValue];
 #endif
 }
 
@@ -264,13 +264,8 @@ NSArray* XPRunOpenPanel(void)
 
 -(NSString*)SVR_descriptionHighlightingRange:(NSRange)range;
 {
-#if OS_OPENSTEP
-  NSString *trailing = @"«";
-  NSString *leading  = @"»";
-#else
-  NSString *trailing = @"ã€";
-  NSString *leading  = @"ã€Œ";
-#endif
+  NSString *leading  = @">>";
+  NSString *trailing = @"<<";
   NSMutableString *output = [[self mutableCopy] autorelease];
   [output insertString:trailing atIndex:NSMaxRange(range)];
   [output insertString:leading atIndex:range.location];
@@ -279,11 +274,11 @@ NSArray* XPRunOpenPanel(void)
 
 -(const char*)XP_UTF8String;
 {
-#if OS_OPENSTEP
-  return [self cString];
-#else
-  return [self UTF8String];
-#endif
+  if ([self respondsToSelector:@selector(UTF8String)]) {
+    return [self UTF8String];
+  } else {
+    return [self cString];
+  }
 }
 
 @end

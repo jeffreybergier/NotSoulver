@@ -28,10 +28,10 @@
 
 @end
 
-#if OS_OPENSTEP
-@interface SVRDocumentModelController (TextDelegate)
-#else
+#ifdef __MAC_10_6
 @interface SVRDocumentModelController (TextDelegate) <NSTextViewDelegate>
+#else
+@interface SVRDocumentModelController (TextDelegate)
 #endif
 
 -(void)resetWaitTimer;
