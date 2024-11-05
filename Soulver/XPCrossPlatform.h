@@ -83,23 +83,6 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs);
 -(NSRange)XP_rangeValue;
 @end
 
-@interface XPLog: NSObject
-// TODO: Refactor into log levels
-// TODO: Add these Macros
-// FOUNDATION_EXPORT void NSLog(NSString *format, ...) NS_FORMAT_FUNCTION(1,2) NS_NO_TAIL_CALL;
-/// Always does an NSLog
-+(void)alwys:(NSString*)formatString, ...;
-/// NSLog when in DEBUG or EXTRA flag found
-+(void)debug:(NSString*)formatString, ...;
-/// NSLog only when DEBUG and EXTRA flag found
-/// Requires `-DEXTRA` CFLAG option in GCC
-+(void)extra:(NSString*)formatString, ...;
-/// Requires `fb +[XPLog pause:]` in GDB to Pause Debugger
-+(void)pause:(NSString*)formatString, ...;
-/// Raises an exception with format (crashes in production)
-+(void)error:(NSString*)formatString, ...;
-@end
-
 @interface NSNumber (CrossPlatform)
 +(NSNumber*)XP_numberWithInteger:(XPInteger)integer;
 -(XPInteger)XP_integerValue;
@@ -214,4 +197,132 @@ NSArray* XPRunOpenPanel(void);
 -(BOOL)XP_loadNibNamed:(NSString*)nibName
                  owner:(id)owner
        topLevelObjects:(NSArray**)topLevelObjects;
+@end
+
+// MARK: XPLogging
+
+// In C99 the ability was added for Macros to have Variadic arguments
+// https://stackoverflow.com/questions/78581920/what-is-the-stdc-version-value-for-c23
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
+#define C99 1
+#else
+#define C99 0
+#endif
+
+#ifndef LOGLEVEL
+#define LOGLEVEL 0
+#endif
+
+#if LOGLEVEL >= 0 && C99 == 0
+#define XPLogAlwys(_formatString) NSLog(@"%@", _formatString)
+#define XPLogAlwys1(_formatString, _one) NSLog(_formatString, _one)
+#define XPLogAlwys2(_formatString, _one, _two) NSLog(_formatString, _one, _two)
+#define XPLogAlwys3(_formatString, _one, _two, _three) NSLog(_formatString, _one, _two, _three)
+#define XPLogAlwys4(_formatString, _one, _two, _three, _four) NSLog(_formatString, _one, _two, _three, _four)
+#endif
+#if LOGLEVEL >= 0 && C99 == 1
+#define XPLogAlwys(_formatString) NSLog(@"%@", _formatString)
+#define XPLogAlwys1(_formatString, ...) NSLog(_formatString, __VA_ARGS__)
+#define XPLogAlwys2(_formatString, ...) NSLog(_formatString, __VA_ARGS__)
+#define XPLogAlwys3(_formatString, ...) NSLog(_formatString, __VA_ARGS__)
+#define XPLogAlwys4(_formatString, ...) NSLog(_formatString, __VA_ARGS__)
+#endif
+#if (DEBUG || LOGLEVEL >= 1) && C99 == 0
+#define XPLogDebug(_formatString) NSLog(@"%@", _formatString)
+#define XPLogDebug1(_formatString, _one) NSLog(_formatString, _one)
+#define XPLogDebug2(_formatString, _one, _two) NSLog(_formatString, _one, _two)
+#define XPLogDebug3(_formatString, _one, _two, _three) NSLog(_formatString, _one, _two, _three)
+#define XPLogDebug4(_formatString, _one, _two, _three, _four) NSLog(_formatString, _one, _two, _three, _four)
+#define XPLogPause(_formatString) NSLog(@"LOG-PAUSE: %@", _formatString); [XPLog pause]
+#define XPLogPause1(_formatString, _one) NSLog([@"LOG-PAUSE: " stringByAppendingString:_formatString], _one); [XPLog pause]
+#define XPLogPause2(_formatString, _one, _two) NSLog([@"LOG-PAUSE: " stringByAppendingString:_formatString], _one, _two); [XPLog pause]
+#define XPLogPause3(_formatString, _one, _two, _three) NSLog([@"LOG-PAUSE: " stringByAppendingString:_formatString], _one, _two, _three); [XPLog pause]
+#define XPLogPause4(_formatString, _one, _two, _three, _four) NSLog([@"LOG-PAUSE: " stringByAppendingString:_formatString], _one, _two, _three, _four); [XPLog pause]
+#endif
+
+#if (DEBUG || LOGLEVEL >= 1) && C99 == 1
+#define XPLogDebug(_formatString) NSLog(@"%@", _formatString)
+#define XPLogDebug1(_formatString, ...) NSLog(_formatString, __VA_ARGS__)
+#define XPLogDebug2(_formatString, ...) NSLog(_formatString, __VA_ARGS__)
+#define XPLogDebug3(_formatString, ...) NSLog(_formatString, __VA_ARGS__)
+#define XPLogDebug4(_formatString, ...) NSLog(_formatString, __VA_ARGS__)
+#define XPLogPause(_formatString) NSLog(@"%@", _formatString); [XPLog pause]
+#define XPLogPause1(_formatString, ...) NSLog(_formatString, __VA_ARGS__); [XPLog pause]
+#define XPLogPause2(_formatString, ...) NSLog(_formatString, __VA_ARGS__); [XPLog pause]
+#define XPLogPause3(_formatString, ...) NSLog(_formatString, __VA_ARGS__); [XPLog pause]
+#define XPLogPause4(_formatString, ...) NSLog(_formatString, __VA_ARGS__); [XPLog pause]
+#endif
+
+#if LOGLEVEL >= 2 && C99 == 1
+#define XPLogExtra(_formatString) NSLog(@"%@", _formatString)
+#define XPLogExtra1(_formatString, _one) NSLog(_formatString, _one)
+#define XPLogExtra2(_formatString, _one, _two) NSLog(_formatString, _one, _two)
+#define XPLogExtra3(_formatString, _one, _two, _three) NSLog(_formatString, _one, _two, _three)
+#define XPLogExtra4(_formatString, _one, _two, _three, _four) NSLog(_formatString, _one, _two, _three, _four)
+#endif
+
+#if LOGLEVEL >= 2 && C99 == 0
+#define XPLogExtra(_formatString) NSLog(@"%@", _formatString)
+#define XPLogExtra1(_formatString, ...) NSLog(_formatString, __VA_ARGS__)
+#define XPLogExtra2(_formatString, ...) NSLog(_formatString, __VA_ARGS__)
+#define XPLogExtra3(_formatString, ...) NSLog(_formatString, __VA_ARGS__)
+#define XPLogExtra4(_formatString, ...) NSLog(_formatString, __VA_ARGS__)
+#endif
+
+#ifndef XPLogDebug
+#define XPLogDebug(_formatString)
+#define XPLogDebug1(_formatString, _one)
+#define XPLogDebug2(_formatString, _one, _two)
+#define XPLogDebug3(_formatString, _one, _two, _three)
+#define XPLogDebug4(_formatString, _one, _two, _three, _four)
+#endif
+
+#ifndef XPLogPause
+#define XPLogPause(_formatString)
+#define XPLogPause1(_formatString, _one)
+#define XPLogPause2(_formatString, _one, _two)
+#define XPLogPause3(_formatString, _one, _two, _three)
+#define XPLogPause4(_formatString, _one, _two, _three, _four)
+#endif
+
+#ifndef XPLogExtra
+#define XPLogExtra(_formatString)
+#define XPLogExtra1(_formatString, _one)
+#define XPLogExtra2(_formatString, _one, _two)
+#define XPLogExtra3(_formatString, _one, _two, _three)
+#define XPLogExtra4(_formatString, _one, _two, _three, _four)
+#endif
+
+
+#if C99 > 0
+#define XPLogRaise(_formatString) [NSException raise:@"SVRException" format:_formatString]
+#define XPLogRaise1(_formatString, ...) [NSException raise:@"SVRException" format:_formatString, __VA_ARGS__]
+#define XPLogRaise2(_formatString, ...) [NSException raise:@"SVRException" format:_formatString, __VA_ARGS__]
+#define XPLogRaise3(_formatString, ...) [NSException raise:@"SVRException" format:_formatString, __VA_ARGS__]
+#define XPLogRaise4(_formatString, ...) [NSException raise:@"SVRException" format:_formatString, __VA_ARGS__]
+#else
+#define XPLogRaise(_formatString) [NSException raise:@"SVRException" format:_formatString]
+#define XPLogRaise1(_formatString, _one) [NSException raise:@"SVRException" format:_formatString, _one]
+#define XPLogRaise2(_formatString, _one, _two) [NSException raise:@"SVRException" format:_formatString, _one, _two]
+#define XPLogRaise3(_formatString, _one, _two, _three) [NSException raise:@"SVRException" format:_formatString, _one, _two, _three]
+#define XPLogRaise4(_formatString, _one, _two, _three, _four) [NSException raise:@"SVRException" format:_formatString, _one, _two, _three, _four]
+#endif
+
+@interface XPLog: NSObject
++(void)pause;
++(void)executeUnitTests;
+// TODO: Refactor into log levels
+// TODO: Add these Macros
+// FOUNDATION_EXPORT void NSLog(NSString *format, ...) NS_FORMAT_FUNCTION(1,2) NS_NO_TAIL_CALL;
+/// Always does an NSLog
++(void)alwys:(NSString*)formatString, ...;
+/// NSLog when in DEBUG or EXTRA flag found
++(void)debug:(NSString*)formatString, ...;
+/// NSLog only when DEBUG and EXTRA flag found
+/// Requires `-DEXTRA` CFLAG option in GCC
++(void)extra:(NSString*)formatString, ...;
+/// Requires `fb +[XPLog pause:]` in GDB to Pause Debugger
++(void)pause:(NSString*)formatString, ...;
+/// Raises an exception with format (crashes in production)
++(void)error:(NSString*)formatString, ...;
 @end

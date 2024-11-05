@@ -12,20 +12,14 @@ int main(int argc, const char *argv[]) {
   // MARK: Boot Sequence
   // And document support CFLAGS
   
-  // 0. Create temporary autorelease pool before NSApplication loads
+  // 1. Create temporary autorelease pool before NSApplication loads
   NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
-  
-  // 1. Check Basic Logging IFDEFS
-  [XPLog alwys:@"ALWYS"];
-  [XPLog debug:@"DEBUG"]; // #DEBUG || EXTRA
-  [XPLog extra:@"EXTRA"]; // #DEBUG && EXTRA
-//[XPLog pause:@"PAUSE"];
-//[XPLog error:@"ERROR"];
   
   // 2. Execute Unit Tests if Needed
 #ifdef TESTING
   [[NSUserDefaults standardUserDefaults] SVR_configure];
   [XPLog alwys:@"<Main> Unit Tests: STARTING"];
+  [XPLog executeUnitTests];
   [CrossPlatform executeUnitTests];
   [SVRSolver executeTests];
   [SLRERegex executeTests];

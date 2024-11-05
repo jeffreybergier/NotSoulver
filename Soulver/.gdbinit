@@ -1,6 +1,6 @@
 ## Stop on Exception
 fb -[NSException raise]
-fb +[XPLog pause:]
+fb +[XPLog pause]
 
 ## Remove later
 
