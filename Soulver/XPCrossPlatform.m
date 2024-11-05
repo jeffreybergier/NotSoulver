@@ -468,4 +468,53 @@ NSArray* XPRunOpenPanel(void)
   */
 }
 
++(void)logKnownEnvironment;
+{
+#ifdef LOGLEVEL
+  XPLogAlwys1(@"  LOGLEVEL  (%d)", LOGLEVEL);
+#else
+  XPLogAlwys (@"  LOGLEVEL  (ND)");
+#endif
+#ifdef DEBUG
+  XPLogAlwys1(@"  DEBUG     (%d)", DEBUG);
+#else
+  XPLogAlwys (@"  DEBUG     (ND)");
+#endif
+#ifdef __MAC_10_0
+  XPLogAlwys1(@"__MAC_10_0  (%d)", __MAC_10_0);
+#else
+  XPLogAlwys (@"__MAC_10_0  (ND)");
+#endif
+#ifdef __MAC_10_2
+  XPLogAlwys1(@"__MAC_10_2  (%d)", __MAC_10_2);
+#else
+  XPLogAlwys (@"__MAC_10_2  (ND)");
+#endif
+#ifdef __MAC_10_4
+  XPLogAlwys1(@"__MAC_10_4  (%d)", __MAC_10_4);
+#else
+  XPLogAlwys (@"__MAC_10_4  (ND)");
+#endif
+#ifdef __MAC_10_6
+  XPLogAlwys1(@"__MAC_10_6  (%d)", __MAC_10_6);
+#else
+  XPLogAlwys (@"__MAC_10_6  (ND)");
+#endif
+#ifdef __MAC_10_9
+  XPLogAlwys1(@"__MAC_10_9  (%d)", __MAC_10_9);
+#else
+  XPLogAlwys (@"__MAC_10_9  (ND)");
+#endif
+#ifdef __MAC_10_13
+  XPLogAlwys1(@"__MAC_10_13 (%d)", __MAC_10_13);
+#else
+  XPLogAlwys (@"__MAC_10_13 (ND)");
+#endif
+#ifdef __STDC_VERSION__
+  XPLogAlwys1(@"__STDC_VERSION__(%ld)", __STDC_VERSION__);
+#else
+  XPLogAlwys (@"__STDC_VERSION__(ND)");
+#endif
+}
+
 @end

@@ -15,7 +15,10 @@ int main(int argc, const char *argv[]) {
   // 1. Create temporary autorelease pool before NSApplication loads
   NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
   
-  // 2. Execute Unit Tests if Needed
+  // 2. Log the environment
+  [XPLog logKnownEnvironment];
+  
+  // 3. Execute Unit Tests if Needed
 #ifdef TESTING
   [[NSUserDefaults standardUserDefaults] SVR_configure];
   XPLogAlwys(@"<Main> Unit Tests: STARTING");
