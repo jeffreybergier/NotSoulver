@@ -39,7 +39,9 @@
 {
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
   self = [super init];
-  [NSBundle loadNibNamed:@"NEXTSTEP_AccessoryWindows" owner:self];
+  [[NSBundle mainBundle] XP_loadNibNamed:@"NEXTSTEP_AccessoryWindows"
+                                   owner:self
+                         topLevelObjects:&_topLevelObjects];
   [self __restoreWindowState];
   [nc addObserver:self
          selector:@selector(__windowDidBecomeKey:)
@@ -160,9 +162,11 @@
   [_keypadPanel autorelease];
   [_aboutWindow autorelease];
   [_settingsWindow autorelease];
+  [_topLevelObjects release];
   _keypadPanel = nil;
   _aboutWindow = nil;
   _settingsWindow = nil;
+  _topLevelObjects = nil;
   [super dealloc];
 }
 

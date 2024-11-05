@@ -392,28 +392,30 @@ NSArray* XPRunOpenPanel(void)
 -(NSData*)XP_data;
 {
   id forArchiving = nil;
-  SEL selector = @selector(fontDescriptor);
-  if ([self respondsToSelector:selector]) {
-    forArchiving = [self performSelector:selector];
+  if ([self respondsToSelector:@selector(fontDescriptor)]) {
+    forArchiving = [self fontDescriptor];
   } else {
     forArchiving = self;
   }
-  return [XPKeyedArchiver archivedDataWithRootObject:forArchiving];
+  return [XPKeyedArchiver XP_archivedDataWithRootObject:forArchiving];
 }
 
 +(id)XP_fontWithData:(NSData*)data;
 {
   NSFont *output = nil;
   id unarchived = nil;
-  Class descriptorClass = NSClassFromString(@"NSFontDescriptor");
+  Class descriptorClass = nil;
   if (!data) { return nil; }
-  unarchived = [XPKeyedUnarchiver unarchiveObjectWithData:data];
-  if ([unarchived isKindOfClass:descriptorClass]) {
+  descriptorClass = NSClassFromString(@"NSFontDescriptor");
+  if (descriptorClass) {
+    unarchived = [XPKeyedUnarchiver XP_unarchivedObjectOfClass:descriptorClass
+                                                      fromData:data];
     output = [self fontWithDescriptor:unarchived size:0];
   } else {
+    unarchived = [XPKeyedUnarchiver XP_unarchivedObjectOfClass:[NSFont class]
+                                                      fromData:data];
     output = unarchived;
   }
-  if (![output isKindOfClass:[NSFont class]]) { [XPLog error:@""]; return nil; }
   return output;
 }
 
@@ -423,14 +425,15 @@ NSArray* XPRunOpenPanel(void)
 
 -(NSData*)XP_data;
 {
-  return [XPKeyedArchiver archivedDataWithRootObject:self];
+  return [XPKeyedArchiver XP_archivedDataWithRootObject:self];
 }
 
 +(id)XP_colorWithData:(NSData*)data;
 {
   NSColor *output = nil;
   if (!data) { return nil; }
-  output = [XPKeyedUnarchiver unarchiveObjectWithData:data];
+  output = [XPKeyedUnarchiver XP_unarchivedObjectOfClass:[NSColor class]
+                                                fromData:data];
   if (![output isKindOfClass:[NSColor class]]) { [XPLog error:@""]; return nil; }
   return output;
 }
@@ -446,3 +449,54 @@ NSArray* XPRunOpenPanel(void)
 }
 @end
 
+@implementation XPKeyedArchiver (CrossPlatform)
++(NSData*)XP_archivedDataWithRootObject:(id)object;
+{
+  if ([self respondsToSelector:@selector(archivedDataWithRootObject:requiringSecureCoding:error:)]) {
+    return [self archivedDataWithRootObject:object requiringSecureCoding:YES error:NULL];
+  } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    return [self archivedDataWithRootObject:object];
+#pragma clang diagnostic pop
+  }
+}
+@end
+
+@implementation XPKeyedUnarchiver (CrossPlatform)
++(id)XP_unarchivedObjectOfClass:(Class)cls fromData:(NSData*)data;
+{
+  id output = nil;
+  if ([self respondsToSelector:@selector(unarchivedObjectOfClass:fromData:error:)]) {
+    return [self unarchivedObjectOfClass:cls fromData:data error:NULL];
+  } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    output = [self unarchiveObjectWithData:data];
+#pragma clang diagnostic pop
+    if (!output) { return nil; }
+    if ([output isKindOfClass:cls]) {
+      return output;
+    } else {
+      [XPLog error:@"XP_unarchivedObject:%@ notKindOfClass %@", output, cls];
+      return nil;
+    }
+  }
+}
+@end
+
+@implementation NSBundle (CrossPlatform)
+-(BOOL)XP_loadNibNamed:(NSString*)nibName
+                 owner:(id)owner
+       topLevelObjects:(NSArray**)topLevelObjects;
+{
+  if ([self respondsToSelector:@selector(loadNibNamed:owner:topLevelObjects:)]) {
+    return [self loadNibNamed:nibName owner:owner topLevelObjects:topLevelObjects];
+  } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    return [[self class] loadNibNamed:nibName owner:owner];
+#pragma clang diagnostic pop
+  }
+}
+@end

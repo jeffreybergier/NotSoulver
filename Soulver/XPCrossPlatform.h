@@ -174,3 +174,16 @@ NSArray* XPRunOpenPanel(void);
 +(void)executeUnitTests;
 @end
 
+@interface XPKeyedArchiver (CrossPlatform)
++(NSData*)XP_archivedDataWithRootObject:(id)object;
+@end
+
+@interface XPKeyedUnarchiver (CrossPlatform)
++(id)XP_unarchivedObjectOfClass:(Class)cls fromData:(NSData*)data;
+@end
+
+@interface NSBundle (CrossPlatform)
+-(BOOL)XP_loadNibNamed:(NSString*)nibName
+                 owner:(id)owner
+       topLevelObjects:(NSArray**)topLevelObjects;
+@end

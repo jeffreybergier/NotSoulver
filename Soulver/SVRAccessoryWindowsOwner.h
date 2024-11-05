@@ -19,6 +19,7 @@
   mm_retain IBOutlet NSPanel  *_keypadPanel;
   mm_retain IBOutlet NSWindow *_aboutWindow;
   mm_retain IBOutlet NSWindow *_settingsWindow;
+  mm_new NSArray *_topLevelObjects;
 }
 
 // MARK: IBOutlets
