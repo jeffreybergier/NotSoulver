@@ -157,7 +157,7 @@
 
 - (void)dealloc
 {
-  [XPLog debug:@"DEALLOC: %@", self];
+  XPLogDebug1(@"DEALLOC: %@", self);
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [_keypadPanel autorelease];
   [_aboutWindow autorelease];

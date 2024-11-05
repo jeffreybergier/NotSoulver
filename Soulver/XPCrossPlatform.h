@@ -309,13 +309,9 @@ NSArray* XPRunOpenPanel(void);
 #endif
 
 @interface XPLog: NSObject
+/// Requires `fb +[XPLog pause]` in GDB to Pause Debugger
 +(void)pause;
 +(void)executeUnitTests;
-// TODO: Add these Macros
-/// NSLog when in DEBUG or EXTRA flag found
-+(void)debug:(NSString*)formatString, ...;
-/// Requires `fb +[XPLog pause:]` in GDB to Pause Debugger
-+(void)pause:(NSString*)formatString, ...;
 /// Raises an exception with format (crashes in production)
 +(void)error:(NSString*)formatString, ...;
 @end

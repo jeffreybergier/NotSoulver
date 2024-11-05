@@ -22,7 +22,7 @@
     range = [next XP_rangeValue];
     number = [NSDecimalNumber decimalNumberWithString:[[string string] substringWithRange:range]];
     if ([number SVR_isNotANumber]) {
-      [XPLog pause:@"NaN: %@", number];
+      XPLogDebug1(@"NaN: %@", number);
     }
     [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagNumber)
                    value:number

@@ -87,7 +87,7 @@
       [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
       output = nil;
     } else {
-      [XPLog pause:@"(): %@<-%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], [NSDecimalNumber notANumber]];
+      XPLogDebug2(@"(): %@<-%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], [NSDecimalNumber notANumber]);
     }
   }
   
@@ -298,17 +298,21 @@
   switch (error) {
     case NSCalculationNoError: return nil;
     case NSCalculationLossOfPrecision:
-      [XPLog debug:@"exceptionDuringOperation: NSCalculationLossOfPrecision"];
+      XPLogDebug3(@"exceptionDuringOperation:%@ error:NSCalculationLossOfPrecision leftOperand:%@ rightOperand:%@",
+                  NSStringFromSelector(operation), leftOperand, rightOperand);
       return nil;
     case NSCalculationUnderflow:
-      [XPLog debug:@"exceptionDuringOperation: NSCalculationUnderflow"];
+      XPLogDebug3(@"exceptionDuringOperation:%@ error:NSCalculationUnderflow leftOperand:%@ rightOperand:%@",
+                  NSStringFromSelector(operation), leftOperand, rightOperand);
       return nil;
     case NSCalculationOverflow:
-      [XPLog debug:@"exceptionDuringOperation: NSCalculationOverflow"];
+      XPLogDebug3(@"exceptionDuringOperation:%@ error:NSCalculationOverflow leftOperand:%@ rightOperand:%@",
+                  NSStringFromSelector(operation), leftOperand, rightOperand);
       return nil;
     case NSCalculationDivideByZero:
+      XPLogDebug3(@"exceptionDuringOperation:%@ error:NSCalculationDivideByZero leftOperand:%@ rightOperand:%@",
+                  NSStringFromSelector(operation), leftOperand, rightOperand);
       if (_errorPtr != NULL) { *_errorPtr = SVRSolverErrorDivideByZero; }
-      [XPLog debug:@"NSCalculationDivideByZero"];
       return [NSDecimalNumber notANumber];
   }
   return nil;

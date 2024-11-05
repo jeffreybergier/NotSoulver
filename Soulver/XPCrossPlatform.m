@@ -468,28 +468,6 @@ NSArray* XPRunOpenPanel(void)
   */
 }
 
-+(void)debug:(NSString*)_formatString, ...;
-{
-#if DEBUG || EXTRA
-  va_list args;
-  NSString *formatString = (_formatString) ? _formatString : @"NO MESSAGE PROVIDED";
-  va_start(args, _formatString);
-  formatString = [@"LOG-DEBUG: " stringByAppendingString:formatString];
-  NSLogv(formatString, args);
-  va_end(args);
-#endif
-}
-
-+(void)pause:(NSString*)_formatString, ...;
-{
-  va_list args;
-  NSString *formatString = (_formatString) ? _formatString : @"NO MESSAGE PROVIDED";
-  va_start(args, _formatString);
-  formatString = [@"LOG-PAUSE: " stringByAppendingString:formatString];
-  NSLogv(formatString, args);
-  va_end(args);
-}
-
 +(void)error:(NSString*)_formatString, ...;
 {
   va_list args;

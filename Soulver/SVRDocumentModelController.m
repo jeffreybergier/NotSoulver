@@ -45,7 +45,7 @@
                           encoding:NSUTF8StringEncoding]
     autorelease];
   if (string) {
-    [XPLog debug:@"%@ loadDataRepresentation: Rendering", self];
+    XPLogDebug1(@"%@ loadDataRepresentation: Rendering", self);
     [model beginEditing];
     [[model mutableString] setString:string];
     [SVRSolver solveAttributedString:model];
@@ -81,7 +81,7 @@
 
 -(void)backspaceLine;
 {
-  [XPLog pause:@"Unimplemented"];
+  XPLogPause(@"Unimplemented");
 }
 
 -(void)backspaceAll;
@@ -95,7 +95,7 @@
 
 -(void)dealloc;
 {
-  [XPLog debug:@"DEALLOC: %@", self];
+  XPLogDebug1(@"DEALLOC: %@", self);
   [_waitTimer invalidate];
   [_waitTimer release];
   [_model release];
@@ -129,7 +129,7 @@
   NSTextView *textView = [self textView];
   NSRange selection = [textView selectedRange];
   
-  [XPLog debug:@"%@ waitTimerFired: Rendering", self];
+  XPLogDebug1(@"%@ waitTimerFired: Rendering", self);
   
   [model beginEditing];
   [SVRSolver solveAttributedString:model];

@@ -40,7 +40,7 @@
   SVRDocument *nextC;
   
   filenames = XPRunOpenPanel();
-  if ([filenames count] == 0) { [XPLog debug:@"%@ Open Cancelled", self]; return; }
+  if ([filenames count] == 0) { XPLogDebug1(@"%@ Open Cancelled", self); return; }
   e = [filenames objectEnumerator];
   while ((nextF = [e nextObject])) {
     nextC = [[self openDocuments] member:nextF];
@@ -88,7 +88,7 @@
 
 -(void)dealloc;
 {
-  [XPLog debug:@"DEALLOC: %@", self];
+  XPLogDebug1(@"DEALLOC: %@", self);
   [_openDocuments release];
   [_accessoryWindowsOwner release];
   _openDocuments = nil;
@@ -116,7 +116,7 @@
   // Configure Accessory Windows
   _accessoryWindowsOwner = [[SVRAccessoryWindowsOwner alloc] init];
   // Announce
-  [XPLog debug:@"%@ applicationWillFinishLaunching:", self];
+  XPLogDebug1(@"%@ applicationWillFinishLaunching:", self);
 }
 
 -(BOOL)applicationShouldTerminate:(NSApplication *)sender;

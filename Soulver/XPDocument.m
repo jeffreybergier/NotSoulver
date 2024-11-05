@@ -110,7 +110,7 @@ NSPoint XPDocumentPointForCascading;
   // Set the delegate
   [window setDelegate:self];
   
-  [XPLog debug:@"awakeFromNib: %@", self];
+  XPLogDebug1(@"awakeFromNib: %@", self);
 }
 
 -(void)updateWindowChrome;
@@ -253,7 +253,7 @@ NSPoint XPDocumentPointForCascading;
   } else if (menuAction == @selector(revertDocumentToSaved:)) {
     return [self fileName] != nil && [self isDocumentEdited];
   }
-  [XPLog debug:@"validateMenuItem: Unknown Selector: %@", NSStringFromSelector(menuAction)];
+  XPLogPause1(@"validateMenuItem: Unknown Selector: %@", NSStringFromSelector(menuAction));
   return NO;
 }
 
@@ -287,7 +287,7 @@ NSPoint XPDocumentPointForCascading;
       [self readFromFile:nil ofType:nil];
       break;
     case XPAlertReturnAlternate:
-      [XPLog debug:@"User cancelled revert"];
+      XPLogDebug(@"User cancelled revert");
       break;
     case XPAlertReturnOther:
     case XPAlertReturnError:
@@ -338,7 +338,7 @@ NSPoint XPDocumentPointForCascading;
       [self writeToFile:[savePanel filename] ofType:nil];
       break;
     case XPModalResponseCancel:
-      [XPLog debug:@"User cancelled save"];
+      XPLogDebug(@"User cancelled save");
       break;
     default:
       [XPLog error:@"Unexpected save panel result: %ld", okCancel];
@@ -382,7 +382,7 @@ NSPoint XPDocumentPointForCascading;
 
 - (void)dealloc
 {
-  [XPLog debug:@"DEALLOC: %@", self];
+  XPLogDebug1(@"DEALLOC: %@", self);
   [_window setDelegate:nil];
   // this autorelease (instead of release) is necessary
   // to prevent crashes when the window is closing

@@ -185,7 +185,7 @@
   BOOL decoded = [self decodeThemeColor:&color
                          interfaceStyle:&style
                           fromColorWell:sender];
-  if (!decoded) { [XPLog pause:@"colorChanged:%@ Failed", sender]; return; }
+  if (!decoded) { XPLogDebug1(@"colorChanged:%@ Failed", sender); return; }
   [ud SVR_setColor:wellColor forTheme:color withStyle:style];
 }
 
@@ -212,7 +212,7 @@
   SVRFontManager *fm = (SVRFontManager*)[NSFontManager sharedFontManager];
   if (![fm isKindOfClass:[SVRFontManager class]]) { [XPLog error:@""]; return; }
   decoded = [self decodeThemeFont:&theme fromButton:sender];
-  if (!decoded) { [XPLog pause:@"fontChangeRequest:%@ Failed", sender]; return; }
+  if (!decoded) { XPLogDebug1(@"fontChangeRequest:%@ Failed", sender); return; }
   [fm setSelectedFont:[ud SVR_fontForTheme:theme] isMultiple:NO];
   [fm setThemeFont:theme];
   [fm orderFrontFontPanel:sender];
@@ -237,7 +237,7 @@
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   SVRThemeFont font = -2;
   BOOL decoded = [self decodeThemeFont:&font fromButton:sender];
-  if (!decoded) { [XPLog pause:@"fontReset:%@ Failed", sender]; return; }
+  if (!decoded) { XPLogDebug1(@"fontReset:%@ Failed", sender); return; }
   [ud SVR_setFont:nil forTheme:font];
   [self populateUI];
 }
@@ -247,7 +247,7 @@
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   SVRThemeColor color = -2;
   BOOL decoded = [self decodeThemeColor:&color fromResetButton:sender];
-  if (!decoded) { [XPLog pause:@"colorReset:%@ Failed", sender]; return; }
+  if (!decoded) { XPLogDebug1(@"colorReset:%@ Failed", sender); return; }
   [ud SVR_setColor:nil forTheme:color withStyle:XPUserInterfaceStyleLight];
   [ud SVR_setColor:nil forTheme:color withStyle:XPUserInterfaceStyleDark];
   [self populateUI];
@@ -341,7 +341,7 @@
 
 -(void)dealloc;
 {
-  [XPLog debug:@"DEALLOC:%@", self];
+  XPLogDebug1(@"DEALLOC:%@", self);
   [_groupGeneralView release];
   [_groupColorView release];
   [_groupFontView release];

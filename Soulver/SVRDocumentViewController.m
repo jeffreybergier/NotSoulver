@@ -37,7 +37,7 @@
                                              object:nil];
   
   // Announce
-  [XPLog debug:@"awakeFromNib: %@", self];
+  XPLogDebug1(@"awakeFromNib: %@", self);
 }
 
 -(void)themeDidChangeNotification:(NSNotification*)aNotification;
@@ -156,7 +156,7 @@
 // MARK: Dealloc
 -(void)dealloc;
 {
-  [XPLog debug:@"DEALLOC: %@", self];
+  XPLogDebug1(@"DEALLOC: %@", self);
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [_modelController release];
   _modelController = nil;
