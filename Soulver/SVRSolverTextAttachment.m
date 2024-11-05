@@ -46,7 +46,7 @@
 
 - (void)dealloc
 {
-  [XPLog extra:@"DEALLOC: %@", self];
+  XPLogExtra1(@"DEALLOC: %@", self);
   [_solution release];
   _solution = nil;
   [super dealloc];
@@ -100,7 +100,7 @@
   }
   [[attachment stringForDrawing] drawInRect:textFrame
                              withAttributes:[self attributesForDrawingSolution]];
-  [XPLog extra:@"drawSolutionWithFrame:%@", NSStringFromRect(cellFrame)];
+  XPLogExtra1(@"drawSolutionWithFrame:%@", NSStringFromRect(cellFrame));
 }
 
 -(void)drawErrorWithFrame:(NSRect)cellFrame
@@ -116,7 +116,7 @@
   }
   [[attachment stringForDrawing] drawInRect:textFrame
                              withAttributes:[self attributesForDrawingError]];
-  [XPLog extra:@"drawErrorWithFrame:%@", NSStringFromRect(cellFrame)];
+  XPLogExtra1(@"drawErrorWithFrame:%@", NSStringFromRect(cellFrame));
 }
 
 -(NSDictionary*)attributesForDrawingSolution;
@@ -214,7 +214,7 @@
 
 -(void)dealloc;
 {
-  [XPLog extra:@"DEALLOC: %@", self];
+  XPLogExtra1(@"DEALLOC: %@", self);
   [_description release];
   _description = nil;
   [super dealloc];

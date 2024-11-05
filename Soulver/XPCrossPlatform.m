@@ -89,18 +89,6 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
 #endif
 }
 
-+(void)extra:(NSString*)_formatString, ...;
-{
-#if DEBUG && EXTRA
-  va_list args;
-  NSString *formatString = (_formatString) ? _formatString : @"NO MESSAGE PROVIDED";
-  va_start(args, _formatString);
-  formatString = [@"LOG-EXTRA: " stringByAppendingString:formatString];
-  NSLogv(formatString, args);
-  va_end(args);
-#endif
-}
-
 +(void)pause:(NSString*)_formatString, ...;
 {
   va_list args;
@@ -278,7 +266,7 @@ NSArray* XPRunOpenPanel(void)
 
 - (void)dealloc
 {
-  [XPLog extra:@"DEALLOC: %@", self];
+  XPLogExtra1(@"DEALLOC: %@", self);
   [_key release];
   [_string release];
   _key = nil;

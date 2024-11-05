@@ -88,7 +88,7 @@
       range.location += 1;
       range.length -= 1;
     }
-    [XPLog extra:@"<#> %@", [_string SVR_descriptionHighlightingRange:range]];
+    XPLogExtra1(@"<#> %@", [_string SVR_descriptionHighlightingRange:range]);
     [output addObject:[NSValue XP_valueWithRange:range]];
   }
   _numbers = [output copy];
@@ -103,7 +103,7 @@
   NSAssert(!_operators, @"This is a lazy init method, it assumes _operators is NIL");
   while ((match = [regex nextObject])) {
     range = [match groupRangeAtIndex:0];
-    [XPLog extra:@"<+*> %@", [_string SVR_descriptionHighlightingRange:range]];
+    XPLogExtra1(@"<+*> %@", [_string SVR_descriptionHighlightingRange:range]);
     [output addObject:[NSValue XP_valueWithRange:range]];
   }
   _operators = [output copy];
@@ -120,7 +120,7 @@
     range = [match range];
     // Trim the = sign off
     range.length -= 1;
-    [XPLog extra:@"<=> %@", [_string SVR_descriptionHighlightingRange:range]];
+    XPLogExtra1(@"<=> %@", [_string SVR_descriptionHighlightingRange:range]);
     [output addObject:[NSValue XP_valueWithRange:range]];
   }
   _expressions = [output copy];
@@ -138,7 +138,7 @@
   regex = [SLRERegex SVR_regexForLeftBracketsInString:_string];
   while ((match = [regex nextObject])) {
     range = [match groupRangeAtIndex:0];
-    [XPLog extra:@"<(> %@", [_string SVR_descriptionHighlightingRange:range]];
+    XPLogExtra1(@"<(> %@", [_string SVR_descriptionHighlightingRange:range]);
     [output addObject:[NSValue XP_valueWithRange:range]];
   }
   
@@ -146,7 +146,7 @@
   regex = [SLRERegex SVR_regexForRightBracketsInString:_string];
   while ((match = [regex nextObject])) {
     range = [match groupRangeAtIndex:0];
-    [XPLog extra:@"<)> %@", [_string SVR_descriptionHighlightingRange:range]];
+    XPLogExtra1(@"<)> %@", [_string SVR_descriptionHighlightingRange:range]);
     [output addObject:[NSValue XP_valueWithRange:range]];
   }
   
@@ -156,7 +156,7 @@
 // MARK: Dealloc
 -(void)dealloc;
 {
-  [XPLog extra:@"DEALLOC: %@", self];
+  XPLogExtra1(@"DEALLOC: %@", self);
   [_string release];
   [_numbers release];
   [_operators release];

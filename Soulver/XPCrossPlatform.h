@@ -318,9 +318,6 @@ NSArray* XPRunOpenPanel(void);
 +(void)alwys:(NSString*)formatString, ...;
 /// NSLog when in DEBUG or EXTRA flag found
 +(void)debug:(NSString*)formatString, ...;
-/// NSLog only when DEBUG and EXTRA flag found
-/// Requires `-DEXTRA` CFLAG option in GCC
-+(void)extra:(NSString*)formatString, ...;
 /// Requires `fb +[XPLog pause:]` in GDB to Pause Debugger
 +(void)pause:(NSString*)formatString, ...;
 /// Raises an exception with format (crashes in production)

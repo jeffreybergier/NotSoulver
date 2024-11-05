@@ -71,15 +71,15 @@
     if (idx == 0) {
       matchRange.location = (XPUInteger)(captures[idx].ptr - buffer);
       matchRange.length = (XPUInteger)captures[idx].len;
-      [XPLog extra:@"%@ Pattern:`%@` Match[0]:`%@`",
-       [super description], _pattern, [_string SVR_descriptionHighlightingRange:matchRange]];
+      XPLogExtra3(@"%@ Pattern:`%@` Match[0]:`%@`",
+       [super description], _pattern, [_string SVR_descriptionHighlightingRange:matchRange]);
     } else {
       groupRange.location = (XPUInteger)(captures[idx].ptr - buffer);
       groupRange.length = (XPUInteger)captures[idx].len;
       if (NSMaxRange(groupRange) >= [_string length]) { continue; }
       [groupRanges addObject:[NSValue XP_valueWithRange:groupRange]];
-      [XPLog extra:@"%@ Pattern:`%@` Group[%d]:`%@`",
-       [super description], _pattern, idx, [_string SVR_descriptionHighlightingRange:groupRange]];
+      XPLogExtra4(@"%@ Pattern:`%@` Group[%d]:`%@`",
+       [super description], _pattern, idx, [_string SVR_descriptionHighlightingRange:groupRange]);
     }
   }
   
@@ -119,7 +119,7 @@
 // MARK: Dealloc
 -(void)dealloc;
 {
-  [XPLog extra:@"DEALLOC: %@", self];
+  XPLogExtra1(@"DEALLOC: %@", self);
   [_pattern release];
   [_string  release];
   _pattern = nil;
@@ -168,7 +168,7 @@
 
 - (void)dealloc
 {
-  [XPLog extra:@"DEALLOC: %@", self];
+  XPLogExtra1(@"DEALLOC: %@", self);
   [_groupRanges release];
   _groupRanges = nil;
   [super dealloc];

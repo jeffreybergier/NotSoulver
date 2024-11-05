@@ -158,7 +158,7 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 {
   NSData *data = [self objectForKey:[self __SVR_keyForThemeColor:theme withStyle:style]];
   NSColor *output = [NSColor XP_colorWithData:data];
-  if (!output) { [XPLog error:@"Color Not Found"]; return nil; }
+  if (!output) { XPLogRaise(@"Color Not Found"); return nil; }
   return output;
 }
 
@@ -184,7 +184,7 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 {
   NSData *data = [self dataForKey:[self __SVR_keyForThemeFont:theme]];
   NSFont *font = [NSFont XP_fontWithData:data];
-  if (!font) { [XPLog error:@"Font Not Found"]; return nil; }
+  if (!font) { XPLogRaise(@"Font Not Found"); return nil; }
   return font;
 }
 

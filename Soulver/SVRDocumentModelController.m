@@ -143,7 +143,7 @@
 
 -(void)textDidChange:(NSNotification*)notification;
 {
-  [XPLog extra:@"textDidChange:"];
+  XPLogExtra1(@"%@ textDidChange:", self);
   [self resetWaitTimer];
 }
 

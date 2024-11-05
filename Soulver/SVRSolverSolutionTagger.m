@@ -38,8 +38,7 @@
       NSAttributedString attributedStringWithAttachment:
         [SVRSolverTextAttachment attachmentWithSolution:solution error:error]
     ];
-    [XPLog extra:@"=: %@<-%@",
-     [[string string] SVR_descriptionHighlightingRange:solutionRange], solution];
+    XPLogExtra2(@"=: %@<-%@", [[string string] SVR_descriptionHighlightingRange:solutionRange], solution);
     [string replaceCharactersInRange:solutionRange
                 withAttributedString:solutionString];
     [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)
@@ -83,7 +82,7 @@
     // Revert patch back to subexpression with brackets
     patchRange = [bracketRange XP_rangeValue];
     if (output) {
-      [XPLog extra:@"(): %@<-%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output];
+      XPLogExtra2(@"(): %@<-%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output);
       patchString = [self __taggedStringWithNumber:output];
       [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
       output = nil;
@@ -102,7 +101,7 @@
                                          patchRange:&patchRange
                                               error:errorPtr]))
   {
-    [XPLog extra:@"Op^: %@<-%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output];
+    XPLogExtra2(@"Op^: %@<-%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output);
     patchString = [self __taggedStringWithNumber:output];
     [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
   }
@@ -117,7 +116,7 @@
                                          patchRange:&patchRange
                                               error:errorPtr]))
   {
-    [XPLog extra:@"Op*: %@<-%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output];
+    XPLogExtra2(@"Op*: %@<-%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output);
     patchString = [self __taggedStringWithNumber:output];
     [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
   }
@@ -132,7 +131,7 @@
                                          patchRange:&patchRange
                                               error:errorPtr]))
   {
-    [XPLog extra:@"Op+: %@<-%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output];
+    XPLogExtra2(@"Op+: %@<-%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output);
     patchString = [self __taggedStringWithNumber:output];
     [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
   }
@@ -317,7 +316,7 @@
 
 -(void)dealloc;
 {
-  [XPLog extra:@"DEALLOC: %@", self];
+  XPLogExtra1(@"DEALLOC: %@", self);
   _errorPtr = NULL;
   [super dealloc];
 }
