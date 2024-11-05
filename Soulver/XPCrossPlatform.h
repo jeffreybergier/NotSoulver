@@ -311,11 +311,7 @@ NSArray* XPRunOpenPanel(void);
 @interface XPLog: NSObject
 +(void)pause;
 +(void)executeUnitTests;
-// TODO: Refactor into log levels
 // TODO: Add these Macros
-// FOUNDATION_EXPORT void NSLog(NSString *format, ...) NS_FORMAT_FUNCTION(1,2) NS_NO_TAIL_CALL;
-/// Always does an NSLog
-+(void)alwys:(NSString*)formatString, ...;
 /// NSLog when in DEBUG or EXTRA flag found
 +(void)debug:(NSString*)formatString, ...;
 /// Requires `fb +[XPLog pause:]` in GDB to Pause Debugger

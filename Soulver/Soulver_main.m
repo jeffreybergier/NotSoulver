@@ -18,14 +18,13 @@ int main(int argc, const char *argv[]) {
   // 2. Execute Unit Tests if Needed
 #ifdef TESTING
   [[NSUserDefaults standardUserDefaults] SVR_configure];
-  [XPLog alwys:@"<Main> Unit Tests: STARTING"];
-  [XPLog executeUnitTests];
+  XPLogAlwys(@"<Main> Unit Tests: STARTING");
   [CrossPlatform executeUnitTests];
   [SVRSolver executeTests];
   [SLRERegex executeTests];
-  [XPLog alwys:@"<Main> Unit Tests: PASSED"];
+  XPLogAlwys(@"<Main> Unit Tests: PASSED");
 #else
-  [XPLog alwys:@"<Main> Unit Tests: SKIPPED"];
+  XPLogAlwys(@"<Main> Unit Tests: SKIPPED");
 #endif
   
   // 3. Release pool

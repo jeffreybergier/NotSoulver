@@ -37,81 +37,6 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
 }
 @end
 
-@implementation XPLog
-
-+(void)pause {}
-
-+(void)executeUnitTests;
-{
-  XPLogAlwys (@"XPLogAlwys");
-  XPLogAlwys1(@"XPLogAlwys1: %d", 1);
-  XPLogAlwys2(@"XPLogAlwys2: %d, %d", 1, 2);
-  XPLogAlwys3(@"XPLogAlwys3: %d, %d, %d", 1, 2, 3);
-  XPLogAlwys4(@"XPLogAlwys4: %d, %d, %d, %d", 1, 2, 3, 4);
-  XPLogDebug (@"XPLogDebug");
-  XPLogDebug1(@"XPLogDebug1: %d", 1);
-  XPLogDebug2(@"XPLogDebug2: %d, %d", 1, 2);
-  XPLogDebug3(@"XPLogDebug3: %d, %d, %d", 1, 2, 3);
-  XPLogDebug4(@"XPLogDebug4: %d, %d, %d, %d", 1, 2, 3, 4);
-  /*
-  XPLogPause (@"XPLogPause");
-  XPLogPause1(@"XPLogPause1: %d", 1);
-  XPLogPause2(@"XPLogPause2: %d, %d", 1, 2);
-  XPLogPause3(@"XPLogPause3: %d, %d, %d", 1, 2, 3);
-  XPLogPause4(@"XPLogPause4: %d, %d, %d, %d", 1, 2, 3, 4);
-  XPLogRaise(@"XPLogRaise");
-  XPLogRaise1(@"XPLogRaise1: %d", 1);
-  XPLogRaise2(@"XPLogRaise2: %d, %d", 1, 2);
-  XPLogRaise3(@"XPLogRaise3: %d, %d, %d", 1, 2, 3);
-  XPLogRaise4(@"XPLogRaise4: %d, %d, %d, %d", 1, 2, 3, 4);
-  */
-}
-
-+(void)alwys:(NSString*)_formatString, ...;
-{
-  va_list args;
-  NSString *formatString = (_formatString) ? _formatString : @"NO MESSAGE PROVIDED";
-  va_start(args, _formatString);
-  formatString = [@"LOG-ALWYS: " stringByAppendingString:formatString];
-  NSLogv(formatString, args);
-  va_end(args);
-}
-
-+(void)debug:(NSString*)_formatString, ...;
-{
-#if DEBUG || EXTRA
-  va_list args;
-  NSString *formatString = (_formatString) ? _formatString : @"NO MESSAGE PROVIDED";
-  va_start(args, _formatString);
-  formatString = [@"LOG-DEBUG: " stringByAppendingString:formatString];
-  NSLogv(formatString, args);
-  va_end(args);
-#endif
-}
-
-+(void)pause:(NSString*)_formatString, ...;
-{
-  va_list args;
-  NSString *formatString = (_formatString) ? _formatString : @"NO MESSAGE PROVIDED";
-  va_start(args, _formatString);
-  formatString = [@"LOG-PAUSE: " stringByAppendingString:formatString];
-  NSLogv(formatString, args);
-  va_end(args);
-}
-
-+(void)error:(NSString*)_formatString, ...;
-{
-  va_list args;
-  NSString *formatString = (_formatString) ? _formatString : @"NO ERROR PROVIDED";
-  va_start(args, _formatString);
-  formatString = [@"LOG-ERROR: " stringByAppendingString:formatString];
-  NSLogv(formatString, args);
-  [NSException raise:@"SVRException" format:formatString arguments:args];
-  va_end(args);
-}
-
-@end
-
 @implementation NSNumber (CrossPlatform)
 
 +(NSNumber*)XP_numberWithInteger:(XPInteger)integer;
@@ -325,7 +250,7 @@ NSArray* XPRunOpenPanel(void)
   NSMutableString *string = [[NSMutableString new] autorelease];
   NSString *expected = nil;
   
-  [XPLog alwys:@"XPTEST_replaceOccurrencesOfStringWithString: Start"];
+  XPLogAlwys(@"XPTEST_replaceOccurrencesOfStringWithString: Start");
   
   [string setString:@"0a0b0c0d0e0f0g0h0i0j0"];
   [string XP_replaceOccurrencesOfString:@"0" withString:@"+"];
@@ -342,7 +267,7 @@ NSArray* XPRunOpenPanel(void)
   expected = @"++a++b++c++d++e++f++g++h++ijklmnop";
   NSAssert([expected isEqualToString:string], @"");
   
-  [XPLog alwys:@"XPTEST_replaceOccurrencesOfStringWithString: Pass"];
+  XPLogAlwys(@"XPTEST_replaceOccurrencesOfStringWithString: Pass");
 }
 @end
 
@@ -454,9 +379,10 @@ NSArray* XPRunOpenPanel(void)
 @implementation CrossPlatform
 +(void)executeUnitTests;
 {
-  [XPLog alwys:@"XPTESTS: Start"];
+  XPLogAlwys(@"XPTESTS: Start");
   [NSMutableString XPTEST_replaceOccurrencesOfStringWithString];
-  [XPLog alwys:@"XPTESTS: Pass"];
+  [XPLog executeUnitTests];
+  XPLogAlwys(@"XPTESTS: Pass");
 }
 @end
 
@@ -510,4 +436,69 @@ NSArray* XPRunOpenPanel(void)
 #pragma clang diagnostic pop
   }
 }
+@end
+
+@implementation XPLog
+
++(void)pause {}
+
++(void)executeUnitTests;
+{
+  XPLogAlwys (@"XPLogAlwys");
+  XPLogAlwys1(@"XPLogAlwys1: %d", 1);
+  XPLogAlwys2(@"XPLogAlwys2: %d, %d", 1, 2);
+  XPLogAlwys3(@"XPLogAlwys3: %d, %d, %d", 1, 2, 3);
+  XPLogAlwys4(@"XPLogAlwys4: %d, %d, %d, %d", 1, 2, 3, 4);
+  XPLogDebug (@"XPLogDebug");
+  XPLogDebug1(@"XPLogDebug1: %d", 1);
+  XPLogDebug2(@"XPLogDebug2: %d, %d", 1, 2);
+  XPLogDebug3(@"XPLogDebug3: %d, %d, %d", 1, 2, 3);
+  XPLogDebug4(@"XPLogDebug4: %d, %d, %d, %d", 1, 2, 3, 4);
+  /*
+  XPLogPause (@"XPLogPause");
+  XPLogPause1(@"XPLogPause1: %d", 1);
+  XPLogPause2(@"XPLogPause2: %d, %d", 1, 2);
+  XPLogPause3(@"XPLogPause3: %d, %d, %d", 1, 2, 3);
+  XPLogPause4(@"XPLogPause4: %d, %d, %d, %d", 1, 2, 3, 4);
+  XPLogRaise(@"XPLogRaise");
+  XPLogRaise1(@"XPLogRaise1: %d", 1);
+  XPLogRaise2(@"XPLogRaise2: %d, %d", 1, 2);
+  XPLogRaise3(@"XPLogRaise3: %d, %d, %d", 1, 2, 3);
+  XPLogRaise4(@"XPLogRaise4: %d, %d, %d, %d", 1, 2, 3, 4);
+  */
+}
+
++(void)debug:(NSString*)_formatString, ...;
+{
+#if DEBUG || EXTRA
+  va_list args;
+  NSString *formatString = (_formatString) ? _formatString : @"NO MESSAGE PROVIDED";
+  va_start(args, _formatString);
+  formatString = [@"LOG-DEBUG: " stringByAppendingString:formatString];
+  NSLogv(formatString, args);
+  va_end(args);
+#endif
+}
+
++(void)pause:(NSString*)_formatString, ...;
+{
+  va_list args;
+  NSString *formatString = (_formatString) ? _formatString : @"NO MESSAGE PROVIDED";
+  va_start(args, _formatString);
+  formatString = [@"LOG-PAUSE: " stringByAppendingString:formatString];
+  NSLogv(formatString, args);
+  va_end(args);
+}
+
++(void)error:(NSString*)_formatString, ...;
+{
+  va_list args;
+  NSString *formatString = (_formatString) ? _formatString : @"NO ERROR PROVIDED";
+  va_start(args, _formatString);
+  formatString = [@"LOG-ERROR: " stringByAppendingString:formatString];
+  NSLogv(formatString, args);
+  [NSException raise:@"SVRException" format:formatString arguments:args];
+  va_end(args);
+}
+
 @end
