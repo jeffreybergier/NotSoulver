@@ -123,7 +123,6 @@
 			);
 			buildSettings = {
 				INSTALL_PATH = "$(HOME)/Apps";
-				OPTIMIZATION_CFLAGS = "";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
@@ -228,7 +227,6 @@
 			isa = PBXBuildFile;
 			settings = {
 				ATTRIBUTES = (
-					Debug,
 				);
 			};
 		};
@@ -243,7 +241,6 @@
 			isa = PBXBuildFile;
 			settings = {
 				ATTRIBUTES = (
-					Debug,
 				);
 			};
 		};
@@ -258,7 +255,6 @@
 			isa = PBXBuildFile;
 			settings = {
 				ATTRIBUTES = (
-					Debug,
 				);
 			};
 		};
@@ -273,7 +269,6 @@
 			isa = PBXBuildFile;
 			settings = {
 				ATTRIBUTES = (
-					Debug,
 				);
 			};
 		};
@@ -288,7 +283,6 @@
 			isa = PBXBuildFile;
 			settings = {
 				ATTRIBUTES = (
-					Debug,
 				);
 			};
 		};
@@ -303,7 +297,6 @@
 			isa = PBXBuildFile;
 			settings = {
 				ATTRIBUTES = (
-					Debug,
 				);
 			};
 		};
@@ -318,7 +311,6 @@
 			isa = PBXBuildFile;
 			settings = {
 				ATTRIBUTES = (
-					Debug,
 				);
 			};
 		};
@@ -333,7 +325,6 @@
 			isa = PBXBuildFile;
 			settings = {
 				ATTRIBUTES = (
-					Debug,
 				);
 			};
 		};
@@ -348,7 +339,6 @@
 			isa = PBXBuildFile;
 			settings = {
 				ATTRIBUTES = (
-					Debug,
 				);
 			};
 		};
@@ -363,7 +353,6 @@
 			isa = PBXBuildFile;
 			settings = {
 				ATTRIBUTES = (
-					Debug,
 				);
 			};
 		};
@@ -378,7 +367,6 @@
 			isa = PBXBuildFile;
 			settings = {
 				ATTRIBUTES = (
-					Debug,
 				);
 			};
 		};
@@ -393,7 +381,6 @@
 			isa = PBXBuildFile;
 			settings = {
 				ATTRIBUTES = (
-					Debug,
 				);
 			};
 		};
@@ -408,7 +395,6 @@
 			isa = PBXBuildFile;
 			settings = {
 				ATTRIBUTES = (
-					Debug,
 				);
 			};
 		};
@@ -423,7 +409,6 @@
 			isa = PBXBuildFile;
 			settings = {
 				ATTRIBUTES = (
-					Debug,
 				);
 			};
 		};
@@ -438,7 +423,6 @@
 			isa = PBXBuildFile;
 			settings = {
 				ATTRIBUTES = (
-					Debug,
 				);
 			};
 		};
@@ -453,7 +437,6 @@
 			isa = PBXBuildFile;
 			settings = {
 				ATTRIBUTES = (
-					Debug,
 				);
 			};
 		};
@@ -705,7 +688,6 @@
 			isa = PBXBuildFile;
 			settings = {
 				ATTRIBUTES = (
-					Debug,
 				);
 			};
 		};
@@ -720,7 +702,6 @@
 			isa = PBXBuildFile;
 			settings = {
 				ATTRIBUTES = (
-					Debug,
 				);
 			};
 		};
