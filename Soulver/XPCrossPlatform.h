@@ -64,7 +64,7 @@ typedef CGFloat XPFloat;
 typedef float XPFloat;
 #endif
 
-#ifdef __MAC_10_0
+#ifdef MAC_OS_X_VERSION_10_0
 typedef NSRangePointer XPRangePointer;
 #define XPTextAlignmentCenter NSTextAlignmentCenter
 #else
@@ -72,7 +72,7 @@ typedef NSRange* XPRangePointer;
 #define XPTextAlignmentCenter NSCenterTextAlignment
 #endif
 
-#ifdef __MAC_10_2
+#ifdef MAC_OS_X_VERSION_10_2
 #define XPKeyedArchiver NSKeyedArchiver
 #define XPKeyedUnarchiver NSKeyedUnarchiver
 #else
@@ -80,13 +80,13 @@ typedef NSRange* XPRangePointer;
 #define XPKeyedUnarchiver NSUnarchiver
 #endif
 
-#ifdef __MAC_10_4
+#ifdef MAC_OS_X_VERSION_10_4
 #define XPLocale NSLocale
 #else
 #define XPLocale NSDictionary
 #endif
 
-#ifdef __MAC_10_9
+#ifdef MAC_OS_X_VERSION_10_9
 #define XPModalResponseOK NSModalResponseOK
 #define XPModalResponseCancel NSModalResponseCancel
 #else
@@ -94,7 +94,7 @@ typedef NSRange* XPRangePointer;
 #define XPModalResponseCancel NSCancelButton
 #endif
 
-#ifdef __MAC_10_13
+#ifdef MAC_OS_X_VERSION_10_13
 typedef NSAttributedStringKey XPAttributedStringKey;
 #else
 typedef NSString* XPAttributedStringKey;

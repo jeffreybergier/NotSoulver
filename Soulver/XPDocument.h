@@ -32,7 +32,7 @@
 
 // This is a best effort implementation of NSDocument only for use in OpenStep.
 // Its insanely minimal because it won't be used once Mac OS X Ships
-#ifdef __MAC_10_6
+#ifdef MAC_OS_X_VERSION_10_6
 @interface XPDocument: NSResponder <NSWindowDelegate>
 #else
 @interface XPDocument: NSResponder
