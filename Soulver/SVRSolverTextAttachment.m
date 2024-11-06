@@ -206,8 +206,8 @@
        withFrame:(NSRect)cellFrame
           inView:(NSView*)controlView;
 {
-  [XPLog pause:@"higlight:%@ withFrame:%@",
-   (flag) ? @"YES" : @"NO", NSStringFromRect(cellFrame)];
+  XPLogPause2(@"higlight:%@ withFrame:%@",
+   (flag) ? @"YES" : @"NO", NSStringFromRect(cellFrame));
 }
 
 // MARK: Dealloc

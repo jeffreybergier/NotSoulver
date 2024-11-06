@@ -316,5 +316,5 @@ NSArray* XPRunOpenPanel(void);
 /// Requires `fb +[XPLog pause]` in GDB to Pause Debugger
 +(void)pause;
 +(void)executeUnitTests;
-+(void)logKnownEnvironment;
++(void)logCheckedPoundDefines;
 @end

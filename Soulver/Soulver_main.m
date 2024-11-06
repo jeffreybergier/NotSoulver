@@ -16,7 +16,7 @@ int main(int argc, const char *argv[]) {
   NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
   
   // 2. Log the environment
-  [XPLog logKnownEnvironment];
+  [XPLog logCheckedPoundDefines];
   
   // 3. Execute Unit Tests if Needed
 #ifdef TESTING
