@@ -1,0 +1,877 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 38;
+	objects = {
+		8C97D54E2CDB772F00A84004 = {
+			children = (
+				8C97D55B2CDB772F00A84004,
+				8C97D57C2CDB772F00A84004,
+				8C97D59F2CDB772F00A84004,
+				8C97D5A42CDB772F00A84004,
+				8C97D5AB2CDB772F00A84004,
+				8C97D5B22CDB772F00A84004,
+				8C97D5B72CDB772F00A84004,
+				8C97D5592CDB772F00A84004,
+			);
+			isa = PBXGroup;
+			name = Soulver;
+			refType = 4;
+		};
+		8C97D5502CDB772F00A84004 = {
+			buildRules = (
+			);
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			isa = PBXBuildStyle;
+			name = Development;
+		};
+		8C97D5512CDB772F00A84004 = {
+			buildRules = (
+			);
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+			};
+			isa = PBXBuildStyle;
+			name = Deployment;
+		};
+		8C97D5522CDB772F00A84004 = {
+			buildActionMask = 2147483647;
+			files = (
+				8C97D57E2CDB772F00A84004,
+				8C97D5802CDB772F00A84004,
+				8C97D5822CDB772F00A84004,
+				8C97D5842CDB772F00A84004,
+				8C97D5862CDB772F00A84004,
+				8C97D5882CDB772F00A84004,
+				8C97D58A2CDB772F00A84004,
+				8C97D58C2CDB772F00A84004,
+				8C97D58E2CDB772F00A84004,
+				8C97D5902CDB772F00A84004,
+				8C97D5922CDB772F00A84004,
+				8C97D5942CDB772F00A84004,
+				8C97D5962CDB772F00A84004,
+				8C97D5982CDB772F00A84004,
+				8C97D59A2CDB772F00A84004,
+				8C97D59C2CDB772F00A84004,
+				8C97D59E2CDB772F00A84004,
+			);
+			isa = PBXHeadersBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C97D5532CDB772F00A84004 = {
+			buildActionMask = 2147483647;
+			files = (
+				8C97D5A62CDB772F00A84004,
+				8C97D5A82CDB772F00A84004,
+				8C97D5AA2CDB772F00A84004,
+			);
+			isa = PBXResourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C97D5542CDB772F00A84004 = {
+			buildActionMask = 2147483647;
+			files = (
+				8C97D55D2CDB772F00A84004,
+				8C97D55F2CDB772F00A84004,
+				8C97D5612CDB772F00A84004,
+				8C97D5632CDB772F00A84004,
+				8C97D5652CDB772F00A84004,
+				8C97D5672CDB772F00A84004,
+				8C97D5692CDB772F00A84004,
+				8C97D56B2CDB772F00A84004,
+				8C97D56D2CDB772F00A84004,
+				8C97D56F2CDB772F00A84004,
+				8C97D5712CDB772F00A84004,
+				8C97D5732CDB772F00A84004,
+				8C97D5752CDB772F00A84004,
+				8C97D5772CDB772F00A84004,
+				8C97D5792CDB772F00A84004,
+				8C97D57B2CDB772F00A84004,
+				8C97D5A12CDB772F00A84004,
+				8C97D5A32CDB772F00A84004,
+			);
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C97D5552CDB772F00A84004 = {
+			buildActionMask = 2147483647;
+			files = (
+				8C97D5B42CDB772F00A84004,
+				8C97D5B62CDB772F00A84004,
+			);
+			isa = PBXFrameworksBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C97D5562CDB772F00A84004 = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			isa = PBXRezBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C97D5572CDB772F00A84004 = {
+			buildPhases = (
+				8C97D5522CDB772F00A84004,
+				8C97D5532CDB772F00A84004,
+				8C97D5542CDB772F00A84004,
+				8C97D5552CDB772F00A84004,
+				8C97D5562CDB772F00A84004,
+			);
+			buildSettings = {
+				INSTALL_PATH = "$(HOME)/Apps";
+				OPTIMIZATION_CFLAGS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Soulver;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
+				WRAPPER_EXTENSION = app;
+			};
+			dependencies = (
+			);
+			isa = PBXApplicationTarget;
+			name = "Soulver (Application)";
+			productInstallPath = "$(HOME)/Apps";
+			productName = "Soulver (Application)";
+			productReference = 8C97D5582CDB772F00A84004;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>Soulver</string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
+	<key>CFBundleIconFile</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string></string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string></string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string></string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>0.0.1d1</string>
+	<key>NSExtensions</key>
+	<dict>
+		<key>solv</key>
+		<dict>
+			<key>NSIcon</key>
+			<string></string>
+		</dict>
+	</dict>
+	<key>NSMainNibFile</key>
+	<string>NEXTSTEP_Soulver.nib</string>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+</dict>
+</plist>
+";
+		};
+		8C97D5582CDB772F00A84004 = {
+			isa = PBXApplicationReference;
+			path = Soulver.app;
+			refType = 3;
+		};
+		8C97D5592CDB772F00A84004 = {
+			children = (
+				8C97D5582CDB772F00A84004,
+			);
+			isa = PBXGroup;
+			name = Products;
+			refType = 4;
+		};
+		8C97D55B2CDB772F00A84004 = {
+			children = (
+				8C97D55C2CDB772F00A84004,
+				8C97D55E2CDB772F00A84004,
+				8C97D5602CDB772F00A84004,
+				8C97D5622CDB772F00A84004,
+				8C97D5642CDB772F00A84004,
+				8C97D5662CDB772F00A84004,
+				8C97D5682CDB772F00A84004,
+				8C97D56A2CDB772F00A84004,
+				8C97D56C2CDB772F00A84004,
+				8C97D56E2CDB772F00A84004,
+				8C97D5702CDB772F00A84004,
+				8C97D5722CDB772F00A84004,
+				8C97D5742CDB772F00A84004,
+				8C97D5762CDB772F00A84004,
+				8C97D5782CDB772F00A84004,
+				8C97D57A2CDB772F00A84004,
+			);
+			isa = PBXGroup;
+			name = Classes;
+			refType = 4;
+		};
+		8C97D55C2CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SVRAppDelegate.m;
+			refType = 4;
+		};
+		8C97D55D2CDB772F00A84004 = {
+			fileRef = 8C97D55C2CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Debug,
+				);
+			};
+		};
+		8C97D55E2CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SVRAccessoryWindowsOwner.m;
+			refType = 4;
+		};
+		8C97D55F2CDB772F00A84004 = {
+			fileRef = 8C97D55E2CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Debug,
+				);
+			};
+		};
+		8C97D5602CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SVRDocument.m;
+			refType = 4;
+		};
+		8C97D5612CDB772F00A84004 = {
+			fileRef = 8C97D5602CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Debug,
+				);
+			};
+		};
+		8C97D5622CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SVRDocumentModelController.m;
+			refType = 4;
+		};
+		8C97D5632CDB772F00A84004 = {
+			fileRef = 8C97D5622CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Debug,
+				);
+			};
+		};
+		8C97D5642CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SVRDocumentViewController.m;
+			refType = 4;
+		};
+		8C97D5652CDB772F00A84004 = {
+			fileRef = 8C97D5642CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Debug,
+				);
+			};
+		};
+		8C97D5662CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SVRSettingsViewController.m;
+			refType = 4;
+		};
+		8C97D5672CDB772F00A84004 = {
+			fileRef = 8C97D5662CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Debug,
+				);
+			};
+		};
+		8C97D5682CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SVRSolver.m;
+			refType = 4;
+		};
+		8C97D5692CDB772F00A84004 = {
+			fileRef = 8C97D5682CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Debug,
+				);
+			};
+		};
+		8C97D56A2CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SVRSolverExpressionTagger.m;
+			refType = 4;
+		};
+		8C97D56B2CDB772F00A84004 = {
+			fileRef = 8C97D56A2CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Debug,
+				);
+			};
+		};
+		8C97D56C2CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SVRSolverScanner.m;
+			refType = 4;
+		};
+		8C97D56D2CDB772F00A84004 = {
+			fileRef = 8C97D56C2CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Debug,
+				);
+			};
+		};
+		8C97D56E2CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SVRSolverSolutionTagger.m;
+			refType = 4;
+		};
+		8C97D56F2CDB772F00A84004 = {
+			fileRef = 8C97D56E2CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Debug,
+				);
+			};
+		};
+		8C97D5702CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SVRSolverStyler.m;
+			refType = 4;
+		};
+		8C97D5712CDB772F00A84004 = {
+			fileRef = 8C97D5702CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Debug,
+				);
+			};
+		};
+		8C97D5722CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SVRSolverTextAttachment.m;
+			refType = 4;
+		};
+		8C97D5732CDB772F00A84004 = {
+			fileRef = 8C97D5722CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Debug,
+				);
+			};
+		};
+		8C97D5742CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = XPCrossPlatform.m;
+			refType = 4;
+		};
+		8C97D5752CDB772F00A84004 = {
+			fileRef = 8C97D5742CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Debug,
+				);
+			};
+		};
+		8C97D5762CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = XPDocument.m;
+			refType = 4;
+		};
+		8C97D5772CDB772F00A84004 = {
+			fileRef = 8C97D5762CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Debug,
+				);
+			};
+		};
+		8C97D5782CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SLRERegex.m;
+			refType = 4;
+		};
+		8C97D5792CDB772F00A84004 = {
+			fileRef = 8C97D5782CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Debug,
+				);
+			};
+		};
+		8C97D57A2CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = "NSUserDefaults+Soulver.m";
+			refType = 4;
+		};
+		8C97D57B2CDB772F00A84004 = {
+			fileRef = 8C97D57A2CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Debug,
+				);
+			};
+		};
+		8C97D57C2CDB772F00A84004 = {
+			children = (
+				8C97D57D2CDB772F00A84004,
+				8C97D57F2CDB772F00A84004,
+				8C97D5812CDB772F00A84004,
+				8C97D5832CDB772F00A84004,
+				8C97D5852CDB772F00A84004,
+				8C97D5872CDB772F00A84004,
+				8C97D5892CDB772F00A84004,
+				8C97D58B2CDB772F00A84004,
+				8C97D58D2CDB772F00A84004,
+				8C97D58F2CDB772F00A84004,
+				8C97D5912CDB772F00A84004,
+				8C97D5932CDB772F00A84004,
+				8C97D5952CDB772F00A84004,
+				8C97D5972CDB772F00A84004,
+				8C97D5992CDB772F00A84004,
+				8C97D59B2CDB772F00A84004,
+				8C97D59D2CDB772F00A84004,
+			);
+			isa = PBXGroup;
+			name = Headers;
+			refType = 4;
+		};
+		8C97D57D2CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SVRAppDelegate.h;
+			refType = 4;
+		};
+		8C97D57E2CDB772F00A84004 = {
+			fileRef = 8C97D57D2CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C97D57F2CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SVRDocument.h;
+			refType = 4;
+		};
+		8C97D5802CDB772F00A84004 = {
+			fileRef = 8C97D57F2CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C97D5812CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SVRAccessoryWindowsOwner.h;
+			refType = 4;
+		};
+		8C97D5822CDB772F00A84004 = {
+			fileRef = 8C97D5812CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C97D5832CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SVRDocumentModelController.h;
+			refType = 4;
+		};
+		8C97D5842CDB772F00A84004 = {
+			fileRef = 8C97D5832CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C97D5852CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SVRDocumentViewController.h;
+			refType = 4;
+		};
+		8C97D5862CDB772F00A84004 = {
+			fileRef = 8C97D5852CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C97D5872CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SVRSettingsViewController.h;
+			refType = 4;
+		};
+		8C97D5882CDB772F00A84004 = {
+			fileRef = 8C97D5872CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C97D5892CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SVRSolver.h;
+			refType = 4;
+		};
+		8C97D58A2CDB772F00A84004 = {
+			fileRef = 8C97D5892CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C97D58B2CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SVRSolverExpressionTagger.h;
+			refType = 4;
+		};
+		8C97D58C2CDB772F00A84004 = {
+			fileRef = 8C97D58B2CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C97D58D2CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SVRSolverScanner.h;
+			refType = 4;
+		};
+		8C97D58E2CDB772F00A84004 = {
+			fileRef = 8C97D58D2CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C97D58F2CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SVRSolverSolutionTagger.h;
+			refType = 4;
+		};
+		8C97D5902CDB772F00A84004 = {
+			fileRef = 8C97D58F2CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C97D5912CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SVRSolverStyler.h;
+			refType = 4;
+		};
+		8C97D5922CDB772F00A84004 = {
+			fileRef = 8C97D5912CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C97D5932CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SVRSolverTextAttachment.h;
+			refType = 4;
+		};
+		8C97D5942CDB772F00A84004 = {
+			fileRef = 8C97D5932CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C97D5952CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = XPCrossPlatform.h;
+			refType = 4;
+		};
+		8C97D5962CDB772F00A84004 = {
+			fileRef = 8C97D5952CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C97D5972CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = XPDocument.h;
+			refType = 4;
+		};
+		8C97D5982CDB772F00A84004 = {
+			fileRef = 8C97D5972CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C97D5992CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = slre.h;
+			refType = 4;
+		};
+		8C97D59A2CDB772F00A84004 = {
+			fileRef = 8C97D5992CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C97D59B2CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SLRERegex.h;
+			refType = 4;
+		};
+		8C97D59C2CDB772F00A84004 = {
+			fileRef = 8C97D59B2CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C97D59D2CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = "NSUserDefaults+Soulver.h";
+			refType = 4;
+		};
+		8C97D59E2CDB772F00A84004 = {
+			fileRef = 8C97D59D2CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C97D59F2CDB772F00A84004 = {
+			children = (
+				8C97D5A02CDB772F00A84004,
+				8C97D5A22CDB772F00A84004,
+			);
+			isa = PBXGroup;
+			name = "Other Sources";
+			refType = 4;
+		};
+		8C97D5A02CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = slre.c;
+			refType = 4;
+		};
+		8C97D5A12CDB772F00A84004 = {
+			fileRef = 8C97D5A02CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Debug,
+				);
+			};
+		};
+		8C97D5A22CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = Soulver_main.m;
+			refType = 4;
+		};
+		8C97D5A32CDB772F00A84004 = {
+			fileRef = 8C97D5A22CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Debug,
+				);
+			};
+		};
+		8C97D5A42CDB772F00A84004 = {
+			children = (
+				8C97D5A52CDB772F00A84004,
+				8C97D5A72CDB772F00A84004,
+				8C97D5A92CDB772F00A84004,
+			);
+			isa = PBXGroup;
+			name = Interfaces;
+			refType = 4;
+		};
+		8C97D5A52CDB772F00A84004 = {
+			isa = PBXFileReference;
+			name = NEXTSTEP_AccessoryWindows.nib;
+			path = English.lproj/NEXTSTEP_AccessoryWindows.nib;
+			refType = 4;
+		};
+		8C97D5A62CDB772F00A84004 = {
+			fileRef = 8C97D5A52CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C97D5A72CDB772F00A84004 = {
+			isa = PBXFileReference;
+			name = NEXTSTEP_SVRDocument.nib;
+			path = English.lproj/NEXTSTEP_SVRDocument.nib;
+			refType = 4;
+		};
+		8C97D5A82CDB772F00A84004 = {
+			fileRef = 8C97D5A72CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C97D5A92CDB772F00A84004 = {
+			isa = PBXFileReference;
+			name = NEXTSTEP_Soulver.nib;
+			path = English.lproj/NEXTSTEP_Soulver.nib;
+			refType = 4;
+		};
+		8C97D5AA2CDB772F00A84004 = {
+			fileRef = 8C97D5A92CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C97D5AB2CDB772F00A84004 = {
+			children = (
+				8C97D5AC2CDB772F00A84004,
+				8C97D5AD2CDB772F00A84004,
+				8C97D5AE2CDB772F00A84004,
+				8C97D5AF2CDB772F00A84004,
+				8C97D5B02CDB772F00A84004,
+				8C97D5B12CDB772F00A84004,
+			);
+			isa = PBXGroup;
+			name = "Supporting Files";
+			refType = 4;
+		};
+		8C97D5AC2CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = Makefile.preamble;
+			refType = 4;
+		};
+		8C97D5AD2CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = Makefile;
+			refType = 4;
+		};
+		8C97D5AE2CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = Makefile.postamble;
+			refType = 4;
+		};
+		8C97D5AF2CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = m.template;
+			refType = 4;
+		};
+		8C97D5B02CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = h.template;
+			refType = 4;
+		};
+		8C97D5B12CDB772F00A84004 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = .gdbinit;
+			refType = 4;
+		};
+		8C97D5B22CDB772F00A84004 = {
+			children = (
+				8C97D5B32CDB772F00A84004,
+				8C97D5B52CDB772F00A84004,
+			);
+			isa = PBXGroup;
+			name = "External Frameworks and Libraries";
+			refType = 4;
+		};
+		8C97D5B32CDB772F00A84004 = {
+			isa = PBXFrameworkReference;
+			name = AppKit.framework;
+			path = /System/Library/Frameworks/AppKit.framework;
+			refType = 0;
+		};
+		8C97D5B42CDB772F00A84004 = {
+			fileRef = 8C97D5B32CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C97D5B52CDB772F00A84004 = {
+			isa = PBXFrameworkReference;
+			name = Foundation.framework;
+			path = /System/Library/Frameworks/Foundation.framework;
+			refType = 0;
+		};
+		8C97D5B62CDB772F00A84004 = {
+			fileRef = 8C97D5B52CDB772F00A84004;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C97D5B72CDB772F00A84004 = {
+			isa = PBXFileReference;
+			name = "Import Log.rtf";
+			path = "/Users/me/Desktop/NotSoulver/Soulver/Import Log.rtf";
+			refType = 0;
+		};
+		8C97D5B82CDB772F00A84004 = {
+			buildStyles = (
+				8C97D5502CDB772F00A84004,
+				8C97D5512CDB772F00A84004,
+			);
+			hasScannedForEncodings = 1;
+			isa = PBXProject;
+			mainGroup = 8C97D54E2CDB772F00A84004;
+			productRefGroup = 8C97D5592CDB772F00A84004;
+			projectDirPath = "";
+			targets = (
+				8C97D5572CDB772F00A84004,
+			);
+		};
+	};
+	rootObject = 8C97D5B82CDB772F00A84004;
+}
