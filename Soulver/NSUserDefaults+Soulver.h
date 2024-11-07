@@ -123,3 +123,7 @@ typedef enum {
 +(NSDictionary*)__SVR_standardDictionary;
 +(XPLocale*)__SVR_legacyDecimalNumberLocale;
 @end
+
+@interface Localized: NSObject
++(NSString*)appName;
+@end

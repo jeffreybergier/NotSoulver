@@ -364,3 +364,10 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 }
 
 @end
+
+@implementation Localized
+
++(NSString*)appName;
+{ return NSLocalizedString(@"SVR_APP_NAME", @""); }
+
+@end

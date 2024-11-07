@@ -133,6 +133,9 @@
 
 -(void)applicationWillFinishLaunching:(NSNotification*)aNotification;
 {
+  NSApplication *app = [aNotification object];
+  // Configure the title of the app
+  [[app mainMenu] setTitle:[Localized appName]];
   // Prepare UserDefaults
   [[NSUserDefaults standardUserDefaults] SVR_configure];
   // Prepare FontManager
