@@ -146,12 +146,11 @@ NSPoint XPDocumentPointForCascading;
   NSString *fileName = [self fileName];
   
   if (fileName) {
-    [window setTitle:[self displayName]];
     [window setRepresentedFilename:fileName];
   } else {
-    [window setTitle:@"UNTITLED"];
     [window setRepresentedFilename:@""];
   }
+  [window setTitle:[self displayName]];
   [window setDocumentEdited:[self isDocumentEdited]];
 }
 
@@ -161,7 +160,7 @@ NSPoint XPDocumentPointForCascading;
 -(NSString*)displayName;
 {
   NSString *lastPathComponent = [[self fileName] lastPathComponent];
-  return (lastPathComponent) ? lastPathComponent : @"UNTITLED";
+  return (lastPathComponent) ? lastPathComponent : [Localized titleUntitled];
 }
 
 /// Override to update window status
@@ -389,20 +388,20 @@ NSPoint XPDocumentPointForCascading;
 
 -(XPAlertReturn)runUnsavedChangesAlert;
 {
-  return NSRunAlertPanel(@"Close",
-                         @"Save changes to %@?",
-                         @"Save",
-                         @"Don't Save",
-                         @"Cancel",
+  return NSRunAlertPanel([Localized titleClose],
+                         [Localized phraseSaveChangesTo],
+                         [Localized verbSave],
+                         [Localized verbDontSave],
+                         [Localized verbCancel],
                          [self displayName]);
 }
 
 -(XPAlertReturn)runRevertToSavedAlert;
 {
-  return NSRunAlertPanel(@"Alert",
-                         @"Do you want to revert changes to %@?",
-                         @"Revert",
-                         @"Cancel",
+  return NSRunAlertPanel([Localized titleAlert],
+                         [Localized phraseRevertChangesTo],
+                         [Localized verbRevert],
+                         [Localized verbCancel],
                          nil,
                          [self displayName]);
 }
