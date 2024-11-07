@@ -40,11 +40,7 @@
 
 -(NSString*)windowNibName;
 {
-#ifdef __MAC_10_0
-  return @"MACOSX_SVRDocument.nib";
-#else
   return @"NEXTSTEP_SVRDocument.nib";
-#endif
 }
 
 // MARK: INIT
