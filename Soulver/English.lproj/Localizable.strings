@@ -1,1 +1,12 @@
-"SVR_APP_NAME" = "[Not]Solver";
+
+// Main Menu and other App Strings
+"NEXT_APP_Name" = "[Not]Solver";
+
+// Quit Dialog
+"NEXT_DIALOG_Quit"          = "Quit";
+"NEXT_DIALOG_EditedWindows" = "There are edited windows.";
+"NEXT_BUTTON_ReviewUnsaved" = "Review Unsaved";
+"NEXT_BUTTON_QuitAnyway"    = "Quit Anyway";
+
+// Generic Dialogs
+"NEXT_BUTTON_Cancel" = "Cancel";

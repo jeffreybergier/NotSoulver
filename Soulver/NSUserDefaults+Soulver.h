@@ -126,4 +126,9 @@ typedef enum {
 
 @interface Localized: NSObject
 +(NSString*)appName;
++(NSString*)dialogQuit;
++(NSString*)dialogEditedWindows;
++(NSString*)buttonReviewUnsaved;
++(NSString*)buttonQuitAnyway;
++(NSString*)buttonCancel;
 @end

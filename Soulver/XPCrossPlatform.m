@@ -98,11 +98,12 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 XPAlertReturn XPRunQuitAlert(void)
 {
-  return NSRunAlertPanel(@"Quit",
-                         @"There are edited windows.",
-                         @"Review Unsaved",
-                         @"Quit Anyway",
-                         @"Cancel");
+  return NSRunAlertPanel([Localized dialogQuit],
+                         @"%@", // dialogEditedWindows
+                         [Localized buttonReviewUnsaved],
+                         [Localized buttonQuitAnyway],
+                         [Localized buttonCancel],
+                         [Localized dialogEditedWindows]);
 }
 
 NSArray* XPRunOpenPanel(void)

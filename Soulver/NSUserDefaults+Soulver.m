@@ -368,6 +368,16 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 @implementation Localized
 
 +(NSString*)appName;
-{ return NSLocalizedString(@"SVR_APP_NAME", @""); }
+{ return NSLocalizedString(@"NEXT_APP_Name", @""); }
++(NSString*)dialogQuit;
+{ return NSLocalizedString(@"NEXT_DIALOG_Quit", @""); }
++(NSString*)dialogEditedWindows;
+{ return NSLocalizedString(@"NEXT_DIALOG_EditedWindows", @""); }
++(NSString*)buttonReviewUnsaved;
+{ return NSLocalizedString(@"NEXT_BUTTON_ReviewUnsaved", @""); }
++(NSString*)buttonQuitAnyway;
+{ return NSLocalizedString(@"NEXT_BUTTON_QuitAnyway", @""); }
++(NSString*)buttonCancel;
+{ return NSLocalizedString(@"NEXT_BUTTON_Cancel", @""); }
 
 @end
