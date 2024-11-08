@@ -57,7 +57,7 @@
 
 @end
 
-#ifdef __MAC_10_6
+#ifdef MAC_OS_X_VERSION_10_6
 @interface SVRDocumentModelController (TextDelegate) <NSTextViewDelegate>
 #else
 @interface SVRDocumentModelController (TextDelegate)

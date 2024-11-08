@@ -1,0 +1,21 @@
+
+// Titles
+"NEXT_T_AppName" = "[Not]Solver";
+"NEXT_T_Quit" = "Quit";
+"NEXT_T_Untitled" = "UNTITLED";
+"NEXT_T_Alert" = "Alert";
+"NEXT_T_Close" = "Close";
+
+// Verbs
+"NEXT_V_Cancel" = "Cancel";
+"NEXT_V_QuitAnyway" = "Quit Anyway";
+"NEXT_V_ReviewUnsaved" = "Review Unsaved";
+"NEXT_V_Save" = "Save";
+"NEXT_V_Revert" = "Revert";
+"NEXT_V_DontSave" = "Don't Save";
+
+// Phrases
+"NEXT_P_EditedWindows" = "There are edited windows.";
+"NEXT_P_SaveChangesTo%@" = "Save changes to %@?";
+"NEXT_P_RevertChangesTo%@" = "Revert changes to %@?";
+

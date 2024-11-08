@@ -364,3 +364,36 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 }
 
 @end
+
+@implementation Localized
+
++(NSString*)titleAppName;
+{ return NSLocalizedString(@"NEXT_T_AppName", @""); }
++(NSString*)titleQuit;
+{ return NSLocalizedString(@"NEXT_T_Quit", @""); }
++(NSString*)titleUntitled;
+{ return NSLocalizedString(@"NEXT_T_Untitled", @""); }
++(NSString*)titleAlert;
+{ return NSLocalizedString(@"NEXT_T_Alert", @""); }
++(NSString*)titleClose;
+{ return NSLocalizedString(@"NEXT_T_Close", @""); }
++(NSString*)phraseEditedWindows;
+{ return NSLocalizedString(@"NEXT_P_EditedWindows", @""); }
++(NSString*)phraseSaveChangesTo;
+{ return NSLocalizedString(@"NEXT_P_SaveChangesTo%@", @""); }
++(NSString*)phraseRevertChangesTo;
+{ return NSLocalizedString(@"NEXT_P_RevertChangesTo%@", @""); }
++(NSString*)verbReviewUnsaved;
+{ return NSLocalizedString(@"NEXT_V_ReviewUnsaved", @""); }
++(NSString*)verbQuitAnyway;
+{ return NSLocalizedString(@"NEXT_V_QuitAnyway", @""); }
++(NSString*)verbCancel;
+{ return NSLocalizedString(@"NEXT_V_Cancel", @""); }
++(NSString*)verbSave;
+{ return NSLocalizedString(@"NEXT_V_Save", @""); }
++(NSString*)verbRevert;
+{ return NSLocalizedString(@"NEXT_V_Revert", @""); }
++(NSString*)verbDontSave;
+{ return NSLocalizedString(@"NEXT_V_DontSave", @""); }
+
+@end

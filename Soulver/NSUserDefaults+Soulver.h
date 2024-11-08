@@ -123,3 +123,20 @@ typedef enum {
 +(NSDictionary*)__SVR_standardDictionary;
 +(XPLocale*)__SVR_legacyDecimalNumberLocale;
 @end
+
+@interface Localized: NSObject
++(NSString*)titleAppName;
++(NSString*)titleQuit;
++(NSString*)titleUntitled;
++(NSString*)titleAlert;
++(NSString*)titleClose;
++(NSString*)phraseEditedWindows;
++(NSString*)phraseSaveChangesTo;
++(NSString*)phraseRevertChangesTo;
++(NSString*)verbReviewUnsaved;
++(NSString*)verbQuitAnyway;
++(NSString*)verbCancel;
++(NSString*)verbSave;
++(NSString*)verbRevert;
++(NSString*)verbDontSave;
+@end

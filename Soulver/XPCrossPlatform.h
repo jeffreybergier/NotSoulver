@@ -29,13 +29,6 @@
 
 #import <AppKit/AppKit.h>
 
-// Uncomment these to see how to use them
-// NSLog(@"%d", __MAC_OS_X_VERSION_MIN_REQUIRED);
-// NSLog(@"%d", __MAC_10_4);
-
-// MARK: Forward Declarations
-@class SVRMathString;
-
 /// MARK: Simple Typedefs
 
 // Memory management annotations
@@ -64,15 +57,13 @@ typedef CGFloat XPFloat;
 typedef float XPFloat;
 #endif
 
-#ifdef __MAC_10_0
+#ifdef MAC_OS_X_VERSION_10_0
 typedef NSRangePointer XPRangePointer;
-#define XPTextAlignmentCenter NSTextAlignmentCenter
 #else
 typedef NSRange* XPRangePointer;
-#define XPTextAlignmentCenter NSCenterTextAlignment
 #endif
 
-#ifdef __MAC_10_2
+#ifdef MAC_OS_X_VERSION_10_2
 #define XPKeyedArchiver NSKeyedArchiver
 #define XPKeyedUnarchiver NSKeyedUnarchiver
 #else
@@ -80,13 +71,19 @@ typedef NSRange* XPRangePointer;
 #define XPKeyedUnarchiver NSUnarchiver
 #endif
 
-#ifdef __MAC_10_4
+#ifdef MAC_OS_X_VERSION_10_4
 #define XPLocale NSLocale
+// Docs says NSTextAlignmentCenter is available in 10.0.
+// But its not even available in 10.2, so I put it here.
+// It could be 10.3 or 10.4 or later. No way to know
+// until I get to that version of OSX
+#define XPTextAlignmentCenter NSTextAlignmentCenter
 #else
 #define XPLocale NSDictionary
+#define XPTextAlignmentCenter NSCenterTextAlignment
 #endif
 
-#ifdef __MAC_10_9
+#ifdef MAC_OS_X_VERSION_10_9
 #define XPModalResponseOK NSModalResponseOK
 #define XPModalResponseCancel NSModalResponseCancel
 #else
@@ -94,7 +91,7 @@ typedef NSRange* XPRangePointer;
 #define XPModalResponseCancel NSCancelButton
 #endif
 
-#ifdef __MAC_10_13
+#ifdef MAC_OS_X_VERSION_10_13
 typedef NSAttributedStringKey XPAttributedStringKey;
 #else
 typedef NSString* XPAttributedStringKey;

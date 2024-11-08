@@ -18,23 +18,23 @@ NEXTSTEP_DOCICONS =
 ICONSECTIONS =	-sectcreate __ICON app /NextLibrary/Frameworks/AppKit.framework/Resources/NSDefaultApplicationIcon.tiff
 
 LOCAL_RESOURCES = NEXTSTEP_AccessoryWindows.nib NEXTSTEP_Soulver.nib\
-                  NEXTSTEP_SVRDocument.nib
+                  NEXTSTEP_SVRDocument.nib Localizable.strings
 
 CLASSES = SVRAppDelegate.m SVRAccessoryWindowsOwner.m SVRDocument.m\
           SVRDocumentModelController.m SVRDocumentViewController.m\
-          SVRSolver.m SVRSolverExpressionTagger.m SVRSolverScanner.m\
+          SVRSettingsViewController.m SVRSolver.m\
+          SVRSolverExpressionTagger.m SVRSolverScanner.m\
           SVRSolverSolutionTagger.m SVRSolverStyler.m\
           SVRSolverTextAttachment.m XPCrossPlatform.m XPDocument.m\
-          SLRERegex.m NSUserDefaults+Soulver.m\
-          SVRSettingsViewController.m
+          SLRERegex.m NSUserDefaults+Soulver.m
 
 HFILES = SVRAppDelegate.h SVRDocument.h SVRAccessoryWindowsOwner.h\
          SVRDocumentModelController.h SVRDocumentViewController.h\
-         SVRSolver.h SVRSolverExpressionTagger.h SVRSolverScanner.h\
+         SVRSettingsViewController.h SVRSolver.h\
+         SVRSolverExpressionTagger.h SVRSolverScanner.h\
          SVRSolverSolutionTagger.h SVRSolverStyler.h\
          SVRSolverTextAttachment.h XPCrossPlatform.h XPDocument.h\
-         slre.h SLRERegex.h NSUserDefaults+Soulver.h\
-         SVRSettingsViewController.h
+         slre.h SLRERegex.h NSUserDefaults+Soulver.h
 
 MFILES = Soulver_main.m
 

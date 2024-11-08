@@ -98,11 +98,12 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 XPAlertReturn XPRunQuitAlert(void)
 {
-  return NSRunAlertPanel(@"Quit",
-                         @"There are edited windows.",
-                         @"Review Unsaved",
-                         @"Quit Anyway",
-                         @"Cancel");
+  return NSRunAlertPanel([Localized titleQuit],
+                         @"%@", // dialogEditedWindows
+                         [Localized verbReviewUnsaved],
+                         [Localized verbQuitAnyway],
+                         [Localized verbCancel],
+                         [Localized phraseEditedWindows]);
 }
 
 NSArray* XPRunOpenPanel(void)
@@ -502,69 +503,69 @@ NSArray* XPRunOpenPanel(void)
 {
   XPLogAlwys (@"<XPLog> Start: logCheckedPoundDefines");
 #ifdef LOGLEVEL
-  XPLogAlwys1(@"LOGLEVEL........(%d)", LOGLEVEL);
+  XPLogAlwys1(@"LOGLEVEL...............(%d)", LOGLEVEL);
 #else
-  XPLogAlwys (@"LOGLEVEL........(ND)");
+  XPLogAlwys (@"LOGLEVEL...............(ND)");
 #endif
 #ifdef DEBUG
-  XPLogAlwys1(@"DEBUG...........(%d)", DEBUG);
+  XPLogAlwys1(@"DEBUG..................(%d)", DEBUG);
 #else
-  XPLogAlwys (@"DEBUG...........(ND)");
+  XPLogAlwys (@"DEBUG..................(ND)");
 #endif
 #ifdef TESTING
-  XPLogAlwys1(@"TESTING.........(%d)", TESTING);
+  XPLogAlwys1(@"TESTING................(%d)", TESTING);
 #else
-  XPLogAlwys (@"TESTING.........(ND)");
+  XPLogAlwys (@"TESTING................(ND)");
 #endif
 #ifdef NS_ENUM
-  XPLogAlwys (@"NS_ENUM.........(Defined)");
+  XPLogAlwys (@"NS_ENUM................(Defined)");
 #else
-  XPLogAlwys (@"NS_ENUM.........(ND)");
+  XPLogAlwys (@"NS_ENUM................(ND)");
 #endif
 #ifdef CGFLOAT_MAX
-  XPLogAlwys1(@"CGFLOAT_MAX.....(%g)", CGFLOAT_MAX);
+  XPLogAlwys1(@"CGFLOAT_MAX............(%g)", CGFLOAT_MAX);
 #else
-  XPLogAlwys (@"CGFLOAT_MAX.....(ND)");
+  XPLogAlwys (@"CGFLOAT_MAX............(ND)");
 #endif
 #ifdef NSIntegerMax
-  XPLogAlwys1(@"NSIntegerMax....(%ld)", NSIntegerMax);
+  XPLogAlwys1(@"NSIntegerMax...........(%ld)", NSIntegerMax);
 #else
-  XPLogAlwys (@"NSIntegerMax....(ND)");
+  XPLogAlwys (@"NSIntegerMax...........(ND)");
 #endif
-#ifdef __MAC_10_0
-  XPLogAlwys1(@"__MAC_10_0......(%d)", __MAC_10_0);
+#ifdef MAC_OS_X_VERSION_10_0
+  XPLogAlwys1(@"MAC_OS_X_VERSION_10_0..(%d)", MAC_OS_X_VERSION_10_0);
 #else
-  XPLogAlwys (@"__MAC_10_0......(ND)");
+  XPLogAlwys (@"MAC_OS_X_VERSION_10_0..(ND)");
 #endif
-#ifdef __MAC_10_2
-  XPLogAlwys1(@"__MAC_10_2......(%d)", __MAC_10_2);
+#ifdef MAC_OS_X_VERSION_10_2
+  XPLogAlwys1(@"MAC_OS_X_VERSION_10_2..(%d)", MAC_OS_X_VERSION_10_2);
 #else
-  XPLogAlwys (@"__MAC_10_2......(ND)");
+  XPLogAlwys (@"MAC_OS_X_VERSION_10_2..(ND)");
 #endif
-#ifdef __MAC_10_4
-  XPLogAlwys1(@"__MAC_10_4......(%d)", __MAC_10_4);
+#ifdef MAC_OS_X_VERSION_10_4
+  XPLogAlwys1(@"MAC_OS_X_VERSION_10_4..(%d)", MAC_OS_X_VERSION_10_4);
 #else
-  XPLogAlwys (@"__MAC_10_4......(ND)");
+  XPLogAlwys (@"MAC_OS_X_VERSION_10_4..(ND)");
 #endif
-#ifdef __MAC_10_6
-  XPLogAlwys1(@"__MAC_10_6......(%d)", __MAC_10_6);
+#ifdef MAC_OS_X_VERSION_10_6
+  XPLogAlwys1(@"MAC_OS_X_VERSION_10_6..(%d)", MAC_OS_X_VERSION_10_6);
 #else
-  XPLogAlwys (@"__MAC_10_6......(ND)");
+  XPLogAlwys (@"MAC_OS_X_VERSION_10_6..(ND)");
 #endif
-#ifdef __MAC_10_9
-  XPLogAlwys1(@"__MAC_10_9......(%d)", __MAC_10_9);
+#ifdef MAC_OS_X_VERSION_10_9
+  XPLogAlwys1(@"MAC_OS_X_VERSION_10_9..(%d)", MAC_OS_X_VERSION_10_9);
 #else
-  XPLogAlwys (@"__MAC_10_9......(ND)");
+  XPLogAlwys (@"MAC_OS_X_VERSION_10_9..(ND)");
 #endif
-#ifdef __MAC_10_13
-  XPLogAlwys1(@"__MAC_10_13.....(%d)", __MAC_10_13);
+#ifdef MAC_OS_X_VERSION_10_13
+  XPLogAlwys1(@"MAC_OS_X_VERSION_10_13.(%d)", MAC_OS_X_VERSION_10_13);
 #else
-  XPLogAlwys (@"__MAC_10_13.....(ND)");
+  XPLogAlwys (@"MAC_OS_X_VERSION_10_13.(ND)");
 #endif
 #ifdef __STDC_VERSION__
-  XPLogAlwys1(@"__STDC_VERSION__(%ld)", __STDC_VERSION__);
+  XPLogAlwys1(@"__STDC_VERSION__.......(%ld)", __STDC_VERSION__);
 #else
-  XPLogAlwys (@"__STDC_VERSION__(ND)");
+  XPLogAlwys (@"__STDC_VERSION__.......(ND)");
 #endif
   XPLogAlwys (@"<XPLog> End: logCheckedPoundDefines");
 }
