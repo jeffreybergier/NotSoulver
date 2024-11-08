@@ -176,6 +176,7 @@ SVRSolverOperator SVRSolverOperatorForRawString(NSString *string)
 
 NSString *SVRSolverDescriptionForError(SVRSolverError error)
 {
+  // TODO: Localize Strings
   switch (error) {
     case SVRSolverErrorNone:
       return nil;

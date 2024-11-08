@@ -45,7 +45,7 @@
 -(NSString*)stringForDrawing;
 {
   return ([self error] == SVRSolverErrorNone)
-  ? [@"=" stringByAppendingString:[[self solution] SVR_description]]
+  ? [@"=" stringByAppendingString:[[self solution] description]]
   : [@"=" stringByAppendingString:SVRSolverDescriptionForError([self error])];
 }
 

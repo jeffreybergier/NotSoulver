@@ -94,7 +94,6 @@ typedef enum {
 -(BOOL)SVR_setSavePanelLastDirectory:(NSString*)newValue;
 -(NSTimeInterval)SVR_waitTimeForRendering;
 -(BOOL)SVR_setWaitTimeForRendering:(NSTimeInterval)newValue;
--(XPLocale*)SVR_decimalNumberLocale;
 
 // MARK: Accessory Window Visibility
 +(NSString*)SVR_frameKeyForWindow:(SVRAccessoryWindow)window;
@@ -121,7 +120,6 @@ typedef enum {
 // MARK: Configuration
 -(void)SVR_configure;
 +(NSDictionary*)__SVR_standardDictionary;
-+(XPLocale*)__SVR_legacyDecimalNumberLocale;
 @end
 
 @interface Localized: NSObject

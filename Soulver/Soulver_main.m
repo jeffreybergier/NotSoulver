@@ -48,7 +48,7 @@ int main(int argc, const char *argv[]) {
   [XPLog logCheckedPoundDefines];
   
   // 3. Execute Unit Tests if Needed
-#ifdef TESTING
+#if TESTING == 1
   [[NSUserDefaults standardUserDefaults] SVR_configure];
   XPLogAlwys(@"<Main> Unit Tests: STARTING");
   [CrossPlatform executeUnitTests];
@@ -64,7 +64,8 @@ int main(int argc, const char *argv[]) {
   pool = nil;
   
   // 4. Load NSApplication
-#ifdef __MAC_10_0
+#ifdef MAC_OS_X_VERSION_10_4
+  XPLogAlwys(@"<Main> Exiting due to unsupported system");
   return 0;
 #else
   return NSApplicationMain(argc, argv);

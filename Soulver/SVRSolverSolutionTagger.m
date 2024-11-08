@@ -258,7 +258,7 @@
 {
   NSDictionary *attributes = [NSDictionary dictionaryWithObject:number
                                                          forKey:XPAttributedStringKeyForTag(SVRSolverTagNumber)];
-  return [[[NSAttributedString alloc] initWithString:[number SVR_description]
+  return [[[NSAttributedString alloc] initWithString:[number description]
                                           attributes:attributes] autorelease];
 }
 
