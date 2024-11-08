@@ -48,7 +48,7 @@ int main(int argc, const char *argv[]) {
   [XPLog logCheckedPoundDefines];
   
   // 3. Execute Unit Tests if Needed
-#ifdef TESTING
+#if TESTING == 1
   [[NSUserDefaults standardUserDefaults] SVR_configure];
   XPLogAlwys(@"<Main> Unit Tests: STARTING");
   [CrossPlatform executeUnitTests];

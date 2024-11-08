@@ -471,6 +471,11 @@ NSArray* XPRunOpenPanel(void)
   XPLogDebug2(@"XPLogDebug2: %d, %d", 1, 2);
   XPLogDebug3(@"XPLogDebug3: %d, %d, %d", 1, 2, 3);
   XPLogDebug4(@"XPLogDebug4: %d, %d, %d, %d", 1, 2, 3, 4);
+  XPLogExtra (@"XPLogExtra");
+  XPLogExtra1(@"XPLogExtra1: %d", 1);
+  XPLogExtra2(@"XPLogExtra2: %d, %d", 1, 2);
+  XPLogExtra3(@"XPLogExtra3: %d, %d, %d", 1, 2, 3);
+  XPLogExtra4(@"XPLogExtra4: %d, %d, %d, %d", 1, 2, 3, 4);
   /*
   XPLogPause (@"XPLogPause");
   XPLogPause1(@"XPLogPause1: %d", 1);
@@ -488,21 +493,9 @@ NSArray* XPRunOpenPanel(void)
 +(void)logCheckedPoundDefines;
 {
   XPLogAlwys (@"<XPLog> Start: logCheckedPoundDefines");
-#ifdef LOGLEVEL
   XPLogAlwys1(@"LOGLEVEL...............(%d)", LOGLEVEL);
-#else
-  XPLogAlwys (@"LOGLEVEL...............(ND)");
-#endif
-#ifdef DEBUG
   XPLogAlwys1(@"DEBUG..................(%d)", DEBUG);
-#else
-  XPLogAlwys (@"DEBUG..................(ND)");
-#endif
-#ifdef TESTING
   XPLogAlwys1(@"TESTING................(%d)", TESTING);
-#else
-  XPLogAlwys (@"TESTING................(ND)");
-#endif
 #ifdef NS_ENUM
   XPLogAlwys (@"NS_ENUM................(Defined)");
 #else
