@@ -141,22 +141,22 @@
   // Configure Math Text Font Field
   currentFont = [ud SVR_fontForTheme:SVRThemeFontMath];
   [currentFontAttribs setObject:currentFont forKey:NSFontAttributeName];
-  currentFontString = [[NSAttributedString alloc] initWithString:[self __descriptionForFont:currentFont]
-                                                      attributes:currentFontAttribs];
+  currentFontString = [[[NSAttributedString alloc] initWithString:[self __descriptionForFont:currentFont]
+                                                       attributes:currentFontAttribs] autorelease];
   [_fieldTextMath setAttributedStringValue:currentFontString];
   
   // Configure Other Text Font Field
   currentFont = [ud SVR_fontForTheme:SVRThemeFontOther];
   [currentFontAttribs setObject:currentFont forKey:NSFontAttributeName];
-  currentFontString = [[NSAttributedString alloc] initWithString:[self __descriptionForFont:currentFont]
-                                                      attributes:currentFontAttribs];
+  currentFontString = [[[NSAttributedString alloc] initWithString:[self __descriptionForFont:currentFont]
+                                                       attributes:currentFontAttribs] autorelease];
   [_fieldTextOther setAttributedStringValue:currentFontString];
   
   // Configure Error Text Font Field
   currentFont = [ud SVR_fontForTheme:SVRThemeFontError];
   [currentFontAttribs setObject:currentFont forKey:NSFontAttributeName];
-  currentFontString = [[NSAttributedString alloc] initWithString:[self __descriptionForFont:currentFont]
-                                                      attributes:currentFontAttribs];
+  currentFontString = [[[NSAttributedString alloc] initWithString:[self __descriptionForFont:currentFont]
+                                                       attributes:currentFontAttribs] autorelease];
   [_fieldTextError setAttributedStringValue:currentFontString];
 }
 

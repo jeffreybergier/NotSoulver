@@ -64,7 +64,8 @@ int main(int argc, const char *argv[]) {
   pool = nil;
   
   // 4. Load NSApplication
-#ifdef __MAC_10_0
+#ifdef MAC_OS_X_VERSION_10_4
+  XPLogAlwys(@"<Main> Exiting due to unsupported system");
   return 0;
 #else
   return NSApplicationMain(argc, argv);

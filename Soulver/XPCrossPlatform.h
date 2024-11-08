@@ -72,14 +72,12 @@ typedef NSRange* XPRangePointer;
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_4
-#define XPLocale NSLocale
 // Docs says NSTextAlignmentCenter is available in 10.0.
 // But its not even available in 10.2, so I put it here.
 // It could be 10.3 or 10.4 or later. No way to know
 // until I get to that version of OSX
 #define XPTextAlignmentCenter NSTextAlignmentCenter
 #else
-#define XPLocale NSDictionary
 #define XPTextAlignmentCenter NSCenterTextAlignment
 #endif
 
@@ -99,11 +97,9 @@ typedef NSString* XPAttributedStringKey;
 
 extern const NSRange XPNotFoundRange;
 BOOL XPIsNotFoundRange(NSRange range);
-BOOL XPIsFoundRange(NSRange range);
 BOOL XPContainsRange(NSRange lhs, NSRange rhs);
 
 @interface NSValue (CrossPlatform)
--(id)XP_initWithRange:(NSRange)range;
 +(id)XP_valueWithRange:(NSRange)range;
 -(NSRange)XP_rangeValue;
 @end
@@ -111,7 +107,6 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs);
 @interface NSNumber (CrossPlatform)
 +(NSNumber*)XP_numberWithInteger:(XPInteger)integer;
 -(XPInteger)XP_integerValue;
--(NSString*)SVR_descriptionForDrawing;
 @end
 
 #ifdef NS_ENUM
@@ -186,8 +181,6 @@ NSArray* XPRunOpenPanel(void);
 @interface NSDecimalNumber (Soulver)
 /// In OpenStep, NaN comparisons are weird, so this uses a string comparison
 -(BOOL)SVR_isNotANumber;
--(NSString*)SVR_description;
-+(id)SVR_decimalNumberWithString:(NSString*)string;
 -(NSDecimalNumber*)SVR_decimalNumberByRaisingToPower:(NSDecimalNumber*)power
                                         withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
 @end

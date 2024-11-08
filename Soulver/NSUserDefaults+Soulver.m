@@ -33,7 +33,6 @@ NSString * const SVRThemeDidChangeNotificationName = @"kSVRThemeDidChangeNotific
 
 NSString *XPUserDefaultsSavePanelLastDirectory    = @"kSavePanelLastDirectory";
 NSString *XPUserDefaultsWaitTimeForRendering      = @"kWaitTimeForRendering";
-NSString *XPUserDefaultsLegacyDecimalNumberLocale = @"kLegacyDecimalNumberLocale";
 
 NSString *SVRAccessoryWindowSettingsFrame         = @"kSVRAccessoryWindowSettingsFrameKey";
 NSString *SVRAccessoryWindowAboutFrame            = @"kSVRAccessoryWindowAboutFrameKey";
@@ -96,16 +95,6 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
     [self setFloat:(float)newValue forKey:XPUserDefaultsWaitTimeForRendering];
   }
   return [self synchronize];
-}
-
--(XPLocale*)SVR_decimalNumberLocale;
-{
-  Class Locale = NSClassFromString(@"NSLocale");
-  if (Locale) {
-    return [Locale currentLocale];
-  } else {
-    return [self objectForKey:XPUserDefaultsLegacyDecimalNumberLocale];
-  }
 }
 
 // MARK: Accessory Window Visibility
@@ -318,7 +307,6 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
           SVRThemeUserInterfaceStyle,
           SVRAccessoryWindowKeypadVisibility,
           XPUserDefaultsWaitTimeForRendering,
-          XPUserDefaultsLegacyDecimalNumberLocale,
           nil];
   vals = [NSArray arrayWithObjects:
           // Light Theme
@@ -350,17 +338,9 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
           @"0",   // SVRThemeUserInterfaceStyle
           @"YES", // SVRAccessoryWindowKeypadVisibility
           @"2.0", // XPUserDefaultsWaitTimeForRendering
-          [self __SVR_legacyDecimalNumberLocale], // XPUserDefaultsLegacyDecimalNumberLocale
           nil];
   
   return [NSDictionary dictionaryWithObjects:vals forKeys:keys];
-}
-
-+(NSDictionary*)__SVR_legacyDecimalNumberLocale;
-{
-  NSArray *keys   = [NSArray arrayWithObjects:@"kCFLocaleDecimalSeparatorKey", @"NSDecimalSeparator", nil];
-  NSArray *values = [NSArray arrayWithObjects:@".", @".", nil];
-  return [[[NSDictionary alloc] initWithObjects:values forKeys:keys] autorelease];
 }
 
 @end

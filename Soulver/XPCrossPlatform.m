@@ -36,31 +36,32 @@ BOOL XPIsNotFoundRange(NSRange range)
   return range.location == NSNotFound;
 }
 
-BOOL XPIsFoundRange(NSRange range)
-{
-  return range.location != NSNotFound;
-}
-
 BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
   return (lhs.location <= rhs.location) && (NSMaxRange(lhs) >= NSMaxRange(rhs));
 }
 
 @implementation NSValue (CrossPlatform)
--(id)XP_initWithRange:(NSRange)range;
-{
-  if (XPIsNotFoundRange(range)) { return nil; }
-  return [self initWithBytes:&range objCType:@encode(NSRange)];
-}
 +(id)XP_valueWithRange:(NSRange)range;
 {
   if (XPIsNotFoundRange(range)) { return nil; }
-  return [self valueWithBytes:&range objCType:@encode(NSRange)];
+  if ([self respondsToSelector:@selector(valueWithRange:)]) {
+    return [self valueWithRange:range];
+  } else {
+    return [self valueWithBytes:&range objCType:@encode(NSRange)];
+  }
 }
 -(NSRange)XP_rangeValue;
 {
   NSRange range;
-  [self getValue:&range];
-  return range;
+  if ([self respondsToSelector:@selector(rangeValue)]) {
+    [self getValue:&range];
+    return range;
+    // TODO: Figure out how to restore this and have it still compile in OpenStep
+    // return [self rangeValue];
+  } else {
+    [self getValue:&range];
+    return range;
+  }
 }
 @end
 
@@ -68,30 +69,27 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
 
 +(NSNumber*)XP_numberWithInteger:(XPInteger)integer;
 {
-#ifdef NSIntegerMax
-  return [NSNumber numberWithInteger:integer];
-#else
-  return [NSNumber numberWithInt:integer];
-#endif
+  if ([self respondsToSelector:@selector(numberWithInteger:)]) {
+    return [self numberWithInteger:integer];
+  } else {
+    return [self numberWithInt:(int)integer];
+  }
 }
 
 -(XPInteger)XP_integerValue;
 {
-#ifdef NSIntegerMax
-  return [self integerValue];
-#else
-  return [self intValue];
-#endif
-}
-
--(NSString*)SVR_descriptionForDrawing;
-{
-  if ([self isKindOfClass:[NSDecimalNumber class]]) {
-    return [(NSDecimalNumber*)self SVR_description];
+  if ([self respondsToSelector:@selector(integerValue)]) {
+    // TODO: Check if the pragma commands help in Jaguar
+    // They don't silence warnings in OpenStep
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wundeclared-selector"
+    return (XPInteger)[self integerValue];
+#pragma GCC diagnostic pop
   } else {
-    return [self description];
+    return [self intValue];
   }
 }
+
 @end
 
 #pragma clang diagnostic push
@@ -99,7 +97,7 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
 XPAlertReturn XPRunQuitAlert(void)
 {
   return NSRunAlertPanel([Localized titleQuit],
-                         @"%@", // dialogEditedWindows
+                         @"%@",  // dialogEditedWindows
                          [Localized verbReviewUnsaved],
                          [Localized verbQuitAnyway],
                          [Localized verbCancel],
@@ -307,22 +305,9 @@ NSArray* XPRunOpenPanel(void)
 
 -(BOOL)SVR_isNotANumber;
 {
-  NSString *lhsDescription = [self SVR_description];
-  NSString *rhsDescription = [[NSDecimalNumber notANumber] SVR_description];
+  NSString *lhsDescription = [self description];
+  NSString *rhsDescription = [[NSDecimalNumber notANumber] description];
   return [lhsDescription isEqualToString:rhsDescription];
-}
-
--(NSString*)SVR_description;
-{
-  return [self descriptionWithLocale:[[NSUserDefaults standardUserDefaults] SVR_decimalNumberLocale]];
-}
-
-+(id)SVR_decimalNumberWithString:(NSString*)string;
-{
-  return [NSDecimalNumber
-          decimalNumberWithString:string
-          locale:[[NSUserDefaults standardUserDefaults]
-                  SVR_decimalNumberLocale]];
 }
 
 // NSDecimalNumber handles exponents extremely strangely
@@ -442,13 +427,14 @@ NSArray* XPRunOpenPanel(void)
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     output = [self unarchiveObjectWithData:data];
 #pragma clang diagnostic pop
-    if (!output) { return nil; }
-    if ([output isKindOfClass:cls]) {
-      return output;
-    } else {
-      XPLogRaise2(@"XP_unarchivedObject:%@ notKindOfClass %@", output, cls);
+    if (!output) {
       return nil;
     }
+    if ([output isKindOfClass:cls]) {
+      return output;
+    }
+    XPLogRaise2(@"XP_unarchivedObject:%@ notKindOfClass %@", output, cls);
+    return nil;
   }
 }
 @end
