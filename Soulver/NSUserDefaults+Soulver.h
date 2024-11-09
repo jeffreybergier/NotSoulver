@@ -135,10 +135,14 @@ typedef enum {
 +(NSString*)phraseErrorMismatchedBrackets;
 +(NSString*)phraseErrorMissingOperand;
 +(NSString*)phraseErrorDividByZero;
++(NSString*)phraseSourceRepositoryURL;
++(NSString*)phraseCopyWebURLToClipboard;
 +(NSString*)verbReviewUnsaved;
 +(NSString*)verbQuitAnyway;
 +(NSString*)verbCancel;
 +(NSString*)verbSave;
 +(NSString*)verbRevert;
 +(NSString*)verbDontSave;
++(NSString*)verbCopyToClipboard;
++(NSString*)verbDontCopy;
 @end

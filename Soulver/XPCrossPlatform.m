@@ -104,6 +104,16 @@ XPAlertReturn XPRunQuitAlert(void)
                          [Localized phraseEditedWindows]);
 }
 
+XPAlertReturn XPRunCopyWebURLToPasteboardAlert(NSString* webURL)
+{
+  return NSRunAlertPanel([Localized titleAlert],
+                         [Localized phraseCopyWebURLToClipboard],
+                         [Localized verbCopyToClipboard],
+                         [Localized verbDontCopy],
+                         nil,
+                         webURL);
+}
+
 NSArray* XPRunOpenPanel(void)
 {
   // This method was occasionally causing a crash with NSOpenPanel,
@@ -452,6 +462,17 @@ NSArray* XPRunOpenPanel(void)
     return [[self class] loadNibNamed:nibName owner:owner];
 #pragma clang diagnostic pop
   }
+}
+@end
+
+@implementation NSWorkspace (CrossPlatform)
+-(BOOL)XP_openFile:(NSString*)file;
+{
+#ifdef MAC_OS_X_VERSION_10_0
+    return [self openURL:[NSURL URLWithString:file]];
+#else
+    return [self openFile:file];
+#endif
 }
 @end
 

@@ -1,6 +1,6 @@
 "FirstResponder" = {ACTIONS = {"keypadAppend:" = id; }; OUTLETS = {}; SUPERCLASS = NSObject; };
 "SVRAccessoryWindowsOwner" = {
-    ACTIONS = {}; 
+    ACTIONS = {"openSourceRepository:" = id; }; 
     OUTLETS = {_aboutWindow = id; _keypadPanel = id; _settingsWindow = id; }; 
     SUPERCLASS = NSObject; 
 };

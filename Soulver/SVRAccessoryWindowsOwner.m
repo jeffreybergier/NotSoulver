@@ -115,6 +115,37 @@
   [[self aboutWindow] makeKeyAndOrderFront:sender];
 }
 
+-(IBAction)openSourceRepository:(id)sender;
+{
+  // TODO: Add specific support for opening in Omniweb on OpenStep
+  BOOL success = NO;
+  XPAlertReturn copyToClipboard = XPAlertReturnError;
+  NSPasteboard *pb = [NSPasteboard generalPasteboard];
+  NSWorkspace *ws = [NSWorkspace sharedWorkspace];
+  NSString *webURLToOpen = [Localized phraseSourceRepositoryURL];
+  success = [ws XP_openFile:webURLToOpen];
+  if (success) { return; }
+  NSBeep();
+  XPLogDebug1(@"[Failed] [NSWorkspace openURL:%@]", webURLToOpen);
+  copyToClipboard = XPRunCopyWebURLToPasteboardAlert(webURLToOpen);
+  switch (copyToClipboard) {
+    case XPAlertReturnDefault:
+      [pb declareTypes:[NSArray arrayWithObject:XPPasteboardTypeString] owner:self];
+      success = [pb setString:webURLToOpen forType:XPPasteboardTypeString];
+      if (success) {
+        XPLogDebug1(@"[Success] [NSPasteboard setString:%@", webURLToOpen);
+      } else {
+        XPLogPause1(@"[Failed] [NSPasteboard setString:%@", webURLToOpen);
+      }
+      return;
+    case XPAlertReturnAlternate:
+    case XPAlertReturnOther:
+    case XPAlertReturnError:
+      XPLogDebug1(@"[Cancelled] [NSPasteboard setString:%@", webURLToOpen);
+      return;
+  }
+}
+
 // MARK: Restore Window State
 -(void)__restoreWindowState;
 {

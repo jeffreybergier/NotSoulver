@@ -17,9 +17,13 @@
 "NEXT_P_ErrorMismatchedBrackets%d" = "%d|Parentheses not balanced";
 "NEXT_P_ErrorMissingOperand%d" = "%d|Missing operand";
 "NEXT_P_ErrorDividByZero%d" = "%d|Divide by zero";
+"NEXT_P_CopyToClipboard" = "Copy to Clipboard";
+"NEXT_P_DontCopy" = "Don't Copy";
 
 // Phrases
 "NEXT_P_EditedWindows" = "There are edited windows.";
 "NEXT_P_SaveChangesTo%@" = "Save changes to %@?";
 "NEXT_P_RevertChangesTo%@" = "Revert changes to %@?";
+"NEXT_P_SourceRepositoryURL" = "https://github.com/jeffreybergier/NotSoulver";
+"NEXT_P_CopyWebURLToClipboard%@" = "Copy `%@` to the clipboard?";
 

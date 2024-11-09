@@ -61,6 +61,7 @@
 -(IBAction)toggleKeypadPanel:(id)sender;
 -(IBAction)showSettingsWindow:(id)sender;
 -(IBAction)showAboutWindow:(id)sender;
+-(IBAction)openSourceRepository:(id)sender;
 
 // MARK: Restore Window State
 -(void)__restoreWindowState;

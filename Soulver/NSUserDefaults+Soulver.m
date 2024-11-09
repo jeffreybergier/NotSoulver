@@ -371,6 +371,10 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 { return NSLocalizedString(@"NEXT_P_ErrorMissingOperand%d", @""); }
 +(NSString*)phraseErrorDividByZero;
 { return NSLocalizedString(@"NEXT_P_ErrorDividByZero%d", @""); }
++(NSString*)phraseSourceRepositoryURL;
+{ return NSLocalizedString(@"NEXT_P_SourceRepositoryURL", @""); }
++(NSString*)phraseCopyWebURLToClipboard;
+{ return NSLocalizedString(@"NEXT_P_CopyWebURLToClipboard%@", @""); }
 +(NSString*)verbReviewUnsaved;
 { return NSLocalizedString(@"NEXT_V_ReviewUnsaved", @""); }
 +(NSString*)verbQuitAnyway;
@@ -383,5 +387,9 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 { return NSLocalizedString(@"NEXT_V_Revert", @""); }
 +(NSString*)verbDontSave;
 { return NSLocalizedString(@"NEXT_V_DontSave", @""); }
++(NSString*)verbCopyToClipboard;
+{ return NSLocalizedString(@"NEXT_P_CopyToClipboard", @""); }
++(NSString*)verbDontCopy;
+{ return NSLocalizedString(@"NEXT_P_DontCopy", @""); }
 
 @end
