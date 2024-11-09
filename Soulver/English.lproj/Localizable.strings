@@ -13,6 +13,10 @@
 "NEXT_V_Save" = "Save";
 "NEXT_V_Revert" = "Revert";
 "NEXT_V_DontSave" = "Don't Save";
+"NEXT_P_ErrorInvalidCharacter%d" = "%d|Incompatible character";
+"NEXT_P_ErrorMismatchedBrackets%d" = "%d|Parentheses not balanced";
+"NEXT_P_ErrorMissingOperand%d" = "%d|Missing operand";
+"NEXT_P_ErrorDividByZero%d" = "%d|Divide by zero";
 
 // Phrases
 "NEXT_P_EditedWindows" = "There are edited windows.";

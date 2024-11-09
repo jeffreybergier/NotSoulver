@@ -363,6 +363,14 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 { return NSLocalizedString(@"NEXT_P_SaveChangesTo%@", @""); }
 +(NSString*)phraseRevertChangesTo;
 { return NSLocalizedString(@"NEXT_P_RevertChangesTo%@", @""); }
++(NSString*)phraseErrorInvalidCharacter;
+{ return NSLocalizedString(@"NEXT_P_ErrorInvalidCharacter%d", @""); }
++(NSString*)phraseErrorMismatchedBrackets;
+{ return NSLocalizedString(@"NEXT_P_ErrorMismatchedBrackets%d", @""); }
++(NSString*)phraseErrorMissingOperand;
+{ return NSLocalizedString(@"NEXT_P_ErrorMissingOperand%d", @""); }
++(NSString*)phraseErrorDividByZero;
+{ return NSLocalizedString(@"NEXT_P_ErrorDividByZero%d", @""); }
 +(NSString*)verbReviewUnsaved;
 { return NSLocalizedString(@"NEXT_V_ReviewUnsaved", @""); }
 +(NSString*)verbQuitAnyway;

@@ -131,6 +131,10 @@ typedef enum {
 +(NSString*)phraseEditedWindows;
 +(NSString*)phraseSaveChangesTo;
 +(NSString*)phraseRevertChangesTo;
++(NSString*)phraseErrorInvalidCharacter;
++(NSString*)phraseErrorMismatchedBrackets;
++(NSString*)phraseErrorMissingOperand;
++(NSString*)phraseErrorDividByZero;
 +(NSString*)verbReviewUnsaved;
 +(NSString*)verbQuitAnyway;
 +(NSString*)verbCancel;
