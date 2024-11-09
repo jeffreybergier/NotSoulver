@@ -20,6 +20,8 @@ ICONSECTIONS =	-sectcreate __ICON app /NextLibrary/Frameworks/AppKit.framework/R
 LOCAL_RESOURCES = NEXTSTEP_AccessoryWindows.nib NEXTSTEP_Soulver.nib\
                   NEXTSTEP_SVRDocument.nib Localizable.strings
 
+GLOBAL_RESOURCES = about-image-512.tiff
+
 CLASSES = SVRAppDelegate.m SVRAccessoryWindowsOwner.m SVRDocument.m\
           SVRDocumentModelController.m SVRDocumentViewController.m\
           SVRSettingsViewController.m SVRSolver.m\
