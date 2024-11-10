@@ -215,7 +215,7 @@ NSArray* XPRunOpenPanel(void);
 @end
 
 @interface XPKeyedUnarchiver (CrossPlatform)
-+(id)XP_unarchivedObjectOfClass:(Class)cls fromData:(NSData*)data;
++(id)XP_unarchivedObjectOfClass:(Class)cls fromData:(NSData*)someData;
 @end
 
 @interface NSBundle (CrossPlatform)
