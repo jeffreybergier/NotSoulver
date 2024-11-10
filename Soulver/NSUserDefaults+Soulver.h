@@ -137,6 +137,7 @@ typedef enum {
 +(NSString*)phraseErrorDividByZero;
 +(NSString*)phraseSourceRepositoryURL;
 +(NSString*)phraseCopyWebURLToClipboard;
++(NSString*)aboutParagraph;
 +(NSString*)verbReviewUnsaved;
 +(NSString*)verbQuitAnyway;
 +(NSString*)verbCancel;

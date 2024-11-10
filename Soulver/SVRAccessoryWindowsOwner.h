@@ -43,9 +43,10 @@
 
 @interface SVRAccessoryWindowsOwner: NSObject
 {
-  mm_retain IBOutlet NSPanel  *_keypadPanel;
-  mm_retain IBOutlet NSWindow *_aboutWindow;
-  mm_retain IBOutlet NSWindow *_settingsWindow;
+  mm_retain   IBOutlet NSPanel    *_keypadPanel;
+  mm_retain   IBOutlet NSWindow   *_aboutWindow;
+  mm_retain   IBOutlet NSWindow   *_settingsWindow;
+  mm_unretain IBOutlet NSTextView *_aboutTextView;
   mm_new NSArray *_topLevelObjects;
 }
 
@@ -53,9 +54,11 @@
 -(NSPanel *)keypadPanel;
 -(NSWindow*)aboutWindow;
 -(NSWindow*)settingsWindow;
+-(NSTextView*)aboutTextView;
 
 // MARK: Init
 -(id)init;
+-(void)awakeFromNib;
 
 // MARK: IBActions
 -(IBAction)toggleKeypadPanel:(id)sender;

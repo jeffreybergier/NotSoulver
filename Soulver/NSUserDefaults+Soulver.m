@@ -375,6 +375,8 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 { return NSLocalizedString(@"NEXT_P_SourceRepositoryURL", @""); }
 +(NSString*)phraseCopyWebURLToClipboard;
 { return NSLocalizedString(@"NEXT_P_CopyWebURLToClipboard%@", @""); }
++(NSString*)aboutParagraph;
+{ return NSLocalizedString(@"NEXT_P_AboutParagraph", @""); }
 +(NSString*)verbReviewUnsaved;
 { return NSLocalizedString(@"NEXT_V_ReviewUnsaved", @""); }
 +(NSString*)verbQuitAnyway;

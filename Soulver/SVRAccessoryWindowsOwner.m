@@ -61,6 +61,11 @@
   return [[_settingsWindow retain] autorelease];
 }
 
+-(NSTextView*)aboutTextView;
+{
+  return [[_aboutTextView retain] autorelease];
+}
+
 // MARK: Init
 -(id)init;
 {
@@ -91,6 +96,18 @@
              name:NSApplicationWillTerminateNotification
            object:nil];
   return self;
+}
+
+-(void)awakeFromNib;
+{
+  // Set the about text from the strings file
+  NSTextStorage *textStorage = [[self aboutTextView] textStorage];
+  [ textStorage beginEditing];
+  [[textStorage mutableString] setString:[Localized aboutParagraph]];
+  [ textStorage endEditing];
+  
+  // Announce
+  XPLogDebug1(@"%@ awakeFromNib", self);
 }
 
 // MARK: IBActions
@@ -224,6 +241,7 @@
   _keypadPanel = nil;
   _aboutWindow = nil;
   _settingsWindow = nil;
+  _aboutTextView = nil;
   _topLevelObjects = nil;
   [super dealloc];
 }
