@@ -81,6 +81,12 @@ typedef NSRange* XPRangePointer;
 #define XPTextAlignmentCenter NSCenterTextAlignment
 #endif
 
+#ifdef MAC_OS_X_VERSION_10_6
+#define XPPasteboardTypeString NSPasteboardTypeString
+#else
+#define XPPasteboardTypeString NSStringPboardType
+#endif
+
 #ifdef MAC_OS_X_VERSION_10_9
 #define XPModalResponseOK NSModalResponseOK
 #define XPModalResponseCancel NSModalResponseCancel
@@ -142,6 +148,7 @@ typedef enum {
 #endif
 
 XPAlertReturn XPRunQuitAlert(void);
+XPAlertReturn XPRunCopyWebURLToPasteboardAlert(NSString* webURL);
 NSArray* XPRunOpenPanel(void);
 
 @interface XPAttributeEnumerator: NSEnumerator
@@ -208,13 +215,17 @@ NSArray* XPRunOpenPanel(void);
 @end
 
 @interface XPKeyedUnarchiver (CrossPlatform)
-+(id)XP_unarchivedObjectOfClass:(Class)cls fromData:(NSData*)data;
++(id)XP_unarchivedObjectOfClass:(Class)cls fromData:(NSData*)someData;
 @end
 
 @interface NSBundle (CrossPlatform)
 -(BOOL)XP_loadNibNamed:(NSString*)nibName
                  owner:(id)owner
        topLevelObjects:(NSArray**)topLevelObjects;
+@end
+
+@interface NSWorkspace (CrossPlatform)
+-(BOOL)XP_openFile:(NSString*)file;
 @end
 
 // MARK: XPLogging

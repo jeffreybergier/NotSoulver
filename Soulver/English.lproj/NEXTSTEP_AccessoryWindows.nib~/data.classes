@@ -1,7 +1,12 @@
 "FirstResponder" = {ACTIONS = {"keypadAppend:" = id; }; OUTLETS = {}; SUPERCLASS = NSObject; };
 "SVRAccessoryWindowsOwner" = {
-    ACTIONS = {}; 
-    OUTLETS = {_aboutWindow = id; _keypadPanel = id; _settingsWindow = id; }; 
+    ACTIONS = {"openSourceRepository:" = id; }; 
+    OUTLETS = {
+        _aboutTextView = id; 
+        _aboutWindow = id; 
+        _keypadPanel = id; 
+        _settingsWindow = id; 
+    }; 
     SUPERCLASS = NSObject; 
 };
 "SVRSettingsViewController" = {

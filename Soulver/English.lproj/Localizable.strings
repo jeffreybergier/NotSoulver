@@ -1,6 +1,6 @@
 
 // Titles
-"NEXT_T_AppName" = "[Not]Solver";
+"NEXT_T_AppName" = "[Not]Soulver";
 "NEXT_T_Quit" = "Quit";
 "NEXT_T_Untitled" = "UNTITLED";
 "NEXT_T_Alert" = "Alert";
@@ -13,9 +13,18 @@
 "NEXT_V_Save" = "Save";
 "NEXT_V_Revert" = "Revert";
 "NEXT_V_DontSave" = "Don't Save";
+"NEXT_P_ErrorInvalidCharacter%d" = "%d|Incompatible character";
+"NEXT_P_ErrorMismatchedBrackets%d" = "%d|Parentheses not balanced";
+"NEXT_P_ErrorMissingOperand%d" = "%d|Missing operand";
+"NEXT_P_ErrorDividByZero%d" = "%d|Divide by zero";
+"NEXT_P_CopyToClipboard" = "Copy to Clipboard";
+"NEXT_P_DontCopy" = "Don't Copy";
 
 // Phrases
 "NEXT_P_EditedWindows" = "There are edited windows.";
 "NEXT_P_SaveChangesTo%@" = "Save changes to %@?";
 "NEXT_P_RevertChangesTo%@" = "Revert changes to %@?";
+"NEXT_P_SourceRepositoryURL" = "https://github.com/jeffreybergier/NotSoulver";
+"NEXT_P_CopyWebURLToClipboard%@" = "Copy `%@` to the clipboard?";
+"NEXT_P_AboutParagraph" = "I wrote [Not]Soulver as a learning exercise. It was supposed to be an experiment in learning how to develop for OpenStep, i.e. without Swift, without ARC, without Blocks, without Properties, etc. But I ended up learning a whole lot more. I can honestly say that learning how to develop for OpenStep will bring you much closer to how Cocoa and Cocoa Touch actually work. The OpenStep documentation is wonderful and you get the sense that every object in Foundation and AppKit was delightfully crafted with its own personality and quirks. It has been a joy to bring a single codebase through 30 years of Apple Operating System history.";
 

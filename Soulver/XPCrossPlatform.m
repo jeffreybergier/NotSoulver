@@ -44,24 +44,21 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
 +(id)XP_valueWithRange:(NSRange)range;
 {
   if (XPIsNotFoundRange(range)) { return nil; }
-  if ([self respondsToSelector:@selector(valueWithRange:)]) {
-    return [self valueWithRange:range];
-  } else {
-    return [self valueWithBytes:&range objCType:@encode(NSRange)];
-  }
+#ifdef MAC_OS_X_VERSION_10_0
+  return [self valueWithRange:range];
+#else
+  return [self valueWithBytes:&range objCType:@encode(NSRange)];
+#endif
 }
 -(NSRange)XP_rangeValue;
 {
+#ifdef MAC_OS_X_VERSION_10_0
+  return [self rangeValue];
+#else
   NSRange range;
-  if ([self respondsToSelector:@selector(rangeValue)]) {
-    [self getValue:&range];
-    return range;
-    // TODO: Figure out how to restore this and have it still compile in OpenStep
-    // return [self rangeValue];
-  } else {
-    [self getValue:&range];
-    return range;
-  }
+  [self getValue:&range];
+  return range;
+#endif
 }
 @end
 
@@ -69,25 +66,20 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
 
 +(NSNumber*)XP_numberWithInteger:(XPInteger)integer;
 {
-  if ([self respondsToSelector:@selector(numberWithInteger:)]) {
-    return [self numberWithInteger:integer];
-  } else {
-    return [self numberWithInt:(int)integer];
-  }
+#ifdef NSIntegerMax
+  return [self numberWithInteger:integer];
+#else
+  return [self numberWithInt:integer];
+#endif
 }
 
 -(XPInteger)XP_integerValue;
 {
-  if ([self respondsToSelector:@selector(integerValue)]) {
-    // TODO: Check if the pragma commands help in Jaguar
-    // They don't silence warnings in OpenStep
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wundeclared-selector"
-    return (XPInteger)[self integerValue];
-#pragma GCC diagnostic pop
-  } else {
-    return [self intValue];
-  }
+#ifdef NSIntegerMax
+  return [self integerValue];
+#else
+  return [self intValue];
+#endif
 }
 
 @end
@@ -102,6 +94,16 @@ XPAlertReturn XPRunQuitAlert(void)
                          [Localized verbQuitAnyway],
                          [Localized verbCancel],
                          [Localized phraseEditedWindows]);
+}
+
+XPAlertReturn XPRunCopyWebURLToPasteboardAlert(NSString* webURL)
+{
+  return NSRunAlertPanel([Localized titleAlert],
+                         [Localized phraseCopyWebURLToClipboard],
+                         [Localized verbCopyToClipboard],
+                         [Localized verbDontCopy],
+                         nil,
+                         webURL);
 }
 
 NSArray* XPRunOpenPanel(void)
@@ -241,14 +243,11 @@ NSArray* XPRunOpenPanel(void)
 
 -(const char*)XP_UTF8String;
 {
-  if ([self respondsToSelector:@selector(UTF8String)]) {
-    return [self UTF8String];
-  } else {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    return [self cString];
-#pragma clang diagnostic pop
-  }
+#ifdef MAC_OS_X_VERSION_10_0
+  return [self UTF8String];
+#else
+  return [self cString];
+#endif
 }
 
 @end
@@ -344,31 +343,24 @@ NSArray* XPRunOpenPanel(void)
 -(NSData*)XP_data;
 {
   id forArchiving = nil;
-  if ([self respondsToSelector:@selector(fontDescriptor)]) {
-    forArchiving = [self fontDescriptor];
-  } else {
-    forArchiving = self;
-  }
+#ifdef MAC_OS_X_VERSION_10_3
+  forArchiving = [self fontDescriptor];
+#else
+  forArchiving = self;
+#endif
   return [XPKeyedArchiver XP_archivedDataWithRootObject:forArchiving];
 }
 
 +(id)XP_fontWithData:(NSData*)data;
 {
-  NSFont *output = nil;
-  id unarchived = nil;
-  Class descriptorClass = nil;
-  if (!data) { return nil; }
-  descriptorClass = NSClassFromString(@"NSFontDescriptor");
-  if (descriptorClass) {
-    unarchived = [XPKeyedUnarchiver XP_unarchivedObjectOfClass:descriptorClass
-                                                      fromData:data];
-    output = [self fontWithDescriptor:unarchived size:0];
-  } else {
-    unarchived = [XPKeyedUnarchiver XP_unarchivedObjectOfClass:[NSFont class]
-                                                      fromData:data];
-    output = unarchived;
-  }
-  return output;
+#ifdef MAC_OS_X_VERSION_10_3
+  id descriptor = [XPKeyedUnarchiver XP_unarchivedObjectOfClass:[NSFontDescriptor class]
+                                                       fromData:data];
+  return [self fontWithDescriptor:descriptor size:0];
+#else
+  return [XPKeyedUnarchiver XP_unarchivedObjectOfClass:[NSFont class]
+                                              fromData:data];
+#endif
 }
 
 @end
@@ -405,37 +397,30 @@ NSArray* XPRunOpenPanel(void)
 @implementation XPKeyedArchiver (CrossPlatform)
 +(NSData*)XP_archivedDataWithRootObject:(id)object;
 {
-  if ([self respondsToSelector:@selector(archivedDataWithRootObject:requiringSecureCoding:error:)]) {
-    return [self archivedDataWithRootObject:object requiringSecureCoding:YES error:NULL];
-  } else {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    return [self archivedDataWithRootObject:object];
-#pragma clang diagnostic pop
-  }
+#ifdef MAC_OS_X_VERSION_10_13
+  return [self archivedDataWithRootObject:object
+                    requiringSecureCoding:YES
+                                    error:NULL];
+#else
+  return [self archivedDataWithRootObject:object];
+#endif
 }
 @end
 
 @implementation XPKeyedUnarchiver (CrossPlatform)
-+(id)XP_unarchivedObjectOfClass:(Class)cls fromData:(NSData*)data;
+// someData used because data conflicts with instance variable
+// and causes warning in OpenStep
++(id)XP_unarchivedObjectOfClass:(Class)cls fromData:(NSData*)someData;
 {
-  id output = nil;
-  if ([self respondsToSelector:@selector(unarchivedObjectOfClass:fromData:error:)]) {
-    return [self unarchivedObjectOfClass:cls fromData:data error:NULL];
-  } else {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    output = [self unarchiveObjectWithData:data];
-#pragma clang diagnostic pop
-    if (!output) {
-      return nil;
-    }
-    if ([output isKindOfClass:cls]) {
-      return output;
-    }
-    XPLogRaise2(@"XP_unarchivedObject:%@ notKindOfClass %@", output, cls);
-    return nil;
-  }
+#ifdef MAC_OS_X_VERSION_10_13
+  return [self unarchivedObjectOfClass:cls fromData:someData error:NULL];
+#else
+  id output = [self unarchiveObjectWithData:someData];
+  if (!output) { return nil; }
+  if ([output isKindOfClass:cls]) { return output; }
+  XPLogRaise2(@"XP_unarchivedObject:%@ notKindOfClass %@", output, cls);
+  return nil;
+#endif
 }
 @end
 
@@ -444,14 +429,25 @@ NSArray* XPRunOpenPanel(void)
                  owner:(id)owner
        topLevelObjects:(NSArray**)topLevelObjects;
 {
-  if ([self respondsToSelector:@selector(loadNibNamed:owner:topLevelObjects:)]) {
-    return [self loadNibNamed:nibName owner:owner topLevelObjects:topLevelObjects];
-  } else {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    return [[self class] loadNibNamed:nibName owner:owner];
-#pragma clang diagnostic pop
-  }
+#ifdef MAC_OS_X_VERSION_10_8
+  return [self loadNibNamed:nibName
+                      owner:owner
+            topLevelObjects:topLevelObjects];
+#else
+  return [[self class] loadNibNamed:nibName
+                              owner:owner];
+#endif
+}
+@end
+
+@implementation NSWorkspace (CrossPlatform)
+-(BOOL)XP_openFile:(NSString*)file;
+{
+#ifdef MAC_OS_X_VERSION_10_0
+    return [self openURL:[NSURL URLWithString:file]];
+#else
+    return [self openFile:file];
+#endif
 }
 @end
 
@@ -521,6 +517,11 @@ NSArray* XPRunOpenPanel(void)
 #else
   XPLogAlwys (@"MAC_OS_X_VERSION_10_2..(ND)");
 #endif
+#ifdef MAC_OS_X_VERSION_10_3
+  XPLogAlwys1(@"MAC_OS_X_VERSION_10_3..(%d)", MAC_OS_X_VERSION_10_3);
+#else
+  XPLogAlwys (@"MAC_OS_X_VERSION_10_3..(ND)");
+#endif
 #ifdef MAC_OS_X_VERSION_10_4
   XPLogAlwys1(@"MAC_OS_X_VERSION_10_4..(%d)", MAC_OS_X_VERSION_10_4);
 #else
@@ -530,6 +531,11 @@ NSArray* XPRunOpenPanel(void)
   XPLogAlwys1(@"MAC_OS_X_VERSION_10_6..(%d)", MAC_OS_X_VERSION_10_6);
 #else
   XPLogAlwys (@"MAC_OS_X_VERSION_10_6..(ND)");
+#endif
+#ifdef MAC_OS_X_VERSION_10_8
+  XPLogAlwys1(@"MAC_OS_X_VERSION_10_8..(%d)", MAC_OS_X_VERSION_10_8);
+#else
+  XPLogAlwys (@"MAC_OS_X_VERSION_10_8..(ND)");
 #endif
 #ifdef MAC_OS_X_VERSION_10_9
   XPLogAlwys1(@"MAC_OS_X_VERSION_10_9..(%d)", MAC_OS_X_VERSION_10_9);

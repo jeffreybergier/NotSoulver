@@ -1,10 +1,10 @@
 ![Screenshot of the app running in OpenStep](README/screenshot10.png)
 
 # \[Not\] Soulver for OpenStep 4.2
-A rudimentary calculator inspired by [Solver](https://github.com/soulverteam) written in ancient Objective C that compiles and runs in OpenStep 4.2. The calculator logic also compiles and runs properly in Xcode 16. I guess that says a lot about the stability of Objective C and Foundation over the years.
+A rudimentary calculator inspired by [Soulver](https://github.com/soulverteam) written in ancient Objective C that compiles and runs in OpenStep 4.2. The calculator logic also compiles and runs properly in Xcode 16. I guess that says a lot about the stability of Objective C and Foundation over the years.
 
 ## Disclaimer
-This software is NOT related to [Solver](https://github.com/soulverteam) by Zac Cohan. This application was inspired by Solver and created as a learning exercise. You should purchase and use [Solver](https://github.com/soulverteam) by Zac Cohan instead of using this software.
+This software is NOT related to [Soulver](https://github.com/soulverteam) by Zac Cohan. This application was inspired by Soulver and created as a learning exercise. You should purchase and use [Soulver](https://github.com/soulverteam) by Zac Cohan instead of using this software.
 
 ## How to Use
 This application parses the mathematical formulas out of the text and solves them them inline. The equal sign is used to indicate you would like the problem to be solved.

@@ -28,6 +28,7 @@
 //
 
 #import "SVRSolver.h"
+#import "NSUserDefaults+Soulver.h"
 #import "XPCrossPlatform.h"
 #import "SVRSolverStyler.h"
 #import "SVRSolverScanner.h"
@@ -181,13 +182,13 @@ NSString *SVRSolverDescriptionForError(SVRSolverError error)
     case SVRSolverErrorNone:
       return nil;
     case SVRSolverErrorInvalidCharacter:
-      return [NSString stringWithFormat:@"<Error:%d> Incompatible character", error];
+      return [NSString stringWithFormat:[Localized phraseErrorInvalidCharacter], error];
     case SVRSolverErrorMismatchedBrackets:
-      return [NSString stringWithFormat:@"<Error:%d> Parentheses not balanced", error];
+      return [NSString stringWithFormat:[Localized phraseErrorMismatchedBrackets], error];
     case SVRSolverErrorMissingOperand:
-      return [NSString stringWithFormat:@"<Error:%d> Missing operand", error];
+      return [NSString stringWithFormat:[Localized phraseErrorMissingOperand], error];
     case SVRSolverErrorDivideByZero:
-      return [NSString stringWithFormat:@"<Error:%d> Divide by zero", error];
+      return [NSString stringWithFormat:[Localized phraseErrorDividByZero], error];
     default:
       XPLogRaise1(@"SVRSolverDescriptionForErrorUnknown: %d", error);
       return nil;

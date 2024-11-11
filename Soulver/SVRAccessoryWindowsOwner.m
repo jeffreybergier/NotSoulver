@@ -61,6 +61,11 @@
   return [[_settingsWindow retain] autorelease];
 }
 
+-(NSTextView*)aboutTextView;
+{
+  return [[_aboutTextView retain] autorelease];
+}
+
 // MARK: Init
 -(id)init;
 {
@@ -93,6 +98,18 @@
   return self;
 }
 
+-(void)awakeFromNib;
+{
+  // Set the about text from the strings file
+  NSTextStorage *textStorage = [[self aboutTextView] textStorage];
+  [ textStorage beginEditing];
+  [[textStorage mutableString] setString:[Localized aboutParagraph]];
+  [ textStorage endEditing];
+  
+  // Announce
+  XPLogDebug1(@"%@ awakeFromNib", self);
+}
+
 // MARK: IBActions
 // Invoked by AppDelegate
 -(IBAction)toggleKeypadPanel:(id)sender;
@@ -113,6 +130,37 @@
 -(IBAction)showAboutWindow:(id)sender;
 {
   [[self aboutWindow] makeKeyAndOrderFront:sender];
+}
+
+-(IBAction)openSourceRepository:(id)sender;
+{
+  // TODO: Add specific support for opening in Omniweb on OpenStep
+  BOOL success = NO;
+  XPAlertReturn copyToClipboard = XPAlertReturnError;
+  NSPasteboard *pb = [NSPasteboard generalPasteboard];
+  NSWorkspace *ws = [NSWorkspace sharedWorkspace];
+  NSString *webURLToOpen = [Localized phraseSourceRepositoryURL];
+  success = [ws XP_openFile:webURLToOpen];
+  if (success) { return; }
+  NSBeep();
+  XPLogDebug1(@"[Failed] [NSWorkspace openURL:%@]", webURLToOpen);
+  copyToClipboard = XPRunCopyWebURLToPasteboardAlert(webURLToOpen);
+  switch (copyToClipboard) {
+    case XPAlertReturnDefault:
+      [pb declareTypes:[NSArray arrayWithObject:XPPasteboardTypeString] owner:self];
+      success = [pb setString:webURLToOpen forType:XPPasteboardTypeString];
+      if (success) {
+        XPLogDebug1(@"[Success] [NSPasteboard setString:%@", webURLToOpen);
+      } else {
+        XPLogPause1(@"[Failed] [NSPasteboard setString:%@", webURLToOpen);
+      }
+      return;
+    case XPAlertReturnAlternate:
+    case XPAlertReturnOther:
+    case XPAlertReturnError:
+      XPLogDebug1(@"[Cancelled] [NSPasteboard setString:%@", webURLToOpen);
+      return;
+  }
 }
 
 // MARK: Restore Window State
@@ -193,6 +241,7 @@
   _keypadPanel = nil;
   _aboutWindow = nil;
   _settingsWindow = nil;
+  _aboutTextView = nil;
   _topLevelObjects = nil;
   [super dealloc];
 }
