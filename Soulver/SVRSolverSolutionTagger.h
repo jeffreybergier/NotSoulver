@@ -40,6 +40,8 @@
 +(void)tagSolutionsInAttributedString:(NSMutableAttributedString*)string;
 
 // MARK: Private
++(BOOL)__prepareExpression:(NSMutableAttributedString*)input
+      withPreviousSolution:(NSDecimalNumber*)previousSolution;
 +(NSDecimalNumber*)__solutionForExpression:(NSAttributedString*)string
                                      error:(SVRSolverErrorPointer)errorPtr;
 +(NSValue*)__rangeOfNextBracketsInExpression:(NSAttributedString*)input

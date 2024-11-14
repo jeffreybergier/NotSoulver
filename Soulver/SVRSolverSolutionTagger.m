@@ -38,49 +38,49 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
 
 +(void)load;
 {
-  SVRSolverSolutionTaggerSetExponent = [[NSSet alloc] initWithObjects:NSNumberForOperator(SVRSolverOperatorExponent), nil];
-  SVRSolverSolutionTaggerSetMultDiv = [[NSSet alloc] initWithObjects:
-                                       NSNumberForOperator(SVRSolverOperatorMultiply),
-                                       NSNumberForOperator(SVRSolverOperatorDivide),
-                                       nil];
-  SVRSolverSolutionTaggerSetAddSub = [[NSSet alloc] initWithObjects:
-                                      NSNumberForOperator(SVRSolverOperatorSubtract),
-                                      NSNumberForOperator(SVRSolverOperatorAdd),
-                                      nil];
+  SVRSolverSolutionTaggerSetExponent = [[NSSet alloc] initWithObjects:
+                                        NSNumberForOperator(SVRSolverOperatorExponent),
+                                        nil];
+  SVRSolverSolutionTaggerSetMultDiv  = [[NSSet alloc] initWithObjects:
+                                        NSNumberForOperator(SVRSolverOperatorMultiply),
+                                        NSNumberForOperator(SVRSolverOperatorDivide),
+                                        nil];
+  SVRSolverSolutionTaggerSetAddSub   = [[NSSet alloc] initWithObjects:
+                                        NSNumberForOperator(SVRSolverOperatorSubtract),
+                                        NSNumberForOperator(SVRSolverOperatorAdd),
+                                        nil];
 }
 
 // MARK: Business Logic
-+(void)tagSolutionsInAttributedString:(NSMutableAttributedString*)string;
++(void)tagSolutionsInAttributedString:(NSMutableAttributedString*)output;
 {
   SVRSolverError error = SVRSolverErrorNone;
+  NSMutableAttributedString *expressionToSolve = nil;
   NSDecimalNumber *solution = nil;
   NSAttributedString *solutionString = nil;
+  BOOL didInsertPreviousSolution = NO;
   NSRange solutionRange = XPNotFoundRange; // range of the equal sign
   NSEnumerator *e = nil;
   NSString *next = nil;
   NSRange nextRange = XPNotFoundRange;
 
-  e = [string SVR_enumeratorForAttribute:XPAttributedStringKeyForTag(SVRSolverTagExpression)
+  e = [output SVR_enumeratorForAttribute:XPAttributedStringKeyForTag(SVRSolverTagExpression)
               usingLongestEffectiveRange:YES];
   while ((next = [e nextObject])) {
     nextRange = NSRangeFromString(next);
     solutionRange = NSMakeRange(NSMaxRange(nextRange), 1);
-    if (solution) {
-      // For previous solution, add it to the string in case it needs it
-      [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagPreviousSolution)
-                     value:solution
-                     range:solutionRange];
-    }
-    solution = [self __solutionForExpression:[string attributedSubstringFromRange:nextRange]
-                                       error:&error];
+    expressionToSolve = [[[output attributedSubstringFromRange:nextRange] mutableCopy] autorelease];
+    didInsertPreviousSolution = [self __prepareExpression:expressionToSolve
+                                     withPreviousSolution:solution];
+    solution = [self __solutionForExpression:expressionToSolve error:&error];
     solutionString = [
       NSAttributedString attributedStringWithAttachment:
         [SVRSolverTextAttachment attachmentWithSolution:solution error:error]
     ];
-    XPLogExtra2(@"=: %@<-%@", [[string string] SVR_descriptionHighlightingRange:solutionRange], solution);
-    [string replaceCharactersInRange:solutionRange
+    XPLogExtra2(@"=: %@<-%@", [[output string] SVR_descriptionHighlightingRange:solutionRange], solution);
+    [output replaceCharactersInRange:solutionRange
                 withAttributedString:solutionString];
-    [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)
+    [output addAttribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)
                    value:(solution) ? (NSNumber*)solution : [NSNumber numberWithInt:error]
                    range:solutionRange];
     error = SVRSolverErrorNone;
@@ -88,6 +88,51 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
 }
 
 // MARK: Private
+
++(BOOL)__prepareExpression:(NSMutableAttributedString*)input
+      withPreviousSolution:(NSDecimalNumber*)previousSolution;
+{
+  NSNumber *operator = nil;
+  NSAttributedString *toInsert = nil;
+  NSDictionary *attribs = nil;
+  
+  // Remove the expression attribute as we already used that
+  [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagExpression)
+                   range:NSMakeRange(0, [input length])];
+  
+  // Do basic sanity checks
+  if (!previousSolution) { return NO; }
+  if ([input length] == 0) { return NO; }
+  
+  // Find the operator
+  operator = [input attribute:XPAttributedStringKeyForTag(SVRSolverTagOperator)
+                         atIndex:0
+                  effectiveRange:NULL];
+  if (operator == nil) { return NO; }
+  switch (SVRSolverOperatorForNumber(operator)) {
+    case SVRSolverOperatorExponent:
+    case SVRSolverOperatorDivide:
+    case SVRSolverOperatorMultiply:
+    case SVRSolverOperatorAdd:
+      // Insert the previous solution
+      attribs = [NSDictionary dictionaryWithObject:previousSolution
+                                            forKey:XPAttributedStringKeyForTag(SVRSolverTagNumber)];
+      toInsert = [[[NSAttributedString alloc] initWithString:[previousSolution description]
+                                                  attributes:attribs] autorelease];
+      [input insertAttributedString:toInsert atIndex:0];
+      return YES;
+    case SVRSolverOperatorSubtract:
+      // We can't distinguish between operator and negative number in this case.
+      // Just remove the operator key so its treated as a negative number.
+      [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagOperator)
+                       range:NSMakeRange(0, 1)];
+      return NO;
+    default:
+      XPLogRaise2(@"__prepareExpression: unknownOperator:%@ foundInExpression:%@", operator, input);
+      return NO;
+  }
+}
+
 +(NSDecimalNumber*)__solutionForExpression:(NSAttributedString*)input
                                      error:(SVRSolverErrorPointer)errorPtr;
 {

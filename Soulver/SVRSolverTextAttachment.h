@@ -31,6 +31,8 @@
 #import "SVRSolver.h"
 #import "XPCrossPlatform.h"
 
+// TODO: Refactor this to be more smart
+// It needs purpose(previousSolution/Solution), NSDecimalNumber, Error as input
 @class SVRSolverTextAttachmentCell;
 
 @interface SVRSolverTextAttachment: NSTextAttachment
@@ -48,6 +50,9 @@
 
 @end
 
+
+// TODO: Refactor this to be more dumb
+// It needs beforeFont, afterFont, stringToDraw
 @interface SVRSolverTextAttachmentCell: NSTextAttachmentCell
 {
   mm_new NSString *_description;
