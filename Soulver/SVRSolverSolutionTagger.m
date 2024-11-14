@@ -30,7 +30,24 @@
 #import "SVRSolverSolutionTagger.h"
 #import "SVRSolverTextAttachment.h"
 
+NSSet *SVRSolverSolutionTaggerSetExponent = nil;
+NSSet *SVRSolverSolutionTaggerSetMultDiv  = nil;
+NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
+
 @implementation SVRSolverSolutionTagger
+
++(void)load;
+{
+  SVRSolverSolutionTaggerSetExponent = [[NSSet alloc] initWithObjects:NSNumberForOperator(SVRSolverOperatorExponent), nil];
+  SVRSolverSolutionTaggerSetMultDiv = [[NSSet alloc] initWithObjects:
+                                       NSNumberForOperator(SVRSolverOperatorMultiply),
+                                       NSNumberForOperator(SVRSolverOperatorDivide),
+                                       nil];
+  SVRSolverSolutionTaggerSetAddSub = [[NSSet alloc] initWithObjects:
+                                      NSNumberForOperator(SVRSolverOperatorSubtract),
+                                      NSNumberForOperator(SVRSolverOperatorAdd),
+                                      nil];
+}
 
 // MARK: Business Logic
 +(void)tagSolutionsInAttributedString:(NSMutableAttributedString*)string;
@@ -74,16 +91,9 @@
 +(NSDecimalNumber*)__solutionForExpression:(NSAttributedString*)input
                                      error:(SVRSolverErrorPointer)errorPtr;
 {
-  NSSet *setExponent = [NSSet setWithObject:
-                        NSNumberForOperator(SVRSolverOperatorExponent)];
-  NSSet *setMultDiv  = [NSSet setWithObjects:
-                        NSNumberForOperator(SVRSolverOperatorMultiply),
-                        NSNumberForOperator(SVRSolverOperatorDivide),
-                        nil];
-  NSSet *setAddSub   = [NSSet setWithObjects:
-                        NSNumberForOperator(SVRSolverOperatorSubtract),
-                        NSNumberForOperator(SVRSolverOperatorAdd),
-                        nil];
+  NSSet *setExponent = SVRSolverSolutionTaggerSetExponent;
+  NSSet *setMultDiv  = SVRSolverSolutionTaggerSetMultDiv;
+  NSSet *setAddSub   = SVRSolverSolutionTaggerSetAddSub;
   
   NSRange patchRange = XPNotFoundRange;
   NSValue *bracketRange = nil;

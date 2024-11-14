@@ -33,6 +33,9 @@
 
 @interface SVRSolverSolutionTagger: NSObject
 
+// MARK: Configure constants
++(void)load;
+
 // MARK: Business Logic
 +(void)tagSolutionsInAttributedString:(NSMutableAttributedString*)string;
 
