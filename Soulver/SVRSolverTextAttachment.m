@@ -52,9 +52,9 @@
   return [[_neighorFont retain] autorelease];
 }
 
--(XPUserInterfaceStyle)userInterfaceStyle;
+-(SVRSolverTextAttachmentBackgroundStyle)backgroundStyle;
 {
-  return _userInterfaceStyle;
+  return _backgroundStyle;
 }
 
 // MARK: Init
@@ -98,7 +98,7 @@
   _toDrawFont   = [[[self class] toDrawFont]   retain];
   _toDrawColor  = [[[self class] toDrawColor]  retain];
   _neighorFont  = [[[self class] neighborFont] retain];
-  _userInterfaceStyle = [[self class] userInterfaceStyle];
+  _backgroundStyle = [[self class] backgroundStyle];
   [wrapper setPreferredFilename:_toDrawString];
   [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
   return self;
@@ -126,9 +126,16 @@
 {
   return [[NSUserDefaults standardUserDefaults] SVR_fontForTheme:SVRThemeFontMath];
 }
-+(XPUserInterfaceStyle)userInterfaceStyle;
++(SVRSolverTextAttachmentBackgroundStyle)backgroundStyle;
 {
-  return [[NSUserDefaults standardUserDefaults] SVR_userInterfaceStyle];
+  switch ([[NSUserDefaults standardUserDefaults] SVR_userInterfaceStyle]) {
+    case XPUserInterfaceStyleDark:
+      return SVRSolverTextAttachmentBackgroundStyleDark;
+    case XPUserInterfaceStyleLight:
+    case XPUserInterfaceStyleUnspecified:
+    default:
+      return SVRSolverTextAttachmentBackgroundStyleLight;
+  }
 }
 
 // MARK: Silence warnings in OpenStep
@@ -139,7 +146,7 @@
 -(NSFont*)toDrawFont;     { return [super toDrawFont];   }
 -(NSColor*)toDrawColor;   { return [super toDrawColor];  }
 -(NSFont*)neighorFont;    { return [super neighorFont];  }
--(XPUserInterfaceStyle)userInterfaceStyle; { return [super userInterfaceStyle]; }
+-(SVRSolverTextAttachmentBackgroundStyle)backgroundStyle; { return [super backgroundStyle]; }
 #endif
 
 @end
@@ -156,7 +163,7 @@
   _toDrawFont   = [[[self class] toDrawFont]   retain];
   _toDrawColor  = [[[self class] toDrawColor]  retain];
   _neighorFont  = [[[self class] neighborFont] retain];
-  _userInterfaceStyle = [[self class] userInterfaceStyle];
+  _backgroundStyle = [[self class] backgroundStyle];
   [wrapper setPreferredFilename:_toDrawString];
   [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
   return self;
@@ -184,9 +191,16 @@
 {
   return [[NSUserDefaults standardUserDefaults] SVR_fontForTheme:SVRThemeFontMath];
 }
-+(XPUserInterfaceStyle)userInterfaceStyle;
++(SVRSolverTextAttachmentBackgroundStyle)backgroundStyle;
 {
-  return [[NSUserDefaults standardUserDefaults] SVR_userInterfaceStyle];
+  switch ([[NSUserDefaults standardUserDefaults] SVR_userInterfaceStyle]) {
+    case XPUserInterfaceStyleDark:
+      return SVRSolverTextAttachmentBackgroundStyleDark;
+    case XPUserInterfaceStyleLight:
+    case XPUserInterfaceStyleUnspecified:
+    default:
+      return SVRSolverTextAttachmentBackgroundStyleLight;
+  }
 }
 
 // MARK: Silence warnings in OpenStep
@@ -197,7 +211,7 @@
 -(NSFont*)toDrawFont;     { return [super toDrawFont];   }
 -(NSColor*)toDrawColor;   { return [super toDrawColor];  }
 -(NSFont*)neighorFont;    { return [super neighorFont];  }
--(XPUserInterfaceStyle)userInterfaceStyle; { return [super userInterfaceStyle]; }
+-(SVRSolverTextAttachmentBackgroundStyle)backgroundStyle; { return [super backgroundStyle]; }
 #endif
 
 @end
@@ -215,7 +229,7 @@
   _toDrawFont   = [[[self class] toDrawFont]   retain];
   _toDrawColor  = [[[self class] toDrawColor]  retain];
   _neighorFont  = [[[self class] neighborFont] retain];
-  _userInterfaceStyle = [[self class] userInterfaceStyle];
+  _backgroundStyle = [[self class] backgroundStyle];
   [wrapper setPreferredFilename:_toDrawString];
   [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
   return self;
@@ -246,9 +260,9 @@
 {
   return [[NSUserDefaults standardUserDefaults] SVR_fontForTheme:SVRThemeFontMath];
 }
-+(XPUserInterfaceStyle)userInterfaceStyle;
++(SVRSolverTextAttachmentBackgroundStyle)backgroundStyle;
 {
-  return [[NSUserDefaults standardUserDefaults] SVR_userInterfaceStyle];
+  return SVRSolverTextAttachmentBackgroundStyleNone;
 }
 
 // MARK: Silence warnings in OpenStep
@@ -259,7 +273,7 @@
 -(NSFont*)toDrawFont;     { return [super toDrawFont];   }
 -(NSColor*)toDrawColor;   { return [super toDrawColor];  }
 -(NSFont*)neighorFont;    { return [super neighorFont];  }
--(XPUserInterfaceStyle)userInterfaceStyle; { return [super userInterfaceStyle]; }
+-(SVRSolverTextAttachmentBackgroundStyle)backgroundStyle; { return [super backgroundStyle]; }
 #endif
 
 @end
@@ -324,10 +338,17 @@
 -(void)drawWithFrame:(NSRect)cellFrame
               inView:(NSView*)controlView;
 {
-  if ([[self SVR_attachment] userInterfaceStyle] == XPUserInterfaceStyleDark) {
-    NSDrawGrayBezel(cellFrame, cellFrame);
-  } else {
-    NSDrawWhiteBezel(cellFrame, cellFrame);
+  // TODO: Play with the drawing styles
+  switch ([[self SVR_attachment] backgroundStyle]) {
+    case SVRSolverTextAttachmentBackgroundStyleLight:
+      NSDrawWhiteBezel(cellFrame, cellFrame);
+      break;
+    case SVRSolverTextAttachmentBackgroundStyleDark:
+      NSDrawGrayBezel(cellFrame, cellFrame);
+      break;
+    case SVRSolverTextAttachmentBackgroundStyleNone:
+    default:
+      break;
   }
   [[[self SVR_attachment] toDrawString] drawInRect:cellFrame
                                     withAttributes:[self toDrawAttributes]];

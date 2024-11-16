@@ -31,13 +31,19 @@
 #import "SVRSolver.h"
 #import "XPCrossPlatform.h"
 
+typedef enum {
+  SVRSolverTextAttachmentBackgroundStyleLight,
+  SVRSolverTextAttachmentBackgroundStyleDark,
+  SVRSolverTextAttachmentBackgroundStyleNone
+} SVRSolverTextAttachmentBackgroundStyle;
+
 @protocol SVRSolverTextAttachment <NSObject>
 
 -(NSString*)toDrawString;
 -(NSFont*)toDrawFont;
 -(NSColor*)toDrawColor;
 -(NSFont*)neighorFont;
--(XPUserInterfaceStyle)userInterfaceStyle;
+-(SVRSolverTextAttachmentBackgroundStyle)backgroundStyle;
 
 @end
 
@@ -47,14 +53,14 @@
   mm_retain NSFont    *_toDrawFont;
   mm_retain NSColor   *_toDrawColor;
   mm_retain NSFont    *_neighorFont;
-  XPUserInterfaceStyle _userInterfaceStyle;
+  SVRSolverTextAttachmentBackgroundStyle _backgroundStyle;
 }
 
 -(NSString*)toDrawString;
 -(NSFont*)toDrawFont;
 -(NSColor*)toDrawColor;
 -(NSFont*)neighorFont;
--(XPUserInterfaceStyle)userInterfaceStyle;
+-(SVRSolverTextAttachmentBackgroundStyle)backgroundStyle;
 
 @end
 
@@ -69,7 +75,7 @@
 +(NSFont*)toDrawFont;
 +(NSColor*)toDrawColor;
 +(NSFont*)neighborFont;
-+(XPUserInterfaceStyle)userInterfaceStyle;
++(SVRSolverTextAttachmentBackgroundStyle)backgroundStyle;
 
 @end
 
@@ -84,7 +90,7 @@
 +(NSFont*)toDrawFont;
 +(NSColor*)toDrawColor;
 +(NSFont*)neighborFont;
-+(XPUserInterfaceStyle)userInterfaceStyle;
++(SVRSolverTextAttachmentBackgroundStyle)backgroundStyle;
 
 @end
 
@@ -102,7 +108,7 @@
 +(NSFont*)toDrawFont;
 +(NSColor*)toDrawColor;
 +(NSFont*)neighborFont;
-+(XPUserInterfaceStyle)userInterfaceStyle;
++(SVRSolverTextAttachmentBackgroundStyle)backgroundStyle;
 
 @end
 
