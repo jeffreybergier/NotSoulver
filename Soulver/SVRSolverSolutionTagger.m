@@ -38,6 +38,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
 
 +(void)load;
 {
+  NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
   SVRSolverSolutionTaggerSetExponent = [[NSSet alloc] initWithObjects:
                                         NSNumberForOperator(SVRSolverOperatorExponent),
                                         nil];
@@ -49,6 +50,8 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
                                         NSNumberForOperator(SVRSolverOperatorSubtract),
                                         NSNumberForOperator(SVRSolverOperatorAdd),
                                         nil];
+  [pool release];
+  pool = nil;
 }
 
 // MARK: Business Logic
