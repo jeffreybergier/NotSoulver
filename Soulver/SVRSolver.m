@@ -171,7 +171,22 @@ SVRSolverOperator SVRSolverOperatorForRawString(NSString *string)
     return SVRSolverOperatorAdd;
   } else {
     XPLogRaise1(@"SVR_operatorForRawStringUnknown: %@", string);
-    return (SVRSolverOperator)-1;
+    return SVRSolverOperatorUnknown;
+  }
+}
+
+NSString *RawStringForOperator(SVRSolverOperator operator)
+{
+  switch (operator) {
+    case SVRSolverOperatorExponent: return @"^";
+    case SVRSolverOperatorDivide:   return @"/";
+    case SVRSolverOperatorMultiply: return @"*";
+    case SVRSolverOperatorSubtract: return @"-";
+    case SVRSolverOperatorAdd:      return @"+";
+    case SVRSolverOperatorUnknown:
+    default:
+      XPLogRaise1(@"RawStringForOperatorUnknown: %d", operator);
+      return nil;
   }
 }
 

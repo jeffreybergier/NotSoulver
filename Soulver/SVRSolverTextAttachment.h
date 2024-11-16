@@ -58,8 +58,6 @@
 
 @end
 
-@class SVRSolverTextAttachmentCell;
-
 @interface SVRSolverSolutionTextAttachment: SVRSolverTextAttachmentImp <SVRSolverTextAttachment>
 
 // MARK: Init
@@ -83,6 +81,24 @@
 
 // MARK: Business Logic
 +(NSString*)toDrawStringWithError:(SVRSolverError)error;
++(NSFont*)toDrawFont;
++(NSColor*)toDrawColor;
++(NSFont*)neighborFont;
++(XPUserInterfaceStyle)userInterfaceStyle;
+
+@end
+
+@interface SVRSolverPreviousSolutionTextAttachment: SVRSolverTextAttachmentImp <SVRSolverTextAttachment>
+
+// MARK: Init
+-(id)initWithPreviousSolution:(NSDecimalNumber*)previousSolution
+                     operator:(SVRSolverOperator)operator;
++(id)attachmentWithPreviousSolution:(NSDecimalNumber*)previousSolution
+                           operator:(SVRSolverOperator)operator;
+
+// MARK: Business Logic
++(NSString*)toDrawStringWithPreviousSolution:(NSDecimalNumber*)previousSolution
+                                    operator:(SVRSolverOperator)operator;
 +(NSFont*)toDrawFont;
 +(NSColor*)toDrawColor;
 +(NSFont*)neighborFont;

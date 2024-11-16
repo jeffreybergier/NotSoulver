@@ -94,11 +94,11 @@
 {
   NSFileWrapper *wrapper = [[[NSFileWrapper alloc] init] autorelease];
   self = [super initWithFileWrapper:wrapper];
-  _toDrawString = [[SVRSolverSolutionTextAttachment toDrawStringWithSolution:solution] retain];
-  _toDrawFont   = [[SVRSolverSolutionTextAttachment toDrawFont] retain];
-  _toDrawColor  = [[SVRSolverSolutionTextAttachment toDrawColor] retain];
-  _neighorFont  = [[SVRSolverSolutionTextAttachment neighborFont] retain];
-  _userInterfaceStyle = [SVRSolverSolutionTextAttachment userInterfaceStyle];
+  _toDrawString = [[[self class] toDrawStringWithSolution:solution] retain];
+  _toDrawFont   = [[[self class] toDrawFont]   retain];
+  _toDrawColor  = [[[self class] toDrawColor]  retain];
+  _neighorFont  = [[[self class] neighborFont] retain];
+  _userInterfaceStyle = [[self class] userInterfaceStyle];
   [wrapper setPreferredFilename:_toDrawString];
   [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
   return self;
@@ -152,11 +152,11 @@
 {
   NSFileWrapper *wrapper = [[[NSFileWrapper alloc] init] autorelease];
   self = [super initWithFileWrapper:wrapper];
-  _toDrawString = [[SVRSolverErrorTextAttachment toDrawStringWithError:error] retain];
-  _toDrawFont   = [[SVRSolverErrorTextAttachment toDrawFont] retain];
-  _toDrawColor  = [[SVRSolverErrorTextAttachment toDrawColor] retain];
-  _neighorFont  = [[SVRSolverErrorTextAttachment neighborFont] retain];
-  _userInterfaceStyle = [SVRSolverErrorTextAttachment userInterfaceStyle];
+  _toDrawString = [[[self class] toDrawStringWithError:error] retain];
+  _toDrawFont   = [[[self class] toDrawFont]   retain];
+  _toDrawColor  = [[[self class] toDrawColor]  retain];
+  _neighorFont  = [[[self class] neighborFont] retain];
+  _userInterfaceStyle = [[self class] userInterfaceStyle];
   [wrapper setPreferredFilename:_toDrawString];
   [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
   return self;
@@ -179,6 +179,68 @@
 +(NSColor*)toDrawColor;
 {
   return [[NSUserDefaults standardUserDefaults] SVR_colorForTheme:SVRThemeColorErrorText];
+}
++(NSFont*)neighborFont;
+{
+  return [[NSUserDefaults standardUserDefaults] SVR_fontForTheme:SVRThemeFontMath];
+}
++(XPUserInterfaceStyle)userInterfaceStyle;
+{
+  return [[NSUserDefaults standardUserDefaults] SVR_userInterfaceStyle];
+}
+
+// MARK: Silence warnings in OpenStep
+// for some reason OpenStep doesn't see the superclass
+// implementation of these methods and gives warnings
+#ifndef MAC_OS_X_VERSION_10_0
+-(NSString*)toDrawString; { return [super toDrawString]; }
+-(NSFont*)toDrawFont;     { return [super toDrawFont];   }
+-(NSColor*)toDrawColor;   { return [super toDrawColor];  }
+-(NSFont*)neighorFont;    { return [super neighorFont];  }
+-(XPUserInterfaceStyle)userInterfaceStyle; { return [super userInterfaceStyle]; }
+#endif
+
+@end
+
+@implementation SVRSolverPreviousSolutionTextAttachment
+
+// MARK: Init
+-(id)initWithPreviousSolution:(NSDecimalNumber*)previousSolution
+                     operator:(SVRSolverOperator)operator;
+{
+  NSFileWrapper *wrapper = [[[NSFileWrapper alloc] init] autorelease];
+  self = [super initWithFileWrapper:wrapper];
+  _toDrawString = [[[self class] toDrawStringWithPreviousSolution:previousSolution
+                                                         operator:operator] retain];
+  _toDrawFont   = [[[self class] toDrawFont]   retain];
+  _toDrawColor  = [[[self class] toDrawColor]  retain];
+  _neighorFont  = [[[self class] neighborFont] retain];
+  _userInterfaceStyle = [[self class] userInterfaceStyle];
+  [wrapper setPreferredFilename:_toDrawString];
+  [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
+  return self;
+}
+
++(id)attachmentWithPreviousSolution:(NSDecimalNumber*)previousSolution
+                           operator:(SVRSolverOperator)operator;
+{
+  return [[[SVRSolverPreviousSolutionTextAttachment alloc] initWithPreviousSolution:previousSolution
+                                                                           operator:operator] autorelease];
+}
+
+// MARK: Business Logic
++(NSString*)toDrawStringWithPreviousSolution:(NSDecimalNumber*)previousSolution
+                                    operator:(SVRSolverOperator)operator;
+{
+  return [[previousSolution description] stringByAppendingString:RawStringForOperator(operator)];
+}
++(NSFont*)toDrawFont;
+{
+  return [[NSUserDefaults standardUserDefaults] SVR_fontForTheme:SVRThemeFontMath];
+}
++(NSColor*)toDrawColor;
+{
+  return [[NSUserDefaults standardUserDefaults] SVR_colorForTheme:SVRThemeColorSolutionSecondary];
 }
 +(NSFont*)neighborFont;
 {

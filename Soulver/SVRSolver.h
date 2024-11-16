@@ -77,6 +77,7 @@ typedef enum {
   SVRSolverOperatorMultiply,
   SVRSolverOperatorSubtract,
   SVRSolverOperatorAdd,
+  SVRSolverOperatorUnknown
 } SVRSolverOperator;
 
 typedef enum {
@@ -96,5 +97,6 @@ SVRSolverTag          SVRSolverTagForKey(XPAttributedStringKey string);
 NSNumber             *NSNumberForOperator(SVRSolverOperator operator);
 SVRSolverOperator     SVRSolverOperatorForNumber(NSNumber *number);
 SVRSolverOperator     SVRSolverOperatorForRawString(NSString *string);
+NSString             *RawStringForOperator(SVRSolverOperator operator);
 NSString             *SVRSolverDescriptionForError(SVRSolverError error);
 NSString             *SVRSolverDebugDescriptionForError(SVRSolverError error);

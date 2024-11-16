@@ -61,6 +61,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
   NSMutableAttributedString *expressionToSolve = nil;
   NSDecimalNumber *solution = nil;
   NSAttributedString *solutionString = nil;
+  SVRSolverOperator previousSolutionOperator = SVRSolverOperatorUnknown;
   BOOL didInsertPreviousSolution = NO;
   NSRange solutionRange = XPNotFoundRange; // range of the equal sign
   NSEnumerator *e = nil;
@@ -74,12 +75,28 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     solutionRange = NSMakeRange(NSMaxRange(nextRange), 1);
     expressionToSolve = [[[output attributedSubstringFromRange:nextRange] mutableCopy] autorelease];
     didInsertPreviousSolution = [self __prepareExpression:expressionToSolve
-                                     withPreviousSolution:solution];
+                                     withPreviousSolution:solution
+                                          operatorPointer:&previousSolutionOperator];
+    if (didInsertPreviousSolution) {
+      solutionString = [
+        NSAttributedString attributedStringWithAttachment:
+          [SVRSolverPreviousSolutionTextAttachment attachmentWithPreviousSolution:solution
+                                                                         operator:previousSolutionOperator]
+      ];
+      [output replaceCharactersInRange:NSMakeRange(nextRange.location, 1)
+                  withAttributedString:solutionString];
+    }
     solution = [self __solutionForExpression:expressionToSolve error:&error];
     if (solution) {
-      solutionString = [NSAttributedString attributedStringWithAttachment:[SVRSolverSolutionTextAttachment attachmentWithSolution:solution]];
+      solutionString = [
+        NSAttributedString attributedStringWithAttachment:
+          [SVRSolverSolutionTextAttachment attachmentWithSolution:solution]
+      ];
     } else {
-      solutionString = [NSAttributedString attributedStringWithAttachment:[SVRSolverErrorTextAttachment attachmentWithError:error]];
+      solutionString = [
+        NSAttributedString attributedStringWithAttachment:
+          [SVRSolverErrorTextAttachment attachmentWithError:error]
+      ];
     }
     XPLogExtra2(@"=: %@<-%@", [[output string] SVR_descriptionHighlightingRange:solutionRange], solution);
     [output replaceCharactersInRange:solutionRange
@@ -94,9 +111,11 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
 // MARK: Private
 
 +(BOOL)__prepareExpression:(NSMutableAttributedString*)input
-      withPreviousSolution:(NSDecimalNumber*)previousSolution;
+      withPreviousSolution:(NSDecimalNumber*)previousSolution
+           operatorPointer:(SVRSolverOperator*)operatorPointer;
 {
-  NSNumber *operator = nil;
+  NSNumber *operatorNumber = nil;
+  SVRSolverOperator operator = SVRSolverOperatorUnknown;
   NSAttributedString *toInsert = nil;
   NSDictionary *attribs = nil;
   
@@ -107,13 +126,15 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
   // Do basic sanity checks
   if (!previousSolution) { return NO; }
   if ([input length] == 0) { return NO; }
+  if (operatorPointer == NULL) { return NO; }
   
   // Find the operator
-  operator = [input attribute:XPAttributedStringKeyForTag(SVRSolverTagOperator)
+  operatorNumber = [input attribute:XPAttributedStringKeyForTag(SVRSolverTagOperator)
                          atIndex:0
                   effectiveRange:NULL];
-  if (operator == nil) { return NO; }
-  switch (SVRSolverOperatorForNumber(operator)) {
+  if (operatorNumber == nil) { return NO; }
+  operator = SVRSolverOperatorForNumber(operatorNumber);
+  switch (operator) {
     case SVRSolverOperatorExponent:
     case SVRSolverOperatorDivide:
     case SVRSolverOperatorMultiply:
@@ -124,6 +145,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
       toInsert = [[[NSAttributedString alloc] initWithString:[previousSolution description]
                                                   attributes:attribs] autorelease];
       [input insertAttributedString:toInsert atIndex:0];
+      *operatorPointer = operator;
       return YES;
     case SVRSolverOperatorSubtract:
       // We can't distinguish between operator and negative number in this case.
@@ -132,7 +154,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
                        range:NSMakeRange(0, 1)];
       return NO;
     default:
-      XPLogRaise2(@"__prepareExpression: unknownOperator:%@ foundInExpression:%@", operator, input);
+      XPLogRaise2(@"__prepareExpression: unknownOperator:%@ foundInExpression:%@", operatorNumber, input);
       return NO;
   }
 }
