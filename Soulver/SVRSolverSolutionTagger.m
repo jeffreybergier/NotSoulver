@@ -73,10 +73,11 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     didInsertPreviousSolution = [self __prepareExpression:expressionToSolve
                                      withPreviousSolution:solution];
     solution = [self __solutionForExpression:expressionToSolve error:&error];
-    solutionString = [
-      NSAttributedString attributedStringWithAttachment:
-        [SVRSolverTextAttachment attachmentWithSolution:solution error:error]
-    ];
+    if (solution) {
+      solutionString = [NSAttributedString attributedStringWithAttachment:[SVRSolverSolutionTextAttachment attachmentWithSolution:solution]];
+    } else {
+      solutionString = [NSAttributedString attributedStringWithAttachment:[SVRSolverErrorTextAttachment attachmentWithError:error]];
+    }
     XPLogExtra2(@"=: %@<-%@", [[output string] SVR_descriptionHighlightingRange:solutionRange], solution);
     [output replaceCharactersInRange:solutionRange
                 withAttributedString:solutionString];

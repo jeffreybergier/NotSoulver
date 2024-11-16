@@ -31,56 +31,89 @@
 #import "SVRSolver.h"
 #import "XPCrossPlatform.h"
 
-// TODO: Refactor this to be more smart
-// It needs purpose(previousSolution/Solution), NSDecimalNumber, Error as input
-@class SVRSolverTextAttachmentCell;
+@protocol SVRSolverTextAttachment <NSObject>
 
-@interface SVRSolverTextAttachment: NSTextAttachment
-{
-  mm_retain NSDecimalNumber *_solution;
-  SVRSolverError _error;
-}
-
--(NSDecimalNumber*)solution;
--(SVRSolverError)error;
--(NSString*)stringForDrawing;
--(id)initWithSolution:(NSDecimalNumber*)solution error:(SVRSolverError)error;
-+(id)attachmentWithSolution:(NSDecimalNumber*)solution error:(SVRSolverError)error;
--(NSString*)description;
+-(NSString*)toDrawString;
+-(NSFont*)toDrawFont;
+-(NSColor*)toDrawColor;
+-(NSFont*)neighorFont;
+-(XPUserInterfaceStyle)userInterfaceStyle;
 
 @end
 
+@interface SVRSolverTextAttachmentImp: NSTextAttachment <SVRSolverTextAttachment>
+{
+  mm_retain NSString  *_toDrawString;
+  mm_retain NSFont    *_toDrawFont;
+  mm_retain NSColor   *_toDrawColor;
+  mm_retain NSFont    *_neighorFont;
+  XPUserInterfaceStyle _userInterfaceStyle;
+}
 
-// TODO: Refactor this to be more dumb
-// It needs beforeFont, afterFont, stringToDraw
+-(NSString*)toDrawString;
+-(NSFont*)toDrawFont;
+-(NSColor*)toDrawColor;
+-(NSFont*)neighorFont;
+-(XPUserInterfaceStyle)userInterfaceStyle;
+
+@end
+
+@class SVRSolverTextAttachmentCell;
+
+@interface SVRSolverSolutionTextAttachment: SVRSolverTextAttachmentImp <SVRSolverTextAttachment>
+
+// MARK: Init
+-(id)initWithSolution:(NSDecimalNumber*)solution;
++(id)attachmentWithSolution:(NSDecimalNumber*)solution;
+
+// MARK: Business Logic
++(NSString*)toDrawStringWithSolution:(NSDecimalNumber*)solution;
++(NSFont*)toDrawFont;
++(NSColor*)toDrawColor;
++(NSFont*)neighborFont;
++(XPUserInterfaceStyle)userInterfaceStyle;
+
+@end
+
+@interface SVRSolverErrorTextAttachment: SVRSolverTextAttachmentImp <SVRSolverTextAttachment>
+
+// MARK: Init
+-(id)initWithError:(SVRSolverError)error;
++(id)attachmentWithError:(SVRSolverError)error;
+
+// MARK: Business Logic
++(NSString*)toDrawStringWithError:(SVRSolverError)error;
++(NSFont*)toDrawFont;
++(NSColor*)toDrawColor;
++(NSFont*)neighborFont;
++(XPUserInterfaceStyle)userInterfaceStyle;
+
+@end
+
 @interface SVRSolverTextAttachmentCell: NSTextAttachmentCell
 {
-  mm_new NSString *_description;
+  mm_new NSDictionary *_toDrawAttributes;
 }
 
 // MARK: Properties
--(BOOL)shouldDrawError;
--(NSString*)description;
+-(NSDictionary*)toDrawAttributes;
+-(id<SVRSolverTextAttachment>)SVR_attachment;
 
 // MARK: Init
--(id)initWithAttachment:(SVRSolverTextAttachment*)attachment;
-+(id)cellWithAttachment:(SVRSolverTextAttachment*)attachment;
+-(id)initWithAttachment:(NSTextAttachment<SVRSolverTextAttachment>*)attachment;
++(id)cellWithAttachment:(NSTextAttachment<SVRSolverTextAttachment>*)attachment;
 
 // MARK: Custom Drawing
--(void)drawSolutionWithFrame:(NSRect)cellFrame
-                   textFrame:(NSRect)textFrame
-                      inView:(NSView*)controlView;
--(void)drawErrorWithFrame:(NSRect)cellFrame
-                textFrame:(NSRect)textFrame
-                   inView:(NSView*)controlView;
--(NSDictionary*)attributesForDrawingSolution;
--(NSDictionary*)attributesForDrawingError;
++(NSDictionary*)toDrawAttributesWithFont:(NSFont*)font
+                                   color:(NSColor*)color;
+-(void)drawWithFrame:(NSRect)cellFrame
+              inView:(NSView*)controlView;
 
 // MARK: Protocol (Used)
 -(NSSize)cellSize;
 -(NSPoint)cellBaselineOffset;
--(void)drawWithFrame:(NSRect)cellFrame
-              inView:(NSView*)controlView;
+
+// MARK: Protocol (Unused)
 -(void)highlight:(BOOL)flag
        withFrame:(NSRect)cellFrame
           inView:(NSView*)controlView;
