@@ -77,7 +77,6 @@
   [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagNumber) range:range];
   [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagBracket) range:range];
   [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagOperator) range:range];
-  [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagSolution) range:range];
   [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagExpression) range:range];
   [input removeAttribute:NSFontAttributeName range:range];
   [input removeAttribute:NSForegroundColorAttributeName range:range];
@@ -128,7 +127,6 @@ NSString *XPAttributedStringKeyForTag(SVRSolverTag tag)
     case SVRSolverTagBracket:    return @"kSVRSoulverTagBracketKey";
     case SVRSolverTagOperator:   return @"kSVRSoulverTagOperatorKey";
     case SVRSolverTagExpression: return @"kSVRSoulverTagExpressionKey";
-    case SVRSolverTagSolution:   return @"kSVRSolverTagSolutionKey";
     case SVRSolverTagOriginal:   return @"kSVRSolverTagOriginalKey";
     default:
       XPLogRaise1(@"SVR_stringForTagUnknown: %d", tag);
@@ -146,8 +144,6 @@ SVRSolverTag SVRSolverTagForKey(XPAttributedStringKey string)
     return SVRSolverTagOperator;
   } else if ([string isEqualToString:XPAttributedStringKeyForTag(SVRSolverTagExpression)]) {
     return SVRSolverTagExpression;
-  } else if ([string isEqualToString:XPAttributedStringKeyForTag(SVRSolverTagSolution)])   {
-    return SVRSolverTagSolution;
   } else if ([string isEqualToString:XPAttributedStringKeyForTag(SVRSolverTagOriginal)])   {
     return SVRSolverTagOriginal;
   } else {

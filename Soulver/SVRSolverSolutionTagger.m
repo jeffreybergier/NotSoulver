@@ -110,9 +110,6 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     // Step 6: Insert the text attachment for the solution or error
     [output replaceCharactersInRange:solutionRange
                 withAttributedString:solutionString];
-    [output addAttribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)
-                   value:(solution) ? (NSNumber*)solution : [NSNumber numberWithInt:error]
-                   range:solutionRange];
     [output addAttribute:XPAttributedStringKeyForTag(SVRSolverTagOriginal)
                    value:@"="
                    range:solutionRange];

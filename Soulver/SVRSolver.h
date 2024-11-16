@@ -65,9 +65,6 @@ typedef enum {
   // Stores NSString of the range of the bracket - (Minus the Equal Sign)
   // NSStringFromRange (use NSRangeFromString to extract)
   SVRSolverTagExpression,
-  // Stores NSDecimalNumber with the solution for the expression in the = sign
-  // Stores NSNumber if its an error
-  SVRSolverTagSolution,
   // Stores NSString with the original value
   // before it was replaced with NSTextAttachment
   SVRSolverTagOriginal
