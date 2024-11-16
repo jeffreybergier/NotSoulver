@@ -62,7 +62,8 @@
 // MARK: NSDocument Support
 -(NSData*)dataRepresentationOfType:(NSString*)type;
 {
-  return [[[self model] string] dataUsingEncoding:NSUTF8StringEncoding];
+  NSString *originalString = [SVRSolver restoreOriginalString:[self model]];
+  return [originalString dataUsingEncoding:NSUTF8StringEncoding];
 }
 
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;

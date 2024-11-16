@@ -74,19 +74,27 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     nextRange = NSRangeFromString(next);
     solutionRange = NSMakeRange(NSMaxRange(nextRange), 1);
     expressionToSolve = [[[output attributedSubstringFromRange:nextRange] mutableCopy] autorelease];
+    // Step 1: Prepare the expression string with previous solution if needed
     didInsertPreviousSolution = [self __prepareExpression:expressionToSolve
                                      withPreviousSolution:solution
                                           operatorPointer:&previousSolutionOperator];
     if (didInsertPreviousSolution) {
+      // Step 2: If the previous solution is used, create a text attachment
       solutionString = [
         NSAttributedString attributedStringWithAttachment:
           [SVRSolverPreviousSolutionTextAttachment attachmentWithPreviousSolution:solution
                                                                          operator:previousSolutionOperator]
       ];
+      // Step 3: Insert the previous solution text attachment
       [output replaceCharactersInRange:NSMakeRange(nextRange.location, 1)
                   withAttributedString:solutionString];
+      [output addAttribute:XPAttributedStringKeyForTag(SVRSolverTagOriginal)
+                     value:RawStringForOperator(previousSolutionOperator)
+                     range:NSMakeRange(nextRange.location, 1)];
     }
+    // Step 4: Solve the exoression string.
     solution = [self __solutionForExpression:expressionToSolve error:&error];
+    // Step 5: Create the text attachment for solution or error
     if (solution) {
       solutionString = [
         NSAttributedString attributedStringWithAttachment:
@@ -99,10 +107,14 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
       ];
     }
     XPLogExtra2(@"=: %@<-%@", [[output string] SVR_descriptionHighlightingRange:solutionRange], solution);
+    // Step 6: Insert the text attachment for the solution or error
     [output replaceCharactersInRange:solutionRange
                 withAttributedString:solutionString];
     [output addAttribute:XPAttributedStringKeyForTag(SVRSolverTagSolution)
                    value:(solution) ? (NSNumber*)solution : [NSNumber numberWithInt:error]
+                   range:solutionRange];
+    [output addAttribute:XPAttributedStringKeyForTag(SVRSolverTagOriginal)
+                   value:@"="
                    range:solutionRange];
     error = SVRSolverErrorNone;
   }

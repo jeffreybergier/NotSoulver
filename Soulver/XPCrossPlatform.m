@@ -252,53 +252,6 @@ NSArray* XPRunOpenPanel(void)
 
 @end
 
-@implementation NSMutableString (CrossPlatform)
--(void)XP_replaceOccurrencesOfString:(NSString*)searchString
-                          withString:(NSString*)replaceString;
-{
-  XPUInteger length = [self length];
-  NSRange searchRange = NSMakeRange(0, length);
-  NSRange foundRange = XPNotFoundRange;
-  
-  if ([searchString length] != [replaceString length]) {
-    XPLogRaise(@"Precondition Failure: searchString and replaceString must be same length");
-    return;
-  }
-  
-  while (searchRange.location < length) {
-    foundRange = [self rangeOfString:searchString options:0 range:searchRange];
-    if (XPIsNotFoundRange(foundRange)) { break; }
-    [self replaceCharactersInRange:foundRange withString:replaceString];
-    searchRange = NSMakeRange(NSMaxRange(foundRange), length-NSMaxRange(foundRange));
-  }
-}
-
-+(void)XPTEST_replaceOccurrencesOfStringWithString;
-{
-  NSMutableString *string = [[NSMutableString new] autorelease];
-  NSString *expected = nil;
-  
-  XPLogAlwys(@"XPTEST_replaceOccurrencesOfStringWithString: Start");
-  
-  [string setString:@"0a0b0c0d0e0f0g0h0i0j0"];
-  [string XP_replaceOccurrencesOfString:@"0" withString:@"+"];
-  expected = @"+a+b+c+d+e+f+g+h+i+j+";
-  NSAssert([expected isEqualToString:string], @"");
-  
-  [string setString:@"00a00b00c00d00e00f00g00h00i00j00"];
-  [string XP_replaceOccurrencesOfString:@"00" withString:@"++"];
-  expected = @"++a++b++c++d++e++f++g++h++i++j++";
-  NSAssert([expected isEqualToString:string], @"");
-  
-  [string setString:@"00a00b00c00d00e00f00g00h00ijklmnop"];
-  [string XP_replaceOccurrencesOfString:@"00" withString:@"++"];
-  expected = @"++a++b++c++d++e++f++g++h++ijklmnop";
-  NSAssert([expected isEqualToString:string], @"");
-  
-  XPLogAlwys(@"XPTEST_replaceOccurrencesOfStringWithString: Pass");
-}
-@end
-
 // MARK: NSDecimalNumber
 @implementation NSDecimalNumber (Soulver)
 
@@ -388,7 +341,6 @@ NSArray* XPRunOpenPanel(void)
 +(void)executeUnitTests;
 {
   XPLogAlwys(@"XPTESTS: Start");
-  [NSMutableString XPTEST_replaceOccurrencesOfStringWithString];
   [XPLog executeUnitTests];
   XPLogAlwys(@"XPTESTS: Pass");
 }

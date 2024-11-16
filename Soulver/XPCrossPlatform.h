@@ -179,12 +179,6 @@ NSArray* XPRunOpenPanel(void);
 -(const char*)XP_UTF8String;
 @end
 
-@interface NSMutableString (CrossPlatform)
--(void)XP_replaceOccurrencesOfString:(NSString*)searchString
-                          withString:(NSString*)replaceString;
-+(void)XPTEST_replaceOccurrencesOfStringWithString;
-@end
-
 @interface NSDecimalNumber (Soulver)
 /// In OpenStep, NaN comparisons are weird, so this uses a string comparison
 -(BOOL)SVR_isNotANumber;

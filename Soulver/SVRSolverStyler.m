@@ -83,18 +83,6 @@
           [input addAttribute:NSForegroundColorAttributeName
                         value:[ud SVR_colorForTheme:SVRThemeColorOperator]
                         range:checkRange];
-        } else {
-          check = [input attribute:XPAttributedStringKeyForTag(SVRSolverTagPreviousSolution)
-                           atIndex:index
-                    effectiveRange:&checkRange];
-          if (check) {
-            [input addAttribute:NSFontAttributeName
-                          value:[ud SVR_fontForTheme:SVRThemeFontMath]
-                          range:checkRange];
-            [input addAttribute:NSForegroundColorAttributeName
-                          value:[ud SVR_colorForTheme:SVRThemeColorSolutionSecondary]
-                          range:checkRange];
-          }
         }
       }
     }
