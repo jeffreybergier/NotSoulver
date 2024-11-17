@@ -32,10 +32,13 @@
 #import "XPCrossPlatform.h"
 
 typedef enum {
-  SVRSolverTextAttachmentBackgroundStyleLight,
-  SVRSolverTextAttachmentBackgroundStyleDark,
-  SVRSolverTextAttachmentBackgroundStyleNone
-} SVRSolverTextAttachmentBackgroundStyle;
+  SVRSolverTextAttachmentBorderStyleColored,
+  SVRSolverTextAttachmentBorderStyleRecessedGray,
+  SVRSolverTextAttachmentBorderStyleRecessedWhite,
+  SVRSolverTextAttachmentBorderStyleGroove,
+  SVRSolverTextAttachmentBorderStyleDotted,
+  SVRSolverTextAttachmentBorderStyleNone
+} SVRSolverTextAttachmentBorderStyle;
 
 @protocol SVRSolverTextAttachment <NSObject>
 
@@ -43,7 +46,7 @@ typedef enum {
 -(NSFont*)toDrawFont;
 -(NSColor*)toDrawColor;
 -(NSFont*)neighorFont;
--(SVRSolverTextAttachmentBackgroundStyle)backgroundStyle;
+-(SVRSolverTextAttachmentBorderStyle)borderStyle;
 
 @end
 
@@ -53,14 +56,14 @@ typedef enum {
   mm_retain NSFont    *_toDrawFont;
   mm_retain NSColor   *_toDrawColor;
   mm_retain NSFont    *_neighorFont;
-  SVRSolverTextAttachmentBackgroundStyle _backgroundStyle;
+  SVRSolverTextAttachmentBorderStyle _borderStyle;
 }
 
 -(NSString*)toDrawString;
 -(NSFont*)toDrawFont;
 -(NSColor*)toDrawColor;
 -(NSFont*)neighorFont;
--(SVRSolverTextAttachmentBackgroundStyle)backgroundStyle;
+-(SVRSolverTextAttachmentBorderStyle)borderStyle;
 
 @end
 
@@ -75,7 +78,7 @@ typedef enum {
 +(NSFont*)toDrawFont;
 +(NSColor*)toDrawColor;
 +(NSFont*)neighborFont;
-+(SVRSolverTextAttachmentBackgroundStyle)backgroundStyle;
++(SVRSolverTextAttachmentBorderStyle)borderStyle;
 
 @end
 
@@ -90,7 +93,7 @@ typedef enum {
 +(NSFont*)toDrawFont;
 +(NSColor*)toDrawColor;
 +(NSFont*)neighborFont;
-+(SVRSolverTextAttachmentBackgroundStyle)backgroundStyle;
++(SVRSolverTextAttachmentBorderStyle)borderStyle;
 
 @end
 
@@ -108,7 +111,7 @@ typedef enum {
 +(NSFont*)toDrawFont;
 +(NSColor*)toDrawColor;
 +(NSFont*)neighborFont;
-+(SVRSolverTextAttachmentBackgroundStyle)backgroundStyle;
++(SVRSolverTextAttachmentBorderStyle)borderStyle;
 
 @end
 

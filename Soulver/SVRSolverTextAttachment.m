@@ -52,9 +52,9 @@
   return [[_neighorFont retain] autorelease];
 }
 
--(SVRSolverTextAttachmentBackgroundStyle)backgroundStyle;
+-(SVRSolverTextAttachmentBorderStyle)borderStyle;
 {
-  return _backgroundStyle;
+  return _borderStyle;
 }
 
 // MARK: Init
@@ -98,7 +98,7 @@
   _toDrawFont   = [[[self class] toDrawFont]   retain];
   _toDrawColor  = [[[self class] toDrawColor]  retain];
   _neighorFont  = [[[self class] neighborFont] retain];
-  _backgroundStyle = [[self class] backgroundStyle];
+  _borderStyle  = [ [self class] borderStyle];
   [wrapper setPreferredFilename:_toDrawString];
   [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
   return self;
@@ -126,15 +126,15 @@
 {
   return [[NSUserDefaults standardUserDefaults] SVR_fontForTheme:SVRThemeFontMath];
 }
-+(SVRSolverTextAttachmentBackgroundStyle)backgroundStyle;
++(SVRSolverTextAttachmentBorderStyle)borderStyle;
 {
   switch ([[NSUserDefaults standardUserDefaults] SVR_userInterfaceStyle]) {
     case XPUserInterfaceStyleDark:
-      return SVRSolverTextAttachmentBackgroundStyleDark;
+      return SVRSolverTextAttachmentBorderStyleRecessedGray;
     case XPUserInterfaceStyleLight:
     case XPUserInterfaceStyleUnspecified:
     default:
-      return SVRSolverTextAttachmentBackgroundStyleLight;
+      return SVRSolverTextAttachmentBorderStyleRecessedWhite;
   }
 }
 
@@ -146,7 +146,7 @@
 -(NSFont*)toDrawFont;     { return [super toDrawFont];   }
 -(NSColor*)toDrawColor;   { return [super toDrawColor];  }
 -(NSFont*)neighorFont;    { return [super neighorFont];  }
--(SVRSolverTextAttachmentBackgroundStyle)backgroundStyle; { return [super backgroundStyle]; }
+-(SVRSolverTextAttachmentBorderStyle)borderStyle; { return [super borderStyle]; }
 #endif
 
 @end
@@ -163,7 +163,7 @@
   _toDrawFont   = [[[self class] toDrawFont]   retain];
   _toDrawColor  = [[[self class] toDrawColor]  retain];
   _neighorFont  = [[[self class] neighborFont] retain];
-  _backgroundStyle = [[self class] backgroundStyle];
+  _borderStyle  = [ [self class] borderStyle];
   [wrapper setPreferredFilename:_toDrawString];
   [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
   return self;
@@ -191,15 +191,15 @@
 {
   return [[NSUserDefaults standardUserDefaults] SVR_fontForTheme:SVRThemeFontMath];
 }
-+(SVRSolverTextAttachmentBackgroundStyle)backgroundStyle;
++(SVRSolverTextAttachmentBorderStyle)borderStyle;
 {
   switch ([[NSUserDefaults standardUserDefaults] SVR_userInterfaceStyle]) {
     case XPUserInterfaceStyleDark:
-      return SVRSolverTextAttachmentBackgroundStyleDark;
+      return SVRSolverTextAttachmentBorderStyleRecessedGray;
     case XPUserInterfaceStyleLight:
     case XPUserInterfaceStyleUnspecified:
     default:
-      return SVRSolverTextAttachmentBackgroundStyleLight;
+      return SVRSolverTextAttachmentBorderStyleRecessedGray;
   }
 }
 
@@ -211,7 +211,7 @@
 -(NSFont*)toDrawFont;     { return [super toDrawFont];   }
 -(NSColor*)toDrawColor;   { return [super toDrawColor];  }
 -(NSFont*)neighorFont;    { return [super neighorFont];  }
--(SVRSolverTextAttachmentBackgroundStyle)backgroundStyle; { return [super backgroundStyle]; }
+-(SVRSolverTextAttachmentBorderStyle)borderStyle; { return [super borderStyle]; }
 #endif
 
 @end
@@ -229,7 +229,7 @@
   _toDrawFont   = [[[self class] toDrawFont]   retain];
   _toDrawColor  = [[[self class] toDrawColor]  retain];
   _neighorFont  = [[[self class] neighborFont] retain];
-  _backgroundStyle = [[self class] backgroundStyle];
+  _borderStyle  = [ [self class] borderStyle];
   [wrapper setPreferredFilename:_toDrawString];
   [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
   return self;
@@ -254,15 +254,15 @@
 }
 +(NSColor*)toDrawColor;
 {
-  return [[NSUserDefaults standardUserDefaults] SVR_colorForTheme:SVRThemeColorSolutionSecondary];
+  return [[NSUserDefaults standardUserDefaults] SVR_colorForTheme:SVRThemeColorOperator];
 }
 +(NSFont*)neighborFont;
 {
   return [[NSUserDefaults standardUserDefaults] SVR_fontForTheme:SVRThemeFontMath];
 }
-+(SVRSolverTextAttachmentBackgroundStyle)backgroundStyle;
++(SVRSolverTextAttachmentBorderStyle)borderStyle;
 {
-  return SVRSolverTextAttachmentBackgroundStyleNone;
+  return SVRSolverTextAttachmentBorderStyleDotted;
 }
 
 // MARK: Silence warnings in OpenStep
@@ -273,7 +273,7 @@
 -(NSFont*)toDrawFont;     { return [super toDrawFont];   }
 -(NSColor*)toDrawColor;   { return [super toDrawColor];  }
 -(NSFont*)neighorFont;    { return [super neighorFont];  }
--(SVRSolverTextAttachmentBackgroundStyle)backgroundStyle; { return [super backgroundStyle]; }
+-(SVRSolverTextAttachmentBorderStyle)borderStyle; { return [super borderStyle]; }
 #endif
 
 @end
@@ -339,20 +339,30 @@
               inView:(NSView*)controlView;
 {
   // TODO: Play with the drawing styles
-  switch ([[self SVR_attachment] backgroundStyle]) {
-    case SVRSolverTextAttachmentBackgroundStyleLight:
-      NSDrawWhiteBezel(cellFrame, cellFrame);
+  switch ([[self SVR_attachment] borderStyle]) {
+    case SVRSolverTextAttachmentBorderStyleColored:
+      [[[self SVR_attachment] toDrawColor] set];
+      NSFrameRect(cellFrame);
       break;
-    case SVRSolverTextAttachmentBackgroundStyleDark:
+    case SVRSolverTextAttachmentBorderStyleRecessedGray:
       NSDrawGrayBezel(cellFrame, cellFrame);
       break;
-    case SVRSolverTextAttachmentBackgroundStyleNone:
+    case SVRSolverTextAttachmentBorderStyleRecessedWhite:
+      NSDrawWhiteBezel(cellFrame, cellFrame);
+      break;
+    case SVRSolverTextAttachmentBorderStyleGroove:
+      NSDrawGroove(cellFrame, cellFrame);
+      break;
+    case SVRSolverTextAttachmentBorderStyleDotted:
+      NSDottedFrameRect(cellFrame);
+      break;
+    case SVRSolverTextAttachmentBorderStyleNone:
     default:
       break;
   }
   [[[self SVR_attachment] toDrawString] drawInRect:cellFrame
                                     withAttributes:[self toDrawAttributes]];
-  XPLogExtra1(@"drawWithFrame:%@", NSStringFromRect(cellFrame));
+  XPLogExtra2(@"drawString:`%@` withFrame:%@", [[self SVR_attachment] toDrawString], NSStringFromRect(cellFrame));
 }
 
 // MARK: Protocol (Used)
