@@ -51,7 +51,6 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
                                         NSNumberForOperator(SVRSolverOperatorAdd),
                                         nil];
   [pool release];
-  pool = nil;
 }
 
 // MARK: Business Logic
