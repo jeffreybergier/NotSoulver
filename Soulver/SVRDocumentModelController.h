@@ -32,13 +32,15 @@
 
 @interface SVRDocumentModelController: NSObject
 {
-  mm_new      NSTextStorage *_model;
-  mm_new      NSTimer       *_waitTimer;
-  mm_unretain NSTextView    *_textView;
+  mm_new      NSTextStorage       *_model;
+  mm_new      NSTimer             *_waitTimer;
+  mm_new      NSMutableDictionary *_dataCache;
+  mm_unretain NSTextView          *_textView;
 }
 
 // MARK: Properties
 -(NSTextStorage*)model;
+-(NSMutableDictionary*)dataCache;
 -(NSTextView*)textView;
 -(void)setTextView:(NSTextView*)textView;
 
