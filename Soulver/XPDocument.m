@@ -360,7 +360,6 @@ NSPoint XPDocumentPointForCascading;
   okCancel = [savePanel runModal];
   switch (okCancel) {
     case XPModalResponseOK:
-      // TODO: Consider trying to return error value if this fails
       [self writeToFile:[savePanel filename] ofType:nil];
       break;
     case XPModalResponseCancel:

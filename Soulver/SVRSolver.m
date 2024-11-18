@@ -197,7 +197,6 @@ NSString *RawStringForOperator(SVRSolverOperator operator)
 
 NSString *SVRSolverDescriptionForError(SVRSolverError error)
 {
-  // TODO: Localize Strings
   switch (error) {
     case SVRSolverErrorNone:
       return nil;

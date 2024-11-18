@@ -262,7 +262,7 @@
 }
 +(SVRSolverTextAttachmentBorderStyle)borderStyle;
 {
-  return SVRSolverTextAttachmentBorderStyleDotted;
+  return SVRSolverTextAttachmentBorderStyleColored;
 }
 
 // MARK: Silence warnings in OpenStep
@@ -338,7 +338,6 @@
 -(void)drawWithFrame:(NSRect)cellFrame
               inView:(NSView*)controlView;
 {
-  // TODO: Play with the drawing styles
   switch ([[self SVR_attachment] borderStyle]) {
     case SVRSolverTextAttachmentBorderStyleColored:
       [[[self SVR_attachment] toDrawColor] set];
