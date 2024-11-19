@@ -138,10 +138,10 @@
   }
 }
 
-// MARK: Silence warnings in OpenStep
-// for some reason OpenStep doesn't see the superclass
+// MARK: Silence warnings in Jaguar and Below
+// for some reason GCC doesn't see the superclass
 // implementation of these methods and gives warnings
-#ifndef MAC_OS_X_VERSION_10_0
+#ifndef MAC_OS_X_VERSION_10_3
 -(NSString*)toDrawString; { return [super toDrawString]; }
 -(NSFont*)toDrawFont;     { return [super toDrawFont];   }
 -(NSColor*)toDrawColor;   { return [super toDrawColor];  }
@@ -203,10 +203,10 @@
   }
 }
 
-// MARK: Silence warnings in OpenStep
-// for some reason OpenStep doesn't see the superclass
+// MARK: Silence warnings in Jaguar and Below
+// for some reason GCC doesn't see the superclass
 // implementation of these methods and gives warnings
-#ifndef MAC_OS_X_VERSION_10_0
+#ifndef MAC_OS_X_VERSION_10_3
 -(NSString*)toDrawString; { return [super toDrawString]; }
 -(NSFont*)toDrawFont;     { return [super toDrawFont];   }
 -(NSColor*)toDrawColor;   { return [super toDrawColor];  }
@@ -265,10 +265,10 @@
   return SVRSolverTextAttachmentBorderStyleColored;
 }
 
-// MARK: Silence warnings in OpenStep
-// for some reason OpenStep doesn't see the superclass
+// MARK: Silence warnings in Jaguar and Below
+// for some reason GCC doesn't see the superclass
 // implementation of these methods and gives warnings
-#ifndef MAC_OS_X_VERSION_10_0
+#ifndef MAC_OS_X_VERSION_10_3
 -(NSString*)toDrawString; { return [super toDrawString]; }
 -(NSFont*)toDrawFont;     { return [super toDrawFont];   }
 -(NSColor*)toDrawColor;   { return [super toDrawColor];  }
@@ -377,11 +377,13 @@
 -(NSPoint)cellBaselineOffset;
 {
   // TODO: Figure out how to always make this render in vertically center
+  NSPoint output = [super cellBaselineOffset];
+  return output;
   NSFont *font = [[self SVR_attachment] toDrawFont];
   XPFloat capHeight = [font capHeight];
   XPFloat underline = fabs([font underlinePosition]);
-  XPFloat calculation = 0-((capHeight/2)+underline);
-  return NSMakePoint(0, calculation);
+  output.y -= ((capHeight/2)+underline);
+  return output;
 }
 
 // MARK: Protocol (Unused)
