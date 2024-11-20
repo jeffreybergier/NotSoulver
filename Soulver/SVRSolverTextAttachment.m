@@ -378,11 +378,9 @@
 {
   // TODO: Figure out how to always make this render in vertically center
   NSPoint output = [super cellBaselineOffset];
-  return output;
-  NSFont *font = [[self SVR_attachment] toDrawFont];
-  XPFloat capHeight = [font capHeight];
-  XPFloat underline = fabs([font underlinePosition]);
-  output.y -= ((capHeight/2)+underline);
+  XPFloat height = [self cellSize].height;
+  NSFont *toDrawFont = [[self SVR_attachment] toDrawFont];
+  output.y -= (height/2.0) + ([toDrawFont descender]*2.0);
   return output;
 }
 
