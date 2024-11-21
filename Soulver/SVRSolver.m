@@ -43,12 +43,18 @@
 
 +(void)solveAttributedString:(NSMutableAttributedString*)input;
 {
+  XPUInteger inputLength = [[input string] length];
+  XPUInteger outputLength;
   [input retain];
   [self __step1_restoreOriginals:input];
   [self __step2_removeAllTags:input];
   [self __step3_scanAndTag:input];
   [self __step4_solveAndTag:input];
   [self __step5_styleAndTag:input];
+  outputLength = [[input string] length];
+  if (inputLength != outputLength) {
+    XPLogPause2(@"SVRSolver solveAttributedString: String changed length: %ld->%ld", inputLength, outputLength);
+  }
   [input autorelease];
 }
 
@@ -61,12 +67,27 @@
 
 +(void)__step1_restoreOriginals:(NSMutableAttributedString*)input;
 {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnonnull"
+  NSCharacterSet *set = [NSCharacterSet characterSetWithCharactersInString:
+                         [[NSAttributedString attributedStringWithAttachment:nil] string]];
+#pragma clang diagnostic pop
   NSRange range = XPNotFoundRange;
+  NSValue *next = nil;
   NSString *originalString = nil;
-  NSString *attributeKey = XPAttributedStringKeyForTag(SVRSolverTagOriginal);
-  XPAttributeEnumerator *e = [input SVR_enumeratorForAttribute:attributeKey];
-  while ((originalString = [e nextObjectEffectiveRange:&range])) {
-    [input removeAttribute:attributeKey range:range];
+  NSEnumerator *e = [[input string] XP_enumeratorForCharactersInSet:set];
+  while ((next = [e nextObject])) {
+    range = [next XP_rangeValue];
+    originalString = [input attribute:XPAttributedStringKeyForTag(SVRSolverTagOriginal)
+                              atIndex:range.location
+                       effectiveRange:NULL];
+    if (!originalString) {
+      XPLogPause(@"SVRSolver __step1_restoreOriginals: No attribute for text attachment character");
+      originalString = @"~";
+    }
+    if (range.length > 1) {
+      XPLogPause1(@"SVRSolver __step1_restoreOriginals: Invalid Range:%@", NSStringFromRange(range));
+    }
     [input replaceCharactersInRange:range withString:originalString];
   }
 }
@@ -74,14 +95,15 @@
 +(void)__step2_removeAllTags:(NSMutableAttributedString*)input;
 {
   NSRange range = NSMakeRange(0, [input length]);
-  [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagNumber) range:range];
-  [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagBracket) range:range];
-  [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagOperator) range:range];
+  [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagNumber)     range:range];
+  [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagBracket)    range:range];
+  [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagOperator)   range:range];
+  [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagOriginal)   range:range];
   [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagExpression) range:range];
-  [input removeAttribute:NSFontAttributeName range:range];
+  [input removeAttribute:NSFontAttributeName            range:range];
   [input removeAttribute:NSForegroundColorAttributeName range:range];
   [input removeAttribute:NSBackgroundColorAttributeName range:range];
-  [input removeAttribute:NSParagraphStyleAttributeName range:range];
+  [input removeAttribute:NSParagraphStyleAttributeName  range:range];
 }
 
 +(void)__step3_scanAndTag:(NSMutableAttributedString*)input;

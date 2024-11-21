@@ -179,14 +179,16 @@
 {
   NSTextStorage *model = [self model];
   NSTextView *textView = [self textView];
+  
+  // Get current selection
   NSRange selection = [textView selectedRange];
   
-  XPLogDebug1(@"%@ waitTimerFired: Rendering", self);
-  
+  // Solve the string
   [model beginEditing];
   [SVRSolver solveAttributedString:model];
   [model endEditing];
-  // TODO: Keep debugging crasher here
+  
+  // Restore the selection
   [textView setSelectedRange:selection];
 
   // Invalidating at the end is important.
