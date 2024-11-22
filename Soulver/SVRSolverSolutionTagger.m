@@ -36,9 +36,8 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
 
 @implementation SVRSolverSolutionTagger
 
-+(void)load;
++(void)initialize;
 {
-  NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
   SVRSolverSolutionTaggerSetExponent = [[NSSet alloc] initWithObjects:
                                         NSNumberForOperator(SVRSolverOperatorExponent),
                                         nil];
@@ -50,7 +49,6 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
                                         NSNumberForOperator(SVRSolverOperatorSubtract),
                                         NSNumberForOperator(SVRSolverOperatorAdd),
                                         nil];
-  [pool release];
 }
 
 // MARK: Business Logic
@@ -314,6 +312,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
   
   lhsRange = NSMakeRange(operatorRange.location - 1, 1);
   if (lhsRange.location >= 0) {
+    // TODO: Keep debugging crasher here
     lhs = [expression attribute:XPAttributedStringKeyForTag(SVRSolverTagNumber)
                         atIndex:lhsRange.location
                  effectiveRange:&lhsRange];

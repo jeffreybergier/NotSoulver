@@ -46,7 +46,7 @@
 
 // MARK: Window Placement
 
-+(void)load;
++(void)initialize;
 
 // MARK: Init
 

@@ -36,7 +36,7 @@ NSPoint XPDocumentPointForCascading;
 
 // MARK: Window Placement
 
-+(void)load;
++(void)initialize;
 {
   XPDocumentPointForCascading = NSZeroPoint;
 }
