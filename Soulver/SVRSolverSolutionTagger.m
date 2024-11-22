@@ -309,10 +309,14 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     // in this string with this operator set
     return nil;
   }
+
+  if (operatorRange.location == 0) {
+    if (errorPtr != NULL) { *errorPtr = SVRSolverErrorMissingOperand; }
+    return nil;
+  }
   
   lhsRange = NSMakeRange(operatorRange.location - 1, 1);
   if (lhsRange.location >= 0) {
-    // TODO: Keep debugging crasher here
     lhs = [expression attribute:XPAttributedStringKeyForTag(SVRSolverTagNumber)
                         atIndex:lhsRange.location
                  effectiveRange:&lhsRange];
