@@ -196,7 +196,8 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
       [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
       output = nil;
     } else {
-      XPLogDebug2(@"(): %@<-%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], [NSDecimalNumber notANumber]);
+      XPLogExtra1(@"(): %@<-Deleted", [[expression string] SVR_descriptionHighlightingRange:patchRange]);
+      [expression deleteCharactersInRange:patchRange];
     }
   }
   
