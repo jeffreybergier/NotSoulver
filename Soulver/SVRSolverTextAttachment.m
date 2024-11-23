@@ -376,7 +376,6 @@
 
 -(NSPoint)cellBaselineOffset;
 {
-  // TODO: Figure out how to always make this render in vertically center
   NSPoint output = [super cellBaselineOffset];
   XPFloat height = [self cellSize].height;
   NSFont *toDrawFont = [[self SVR_attachment] toDrawFont];

@@ -182,9 +182,7 @@
   SLRERegexMatch *match = nil;
   NSRange range = XPNotFoundRange;
   NSAssert(!_brackets, @"This is a lazy init method, it assumes _brackets is NIL");
-
-  // TODO: Figure out bug where 2 brackets on the left causes infinite loop
-  // Its not in this part of the code
+  
   while ((nextExpression = [e nextObject])) {
     expressionRange = [nextExpression XP_rangeValue];
     regex = [SLRERegex SVR_regexForBracketsInString:[_string substringWithRange:expressionRange]];
