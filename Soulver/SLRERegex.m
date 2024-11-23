@@ -303,38 +303,24 @@
   
   
   // Left Bracket Finding
-  regex = [SLRERegex SVR_regexForLeftBracketsInString:@"and (-102.34+243.333)^(666*-700)-33.44*-4.444*(7...888) and -9-(400) and"];
+  regex = [SLRERegex SVR_regexForBracketsInString:@"and (-102.34+243.333)^(666*-700)-33.44*-4.444*(7...888) and -9-(400) and"];
   match = [regex nextObject];
-   NSAssert([[match groupRanges] count] == 1, @"");
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"(-"], @"");
-  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@"("], @"");
+   NSAssert([[match groupRanges] count] == 0, @"");
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"("], @"");
   match = [regex nextObject];
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"(6"], @"");
-  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@"("], @"");
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@")"], @"");
   match = [regex nextObject];
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"(7"], @"");
-  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@"("], @"");
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"("], @"");
   match = [regex nextObject];
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"(4"], @"");
-  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@"("], @"");
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@")"], @"");
   match = [regex nextObject];
-  NSAssert(match == nil, @"");
-  
-  // Right Bracket Finding
-  regex = [SLRERegex SVR_regexForRightBracketsInString:@"and (-102.34+243.333)^(666*-700)-33.44*-4.444*(7...888)= and -9-(400) and"];
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"("], @"");
   match = [regex nextObject];
-  NSAssert([[match groupRanges] count] == 1, @"");
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"3)"], @"");
-  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@")"], @"");
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@")"], @"");
   match = [regex nextObject];
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"0)"], @"");
-  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@")"], @"");
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"("], @"");
   match = [regex nextObject];
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"8)"], @"");
-  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@")"], @"");
-  match = [regex nextObject];
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"0)"], @"");
-  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@")"], @"");
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@")"], @"");
   match = [regex nextObject];
   NSAssert(match == nil, @"");
   
