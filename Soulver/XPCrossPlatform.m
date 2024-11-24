@@ -145,22 +145,6 @@ NSArray* XPRunOpenPanel(void)
 }
 #pragma clang diagnostic pop
 
-@implementation NSAttributedString (CrossPlatform)
-
--(XPAttributeEnumerator*)SVR_enumeratorForAttribute:(XPAttributedStringKey)key;
-{
-  return [self SVR_enumeratorForAttribute:key usingLongestEffectiveRange:NO];
-}
-
--(XPAttributeEnumerator*)SVR_enumeratorForAttribute:(XPAttributedStringKey)key
-                         usingLongestEffectiveRange:(BOOL)usesLongest;
-{
-  return [XPAttributeEnumerator enumeratorWithAttributedString:self
-                                               forAttributeKey:key
-                                    usingLongestEffectiveRange:usesLongest];
-}
-@end
-
 @implementation XPAttributeEnumerator
 -(id)initWithAttributedString:(NSAttributedString*)attributedString
               forAttributeKey:(XPAttributedStringKey)key
@@ -229,6 +213,62 @@ NSArray* XPRunOpenPanel(void)
 
 @end
 
+@implementation NSAttributedString (CrossPlatform)
+
+-(XPAttributeEnumerator*)SVR_enumeratorForAttribute:(XPAttributedStringKey)key;
+{
+  return [self SVR_enumeratorForAttribute:key usingLongestEffectiveRange:NO];
+}
+
+-(XPAttributeEnumerator*)SVR_enumeratorForAttribute:(XPAttributedStringKey)key
+                         usingLongestEffectiveRange:(BOOL)usesLongest;
+{
+  return [XPAttributeEnumerator enumeratorWithAttributedString:self
+                                               forAttributeKey:key
+                                    usingLongestEffectiveRange:usesLongest];
+}
+@end
+
+@implementation XPCharacterSetEnumerator
+-(id)initWithString:(NSString*)string characterSet:(NSCharacterSet*)aSet options:(XPStringCompareOptions)mask;
+{
+  self = [super init];
+  if (mask & NSBackwardsSearch) { XPLogRaise1(@"%@: NSBackwardsSearch unsupported", self); }
+  _string = [string retain];
+  _set = [aSet retain];
+  _options = mask;
+  _index = NSMakeRange(0, [string length]);
+  return self;
+}
+
++(id)enumeratorWithString:(NSString*)string characterSet:(NSCharacterSet*)aSet options:(XPStringCompareOptions)mask;
+{
+  return [[[XPCharacterSetEnumerator alloc] initWithString:string
+                                              characterSet:aSet
+                                                   options:mask] autorelease];
+}
+
+-(NSValue*)nextObject;
+{
+  NSRange output = XPNotFoundRange;
+  XPUInteger maxRange = 0;
+  output = [_string rangeOfCharacterFromSet:_set options:_options range:_index];
+  if (XPIsNotFoundRange(output)) { return nil; }
+  maxRange = NSMaxRange(output);
+  _index = NSMakeRange(maxRange, [_string length]-maxRange);
+  return [NSValue XP_valueWithRange:output];
+}
+
+- (void)dealloc
+{
+  XPLogExtra1(@"DEALLOC:%@", self);
+  [_string release];
+  [_set release];
+  [super dealloc];
+}
+
+@end
+
 @implementation NSString (CrossPlatform)
 
 -(NSString*)SVR_descriptionHighlightingRange:(NSRange)range;
@@ -250,53 +290,20 @@ NSArray* XPRunOpenPanel(void)
 #endif
 }
 
-@end
-
-@implementation NSMutableString (CrossPlatform)
--(void)XP_replaceOccurrencesOfString:(NSString*)searchString
-                          withString:(NSString*)replaceString;
+-(NSEnumerator*)XP_enumeratorForCharactersInSet:(NSCharacterSet*)aSet;
 {
-  XPUInteger length = [self length];
-  NSRange searchRange = NSMakeRange(0, length);
-  NSRange foundRange = XPNotFoundRange;
-  
-  if ([searchString length] != [replaceString length]) {
-    XPLogRaise(@"Precondition Failure: searchString and replaceString must be same length");
-    return;
-  }
-  
-  while (searchRange.location < length) {
-    foundRange = [self rangeOfString:searchString options:0 range:searchRange];
-    if (XPIsNotFoundRange(foundRange)) { break; }
-    [self replaceCharactersInRange:foundRange withString:replaceString];
-    searchRange = NSMakeRange(NSMaxRange(foundRange), length-NSMaxRange(foundRange));
-  }
+  return [XPCharacterSetEnumerator enumeratorWithString:self
+                                           characterSet:aSet
+                                                options:0];
+}
+-(NSEnumerator*)XP_enumeratorForCharactersInSet:(NSCharacterSet*)aSet
+                                        options:(XPStringCompareOptions)mask;
+{
+  return [XPCharacterSetEnumerator enumeratorWithString:self
+                                           characterSet:aSet
+                                                options:mask];
 }
 
-+(void)XPTEST_replaceOccurrencesOfStringWithString;
-{
-  NSMutableString *string = [[NSMutableString new] autorelease];
-  NSString *expected = nil;
-  
-  XPLogAlwys(@"XPTEST_replaceOccurrencesOfStringWithString: Start");
-  
-  [string setString:@"0a0b0c0d0e0f0g0h0i0j0"];
-  [string XP_replaceOccurrencesOfString:@"0" withString:@"+"];
-  expected = @"+a+b+c+d+e+f+g+h+i+j+";
-  NSAssert([expected isEqualToString:string], @"");
-  
-  [string setString:@"00a00b00c00d00e00f00g00h00i00j00"];
-  [string XP_replaceOccurrencesOfString:@"00" withString:@"++"];
-  expected = @"++a++b++c++d++e++f++g++h++i++j++";
-  NSAssert([expected isEqualToString:string], @"");
-  
-  [string setString:@"00a00b00c00d00e00f00g00h00ijklmnop"];
-  [string XP_replaceOccurrencesOfString:@"00" withString:@"++"];
-  expected = @"++a++b++c++d++e++f++g++h++ijklmnop";
-  NSAssert([expected isEqualToString:string], @"");
-  
-  XPLogAlwys(@"XPTEST_replaceOccurrencesOfStringWithString: Pass");
-}
 @end
 
 // MARK: NSDecimalNumber
@@ -388,7 +395,6 @@ NSArray* XPRunOpenPanel(void)
 +(void)executeUnitTests;
 {
   XPLogAlwys(@"XPTESTS: Start");
-  [NSMutableString XPTEST_replaceOccurrencesOfStringWithString];
   [XPLog executeUnitTests];
   XPLogAlwys(@"XPTESTS: Pass");
 }
@@ -526,6 +532,11 @@ NSArray* XPRunOpenPanel(void)
   XPLogAlwys1(@"MAC_OS_X_VERSION_10_4..(%d)", MAC_OS_X_VERSION_10_4);
 #else
   XPLogAlwys (@"MAC_OS_X_VERSION_10_4..(ND)");
+#endif
+#ifdef MAC_OS_X_VERSION_10_5
+  XPLogAlwys1(@"MAC_OS_X_VERSION_10_5..(%d)", MAC_OS_X_VERSION_10_5);
+#else
+  XPLogAlwys (@"MAC_OS_X_VERSION_10_5..(ND)");
 #endif
 #ifdef MAC_OS_X_VERSION_10_6
   XPLogAlwys1(@"MAC_OS_X_VERSION_10_6..(%d)", MAC_OS_X_VERSION_10_6);

@@ -36,9 +36,10 @@
 
 // MARK: Business Logic
 +(void)solveAttributedString:(NSMutableAttributedString*)input;
++(NSString*)restoreOriginalString:(NSAttributedString*)input;
 
 // MARK: Private
-+(void)__step1_decodeExpressionTerminator:(NSMutableAttributedString*)input;
++(void)__step1_restoreOriginals:(NSMutableAttributedString*)input;
 +(void)__step2_removeAllTags:(NSMutableAttributedString*)input;
 +(void)__step3_scanAndTag:(NSMutableAttributedString*)input;
 +(void)__step4_solveAndTag:(NSMutableAttributedString*)input;
@@ -64,11 +65,9 @@ typedef enum {
   // Stores NSString of the range of the bracket - (Minus the Equal Sign)
   // NSStringFromRange (use NSRangeFromString to extract)
   SVRSolverTagExpression,
-  // Stores NSDecimalNumber with the solution for the expression in the = sign
-  // Stores NSNumber if its an error
-  SVRSolverTagSolution,
-  // Stores NSDecimalNumber with the solution of the previous expression
-  SVRSolverTagPreviousSolution,
+  // Stores NSString with the original value
+  // before it was replaced with NSTextAttachment
+  SVRSolverTagOriginal
 } SVRSolverTag;
 
 typedef enum {
@@ -77,6 +76,7 @@ typedef enum {
   SVRSolverOperatorMultiply,
   SVRSolverOperatorSubtract,
   SVRSolverOperatorAdd,
+  SVRSolverOperatorUnknown
 } SVRSolverOperator;
 
 typedef enum {
@@ -96,5 +96,6 @@ SVRSolverTag          SVRSolverTagForKey(XPAttributedStringKey string);
 NSNumber             *NSNumberForOperator(SVRSolverOperator operator);
 SVRSolverOperator     SVRSolverOperatorForNumber(NSNumber *number);
 SVRSolverOperator     SVRSolverOperatorForRawString(NSString *string);
+NSString             *RawStringForOperator(SVRSolverOperator operator);
 NSString             *SVRSolverDescriptionForError(SVRSolverError error);
 NSString             *SVRSolverDebugDescriptionForError(SVRSolverError error);

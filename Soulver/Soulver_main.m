@@ -61,7 +61,6 @@ int main(int argc, const char *argv[]) {
   
   // 3. Release pool
   [pool release];
-  pool = nil;
   
   // 4. Load NSApplication
 #ifdef MAC_OS_X_VERSION_10_4

@@ -45,9 +45,9 @@
 +(id)scannerWithString:(NSString*)string;
 
 // MARK: Access the ranges
+-(NSSet*)expressionRanges;
 -(NSSet*)numberRanges;
 -(NSSet*)operatorRanges;
--(NSSet*)expressionRanges;
 -(NSSet*)bracketRanges;
 
 // MARK: Convenience Properties
@@ -55,9 +55,9 @@
 -(NSString*)description;
 
 // MARK: Private
+-(void)__populateExpressions;
 -(void)__populateNumbers;
 -(void)__populateOperators;
--(void)__populateExpressions;
 -(void)__populateBrackets;
 
 @end
@@ -67,7 +67,6 @@
 +(id)SVR_regexForNumbersInString:(NSString*)string;
 +(id)SVR_regexForOperatorsInString:(NSString*)string;
 +(id)SVR_regexForExpressionsInString:(NSString*)string;
-+(id)SVR_regexForLeftBracketsInString:(NSString*)string;
-+(id)SVR_regexForRightBracketsInString:(NSString*)string;
++(id)SVR_regexForBracketsInString:(NSString*)string;
 
 @end

@@ -134,7 +134,6 @@
 
 -(IBAction)openSourceRepository:(id)sender;
 {
-  // TODO: Add specific support for opening in Omniweb on OpenStep
   BOOL success = NO;
   XPAlertReturn copyToClipboard = XPAlertReturnError;
   NSPasteboard *pb = [NSPasteboard generalPasteboard];

@@ -43,37 +43,68 @@
 
 +(void)solveAttributedString:(NSMutableAttributedString*)input;
 {
+  XPUInteger inputLength = [[input string] length];
+  XPUInteger outputLength;
   [input retain];
-  [self __step1_decodeExpressionTerminator:input];
+  [self __step1_restoreOriginals:input];
   [self __step2_removeAllTags:input];
   [self __step3_scanAndTag:input];
   [self __step4_solveAndTag:input];
   [self __step5_styleAndTag:input];
+  outputLength = [[input string] length];
+  if (inputLength != outputLength) {
+    XPLogPause2(@"SVRSolver solveAttributedString: String changed length: %ld->%ld", inputLength, outputLength);
+  }
   [input autorelease];
 }
 
-+(void)__step1_decodeExpressionTerminator:(NSMutableAttributedString*)input;
++(NSString*)restoreOriginalString:(NSAttributedString*)input;
 {
-  unichar attachmentChar = NSAttachmentCharacter;
-  NSString *searchString = [NSString stringWithCharacters:&attachmentChar length:1];
-  NSString *replaceString = @"=";
-  [[input mutableString] XP_replaceOccurrencesOfString:searchString
-                                            withString:replaceString];
+  NSMutableAttributedString *copy = [[input mutableCopy] autorelease];
+  [self __step1_restoreOriginals:copy];
+  return [copy string];
+}
+
++(void)__step1_restoreOriginals:(NSMutableAttributedString*)input;
+{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnonnull"
+  // TODO: Move this into static method and use +initialize
+  NSCharacterSet *set = [NSCharacterSet characterSetWithCharactersInString:
+                         [[NSAttributedString attributedStringWithAttachment:nil] string]];
+#pragma clang diagnostic pop
+  NSRange range = XPNotFoundRange;
+  NSValue *next = nil;
+  NSString *originalString = nil;
+  NSEnumerator *e = [[input string] XP_enumeratorForCharactersInSet:set];
+  while ((next = [e nextObject])) {
+    range = [next XP_rangeValue];
+    originalString = [input attribute:XPAttributedStringKeyForTag(SVRSolverTagOriginal)
+                              atIndex:range.location
+                       effectiveRange:NULL];
+    if (!originalString) {
+      XPLogPause(@"SVRSolver __step1_restoreOriginals: No attribute for text attachment character");
+      originalString = @"~";
+    }
+    if (range.length > 1) {
+      XPLogPause1(@"SVRSolver __step1_restoreOriginals: Invalid Range:%@", NSStringFromRange(range));
+    }
+    [input replaceCharactersInRange:range withString:originalString];
+  }
 }
 
 +(void)__step2_removeAllTags:(NSMutableAttributedString*)input;
 {
   NSRange range = NSMakeRange(0, [input length]);
-  [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagNumber) range:range];
-  [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagBracket) range:range];
-  [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagOperator) range:range];
-  [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagSolution) range:range];
+  [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagNumber)     range:range];
+  [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagBracket)    range:range];
+  [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagOperator)   range:range];
+  [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagOriginal)   range:range];
   [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagExpression) range:range];
-  [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagPreviousSolution) range:range];
-  [input removeAttribute:NSFontAttributeName range:range];
+  [input removeAttribute:NSFontAttributeName            range:range];
   [input removeAttribute:NSForegroundColorAttributeName range:range];
   [input removeAttribute:NSBackgroundColorAttributeName range:range];
-  [input removeAttribute:NSParagraphStyleAttributeName range:range];
+  [input removeAttribute:NSParagraphStyleAttributeName  range:range];
 }
 
 +(void)__step3_scanAndTag:(NSMutableAttributedString*)input;
@@ -115,12 +146,11 @@
 NSString *XPAttributedStringKeyForTag(SVRSolverTag tag)
 {
   switch (tag) {
-    case SVRSolverTagNumber:           return @"kSVRSoulverTagNumberKey";
-    case SVRSolverTagBracket:          return @"kSVRSoulverTagBracketKey";
-    case SVRSolverTagOperator:         return @"kSVRSoulverTagOperatorKey";
-    case SVRSolverTagExpression:       return @"kSVRSoulverTagExpressionKey";
-    case SVRSolverTagSolution:         return @"kSVRSolverTagSolutionKey";
-    case SVRSolverTagPreviousSolution: return @"kSVRSolverTagPreviousSolutionKey";
+    case SVRSolverTagNumber:     return @"kSVRSoulverTagNumberKey";
+    case SVRSolverTagBracket:    return @"kSVRSoulverTagBracketKey";
+    case SVRSolverTagOperator:   return @"kSVRSoulverTagOperatorKey";
+    case SVRSolverTagExpression: return @"kSVRSoulverTagExpressionKey";
+    case SVRSolverTagOriginal:   return @"kSVRSolverTagOriginalKey";
     default:
       XPLogRaise1(@"SVR_stringForTagUnknown: %d", tag);
       return nil;
@@ -129,18 +159,16 @@ NSString *XPAttributedStringKeyForTag(SVRSolverTag tag)
 
 SVRSolverTag SVRSolverTagForKey(XPAttributedStringKey string)
 {
-  if        ([string isEqualToString:XPAttributedStringKeyForTag(SVRSolverTagNumber)])           {
+  if        ([string isEqualToString:XPAttributedStringKeyForTag(SVRSolverTagNumber)])     {
     return SVRSolverTagNumber;
-  } else if ([string isEqualToString:XPAttributedStringKeyForTag(SVRSolverTagBracket)])          {
+  } else if ([string isEqualToString:XPAttributedStringKeyForTag(SVRSolverTagBracket)])    {
     return SVRSolverTagBracket;
-  } else if ([string isEqualToString:XPAttributedStringKeyForTag(SVRSolverTagOperator)])         {
+  } else if ([string isEqualToString:XPAttributedStringKeyForTag(SVRSolverTagOperator)])   {
     return SVRSolverTagOperator;
-  } else if ([string isEqualToString:XPAttributedStringKeyForTag(SVRSolverTagExpression)])       {
+  } else if ([string isEqualToString:XPAttributedStringKeyForTag(SVRSolverTagExpression)]) {
     return SVRSolverTagExpression;
-  } else if ([string isEqualToString:XPAttributedStringKeyForTag(SVRSolverTagSolution)])         {
-    return SVRSolverTagSolution;
-  } else if ([string isEqualToString:XPAttributedStringKeyForTag(SVRSolverTagPreviousSolution)]) {
-    return SVRSolverTagPreviousSolution;
+  } else if ([string isEqualToString:XPAttributedStringKeyForTag(SVRSolverTagOriginal)])   {
+    return SVRSolverTagOriginal;
   } else {
     XPLogRaise1(@"SVR_tagForStringUnknown: %@", string);
     return (SVRSolverTag)-1;
@@ -171,13 +199,27 @@ SVRSolverOperator SVRSolverOperatorForRawString(NSString *string)
     return SVRSolverOperatorAdd;
   } else {
     XPLogRaise1(@"SVR_operatorForRawStringUnknown: %@", string);
-    return (SVRSolverOperator)-1;
+    return SVRSolverOperatorUnknown;
+  }
+}
+
+NSString *RawStringForOperator(SVRSolverOperator operator)
+{
+  switch (operator) {
+    case SVRSolverOperatorExponent: return @"^";
+    case SVRSolverOperatorDivide:   return @"/";
+    case SVRSolverOperatorMultiply: return @"*";
+    case SVRSolverOperatorSubtract: return @"-";
+    case SVRSolverOperatorAdd:      return @"+";
+    case SVRSolverOperatorUnknown:
+    default:
+      XPLogRaise1(@"RawStringForOperatorUnknown: %d", operator);
+      return nil;
   }
 }
 
 NSString *SVRSolverDescriptionForError(SVRSolverError error)
 {
-  // TODO: Localize Strings
   switch (error) {
     case SVRSolverErrorNone:
       return nil;

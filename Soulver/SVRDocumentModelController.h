@@ -30,15 +30,20 @@
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
 
+// TODO: Figure out how to make CMD V to copy the "cleaned up" plain string
+// TODO: Figure out why 5-5=10
+
 @interface SVRDocumentModelController: NSObject
 {
-  mm_new      NSTextStorage *_model;
-  mm_new      NSTimer       *_waitTimer;
-  mm_unretain NSTextView    *_textView;
+  mm_new      NSTextStorage       *_model;
+  mm_new      NSTimer             *_waitTimer;
+  mm_new      NSMutableDictionary *_dataCache;
+  mm_unretain NSTextView          *_textView;
 }
 
 // MARK: Properties
 -(NSTextStorage*)model;
+-(NSMutableDictionary*)dataCache;
 -(NSTextView*)textView;
 -(void)setTextView:(NSTextView*)textView;
 

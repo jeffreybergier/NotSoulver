@@ -30,212 +30,42 @@
 #import "SVRSolverTextAttachment.h"
 #import "NSUserDefaults+Soulver.h"
 
-@implementation SVRSolverTextAttachment
+@implementation SVRSolverTextAttachmentImp
 
--(NSDecimalNumber*)solution;
+-(NSString*)toDrawString;
 {
-  return [[_solution retain] autorelease];
+  return [[_toDrawString retain] autorelease];
 }
 
--(SVRSolverError)error;
+-(NSFont*)toDrawFont;
 {
-  return _error;
+  return [[_toDrawFont retain] autorelease];
 }
 
--(NSString*)stringForDrawing;
+-(NSColor*)toDrawColor;
 {
-  return ([self error] == SVRSolverErrorNone)
-  ? [@"=" stringByAppendingString:[[self solution] description]]
-  : [@"=" stringByAppendingString:SVRSolverDescriptionForError([self error])];
+  return [[_toDrawColor retain] autorelease];
 }
 
--(id)initWithSolution:(NSDecimalNumber*)solution error:(SVRSolverError)error;
+-(NSFont*)neighorFont;
 {
-  NSFileWrapper *wrapper = [[[NSFileWrapper alloc] init] autorelease];
-  self = [super initWithFileWrapper:wrapper];
-  _solution = [solution retain];
-  _error = error;
-  [wrapper setPreferredFilename:[self stringForDrawing]];
-  [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
-  return self;
+  return [[_neighorFont retain] autorelease];
 }
 
-+(id)attachmentWithSolution:(NSDecimalNumber*)solution error:(SVRSolverError)error;
+-(SVRSolverTextAttachmentBorderStyle)borderStyle;
 {
-  return [[[SVRSolverTextAttachment alloc] initWithSolution:solution error:error] autorelease];
-}
-
--(NSString*)description;
-{
-  return [NSString stringWithFormat:@"<%@> {solution:`%@`, error:%@}",
-    [self class], [self solution], SVRSolverDebugDescriptionForError([self error])];
-}
-
-- (void)dealloc
-{
-  XPLogExtra1(@"DEALLOC: %@", self);
-  [_solution release];
-  _solution = nil;
-  [super dealloc];
-}
-
-@end
-
-@implementation SVRSolverTextAttachmentCell
-
-// MARK: Properties
-
--(BOOL)shouldDrawError;
-{
-  SVRSolverTextAttachment *attachment = (SVRSolverTextAttachment*)[self attachment];
-  return [attachment error] != SVRSolverErrorNone;
-}
-
--(NSString*)description;
-{
-  return [[_description retain] autorelease];
+  return _borderStyle;
 }
 
 // MARK: Init
-
--(id)initWithAttachment:(SVRSolverTextAttachment*)attachment;
+-(id)init;
 {
   self = [super init];
-  _description = [[NSString alloc] initWithFormat:@"<%@> {solution:`%@`, error:%@}",
-      [self class], [attachment solution], SVRSolverDebugDescriptionForError([attachment error])];
-  [self setAttachment:attachment];
+  _toDrawString = nil;
+  _toDrawFont   = nil;
+  _toDrawColor  = nil;
+  _neighorFont  = nil;
   return self;
-}
-
-+(id)cellWithAttachment:(SVRSolverTextAttachment*)attachment;
-{
-  return [[[SVRSolverTextAttachmentCell alloc] initWithAttachment:attachment] autorelease];
-}
-
-// MARK: Custom Drawing
-
--(void)drawSolutionWithFrame:(NSRect)cellFrame
-                   textFrame:(NSRect)textFrame
-                      inView:(NSView*)controlView;
-{
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  SVRSolverTextAttachment *attachment = (SVRSolverTextAttachment*)[self attachment];
-  if ([ud SVR_userInterfaceStyle] == XPUserInterfaceStyleDark) {
-    NSDrawGrayBezel(cellFrame, cellFrame);
-  } else {
-    NSDrawWhiteBezel(cellFrame, cellFrame);
-  }
-  [[attachment stringForDrawing] drawInRect:textFrame
-                             withAttributes:[self attributesForDrawingSolution]];
-  XPLogExtra1(@"drawSolutionWithFrame:%@", NSStringFromRect(cellFrame));
-}
-
--(void)drawErrorWithFrame:(NSRect)cellFrame
-                textFrame:(NSRect)textFrame
-                   inView:(NSView*)controlView;
-{
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  SVRSolverTextAttachment *attachment = (SVRSolverTextAttachment*)[self attachment];
-  if ([ud SVR_userInterfaceStyle] == XPUserInterfaceStyleDark) {
-    NSDrawGrayBezel(cellFrame, cellFrame);
-  } else {
-    NSDrawWhiteBezel(cellFrame, cellFrame);
-  }
-  [[attachment stringForDrawing] drawInRect:textFrame
-                             withAttributes:[self attributesForDrawingError]];
-  XPLogExtra1(@"drawErrorWithFrame:%@", NSStringFromRect(cellFrame));
-}
-
--(NSDictionary*)attributesForDrawingSolution;
-{
-  NSUserDefaults *ud;
-  NSArray *keys;
-  NSArray *vals;
-  NSMutableParagraphStyle *style;
-  
-  style = [[[NSMutableParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
-  [style setAlignment:XPTextAlignmentCenter];
-  
-  ud   = [NSUserDefaults standardUserDefaults];
-  keys = [NSArray arrayWithObjects:
-          NSFontAttributeName,
-          NSForegroundColorAttributeName,
-          NSParagraphStyleAttributeName,
-          nil];
-  vals = [NSArray arrayWithObjects:
-          [ud SVR_fontForTheme:SVRThemeFontMath],
-          [ud SVR_colorForTheme:SVRThemeColorSolution],
-          style,
-          nil];
-  return [NSDictionary dictionaryWithObjects:vals forKeys:keys];
-}
-
--(NSDictionary*)attributesForDrawingError;
-{
-  NSUserDefaults *ud;
-  NSArray *keys;
-  NSArray *vals;
-  NSMutableParagraphStyle *style;
-  
-  style = [[[NSMutableParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
-  [style setAlignment:XPTextAlignmentCenter];
-  
-  ud   = [NSUserDefaults standardUserDefaults];
-  keys = [NSArray arrayWithObjects:
-          NSFontAttributeName,
-          NSForegroundColorAttributeName,
-          NSParagraphStyleAttributeName,
-          nil];
-  vals = [NSArray arrayWithObjects:
-          [ud SVR_fontForTheme:SVRThemeFontError],
-          [ud SVR_colorForTheme:SVRThemeColorErrorText],
-          style,
-          nil];
-  return [NSDictionary dictionaryWithObjects:vals forKeys:keys];
-}
-
-// MARK: Protocol (Used)
-
--(NSSize)cellSize;
-{
-  NSDictionary *attributes = ([self shouldDrawError])
-                            ? [self attributesForDrawingError]
-                            : [self attributesForDrawingSolution];
-  SVRSolverTextAttachment *attachment = (SVRSolverTextAttachment*)[self attachment];
-  NSSize size = [[attachment stringForDrawing] sizeWithAttributes:attributes];
-  size.width += 8;
-  return size;
-}
-
--(NSPoint)cellBaselineOffset;
-{
-  // TODO: Figure out how to always make this render in vertically center
-  NSFont *font = [[self attributesForDrawingSolution] objectForKey:NSFontAttributeName];
-  XPFloat capHeight = [font capHeight];
-  XPFloat underline = fabs([font underlinePosition]);
-  XPFloat calculation = 0-((capHeight/2)+underline);
-  return NSMakePoint(0, calculation);
-}
-
--(void)drawWithFrame:(NSRect)cellFrame
-              inView:(NSView*)controlView;
-{
-  NSFont *font = [[self attributesForDrawingSolution] objectForKey:NSFontAttributeName];
-  NSRect textFrame = NSMakeRect(cellFrame.origin.x,
-                                cellFrame.origin.y - [font underlinePosition],
-                                cellFrame.size.width,
-                                cellFrame.size.height);
-  return ([self shouldDrawError])
-        ? [self drawErrorWithFrame:cellFrame    textFrame:textFrame inView:controlView]
-        : [self drawSolutionWithFrame:cellFrame textFrame:textFrame inView:controlView];
-}
-
--(void)highlight:(BOOL)flag
-       withFrame:(NSRect)cellFrame
-          inView:(NSView*)controlView;
-{
-  XPLogPause2(@"higlight:%@ withFrame:%@",
-   (flag) ? @"YES" : @"NO", NSStringFromRect(cellFrame));
 }
 
 // MARK: Dealloc
@@ -243,8 +73,332 @@
 -(void)dealloc;
 {
   XPLogExtra1(@"DEALLOC: %@", self);
-  [_description release];
-  _description = nil;
+  [_toDrawString release];
+  [_toDrawFont   release];
+  [_toDrawColor  release];
+  [_neighorFont  release];
+  _toDrawString = nil;
+  _toDrawFont   = nil;
+  _toDrawColor  = nil;
+  _neighorFont  = nil;
+  [super dealloc];
+}
+
+@end
+
+@implementation SVRSolverSolutionTextAttachment
+
+// MARK: Init
+
+-(id)initWithSolution:(NSDecimalNumber*)solution;
+{
+  NSFileWrapper *wrapper = [[[NSFileWrapper alloc] init] autorelease];
+  self = [super initWithFileWrapper:wrapper];
+  _toDrawString = [[[self class] toDrawStringWithSolution:solution] retain];
+  _toDrawFont   = [[[self class] toDrawFont]   retain];
+  _toDrawColor  = [[[self class] toDrawColor]  retain];
+  _neighorFont  = [[[self class] neighborFont] retain];
+  _borderStyle  = [ [self class] borderStyle];
+  [wrapper setPreferredFilename:_toDrawString];
+  [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
+  return self;
+}
+
++(id)attachmentWithSolution:(NSDecimalNumber*)solution;
+{
+  return [[[SVRSolverSolutionTextAttachment alloc] initWithSolution:solution] autorelease];
+}
+
+// MARK: Business Logic
++(NSString*)toDrawStringWithSolution:(NSDecimalNumber*)solution;
+{
+  return [@"=" stringByAppendingString:[solution description]];
+}
++(NSFont*)toDrawFont;
+{
+  return [[NSUserDefaults standardUserDefaults] SVR_fontForTheme:SVRThemeFontMath];
+}
++(NSColor*)toDrawColor;
+{
+  return [[NSUserDefaults standardUserDefaults] SVR_colorForTheme:SVRThemeColorSolution];
+}
++(NSFont*)neighborFont;
+{
+  return [[NSUserDefaults standardUserDefaults] SVR_fontForTheme:SVRThemeFontMath];
+}
++(SVRSolverTextAttachmentBorderStyle)borderStyle;
+{
+  switch ([[NSUserDefaults standardUserDefaults] SVR_userInterfaceStyle]) {
+    case XPUserInterfaceStyleDark:
+      return SVRSolverTextAttachmentBorderStyleRecessedGray;
+    case XPUserInterfaceStyleLight:
+    case XPUserInterfaceStyleUnspecified:
+    default:
+      return SVRSolverTextAttachmentBorderStyleRecessedWhite;
+  }
+}
+
+// MARK: Silence warnings in Jaguar and Below
+// for some reason GCC doesn't see the superclass
+// implementation of these methods and gives warnings
+#ifndef MAC_OS_X_VERSION_10_3
+-(NSString*)toDrawString; { return [super toDrawString]; }
+-(NSFont*)toDrawFont;     { return [super toDrawFont];   }
+-(NSColor*)toDrawColor;   { return [super toDrawColor];  }
+-(NSFont*)neighorFont;    { return [super neighorFont];  }
+-(SVRSolverTextAttachmentBorderStyle)borderStyle; { return [super borderStyle]; }
+#endif
+
+@end
+
+@implementation SVRSolverErrorTextAttachment
+
+// MARK: Init
+
+-(id)initWithError:(SVRSolverError)error;
+{
+  NSFileWrapper *wrapper = [[[NSFileWrapper alloc] init] autorelease];
+  self = [super initWithFileWrapper:wrapper];
+  _toDrawString = [[[self class] toDrawStringWithError:error] retain];
+  _toDrawFont   = [[[self class] toDrawFont]   retain];
+  _toDrawColor  = [[[self class] toDrawColor]  retain];
+  _neighorFont  = [[[self class] neighborFont] retain];
+  _borderStyle  = [ [self class] borderStyle];
+  [wrapper setPreferredFilename:_toDrawString];
+  [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
+  return self;
+}
+
++(id)attachmentWithError:(SVRSolverError)error;
+{
+  return [[[SVRSolverErrorTextAttachment alloc] initWithError:error] autorelease];
+}
+
+// MARK: Business Logic
++(NSString*)toDrawStringWithError:(SVRSolverError)error;
+{
+  return [@"=" stringByAppendingString:SVRSolverDescriptionForError(error)];
+}
++(NSFont*)toDrawFont;
+{
+  return [[NSUserDefaults standardUserDefaults] SVR_fontForTheme:SVRThemeFontError];
+}
++(NSColor*)toDrawColor;
+{
+  return [[NSUserDefaults standardUserDefaults] SVR_colorForTheme:SVRThemeColorErrorText];
+}
++(NSFont*)neighborFont;
+{
+  return [[NSUserDefaults standardUserDefaults] SVR_fontForTheme:SVRThemeFontMath];
+}
++(SVRSolverTextAttachmentBorderStyle)borderStyle;
+{
+  switch ([[NSUserDefaults standardUserDefaults] SVR_userInterfaceStyle]) {
+    case XPUserInterfaceStyleDark:
+      return SVRSolverTextAttachmentBorderStyleRecessedGray;
+    case XPUserInterfaceStyleLight:
+    case XPUserInterfaceStyleUnspecified:
+    default:
+      return SVRSolverTextAttachmentBorderStyleRecessedGray;
+  }
+}
+
+// MARK: Silence warnings in Jaguar and Below
+// for some reason GCC doesn't see the superclass
+// implementation of these methods and gives warnings
+#ifndef MAC_OS_X_VERSION_10_3
+-(NSString*)toDrawString; { return [super toDrawString]; }
+-(NSFont*)toDrawFont;     { return [super toDrawFont];   }
+-(NSColor*)toDrawColor;   { return [super toDrawColor];  }
+-(NSFont*)neighorFont;    { return [super neighorFont];  }
+-(SVRSolverTextAttachmentBorderStyle)borderStyle; { return [super borderStyle]; }
+#endif
+
+@end
+
+@implementation SVRSolverPreviousSolutionTextAttachment
+
+// MARK: Init
+-(id)initWithPreviousSolution:(NSDecimalNumber*)previousSolution
+                     operator:(SVRSolverOperator)operator;
+{
+  NSFileWrapper *wrapper = [[[NSFileWrapper alloc] init] autorelease];
+  self = [super initWithFileWrapper:wrapper];
+  _toDrawString = [[[self class] toDrawStringWithPreviousSolution:previousSolution
+                                                         operator:operator] retain];
+  _toDrawFont   = [[[self class] toDrawFont]   retain];
+  _toDrawColor  = [[[self class] toDrawColor]  retain];
+  _neighorFont  = [[[self class] neighborFont] retain];
+  _borderStyle  = [ [self class] borderStyle];
+  [wrapper setPreferredFilename:_toDrawString];
+  [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
+  return self;
+}
+
++(id)attachmentWithPreviousSolution:(NSDecimalNumber*)previousSolution
+                           operator:(SVRSolverOperator)operator;
+{
+  return [[[SVRSolverPreviousSolutionTextAttachment alloc] initWithPreviousSolution:previousSolution
+                                                                           operator:operator] autorelease];
+}
+
+// MARK: Business Logic
++(NSString*)toDrawStringWithPreviousSolution:(NSDecimalNumber*)previousSolution
+                                    operator:(SVRSolverOperator)operator;
+{
+  return [[previousSolution description] stringByAppendingString:RawStringForOperator(operator)];
+}
++(NSFont*)toDrawFont;
+{
+  return [[NSUserDefaults standardUserDefaults] SVR_fontForTheme:SVRThemeFontMath];
+}
++(NSColor*)toDrawColor;
+{
+  return [[NSUserDefaults standardUserDefaults] SVR_colorForTheme:SVRThemeColorOperator];
+}
++(NSFont*)neighborFont;
+{
+  return [[NSUserDefaults standardUserDefaults] SVR_fontForTheme:SVRThemeFontMath];
+}
++(SVRSolverTextAttachmentBorderStyle)borderStyle;
+{
+  return SVRSolverTextAttachmentBorderStyleColored;
+}
+
+// MARK: Silence warnings in Jaguar and Below
+// for some reason GCC doesn't see the superclass
+// implementation of these methods and gives warnings
+#ifndef MAC_OS_X_VERSION_10_3
+-(NSString*)toDrawString; { return [super toDrawString]; }
+-(NSFont*)toDrawFont;     { return [super toDrawFont];   }
+-(NSColor*)toDrawColor;   { return [super toDrawColor];  }
+-(NSFont*)neighorFont;    { return [super neighorFont];  }
+-(SVRSolverTextAttachmentBorderStyle)borderStyle; { return [super borderStyle]; }
+#endif
+
+@end
+
+@implementation SVRSolverTextAttachmentCell
+
+// MARK: Properties
+
+-(NSDictionary*)toDrawAttributes;
+{
+  return [[_toDrawAttributes retain] autorelease];
+}
+
+-(id<SVRSolverTextAttachment>)SVR_attachment;
+{
+  return (id<SVRSolverTextAttachment>)[self attachment];
+}
+
+// MARK: Init
+
+-(id)initWithAttachment:(NSTextAttachment<SVRSolverTextAttachment>*)attachment;
+{
+  self = [super init];
+  [self setAttachment:attachment];
+  _toDrawAttributes = [
+    [SVRSolverTextAttachmentCell toDrawAttributesWithFont:[attachment toDrawFont]
+                                                    color:[attachment toDrawColor]]
+    retain];
+  return self;
+}
+
++(id)cellWithAttachment:(NSTextAttachment<SVRSolverTextAttachment>*)attachment;
+{
+  return [[[SVRSolverTextAttachmentCell alloc] initWithAttachment:attachment] autorelease];
+}
+
+// MARK: Custom Drawing
+
++(NSDictionary*)toDrawAttributesWithFont:(NSFont*)font
+                                   color:(NSColor*)color;
+{
+  NSArray *keys;
+  NSArray *vals;
+  NSMutableParagraphStyle *style;
+  
+  style = [[[NSMutableParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
+  [style setAlignment:XPTextAlignmentCenter];
+  
+  keys = [NSArray arrayWithObjects:
+          NSFontAttributeName,
+          NSForegroundColorAttributeName,
+          NSParagraphStyleAttributeName,
+          nil];
+  vals = [NSArray arrayWithObjects:
+          font,
+          color,
+          style,
+          nil];
+  return [NSDictionary dictionaryWithObjects:vals forKeys:keys];
+}
+
+-(void)drawWithFrame:(NSRect)cellFrame
+              inView:(NSView*)controlView;
+{
+  switch ([[self SVR_attachment] borderStyle]) {
+    case SVRSolverTextAttachmentBorderStyleColored:
+      [[[self SVR_attachment] toDrawColor] set];
+      NSFrameRect(cellFrame);
+      break;
+    case SVRSolverTextAttachmentBorderStyleRecessedGray:
+      NSDrawGrayBezel(cellFrame, cellFrame);
+      break;
+    case SVRSolverTextAttachmentBorderStyleRecessedWhite:
+      NSDrawWhiteBezel(cellFrame, cellFrame);
+      break;
+    case SVRSolverTextAttachmentBorderStyleGroove:
+      NSDrawGroove(cellFrame, cellFrame);
+      break;
+    case SVRSolverTextAttachmentBorderStyleDotted:
+      NSDottedFrameRect(cellFrame);
+      break;
+    case SVRSolverTextAttachmentBorderStyleNone:
+    default:
+      break;
+  }
+  [[[self SVR_attachment] toDrawString] drawInRect:cellFrame
+                                    withAttributes:[self toDrawAttributes]];
+  XPLogExtra2(@"drawString:`%@` withFrame:%@", [[self SVR_attachment] toDrawString], NSStringFromRect(cellFrame));
+}
+
+// MARK: Protocol (Used)
+
+-(NSSize)cellSize;
+{
+  NSDictionary *attributes = [self toDrawAttributes];
+  NSSize size = [[[self SVR_attachment] toDrawString] sizeWithAttributes:attributes];
+  size.width += 8;
+  return size;
+}
+
+-(NSPoint)cellBaselineOffset;
+{
+  NSPoint output = [super cellBaselineOffset];
+  XPFloat height = [self cellSize].height;
+  NSFont *toDrawFont = [[self SVR_attachment] toDrawFont];
+  output.y -= (height/2.0) + ([toDrawFont descender]*2.0);
+  return output;
+}
+
+// MARK: Protocol (Unused)
+
+-(void)highlight:(BOOL)flag
+       withFrame:(NSRect)cellFrame
+          inView:(NSView*)controlView;
+{
+  XPLogPause2(@"higlight:%@ withFrame:%@", (flag) ? @"YES" : @"NO", NSStringFromRect(cellFrame));
+}
+
+// MARK: Dealloc
+
+-(void)dealloc;
+{
+  XPLogExtra1(@"DEALLOC: %@", self);
+  [_toDrawAttributes release];
+  _toDrawAttributes = nil;
   [super dealloc];
 }
 

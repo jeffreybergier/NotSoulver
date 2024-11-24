@@ -33,10 +33,16 @@
 
 @interface SVRSolverSolutionTagger: NSObject
 
+// MARK: Configure constants
++(void)initialize;
+
 // MARK: Business Logic
 +(void)tagSolutionsInAttributedString:(NSMutableAttributedString*)string;
 
 // MARK: Private
++(BOOL)__prepareExpression:(NSMutableAttributedString*)input
+      withPreviousSolution:(NSDecimalNumber*)previousSolution
+           operatorPointer:(SVRSolverOperator*)operatorPointer;
 +(NSDecimalNumber*)__solutionForExpression:(NSAttributedString*)string
                                      error:(SVRSolverErrorPointer)errorPtr;
 +(NSValue*)__rangeOfNextBracketsInExpression:(NSAttributedString*)input

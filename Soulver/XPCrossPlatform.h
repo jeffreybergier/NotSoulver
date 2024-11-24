@@ -81,6 +81,12 @@ typedef NSRange* XPRangePointer;
 #define XPTextAlignmentCenter NSCenterTextAlignment
 #endif
 
+#ifdef MAC_OS_X_VERSION_10_5
+#define XPStringCompareOptions NSStringCompareOptions
+#else
+#define XPStringCompareOptions unsigned int
+#endif
+
 #ifdef MAC_OS_X_VERSION_10_6
 #define XPPasteboardTypeString NSPasteboardTypeString
 #else
@@ -174,15 +180,28 @@ NSArray* XPRunOpenPanel(void);
                          usingLongestEffectiveRange:(BOOL)useLongest;
 @end
 
+@interface XPCharacterSetEnumerator: NSEnumerator
+{
+  mm_retain NSString *_string;
+  mm_retain NSCharacterSet *_set;
+  XPStringCompareOptions _options;
+  NSRange _index;
+}
+-(id)initWithString:(NSString*)string
+       characterSet:(NSCharacterSet*)aSet
+            options:(XPStringCompareOptions)mask;
++(id)enumeratorWithString:(NSString*)string
+             characterSet:(NSCharacterSet*)aSet
+                  options:(XPStringCompareOptions)mask;
+-(NSValue*)nextObject;
+@end
+
 @interface NSString (CrossPlatform)
 -(NSString*)SVR_descriptionHighlightingRange:(NSRange)range;
 -(const char*)XP_UTF8String;
-@end
-
-@interface NSMutableString (CrossPlatform)
--(void)XP_replaceOccurrencesOfString:(NSString*)searchString
-                          withString:(NSString*)replaceString;
-+(void)XPTEST_replaceOccurrencesOfStringWithString;
+-(NSEnumerator*)XP_enumeratorForCharactersInSet:(NSCharacterSet*)aSet;
+-(NSEnumerator*)XP_enumeratorForCharactersInSet:(NSCharacterSet*)aSet
+                                        options:(XPStringCompareOptions)mask;
 @end
 
 @interface NSDecimalNumber (Soulver)

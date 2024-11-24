@@ -39,6 +39,11 @@
   return [[_model retain] autorelease];
 }
 
+-(NSMutableDictionary*)dataCache;
+{
+  return [[_dataCache retain] autorelease];
+}
+
 -(NSTextView*)textView;
 {
   return [[_textView retain] autorelease];
@@ -54,6 +59,7 @@
 {
   self = [super init];
   _model = [NSTextStorage new];
+  _dataCache = [NSMutableDictionary new];
   _textView = nil;
   _waitTimer = nil;
   return self;
@@ -62,7 +68,22 @@
 // MARK: NSDocument Support
 -(NSData*)dataRepresentationOfType:(NSString*)type;
 {
-  return [[[self model] string] dataUsingEncoding:NSUTF8StringEncoding];
+  NSMutableDictionary *dataCache = [self dataCache];
+  NSString *key = [[self model] string];
+  NSData *output = [dataCache objectForKey:key];
+  if (output) {
+    XPLogExtra1(@"%@ dataRepresentationOfType: Cache Hit", self);
+    return output;
+  } else {
+    if ([dataCache count] > 20) {
+      XPLogDebug1(@"%@ dataRepresentationOfType: Cache Clear", self);
+      [dataCache removeAllObjects];
+    }
+    XPLogExtra1(@"%@ dataRepresentationOfType: Cache Miss", self);
+    output = [[SVRSolver restoreOriginalString:[self model]] dataUsingEncoding:NSUTF8StringEncoding];
+    [dataCache setObject:output forKey:key];
+    return output;
+  }
 }
 
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
@@ -128,7 +149,9 @@
   [_waitTimer invalidate];
   [_waitTimer release];
   [_model release];
+  [_dataCache release];
   _textView = nil;
+  _dataCache = nil;
   _waitTimer = nil;
   _model = nil;
   [super dealloc];
@@ -156,13 +179,16 @@
 {
   NSTextStorage *model = [self model];
   NSTextView *textView = [self textView];
+  
+  // Get current selection
   NSRange selection = [textView selectedRange];
   
-  XPLogDebug1(@"%@ waitTimerFired: Rendering", self);
-  
+  // Solve the string
   [model beginEditing];
   [SVRSolver solveAttributedString:model];
   [model endEditing];
+  
+  // Restore the selection
   [textView setSelectedRange:selection];
 
   // Invalidating at the end is important.
