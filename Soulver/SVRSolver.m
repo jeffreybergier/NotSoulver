@@ -69,6 +69,7 @@
 {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wnonnull"
+  // TODO: Move this into static method and use +initialize
   NSCharacterSet *set = [NSCharacterSet characterSetWithCharactersInString:
                          [[NSAttributedString attributedStringWithAttachment:nil] string]];
 #pragma clang diagnostic pop
