@@ -102,9 +102,10 @@
   [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagOriginal)   range:range];
   [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagExpression) range:range];
   [input removeAttribute:NSFontAttributeName            range:range];
+  [input removeAttribute:NSAttachmentAttributeName      range:range];
+  [input removeAttribute:NSParagraphStyleAttributeName  range:range];
   [input removeAttribute:NSForegroundColorAttributeName range:range];
   [input removeAttribute:NSBackgroundColorAttributeName range:range];
-  [input removeAttribute:NSParagraphStyleAttributeName  range:range];
 }
 
 +(void)__step3_scanAndTag:(NSMutableAttributedString*)input;
