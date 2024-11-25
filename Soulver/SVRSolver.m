@@ -69,7 +69,6 @@
 {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wnonnull"
-  // TODO: Move this into static method and use +initialize
   NSCharacterSet *set = [NSCharacterSet characterSetWithCharactersInString:
                          [[NSAttributedString attributedStringWithAttachment:nil] string]];
 #pragma clang diagnostic pop
@@ -110,15 +109,17 @@
 
 +(void)__step3_scanAndTag:(NSMutableAttributedString*)input;
 {
+  // TODO: PRIORITY: Fix 10/-2=
   SVRSolverScanner *scanner = [SVRSolverScanner scannerWithString:[input string]];
-  [SVRSolverExpressionTagger tagNumbersAtRanges:[scanner numberRanges]
-                             inAttributedString:input];
-  [SVRSolverExpressionTagger tagBracketsAtRanges:[scanner bracketRanges]
-                              inAttributedString:input];
-  [SVRSolverExpressionTagger tagOperatorsAtRanges:[scanner operatorRanges]
-                               inAttributedString:input];
-  [SVRSolverExpressionTagger tagExpressionsAtRanges:[scanner expressionRanges]
-                                 inAttributedString:input];
+  [SVRSolverExpressionTagger step1_tagOperatorsAtRanges:[scanner operatorRanges]
+                                     inAttributedString:input];
+  [SVRSolverExpressionTagger step2_tagNumbersAtRanges:[scanner numberRanges]
+                                   inAttributedString:input];
+  [SVRSolverExpressionTagger step3_tagBracketsAtRanges:[scanner bracketRanges]
+                                    inAttributedString:input];
+  [SVRSolverExpressionTagger step4_tagExpressionsAtRanges:[scanner expressionRanges]
+                                       inAttributedString:input];
+  return;
 }
 
 +(void)__step4_solveAndTag:(NSMutableAttributedString*)input;

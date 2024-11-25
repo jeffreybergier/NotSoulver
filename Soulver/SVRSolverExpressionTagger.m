@@ -33,8 +33,8 @@
 
 @implementation SVRSolverExpressionTagger
 
-+(void)tagNumbersAtRanges:(NSSet*)ranges
-       inAttributedString:(NSMutableAttributedString*)string;
++(void)step2_tagNumbersAtRanges:(NSSet*)ranges
+             inAttributedString:(NSMutableAttributedString*)string;
 {
   NSDecimalNumber *number = nil;
   NSValue *next = nil;
@@ -46,14 +46,15 @@
     if ([number SVR_isNotANumber]) {
       XPLogDebug1(@"NaN: %@", number);
     }
+    [string removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagOperator) range:range];
     [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagNumber)
                    value:number
                    range:range];
   }
 }
 
-+(void)tagOperatorsAtRanges:(NSSet*)ranges
-         inAttributedString:(NSMutableAttributedString*)string;
++(void)step1_tagOperatorsAtRanges:(NSSet*)ranges
+               inAttributedString:(NSMutableAttributedString*)string;
 {
   SVRSolverOperator operator = (SVRSolverOperator)-1;
   NSValue *next = nil;
@@ -68,8 +69,8 @@
   }
 }
 
-+(void)tagExpressionsAtRanges:(NSSet*)ranges
-           inAttributedString:(NSMutableAttributedString*)string;
++(void)step4_tagExpressionsAtRanges:(NSSet*)ranges
+                 inAttributedString:(NSMutableAttributedString*)string;
 {
   NSValue *next = nil;
   NSEnumerator *e = [ranges objectEnumerator];
@@ -80,8 +81,8 @@
   }
 }
 
-+(void)tagBracketsAtRanges:(NSSet*)ranges
-        inAttributedString:(NSMutableAttributedString*)string;
++(void)step3_tagBracketsAtRanges:(NSSet*)ranges
+              inAttributedString:(NSMutableAttributedString*)string;
 {
   NSValue *next = nil;
   NSEnumerator *e = [ranges objectEnumerator];

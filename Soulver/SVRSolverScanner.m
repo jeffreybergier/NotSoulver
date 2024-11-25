@@ -112,6 +112,7 @@
 
 -(void)__populateNumbers;
 {
+  NSSet *negativeNumberConfirmSet = [NSSet setWithObjects:@"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @")", nil];
   NSMutableSet *output = [NSMutableSet new];
   NSSet *expressions = [self expressionRanges];
   NSEnumerator *e = [expressions objectEnumerator];
@@ -119,6 +120,7 @@
   NSRange expressionRange = XPNotFoundRange;
   SLRERegex *regex = nil;
   SLRERegexMatch *match = nil;
+  NSDecimalNumber *matchedNumber = nil;
   NSRange range = XPNotFoundRange;
   NSAssert(!_numbers, @"This is a lazy init method, it assumes _numbers is NIL");
   
@@ -127,16 +129,20 @@
     regex = [SLRERegex SVR_regexForNumbersInString:[_string substringWithRange:expressionRange]];
     while ((match = [regex nextObject])) {
       range = [match range];
+      range.location += expressionRange.location; // Adjust range to be in space of whole string
+      matchedNumber = [NSDecimalNumber decimalNumberWithString:[_string substringWithRange:range]];
+      if ([matchedNumber SVR_isNotANumber]) { XPLogRaise(@"SVRSolverScanner __populateNumbers: Matched NaN"); }
       if (range.location > 0
-         && [[_string substringWithRange:NSMakeRange(range.location-1, 1)] isEqualToString:@")"])
+          && [matchedNumber compare:[NSDecimalNumber zero]] == NSOrderedAscending
+          && [negativeNumberConfirmSet member:[_string substringWithRange:NSMakeRange(range.location-1, 1)]] != nil)
       {
         // The regex matches (5+5)-7 as 3 numbers 5,5,-7 but the -7 is actually 7
         // This check adjusts for this edge case
         range.location += 1;
         range.length -= 1;
+        XPLogDebug2(@"SVRSolverScanner __populateNumbers: `%@`->`%@`",
+                    matchedNumber, [_string substringWithRange:range]);
       }
-      // Adjust range to be in space of whole string
-      range.location += expressionRange.location;
       XPLogExtra1(@"<#> %@", [_string SVR_descriptionHighlightingRange:range]);
       [output addObject:[NSValue XP_valueWithRange:range]];
     }
