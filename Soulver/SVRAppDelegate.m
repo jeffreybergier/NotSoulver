@@ -179,6 +179,7 @@
   }
 }
 
+// TODO: Fix this method to make sense
 -(BOOL)__applicationShouldTerminateAfterReviewingAllWindows:(NSApplication*)sender;
 {
   BOOL allDocumentsSaved = YES;
@@ -187,6 +188,7 @@
   while ((next = [e nextObject])) {
     if ([next isDocumentEdited]) {
       [next saveDocument:sender];
+      // if the document is saved, close the window
       allDocumentsSaved = ![next isDocumentEdited];
     }
     if (allDocumentsSaved) {
@@ -195,6 +197,9 @@
       break;
     }
   }
+  
+  // if all the windows are closed, return YES
+  
   return allDocumentsSaved;
 }
 
