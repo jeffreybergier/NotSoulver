@@ -33,6 +33,22 @@
 
 @implementation SVRSolverExpressionTagger
 
++(void)step1_tagOperatorsAtRanges:(NSSet*)ranges
+               inAttributedString:(NSMutableAttributedString*)string;
+{
+  SVRSolverOperator operator = (SVRSolverOperator)-1;
+  NSValue *next = nil;
+  NSRange range = XPNotFoundRange;
+  NSEnumerator *e = [ranges objectEnumerator];
+  while ((next = [e nextObject])) {
+    range = [next XP_rangeValue];
+    operator = SVRSolverOperatorForRawString([[string string] substringWithRange:range]);
+    [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagOperator)
+                   value:NSNumberForOperator(operator)
+                   range:range];
+  }
+}
+
 +(void)step2_tagNumbersAtRanges:(NSSet*)ranges
              inAttributedString:(NSMutableAttributedString*)string;
 {
@@ -53,19 +69,15 @@
   }
 }
 
-+(void)step1_tagOperatorsAtRanges:(NSSet*)ranges
-               inAttributedString:(NSMutableAttributedString*)string;
++(void)step3_tagBracketsAtRanges:(NSSet*)ranges
+              inAttributedString:(NSMutableAttributedString*)string;
 {
-  SVRSolverOperator operator = (SVRSolverOperator)-1;
   NSValue *next = nil;
-  NSRange range = XPNotFoundRange;
   NSEnumerator *e = [ranges objectEnumerator];
   while ((next = [e nextObject])) {
-    range = [next XP_rangeValue];
-    operator = SVRSolverOperatorForRawString([[string string] substringWithRange:range]);
-    [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagOperator)
-                   value:NSNumberForOperator(operator)
-                   range:range];
+    [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagBracket)
+                   value:NSStringFromRange([next XP_rangeValue])
+                   range:[next XP_rangeValue]];
   }
 }
 
@@ -76,18 +88,6 @@
   NSEnumerator *e = [ranges objectEnumerator];
   while ((next = [e nextObject])) {
     [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagExpression)
-                   value:NSStringFromRange([next XP_rangeValue])
-                   range:[next XP_rangeValue]];
-  }
-}
-
-+(void)step3_tagBracketsAtRanges:(NSSet*)ranges
-              inAttributedString:(NSMutableAttributedString*)string;
-{
-  NSValue *next = nil;
-  NSEnumerator *e = [ranges objectEnumerator];
-  while ((next = [e nextObject])) {
-    [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagBracket)
                    value:NSStringFromRange([next XP_rangeValue])
                    range:[next XP_rangeValue]];
   }
