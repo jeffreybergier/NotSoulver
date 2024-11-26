@@ -240,7 +240,6 @@
   NSAssert(match == nil, @"");
   
   // More complete operator finding
-  // TODO: For some reason \d is not working in place of digits
   regex = [SLRERegex SVR_regexForOperatorsInString:@"and (1+2)^(6*7)-3*4*(7) and 9-(4) and"];
   NSAssert([regex containsMatch], @"");
   match = [regex nextObject];

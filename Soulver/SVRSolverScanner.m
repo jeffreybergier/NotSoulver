@@ -233,6 +233,7 @@
 }
 +(id)SVR_regexForOperatorsInString:(NSString*)string;
 {
+  // For some reason \d is not working in place of digits
   return [self regexWithString:string
                        pattern:@"(\\+|\\-|\\/|\\*|\\^)[\\-\\(0123456789]"
                           mode:SLRERegexAdvanceAfterGroup];
@@ -240,6 +241,7 @@
 
 +(id)SVR_regexForExpressionsInString:(NSString*)string;
 {
+  // For some reason \d is not working in place of digits
   return [self regexWithString:string
                        pattern:@"[0123456789\\.\\^\\*\\-\\+\\/\\(\\)]+\\="
                           mode:SLRERegexAdvanceAfterMatch];
