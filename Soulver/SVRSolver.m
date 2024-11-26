@@ -109,7 +109,6 @@
 
 +(void)__step3_scanAndTag:(NSMutableAttributedString*)input;
 {
-  // TODO: PRIORITY: Fix 10/-2=
   SVRSolverScanner *scanner = [SVRSolverScanner scannerWithString:[input string]];
   [SVRSolverExpressionTagger step1_tagOperatorsAtRanges:[scanner operatorRanges]
                                      inAttributedString:input];

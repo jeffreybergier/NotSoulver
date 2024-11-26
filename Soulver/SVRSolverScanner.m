@@ -234,7 +234,7 @@
 +(id)SVR_regexForOperatorsInString:(NSString*)string;
 {
   return [self regexWithString:string
-                       pattern:@"(\\+|\\-|\\/|\\*|\\^)[\\(0123456789]"
+                       pattern:@"(\\+|\\-|\\/|\\*|\\^)[\\-\\(0123456789]"
                           mode:SLRERegexAdvanceAfterGroup];
 }
 
