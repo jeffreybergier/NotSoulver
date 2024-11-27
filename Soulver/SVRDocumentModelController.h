@@ -31,7 +31,6 @@
 #import "XPCrossPlatform.h"
 
 // TODO: Figure out how to make CMD V to copy the "cleaned up" plain string
-// TODO: Figure out why 5-5=10
 
 @interface SVRDocumentModelController: NSObject
 {

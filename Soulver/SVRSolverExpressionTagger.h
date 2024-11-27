@@ -31,13 +31,15 @@
 
 @interface SVRSolverExpressionTagger: NSObject
 
-+(void)tagNumbersAtRanges:(NSSet*)ranges
-       inAttributedString:(NSMutableAttributedString*)string;
-+(void)tagOperatorsAtRanges:(NSSet*)ranges
-         inAttributedString:(NSMutableAttributedString*)string;
-+(void)tagExpressionsAtRanges:(NSSet*)ranges
-           inAttributedString:(NSMutableAttributedString*)string;
-+(void)tagBracketsAtRanges:(NSSet*)ranges
-        inAttributedString:(NSMutableAttributedString*)string;
++(void)step1_tagOperatorsAtRanges:(NSSet*)ranges
+               inAttributedString:(NSMutableAttributedString*)string;
+// TODO: Improve Regex so that this does not have to manually
+// remove the - operator which can conflict with negative numbers
++(void)step2_tagNumbersAtRanges:(NSSet*)ranges
+             inAttributedString:(NSMutableAttributedString*)string;
++(void)step3_tagBracketsAtRanges:(NSSet*)ranges
+              inAttributedString:(NSMutableAttributedString*)string;
++(void)step4_tagExpressionsAtRanges:(NSSet*)ranges
+                 inAttributedString:(NSMutableAttributedString*)string;
 
 @end

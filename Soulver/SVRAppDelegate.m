@@ -170,7 +170,7 @@
   alertResult = XPRunQuitAlert();
   switch (alertResult) {
     case XPAlertReturnDefault:
-      return [self __applicationShouldTerminateAfterReviewingAllWindows:sender];
+      return [self __applicationShouldTerminateAfterReviewingAllDocuments:sender];
     case XPAlertReturnAlternate: return YES;
     case XPAlertReturnOther:     return NO;
     default:
@@ -179,23 +179,26 @@
   }
 }
 
--(BOOL)__applicationShouldTerminateAfterReviewingAllWindows:(NSApplication*)sender;
+-(BOOL)__applicationShouldTerminateAfterReviewingAllDocuments:(NSApplication*)sender;
 {
-  BOOL allDocumentsSaved = YES;
   NSEnumerator *e = [[self openDocuments] objectEnumerator];
   XPDocument *next = nil;
+  
+  // Try to close all documents (asking the user to save them)
+  while ((next = [e nextObject])) {
+    [[next window] performClose:sender];
+  }
+  
+  // Iterate again and check if are unsaved changes
+  e = [[self openDocuments] objectEnumerator];
   while ((next = [e nextObject])) {
     if ([next isDocumentEdited]) {
-      [next saveDocument:sender];
-      allDocumentsSaved = ![next isDocumentEdited];
-    }
-    if (allDocumentsSaved) {
-      [[next window] performClose:sender];
-    } else {
-      break;
+      return NO;
     }
   }
-  return allDocumentsSaved;
+
+  // If we made it this far, then everything is saved
+  return YES;
 }
 
 -(BOOL)application:(NSApplication *)sender openFile:(NSString *)filename;

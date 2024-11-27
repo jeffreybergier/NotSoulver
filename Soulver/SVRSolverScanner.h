@@ -40,6 +40,9 @@
   mm_new  NSSet    *_brackets;
 }
 
+// MARK: Load
++(void)initialize;
+
 // MARK: Initialization
 -(id)initWithString:(NSString*)string;
 +(id)scannerWithString:(NSString*)string;

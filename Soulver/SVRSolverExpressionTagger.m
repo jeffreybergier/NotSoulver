@@ -33,27 +33,8 @@
 
 @implementation SVRSolverExpressionTagger
 
-+(void)tagNumbersAtRanges:(NSSet*)ranges
-       inAttributedString:(NSMutableAttributedString*)string;
-{
-  NSDecimalNumber *number = nil;
-  NSValue *next = nil;
-  NSRange range = XPNotFoundRange;
-  NSEnumerator *e = [ranges objectEnumerator];
-  while ((next = [e nextObject])) {
-    range = [next XP_rangeValue];
-    number = [NSDecimalNumber decimalNumberWithString:[[string string] substringWithRange:range]];
-    if ([number SVR_isNotANumber]) {
-      XPLogDebug1(@"NaN: %@", number);
-    }
-    [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagNumber)
-                   value:number
-                   range:range];
-  }
-}
-
-+(void)tagOperatorsAtRanges:(NSSet*)ranges
-         inAttributedString:(NSMutableAttributedString*)string;
++(void)step1_tagOperatorsAtRanges:(NSSet*)ranges
+               inAttributedString:(NSMutableAttributedString*)string;
 {
   SVRSolverOperator operator = (SVRSolverOperator)-1;
   NSValue *next = nil;
@@ -68,25 +49,48 @@
   }
 }
 
-+(void)tagExpressionsAtRanges:(NSSet*)ranges
-           inAttributedString:(NSMutableAttributedString*)string;
++(void)step2_tagNumbersAtRanges:(NSSet*)ranges
+             inAttributedString:(NSMutableAttributedString*)string;
 {
+  NSString *numberString = nil;
+  NSDecimalNumber *number = nil;
   NSValue *next = nil;
+  NSRange range = XPNotFoundRange;
   NSEnumerator *e = [ranges objectEnumerator];
   while ((next = [e nextObject])) {
-    [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagExpression)
-                   value:NSStringFromRange([next XP_rangeValue])
-                   range:[next XP_rangeValue]];
+    range = [next XP_rangeValue];
+    numberString = [[string string] substringWithRange:range];
+    number = [NSDecimalNumber decimalNumberWithString:numberString];
+    if ([number SVR_isNotANumber]) {
+      XPLogPause1(@"SVRSolverExpressionTagger: step2: `%@` is NaN", numberString);
+    }
+    [string removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagOperator)
+                      range:range];
+    [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagNumber)
+                   value:number
+                   range:range];
   }
 }
 
-+(void)tagBracketsAtRanges:(NSSet*)ranges
-        inAttributedString:(NSMutableAttributedString*)string;
++(void)step3_tagBracketsAtRanges:(NSSet*)ranges
+              inAttributedString:(NSMutableAttributedString*)string;
 {
   NSValue *next = nil;
   NSEnumerator *e = [ranges objectEnumerator];
   while ((next = [e nextObject])) {
     [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagBracket)
+                   value:NSStringFromRange([next XP_rangeValue])
+                   range:[next XP_rangeValue]];
+  }
+}
+
++(void)step4_tagExpressionsAtRanges:(NSSet*)ranges
+                 inAttributedString:(NSMutableAttributedString*)string;
+{
+  NSValue *next = nil;
+  NSEnumerator *e = [ranges objectEnumerator];
+  while ((next = [e nextObject])) {
+    [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagExpression)
                    value:NSStringFromRange([next XP_rangeValue])
                    range:[next XP_rangeValue]];
   }
