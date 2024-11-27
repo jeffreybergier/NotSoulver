@@ -29,7 +29,15 @@
 
 #import "SVRSolverScanner.h"
 
+NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
+
 @implementation SVRSolverScanner
+
+// MARK: Load
++(void)initialize;
+{
+  SVRSolverScannerNegativeNumberPrefixSet = [[NSSet alloc] initWithObjects:@"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @")", nil];
+}
 
 // MARK: Initialization
 -(id)initWithString:(NSString*)string;
@@ -112,7 +120,7 @@
 
 -(void)__populateNumbers;
 {
-  NSSet *negativeNumberConfirmSet = [NSSet setWithObjects:@"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @")", nil];
+  NSSet *negativeNumberPrefixSet = SVRSolverScannerNegativeNumberPrefixSet;
   NSMutableSet *output = [NSMutableSet new];
   NSSet *expressions = [self expressionRanges];
   NSEnumerator *e = [expressions objectEnumerator];
@@ -134,7 +142,7 @@
       if ([matchedNumber SVR_isNotANumber]) { XPLogRaise(@"SVRSolverScanner __populateNumbers: Matched NaN"); }
       if (range.location > 0
           && [matchedNumber compare:[NSDecimalNumber zero]] == NSOrderedAscending
-          && [negativeNumberConfirmSet member:[_string substringWithRange:NSMakeRange(range.location-1, 1)]] != nil)
+          && [negativeNumberPrefixSet member:[_string substringWithRange:NSMakeRange(range.location-1, 1)]] != nil)
       {
         // The regex matches (5+5)-7 as 3 numbers 5,5,-7 but the -7 is actually 7
         // This check adjusts for this edge case

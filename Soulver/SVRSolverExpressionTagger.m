@@ -52,17 +52,20 @@
 +(void)step2_tagNumbersAtRanges:(NSSet*)ranges
              inAttributedString:(NSMutableAttributedString*)string;
 {
+  NSString *numberString = nil;
   NSDecimalNumber *number = nil;
   NSValue *next = nil;
   NSRange range = XPNotFoundRange;
   NSEnumerator *e = [ranges objectEnumerator];
   while ((next = [e nextObject])) {
     range = [next XP_rangeValue];
-    number = [NSDecimalNumber decimalNumberWithString:[[string string] substringWithRange:range]];
+    numberString = [[string string] substringWithRange:range];
+    number = [NSDecimalNumber decimalNumberWithString:numberString];
     if ([number SVR_isNotANumber]) {
-      XPLogDebug1(@"NaN: %@", number);
+      XPLogPause1(@"SVRSolverExpressionTagger: step2: `%@` is NaN", numberString);
     }
-    [string removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagOperator) range:range];
+    [string removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagOperator)
+                      range:range];
     [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagNumber)
                    value:number
                    range:range];
