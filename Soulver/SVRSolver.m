@@ -58,11 +58,11 @@
   [input autorelease];
 }
 
-+(NSString*)restoreOriginalString:(NSAttributedString*)input;
++(NSAttributedString*)restoreOriginalString:(NSAttributedString*)input;
 {
   NSMutableAttributedString *copy = [[input mutableCopy] autorelease];
   [self __step1_restoreOriginals:copy];
-  return [copy string];
+  return [[copy copy] autorelease];
 }
 
 +(void)__step1_restoreOriginals:(NSMutableAttributedString*)input;

@@ -80,7 +80,8 @@
       [dataCache removeAllObjects];
     }
     XPLogExtra1(@"%@ dataRepresentationOfType: Cache Miss", self);
-    output = [[SVRSolver restoreOriginalString:[self model]] dataUsingEncoding:NSUTF8StringEncoding];
+    output = [[[SVRSolver restoreOriginalString:[self model]] string]
+                              dataUsingEncoding:NSUTF8StringEncoding];
     [dataCache setObject:output forKey:key];
     return output;
   }

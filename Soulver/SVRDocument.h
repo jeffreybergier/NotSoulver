@@ -60,5 +60,6 @@
 -(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
 -(IBAction)copyUnsolved:(id)sender;
 -(IBAction)copySolved:(id)sender;
+-(BOOL)__copyAttributedStringToPasteBoard:(NSAttributedString*)attributedString;
 
 @end

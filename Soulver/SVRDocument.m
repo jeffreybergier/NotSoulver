@@ -28,6 +28,7 @@
 //
 
 #import "SVRDocument.h"
+#import "SVRSolver.h"
 
 @implementation SVRDocument
 
@@ -128,12 +129,39 @@
 
 -(IBAction)copyUnsolved:(id)sender;
 {
-  NSLog(@"UNsolved");
+  NSRange range = [[[self viewController] textView] selectedRange];
+  NSAttributedString *original = [[[[self viewController] modelController] model] attributedSubstringFromRange:range];
+  // TODO: Consider improving this to apply correct styling to restored characters
+  NSAttributedString *restored = [SVRSolver restoreOriginalString:original];
+  [self __copyAttributedStringToPasteBoard:restored];
 }
 
 -(IBAction)copySolved:(id)sender;
 {
   NSLog(@"SOLVED");
+}
+
+-(BOOL)__copyAttributedStringToPasteBoard:(NSAttributedString*)attributedString;
+{
+  BOOL successString = NO;
+  BOOL successRTF = NO;
+  NSRange range = NSMakeRange(0, [attributedString length]);
+  NSPasteboard *pb = [NSPasteboard generalPasteboard];
+  
+  [pb declareTypes:[NSArray arrayWithObjects:
+                    NSRTFPboardType,
+                    NSStringPboardType,
+                    nil]
+             owner:nil];
+  
+  // Attributes dictionary might be needed in OSX
+  // [NSDictionary dictionaryWithObject:NSRTFTextDocumentType forKey:NSDocumentTypeDocumentAttribute];
+  successString = [pb setString:[attributedString string] forType:NSStringPboardType];
+  successRTF = [pb setData:[attributedString RTFFromRange:range
+                                       documentAttributes:nil]
+                   forType:NSRTFPboardType];
+  
+  return successRTF && successString;
 }
 
 @end
