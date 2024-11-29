@@ -101,3 +101,39 @@
 }
 
 @end
+
+@implementation SVRDocument (IBActions)
+
+-(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
+{
+  BOOL alreadyValidated = [super validateMenuItem:menuItem];
+  SEL menuAction;
+  NSRange selectedRange;
+  BOOL selectionValid;
+  if (alreadyValidated) { return alreadyValidated; };
+  
+  menuAction = [menuItem action];
+  selectedRange = [[[self viewController] textView] selectedRange];
+  selectionValid = !XPIsNotFoundRange(selectedRange) && selectedRange.length > 0;
+  
+  if        (menuAction == @selector(copyUnsolved:)) {
+    return selectionValid;
+  } else if (menuAction == @selector(copySolved:)) {
+    return selectionValid;
+  }
+
+  return NO;
+}
+
+
+-(IBAction)copyUnsolved:(id)sender;
+{
+  NSLog(@"UNsolved");
+}
+
+-(IBAction)copySolved:(id)sender;
+{
+  NSLog(@"SOLVED");
+}
+
+@end

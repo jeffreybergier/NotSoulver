@@ -279,7 +279,6 @@ NSPoint XPDocumentPointForCascading;
   } else if (menuAction == @selector(revertDocumentToSaved:)) {
     return [self fileName] != nil && [self isDocumentEdited];
   }
-  XPLogPause1(@"validateMenuItem: Unknown Selector: %@", NSStringFromSelector(menuAction));
   return NO;
 }
 
