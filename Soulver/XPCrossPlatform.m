@@ -233,7 +233,6 @@ NSArray* XPRunOpenPanel(void)
 -(id)initWithString:(NSString*)string characterSet:(NSCharacterSet*)aSet options:(XPStringCompareOptions)mask;
 {
   self = [super init];
-  if (mask & NSBackwardsSearch) { XPLogRaise1(@"%@: NSBackwardsSearch unsupported", self); }
   _string = [string retain];
   _set = [aSet retain];
   _options = mask;
@@ -251,11 +250,13 @@ NSArray* XPRunOpenPanel(void)
 -(NSValue*)nextObject;
 {
   NSRange output = XPNotFoundRange;
-  XPUInteger maxRange = 0;
   output = [_string rangeOfCharacterFromSet:_set options:_options range:_index];
   if (XPIsNotFoundRange(output)) { return nil; }
-  maxRange = NSMaxRange(output);
-  _index = NSMakeRange(maxRange, [_string length]-maxRange);
+  if (_options & NSBackwardsSearch) {
+    _index = NSMakeRange(0, output.location);
+  } else {
+    _index = NSMakeRange(NSMaxRange(output), [_string length] - NSMaxRange(output));
+  }
   return [NSValue XP_valueWithRange:output];
 }
 

@@ -129,16 +129,26 @@
 
 -(IBAction)copyUnsolved:(id)sender;
 {
+  BOOL success = NO;
   NSRange range = [[[self viewController] textView] selectedRange];
   NSAttributedString *original = [[[[self viewController] modelController] model] attributedSubstringFromRange:range];
   // TODO: Consider improving this to apply correct styling to restored characters
   NSAttributedString *restored = [SVRSolver replaceAttachmentsWithOriginalCharacters:original];
-  [self __copyAttributedStringToPasteBoard:restored];
+  success = [self __copyAttributedStringToPasteBoard:restored];
+  if (success) { return; }
+  XPLogPause2(@"%@ copySolved: Failed: %@", self, [restored string]);
 }
 
 -(IBAction)copySolved:(id)sender;
 {
-  NSLog(@"SOLVED");
+  BOOL success = NO;
+  NSRange range = [[[self viewController] textView] selectedRange];
+  NSAttributedString *original = [[[[self viewController] modelController] model] attributedSubstringFromRange:range];
+  // TODO: Consider improving this to apply correct styling to restored characters
+  NSAttributedString *restored = [SVRSolver replaceAttachmentsWithStringValue:original];
+  success = [self __copyAttributedStringToPasteBoard:restored];
+  if (success) { return; }
+  XPLogPause2(@"%@ copySolved: Failed: %@", self, [restored string]);
 }
 
 -(BOOL)__copyAttributedStringToPasteBoard:(NSAttributedString*)attributedString;
@@ -157,9 +167,9 @@
   // Attributes dictionary might be needed in OSX
   // [NSDictionary dictionaryWithObject:NSRTFTextDocumentType forKey:NSDocumentTypeDocumentAttribute];
   successString = [pb setString:[attributedString string] forType:NSStringPboardType];
-  successRTF = [pb setData:[attributedString RTFFromRange:range
-                                       documentAttributes:nil]
-                   forType:NSRTFPboardType];
+  successRTF    = [pb setData:  [attributedString RTFFromRange:range
+                                            documentAttributes:nil]
+                      forType:NSRTFPboardType];
   
   return successRTF && successString;
 }
