@@ -59,7 +59,9 @@
 
 -(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
 -(IBAction)copyUnsolved:(id)sender;
--(IBAction)copySolved:(id)sender;
+-(IBAction)copyUniversal:(id)sender;
+-(IBAction)pasteUniversal:(id)sender;
 -(BOOL)__copyAttributedStringToPasteBoard:(NSAttributedString*)attributedString;
+-(BOOL)__copyUnsolvedStringToUnsolvedPasteboard:(NSAttributedString*)attributedString;
 
 @end

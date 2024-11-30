@@ -88,8 +88,10 @@ typedef NSRange* XPRangePointer;
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_6
+#define XPPasteboardTypeRTF NSPasteboardTypeRTF
 #define XPPasteboardTypeString NSPasteboardTypeString
 #else
+#define XPPasteboardTypeRTF NSRTFPboardType
 #define XPPasteboardTypeString NSStringPboardType
 #endif
 
