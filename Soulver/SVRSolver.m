@@ -58,7 +58,7 @@
   [input autorelease];
 }
 
-+(NSAttributedString*)restoreOriginalString:(NSAttributedString*)input;
++(NSAttributedString*)replaceAttachmentsWithOriginalCharacters:(NSAttributedString*)input;
 {
   NSMutableAttributedString *copy = [[input mutableCopy] autorelease];
   [self __step1_restoreOriginals:copy];

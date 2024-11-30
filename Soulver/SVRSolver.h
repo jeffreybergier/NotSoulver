@@ -36,7 +36,7 @@
 
 // MARK: Business Logic
 +(void)solveAttributedString:(NSMutableAttributedString*)input;
-+(NSAttributedString*)restoreOriginalString:(NSAttributedString*)input;
++(NSAttributedString*)replaceAttachmentsWithOriginalCharacters:(NSAttributedString*)input;
 
 // MARK: Private
 +(void)__step1_restoreOriginals:(NSMutableAttributedString*)input;

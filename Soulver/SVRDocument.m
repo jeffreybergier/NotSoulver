@@ -132,7 +132,7 @@
   NSRange range = [[[self viewController] textView] selectedRange];
   NSAttributedString *original = [[[[self viewController] modelController] model] attributedSubstringFromRange:range];
   // TODO: Consider improving this to apply correct styling to restored characters
-  NSAttributedString *restored = [SVRSolver restoreOriginalString:original];
+  NSAttributedString *restored = [SVRSolver replaceAttachmentsWithOriginalCharacters:original];
   [self __copyAttributedStringToPasteBoard:restored];
 }
 
