@@ -58,6 +58,7 @@
 -(void)backspaceCharacter;
 -(void)backspaceLine;
 -(void)backspaceAll;
+-(void)replaceCharactersInRange:(NSRange)range withString:(NSString*)string;
 
 @end
 

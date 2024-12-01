@@ -144,6 +144,15 @@
   [self textDidChange:nil];
 }
 
+-(void)replaceCharactersInRange:(NSRange)range withString:(NSString*)string;
+{
+  NSTextStorage *model = [self model];
+  [model beginEditing];
+  [model replaceCharactersInRange:range withString:string];
+  [model endEditing];
+  [self textDidChange:nil];
+}
+
 -(void)dealloc;
 {
   XPLogDebug1(@"DEALLOC: %@", self);

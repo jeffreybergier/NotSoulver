@@ -31,6 +31,8 @@
 #import "NSUserDefaults+Soulver.h"
 #import "SVRSolver.h"
 
+NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.notsoulver.unsolved";
+
 @implementation SVRDocumentViewController
 
 // MARK: Init
@@ -251,8 +253,24 @@
 
 -(IBAction)pasteUniversal:(id)sender;
 {
-  NSLog(@"PASTE UNIVERSAL:%@", sender);
-  return;
+  NSString *specialType = SVRDocumentViewControllerUnsolvedPasteboardType;
+  NSTextView *textView = [self textView];
+  NSPasteboard *pb = [NSPasteboard generalPasteboard];
+  NSString *unsolvedString = nil;
+  
+  if ([pb availableTypeFromArray:[NSArray arrayWithObject:specialType]]
+      && (unsolvedString = [pb stringForType:specialType]))
+  {
+    // Do Universal Paste
+    XPLogDebug1(@"%@ pasteUniversal: Universal Paste", self);
+    [[self modelController] replaceCharactersInRange:[textView selectedRange]
+                                          withString:unsolvedString];
+  } else {
+    // Fail universal paste and forward the message to the textview
+    XPLogDebug1(@"%@ pasteUniversal: NOT Universal Paste", self);
+    [textView pasteAsPlainText:sender];
+    return;
+  }
 }
 
 -(BOOL)__copyAttributedStringToPasteBoard:(NSAttributedString*)attributedString;
@@ -281,7 +299,7 @@
 -(BOOL)__copyUnsolvedStringToUnsolvedPasteboard:(NSAttributedString*)attributedString;
 {
   BOOL success = NO;
-  NSString *specialType = @"com.saturdayapps.notsoulver.unsolved";
+  NSString *specialType = SVRDocumentViewControllerUnsolvedPasteboardType;
   NSPasteboard *pb = [NSPasteboard generalPasteboard];
   
   [pb declareTypes:[NSArray arrayWithObject:specialType] owner:nil];
