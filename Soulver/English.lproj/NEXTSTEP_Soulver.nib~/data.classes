@@ -2,6 +2,8 @@
     ACTIONS = {
         "copyUniversal:" = id; 
         "copyUnsolved:" = id; 
+        "cutUniversal:" = id; 
+        "cutUnsolved:" = id; 
         "pasteAsPlainText:" = id; 
         "pasteUniversal:" = id; 
         "revertDocumentToSaved:" = id; 

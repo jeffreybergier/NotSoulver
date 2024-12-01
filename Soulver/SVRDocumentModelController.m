@@ -153,6 +153,15 @@
   [self textDidChange:nil];
 }
 
+-(void)deleteCharactersInRange:(NSRange)range;
+{
+  NSTextStorage *model = [self model];
+  [model beginEditing];
+  [model deleteCharactersInRange:range];
+  [model endEditing];
+  [self textDidChange:nil];
+}
+
 -(void)dealloc;
 {
   XPLogDebug1(@"DEALLOC: %@", self);
