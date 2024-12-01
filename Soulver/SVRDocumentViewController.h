@@ -65,7 +65,8 @@
 -(IBAction)copyUnsolved:(id)sender;
 -(IBAction)copyUniversal:(id)sender;
 -(IBAction)pasteUniversal:(id)sender;
--(BOOL)__copyAttributedStringToPasteBoard:(NSAttributedString*)attributedString;
--(BOOL)__copyUnsolvedStringToUnsolvedPasteboard:(NSAttributedString*)attributedString;
+-(BOOL)__copyUnsolvedAttributedString:(NSAttributedString*)unsolvedString;
+-(BOOL)__universalCopySolvedAttributedString:(NSAttributedString*)solvedString
+                           andUnsolvedString:(NSString*)unsolvedString;
 
 @end

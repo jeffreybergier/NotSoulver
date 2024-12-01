@@ -230,22 +230,20 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   NSRange range = [[self textView] selectedRange];
   NSAttributedString *original = [[[self modelController] model] attributedSubstringFromRange:range];
   NSAttributedString *unsolved = [SVRSolver replaceAttachmentsWithOriginalCharacters:original];
-  success = [self __copyAttributedStringToPasteBoard:unsolved];
+  success = [self __copyUnsolvedAttributedString:unsolved];
   if (success) { return; }
   XPLogPause2(@"%@ copySolved: Failed: %@", self, [unsolved string]);
 }
 
 -(IBAction)copyUniversal:(id)sender;
 {
-  BOOL successSolved = NO;
-  BOOL successUnsolved = NO;
+  BOOL success = NO;
   NSRange range = [[self textView] selectedRange];
   NSAttributedString *original = [[[self modelController] model] attributedSubstringFromRange:range];
   NSAttributedString *solved = [SVRSolver replaceAttachmentsWithStringValue:original];
   NSAttributedString *unsolved = [SVRSolver replaceAttachmentsWithOriginalCharacters:original];
-  successSolved   = [self __copyAttributedStringToPasteBoard:solved];
-  successUnsolved = [self __copyUnsolvedStringToUnsolvedPasteboard:unsolved];
-  if (successSolved && successUnsolved) { return; }
+  success = [self __universalCopySolvedAttributedString:solved andUnsolvedString:[unsolved string]];
+  if (success) { return; }
   XPLogPause2(@"%@ copySolved: Failed: %@", self, [solved string]);
 }
 
@@ -271,11 +269,11 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   }
 }
 
--(BOOL)__copyAttributedStringToPasteBoard:(NSAttributedString*)attributedString;
+-(BOOL)__copyUnsolvedAttributedString:(NSAttributedString*)unsolvedString;
 {
-  BOOL successString = NO;
-  BOOL successRTF = NO;
-  NSRange range = NSMakeRange(0, [attributedString length]);
+  BOOL successPlain = NO;
+  BOOL successRTF   = NO;
+  NSRange range = NSMakeRange(0, [unsolvedString length]);
   NSPasteboard *pb = [NSPasteboard generalPasteboard];
   
   [pb declareTypes:[NSArray arrayWithObjects:
@@ -286,23 +284,38 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   
   // Attributes dictionary might be needed in OSX
   // [NSDictionary dictionaryWithObject:NSRTFTextDocumentType forKey:NSDocumentTypeDocumentAttribute];
-  successString = [pb setString:[attributedString string] forType:XPPasteboardTypeString];
-  successRTF    = [pb setData:  [attributedString RTFFromRange:range
-                                            documentAttributes:nil]
-                      forType:XPPasteboardTypeRTF];
+  successRTF = [pb setData:[unsolvedString RTFFromRange:range documentAttributes:nil]
+                   forType:XPPasteboardTypeRTF];
+  successPlain = [pb setString:[unsolvedString string] forType:XPPasteboardTypeString];
   
-  return successRTF && successString;
+  return successRTF && successPlain;
 }
 
--(BOOL)__copyUnsolvedStringToUnsolvedPasteboard:(NSAttributedString*)attributedString;
+-(BOOL)__universalCopySolvedAttributedString:(NSAttributedString*)solvedString
+                           andUnsolvedString:(NSString*)unsolvedString;
 {
-  BOOL success = NO;
+  BOOL successRTF = NO;
+  BOOL successPlain = NO;
+  BOOL successUnsolved = NO;
+  NSRange range = NSMakeRange(0, [solvedString length]);
   NSString *specialType = SVRDocumentViewControllerUnsolvedPasteboardType;
   NSPasteboard *pb = [NSPasteboard generalPasteboard];
   
-  [pb declareTypes:[NSArray arrayWithObject:specialType] owner:nil];
-  success = [pb setString:[attributedString string] forType:specialType];
-  return success;
+  [pb declareTypes:[NSArray arrayWithObjects:
+                    XPPasteboardTypeRTF,
+                    XPPasteboardTypeString,
+                    specialType,
+                    nil]
+             owner:nil];
+  
+  // Attributes dictionary might be needed in OSX
+  // [NSDictionary dictionaryWithObject:NSRTFTextDocumentType forKey:NSDocumentTypeDocumentAttribute];
+  successRTF = [pb setData:[solvedString RTFFromRange:range documentAttributes:nil]
+                   forType:XPPasteboardTypeRTF];
+  successPlain    = [pb setString:[solvedString string] forType:XPPasteboardTypeString];
+  successUnsolved = [pb setString:unsolvedString forType:specialType];
+  
+  return successRTF && successPlain && successUnsolved;
 }
 
 @end
