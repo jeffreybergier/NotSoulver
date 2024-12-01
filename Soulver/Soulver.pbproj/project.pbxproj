@@ -72,6 +72,7 @@
 				8C9882DA2CFC780000000202,
 				8C9882DD2CFC780000000202,
 				8C9882E02CFC780000000202,
+				8CBA83502CFC7ACF00000202,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -178,7 +179,7 @@
 		</dict>
 	</dict>
 	<key>NSMainNibFile</key>
-	<string>NEXTSTEP_Soulver.nib</string>
+	<string>MACOSX_Soulver.nib</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 </dict>
@@ -733,6 +734,7 @@
 				8C9882D52CFC780000000202,
 				8C9882D72CFC780000000202,
 				8C9882D92CFC780000000202,
+				8CBA834E2CFC7ACF00000202,
 			);
 			isa = PBXGroup;
 			name = Interfaces;
@@ -915,6 +917,27 @@
 			targets = (
 				8C9882872CFC780000000202,
 			);
+		};
+		8CBA834E2CFC7ACF00000202 = {
+			children = (
+				8CBA834F2CFC7ACF00000202,
+			);
+			isa = PBXVariantGroup;
+			name = MACOSX_Soulver.nib;
+			path = "";
+			refType = 4;
+		};
+		8CBA834F2CFC7ACF00000202 = {
+			isa = PBXFileReference;
+			name = English;
+			path = English.lproj/MACOSX_Soulver.nib;
+			refType = 4;
+		};
+		8CBA83502CFC7ACF00000202 = {
+			fileRef = 8CBA834E2CFC7ACF00000202;
+			isa = PBXBuildFile;
+			settings = {
+			};
 		};
 	};
 	rootObject = 8C9882EE2CFC780800000202;
