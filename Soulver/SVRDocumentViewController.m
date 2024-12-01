@@ -229,7 +229,6 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   BOOL success = NO;
   NSRange range = [[self textView] selectedRange];
   NSAttributedString *original = [[[self modelController] model] attributedSubstringFromRange:range];
-  // TODO: Consider improving this to apply correct styling to restored characters
   NSAttributedString *unsolved = [SVRSolver replaceAttachmentsWithOriginalCharacters:original];
   success = [self __copyAttributedStringToPasteBoard:unsolved];
   if (success) { return; }
@@ -242,7 +241,6 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   BOOL successUnsolved = NO;
   NSRange range = [[self textView] selectedRange];
   NSAttributedString *original = [[[self modelController] model] attributedSubstringFromRange:range];
-  // TODO: Consider improving this to apply correct styling to restored characters
   NSAttributedString *solved = [SVRSolver replaceAttachmentsWithStringValue:original];
   NSAttributedString *unsolved = [SVRSolver replaceAttachmentsWithOriginalCharacters:original];
   successSolved   = [self __copyAttributedStringToPasteBoard:solved];

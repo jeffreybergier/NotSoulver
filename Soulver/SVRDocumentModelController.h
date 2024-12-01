@@ -30,8 +30,6 @@
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
 
-// TODO: Figure out how to make CMD V to copy the "cleaned up" plain string
-
 @interface SVRDocumentModelController: NSObject
 {
   mm_new      NSTextStorage       *_model;
