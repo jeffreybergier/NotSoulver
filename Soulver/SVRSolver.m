@@ -34,10 +34,25 @@
 #import "SVRSolverScanner.h"
 #import "SVRSolverSolutionTagger.h"
 #import "SVRSolverExpressionTagger.h"
+#import "SVRSolverTextAttachment.h"
+
+NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
 
 // MARK: SVRSolver
 
 @implementation SVRSolver: NSObject
+
+// MARK: Configure Constants
++(void)initialize;
+{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnonnull"
+  SVRSolverTextAttachmentCharacterSet = [
+    [NSCharacterSet characterSetWithCharactersInString:
+     [[NSAttributedString attributedStringWithAttachment:nil] string]]
+    retain];
+#pragma clang diagnostic pop
+}
 
 // MARK: Business Logic
 
@@ -58,20 +73,39 @@
   [input autorelease];
 }
 
-+(NSString*)restoreOriginalString:(NSAttributedString*)input;
++(NSMutableAttributedString*)replaceAttachmentsWithOriginalCharacters:(NSAttributedString*)input;
 {
-  NSMutableAttributedString *copy = [[input mutableCopy] autorelease];
-  [self __step1_restoreOriginals:copy];
-  return [copy string];
+  NSMutableAttributedString *output = [[input mutableCopy] autorelease];
+  [self __step1_restoreOriginals:output];
+  return output;
+}
+
++(NSMutableAttributedString*)replaceAttachmentsWithStringValue:(NSAttributedString*)input;
+{
+  NSCharacterSet *set = SVRSolverTextAttachmentCharacterSet;
+  NSRange range = XPNotFoundRange;
+  NSValue *next = nil;
+  id<SVRSolverTextAttachment> attachment = nil;
+  NSEnumerator *e = [[input string] XP_enumeratorForCharactersInSet:set
+                                                            options:NSBackwardsSearch];
+  NSMutableAttributedString *output = [[input mutableCopy] autorelease];
+  while ((next = [e nextObject])) {
+    range = [next XP_rangeValue];
+    attachment = [output attribute:NSAttachmentAttributeName
+                           atIndex:range.location
+                    effectiveRange:NULL];
+    if (range.length > 1) {
+      XPLogPause1(@"SVRSolver __step1_restoreOriginals: Invalid Range:%@",
+                  NSStringFromRange(range));
+    }
+    [output replaceCharactersInRange:range withString:[attachment toDrawString]];
+  }
+  return output;
 }
 
 +(void)__step1_restoreOriginals:(NSMutableAttributedString*)input;
 {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wnonnull"
-  NSCharacterSet *set = [NSCharacterSet characterSetWithCharactersInString:
-                         [[NSAttributedString attributedStringWithAttachment:nil] string]];
-#pragma clang diagnostic pop
+  NSCharacterSet *set = SVRSolverTextAttachmentCharacterSet;
   NSRange range = XPNotFoundRange;
   NSValue *next = nil;
   NSString *originalString = nil;
