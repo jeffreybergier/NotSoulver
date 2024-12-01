@@ -58,3 +58,15 @@
 -(NSDictionary*)__typingAttributes;
 
 @end
+
+@interface SVRDocumentViewController (IBActions)
+
+-(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
+-(IBAction)copyUnsolved:(id)sender;
+-(IBAction)copyUniversal:(id)sender;
+-(IBAction)pasteUniversal:(id)sender;
+-(BOOL)__copyUnsolvedAttributedString:(NSAttributedString*)unsolvedString;
+-(BOOL)__universalCopySolvedAttributedString:(NSAttributedString*)solvedString
+                           andUnsolvedString:(NSString*)unsolvedString;
+
+@end

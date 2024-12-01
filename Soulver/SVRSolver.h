@@ -34,9 +34,15 @@
 
 @interface SVRSolver: NSObject
 
+// MARK: Configure Constants
++(void)initialize;
+
 // MARK: Business Logic
 +(void)solveAttributedString:(NSMutableAttributedString*)input;
-+(NSString*)restoreOriginalString:(NSAttributedString*)input;
+// Returns mutable string to avoid making an immutable copy, but it is still a copy of the original string
++(NSMutableAttributedString*)replaceAttachmentsWithOriginalCharacters:(NSAttributedString*)input;
+// Returns mutable string to avoid making an immutable copy, but it is still a copy of the original string
++(NSMutableAttributedString*)replaceAttachmentsWithStringValue:(NSAttributedString*)input;
 
 // MARK: Private
 +(void)__step1_restoreOriginals:(NSMutableAttributedString*)input;
@@ -77,6 +83,7 @@ typedef enum {
   SVRSolverOperatorSubtract,
   SVRSolverOperatorAdd,
   SVRSolverOperatorUnknown
+  // TODO: Consider adding √ (option v) and log ∫ (option + [shift] + b)
 } SVRSolverOperator;
 
 typedef enum {

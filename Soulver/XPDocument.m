@@ -89,13 +89,16 @@ NSPoint XPDocumentPointForCascading;
 -(BOOL)windowShouldClose:(id)sender;
 {
   XPAlertReturn alertResult;
-  XPInteger savePanelResult;
   if (![self isDocumentEdited]) { return YES; }
   alertResult = [self runUnsavedChangesAlert];
   switch (alertResult) {
     case XPAlertReturnDefault:
-      savePanelResult = [self __runModalSavePanelAndSetFileName];
-      return savePanelResult == XPModalResponseOK;
+      if ([self fileName]) {
+        [self saveDocument:sender];
+        return YES;
+      } else {
+        return [self __runModalSavePanelAndSetFileName] == XPModalResponseOK;
+      }
     case XPAlertReturnAlternate:
       return YES;
     case XPAlertReturnOther:
@@ -279,7 +282,6 @@ NSPoint XPDocumentPointForCascading;
   } else if (menuAction == @selector(revertDocumentToSaved:)) {
     return [self fileName] != nil && [self isDocumentEdited];
   }
-  XPLogPause1(@"validateMenuItem: Unknown Selector: %@", NSStringFromSelector(menuAction));
   return NO;
 }
 

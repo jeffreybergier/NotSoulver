@@ -29,6 +29,9 @@
 
 #import "SVRDocumentViewController.h"
 #import "NSUserDefaults+Soulver.h"
+#import "SVRSolver.h"
+
+NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.notsoulver.unsolved";
 
 @implementation SVRDocumentViewController
 
@@ -191,6 +194,128 @@
   _modelController = nil;
   _textView = nil;
   [super dealloc];
+}
+
+@end
+
+@implementation SVRDocumentViewController (IBActions)
+
+-(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
+{
+  SEL menuAction;
+  NSRange selectedRange = XPNotFoundRange;
+  BOOL canCopy  = NO;
+  BOOL canPaste = NO;
+  
+  menuAction = [menuItem action];
+  selectedRange = [[self textView] selectedRange];
+  canCopy  = !XPIsNotFoundRange(selectedRange) && selectedRange.length > 0;
+  canPaste = !XPIsNotFoundRange(selectedRange);
+  
+  if        (menuAction == @selector(copyUnsolved:)) {
+    return canCopy;
+  } else if (menuAction == @selector(copyUniversal:)) {
+    return canCopy;
+  } else if (menuAction == @selector(pasteUniversal:)) {
+    return canPaste;
+  }
+
+  return NO;
+}
+
+
+-(IBAction)copyUnsolved:(id)sender;
+{
+  BOOL success = NO;
+  NSRange range = [[self textView] selectedRange];
+  NSAttributedString *original = [[[self modelController] model] attributedSubstringFromRange:range];
+  NSAttributedString *unsolved = [SVRSolver replaceAttachmentsWithOriginalCharacters:original];
+  success = [self __copyUnsolvedAttributedString:unsolved];
+  if (success) { return; }
+  XPLogPause2(@"%@ copySolved: Failed: %@", self, [unsolved string]);
+}
+
+-(IBAction)copyUniversal:(id)sender;
+{
+  BOOL success = NO;
+  NSRange range = [[self textView] selectedRange];
+  NSAttributedString *original = [[[self modelController] model] attributedSubstringFromRange:range];
+  NSAttributedString *solved = [SVRSolver replaceAttachmentsWithStringValue:original];
+  NSAttributedString *unsolved = [SVRSolver replaceAttachmentsWithOriginalCharacters:original];
+  success = [self __universalCopySolvedAttributedString:solved andUnsolvedString:[unsolved string]];
+  if (success) { return; }
+  XPLogPause2(@"%@ copySolved: Failed: %@", self, [solved string]);
+}
+
+-(IBAction)pasteUniversal:(id)sender;
+{
+  NSString *specialType = SVRDocumentViewControllerUnsolvedPasteboardType;
+  NSTextView *textView = [self textView];
+  NSPasteboard *pb = [NSPasteboard generalPasteboard];
+  NSString *unsolvedString = nil;
+  
+  if ([pb availableTypeFromArray:[NSArray arrayWithObject:specialType]]
+      && (unsolvedString = [pb stringForType:specialType]))
+  {
+    // Do Universal Paste
+    XPLogDebug1(@"%@ pasteUniversal: Universal Paste", self);
+    [[self modelController] replaceCharactersInRange:[textView selectedRange]
+                                          withString:unsolvedString];
+  } else {
+    // Fail universal paste and forward the message to the textview
+    XPLogDebug1(@"%@ pasteUniversal: NOT Universal Paste", self);
+    [textView pasteAsPlainText:sender];
+    return;
+  }
+}
+
+-(BOOL)__copyUnsolvedAttributedString:(NSAttributedString*)unsolvedString;
+{
+  BOOL successPlain = NO;
+  BOOL successRTF   = NO;
+  NSRange range = NSMakeRange(0, [unsolvedString length]);
+  NSPasteboard *pb = [NSPasteboard generalPasteboard];
+  
+  [pb declareTypes:[NSArray arrayWithObjects:
+                    XPPasteboardTypeRTF,
+                    XPPasteboardTypeString,
+                    nil]
+             owner:nil];
+  
+  // Attributes dictionary might be needed in OSX
+  // [NSDictionary dictionaryWithObject:NSRTFTextDocumentType forKey:NSDocumentTypeDocumentAttribute];
+  successRTF = [pb setData:[unsolvedString RTFFromRange:range documentAttributes:nil]
+                   forType:XPPasteboardTypeRTF];
+  successPlain = [pb setString:[unsolvedString string] forType:XPPasteboardTypeString];
+  
+  return successRTF && successPlain;
+}
+
+-(BOOL)__universalCopySolvedAttributedString:(NSAttributedString*)solvedString
+                           andUnsolvedString:(NSString*)unsolvedString;
+{
+  BOOL successRTF = NO;
+  BOOL successPlain = NO;
+  BOOL successUnsolved = NO;
+  NSRange range = NSMakeRange(0, [solvedString length]);
+  NSString *specialType = SVRDocumentViewControllerUnsolvedPasteboardType;
+  NSPasteboard *pb = [NSPasteboard generalPasteboard];
+  
+  [pb declareTypes:[NSArray arrayWithObjects:
+                    XPPasteboardTypeRTF,
+                    XPPasteboardTypeString,
+                    specialType,
+                    nil]
+             owner:nil];
+  
+  // Attributes dictionary might be needed in OSX
+  // [NSDictionary dictionaryWithObject:NSRTFTextDocumentType forKey:NSDocumentTypeDocumentAttribute];
+  successRTF = [pb setData:[solvedString RTFFromRange:range documentAttributes:nil]
+                   forType:XPPasteboardTypeRTF];
+  successPlain    = [pb setString:[solvedString string] forType:XPPasteboardTypeString];
+  successUnsolved = [pb setString:unsolvedString forType:specialType];
+  
+  return successRTF && successPlain && successUnsolved;
 }
 
 @end

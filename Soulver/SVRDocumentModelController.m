@@ -80,7 +80,8 @@
       [dataCache removeAllObjects];
     }
     XPLogExtra1(@"%@ dataRepresentationOfType: Cache Miss", self);
-    output = [[SVRSolver restoreOriginalString:[self model]] dataUsingEncoding:NSUTF8StringEncoding];
+    output = [[[SVRSolver replaceAttachmentsWithOriginalCharacters:[self model]] string]
+                              dataUsingEncoding:NSUTF8StringEncoding];
     [dataCache setObject:output forKey:key];
     return output;
   }
@@ -140,6 +141,15 @@
   [ model beginEditing];
   [[model mutableString] setString:@""];
   [ model endEditing];
+  [self textDidChange:nil];
+}
+
+-(void)replaceCharactersInRange:(NSRange)range withString:(NSString*)string;
+{
+  NSTextStorage *model = [self model];
+  [model beginEditing];
+  [model replaceCharactersInRange:range withString:string];
+  [model endEditing];
   [self textDidChange:nil];
 }
 

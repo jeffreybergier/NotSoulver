@@ -1,6 +1,9 @@
 "FirstResponder" = {
     ACTIONS = {
+        "copyUniversal:" = id; 
+        "copyUnsolved:" = id; 
         "pasteAsPlainText:" = id; 
+        "pasteUniversal:" = id; 
         "revertDocumentToSaved:" = id; 
         "saveDocument:" = id; 
         "saveDocumentAs:" = id; 
