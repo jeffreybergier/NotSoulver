@@ -54,14 +54,3 @@
 -(void)modelDidProcessEditingNotification:(NSNotification*)aNotification;
 
 @end
-
-@interface SVRDocument (IBActions)
-
--(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
--(IBAction)copyUnsolved:(id)sender;
--(IBAction)copyUniversal:(id)sender;
--(IBAction)pasteUniversal:(id)sender;
--(BOOL)__copyAttributedStringToPasteBoard:(NSAttributedString*)attributedString;
--(BOOL)__copyUnsolvedStringToUnsolvedPasteboard:(NSAttributedString*)attributedString;
-
-@end
