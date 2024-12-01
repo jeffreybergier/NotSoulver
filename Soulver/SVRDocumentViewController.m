@@ -216,6 +216,10 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
     return canCopy;
   } else if (menuAction == @selector(copyUniversal:)) {
     return canCopy;
+  } else if (menuAction == @selector(cutUnsolved:)) {
+    return canCopy;
+  } else if (menuAction == @selector(cutUniversal:)) {
+    return canCopy;
   } else if (menuAction == @selector(pasteUniversal:)) {
     return canPaste;
   }
@@ -223,6 +227,18 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   return NO;
 }
 
+-(IBAction)cutUnsolved:(id)sender;
+{
+  NSRange range = [[self textView] selectedRange];
+  [self copyUnsolved:sender];
+  [[self modelController] deleteCharactersInRange:range];
+}
+-(IBAction)cutUniversal:(id)sender;
+{
+  NSRange range = [[self textView] selectedRange];
+  [self copyUniversal:sender];
+  [[self modelController] deleteCharactersInRange:range];
+}
 
 -(IBAction)copyUnsolved:(id)sender;
 {

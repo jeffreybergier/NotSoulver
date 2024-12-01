@@ -62,6 +62,8 @@
 @interface SVRDocumentViewController (IBActions)
 
 -(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
+-(IBAction)cutUnsolved:(id)sender;
+-(IBAction)cutUniversal:(id)sender;
 -(IBAction)copyUnsolved:(id)sender;
 -(IBAction)copyUniversal:(id)sender;
 -(IBAction)pasteUniversal:(id)sender;
