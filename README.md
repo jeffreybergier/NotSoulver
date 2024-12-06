@@ -1,4 +1,4 @@
-![Screenshot of the app running in OpenStep](README/screenshot10.png)
+![Screenshot of the app running in OpenStep](README/screenshot16.png)
 
 # \[Not\] Soulver for OpenStep 4.2
 A rudimentary calculator inspired by [Soulver](https://github.com/soulverteam) written in ancient Objective C that compiles and runs in OpenStep 4.2. The calculator logic also compiles and runs properly in Xcode 16. I guess that says a lot about the stability of Objective C and Foundation over the years.
