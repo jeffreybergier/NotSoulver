@@ -148,7 +148,7 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
         // This check adjusts for this edge case
         range.location += 1;
         range.length -= 1;
-        XPLogDebug2(@"SVRSolverScanner __populateNumbers: `%@`->`%@`",
+        XPLogExtra2(@"SVRSolverScanner __populateNumbers: `%@`->`%@`",
                     matchedNumber, [_string substringWithRange:range]);
       }
       XPLogExtra1(@"<#> %@", [_string SVR_descriptionHighlightingRange:range]);
