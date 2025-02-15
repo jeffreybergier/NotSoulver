@@ -49,7 +49,9 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
 #pragma clang diagnostic ignored "-Wnonnull"
   SVRSolverTextAttachmentCharacterSet = [
     [NSCharacterSet characterSetWithCharactersInString:
-     [[NSAttributedString attributedStringWithAttachment:nil] string]]
+     [[NSAttributedString attributedStringWithAttachment:
+       [[NSTextAttachment new] autorelease]]
+      string]]
     retain];
 #pragma clang diagnostic pop
 }
