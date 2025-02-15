@@ -199,6 +199,8 @@ NSArray* XPRunOpenPanel(void);
 @end
 
 @interface NSString (CrossPlatform)
++(NSString*)SVR_squareRoot_backend;
++(NSString*)SVR_squareRoot_frontend;
 -(NSString*)SVR_descriptionHighlightingRange:(NSRange)range;
 -(const char*)XP_UTF8String;
 -(NSEnumerator*)XP_enumeratorForCharactersInSet:(NSCharacterSet*)aSet;

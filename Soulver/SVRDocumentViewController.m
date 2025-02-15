@@ -150,13 +150,10 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
     case 19: return @"/";
     case 20: return @"(";
     case 21: return @"^";
+    case 22: return [NSString SVR_squareRoot_backend];
     case 13:
       // Backspace Button
       *control = -1;
-      return nil;
-    case 22:
-      // Clear Line Button
-      *control = -2;
       return nil;
     case 23:
       // Clear All Button

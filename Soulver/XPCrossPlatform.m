@@ -272,6 +272,18 @@ NSArray* XPRunOpenPanel(void)
 
 @implementation NSString (CrossPlatform)
 
++(NSString*)SVR_squareRoot_frontend;
+{
+  // This breaks the regex engine because its shit
+  unichar sqrtChar = 0x221A;
+  return [NSString stringWithCharacters:&sqrtChar length:1];
+}
+
++(NSString*)SVR_squareRoot_backend;
+{
+  return @"\\";
+}
+
 -(NSString*)SVR_descriptionHighlightingRange:(NSRange)range;
 {
   NSString *leading  = @">>";
