@@ -281,7 +281,7 @@ NSArray* XPRunOpenPanel(void)
 
 +(NSString*)SVR_rootRawString;
 {
-  return @"\\";
+  return @"#";
 }
 
 -(NSString*)SVR_descriptionHighlightingRange:(NSRange)range;
