@@ -329,8 +329,14 @@ NSArray* XPRunOpenPanel(void)
   return [lhsDescription isEqualToString:rhsDescription];
 }
 
-// NSDecimalNumber handles exponents extremely strangely
-// This provides a little wrapper around the oddities
+-(NSDecimalNumber*)SVR_decimalNumberByRootingByIndex:(NSDecimalNumber*)index;
+{
+  double resultDouble = pow([self doubleValue], 1.0 / [index doubleValue]);
+  NSString *resultString = [NSString stringWithFormat:@"%f", resultDouble];
+  NSDecimalNumber *result = [NSDecimalNumber decimalNumberWithString:resultString];
+  return result;
+}
+
 -(NSDecimalNumber*)SVR_decimalNumberByRaisingToPower:(NSDecimalNumber*)power
                                         withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
 {

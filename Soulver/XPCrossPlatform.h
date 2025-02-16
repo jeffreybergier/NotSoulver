@@ -209,8 +209,15 @@ NSArray* XPRunOpenPanel(void);
 @end
 
 @interface NSDecimalNumber (Soulver)
+
 /// In OpenStep, NaN comparisons are weird, so this uses a string comparison
 -(BOOL)SVR_isNotANumber;
+
+/// 2√64=8 2=index 64=radicand (self)
+-(NSDecimalNumber*)SVR_decimalNumberByRootingByIndex:(NSDecimalNumber*)index;
+
+// NSDecimalNumber handles exponents extremely strangely
+// This provides a little wrapper around the oddities
 -(NSDecimalNumber*)SVR_decimalNumberByRaisingToPower:(NSDecimalNumber*)power
                                         withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
 @end

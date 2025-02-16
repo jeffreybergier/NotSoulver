@@ -375,8 +375,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     case SVRSolverOperatorAdd:
       return [lhs decimalNumberByAdding:rhs withBehavior:ohBehave];
     case SVRSolverOperatorRoot:
-      XPLogRaise1(@"__TODO:// Add nth root method to NSDecimal Number:%d", operator);
-      return nil;
+      return [rhs SVR_decimalNumberByRootingByIndex:lhs];
     default:
       XPLogRaise1(@"__solveWithOperatorUnknown:%d", operator);
       return nil;
