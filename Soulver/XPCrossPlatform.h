@@ -201,6 +201,8 @@ NSArray* XPRunOpenPanel(void);
 @interface NSString (CrossPlatform)
 +(NSString*)SVR_rootRawString;
 +(NSString*)SVR_rootDisplayString;
++(NSString*)SVR_logRawString;
++(NSString*)SVR_logDisplayString;
 -(NSString*)SVR_descriptionHighlightingRange:(NSRange)range;
 -(const char*)XP_UTF8String;
 -(NSEnumerator*)XP_enumeratorForCharactersInSet:(NSCharacterSet*)aSet;

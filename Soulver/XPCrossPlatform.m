@@ -281,7 +281,17 @@ NSArray* XPRunOpenPanel(void)
 
 +(NSString*)SVR_rootRawString;
 {
-  return @"#";
+  return @"r";
+}
+
++(NSString*)SVR_logRawString;
+{
+  return @"l";
+}
+
++(NSString*)SVR_logDisplayString;
+{
+  return @"log";
 }
 
 -(NSString*)SVR_descriptionHighlightingRange:(NSRange)range;
