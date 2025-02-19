@@ -281,12 +281,12 @@ NSArray* XPRunOpenPanel(void)
 
 +(NSString*)SVR_rootRawString;
 {
-  return @"r";
+  return @"R";
 }
 
 +(NSString*)SVR_logRawString;
 {
-  return @"l";
+  return @"L";
 }
 
 +(NSString*)SVR_logDisplayString;
@@ -341,8 +341,16 @@ NSArray* XPRunOpenPanel(void)
 
 -(NSDecimalNumber*)SVR_decimalNumberByRootingByIndex:(NSDecimalNumber*)index;
 {
-  double resultDouble = pow([self doubleValue], 1.0 / [index doubleValue]);
-  NSString *resultString = [NSString stringWithFormat:@"%f", resultDouble];
+  double resultDouble     = pow([self doubleValue], 1.0 / [index doubleValue]);
+  NSString *resultString  = [NSString stringWithFormat:@"%f", resultDouble];
+  NSDecimalNumber *result = [NSDecimalNumber decimalNumberWithString:resultString];
+  return result;
+}
+
+-(NSDecimalNumber*)SVR_decimalNumberByLogarithmWithBase:(NSDecimalNumber*)base;
+{
+  double resultDouble     = log([self doubleValue]) / log([base doubleValue]);
+  NSString *resultString  = [NSString stringWithFormat:@"%f", resultDouble];
   NSDecimalNumber *result = [NSDecimalNumber decimalNumberWithString:resultString];
   return result;
 }

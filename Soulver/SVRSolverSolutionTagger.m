@@ -41,6 +41,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
   SVRSolverSolutionTaggerSetExponent = [[NSSet alloc] initWithObjects:
                                         NSNumberForOperator(SVRSolverOperatorExponent),
                                         NSNumberForOperator(SVRSolverOperatorRoot),
+                                        NSNumberForOperator(SVRSolverOperatorLog),
                                         nil];
   SVRSolverSolutionTaggerSetMultDiv  = [[NSSet alloc] initWithObjects:
                                         NSNumberForOperator(SVRSolverOperatorMultiply),
@@ -147,6 +148,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     case SVRSolverOperatorMultiply:
     case SVRSolverOperatorAdd:
     case SVRSolverOperatorRoot:
+    case SVRSolverOperatorLog:
       // Insert the previous solution
       attribs = [NSDictionary dictionaryWithObject:previousSolution
                                             forKey:XPAttributedStringKeyForTag(SVRSolverTagNumber)];
@@ -376,6 +378,8 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
       return [lhs decimalNumberByAdding:rhs withBehavior:ohBehave];
     case SVRSolverOperatorRoot:
       return [rhs SVR_decimalNumberByRootingByIndex:lhs];
+    case SVRSolverOperatorLog:
+      return [rhs SVR_decimalNumberByLogarithmWithBase:lhs];
     default:
       XPLogRaise1(@"__solveWithOperatorUnknown:%d", operator);
       return nil;

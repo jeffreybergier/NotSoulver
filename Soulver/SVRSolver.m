@@ -236,6 +236,8 @@ SVRSolverOperator SVRSolverOperatorForRawString(NSString *string)
     return SVRSolverOperatorAdd;
   } else if ([string isEqualToString:[NSString SVR_rootRawString]]) {
     return SVRSolverOperatorRoot;
+  } else if ([string isEqualToString:[NSString SVR_logRawString]]) {
+    return SVRSolverOperatorLog;
   } else {
     XPLogRaise1(@"SVR_operatorForRawStringUnknown: %@", string);
     return SVRSolverOperatorUnknown;
@@ -251,6 +253,7 @@ NSString *RawStringForOperator(SVRSolverOperator operator)
     case SVRSolverOperatorSubtract: return @"-";
     case SVRSolverOperatorAdd:      return @"+";
     case SVRSolverOperatorRoot:     return [NSString SVR_rootRawString];
+    case SVRSolverOperatorLog:      return [NSString SVR_logRawString];
     case SVRSolverOperatorUnknown:
     default:
       XPLogRaise1(@"RawStringForOperatorUnknown: %d", operator);

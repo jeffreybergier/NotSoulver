@@ -243,7 +243,7 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
 {
   // For some reason \d is not working in place of digits
   return [self regexWithString:string
-                       pattern:@"(l|r|\\+|\\-|\\/|\\*|\\^)[\\-\\(0123456789]"
+                       pattern:@"(L|R|\\+|\\-|\\/|\\*|\\^)[\\-\\(0123456789]"
                           mode:SLRERegexAdvanceAfterGroup];
 }
 
@@ -251,7 +251,7 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
 {
   // For some reason \d is not working in place of digits
   return [self regexWithString:string
-                       pattern:@"[0123456789lr\\.\\^\\*\\-\\+\\/\\(\\)]+\\="
+                       pattern:@"[0123456789LR\\.\\^\\*\\-\\+\\/\\(\\)]+\\="
                           mode:SLRERegexAdvanceAfterMatch];
 }
 

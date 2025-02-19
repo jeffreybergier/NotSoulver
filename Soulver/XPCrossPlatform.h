@@ -218,6 +218,9 @@ NSArray* XPRunOpenPanel(void);
 /// 2√64=8 2=index 64=radicand (self)
 -(NSDecimalNumber*)SVR_decimalNumberByRootingByIndex:(NSDecimalNumber*)index;
 
+/// 10L100=2 10=base 100=argument (self)
+-(NSDecimalNumber*)SVR_decimalNumberByLogarithmWithBase:(NSDecimalNumber*)base;
+
 // NSDecimalNumber handles exponents extremely strangely
 // This provides a little wrapper around the oddities
 -(NSDecimalNumber*)SVR_decimalNumberByRaisingToPower:(NSDecimalNumber*)power
