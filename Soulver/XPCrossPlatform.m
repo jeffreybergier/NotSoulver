@@ -339,7 +339,7 @@ NSArray* XPRunOpenPanel(void)
   return [lhsDescription isEqualToString:rhsDescription];
 }
 
--(NSDecimalNumber*)SVR_decimalNumberByRootingByIndex:(NSDecimalNumber*)index;
+-(NSDecimalNumber*)SVR_decimalNumberByRootingWithIndex:(NSDecimalNumber*)index;
 {
   double resultDouble     = pow([self doubleValue], 1.0 / [index doubleValue]);
   NSString *resultString  = [NSString stringWithFormat:@"%f", resultDouble];

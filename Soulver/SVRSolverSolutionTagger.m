@@ -377,7 +377,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     case SVRSolverOperatorAdd:
       return [lhs decimalNumberByAdding:rhs withBehavior:ohBehave];
     case SVRSolverOperatorRoot:
-      return [rhs SVR_decimalNumberByRootingByIndex:lhs];
+      return [rhs SVR_decimalNumberByRootingWithIndex:lhs];
     case SVRSolverOperatorLog:
       return [rhs SVR_decimalNumberByLogarithmWithBase:lhs];
     default:
