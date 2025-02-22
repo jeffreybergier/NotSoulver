@@ -330,6 +330,11 @@ NSArray* XPRunOpenPanel(void)
 @end
 
 // MARK: NSDecimalNumber
+
+NSCalculationError SVRCalculationIsInfinite                = NSCalculationDivideByZero + 1;
+NSCalculationError SVRCalculationIndexZero                 = NSCalculationDivideByZero + 2;
+NSCalculationError SVRCalculationIndexEvenRadicandNegative = NSCalculationDivideByZero + 3;
+
 @implementation NSDecimalNumber (Soulver)
 
 -(BOOL)SVR_isNotANumber;
@@ -339,12 +344,46 @@ NSArray* XPRunOpenPanel(void)
   return [lhsDescription isEqualToString:rhsDescription];
 }
 
--(NSDecimalNumber*)SVR_decimalNumberByRootingWithIndex:(NSDecimalNumber*)index;
+-(NSDecimalNumber*)SVR_decimalNumberByRootingWithIndex:(NSDecimalNumber*)index
+                                          withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
 {
-  double resultDouble     = pow([self doubleValue], 1.0 / [index doubleValue]);
-  NSString *resultString  = [NSString stringWithFormat:@"%f", resultDouble];
-  NSDecimalNumber *result = [NSDecimalNumber decimalNumberWithString:resultString];
-  return result;
+  double radicandRaw = [self doubleValue];
+  double indexRaw    = [index doubleValue];
+  double resultRaw   = 0;
+  NSCalculationError error = NSCalculationNoError;
+  
+  if (indexRaw == 0) {
+    error = SVRCalculationIndexZero;
+  }
+  if (radicandRaw < 0 && fmod(indexRaw, 2) != 1) {
+    error = SVRCalculationIndexEvenRadicandNegative;
+  }
+  
+  if (error == NSCalculationNoError) {
+    resultRaw = pow(radicandRaw, 1.0 / indexRaw);
+    if (isnan(resultRaw)) {
+      error = NSCalculationUnderflow;
+    }
+    if (isinf(resultRaw)) {
+      error = NSCalculationOverflow;
+    }
+  }
+  
+  if (error == NSCalculationNoError) {
+    NSString *resultString = [NSString stringWithFormat:@"%f", resultRaw];
+    NSDecimalNumber *result = [NSDecimalNumber decimalNumberWithString:resultString];
+    return result;
+  } else {
+    if (behavior) {
+      [behavior exceptionDuringOperation:@selector(SVR_decimalNumberByRootingWithIndex:withBehavior:)
+                                   error:error
+                             leftOperand:index
+                            rightOperand:self];
+    } else {
+      XPLogRaise1(@"NSCalculationError: %lu", error);
+    }
+    return [NSDecimalNumber notANumber];
+  }
 }
 
 -(NSDecimalNumber*)SVR_decimalNumberByLogarithmWithBase:(NSDecimalNumber*)base;

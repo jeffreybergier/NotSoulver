@@ -210,13 +210,18 @@ NSArray* XPRunOpenPanel(void);
                                         options:(XPStringCompareOptions)mask;
 @end
 
+extern NSCalculationError SVRCalculationIsInfinite;
+extern NSCalculationError SVRCalculationIndexZero;
+extern NSCalculationError SVRCalculationIndexEvenRadicandNegative;
+
 @interface NSDecimalNumber (Soulver)
 
 /// In OpenStep, NaN comparisons are weird, so this uses a string comparison
 -(BOOL)SVR_isNotANumber;
 
 /// 2√64=8 2=index 64=radicand (self)
--(NSDecimalNumber*)SVR_decimalNumberByRootingWithIndex:(NSDecimalNumber*)index;
+-(NSDecimalNumber*)SVR_decimalNumberByRootingWithIndex:(NSDecimalNumber*)index
+                                          withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
 
 /// 10L100=2 10=base 100=argument (self)
 -(NSDecimalNumber*)SVR_decimalNumberByLogarithmWithBase:(NSDecimalNumber*)base;
