@@ -301,11 +301,17 @@ NSString *SVRSolverDebugDescriptionForError(SVRSolverError error)
 
 // MARK: NSDecimalNumber Helper Methods
 
-NSCalculationError SVRCalculationIndexZero                 = NSCalculationDivideByZero + 1;
-NSCalculationError SVRCalculationIndexEvenRadicandNegative = NSCalculationDivideByZero + 2;
-NSCalculationError SVRCalculationArgumentNegative          = NSCalculationDivideByZero + 3;
-NSCalculationError SVRCalculationBaseNegative              = NSCalculationDivideByZero + 4;
-NSCalculationError SVRCalculationBaseOne                   = NSCalculationDivideByZero + 5;
+NSCalculationError SVRCalculationInvalidCharacter   = NSCalculationDivideByZero + 1;
+NSCalculationError SVRCalculationMismatchedBrackets = NSCalculationDivideByZero + 2;
+NSCalculationError SVRCalculationMissingOperand     = NSCalculationDivideByZero + 3;
+NSCalculationError SVRCalculationDivideByZero       = NSCalculationDivideByZero + 4;
+NSCalculationError SVRCalculationResultNaN          = NSCalculationDivideByZero + 5;
+NSCalculationError SVRCalculationResultInfinite     = NSCalculationDivideByZero + 6;
+NSCalculationError SVRCalculationResultUnreal       = NSCalculationDivideByZero + 7;
+NSCalculationError SVRCalculationIndexZero          = NSCalculationDivideByZero + 8;
+NSCalculationError SVRCalculationArgumentNegative   = NSCalculationDivideByZero + 9;
+NSCalculationError SVRCalculationBaseNegative       = NSCalculationDivideByZero + 10;
+NSCalculationError SVRCalculationBaseOne            = NSCalculationDivideByZero + 11;
 
 @implementation NSDecimalNumber (Soulver)
 

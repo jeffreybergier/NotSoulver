@@ -97,6 +97,7 @@ typedef enum {
 } SVRSolverError;
 
 typedef SVRSolverError* SVRSolverErrorPointer;
+typedef NSCalculationError* NSCalcErrorPointer;
 
 // MARK: Enumeration Helper Functions
 
@@ -112,8 +113,14 @@ NSString             *SVRSolverDebugDescriptionForError(SVRSolverError error);
 // MARK: NSDecimalNumber Helper Methods
 
 // TODO: Merge this with SVRSolverError
+extern NSCalculationError SVRCalculationInvalidCharacter;
+extern NSCalculationError SVRCalculationMismatchedBrackets;
+extern NSCalculationError SVRCalculationMissingOperand;
+extern NSCalculationError SVRCalculationDivideByZero;
+extern NSCalculationError SVRCalculationResultNaN;
+extern NSCalculationError SVRCalculationResultInfinite;
+extern NSCalculationError SVRCalculationResultUnreal;
 extern NSCalculationError SVRCalculationIndexZero;
-extern NSCalculationError SVRCalculationIndexEvenRadicandNegative;
 extern NSCalculationError SVRCalculationArgumentNegative;
 extern NSCalculationError SVRCalculationBaseNegative;
 extern NSCalculationError SVRCalculationBaseOne;
