@@ -4,3 +4,4 @@
 *.o
 Soulver.debug
 /Soulver/Soulver.pbproj/me.pbxuser
+*.xcuserdatad
