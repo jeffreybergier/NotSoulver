@@ -108,3 +108,31 @@ SVRSolverOperator     SVRSolverOperatorForRawString(NSString *string);
 NSString             *RawStringForOperator(SVRSolverOperator operator);
 NSString             *SVRSolverDescriptionForError(SVRSolverError error);
 NSString             *SVRSolverDebugDescriptionForError(SVRSolverError error);
+
+// MARK: NSDecimalNumber Helper Methods
+
+// TODO: Merge this with SVRSolverError
+extern NSCalculationError SVRCalculationIndexZero;
+extern NSCalculationError SVRCalculationIndexEvenRadicandNegative;
+extern NSCalculationError SVRCalculationArgumentNegative;
+extern NSCalculationError SVRCalculationBaseNegative;
+extern NSCalculationError SVRCalculationBaseOne;
+
+@interface NSDecimalNumber (Soulver)
+
+/// In OpenStep, NaN comparisons are weird, so this uses a string comparison
+-(BOOL)SVR_isNotANumber;
+
+/// 2√64=8 2=index 64=radicand (self)
+-(NSDecimalNumber*)SVR_decimalNumberByRootingWithIndex:(NSDecimalNumber*)index
+                                          withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
+
+/// 10L100=2 10=base 100=argument (self)
+-(NSDecimalNumber*)SVR_decimalNumberByLogarithmWithBase:(NSDecimalNumber*)base
+                                           withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
+
+// NSDecimalNumber handles exponents extremely strangely
+// This provides a little wrapper around the oddities
+-(NSDecimalNumber*)SVR_decimalNumberByRaisingToPower:(NSDecimalNumber*)power
+                                        withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
+@end

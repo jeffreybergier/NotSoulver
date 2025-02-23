@@ -298,3 +298,136 @@ NSString *SVRSolverDebugDescriptionForError(SVRSolverError error)
       return nil;
   }
 }
+
+// MARK: NSDecimalNumber Helper Methods
+
+NSCalculationError SVRCalculationIndexZero                 = NSCalculationDivideByZero + 1;
+NSCalculationError SVRCalculationIndexEvenRadicandNegative = NSCalculationDivideByZero + 2;
+NSCalculationError SVRCalculationArgumentNegative          = NSCalculationDivideByZero + 3;
+NSCalculationError SVRCalculationBaseNegative              = NSCalculationDivideByZero + 4;
+NSCalculationError SVRCalculationBaseOne                   = NSCalculationDivideByZero + 5;
+
+@implementation NSDecimalNumber (Soulver)
+
+-(BOOL)SVR_isNotANumber;
+{
+  NSString *lhsDescription = [self description];
+  NSString *rhsDescription = [[NSDecimalNumber notANumber] description];
+  return [lhsDescription isEqualToString:rhsDescription];
+}
+
+-(NSDecimalNumber*)SVR_decimalNumberByRootingWithIndex:(NSDecimalNumber*)index
+                                          withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
+{
+  double radicandRaw = [self doubleValue];
+  double indexRaw    = [index doubleValue];
+  double resultRaw   = 0;
+  NSCalculationError error = NSCalculationNoError;
+  
+  if (indexRaw == 0) {
+    error = SVRCalculationIndexZero;
+  }
+  if (radicandRaw < 0 && fmod(indexRaw, 2) != 1) {
+    error = SVRCalculationIndexEvenRadicandNegative;
+  }
+  
+  if (error == NSCalculationNoError) {
+    resultRaw = pow(radicandRaw, 1.0 / indexRaw);
+    if (isnan(resultRaw)) {
+      error = NSCalculationUnderflow;
+    }
+    if (isinf(resultRaw)) {
+      error = NSCalculationOverflow;
+    }
+  }
+  
+  if (error == NSCalculationNoError) {
+    NSString *resultString = [NSString stringWithFormat:@"%f", resultRaw];
+    NSDecimalNumber *result = [NSDecimalNumber decimalNumberWithString:resultString];
+    return result;
+  } else {
+    if (behavior) {
+      [behavior exceptionDuringOperation:@selector(SVR_decimalNumberByRootingWithIndex:withBehavior:)
+                                   error:error
+                             leftOperand:index
+                            rightOperand:self];
+    } else {
+      XPLogRaise1(@"NSCalculationError: %lu", error);
+    }
+    return [NSDecimalNumber notANumber];
+  }
+}
+
+-(NSDecimalNumber*)SVR_decimalNumberByLogarithmWithBase:(NSDecimalNumber*)base
+                                           withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
+{
+  double argumentRaw = [self doubleValue];
+  double baseRaw     = [base doubleValue];
+  double resultRaw   = 0;
+  NSCalculationError error = NSCalculationNoError;
+  
+  if (argumentRaw <= 0) {
+    error = SVRCalculationArgumentNegative;
+  }
+  
+  if (baseRaw <= 0) {
+    error = SVRCalculationBaseNegative;
+  }
+  
+  if (baseRaw == 1) {
+    error = SVRCalculationBaseOne;
+  }
+  
+  if (error == NSCalculationNoError) {
+    resultRaw = log(argumentRaw) / log(baseRaw);
+    if (isnan(resultRaw)) {
+      error = NSCalculationUnderflow;
+    }
+    if (isinf(resultRaw)) {
+      error = NSCalculationOverflow;
+    }
+  }
+  
+  if (error == NSCalculationNoError) {
+    NSString *resultString = [NSString stringWithFormat:@"%f", resultRaw];
+    NSDecimalNumber *result = [NSDecimalNumber decimalNumberWithString:resultString];
+    return result;
+  } else {
+    if (behavior) {
+      [behavior exceptionDuringOperation:@selector(SVR_decimalNumberByRootingWithIndex:withBehavior:)
+                                   error:error
+                             leftOperand:base
+                            rightOperand:self];
+    } else {
+      XPLogRaise1(@"NSCalculationError: %lu", error);
+    }
+    return [NSDecimalNumber notANumber];
+  }
+}
+
+-(NSDecimalNumber*)SVR_decimalNumberByRaisingToPower:(NSDecimalNumber*)power
+                                        withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
+{
+  NSDecimalNumber *output = nil;
+  BOOL powerIsNegative = ([power compare:[NSDecimalNumber zero]] == NSOrderedAscending);
+  BOOL selfIsNegative = ([self compare:[NSDecimalNumber zero]] == NSOrderedAscending);
+  
+  if (powerIsNegative) {
+    output = [[NSDecimalNumber one] decimalNumberByDividingBy:
+                          [self decimalNumberByRaisingToPower:(XPUInteger)abs([power intValue])
+                                                 withBehavior:behavior]
+                                                 withBehavior:behavior];
+  } else {
+    output = [self decimalNumberByRaisingToPower:(XPUInteger)[power unsignedIntValue]
+                                    withBehavior:behavior];
+  }
+  
+  if (selfIsNegative) {
+    output = [output decimalNumberByMultiplyingBy:[NSDecimalNumber decimalNumberWithString:@"-1"]
+                                     withBehavior:behavior];
+  }
+  
+  return output;
+}
+
+@end
