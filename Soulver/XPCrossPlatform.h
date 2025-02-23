@@ -210,9 +210,11 @@ NSArray* XPRunOpenPanel(void);
                                         options:(XPStringCompareOptions)mask;
 @end
 
-extern NSCalculationError SVRCalculationIsInfinite;
 extern NSCalculationError SVRCalculationIndexZero;
 extern NSCalculationError SVRCalculationIndexEvenRadicandNegative;
+extern NSCalculationError SVRCalculationArgumentNegative;
+extern NSCalculationError SVRCalculationBaseNegative;
+extern NSCalculationError SVRCalculationBaseOne;
 
 @interface NSDecimalNumber (Soulver)
 
@@ -224,7 +226,8 @@ extern NSCalculationError SVRCalculationIndexEvenRadicandNegative;
                                           withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
 
 /// 10L100=2 10=base 100=argument (self)
--(NSDecimalNumber*)SVR_decimalNumberByLogarithmWithBase:(NSDecimalNumber*)base;
+-(NSDecimalNumber*)SVR_decimalNumberByLogarithmWithBase:(NSDecimalNumber*)base
+                                           withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
 
 // NSDecimalNumber handles exponents extremely strangely
 // This provides a little wrapper around the oddities

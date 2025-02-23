@@ -331,9 +331,11 @@ NSArray* XPRunOpenPanel(void)
 
 // MARK: NSDecimalNumber
 
-NSCalculationError SVRCalculationIsInfinite                = NSCalculationDivideByZero + 1;
-NSCalculationError SVRCalculationIndexZero                 = NSCalculationDivideByZero + 2;
-NSCalculationError SVRCalculationIndexEvenRadicandNegative = NSCalculationDivideByZero + 3;
+NSCalculationError SVRCalculationIndexZero                 = NSCalculationDivideByZero + 1;
+NSCalculationError SVRCalculationIndexEvenRadicandNegative = NSCalculationDivideByZero + 2;
+NSCalculationError SVRCalculationArgumentNegative          = NSCalculationDivideByZero + 3;
+NSCalculationError SVRCalculationBaseNegative              = NSCalculationDivideByZero + 4;
+NSCalculationError SVRCalculationBaseOne                   = NSCalculationDivideByZero + 5;
 
 @implementation NSDecimalNumber (Soulver)
 
@@ -386,12 +388,51 @@ NSCalculationError SVRCalculationIndexEvenRadicandNegative = NSCalculationDivide
   }
 }
 
--(NSDecimalNumber*)SVR_decimalNumberByLogarithmWithBase:(NSDecimalNumber*)base;
+-(NSDecimalNumber*)SVR_decimalNumberByLogarithmWithBase:(NSDecimalNumber*)base
+                                           withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
 {
-  double resultDouble     = log([self doubleValue]) / log([base doubleValue]);
-  NSString *resultString  = [NSString stringWithFormat:@"%f", resultDouble];
-  NSDecimalNumber *result = [NSDecimalNumber decimalNumberWithString:resultString];
-  return result;
+  double argumentRaw = [self doubleValue];
+  double baseRaw     = [base doubleValue];
+  double resultRaw   = 0;
+  NSCalculationError error = NSCalculationNoError;
+  
+  if (argumentRaw <= 0) {
+    error = SVRCalculationArgumentNegative;
+  }
+  
+  if (baseRaw <= 0) {
+    error = SVRCalculationBaseNegative;
+  }
+  
+  if (baseRaw == 1) {
+    error = SVRCalculationBaseOne;
+  }
+  
+  if (error == NSCalculationNoError) {
+    resultRaw = log(argumentRaw) / log(baseRaw);
+    if (isnan(resultRaw)) {
+      error = NSCalculationUnderflow;
+    }
+    if (isinf(resultRaw)) {
+      error = NSCalculationOverflow;
+    }
+  }
+  
+  if (error == NSCalculationNoError) {
+    NSString *resultString = [NSString stringWithFormat:@"%f", resultRaw];
+    NSDecimalNumber *result = [NSDecimalNumber decimalNumberWithString:resultString];
+    return result;
+  } else {
+    if (behavior) {
+      [behavior exceptionDuringOperation:@selector(SVR_decimalNumberByRootingWithIndex:withBehavior:)
+                                   error:error
+                             leftOperand:base
+                            rightOperand:self];
+    } else {
+      XPLogRaise1(@"NSCalculationError: %lu", error);
+    }
+    return [NSDecimalNumber notANumber];
+  }
 }
 
 -(NSDecimalNumber*)SVR_decimalNumberByRaisingToPower:(NSDecimalNumber*)power

@@ -379,7 +379,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     case SVRSolverOperatorRoot:
       return [rhs SVR_decimalNumberByRootingWithIndex:lhs withBehavior:ohBehave];
     case SVRSolverOperatorLog:
-      return [rhs SVR_decimalNumberByLogarithmWithBase:lhs];
+      return [rhs SVR_decimalNumberByLogarithmWithBase:lhs withBehavior:ohBehave];
     default:
       XPLogRaise1(@"__solveWithOperatorUnknown:%d", operator);
       return nil;
