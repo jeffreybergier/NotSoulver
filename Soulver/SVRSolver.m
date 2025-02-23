@@ -280,38 +280,43 @@ NSString *SVRSolverDescriptionForError(SVRSolverError error)
   }
 }
 
-NSString *SVRSolverDebugDescriptionForError(SVRSolverError error)
+NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error)
 {
   switch (error) {
-    case SVRSolverErrorNone:
-      return @"none";
-    case SVRSolverErrorInvalidCharacter:
-      return @"invalidCharacter";
-    case SVRSolverErrorMismatchedBrackets:
-      return @"mismatchedBrackets";
-    case SVRSolverErrorMissingOperand:
-      return @"missingOperand";
-    case SVRSolverErrorDivideByZero:
-      return @"divideByZero";
-    default:
-      XPLogRaise1(@"SVRSolverDescriptionForErrorUnknown: %d", error);
-      return nil;
+    case SVRCalculationNoError:
+      return @"SVRCalculationNoError";
+    case SVRCalculationLossOfPrecision:
+      return @"SVRCalculationLossOfPrecision";
+    case SVRCalculationUnderflow:
+      return @"SVRCalculationUnderflow";
+    case SVRCalculationOverflow:
+      return @"SVRCalculationOverflow";
+    case SVRCalculationDivideByZero:
+      return @"SVRCalculationDivideByZero";
+    case SVRCalculationInvalidCharacter:
+      return @"SVRCalculationInvalidCharacter";
+    case SVRCalculationMismatchedBrackets:
+      return @"SVRCalculationMismatchedBrackets";
+    case SVRCalculationMissingOperand:
+      return @"SVRCalculationMissingOperand";
+    case SVRCalculationResultNaN:
+      return @"SVRCalculationResultNaN";
+    case SVRCalculationResultInfinite:
+      return @"SVRCalculationResultInfinite";
+    case SVRCalculationResultImaginary:
+      return @"SVRCalculationResultImaginary";
+    case SVRCalculationIndexZero:
+      return @"SVRCalculationIndexZero";
+    case SVRCalculationArgumentNegative:
+      return @"SVRCalculationArgumentNegative";
+    case SVRCalculationBaseNegative:
+      return @"SVRCalculationBaseNegative";
+    case SVRCalculationBaseOne:
+      return @"SVRCalculationBaseOne";
   }
 }
 
 // MARK: NSDecimalNumber Helper Methods
-
-NSCalculationError SVRCalculationInvalidCharacter   = NSCalculationDivideByZero + 1;
-NSCalculationError SVRCalculationMismatchedBrackets = NSCalculationDivideByZero + 2;
-NSCalculationError SVRCalculationMissingOperand     = NSCalculationDivideByZero + 3;
-NSCalculationError SVRCalculationDivideByZero       = NSCalculationDivideByZero + 4;
-NSCalculationError SVRCalculationResultNaN          = NSCalculationDivideByZero + 5;
-NSCalculationError SVRCalculationResultInfinite     = NSCalculationDivideByZero + 6;
-NSCalculationError SVRCalculationResultUnreal       = NSCalculationDivideByZero + 7;
-NSCalculationError SVRCalculationIndexZero          = NSCalculationDivideByZero + 8;
-NSCalculationError SVRCalculationArgumentNegative   = NSCalculationDivideByZero + 9;
-NSCalculationError SVRCalculationBaseNegative       = NSCalculationDivideByZero + 10;
-NSCalculationError SVRCalculationBaseOne            = NSCalculationDivideByZero + 11;
 
 @implementation NSDecimalNumber (Soulver)
 
@@ -328,22 +333,22 @@ NSCalculationError SVRCalculationBaseOne            = NSCalculationDivideByZero 
   double radicandRaw = [self doubleValue];
   double indexRaw    = [index doubleValue];
   double resultRaw   = 0;
-  NSCalculationError error = NSCalculationNoError;
+  SVRCalculationError error = SVRCalculationNoError;
   
   if (indexRaw == 0) {
     error = SVRCalculationIndexZero;
   }
   if (radicandRaw < 0 && fmod(indexRaw, 2) != 1) {
-    error = SVRCalculationIndexEvenRadicandNegative;
+    error = SVRCalculationResultImaginary;
   }
   
   if (error == NSCalculationNoError) {
     resultRaw = pow(radicandRaw, 1.0 / indexRaw);
     if (isnan(resultRaw)) {
-      error = NSCalculationUnderflow;
+      error = SVRCalculationResultNaN;
     }
     if (isinf(resultRaw)) {
-      error = NSCalculationOverflow;
+      error = SVRCalculationResultInfinite;
     }
   }
   
@@ -354,11 +359,11 @@ NSCalculationError SVRCalculationBaseOne            = NSCalculationDivideByZero 
   } else {
     if (behavior) {
       [behavior exceptionDuringOperation:@selector(SVR_decimalNumberByRootingWithIndex:withBehavior:)
-                                   error:error
+                                   error:(NSCalculationError)error
                              leftOperand:index
                             rightOperand:self];
     } else {
-      XPLogRaise1(@"NSCalculationError: %lu", error);
+      XPLogRaise1(@"NSCalculationError: %u", error);
     }
     return [NSDecimalNumber notANumber];
   }
@@ -370,7 +375,7 @@ NSCalculationError SVRCalculationBaseOne            = NSCalculationDivideByZero 
   double argumentRaw = [self doubleValue];
   double baseRaw     = [base doubleValue];
   double resultRaw   = 0;
-  NSCalculationError error = NSCalculationNoError;
+  SVRCalculationError error = SVRCalculationNoError;
   
   if (argumentRaw <= 0) {
     error = SVRCalculationArgumentNegative;
@@ -387,10 +392,10 @@ NSCalculationError SVRCalculationBaseOne            = NSCalculationDivideByZero 
   if (error == NSCalculationNoError) {
     resultRaw = log(argumentRaw) / log(baseRaw);
     if (isnan(resultRaw)) {
-      error = NSCalculationUnderflow;
+      error = SVRCalculationResultNaN;
     }
     if (isinf(resultRaw)) {
-      error = NSCalculationOverflow;
+      error = SVRCalculationResultInfinite;
     }
   }
   
@@ -401,11 +406,11 @@ NSCalculationError SVRCalculationBaseOne            = NSCalculationDivideByZero 
   } else {
     if (behavior) {
       [behavior exceptionDuringOperation:@selector(SVR_decimalNumberByRootingWithIndex:withBehavior:)
-                                   error:error
+                                   error:(NSCalculationError)error
                              leftOperand:base
                             rightOperand:self];
     } else {
-      XPLogRaise1(@"NSCalculationError: %lu", error);
+      XPLogRaise1(@"NSCalculationError: %u", error);
     }
     return [NSDecimalNumber notANumber];
   }

@@ -96,6 +96,24 @@ typedef enum {
   SVRSolverErrorDivideByZero = -1004,
 } SVRSolverError;
 
+typedef enum {
+  SVRCalculationNoError            = NSCalculationNoError,
+  SVRCalculationLossOfPrecision    = NSCalculationLossOfPrecision,
+  SVRCalculationUnderflow          = NSCalculationUnderflow,
+  SVRCalculationOverflow           = NSCalculationOverflow,
+  SVRCalculationDivideByZero       = NSCalculationDivideByZero,
+  SVRCalculationInvalidCharacter   = 105,
+  SVRCalculationMismatchedBrackets = 106,
+  SVRCalculationMissingOperand     = 107,
+  SVRCalculationResultNaN          = 108,
+  SVRCalculationResultInfinite     = 109,
+  SVRCalculationResultImaginary    = 110,
+  SVRCalculationIndexZero          = 111,
+  SVRCalculationArgumentNegative   = 112,
+  SVRCalculationBaseNegative       = 113,
+  SVRCalculationBaseOne            = 114,
+} SVRCalculationError;
+
 typedef SVRSolverError* SVRSolverErrorPointer;
 typedef NSCalculationError* NSCalcErrorPointer;
 
@@ -108,22 +126,10 @@ SVRSolverOperator     SVRSolverOperatorForNumber(NSNumber *number);
 SVRSolverOperator     SVRSolverOperatorForRawString(NSString *string);
 NSString             *RawStringForOperator(SVRSolverOperator operator);
 NSString             *SVRSolverDescriptionForError(SVRSolverError error);
-NSString             *SVRSolverDebugDescriptionForError(SVRSolverError error);
+NSString             *SVRSolverDebugDescriptionForError(SVRCalculationError error);
 
 // MARK: NSDecimalNumber Helper Methods
 
-// TODO: Merge this with SVRSolverError
-extern NSCalculationError SVRCalculationInvalidCharacter;
-extern NSCalculationError SVRCalculationMismatchedBrackets;
-extern NSCalculationError SVRCalculationMissingOperand;
-extern NSCalculationError SVRCalculationDivideByZero;
-extern NSCalculationError SVRCalculationResultNaN;
-extern NSCalculationError SVRCalculationResultInfinite;
-extern NSCalculationError SVRCalculationResultUnreal;
-extern NSCalculationError SVRCalculationIndexZero;
-extern NSCalculationError SVRCalculationArgumentNegative;
-extern NSCalculationError SVRCalculationBaseNegative;
-extern NSCalculationError SVRCalculationBaseOne;
 
 @interface NSDecimalNumber (Soulver)
 
