@@ -135,6 +135,13 @@ typedef enum {
 +(NSString*)phraseErrorMismatchedBrackets;
 +(NSString*)phraseErrorMissingOperand;
 +(NSString*)phraseErrorDividByZero;
++(NSString*)phraseErrorNaN;
++(NSString*)phraseErrorInfinite;
++(NSString*)phraseErrorImaginary;
++(NSString*)phraseErrorIndexZero;
++(NSString*)phraseErrorArgumentNegative;
++(NSString*)phraseErrorBaseNegative;
++(NSString*)phraseErrorBaseOne;
 +(NSString*)phraseSourceRepositoryURL;
 +(NSString*)phraseCopyWebURLToClipboard;
 +(NSString*)aboutParagraph;

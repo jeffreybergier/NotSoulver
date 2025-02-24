@@ -85,11 +85,11 @@ typedef enum {
 @interface SVRSolverErrorTextAttachment: SVRSolverTextAttachmentImp <SVRSolverTextAttachment>
 
 // MARK: Init
--(id)initWithError:(SVRSolverError)error;
-+(id)attachmentWithError:(SVRSolverError)error;
+-(id)initWithError:(SVRCalculationError)error;
++(id)attachmentWithError:(SVRCalculationError)error;
 
 // MARK: Business Logic
-+(NSString*)toDrawStringWithError:(SVRSolverError)error;
++(NSString*)toDrawStringWithError:(SVRCalculationError)error;
 +(NSFont*)toDrawFont;
 +(NSColor*)toDrawColor;
 +(NSFont*)neighborFont;

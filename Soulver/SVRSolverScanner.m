@@ -27,6 +27,7 @@
 // AT https://soulver.app INSTEAD OF USING THIS SOFTWARE.
 //
 
+#import "SVRSolver.h"
 #import "SVRSolverScanner.h"
 
 NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
@@ -148,7 +149,7 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
         // This check adjusts for this edge case
         range.location += 1;
         range.length -= 1;
-        XPLogDebug2(@"SVRSolverScanner __populateNumbers: `%@`->`%@`",
+        XPLogExtra2(@"SVRSolverScanner __populateNumbers: `%@`->`%@`",
                     matchedNumber, [_string substringWithRange:range]);
       }
       XPLogExtra1(@"<#> %@", [_string SVR_descriptionHighlightingRange:range]);
@@ -243,7 +244,7 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
 {
   // For some reason \d is not working in place of digits
   return [self regexWithString:string
-                       pattern:@"(\\+|\\-|\\/|\\*|\\^)[\\-\\(0123456789]"
+                       pattern:@"(L|R|\\+|\\-|\\/|\\*|\\^)[\\-\\(0123456789]"
                           mode:SLRERegexAdvanceAfterGroup];
 }
 
@@ -251,7 +252,7 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
 {
   // For some reason \d is not working in place of digits
   return [self regexWithString:string
-                       pattern:@"[0123456789\\.\\^\\*\\-\\+\\/\\(\\)]+\\="
+                       pattern:@"[0123456789LR\\.\\^\\*\\-\\+\\/\\(\\)]+\\="
                           mode:SLRERegexAdvanceAfterMatch];
 }
 

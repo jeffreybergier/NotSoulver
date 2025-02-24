@@ -1,0 +1,31 @@
+
+
+Added rooting by artibrary base
+2R64= Square root of 64
+3R64= Cube root of 64
+4R64=
+5R64=
+6R64=
+
+Added Logarithms with arbitrary base
+10L1000= log10(1000)
+9L1000= 
+8L1000= 
+7L1000= 
+2L1000= log2(1000)
+
+Added root errors
+0R64= Index Zero Error
+2R-64= Index Even and Radicand Negative
+3R-64= This is not an error
+
+Added logarithm errors
+10L-1000= Log argument less than 0
+-2L1000= Log base negative
+0L1000= Log base 0
+1L1000=Log base is 1
+0.5L1000= this is not an error
+
+
+
+

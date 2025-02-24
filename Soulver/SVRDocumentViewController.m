@@ -150,17 +150,11 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
     case 19: return @"/";
     case 20: return @"(";
     case 21: return @"^";
+    case 22: return [@"2" stringByAppendingString:[NSString SVR_rootRawString]];
+    case 23: return [@"10" stringByAppendingString:[NSString SVR_logRawString]];
     case 13:
       // Backspace Button
       *control = -1;
-      return nil;
-    case 22:
-      // Clear Line Button
-      *control = -2;
-      return nil;
-    case 23:
-      // Clear All Button
-      *control = -3;
       return nil;
   }
   XPLogRaise2(@"<%@> Button with unknown tag: %ld", self, tag);

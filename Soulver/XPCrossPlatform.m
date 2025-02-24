@@ -272,6 +272,28 @@ NSArray* XPRunOpenPanel(void)
 
 @implementation NSString (CrossPlatform)
 
++(NSString*)SVR_rootDisplayString;
+{
+  // This breaks the regex engine because its shit
+  unichar sqrtChar = 0x221A;
+  return [NSString stringWithCharacters:&sqrtChar length:1];
+}
+
++(NSString*)SVR_rootRawString;
+{
+  return @"R";
+}
+
++(NSString*)SVR_logRawString;
+{
+  return @"L";
+}
+
++(NSString*)SVR_logDisplayString;
+{
+  return @"log";
+}
+
 -(NSString*)SVR_descriptionHighlightingRange:(NSRange)range;
 {
   NSString *leading  = @">>";
@@ -303,45 +325,6 @@ NSArray* XPRunOpenPanel(void)
   return [XPCharacterSetEnumerator enumeratorWithString:self
                                            characterSet:aSet
                                                 options:mask];
-}
-
-@end
-
-// MARK: NSDecimalNumber
-@implementation NSDecimalNumber (Soulver)
-
--(BOOL)SVR_isNotANumber;
-{
-  NSString *lhsDescription = [self description];
-  NSString *rhsDescription = [[NSDecimalNumber notANumber] description];
-  return [lhsDescription isEqualToString:rhsDescription];
-}
-
-// NSDecimalNumber handles exponents extremely strangely
-// This provides a little wrapper around the oddities
--(NSDecimalNumber*)SVR_decimalNumberByRaisingToPower:(NSDecimalNumber*)power
-                                        withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
-{
-  NSDecimalNumber *output = nil;
-  BOOL powerIsNegative = ([power compare:[NSDecimalNumber zero]] == NSOrderedAscending);
-  BOOL selfIsNegative = ([self compare:[NSDecimalNumber zero]] == NSOrderedAscending);
-  
-  if (powerIsNegative) {
-    output = [[NSDecimalNumber one] decimalNumberByDividingBy:
-                          [self decimalNumberByRaisingToPower:(XPUInteger)abs([power intValue])
-                                                 withBehavior:behavior]
-                                                 withBehavior:behavior];
-  } else {
-    output = [self decimalNumberByRaisingToPower:(XPUInteger)[power unsignedIntValue]
-                                    withBehavior:behavior];
-  }
-  
-  if (selfIsNegative) {
-    output = [output decimalNumberByMultiplyingBy:[NSDecimalNumber decimalNumberWithString:@"-1"]
-                                     withBehavior:behavior];
-  }
-  
-  return output;
 }
 
 @end

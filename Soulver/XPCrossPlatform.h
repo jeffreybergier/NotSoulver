@@ -199,18 +199,15 @@ NSArray* XPRunOpenPanel(void);
 @end
 
 @interface NSString (CrossPlatform)
++(NSString*)SVR_rootRawString;
++(NSString*)SVR_rootDisplayString;
++(NSString*)SVR_logRawString;
++(NSString*)SVR_logDisplayString;
 -(NSString*)SVR_descriptionHighlightingRange:(NSRange)range;
 -(const char*)XP_UTF8String;
 -(NSEnumerator*)XP_enumeratorForCharactersInSet:(NSCharacterSet*)aSet;
 -(NSEnumerator*)XP_enumeratorForCharactersInSet:(NSCharacterSet*)aSet
                                         options:(XPStringCompareOptions)mask;
-@end
-
-@interface NSDecimalNumber (Soulver)
-/// In OpenStep, NaN comparisons are weird, so this uses a string comparison
--(BOOL)SVR_isNotANumber;
--(NSDecimalNumber*)SVR_decimalNumberByRaisingToPower:(NSDecimalNumber*)power
-                                        withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
 @end
 
 /// NSFont is stored in UserDefaults as archived Data.

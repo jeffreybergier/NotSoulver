@@ -239,6 +239,12 @@
   match = [regex nextObject];
   NSAssert(match == nil, @"");
   
+  // More Square root finding finding
+  regex = [SLRERegex SVR_regexForOperatorsInString:@"and 2R64 and"];
+  NSAssert([regex containsMatch], @"");
+  match = [regex nextObject];
+  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"R6"], @"");
+  
   // More complete operator finding
   regex = [SLRERegex SVR_regexForOperatorsInString:@"and (1+2)^(6*7)-3*4*(7) and 9-(4) and"];
   NSAssert([regex containsMatch], @"");

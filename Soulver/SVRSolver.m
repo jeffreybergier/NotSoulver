@@ -49,7 +49,9 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
 #pragma clang diagnostic ignored "-Wnonnull"
   SVRSolverTextAttachmentCharacterSet = [
     [NSCharacterSet characterSetWithCharactersInString:
-     [[NSAttributedString attributedStringWithAttachment:nil] string]]
+     [[NSAttributedString attributedStringWithAttachment:
+       [[NSTextAttachment new] autorelease]]
+      string]]
     retain];
 #pragma clang diagnostic pop
 }
@@ -232,6 +234,10 @@ SVRSolverOperator SVRSolverOperatorForRawString(NSString *string)
     return SVRSolverOperatorSubtract;
   } else if ([string isEqualToString:@"+"]) {
     return SVRSolverOperatorAdd;
+  } else if ([string isEqualToString:[NSString SVR_rootRawString]]) {
+    return SVRSolverOperatorRoot;
+  } else if ([string isEqualToString:[NSString SVR_logRawString]]) {
+    return SVRSolverOperatorLog;
   } else {
     XPLogRaise1(@"SVR_operatorForRawStringUnknown: %@", string);
     return SVRSolverOperatorUnknown;
@@ -246,6 +252,8 @@ NSString *RawStringForOperator(SVRSolverOperator operator)
     case SVRSolverOperatorMultiply: return @"*";
     case SVRSolverOperatorSubtract: return @"-";
     case SVRSolverOperatorAdd:      return @"+";
+    case SVRSolverOperatorRoot:     return [NSString SVR_rootRawString];
+    case SVRSolverOperatorLog:      return [NSString SVR_logRawString];
     case SVRSolverOperatorUnknown:
     default:
       XPLogRaise1(@"RawStringForOperatorUnknown: %d", operator);
@@ -253,40 +261,282 @@ NSString *RawStringForOperator(SVRSolverOperator operator)
   }
 }
 
-NSString *SVRSolverDescriptionForError(SVRSolverError error)
+NSString *SVRSolverDescriptionForError(SVRCalculationError error)
 {
+  // TODO: Add missing localized strings
   switch (error) {
-    case SVRSolverErrorNone:
+    case SVRCalculationLossOfPrecision:
+    case SVRCalculationUnderflow:
+    case SVRCalculationOverflow:
+      XPLogRaise1(@"Should not show error: %d", error);
       return nil;
-    case SVRSolverErrorInvalidCharacter:
-      return [NSString stringWithFormat:[Localized phraseErrorInvalidCharacter], error];
-    case SVRSolverErrorMismatchedBrackets:
-      return [NSString stringWithFormat:[Localized phraseErrorMismatchedBrackets], error];
-    case SVRSolverErrorMissingOperand:
-      return [NSString stringWithFormat:[Localized phraseErrorMissingOperand], error];
-    case SVRSolverErrorDivideByZero:
+    case SVRCalculationNoError:
+      return nil;
+    case SVRCalculationDivideByZero:
       return [NSString stringWithFormat:[Localized phraseErrorDividByZero], error];
+    case SVRCalculationInvalidCharacter:
+      return [NSString stringWithFormat:[Localized phraseErrorInvalidCharacter], error];
+    case SVRCalculationMismatchedBrackets:
+      return [NSString stringWithFormat:[Localized phraseErrorMismatchedBrackets], error];
+    case SVRCalculationMissingOperand:
+      return [NSString stringWithFormat:[Localized phraseErrorMissingOperand], error];
+    case SVRCalculationResultNaN:
+      return [NSString stringWithFormat:[Localized phraseErrorNaN], error];
+    case SVRCalculationResultInfinite:
+      return [NSString stringWithFormat:[Localized phraseErrorInfinite], error];
+    case SVRCalculationResultImaginary:
+      return [NSString stringWithFormat:[Localized phraseErrorImaginary], error];
+    case SVRCalculationIndexZero:
+      return [NSString stringWithFormat:[Localized phraseErrorIndexZero], error];
+    case SVRCalculationArgumentNegative:
+      return [NSString stringWithFormat:[Localized phraseErrorArgumentNegative], error];
+    case SVRCalculationBaseNegative:
+      return [NSString stringWithFormat:[Localized phraseErrorBaseNegative], error];
+    case SVRCalculationBaseOne:
+      return [NSString stringWithFormat:[Localized phraseErrorBaseOne], error];
     default:
       XPLogRaise1(@"SVRSolverDescriptionForErrorUnknown: %d", error);
       return nil;
   }
 }
 
-NSString *SVRSolverDebugDescriptionForError(SVRSolverError error)
-{
+NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
   switch (error) {
-    case SVRSolverErrorNone:
-      return @"none";
-    case SVRSolverErrorInvalidCharacter:
-      return @"invalidCharacter";
-    case SVRSolverErrorMismatchedBrackets:
-      return @"mismatchedBrackets";
-    case SVRSolverErrorMissingOperand:
-      return @"missingOperand";
-    case SVRSolverErrorDivideByZero:
-      return @"divideByZero";
+    case SVRCalculationNoError:
+      return @"SVRCalculationNoError";
+    case SVRCalculationLossOfPrecision:
+      return @"SVRCalculationLossOfPrecision";
+    case SVRCalculationUnderflow:
+      return @"SVRCalculationUnderflow";
+    case SVRCalculationOverflow:
+      return @"SVRCalculationOverflow";
+    case SVRCalculationDivideByZero:
+      return @"SVRCalculationDivideByZero";
+    case SVRCalculationInvalidCharacter:
+      return @"SVRCalculationInvalidCharacter";
+    case SVRCalculationMismatchedBrackets:
+      return @"SVRCalculationMismatchedBrackets";
+    case SVRCalculationMissingOperand:
+      return @"SVRCalculationMissingOperand";
+    case SVRCalculationResultNaN:
+      return @"SVRCalculationResultNaN";
+    case SVRCalculationResultInfinite:
+      return @"SVRCalculationResultInfinite";
+    case SVRCalculationResultImaginary:
+      return @"SVRCalculationResultImaginary";
+    case SVRCalculationIndexZero:
+      return @"SVRCalculationIndexZero";
+    case SVRCalculationArgumentNegative:
+      return @"SVRCalculationArgumentNegative";
+    case SVRCalculationBaseNegative:
+      return @"SVRCalculationBaseNegative";
+    case SVRCalculationBaseOne:
+      return @"SVRCalculationBaseOne";
     default:
-      XPLogRaise1(@"SVRSolverDescriptionForErrorUnknown: %d", error);
+      XPLogRaise1(@"SVRSolverDebugDescriptionForError: %d", error);
       return nil;
   }
 }
+
+// MARK: NSDecimalNumber Helper Methods
+
+@implementation SVRSolverDecimalBehavior
+
+-(id)initWithErrorPtr:(SVRCalculationErrorPointer)errorPtr;
+{
+  self = [super init];
+  _errorPtr = errorPtr;
+  return self;
+}
+
++(id)behaviorWithErrorPtr:(SVRCalculationErrorPointer)errorPtr;
+{
+  return [[[SVRSolverDecimalBehavior alloc] initWithErrorPtr:errorPtr] autorelease];
+}
+
+-(NSRoundingMode)roundingMode;
+{
+  return NSRoundPlain;
+}
+
+-(short)scale;
+{
+  return 5;
+}
+
+-(NSDecimalNumber*)exceptionDuringOperation:(SEL)operation
+                                      error:(SVRCalculationError)error
+                                leftOperand:(NSDecimalNumber*)leftOperand
+                               rightOperand:(NSDecimalNumber*)rightOperand;
+{
+  // Log the error if needed
+  switch (error) {
+    case SVRCalculationNoError:
+      break;
+    default:
+      XPLogDebug3(@"%@: lhs: %@ rhs: %@", SVRSolverDebugDescriptionForError(error), leftOperand, rightOperand);
+      break;
+  }
+  
+  // Configure the error pointer if needed
+  switch (error) {
+    case SVRCalculationNoError:
+    case SVRCalculationLossOfPrecision:
+    case SVRCalculationOverflow:
+    case SVRCalculationUnderflow:
+      *_errorPtr = SVRCalculationNoError;
+      break;
+    default:
+      *_errorPtr = error;
+      break;
+  }
+  
+  // Decide what to do with the error.
+  // Only divide by zero needs special action (according to docs)
+  switch (error) {
+    case SVRCalculationDivideByZero: return [NSDecimalNumber notANumber];
+    default: return nil;
+  }
+}
+
+-(void)dealloc;
+{
+  XPLogExtra1(@"DEALLOC: %@", self);
+  _errorPtr = NULL;
+  [super dealloc];
+}
+
+@end
+
+@implementation NSDecimalNumber (Soulver)
+
+-(BOOL)SVR_isNotANumber;
+{
+  NSString *lhsDescription = [self description];
+  NSString *rhsDescription = [[NSDecimalNumber notANumber] description];
+  return [lhsDescription isEqualToString:rhsDescription];
+}
+
+-(NSDecimalNumber*)SVR_decimalNumberByRootingWithIndex:(NSDecimalNumber*)index
+                                          withBehavior:(SVRSolverDecimalBehavior*)behavior;
+{
+  double radicandRaw = [self doubleValue];
+  double indexRaw    = [index doubleValue];
+  double resultRaw   = 0;
+  double radMult     = 1; // Used to counteract odd root of negative number
+  SVRCalculationError error = SVRCalculationNoError;
+  
+  if (indexRaw == 0) {
+    error = SVRCalculationIndexZero;
+  }
+  
+  if (radicandRaw < 0) {
+    if (fmod(indexRaw, 2) != 1) {
+      error = SVRCalculationResultImaginary;
+    } else {
+      radMult = -1;
+    }
+  }
+  
+  if (error == SVRCalculationNoError) {
+    resultRaw = pow(radMult*radicandRaw, 1.0 / indexRaw) * radMult;
+    if (isnan(resultRaw)) {
+      error = SVRCalculationResultNaN;
+    }
+    if (isinf(resultRaw)) {
+      error = SVRCalculationResultInfinite;
+    }
+  }
+  
+  if (error == NSCalculationNoError) {
+    NSString *resultString = [NSString stringWithFormat:@"%f", resultRaw];
+    NSDecimalNumber *result = [NSDecimalNumber decimalNumberWithString:resultString];
+    return result;
+  } else {
+    if (behavior) {
+      [behavior exceptionDuringOperation:@selector(SVR_decimalNumberByRootingWithIndex:withBehavior:)
+                                   error:error
+                             leftOperand:index
+                            rightOperand:self];
+    } else {
+      XPLogRaise1(@"NSCalculationError: %u", error);
+    }
+    return [NSDecimalNumber notANumber];
+  }
+}
+
+-(NSDecimalNumber*)SVR_decimalNumberByLogarithmWithBase:(NSDecimalNumber*)base
+                                           withBehavior:(SVRSolverDecimalBehavior*)behavior;
+{
+  double argumentRaw = [self doubleValue];
+  double baseRaw     = [base doubleValue];
+  double resultRaw   = 0;
+  SVRCalculationError error = SVRCalculationNoError;
+  
+  if (argumentRaw <= 0) {
+    error = SVRCalculationArgumentNegative;
+  }
+  
+  if (baseRaw <= 0) {
+    error = SVRCalculationBaseNegative;
+  }
+  
+  if (baseRaw == 1) {
+    error = SVRCalculationBaseOne;
+  }
+  
+  if (error == SVRCalculationNoError) {
+    resultRaw = log(argumentRaw) / log(baseRaw);
+    if (isnan(resultRaw)) {
+      error = SVRCalculationResultNaN;
+    }
+    if (isinf(resultRaw)) {
+      error = SVRCalculationResultInfinite;
+    }
+  }
+  
+  if (error == SVRCalculationNoError) {
+    NSString *resultString = [NSString stringWithFormat:@"%f", resultRaw];
+    NSDecimalNumber *result = [NSDecimalNumber decimalNumberWithString:resultString];
+    return result;
+  } else {
+    if (behavior) {
+      [behavior exceptionDuringOperation:@selector(SVR_decimalNumberByRootingWithIndex:withBehavior:)
+                                   error:error
+                             leftOperand:base
+                            rightOperand:self];
+    } else {
+      XPLogRaise1(@"NSCalculationError: %u", error);
+    }
+    return [NSDecimalNumber notANumber];
+  }
+}
+
+// TODO: Update this to match SVR_decimalNumberByRootingWithIndex
+// Make this the primary method and the other method just uses root 1/exponent
+-(NSDecimalNumber*)SVR_decimalNumberByRaisingToPower:(NSDecimalNumber*)power
+                                        withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
+{
+  NSDecimalNumber *output = nil;
+  BOOL powerIsNegative = ([power compare:[NSDecimalNumber zero]] == NSOrderedAscending);
+  BOOL selfIsNegative = ([self compare:[NSDecimalNumber zero]] == NSOrderedAscending);
+  
+  if (powerIsNegative) {
+    output = [[NSDecimalNumber one] decimalNumberByDividingBy:
+                          [self decimalNumberByRaisingToPower:(XPUInteger)abs([power intValue])
+                                                 withBehavior:behavior]
+                                                 withBehavior:behavior];
+  } else {
+    output = [self decimalNumberByRaisingToPower:(XPUInteger)[power unsignedIntValue]
+                                    withBehavior:behavior];
+  }
+  
+  if (selfIsNegative) {
+    output = [output decimalNumberByMultiplyingBy:[NSDecimalNumber decimalNumberWithString:@"-1"]
+                                     withBehavior:behavior];
+  }
+  
+  return output;
+}
+
+@end
