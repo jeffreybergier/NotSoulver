@@ -369,6 +369,7 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
                                 leftOperand:(NSDecimalNumber*)leftOperand
                                rightOperand:(NSDecimalNumber*)rightOperand;
 {
+  *_errorPtr = error;
   switch (error) {
     case SVRCalculationNoError:
       return nil;
@@ -405,17 +406,23 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
   double radicandRaw = [self doubleValue];
   double indexRaw    = [index doubleValue];
   double resultRaw   = 0;
+  double radMult     = 1; // Used to counteract odd root of negative number
   SVRCalculationError error = SVRCalculationNoError;
   
   if (indexRaw == 0) {
     error = SVRCalculationIndexZero;
   }
-  if (radicandRaw < 0 && fmod(indexRaw, 2) != 1) {
-    error = SVRCalculationResultImaginary;
+  
+  if (radicandRaw < 0) {
+    if (fmod(indexRaw, 2) != 1) {
+      error = SVRCalculationResultImaginary;
+    } else {
+      radMult = -1;
+    }
   }
   
   if (error == NSCalculationNoError) {
-    resultRaw = pow(radicandRaw, 1.0 / indexRaw);
+    resultRaw = pow(radMult*radicandRaw, 1.0 / indexRaw) * radMult;
     if (isnan(resultRaw)) {
       error = SVRCalculationResultNaN;
     }

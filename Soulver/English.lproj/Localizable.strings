@@ -20,9 +20,9 @@
 "NEXT_P_ErrorNaN%d" = "%d|NaN";
 "NEXT_P_ErrorInfinite%d" = "%d|Infinite";
 "NEXT_P_ErrorImaginary%d" = "%d|Imaginary";
-"NEXT_P_ErrorIndexNegative%d" = "%d|Index Negative";
-"NEXT_P_ErrorArgumentNegative%d" = "%d|Argument Negative";
-"NEXT_P_ErrorBaseNegative%d" = "%d|Base 0";
+"NEXT_P_ErrorIndexNegative%d" = "%d|Index <=0";
+"NEXT_P_ErrorArgumentNegative%d" = "%d|Argument <0";
+"NEXT_P_ErrorBaseNegative%d" = "%d|Base <=0";
 "NEXT_P_ErrorBaseOne%d" = "%d|Base 1";
 "NEXT_P_CopyToClipboard" = "Copy to Clipboard";
 "NEXT_P_DontCopy" = "Don't Copy";
