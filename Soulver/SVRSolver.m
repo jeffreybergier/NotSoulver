@@ -265,14 +265,13 @@ NSString *SVRSolverDescriptionForError(SVRCalculationError error)
 {
   // TODO: Add missing localized strings
   switch (error) {
+    case SVRCalculationLossOfPrecision:
+    case SVRCalculationUnderflow:
+    case SVRCalculationOverflow:
+      XPLogRaise1(@"Should not show error: %d", error);
+      return nil;
     case SVRCalculationNoError:
       return nil;
-    case SVRCalculationLossOfPrecision:
-      return @"SVRCalculationLossOfPrecision";
-    case SVRCalculationUnderflow:
-      return @"SVRCalculationUnderflow";
-    case SVRCalculationOverflow:
-      return @"SVRCalculationOverflow";
     case SVRCalculationDivideByZero:
       return [NSString stringWithFormat:[Localized phraseErrorDividByZero], error];
     case SVRCalculationInvalidCharacter:
@@ -282,19 +281,19 @@ NSString *SVRSolverDescriptionForError(SVRCalculationError error)
     case SVRCalculationMissingOperand:
       return [NSString stringWithFormat:[Localized phraseErrorMissingOperand], error];
     case SVRCalculationResultNaN:
-      return @"SVRCalculationResultNaN";
+      return [NSString stringWithFormat:[Localized phraseErrorNaN], error];
     case SVRCalculationResultInfinite:
-      return @"SVRCalculationResultInfinite";
+      return [NSString stringWithFormat:[Localized phraseErrorInfinite], error];
     case SVRCalculationResultImaginary:
-      return @"SVRCalculationResultImaginary";
+      return [NSString stringWithFormat:[Localized phraseErrorImaginary], error];
     case SVRCalculationIndexZero:
-      return @"SVRCalculationIndexZero";
+      return [NSString stringWithFormat:[Localized phraseErrorIndexZero], error];
     case SVRCalculationArgumentNegative:
-      return @"SVRCalculationArgumentNegative";
+      return [NSString stringWithFormat:[Localized phraseErrorArgumentNegative], error];
     case SVRCalculationBaseNegative:
-      return @"SVRCalculationBaseNegative";
+      return [NSString stringWithFormat:[Localized phraseErrorBaseNegative], error];
     case SVRCalculationBaseOne:
-      return @"SVRCalculationBaseOne";
+      return [NSString stringWithFormat:[Localized phraseErrorBaseOne], error];
     default:
       XPLogRaise1(@"SVRSolverDescriptionForErrorUnknown: %d", error);
       return nil;
