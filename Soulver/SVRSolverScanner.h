@@ -28,7 +28,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "XPCrossPlatform.h"
 #import "SLRERegex.h"
 
 @interface SVRSolverScanner: NSObject

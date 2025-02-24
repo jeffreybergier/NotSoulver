@@ -371,6 +371,20 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 { return NSLocalizedString(@"NEXT_P_ErrorMissingOperand%d", @""); }
 +(NSString*)phraseErrorDividByZero;
 { return NSLocalizedString(@"NEXT_P_ErrorDividByZero%d", @""); }
++(NSString*)phraseErrorNaN;
+{ return NSLocalizedString(@"NEXT_P_ErrorNaN%d", @""); }
++(NSString*)phraseErrorInfinite;
+{ return NSLocalizedString(@"NEXT_P_ErrorInfinite%d", @""); }
++(NSString*)phraseErrorImaginary;
+{ return NSLocalizedString(@"NEXT_P_ErrorImaginary%d", @""); }
++(NSString*)phraseErrorIndexZero;
+{ return NSLocalizedString(@"NEXT_P_ErrorIndexNegative%d", @""); }
++(NSString*)phraseErrorArgumentNegative;
+{ return NSLocalizedString(@"NEXT_P_ErrorArgumentNegative%d", @""); }
++(NSString*)phraseErrorBaseNegative;
+{ return NSLocalizedString(@"NEXT_P_ErrorBaseNegative%d", @""); }
++(NSString*)phraseErrorBaseOne;
+{ return NSLocalizedString(@"NEXT_P_ErrorBaseOne%d", @""); }
 +(NSString*)phraseSourceRepositoryURL;
 { return NSLocalizedString(@"NEXT_P_SourceRepositoryURL", @""); }
 +(NSString*)phraseCopyWebURLToClipboard;

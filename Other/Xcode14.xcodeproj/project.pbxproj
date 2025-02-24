@@ -1,0 +1,440 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8CD4023E2D6AFE3D00024E10 /* XPCrossPlatform.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD4020F2D6AFE3B00024E10 /* XPCrossPlatform.m */; };
+		8CD4023F2D6AFE3D00024E10 /* SVRAccessoryWindowsOwner.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD402152D6AFE3B00024E10 /* SVRAccessoryWindowsOwner.m */; };
+		8CD402402D6AFE3D00024E10 /* SVRSolverTextAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD402182D6AFE3B00024E10 /* SVRSolverTextAttachment.m */; };
+		8CD402412D6AFE3D00024E10 /* XPDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD4021B2D6AFE3B00024E10 /* XPDocument.m */; };
+		8CD402422D6AFE3D00024E10 /* SVRDocumentModelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD4021D2D6AFE3B00024E10 /* SVRDocumentModelController.m */; };
+		8CD402432D6AFE3D00024E10 /* SVRSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD402202D6AFE3C00024E10 /* SVRSettingsViewController.m */; };
+		8CD402442D6AFE3D00024E10 /* SVRDocumentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD402212D6AFE3C00024E10 /* SVRDocumentViewController.m */; };
+		8CD402452D6AFE3D00024E10 /* SVRSolverScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD402222D6AFE3C00024E10 /* SVRSolverScanner.m */; };
+		8CD402462D6AFE3D00024E10 /* SLRERegex.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD402232D6AFE3C00024E10 /* SLRERegex.m */; };
+		8CD402472D6AFE3D00024E10 /* SVRSolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD402242D6AFE3C00024E10 /* SVRSolver.m */; };
+		8CD402482D6AFE3D00024E10 /* SVRDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD402272D6AFE3C00024E10 /* SVRDocument.m */; };
+		8CD402492D6AFE3D00024E10 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 8CD4022E2D6AFE3C00024E10 /* Makefile */; };
+		8CD4024A2D6AFE3D00024E10 /* SVRSolverStyler.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD402302D6AFE3C00024E10 /* SVRSolverStyler.m */; };
+		8CD4024B2D6AFE3D00024E10 /* SVRSolverExpressionTagger.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD402322D6AFE3D00024E10 /* SVRSolverExpressionTagger.m */; };
+		8CD4024C2D6AFE3D00024E10 /* Soulver_main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD402342D6AFE3D00024E10 /* Soulver_main.m */; };
+		8CD4024D2D6AFE3D00024E10 /* SVRSolverSolutionTagger.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD402362D6AFE3D00024E10 /* SVRSolverSolutionTagger.m */; };
+		8CD4024E2D6AFE3D00024E10 /* slre.c in Sources */ = {isa = PBXBuildFile; fileRef = 8CD402382D6AFE3D00024E10 /* slre.c */; };
+		8CD4024F2D6AFE3D00024E10 /* NSUserDefaults+Soulver.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD4023B2D6AFE3D00024E10 /* NSUserDefaults+Soulver.m */; };
+		8CD402502D6AFE3D00024E10 /* SVRAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD4023C2D6AFE3D00024E10 /* SVRAppDelegate.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8CD402012D6AFCAF00024E10 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		8C6587BA2D6C17620055E7EA /* .gdbinit */ = {isa = PBXFileReference; lastKnownFileType = text; name = .gdbinit; path = ../Soulver/.gdbinit; sourceTree = "<group>"; };
+		8CD402032D6AFCAF00024E10 /* Xcode14 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Xcode14; sourceTree = BUILT_PRODUCTS_DIR; };
+		8CD4020F2D6AFE3B00024E10 /* XPCrossPlatform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XPCrossPlatform.m; path = ../Soulver/XPCrossPlatform.m; sourceTree = "<group>"; };
+		8CD402132D6AFE3B00024E10 /* PB.project */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = PB.project; path = ../Soulver/PB.project; sourceTree = "<group>"; };
+		8CD402142D6AFE3B00024E10 /* SVRSolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SVRSolver.h; path = ../Soulver/SVRSolver.h; sourceTree = "<group>"; };
+		8CD402152D6AFE3B00024E10 /* SVRAccessoryWindowsOwner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SVRAccessoryWindowsOwner.m; path = ../Soulver/SVRAccessoryWindowsOwner.m; sourceTree = "<group>"; };
+		8CD402162D6AFE3B00024E10 /* slre.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = slre.h; path = ../Soulver/slre.h; sourceTree = "<group>"; };
+		8CD402172D6AFE3B00024E10 /* SVRDocumentModelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SVRDocumentModelController.h; path = ../Soulver/SVRDocumentModelController.h; sourceTree = "<group>"; };
+		8CD402182D6AFE3B00024E10 /* SVRSolverTextAttachment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SVRSolverTextAttachment.m; path = ../Soulver/SVRSolverTextAttachment.m; sourceTree = "<group>"; };
+		8CD402192D6AFE3B00024E10 /* SVRDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SVRDocument.h; path = ../Soulver/SVRDocument.h; sourceTree = "<group>"; };
+		8CD4021A2D6AFE3B00024E10 /* XPDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XPDocument.h; path = ../Soulver/XPDocument.h; sourceTree = "<group>"; };
+		8CD4021B2D6AFE3B00024E10 /* XPDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XPDocument.m; path = ../Soulver/XPDocument.m; sourceTree = "<group>"; };
+		8CD4021C2D6AFE3B00024E10 /* Makefile.preamble */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Makefile.preamble; path = ../Soulver/Makefile.preamble; sourceTree = "<group>"; };
+		8CD4021D2D6AFE3B00024E10 /* SVRDocumentModelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SVRDocumentModelController.m; path = ../Soulver/SVRDocumentModelController.m; sourceTree = "<group>"; };
+		8CD4021E2D6AFE3B00024E10 /* SVRSolverSolutionTagger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SVRSolverSolutionTagger.h; path = ../Soulver/SVRSolverSolutionTagger.h; sourceTree = "<group>"; };
+		8CD4021F2D6AFE3B00024E10 /* Soulver.iconheader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Soulver.iconheader; path = ../Soulver/Soulver.iconheader; sourceTree = "<group>"; };
+		8CD402202D6AFE3C00024E10 /* SVRSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SVRSettingsViewController.m; path = ../Soulver/SVRSettingsViewController.m; sourceTree = "<group>"; };
+		8CD402212D6AFE3C00024E10 /* SVRDocumentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SVRDocumentViewController.m; path = ../Soulver/SVRDocumentViewController.m; sourceTree = "<group>"; };
+		8CD402222D6AFE3C00024E10 /* SVRSolverScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SVRSolverScanner.m; path = ../Soulver/SVRSolverScanner.m; sourceTree = "<group>"; };
+		8CD402232D6AFE3C00024E10 /* SLRERegex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SLRERegex.m; path = ../Soulver/SLRERegex.m; sourceTree = "<group>"; };
+		8CD402242D6AFE3C00024E10 /* SVRSolver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SVRSolver.m; path = ../Soulver/SVRSolver.m; sourceTree = "<group>"; };
+		8CD402252D6AFE3C00024E10 /* SVRSolverScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SVRSolverScanner.h; path = ../Soulver/SVRSolverScanner.h; sourceTree = "<group>"; };
+		8CD402262D6AFE3C00024E10 /* SLRERegex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SLRERegex.h; path = ../Soulver/SLRERegex.h; sourceTree = "<group>"; };
+		8CD402272D6AFE3C00024E10 /* SVRDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SVRDocument.m; path = ../Soulver/SVRDocument.m; sourceTree = "<group>"; };
+		8CD402282D6AFE3C00024E10 /* SVRSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SVRSettingsViewController.h; path = ../Soulver/SVRSettingsViewController.h; sourceTree = "<group>"; };
+		8CD402292D6AFE3C00024E10 /* SVRSolverExpressionTagger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SVRSolverExpressionTagger.h; path = ../Soulver/SVRSolverExpressionTagger.h; sourceTree = "<group>"; };
+		8CD4022A2D6AFE3C00024E10 /* English.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = English.lproj; path = ../Soulver/English.lproj; sourceTree = "<group>"; };
+		8CD4022B2D6AFE3C00024E10 /* NSUserDefaults+Soulver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSUserDefaults+Soulver.h"; path = "../Soulver/NSUserDefaults+Soulver.h"; sourceTree = "<group>"; };
+		8CD4022C2D6AFE3C00024E10 /* Makefile.postamble */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Makefile.postamble; path = ../Soulver/Makefile.postamble; sourceTree = "<group>"; };
+		8CD4022D2D6AFE3C00024E10 /* SVRAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SVRAppDelegate.h; path = ../Soulver/SVRAppDelegate.h; sourceTree = "<group>"; };
+		8CD4022E2D6AFE3C00024E10 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; name = Makefile; path = ../Soulver/Makefile; sourceTree = "<group>"; };
+		8CD4022F2D6AFE3C00024E10 /* SVRDocumentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SVRDocumentViewController.h; path = ../Soulver/SVRDocumentViewController.h; sourceTree = "<group>"; };
+		8CD402302D6AFE3C00024E10 /* SVRSolverStyler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SVRSolverStyler.m; path = ../Soulver/SVRSolverStyler.m; sourceTree = "<group>"; };
+		8CD402312D6AFE3C00024E10 /* h.template */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = h.template; path = ../Soulver/h.template; sourceTree = "<group>"; };
+		8CD402322D6AFE3D00024E10 /* SVRSolverExpressionTagger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SVRSolverExpressionTagger.m; path = ../Soulver/SVRSolverExpressionTagger.m; sourceTree = "<group>"; };
+		8CD402332D6AFE3D00024E10 /* SVRSolverStyler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SVRSolverStyler.h; path = ../Soulver/SVRSolverStyler.h; sourceTree = "<group>"; };
+		8CD402342D6AFE3D00024E10 /* Soulver_main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Soulver_main.m; path = ../Soulver/Soulver_main.m; sourceTree = "<group>"; };
+		8CD402352D6AFE3D00024E10 /* XPCrossPlatform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XPCrossPlatform.h; path = ../Soulver/XPCrossPlatform.h; sourceTree = "<group>"; };
+		8CD402362D6AFE3D00024E10 /* SVRSolverSolutionTagger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SVRSolverSolutionTagger.m; path = ../Soulver/SVRSolverSolutionTagger.m; sourceTree = "<group>"; };
+		8CD402372D6AFE3D00024E10 /* m.template */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = m.template; path = ../Soulver/m.template; sourceTree = "<group>"; };
+		8CD402382D6AFE3D00024E10 /* slre.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = slre.c; path = ../Soulver/slre.c; sourceTree = "<group>"; };
+		8CD402392D6AFE3D00024E10 /* SVRAccessoryWindowsOwner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SVRAccessoryWindowsOwner.h; path = ../Soulver/SVRAccessoryWindowsOwner.h; sourceTree = "<group>"; };
+		8CD4023A2D6AFE3D00024E10 /* SVRSolverTextAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SVRSolverTextAttachment.h; path = ../Soulver/SVRSolverTextAttachment.h; sourceTree = "<group>"; };
+		8CD4023B2D6AFE3D00024E10 /* NSUserDefaults+Soulver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSUserDefaults+Soulver.m"; path = "../Soulver/NSUserDefaults+Soulver.m"; sourceTree = "<group>"; };
+		8CD4023C2D6AFE3D00024E10 /* SVRAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SVRAppDelegate.m; path = ../Soulver/SVRAppDelegate.m; sourceTree = "<group>"; };
+		8CD4023D2D6AFE3D00024E10 /* about-image-512.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "about-image-512.tiff"; path = "../Soulver/about-image-512.tiff"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8CD402002D6AFCAF00024E10 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8CD401FA2D6AFCAF00024E10 = {
+			isa = PBXGroup;
+			children = (
+				8CD4020E2D6AFE1B00024E10 /* Source */,
+				8CD402042D6AFCAF00024E10 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8CD402042D6AFCAF00024E10 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8CD402032D6AFCAF00024E10 /* Xcode14 */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8CD4020E2D6AFE1B00024E10 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				8C6587BA2D6C17620055E7EA /* .gdbinit */,
+				8CD4023D2D6AFE3D00024E10 /* about-image-512.tiff */,
+				8CD4022A2D6AFE3C00024E10 /* English.lproj */,
+				8CD402312D6AFE3C00024E10 /* h.template */,
+				8CD402372D6AFE3D00024E10 /* m.template */,
+				8CD4022E2D6AFE3C00024E10 /* Makefile */,
+				8CD4022C2D6AFE3C00024E10 /* Makefile.postamble */,
+				8CD4021C2D6AFE3B00024E10 /* Makefile.preamble */,
+				8CD4022B2D6AFE3C00024E10 /* NSUserDefaults+Soulver.h */,
+				8CD4023B2D6AFE3D00024E10 /* NSUserDefaults+Soulver.m */,
+				8CD402132D6AFE3B00024E10 /* PB.project */,
+				8CD402382D6AFE3D00024E10 /* slre.c */,
+				8CD402162D6AFE3B00024E10 /* slre.h */,
+				8CD402262D6AFE3C00024E10 /* SLRERegex.h */,
+				8CD402232D6AFE3C00024E10 /* SLRERegex.m */,
+				8CD402342D6AFE3D00024E10 /* Soulver_main.m */,
+				8CD4021F2D6AFE3B00024E10 /* Soulver.iconheader */,
+				8CD402392D6AFE3D00024E10 /* SVRAccessoryWindowsOwner.h */,
+				8CD402152D6AFE3B00024E10 /* SVRAccessoryWindowsOwner.m */,
+				8CD4022D2D6AFE3C00024E10 /* SVRAppDelegate.h */,
+				8CD4023C2D6AFE3D00024E10 /* SVRAppDelegate.m */,
+				8CD402192D6AFE3B00024E10 /* SVRDocument.h */,
+				8CD402272D6AFE3C00024E10 /* SVRDocument.m */,
+				8CD402172D6AFE3B00024E10 /* SVRDocumentModelController.h */,
+				8CD4021D2D6AFE3B00024E10 /* SVRDocumentModelController.m */,
+				8CD4022F2D6AFE3C00024E10 /* SVRDocumentViewController.h */,
+				8CD402212D6AFE3C00024E10 /* SVRDocumentViewController.m */,
+				8CD402282D6AFE3C00024E10 /* SVRSettingsViewController.h */,
+				8CD402202D6AFE3C00024E10 /* SVRSettingsViewController.m */,
+				8CD402142D6AFE3B00024E10 /* SVRSolver.h */,
+				8CD402242D6AFE3C00024E10 /* SVRSolver.m */,
+				8CD402292D6AFE3C00024E10 /* SVRSolverExpressionTagger.h */,
+				8CD402322D6AFE3D00024E10 /* SVRSolverExpressionTagger.m */,
+				8CD402252D6AFE3C00024E10 /* SVRSolverScanner.h */,
+				8CD402222D6AFE3C00024E10 /* SVRSolverScanner.m */,
+				8CD4021E2D6AFE3B00024E10 /* SVRSolverSolutionTagger.h */,
+				8CD402362D6AFE3D00024E10 /* SVRSolverSolutionTagger.m */,
+				8CD402332D6AFE3D00024E10 /* SVRSolverStyler.h */,
+				8CD402302D6AFE3C00024E10 /* SVRSolverStyler.m */,
+				8CD4023A2D6AFE3D00024E10 /* SVRSolverTextAttachment.h */,
+				8CD402182D6AFE3B00024E10 /* SVRSolverTextAttachment.m */,
+				8CD402352D6AFE3D00024E10 /* XPCrossPlatform.h */,
+				8CD4020F2D6AFE3B00024E10 /* XPCrossPlatform.m */,
+				8CD4021A2D6AFE3B00024E10 /* XPDocument.h */,
+				8CD4021B2D6AFE3B00024E10 /* XPDocument.m */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8CD402022D6AFCAF00024E10 /* Xcode14 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8CD4020A2D6AFCAF00024E10 /* Build configuration list for PBXNativeTarget "Xcode14" */;
+			buildPhases = (
+				8CD401FF2D6AFCAF00024E10 /* Sources */,
+				8CD402002D6AFCAF00024E10 /* Frameworks */,
+				8CD402012D6AFCAF00024E10 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Xcode14;
+			productName = Xcode14;
+			productReference = 8CD402032D6AFCAF00024E10 /* Xcode14 */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8CD401FB2D6AFCAF00024E10 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1420;
+				TargetAttributes = {
+					8CD402022D6AFCAF00024E10 = {
+						CreatedOnToolsVersion = 14.2;
+					};
+				};
+			};
+			buildConfigurationList = 8CD401FE2D6AFCAF00024E10 /* Build configuration list for PBXProject "Xcode14" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8CD401FA2D6AFCAF00024E10;
+			productRefGroup = 8CD402042D6AFCAF00024E10 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8CD402022D6AFCAF00024E10 /* Xcode14 */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8CD401FF2D6AFCAF00024E10 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8CD4024C2D6AFE3D00024E10 /* Soulver_main.m in Sources */,
+				8CD4024D2D6AFE3D00024E10 /* SVRSolverSolutionTagger.m in Sources */,
+				8CD402472D6AFE3D00024E10 /* SVRSolver.m in Sources */,
+				8CD4024E2D6AFE3D00024E10 /* slre.c in Sources */,
+				8CD402502D6AFE3D00024E10 /* SVRAppDelegate.m in Sources */,
+				8CD402442D6AFE3D00024E10 /* SVRDocumentViewController.m in Sources */,
+				8CD402402D6AFE3D00024E10 /* SVRSolverTextAttachment.m in Sources */,
+				8CD402432D6AFE3D00024E10 /* SVRSettingsViewController.m in Sources */,
+				8CD402482D6AFE3D00024E10 /* SVRDocument.m in Sources */,
+				8CD4023F2D6AFE3D00024E10 /* SVRAccessoryWindowsOwner.m in Sources */,
+				8CD4024B2D6AFE3D00024E10 /* SVRSolverExpressionTagger.m in Sources */,
+				8CD402492D6AFE3D00024E10 /* Makefile in Sources */,
+				8CD402422D6AFE3D00024E10 /* SVRDocumentModelController.m in Sources */,
+				8CD402452D6AFE3D00024E10 /* SVRSolverScanner.m in Sources */,
+				8CD402462D6AFE3D00024E10 /* SLRERegex.m in Sources */,
+				8CD402412D6AFE3D00024E10 /* XPDocument.m in Sources */,
+				8CD4023E2D6AFE3D00024E10 /* XPCrossPlatform.m in Sources */,
+				8CD4024F2D6AFE3D00024E10 /* NSUserDefaults+Soulver.m in Sources */,
+				8CD4024A2D6AFE3D00024E10 /* SVRSolverStyler.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		8CD402082D6AFCAF00024E10 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_ASSIGN_ENUM = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_COMPLETION_HANDLER_MISUSE = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_FLOAT_CONVERSION = YES;
+				CLANG_WARN_IMPLICIT_FALLTHROUGH = YES;
+				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"TESTING=1",
+					"LOGLEVEL=3",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
+				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.7;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-Wall";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		8CD402092D6AFCAF00024E10 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_ASSIGN_ENUM = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_COMPLETION_HANDLER_MISUSE = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_FLOAT_CONVERSION = YES;
+				CLANG_WARN_IMPLICIT_FALLTHROUGH = YES;
+				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
+				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.7;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				OTHER_CFLAGS = "-Wall";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		8CD4020B2D6AFCAF00024E10 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		8CD4020C2D6AFCAF00024E10 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8CD401FE2D6AFCAF00024E10 /* Build configuration list for PBXProject "Xcode14" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8CD402082D6AFCAF00024E10 /* Debug */,
+				8CD402092D6AFCAF00024E10 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8CD4020A2D6AFCAF00024E10 /* Build configuration list for PBXNativeTarget "Xcode14" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8CD4020B2D6AFCAF00024E10 /* Debug */,
+				8CD4020C2D6AFCAF00024E10 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8CD401FB2D6AFCAF00024E10 /* Project object */;
+}

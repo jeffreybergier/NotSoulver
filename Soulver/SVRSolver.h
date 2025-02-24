@@ -82,19 +82,31 @@ typedef enum {
   SVRSolverOperatorMultiply,
   SVRSolverOperatorSubtract,
   SVRSolverOperatorAdd,
+  SVRSolverOperatorRoot,
+  SVRSolverOperatorLog,
   SVRSolverOperatorUnknown
   // TODO: Consider adding √ (option v) and log ∫ (option + [shift] + b)
 } SVRSolverOperator;
 
 typedef enum {
-  SVRSolverErrorNone = -1,
-  SVRSolverErrorInvalidCharacter = -1001,
-  SVRSolverErrorMismatchedBrackets = -1002,
-  SVRSolverErrorMissingOperand = -1003,
-  SVRSolverErrorDivideByZero = -1004,
-} SVRSolverError;
+  SVRCalculationNoError            = NSCalculationNoError,
+  SVRCalculationLossOfPrecision    = NSCalculationLossOfPrecision,
+  SVRCalculationUnderflow          = NSCalculationUnderflow,
+  SVRCalculationOverflow           = NSCalculationOverflow,
+  SVRCalculationDivideByZero       = NSCalculationDivideByZero,
+  SVRCalculationInvalidCharacter   = 105,
+  SVRCalculationMismatchedBrackets = 106,
+  SVRCalculationMissingOperand     = 107,
+  SVRCalculationResultNaN          = 108,
+  SVRCalculationResultInfinite     = 109,
+  SVRCalculationResultImaginary    = 110,
+  SVRCalculationIndexZero          = 111,
+  SVRCalculationArgumentNegative   = 112,
+  SVRCalculationBaseNegative       = 113,
+  SVRCalculationBaseOne            = 114,
+} SVRCalculationError;
 
-typedef SVRSolverError* SVRSolverErrorPointer;
+typedef SVRCalculationError* SVRCalculationErrorPointer;
 
 // MARK: Enumeration Helper Functions
 
@@ -104,5 +116,40 @@ NSNumber             *NSNumberForOperator(SVRSolverOperator operator);
 SVRSolverOperator     SVRSolverOperatorForNumber(NSNumber *number);
 SVRSolverOperator     SVRSolverOperatorForRawString(NSString *string);
 NSString             *RawStringForOperator(SVRSolverOperator operator);
-NSString             *SVRSolverDescriptionForError(SVRSolverError error);
-NSString             *SVRSolverDebugDescriptionForError(SVRSolverError error);
+NSString             *SVRSolverDescriptionForError(SVRCalculationError error);
+NSString             *SVRSolverDebugDescriptionForError(SVRCalculationError error);
+
+// MARK: NSDecimalNumber Helper Methods
+
+@interface SVRSolverDecimalBehavior: NSObject <NSDecimalNumberBehaviors>
+{
+  SVRCalculationErrorPointer _errorPtr;
+}
+-(id)initWithErrorPtr:(SVRCalculationErrorPointer)errorPtr;
++(id)behaviorWithErrorPtr:(SVRCalculationErrorPointer)errorPtr;
+-(NSRoundingMode)roundingMode;
+-(short)scale;
+-(NSDecimalNumber*)exceptionDuringOperation:(SEL)operation
+                                      error:(SVRCalculationError)error
+                                leftOperand:(NSDecimalNumber*)leftOperand
+                               rightOperand:(NSDecimalNumber*)rightOperand;
+@end
+
+@interface NSDecimalNumber (Soulver)
+
+/// In OpenStep, NaN comparisons are weird, so this uses a string comparison
+-(BOOL)SVR_isNotANumber;
+
+/// 2√64=8 2=index 64=radicand (self)
+-(NSDecimalNumber*)SVR_decimalNumberByRootingWithIndex:(NSDecimalNumber*)index
+                                          withBehavior:(SVRSolverDecimalBehavior*)behavior;
+
+/// 10L100=2 10=base 100=argument (self)
+-(NSDecimalNumber*)SVR_decimalNumberByLogarithmWithBase:(NSDecimalNumber*)base
+                                           withBehavior:(SVRSolverDecimalBehavior*)behavior;
+
+// NSDecimalNumber handles exponents extremely strangely
+// This provides a little wrapper around the oddities
+-(NSDecimalNumber*)SVR_decimalNumberByRaisingToPower:(NSDecimalNumber*)power
+                                        withBehavior:(SVRSolverDecimalBehavior*)behavior;
+@end
