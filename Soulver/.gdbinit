@@ -3,7 +3,7 @@ fb -[NSException raise]
 fb +[XPLog pause]
 
 ## Remove later
-## fb -[SVRDocumentViewController copyUniversal:]
+fb -[SVRDocumentViewController copyUniversal:]
 
 ## Run automatically
 run
