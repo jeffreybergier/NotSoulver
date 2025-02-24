@@ -56,7 +56,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
 // MARK: Business Logic
 +(void)tagSolutionsInAttributedString:(NSMutableAttributedString*)output;
 {
-  SVRSolverError error = SVRSolverErrorNone;
+  SVRCalculationError error = SVRCalculationNoError;
   NSMutableAttributedString *expressionToSolve = nil;
   NSDecimalNumber *solution = nil;
   NSAttributedString *solutionString = nil;
@@ -112,7 +112,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     [output addAttribute:XPAttributedStringKeyForTag(SVRSolverTagOriginal)
                    value:@"="
                    range:solutionRange];
-    error = SVRSolverErrorNone;
+    error = SVRCalculationNoError;
   }
 }
 
@@ -170,7 +170,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
 }
 
 +(NSDecimalNumber*)__solutionForExpression:(NSAttributedString*)input
-                                     error:(SVRSolverErrorPointer)errorPtr;
+                                     error:(SVRCalculationErrorPointer)errorPtr;
 {
   NSSet *setExponent = SVRSolverSolutionTaggerSetExponent;
   NSSet *setMultDiv  = SVRSolverSolutionTaggerSetMultDiv;
@@ -205,7 +205,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     }
   }
   
-  if (errorPtr != NULL && *errorPtr != SVRSolverErrorNone) {
+  if (errorPtr != NULL && *errorPtr != SVRCalculationNoError) {
     return nil;
   }
   
@@ -220,7 +220,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
   }
   
-  if (errorPtr != NULL && *errorPtr != SVRSolverErrorNone) {
+  if (errorPtr != NULL && *errorPtr != SVRCalculationNoError) {
     return nil;
   }
   
@@ -235,7 +235,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
   }
   
-  if (errorPtr != NULL && *errorPtr != SVRSolverErrorNone) {
+  if (errorPtr != NULL && *errorPtr != SVRCalculationNoError) {
     return nil;
   }
   
@@ -250,20 +250,20 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
   }
   
-  if (errorPtr != NULL && *errorPtr != SVRSolverErrorNone) {
+  if (errorPtr != NULL && *errorPtr != SVRCalculationNoError) {
     return nil;
   }
   
   output = [NSDecimalNumber decimalNumberWithString:[expression string]];
   if ([output SVR_isNotANumber]) {
-    if (errorPtr != NULL) { *errorPtr = SVRSolverErrorInvalidCharacter; }
+    if (errorPtr != NULL) { *errorPtr = SVRCalculationInvalidCharacter; }
     return nil;
   }
   return output;
 }
 
 +(NSValue*)__rangeOfNextBracketsInExpression:(NSAttributedString*)input
-                                       error:(SVRSolverErrorPointer)errorPtr;
+                                       error:(SVRCalculationErrorPointer)errorPtr;
 {
   NSRange range = XPNotFoundRange;
   NSValue *lhs = nil;
@@ -282,7 +282,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     }
   }
   if (lhs && errorPtr != NULL) {
-    *errorPtr = SVRSolverErrorMismatchedBrackets;
+    *errorPtr = SVRCalculationMismatchedBrackets;
   }
   return nil;
 }
@@ -290,7 +290,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
 +(NSDecimalNumber*)__nextSolutionInExpression:(NSAttributedString*)expression
                             forOperatorsInSet:(NSSet*)operators
                                    patchRange:(XPRangePointer)rangePtr
-                                        error:(SVRSolverErrorPointer)errorPtr;
+                                        error:(SVRCalculationErrorPointer)errorPtr;
 {
   NSRange operatorRange = NSMakeRange(0, 1);
   NSRange lhsRange = XPNotFoundRange;
@@ -316,7 +316,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
   }
 
   if (operatorRange.location == 0) {
-    if (errorPtr != NULL) { *errorPtr = SVRSolverErrorMissingOperand; }
+    if (errorPtr != NULL) { *errorPtr = SVRCalculationMissingOperand; }
     return nil;
   }
   
@@ -327,7 +327,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
                  effectiveRange:&lhsRange];
   }
   if (lhs == nil) {
-    if (errorPtr != NULL) { *errorPtr = SVRSolverErrorMissingOperand; }
+    if (errorPtr != NULL) { *errorPtr = SVRCalculationMissingOperand; }
     return nil;
   }
   
@@ -338,7 +338,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
                  effectiveRange:&rhsRange];
   }
   if (rhs == nil) {
-    if (errorPtr != NULL) { *errorPtr = SVRSolverErrorMissingOperand; }
+    if (errorPtr != NULL) { *errorPtr = SVRCalculationMissingOperand; }
     return nil;
   }
   
@@ -362,7 +362,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
 +(NSDecimalNumber*)__solveWithOperator:(SVRSolverOperator)operator
                             leftNumber:(NSDecimalNumber*)lhs
                            rightNumber:(NSDecimalNumber*)rhs
-                                 error:(SVRSolverErrorPointer)errorPtr;
+                                 error:(SVRCalculationErrorPointer)errorPtr;
 {
   SVRSolverDecimalBehavior *ohBehave = [SVRSolverDecimalBehavior behaviorWithErrorPtr:errorPtr];
   switch (operator) {
@@ -386,64 +386,4 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
   }
 }
 
-@end
-
-@implementation SVRSolverDecimalBehavior
-
--(id)initWithErrorPtr:(SVRSolverErrorPointer)errorPtr;
-{
-  self = [super init];
-  _errorPtr = errorPtr;
-  return self;
-}
-
-+(id)behaviorWithErrorPtr:(SVRSolverErrorPointer)errorPtr;
-{
-  return [[[SVRSolverDecimalBehavior alloc] initWithErrorPtr:errorPtr] autorelease];
-}
-
--(NSRoundingMode)roundingMode;
-{
-  return NSRoundPlain;
-}
-
--(short)scale;
-{
-  return 5;
-}
-
--(NSDecimalNumber*)exceptionDuringOperation:(SEL)operation
-                                      error:(NSCalculationError)error
-                                leftOperand:(NSDecimalNumber*)leftOperand
-                               rightOperand:(NSDecimalNumber*)rightOperand;
-{
-  switch (error) {
-    case NSCalculationNoError: return nil;
-    case NSCalculationLossOfPrecision:
-      XPLogDebug3(@"exceptionDuringOperation:%@ error:NSCalculationLossOfPrecision leftOperand:%@ rightOperand:%@",
-                  NSStringFromSelector(operation), leftOperand, rightOperand);
-      return nil;
-    case NSCalculationUnderflow:
-      XPLogDebug3(@"exceptionDuringOperation:%@ error:NSCalculationUnderflow leftOperand:%@ rightOperand:%@",
-                  NSStringFromSelector(operation), leftOperand, rightOperand);
-      return nil;
-    case NSCalculationOverflow:
-      XPLogDebug3(@"exceptionDuringOperation:%@ error:NSCalculationOverflow leftOperand:%@ rightOperand:%@",
-                  NSStringFromSelector(operation), leftOperand, rightOperand);
-      return nil;
-    case NSCalculationDivideByZero:
-      XPLogDebug3(@"exceptionDuringOperation:%@ error:NSCalculationDivideByZero leftOperand:%@ rightOperand:%@",
-                  NSStringFromSelector(operation), leftOperand, rightOperand);
-      if (_errorPtr != NULL) { *_errorPtr = SVRSolverErrorDivideByZero; }
-      return [NSDecimalNumber notANumber];
-  }
-  return nil;
-}
-
--(void)dealloc;
-{
-  XPLogExtra1(@"DEALLOC: %@", self);
-  _errorPtr = NULL;
-  [super dealloc];
-}
 @end

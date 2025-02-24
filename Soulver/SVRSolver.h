@@ -89,14 +89,6 @@ typedef enum {
 } SVRSolverOperator;
 
 typedef enum {
-  SVRSolverErrorNone = -1,
-  SVRSolverErrorInvalidCharacter = -1001,
-  SVRSolverErrorMismatchedBrackets = -1002,
-  SVRSolverErrorMissingOperand = -1003,
-  SVRSolverErrorDivideByZero = -1004,
-} SVRSolverError;
-
-typedef enum {
   SVRCalculationNoError            = NSCalculationNoError,
   SVRCalculationLossOfPrecision    = NSCalculationLossOfPrecision,
   SVRCalculationUnderflow          = NSCalculationUnderflow,
@@ -114,8 +106,7 @@ typedef enum {
   SVRCalculationBaseOne            = 114,
 } SVRCalculationError;
 
-typedef SVRSolverError* SVRSolverErrorPointer;
-typedef NSCalculationError* NSCalcErrorPointer;
+typedef SVRCalculationError* SVRCalculationErrorPointer;
 
 // MARK: Enumeration Helper Functions
 
@@ -125,11 +116,24 @@ NSNumber             *NSNumberForOperator(SVRSolverOperator operator);
 SVRSolverOperator     SVRSolverOperatorForNumber(NSNumber *number);
 SVRSolverOperator     SVRSolverOperatorForRawString(NSString *string);
 NSString             *RawStringForOperator(SVRSolverOperator operator);
-NSString             *SVRSolverDescriptionForError(SVRSolverError error);
+NSString             *SVRSolverDescriptionForError(SVRCalculationError error);
 NSString             *SVRSolverDebugDescriptionForError(SVRCalculationError error);
 
 // MARK: NSDecimalNumber Helper Methods
 
+@interface SVRSolverDecimalBehavior: NSObject <NSDecimalNumberBehaviors>
+{
+  SVRCalculationErrorPointer _errorPtr;
+}
+-(id)initWithErrorPtr:(SVRCalculationErrorPointer)errorPtr;
++(id)behaviorWithErrorPtr:(SVRCalculationErrorPointer)errorPtr;
+-(NSRoundingMode)roundingMode;
+-(short)scale;
+-(NSDecimalNumber*)exceptionDuringOperation:(SEL)operation
+                                      error:(SVRCalculationError)error
+                                leftOperand:(NSDecimalNumber*)leftOperand
+                               rightOperand:(NSDecimalNumber*)rightOperand;
+@end
 
 @interface NSDecimalNumber (Soulver)
 
@@ -138,14 +142,14 @@ NSString             *SVRSolverDebugDescriptionForError(SVRCalculationError erro
 
 /// 2√64=8 2=index 64=radicand (self)
 -(NSDecimalNumber*)SVR_decimalNumberByRootingWithIndex:(NSDecimalNumber*)index
-                                          withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
+                                          withBehavior:(SVRSolverDecimalBehavior*)behavior;
 
 /// 10L100=2 10=base 100=argument (self)
 -(NSDecimalNumber*)SVR_decimalNumberByLogarithmWithBase:(NSDecimalNumber*)base
-                                           withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
+                                           withBehavior:(SVRSolverDecimalBehavior*)behavior;
 
 // NSDecimalNumber handles exponents extremely strangely
 // This provides a little wrapper around the oddities
 -(NSDecimalNumber*)SVR_decimalNumberByRaisingToPower:(NSDecimalNumber*)power
-                                        withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
+                                        withBehavior:(SVRSolverDecimalBehavior*)behavior;
 @end

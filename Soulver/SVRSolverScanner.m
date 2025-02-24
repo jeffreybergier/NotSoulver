@@ -27,6 +27,7 @@
 // AT https://soulver.app INSTEAD OF USING THIS SOFTWARE.
 //
 
+#import "SVRSolver.h"
 #import "SVRSolverScanner.h"
 
 NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;

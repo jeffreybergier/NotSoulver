@@ -155,7 +155,7 @@
 
 // MARK: Init
 
--(id)initWithError:(SVRSolverError)error;
+-(id)initWithError:(SVRCalculationError)error;
 {
   NSFileWrapper *wrapper = [[[NSFileWrapper alloc] init] autorelease];
   self = [super initWithFileWrapper:wrapper];
@@ -169,13 +169,13 @@
   return self;
 }
 
-+(id)attachmentWithError:(SVRSolverError)error;
++(id)attachmentWithError:(SVRCalculationError)error;
 {
   return [[[SVRSolverErrorTextAttachment alloc] initWithError:error] autorelease];
 }
 
 // MARK: Business Logic
-+(NSString*)toDrawStringWithError:(SVRSolverError)error;
++(NSString*)toDrawStringWithError:(SVRCalculationError)error;
 {
   return [@"=" stringByAppendingString:SVRSolverDescriptionForError(error)];
 }
