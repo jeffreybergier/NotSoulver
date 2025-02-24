@@ -369,16 +369,33 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
                                 leftOperand:(NSDecimalNumber*)leftOperand
                                rightOperand:(NSDecimalNumber*)rightOperand;
 {
-  *_errorPtr = error;
+  // Log the error if needed
   switch (error) {
     case SVRCalculationNoError:
-      return nil;
-    case SVRCalculationDivideByZero:
-      XPLogDebug3(@"%@: lhs: %@ rhs: %@", SVRSolverDebugDescriptionForError(error), leftOperand, rightOperand);
-      return [NSDecimalNumber notANumber];
+      break;
     default:
       XPLogDebug3(@"%@: lhs: %@ rhs: %@", SVRSolverDebugDescriptionForError(error), leftOperand, rightOperand);
-      return nil;
+      break;
+  }
+  
+  // Configure the error pointer if needed
+  switch (error) {
+    case SVRCalculationNoError:
+    case SVRCalculationLossOfPrecision:
+    case SVRCalculationOverflow:
+    case SVRCalculationUnderflow:
+      *_errorPtr = SVRCalculationNoError;
+      break;
+    default:
+      *_errorPtr = error;
+      break;
+  }
+  
+  // Decide what to do with the error.
+  // Only divide by zero needs special action (according to docs)
+  switch (error) {
+    case SVRCalculationDivideByZero: return [NSDecimalNumber notANumber];
+    default: return nil;
   }
 }
 
