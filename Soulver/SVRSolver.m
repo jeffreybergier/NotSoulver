@@ -438,7 +438,7 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
     }
   }
   
-  if (error == NSCalculationNoError) {
+  if (error == SVRCalculationNoError) {
     resultRaw = pow(radMult*radicandRaw, 1.0 / indexRaw) * radMult;
     if (isnan(resultRaw)) {
       error = SVRCalculationResultNaN;
@@ -455,7 +455,7 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
   } else {
     if (behavior) {
       [behavior exceptionDuringOperation:@selector(SVR_decimalNumberByRootingWithIndex:withBehavior:)
-                                   error:(SVRCalculationError)error
+                                   error:error
                              leftOperand:index
                             rightOperand:self];
     } else {
@@ -485,7 +485,7 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
     error = SVRCalculationBaseOne;
   }
   
-  if (error == NSCalculationNoError) {
+  if (error == SVRCalculationNoError) {
     resultRaw = log(argumentRaw) / log(baseRaw);
     if (isnan(resultRaw)) {
       error = SVRCalculationResultNaN;
@@ -495,14 +495,14 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
     }
   }
   
-  if (error == NSCalculationNoError) {
+  if (error == SVRCalculationNoError) {
     NSString *resultString = [NSString stringWithFormat:@"%f", resultRaw];
     NSDecimalNumber *result = [NSDecimalNumber decimalNumberWithString:resultString];
     return result;
   } else {
     if (behavior) {
       [behavior exceptionDuringOperation:@selector(SVR_decimalNumberByRootingWithIndex:withBehavior:)
-                                   error:(SVRCalculationError)error
+                                   error:error
                              leftOperand:base
                             rightOperand:self];
     } else {
@@ -512,6 +512,8 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
   }
 }
 
+// TODO: Update this to match SVR_decimalNumberByRootingWithIndex
+// Make this the primary method and the other method just uses root 1/exponent
 -(NSDecimalNumber*)SVR_decimalNumberByRaisingToPower:(NSDecimalNumber*)power
                                         withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
 {
