@@ -41,6 +41,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8C6587BA2D6C17620055E7EA /* .gdbinit */ = {isa = PBXFileReference; lastKnownFileType = text; name = .gdbinit; path = ../Soulver/.gdbinit; sourceTree = "<group>"; };
 		8CD402032D6AFCAF00024E10 /* Xcode14 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Xcode14; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CD4020F2D6AFE3B00024E10 /* XPCrossPlatform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XPCrossPlatform.m; path = ../Soulver/XPCrossPlatform.m; sourceTree = "<group>"; };
 		8CD402132D6AFE3B00024E10 /* PB.project */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = PB.project; path = ../Soulver/PB.project; sourceTree = "<group>"; };
@@ -118,6 +119,7 @@
 		8CD4020E2D6AFE1B00024E10 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				8C6587BA2D6C17620055E7EA /* .gdbinit */,
 				8CD4023D2D6AFE3D00024E10 /* about-image-512.tiff */,
 				8CD4022A2D6AFE3C00024E10 /* English.lproj */,
 				8CD402312D6AFE3C00024E10 /* h.template */,
