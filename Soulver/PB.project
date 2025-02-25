@@ -3,7 +3,9 @@
     DYNAMIC_CODE_GEN = YES; 
     FILESTABLE = {
         CLASSES = (
-            SVRAppDelegate.m, 
+            "NSUserDefaults+Soulver.m",
+            SLRERegex.m,
+            SVRAppDelegate.m,
             SVRAccessoryWindowsOwner.m, 
             SVRDocument.m, 
             SVRDocumentModelController.m, 
@@ -14,15 +16,18 @@
             SVRSolverScanner.m, 
             SVRSolverSolutionTagger.m, 
             SVRSolverStyler.m, 
-            SVRSolverTextAttachment.m, 
-            XPCrossPlatform.m, 
-            XPDocument.m, 
-            SLRERegex.m, 
-            "NSUserDefaults+Soulver.m"
+            SVRSolverTextAttachment.m,
+            TestsIntegration.m,
+            TestsUnit.m,
+            XPCrossPlatform.m,
+            XPDocument.m
         ); 
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
         H_FILES = (
-            SVRAppDelegate.h, 
+            "NSUserDefaults+Soulver.h",
+            slre.h,
+            SLRERegex.h,
+            SVRAppDelegate.h,
             SVRDocument.h, 
             SVRAccessoryWindowsOwner.h, 
             SVRDocumentModelController.h, 
@@ -33,13 +38,12 @@
             SVRSolverScanner.h, 
             SVRSolverSolutionTagger.h, 
             SVRSolverStyler.h, 
-            SVRSolverTextAttachment.h, 
-            XPCrossPlatform.h, 
-            XPDocument.h, 
-            slre.h, 
-            SLRERegex.h, 
-            "NSUserDefaults+Soulver.h"
-        ); 
+            SVRSolverTextAttachment.h,
+            TestsIntegration.h,
+            TestsUnit.h,
+            XPCrossPlatform.h,
+            XPDocument.h
+        );
         IMAGES = ("about-image-512.tiff"); 
         INTERFACES = (NEXTSTEP_AccessoryWindows.nib, NEXTSTEP_Soulver.nib, NEXTSTEP_SVRDocument.nib); 
         OTHER_LINKED = (slre.c, Soulver_main.m); 
