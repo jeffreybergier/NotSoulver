@@ -1,12 +1,11 @@
-
-8^2=       // 64
-8^3=     // 512
--8^2=     // 64, positive answer when base is negative and power is even
+8^0= // 1
+8^1= // 8
+8^2= // 64
+8^3= // 512
+-8^2= // 64, positive answer when base is negative and power is even
 -8^3= // -512, negative answer when base is negative and power is odd
 8^-3= // 0.0019
-8^-2= // 0.0156
-
-
+8^-2= // 0.0156s
 
 Added rooting by artibrary base
 2R64= // 8, Square root of 64
