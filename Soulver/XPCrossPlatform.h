@@ -224,10 +224,6 @@ NSArray* XPRunOpenPanel(void);
 +(id)XP_colorWithData:(NSData*)data;
 @end
 
-@interface CrossPlatform: NSObject
-+(void)executeUnitTests;
-@end
-
 @interface XPKeyedArchiver (CrossPlatform)
 +(NSData*)XP_archivedDataWithRootObject:(id)object;
 @end
@@ -409,6 +405,5 @@ NSArray* XPRunOpenPanel(void);
 @interface XPLog: NSObject
 /// Requires `fb +[XPLog pause]` in GDB to Pause Debugger
 +(void)pause;
-+(void)executeUnitTests;
 +(void)logCheckedPoundDefines;
 @end

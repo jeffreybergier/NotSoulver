@@ -169,15 +169,6 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
 
 @end
 
-@implementation SVRSolver (Testing)
-
-+(void)executeTests;
-{
-  NSLog(@"+[SVRSolver executeTests] Unimplemented. Implement check to read file and check known good Attributed String output");
-}
-
-@end
-
 // MARK: Enumeration Helper Functions
 
 NSString *XPAttributedStringKeyForTag(SVRSolverTag tag)

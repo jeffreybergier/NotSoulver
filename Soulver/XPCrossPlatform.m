@@ -375,15 +375,6 @@ NSArray* XPRunOpenPanel(void)
 
 @end
 
-@implementation CrossPlatform
-+(void)executeUnitTests;
-{
-  XPLogAlwys(@"XPTESTS: Start");
-  [XPLog executeUnitTests];
-  XPLogAlwys(@"XPTESTS: Pass");
-}
-@end
-
 @implementation XPKeyedArchiver (CrossPlatform)
 +(NSData*)XP_archivedDataWithRootObject:(id)object;
 {
@@ -444,37 +435,6 @@ NSArray* XPRunOpenPanel(void)
 @implementation XPLog
 
 +(void)pause {}
-
-+(void)executeUnitTests;
-{
-  XPLogAlwys (@"XPLogAlwys");
-  XPLogAlwys1(@"XPLogAlwys1: %d", 1);
-  XPLogAlwys2(@"XPLogAlwys2: %d, %d", 1, 2);
-  XPLogAlwys3(@"XPLogAlwys3: %d, %d, %d", 1, 2, 3);
-  XPLogAlwys4(@"XPLogAlwys4: %d, %d, %d, %d", 1, 2, 3, 4);
-  XPLogDebug (@"XPLogDebug");
-  XPLogDebug1(@"XPLogDebug1: %d", 1);
-  XPLogDebug2(@"XPLogDebug2: %d, %d", 1, 2);
-  XPLogDebug3(@"XPLogDebug3: %d, %d, %d", 1, 2, 3);
-  XPLogDebug4(@"XPLogDebug4: %d, %d, %d, %d", 1, 2, 3, 4);
-  XPLogExtra (@"XPLogExtra");
-  XPLogExtra1(@"XPLogExtra1: %d", 1);
-  XPLogExtra2(@"XPLogExtra2: %d, %d", 1, 2);
-  XPLogExtra3(@"XPLogExtra3: %d, %d, %d", 1, 2, 3);
-  XPLogExtra4(@"XPLogExtra4: %d, %d, %d, %d", 1, 2, 3, 4);
-  /*
-  XPLogPause (@"XPLogPause");
-  XPLogPause1(@"XPLogPause1: %d", 1);
-  XPLogPause2(@"XPLogPause2: %d, %d", 1, 2);
-  XPLogPause3(@"XPLogPause3: %d, %d, %d", 1, 2, 3);
-  XPLogPause4(@"XPLogPause4: %d, %d, %d, %d", 1, 2, 3, 4);
-  XPLogRaise(@"XPLogRaise");
-  XPLogRaise1(@"XPLogRaise1: %d", 1);
-  XPLogRaise2(@"XPLogRaise2: %d, %d", 1, 2);
-  XPLogRaise3(@"XPLogRaise3: %d, %d, %d", 1, 2, 3);
-  XPLogRaise4(@"XPLogRaise4: %d, %d, %d, %d", 1, 2, 3, 4);
-  */
-}
 
 +(void)logCheckedPoundDefines;
 {

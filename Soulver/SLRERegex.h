@@ -97,7 +97,3 @@ typedef enum {
 -(NSRange)groupRangeAtIndex:(XPUInteger)index;
 
 @end
-
-@interface SLRERegex (Tests)
-+(void)executeTests;
-@end

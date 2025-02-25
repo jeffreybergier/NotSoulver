@@ -29,9 +29,8 @@
 
 #import <AppKit/AppKit.h>
 #import "NSUserDefaults+Soulver.h"
-#import "XPCrossPlatform.h"
-#import "SVRSolver.h"
-#import "SLRERegex.h"
+#import "TestsIntegration.h"
+#import "TestsUnit.h"
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -51,9 +50,8 @@ int main(int argc, const char *argv[]) {
 #if TESTING == 1
   [[NSUserDefaults standardUserDefaults] SVR_configure];
   XPLogAlwys(@"<Main> Unit Tests: STARTING");
-  [CrossPlatform executeUnitTests];
-  [SVRSolver executeTests];
-  [SLRERegex executeTests];
+  TestsUnitExecute();
+  TestsIntegrationExecute();
   XPLogAlwys(@"<Main> Unit Tests: PASSED");
 #else
   XPLogAlwys(@"<Main> Unit Tests: SKIPPED");
