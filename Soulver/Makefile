@@ -29,7 +29,7 @@ CLASSES = SVRAppDelegate.m SVRAccessoryWindowsOwner.m SVRDocument.m\
           SVRSolverSolutionTagger.m SVRSolverStyler.m\
           SVRSolverTextAttachment.m XPCrossPlatform.m XPDocument.m\
           SLRERegex.m NSUserDefaults+Soulver.m\
-          TestsIntegration.m TestUnit.m
+          TestsIntegration.m TestsUnit.m
           
 
 HFILES = SVRAppDelegate.h SVRDocument.h SVRAccessoryWindowsOwner.h\
