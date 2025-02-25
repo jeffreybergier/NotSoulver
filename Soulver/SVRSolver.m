@@ -424,23 +424,16 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
 {
   double baseRaw     = [self doubleValue];
   double exponentRaw = [exponent doubleValue];
+  double baseMult    = (baseRaw < 0 && fmod(exponentRaw, 2) != 0) ? -1.0 : 1.0;
   double resultRaw   = 0;
-  double baseMult    = 1; // Used to counteract odd root of negative number
   SVRCalculationError error = SVRCalculationNoError;
   
   if (exponentRaw == 0) {
     return [NSDecimalNumber one];
   }
+  
   if (exponentRaw == 1) {
     return self;
-  }
-  
-  if (baseRaw < 0) {
-    if (fmod(exponentRaw, 2) != 1) {
-      error = SVRCalculationResultImaginary;
-    } else {
-      baseMult = -1;
-    }
   }
   
   if (error == SVRCalculationNoError) {
@@ -470,25 +463,46 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
   }
 }
 
--(NSDecimalNumber*)SVR_decimalNumberByRootingWithExponent:(NSDecimalNumber*)inputPower
-                                        withBehavior:(SVRSolverDecimalBehavior*)behavior;
+-(NSDecimalNumber*)SVR_decimalNumberByRootingWithExponent:(NSDecimalNumber*)inputExponent
+                                             withBehavior:(SVRSolverDecimalBehavior*)behavior;
 {
-  NSDecimalNumber *outputPower = nil;
+  double baseRaw     = [self doubleValue];
+  double exponentRaw = [inputExponent doubleValue];
+  double baseMult    = 1; // Used to counteract odd root of negative number
+  double resultRaw   = 0;
   SVRCalculationError error = SVRCalculationNoError;
   
-  if ([inputPower doubleValue] == 0) {
+  if (exponentRaw == 0) {
     error = SVRCalculationRootByZero;
   }
   
+  if (baseRaw < 0) {
+    if (fmod(exponentRaw, 2) != 1) {
+      error = SVRCalculationResultImaginary;
+    } else {
+      baseMult = -1;
+    }
+  }
+  
+  if (error == SVRCalculationNoError) {
+    resultRaw = pow(baseMult * baseRaw, 1.0 / exponentRaw) * baseMult;
+    if (isnan(resultRaw)) {
+      error = SVRCalculationResultNaN;
+    }
+    if (isinf(resultRaw)) {
+      error = SVRCalculationResultInfinite;
+    }
+  }
+  
   if (error == NSCalculationNoError) {
-    outputPower = [[NSDecimalNumber one] decimalNumberByDividingBy:inputPower];
-    return [self SVR_decimalNumberByRaisingWithExponent:outputPower
-                                           withBehavior:behavior];
+    NSString *resultString = [NSString stringWithFormat:@"%f", resultRaw];
+    NSDecimalNumber *result = [NSDecimalNumber decimalNumberWithString:resultString];
+    return result;
   } else {
     if (behavior) {
       [behavior exceptionDuringOperation:@selector(SVR_decimalNumberByRootingWithExponent:withBehavior:)
                                    error:error
-                             leftOperand:inputPower
+                             leftOperand:inputExponent
                             rightOperand:self];
     } else {
       XPLogRaise1(@"NSCalculationError: %u", error);
