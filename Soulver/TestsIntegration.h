@@ -1,7 +1,7 @@
 //
 // MIT License
 //
-// Copyright (c) 2024 Jeffrey Bergier
+// Copyright (c) 2025 Jeffrey Bergier
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -27,44 +27,11 @@
 // AT https://soulver.app INSTEAD OF USING THIS SOFTWARE.
 //
 
-#import <AppKit/AppKit.h>
-#import "NSUserDefaults+Soulver.h"
-#import "TestsIntegration.h"
-#import "TestsUnit.h"
+#import <Foundation/Foundation.h>
+#import "SVRSolver.h"
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-parameter"
-int main(int argc, const char *argv[]) {
-#pragma clang diagnostic pop
-  
-  // MARK: Boot Sequence
-  // And document support CFLAGS
-  
-  // 1. Create temporary autorelease pool before NSApplication loads
-  NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
-  
-  // 2. Log the environment
-  [XPLog logCheckedPoundDefines];
-  
-  // 3. Execute Unit Tests if Needed
-#if TESTING == 1
-  [[NSUserDefaults standardUserDefaults] SVR_configure];
-  XPLogAlwys(@"<Main> Unit Tests: STARTING");
-  TestsUnitExecute();
-  TestsIntegrationExecute();
-  XPLogAlwys(@"<Main> Unit Tests: PASSED");
-#else
-  XPLogAlwys(@"<Main> Unit Tests: SKIPPED");
-#endif
-  
-  // 3. Release pool
-  [pool release];
-  
-  // 4. Load NSApplication
-#ifdef MAC_OS_X_VERSION_10_4
-  XPLogAlwys(@"<Main> Exiting due to unsupported system");
-  return 0;
-#else
-  return NSApplicationMain(argc, argv);
-#endif
-}
+void TestsIntegrationExecute(void);
+
+@interface SVRSolver (TestsIntegration)
++(void)executeTests;
+@end

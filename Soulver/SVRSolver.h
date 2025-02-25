@@ -54,10 +54,6 @@
 
 @end
 
-@interface SVRSolver (Testing)
-+(void)executeTests;
-@end
-
 // MARK: Enumerations
 
 typedef enum {
