@@ -96,7 +96,7 @@ typedef enum {
   SVRCalculationResultNaN          = 108,
   SVRCalculationResultInfinite     = 109,
   SVRCalculationResultImaginary    = 110,
-  SVRCalculationIndexZero          = 111,
+  SVRCalculationRootByZero         = 111,
   SVRCalculationArgumentNegative   = 112,
   SVRCalculationBaseNegative       = 113,
   SVRCalculationBaseOne            = 114,
@@ -136,16 +136,15 @@ NSString             *SVRSolverDebugDescriptionForError(SVRCalculationError erro
 /// In OpenStep, NaN comparisons are weird, so this uses a string comparison
 -(BOOL)SVR_isNotANumber;
 
-/// 2√64=8 2=index 64=radicand (self)
--(NSDecimalNumber*)SVR_decimalNumberByRootingWithIndex:(NSDecimalNumber*)index
-                                          withBehavior:(SVRSolverDecimalBehavior*)behavior;
+// NSDecimalNumber handles exponents extremely strangely
+// This provides a little wrapper around the oddities
+-(NSDecimalNumber*)SVR_decimalNumberByRaisingWithExponent:(NSDecimalNumber*)exponent
+                                             withBehavior:(SVRSolverDecimalBehavior*)behavior;
+
+-(NSDecimalNumber*)SVR_decimalNumberByRootingWithExponent:(NSDecimalNumber*)exponent
+                                             withBehavior:(SVRSolverDecimalBehavior*)behavior;
 
 /// 10L100=2 10=base 100=argument (self)
 -(NSDecimalNumber*)SVR_decimalNumberByLogarithmWithBase:(NSDecimalNumber*)base
                                            withBehavior:(SVRSolverDecimalBehavior*)behavior;
-
-// NSDecimalNumber handles exponents extremely strangely
-// This provides a little wrapper around the oddities
--(NSDecimalNumber*)SVR_decimalNumberByRaisingToPower:(NSDecimalNumber*)power
-                                        withBehavior:(SVRSolverDecimalBehavior*)behavior;
 @end
