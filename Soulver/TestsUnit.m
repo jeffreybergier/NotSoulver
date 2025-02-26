@@ -84,7 +84,7 @@ void TestsUnitExecute(void)
   
   // Super basic operator finding
   regex = [SLRERegex regexWithString:@"and 5+5 and 4-4 and 6*6 and 7/6 and 8^8 and"
-                             pattern:@"\\d(\\+|-|/|\\*|\\^)\\d"
+                             pattern:@"\\d(\\+|\\-|\\/|\\*|\\^)\\d"
                                 mode:SLRERegexAdvanceAfterMatch];
   NSAssert([regex containsMatch], @"");
   match = [regex nextObject];
