@@ -20,7 +20,8 @@
             TestsIntegration.m,
             TestsUnit.m,
             XPCrossPlatform.m,
-            XPDocument.m
+            XPDocument.m,
+            XPRegularExpression.m
         ); 
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
         H_FILES = (
@@ -42,7 +43,8 @@
             TestsIntegration.h,
             TestsUnit.h,
             XPCrossPlatform.h,
-            XPDocument.h
+            XPDocument.h,
+            XPRegularExpression.h
         );
         IMAGES = ("about-image-512.tiff"); 
         INTERFACES = (NEXTSTEP_AccessoryWindows.nib, NEXTSTEP_Soulver.nib, NEXTSTEP_SVRDocument.nib); 

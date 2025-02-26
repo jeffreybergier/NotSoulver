@@ -29,7 +29,7 @@ CLASSES = SVRAppDelegate.m SVRAccessoryWindowsOwner.m SVRDocument.m\
           SVRSolverSolutionTagger.m SVRSolverStyler.m\
           SVRSolverTextAttachment.m XPCrossPlatform.m XPDocument.m\
           SLRERegex.m NSUserDefaults+Soulver.m\
-          TestsIntegration.m TestsUnit.m
+          TestsIntegration.m TestsUnit.m XPRegularExpression.m
           
 
 HFILES = SVRAppDelegate.h SVRDocument.h SVRAccessoryWindowsOwner.h\
@@ -39,7 +39,7 @@ HFILES = SVRAppDelegate.h SVRDocument.h SVRAccessoryWindowsOwner.h\
          SVRSolverSolutionTagger.h SVRSolverStyler.h\
          SVRSolverTextAttachment.h XPCrossPlatform.h XPDocument.h\
          slre.h SLRERegex.h NSUserDefaults+Soulver.h\
-         TestsIntegration.h TestsUnit.h
+         TestsIntegration.h TestsUnit.h XPRegularExpression.h
 
 MFILES = Soulver_main.m
 
