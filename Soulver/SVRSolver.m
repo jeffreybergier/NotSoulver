@@ -408,8 +408,6 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
   return [lhsDescription isEqualToString:rhsDescription];
 }
 
-// TODO: Update this to match SVR_decimalNumberByRootingWithIndex
-// Make this the primary method and the other method just uses root 1/exponent
 -(NSDecimalNumber*)SVR_decimalNumberByRaisingWithExponent:(NSDecimalNumber*)exponent
                                              withBehavior:(SVRSolverDecimalBehavior*)behavior;
 {
@@ -425,6 +423,12 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
   
   if (exponentRaw == 1) {
     return self;
+  }
+
+  if (exponentRaw > -1 && exponentRaw < 1) {
+    // This is actually a root calculation not a power calculation
+    return [self SVR_decimalNumberByRootingWithExponent:[[NSDecimalNumber one] decimalNumberByDividingBy:exponent]
+                                           withBehavior:behavior];
   }
   
   if (error == SVRCalculationNoError) {
@@ -454,11 +458,11 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
   }
 }
 
--(NSDecimalNumber*)SVR_decimalNumberByRootingWithExponent:(NSDecimalNumber*)inputExponent
+-(NSDecimalNumber*)SVR_decimalNumberByRootingWithExponent:(NSDecimalNumber*)exponent
                                              withBehavior:(SVRSolverDecimalBehavior*)behavior;
 {
   double baseRaw     = [self doubleValue];
-  double exponentRaw = [inputExponent doubleValue];
+  double exponentRaw = [exponent doubleValue];
   double baseMult    = 1; // Used to counteract odd root of negative number
   double resultRaw   = 0;
   SVRCalculationError error = SVRCalculationNoError;
@@ -493,7 +497,7 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
     if (behavior) {
       [behavior exceptionDuringOperation:@selector(SVR_decimalNumberByRootingWithExponent:withBehavior:)
                                    error:error
-                             leftOperand:inputExponent
+                             leftOperand:exponent
                             rightOperand:self];
     } else {
       XPLogRaise1(@"NSCalculationError: %u", error);

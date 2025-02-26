@@ -136,14 +136,10 @@ NSString             *SVRSolverDebugDescriptionForError(SVRCalculationError erro
 /// In OpenStep, NaN comparisons are weird, so this uses a string comparison
 -(BOOL)SVR_isNotANumber;
 
-// NSDecimalNumber handles exponents extremely strangely
-// This provides a little wrapper around the oddities
 -(NSDecimalNumber*)SVR_decimalNumberByRaisingWithExponent:(NSDecimalNumber*)exponent
                                              withBehavior:(SVRSolverDecimalBehavior*)behavior;
-
 -(NSDecimalNumber*)SVR_decimalNumberByRootingWithExponent:(NSDecimalNumber*)exponent
                                              withBehavior:(SVRSolverDecimalBehavior*)behavior;
-
 /// 10L100=2 10=base 100=argument (self)
 -(NSDecimalNumber*)SVR_decimalNumberByLogarithmWithBase:(NSDecimalNumber*)base
                                            withBehavior:(SVRSolverDecimalBehavior*)behavior;
