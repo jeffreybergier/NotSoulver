@@ -30,6 +30,7 @@
 #import <Foundation/Foundation.h>
 #import "SLRERegex.h"
 #import "XPCrossPlatform.h"
+#import "XPRegularExpression.h"
 
 void TestsUnitExecute(void);
 
@@ -38,6 +39,10 @@ void TestsUnitExecute(void);
 @end
 
 @interface SLRERegex (TestsUnit)
++(void)executeTests;
+@end
+
+@interface XPRegularExpression (TestsUnit)
 +(void)executeTests;
 @end
 

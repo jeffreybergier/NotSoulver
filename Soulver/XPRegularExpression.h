@@ -39,7 +39,9 @@
   struct slre _engine;
 }
 
+/// Options and Error are ignored
 -(id)initWithPattern:(NSString *)pattern options:(int)options error:(id*)error;
+/// Options and Error are ignored
 +(XPRegularExpression*)regularExpressionWithPattern:(NSString*)pattern
                                             options:(int)options
                                               error:(id*)error;
@@ -48,11 +50,17 @@
 -(int)options;
 -(XPUInteger)numberOfCaptureGroups;
 
+/// Options and Range are ignored
 -(NSArray*)matchesInString:(NSString*)string
                    options:(int)options
                      range:(NSRange)range;
+/// Options and Range are ignored
 -(XPUInteger)numberOfMatchesInString:(NSString*)string
                              options:(int)options
                                range:(NSRange)range;
+/// Options and Range are ignored
+-(NSArray*)__matchesInString:(NSString*)string
+                     options:(int)options
+                       range:(NSRange)range;
 
 @end

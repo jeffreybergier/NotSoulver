@@ -36,7 +36,7 @@
   BOOL isCompiled = NO;
   self = [super init];
   
-  isCompiled = slre_compile(&_engine, [_pattern XP_UTF8String]);
+  isCompiled = slre_compile(&_engine, [pattern XP_UTF8String]);
   NSAssert2(isCompiled, @"%@ Failed to compile pattern: %@", self, pattern);
   if (!isCompiled) { return nil; }
   
@@ -73,16 +73,62 @@
                    options:(int)options
                      range:(NSRange)range;
 {
-  NSAssert(NO, @"NSUnimplemented");
-  return nil;
+  NSArray *matches = [_cache objectForKey:string];
+  if (matches) { return matches; }
+  matches = [self __matchesInString:string options:options range:range];
+  [_cache setObject:matches forKey:string];
+  return matches;
 }
 
 -(XPUInteger)numberOfMatchesInString:(NSString*)string
                              options:(int)options
                                range:(NSRange)range;
 {
-  NSAssert(NO, @"NSUnimplemented");
-  return 0;
+  NSArray *matches = [_cache objectForKey:string];
+  if (matches) { return [matches count]; }
+  matches = [self __matchesInString:string options:options range:range];
+  [_cache setObject:matches forKey:string];
+  return [matches count];
+}
+
+-(NSArray*)__matchesInString:(NSString*)string
+                     options:(int)options
+                       range:(NSRange)range;
+{
+  NSRange matchRange = XPNotFoundRange;
+  const char* buffer = [string XP_UTF8String];
+  
+  BOOL containsMatch = NO;
+  int index = 0;
+  int length = [string length];
+  
+  int capIndex = 0;
+  int capCount = _engine.num_caps + 1; // according to documentation in slre.h
+  struct cap caps[capCount];
+  
+  containsMatch = slre_match(&_engine,
+                             buffer + index,
+                             length - index,
+                             caps);
+  
+  while (containsMatch) {
+    for (capIndex = 0; capIndex < capCount; capIndex++) {
+      // pull out the full range and update the bufferIndex for next iteration
+      matchRange.location = (XPUInteger)(caps[capIndex].ptr - buffer);
+      matchRange.length = (XPUInteger)caps[capIndex].len;
+      XPLogDebug1(@"%@", NSStringFromRange(matchRange));
+      NSLog(@"");
+      // TODO: Do something with this result
+    }
+    capIndex = 0;
+    index += 1;
+    length -= 1;
+    containsMatch = slre_match(&_engine,
+                               buffer + index,
+                               length - index,
+                               caps);
+  }
+  return nil;
 }
 
 - (void)dealloc

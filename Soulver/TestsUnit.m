@@ -32,8 +32,9 @@
 
 void TestsUnitExecute(void)
 {
-  [XPLog     executeTests];
+  [XPLog executeTests];
   [SLRERegex executeTests];
+  [XPRegularExpression executeTests];
 }
 
 @implementation XPLog (TestsUnit)
@@ -213,5 +214,22 @@ void TestsUnitExecute(void)
   
   NSLog(@"%@ Unit Tests: PASSED", self);
 }
+@end
+
+@implementation XPRegularExpression (TestsUnit)
+
++(void)executeTests;
+{
+  XPRegularExpression *regex = nil;
+  NSString *string = nil;
+  
+  NSLog(@"%@ Unit Tests: STARTING", self);
+  
+  // Super basic operator finding
+  string = @"and 5+5 and 4-4 and 6*6 and 7/6 and 8^8 and";
+  regex = [XPRegularExpression regularExpressionWithPattern:@"\\d(\\+|\\-|\\/|\\*|\\^)\\d" options:0 error:NULL];
+  NSAssert([regex numberOfMatchesInString:string options:0 range:XPNotFoundRange] == 2, @"");
+}
+
 @end
 
