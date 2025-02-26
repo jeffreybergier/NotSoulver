@@ -44,8 +44,6 @@
   _mode = mode;
   _bufferIndex = 0;
   _bufferLength = (int)[string length];
-  isCompiled = slre_compile(&_engine, [_pattern XP_UTF8String]);
-  NSAssert2(isCompiled, @"%@ Failed to compile pattern: %@", self, pattern);
   return self;
 }
 
@@ -61,13 +59,11 @@
 // MARK: Core Functionality
 -(BOOL)containsMatch;
 {
-  BOOL containsMatch = NO;
-  const char* buffer = [_string XP_UTF8String];
-  containsMatch = slre_match(&_engine,
-                             buffer + _bufferIndex,
-                             _bufferLength - _bufferIndex,
-                             NULL);
-  return containsMatch;
+  int status = NO;
+  const char *buffer  = [_string XP_UTF8String];
+  const char *pattern = [_pattern XP_UTF8String];
+  status = slre_match(pattern, buffer, (int)[_string length], NULL, 0, 0);
+  return status > 0;
 }
 
 -(SLRERegexMatch*)nextObject;
@@ -75,20 +71,22 @@
   NSRange matchRange = XPNotFoundRange;
   NSRange groupRange = XPNotFoundRange;
   NSMutableArray *groupRanges = [[NSMutableArray new] autorelease];
-  BOOL containsMatch = NO;
-  const char* buffer = [_string XP_UTF8String];
-  int captureCount = _engine.num_caps + 1; // according to documentation in slre.h
-  struct cap captures[captureCount];
+  int status = 1;
+  const char *buffer  = [_string XP_UTF8String];
+  const char *pattern = [_pattern XP_UTF8String];
+  int capCount = 1;
+  struct slre_cap captures[capCount];
   int idx;
   
-  containsMatch = slre_match(&_engine,
-                             buffer + _bufferIndex,
-                             _bufferLength - _bufferIndex,
-                             captures);
+  status = slre_match(pattern, buffer, (int)[_string length], captures, capCount, 0);
   
-  if (!containsMatch) { return nil; }
+  if (status <= 0) {
+    return nil;
+  }
   
-  for (idx = 0; idx < captureCount; idx++) {
+  
+  
+  for (idx = 0; idx < capCount; idx++) {
     // pull out the full range and update the bufferIndex for next iteration
     if (idx == 0) {
       matchRange.location = (XPUInteger)(captures[idx].ptr - buffer);
@@ -119,6 +117,8 @@
   
   return [SLRERegexMatch matchWithRange:matchRange
                             groupRanges:[[groupRanges copy] autorelease]];
+  
+  return nil;
 }
 
 // MARK: Convenience Properties

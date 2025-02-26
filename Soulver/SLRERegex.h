@@ -52,7 +52,6 @@ typedef enum {
   SLRERegexAdvanceMode _mode;
   int _bufferIndex;
   int _bufferLength;
-  struct slre _engine;
 }
 
 // MARK: Initialization
