@@ -118,3 +118,45 @@
 }
 
 @end
+
+@implementation XPTextCheckingResult
+
+-(XPUInteger)numberOfRanges;
+{
+  return [_ranges count];
+}
+-(NSRange)range;
+{
+  return [[_ranges objectAtIndex:0] XP_rangeValue];
+}
+-(NSRange)rangeAtIndex:(XPUInteger)idx;
+{
+  return [[_ranges objectAtIndex:idx] XP_rangeValue];
+}
+-(XPRegularExpression*)regularExpression;
+{
+  return [[_expression retain] autorelease];
+}
+
+-(id)initWithRanges:(XPRangePointer)ranges
+              count:(XPUInteger)count
+  regularExpression:(XPRegularExpression*)regularExpression;
+{
+  self = [super init];
+  _expression = [regularExpression retain];
+  _ranges = [NSMutableArray new];
+  for (XPUInteger i = 0; i < count; i++) {
+    [_ranges addObject:[NSValue XP_valueWithRange:ranges[i]]];
+  }
+  return self;
+}
+
++(XPTextCheckingResult*)regularExpressionCheckingResultWithRanges:(XPRangePointer)ranges
+                                                            count:(XPUInteger)count
+                                                regularExpression:(XPRegularExpression*)regularExpression;
+{
+  return [[[XPTextCheckingResult alloc] initWithRanges:ranges
+                                                 count:count
+                                     regularExpression:regularExpression] autorelease];
+}
+@end

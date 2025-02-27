@@ -55,3 +55,25 @@
                      range:(NSRange)range;
 
 @end
+
+@interface XPTextCheckingResult: NSObject
+{
+  mm_retain XPRegularExpression *_expression;
+  mm_new NSMutableArray *_ranges;
+}
+/**
+ A result must have at least one range, but may optionally have more (for example, to represent regular expression capture groups).
+ Passing rangeAtIndex: the value 0 always returns the value of the the range property. Additional ranges, if any, will have indexes from 1 to numberOfRanges-1.
+*/
+-(XPUInteger)numberOfRanges;
+-(NSRange)range;
+-(NSRange)rangeAtIndex:(XPUInteger)idx;
+-(XPRegularExpression*)regularExpression;
+-(id)initWithRanges:(XPRangePointer)ranges
+              count:(XPUInteger)count
+  regularExpression:(XPRegularExpression*)regularExpression;
++(XPTextCheckingResult*)regularExpressionCheckingResultWithRanges:(XPRangePointer)ranges
+                                                            count:(XPUInteger)count
+                                                regularExpression:(XPRegularExpression*)regularExpression;
+
+@end
