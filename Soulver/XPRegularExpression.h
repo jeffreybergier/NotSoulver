@@ -34,7 +34,6 @@
 @interface XPRegularExpression: NSObject
 {
   mm_copy NSString *_pattern;
-  mm_new  NSMutableDictionary *_cache;
   int _options;
   struct slre _engine;
 }
@@ -50,17 +49,9 @@
 -(int)options;
 -(XPUInteger)numberOfCaptureGroups;
 
-/// Options and Range are ignored
+/// Options are ignored
 -(NSArray*)matchesInString:(NSString*)string
                    options:(int)options
                      range:(NSRange)range;
-/// Options and Range are ignored
--(XPUInteger)numberOfMatchesInString:(NSString*)string
-                             options:(int)options
-                               range:(NSRange)range;
-/// Options and Range are ignored
--(NSArray*)__matchesInString:(NSString*)string
-                     options:(int)options
-                       range:(NSRange)range;
 
 @end

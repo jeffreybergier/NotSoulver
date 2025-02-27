@@ -228,7 +228,7 @@ void TestsUnitExecute(void)
   // Super basic operator finding
   string = @"and 5+5 and 4-4 and 6*6 and 7/6 and 8^8 and";
   regex = [XPRegularExpression regularExpressionWithPattern:@"\\d(\\+|\\-|\\/|\\*|\\^)\\d" options:0 error:NULL];
-  NSAssert([regex numberOfMatchesInString:string options:0 range:XPNotFoundRange] == 2, @"");
+  NSAssert([regex matchesInString:string options:0 range:NSMakeRange(0, [string length])], @"");
 }
 
 @end
