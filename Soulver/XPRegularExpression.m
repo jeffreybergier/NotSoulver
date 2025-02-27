@@ -39,7 +39,7 @@
   _pattern = [pattern copy];
   _options = options;
   
-  isCompiled = slre_compile(&_engine, [pattern XP_UTF8String]);
+  isCompiled = slre_compile(&_engine, [_pattern XP_UTF8String]);
   NSAssert2(isCompiled, @"%@ Failed to compile pattern: %@", self, pattern);
   if (!isCompiled) {
     [_pattern release];
@@ -84,7 +84,7 @@
   
   slre_match(&_engine,
              buffer + matchRange.location,
-             matchRange.length,
+             (int)matchRange.length,
              caps);
   
   while (!XPIsNotFoundRange(matchRange)) {
@@ -100,7 +100,7 @@
     if (NSMaxRange(matchRange) < NSMaxRange(range)) {
       slre_match(&_engine,
                  buffer + matchRange.location,
-                 matchRange.length,
+                 (int)matchRange.length,
                  caps);
     } else {
       matchRange = XPNotFoundRange;
