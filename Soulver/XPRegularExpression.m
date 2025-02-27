@@ -77,10 +77,13 @@
 {
   NSRange matchRange = range;
   const char* buffer = [string XP_UTF8String];
+  unsigned long capCount = (unsigned long)_engine.num_caps + 1; // according to documentation in slre.h
+  NSMutableArray *output = [[NSMutableArray new] autorelease];
   
+  // Variables for loop
   int capIndex = 0;
-  int capCount = _engine.num_caps + 1; // according to documentation in slre.h
   struct cap caps[capCount];
+  XPRangePointer ranges = NULL;
   
   slre_match(&_engine,
              buffer + matchRange.location,
@@ -88,13 +91,17 @@
              caps);
   
   while (!XPIsNotFoundRange(matchRange)) {
+    ranges = (XPRangePointer)malloc(sizeof(NSRange) * capCount);
     for (capIndex = 0; capIndex < capCount; capIndex++) {
-      // pull out the full range and update the bufferIndex for next iteration
       matchRange.location = (XPUInteger)(caps[capIndex].ptr - buffer);
       matchRange.length = (XPUInteger)caps[capIndex].len;
-      XPLogDebug3(@"index:%d, range:%@ match:%@", capIndex, NSStringFromRange(matchRange), [string substringWithRange:matchRange]);
-      // TODO: Do something with this result
+      ranges[capIndex] = matchRange;
+      XPLogExtra3(@"index:%d, range:%@ match:%@", capIndex, NSStringFromRange(matchRange), [string substringWithRange:matchRange]);
     }
+    [output addObject:[XPTextCheckingResult regularExpressionCheckingResultWithRanges:ranges
+                                                                                count:capCount
+                                                                    regularExpression:self]];
+    free(ranges);
     matchRange.location = NSMaxRange(matchRange);
     matchRange.length = range.length - matchRange.location;
     if (NSMaxRange(matchRange) < NSMaxRange(range)) {
@@ -106,8 +113,7 @@
       matchRange = XPNotFoundRange;
     }
   }
-  // TODO: put together the NSTextCheckingResult
-  return nil;
+  return output;
 }
 
 - (void)dealloc
@@ -142,12 +148,15 @@
               count:(XPUInteger)count
   regularExpression:(XPRegularExpression*)regularExpression;
 {
+  XPUInteger index = 0;
+  if (count == 0) { return nil; }
   self = [super init];
   _expression = [regularExpression retain];
-  _ranges = [NSMutableArray new];
-  for (XPUInteger i = 0; i < count; i++) {
-    [_ranges addObject:[NSValue XP_valueWithRange:ranges[i]]];
+  _ranges = [[NSMutableArray alloc] initWithCapacity:count];
+  for (index = 0; index < count; index++) {
+    [_ranges addObject:[NSValue XP_valueWithRange:ranges[index]]];
   }
+  
   return self;
 }
 
@@ -159,4 +168,14 @@
                                                  count:count
                                      regularExpression:regularExpression] autorelease];
 }
+
+-(void)dealloc
+{
+  [_expression release];
+  [_ranges release];
+  _expression = nil;
+  _ranges = nil;
+  [super dealloc];
+}
+
 @end
