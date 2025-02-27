@@ -31,69 +31,49 @@
 #import "XPCrossPlatform.h"
 #import "slre.h"
 
-@class SLRERegexMatch;
-
-typedef enum {
-  /// Default regex advance mode. Once a match is found,
-  /// it advances the search to after that match.
-  SLRERegexAdvanceAfterMatch,
-  /// This advances the next search to after the last capture group.
-  SLRERegexAdvanceAfterGroup,
-  /// This advances one character at a time.
-  /// Note that this can cause many repeated matches.
-  SLRERegexAdvanceAfterChar,
-} SLRERegexAdvanceMode;
-
-@interface SLRERegex: NSEnumerator
+@interface XPRegularExpression: NSObject
 {
   mm_copy NSString *_pattern;
-  mm_copy NSString *_string;
-  
-  SLRERegexAdvanceMode _mode;
-  int _bufferIndex;
-  int _bufferLength;
+  int _options;
   struct slre _engine;
 }
 
-// MARK: Initialization
--(id)initWithString:(NSString*)string
-            pattern:(NSString*)pattern
-               mode:(SLRERegexAdvanceMode)mode;
+/// Options and Error are ignored
+-(id)initWithPattern:(NSString *)pattern options:(int)options error:(id*)error;
+/// Options and Error are ignored
++(XPRegularExpression*)regularExpressionWithPattern:(NSString*)pattern
+                                            options:(int)options
+                                              error:(id*)error;
 
-+(id)regexWithString:(NSString*)string
-             pattern:(NSString*)pattern
-                mode:(SLRERegexAdvanceMode)mode;
-
-// MARK: Core Functionality
--(BOOL)containsMatch;
-
-// MARK: NSEnumerator
--(SLRERegexMatch*)nextObject;
-
-// MARK: Convenience Properties
--(NSString*)string;
 -(NSString*)pattern;
--(NSString*)description;
+-(int)options;
+-(XPUInteger)numberOfCaptureGroups;
+
+/// Options are ignored
+-(NSArray*)matchesInString:(NSString*)string
+                   options:(int)options
+                     range:(NSRange)range;
 
 @end
 
-@interface SLRERegexMatch: NSObject
+@interface XPTextCheckingResult: NSObject
 {
-  mm_retain NSArray *_groupRanges;
-  NSRange _range;
+  mm_retain XPRegularExpression *_expression;
+  mm_new NSMutableArray *_ranges;
 }
-
-// MARK: Properties
+/**
+ A result must have at least one range, but may optionally have more (for example, to represent regular expression capture groups).
+ Passing rangeAtIndex: the value 0 always returns the value of the the range property. Additional ranges, if any, will have indexes from 1 to numberOfRanges-1.
+*/
+-(XPUInteger)numberOfRanges;
 -(NSRange)range;
--(NSArray*)groupRanges;
-
-// MARK: Init
--(id)initWithRange:(NSRange)matchRange
-       groupRanges:(NSArray*)groupRanges;
-+(id)matchWithRange:(NSRange)matchRange
-        groupRanges:(NSArray*)groupRanges;
-
-// MARK: Convenient Methods
--(NSRange)groupRangeAtIndex:(XPUInteger)index;
+-(NSRange)rangeAtIndex:(XPUInteger)idx;
+-(XPRegularExpression*)regularExpression;
+-(id)initWithRanges:(XPRangePointer)ranges
+              count:(XPUInteger)count
+  regularExpression:(XPRegularExpression*)regularExpression;
++(XPTextCheckingResult*)regularExpressionCheckingResultWithRanges:(XPRangePointer)ranges
+                                                            count:(XPUInteger)count
+                                                regularExpression:(XPRegularExpression*)regularExpression;
 
 @end

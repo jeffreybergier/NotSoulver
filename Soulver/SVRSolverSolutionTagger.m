@@ -367,7 +367,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
   SVRSolverDecimalBehavior *ohBehave = [SVRSolverDecimalBehavior behaviorWithErrorPtr:errorPtr];
   switch (operator) {
     case SVRSolverOperatorExponent:
-      return [lhs SVR_decimalNumberByRaisingToPower:rhs withBehavior:ohBehave];
+      return [lhs SVR_decimalNumberByRaisingWithExponent:rhs withBehavior:ohBehave];
     case SVRSolverOperatorDivide:
       return [lhs decimalNumberByDividingBy:rhs withBehavior:ohBehave];
     case SVRSolverOperatorMultiply:
@@ -377,7 +377,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     case SVRSolverOperatorAdd:
       return [lhs decimalNumberByAdding:rhs withBehavior:ohBehave];
     case SVRSolverOperatorRoot:
-      return [rhs SVR_decimalNumberByRootingWithIndex:lhs withBehavior:ohBehave];
+      return [rhs SVR_decimalNumberByRootingWithExponent:lhs withBehavior:ohBehave];
     case SVRSolverOperatorLog:
       return [rhs SVR_decimalNumberByLogarithmWithBase:lhs withBehavior:ohBehave];
     default:
