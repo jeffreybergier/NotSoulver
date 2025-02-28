@@ -227,7 +227,51 @@ void TestsUnitExecute(void)
   
   NSLog(@"%@ Unit Tests: STARTING", self);
   
-  // Super basic operator finding
+  // MARK: SVR_regexForNumbers
+  string = @"this is 1, 2, 3, 1.1, 2.2, 3.3, 10.10, 20.20, 30.30, -1, -2, -3, -1.1, -2.2, -3.3, -10.10, -20.20, -30.30";
+  regex = [XPRegularExpression SVR_regexForNumbers];
+  matches = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
+  XPTestInt([matches count], 18);
+  result = [matches objectAtIndex:0];
+  XPTestInt([result numberOfRanges], 1);
+  XPTestString([string substringWithRange:[result rangeAtIndex:0]], @"1");
+  
+  // MARK: SVR_regexForOperators
+  // TODO: Make more robust to handle 6.3*-6.0
+  string = @"and 15+15 and 40-400 and 6.3*6.0 and 7/07 and 8^8 and 9R9 and 10L100";
+  regex = [XPRegularExpression SVR_regexForOperators];
+  matches = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
+  XPTestInt([matches count], 7);
+  result = [matches objectAtIndex:0];
+  XPTestInt([result numberOfRanges], 2);
+  XPTestString([string substringWithRange:[result rangeAtIndex:0]], @"+1");
+  XPTestString([string substringWithRange:[result rangeAtIndex:1]], @"+");
+  result = [matches objectAtIndex:1];
+  XPTestInt([result numberOfRanges], 2);
+  XPTestString([string substringWithRange:[result rangeAtIndex:0]], @"-4");
+  XPTestString([string substringWithRange:[result rangeAtIndex:1]], @"-");
+  result = [matches objectAtIndex:2];
+  XPTestInt([result numberOfRanges], 2);
+  XPTestString([string substringWithRange:[result rangeAtIndex:0]], @"*6");
+  XPTestString([string substringWithRange:[result rangeAtIndex:1]], @"*");
+  result = [matches objectAtIndex:3];
+  XPTestInt([result numberOfRanges], 2);
+  XPTestString([string substringWithRange:[result rangeAtIndex:0]], @"/0");
+  XPTestString([string substringWithRange:[result rangeAtIndex:1]], @"/");
+  result = [matches objectAtIndex:4];
+  XPTestInt([result numberOfRanges], 2);
+  XPTestString([string substringWithRange:[result rangeAtIndex:0]], @"^8");
+  XPTestString([string substringWithRange:[result rangeAtIndex:1]], @"^");
+  result = [matches objectAtIndex:5];
+  XPTestInt([result numberOfRanges], 2);
+  XPTestString([string substringWithRange:[result rangeAtIndex:0]], @"R9");
+  XPTestString([string substringWithRange:[result rangeAtIndex:1]], @"R");
+  result = [matches objectAtIndex:6];
+  XPTestInt([result numberOfRanges], 2);
+  XPTestString([string substringWithRange:[result rangeAtIndex:0]], @"L1");
+  XPTestString([string substringWithRange:[result rangeAtIndex:1]], @"L");
+  
+  // Super square root and logarithm finding
   string = @"and 5+5 and 4-4 and 6*6 and 7/6 and 8^8 and";
   regex = [XPRegularExpression regularExpressionWithPattern:@"\\d(\\+|\\-|\\/|\\*|\\^)\\d" options:0 error:NULL];
   matches = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];

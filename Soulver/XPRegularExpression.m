@@ -75,38 +75,35 @@
                    options:(int)options
                      range:(NSRange)range;
 {
+  NSMutableArray *output = [[NSMutableArray new] autorelease];
   NSRange matchRange = range;
   const char* buffer = [string XP_UTF8String];
   unsigned long capCount = (unsigned long)_engine.num_caps + 1; // according to documentation in slre.h
-  NSMutableArray *output = [[NSMutableArray new] autorelease];
+  int length = (int)[string length] - (int)matchRange.location;
   
   // Variables for loop
   int capIndex = 0;
   struct cap caps[capCount];
   XPRangePointer ranges = NULL;
   
-  slre_match(&_engine,
-             buffer + matchRange.location,
-             (int)[string length] - (int)matchRange.location,
-             caps);
+  slre_match(&_engine, buffer + matchRange.location, length, caps);
   
   while (matchRange.length > 0) {
     ranges = (XPRangePointer)malloc(sizeof(NSRange) * capCount);
     for (capIndex = 0; capIndex < capCount; capIndex++) {
-      matchRange.location = (XPUInteger)(caps[capIndex].ptr - buffer);
-      matchRange.length = (XPUInteger)caps[capIndex].len;
-      ranges[capIndex] = matchRange;
-      XPLogExtra3(@"index:%d, range:%@ match:%@", capIndex, NSStringFromRange(matchRange), [string substringWithRange:matchRange]);
+      if (caps[capIndex].ptr - buffer > 0) {
+        matchRange.location = (XPUInteger)(caps[capIndex].ptr - buffer);
+        matchRange.length = (XPUInteger)caps[capIndex].len;
+        ranges[capIndex] = matchRange;
+        XPLogExtra3(@"index:%d, range:%@ match:'%@'", capIndex, NSStringFromRange(matchRange), [string substringWithRange:matchRange]);
+      }
     }
     [output addObject:[XPTextCheckingResult regularExpressionCheckingResultWithRanges:ranges
                                                                                 count:capCount
                                                                     regularExpression:self]];
     free(ranges);
     matchRange.location = NSMaxRange(matchRange);
-    matchRange.length = (XPUInteger)slre_match(&_engine,
-                                               buffer + matchRange.location,
-                                               (int)[string length] - (int)matchRange.location,
-                                               caps);
+    matchRange.length = (XPUInteger)slre_match(&_engine, buffer + matchRange.location, length, caps);
   }
   return output;
 }
@@ -144,12 +141,15 @@
   regularExpression:(XPRegularExpression*)regularExpression;
 {
   XPUInteger index = 0;
+  NSRange range = XPNotFoundRange;
   if (count == 0) { return nil; }
   self = [super init];
   _expression = [regularExpression retain];
   _ranges = [[NSMutableArray alloc] initWithCapacity:count];
   for (index = 0; index < count; index++) {
-    [_ranges addObject:[NSValue XP_valueWithRange:ranges[index]]];
+    range = ranges[index];
+    if (XPIsNotFoundRange(range) || range.length == 0) { continue; }
+    [_ranges addObject:[NSValue XP_valueWithRange:range]];
   }
   
   return self;

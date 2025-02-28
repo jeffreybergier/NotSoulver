@@ -264,3 +264,32 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
 }
 
 @end
+
+@implementation XPRegularExpression (Soulver)
+
++(id)SVR_regexForNumbers;
+{
+  // SLRERegexAdvanceAfterMatch
+  return [self regularExpressionWithPattern:@"\\-?\\d+(\\.\\d+)*" options:0 error:NULL];
+}
++(id)SVR_regexForOperators;
+{
+  // SLRERegexAdvanceAfterGroup
+  // For some reason \d is not working in place of digits
+  return [self regularExpressionWithPattern:@"(L|R|\\+|\\-|\\/|\\*|\\^)[\\-\\(0123456789]" options:0 error:NULL];
+}
+
++(id)SVR_regexForExpressions;
+{
+  // SLRERegexAdvanceAfterMatch
+  // For some reason \d is not working in place of digits
+  return [self regularExpressionWithPattern:@"[0123456789LR\\.\\^\\*\\-\\+\\/\\(\\)]+\\=" options:0 error:NULL];
+}
+
++(id)SVR_regexForBrackets;
+{
+  // SLRERegexAdvanceAfterMatch
+  return [self regularExpressionWithPattern:@"[\\(\\)]" options:0 error:NULL];
+}
+
+@end
