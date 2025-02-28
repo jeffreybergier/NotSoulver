@@ -224,7 +224,6 @@ void TestsUnitExecute(void)
   NSArray *matches = nil;
   XPTextCheckingResult *result;
   NSString *string = nil;
-  NSString *substring = nil;
   
   NSLog(@"%@ Unit Tests: STARTING", self);
   

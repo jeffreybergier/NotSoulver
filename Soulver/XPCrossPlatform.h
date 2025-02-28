@@ -410,17 +410,16 @@ NSArray* XPRunOpenPanel(void);
 
 // MARK: XPTest
 
-#define XPTestInt(_lhs, _rhs)    NSAssert2(_lhs == _rhs, @"[FAIL] '%d' != '%d'", (int)_lhs, (int)_rhs)
-#define XPTestFloat(_lhs, _rhs)  NSAssert2(_lhs == _rhs, @"[FAIL] '%g' != '%g'", _lhs, _rhs)
-#define XPTestObject(_lhs, _rhs) NSAssert2([_lhs isEqual:_rhs], @"[FAIL] %@ != %@", _lhs, _rhs)
-#define XPTestString(_lhs, _rhs) NSAssert2([_lhs isEqualToString:_rhs], @"[FAIL] '%@' != '%@'", _lhs, _rhs)
-#define XPTestRange(_lhs, _loc, _len) NSAssert2(NSEqualRanges(_lhs, NSMakeRange(_loc, _len)), @"[FAIL] %@ != %@", NSStringFromRange(_lhs), NSStringFromRange(NSMakeRange(_loc, _len)))
+#ifdef MAC_OS_X_VERSION_10_4
+#define XPTestFunc [NSString stringWithCString:__PRETTY_FUNCTION__ encoding:NSUTF8StringEncoding]
+#define XPTestFile [[[NSString stringWithCString:__FILE__ encoding:NSUTF8StringEncoding] componentsSeparatedByString:@"/"] lastObject]
+#else
+#define XPTestFunc [NSString stringWithCString:__PRETTY_FUNCTION__]
+#define XPTestFile [[[NSString stringWithCString:__FILE__] componentsSeparatedByString:@"/"] lastObject]
+#endif
 
-/*
-do {						\
-    if (!(condition)) {				\
-        [[NSAssertionHandler currentHandler] handleFailureInFunction:[NSString stringWithCString:__PRETTY_FUNCTION__] file:[NSString stringWithCString:__FILE__] \
-            lineNumber:__LINE__ description:(desc), (arg1), (arg2), (arg3), (arg4), (arg5)];	\
-    }						\
-} while(0)
-*/
+#define XPTestInt(_lhs, _rhs)    NSAssert5(_lhs == _rhs, @"[FAIL] '%d'!='%d' {%@:%d} %@", (int)_lhs, (int)_rhs, XPTestFile, __LINE__, XPTestFunc)
+#define XPTestFloat(_lhs, _rhs)  NSAssert5(_lhs == _rhs, @"[FAIL] '%g'!='%g' {%@:%d} %@", _lhs, _rhs, XPTestFile, __LINE__, XPTestFunc)
+#define XPTestObject(_lhs, _rhs) NSAssert5([_lhs isEqual:_rhs], @"[FAIL] '%@'!='%@' {%@:%d} %@", _lhs, _rhs, XPTestFile, __LINE__, XPTestFunc)
+#define XPTestString(_lhs, _rhs) NSAssert5([_lhs isEqualToString:_rhs], @"[FAIL] '%@'!='%@' {%@:%d} %@", _lhs, _rhs, XPTestFile, __LINE__, XPTestFunc)
+#define XPTestRange(_lhs, _loc, _len) NSAssert5(NSEqualRanges(_lhs, NSMakeRange(_loc, _len)), @"[FAIL] %@!=%@ {%@:%d} %@", NSStringFromRange(_lhs), NSStringFromRange(NSMakeRange(_loc, _len)), XPTestFile, __LINE__, XPTestFunc)
