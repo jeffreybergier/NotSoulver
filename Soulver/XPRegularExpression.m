@@ -87,13 +87,19 @@
   
   while (matchRange.length > 0) {
     ranges = (XPRangePointer)malloc(sizeof(NSRange) * capCount);
+    
     for (capIndex = 0; capIndex < capCount; capIndex++) {
       // This if statement is needed if the capCount value is too large
-      if (caps[capIndex].ptr - buffer < 0) { break; }
-      matchRange.location = (XPUInteger)(caps[capIndex].ptr - buffer);
-      matchRange.length = (XPUInteger)caps[capIndex].len;
-      ranges[capIndex] = matchRange;
-      XPLogExtra3(@"index:%d, range:%@ match:'%@'", capIndex, NSStringFromRange(matchRange), [string substringWithRange:matchRange]);
+      if (caps[capIndex].ptr > buffer + range.location
+          && caps[capIndex].ptr < buffer + [string length] - range.location)
+      {
+        matchRange.location = (XPUInteger)(caps[capIndex].ptr - buffer);
+        matchRange.length = (XPUInteger)caps[capIndex].len;
+        ranges[capIndex] = matchRange;
+        XPLogExtra3(@"index:%d, range:%@ match:'%@'", capIndex, NSStringFromRange(matchRange), [string substringWithRange:matchRange]);
+      } else {
+        ranges[capIndex] = XPNotFoundRange;
+      }
     }
     [output addObject:[XPTextCheckingResult regularExpressionCheckingResultWithRanges:ranges
                                                                                 count:capCount
@@ -148,7 +154,7 @@
   _ranges = [[NSMutableArray alloc] initWithCapacity:count];
   for (index = 0; index < count; index++) {
     range = ranges[index];
-    if (XPIsNotFoundRange(range) || range.length == 0) { continue; }
+    if (XPIsNotFoundRange(range)) { break; }
     [_ranges addObject:[NSValue XP_valueWithRange:range]];
   }
   if ([_ranges count] == 0) { return nil; }
