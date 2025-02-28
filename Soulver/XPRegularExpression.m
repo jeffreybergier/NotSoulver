@@ -41,10 +41,7 @@
   
   isCompiled = slre_compile(&_engine, [_pattern XP_UTF8String]);
   NSAssert2(isCompiled, @"%@ Failed to compile pattern: %@", self, pattern);
-  if (!isCompiled) {
-    [_pattern release];
-    return nil;
-  }
+  if (!isCompiled) { return nil; }
   
   return self;
 }
@@ -76,34 +73,37 @@
                      range:(NSRange)range;
 {
   NSMutableArray *output = [[NSMutableArray new] autorelease];
-  NSRange matchRange = range;
+  NSRange matchRange = range; // length is serving double duty as matchfound variable
   const char* buffer = [string XP_UTF8String];
   unsigned long capCount = (unsigned long)_engine.num_caps + 1; // according to documentation in slre.h
-  int length = (int)[string length] - (int)matchRange.location;
-  
-  // Variables for loop
   int capIndex = 0;
   struct cap caps[capCount];
   XPRangePointer ranges = NULL;
   
-  slre_match(&_engine, buffer + matchRange.location, length, caps);
+  matchRange.length = (XPUInteger)slre_match(&_engine,
+                                             buffer + matchRange.location,
+                                             (int)[string length] - (int)matchRange.location,
+                                             caps);
   
   while (matchRange.length > 0) {
     ranges = (XPRangePointer)malloc(sizeof(NSRange) * capCount);
     for (capIndex = 0; capIndex < capCount; capIndex++) {
-      if (caps[capIndex].ptr - buffer > 0) {
-        matchRange.location = (XPUInteger)(caps[capIndex].ptr - buffer);
-        matchRange.length = (XPUInteger)caps[capIndex].len;
-        ranges[capIndex] = matchRange;
-        XPLogExtra3(@"index:%d, range:%@ match:'%@'", capIndex, NSStringFromRange(matchRange), [string substringWithRange:matchRange]);
-      }
+      // This if statement is needed if the capCount value is too large
+      if (caps[capIndex].ptr - buffer < 0) { break; }
+      matchRange.location = (XPUInteger)(caps[capIndex].ptr - buffer);
+      matchRange.length = (XPUInteger)caps[capIndex].len;
+      ranges[capIndex] = matchRange;
+      XPLogExtra3(@"index:%d, range:%@ match:'%@'", capIndex, NSStringFromRange(matchRange), [string substringWithRange:matchRange]);
     }
     [output addObject:[XPTextCheckingResult regularExpressionCheckingResultWithRanges:ranges
                                                                                 count:capCount
                                                                     regularExpression:self]];
     free(ranges);
     matchRange.location = NSMaxRange(matchRange);
-    matchRange.length = (XPUInteger)slre_match(&_engine, buffer + matchRange.location, length, caps);
+    matchRange.length = (XPUInteger)slre_match(&_engine,
+                                               buffer + matchRange.location,
+                                               (int)[string length] - (int)matchRange.location,
+                                               caps);
   }
   return output;
 }
@@ -151,7 +151,7 @@
     if (XPIsNotFoundRange(range) || range.length == 0) { continue; }
     [_ranges addObject:[NSValue XP_valueWithRange:range]];
   }
-  
+  if ([_ranges count] == 0) { return nil; }
   return self;
 }
 
@@ -159,9 +159,15 @@
                                                             count:(XPUInteger)count
                                                 regularExpression:(XPRegularExpression*)regularExpression;
 {
+  // TODO: Figure out memory leak in static analyzer
   return [[[XPTextCheckingResult alloc] initWithRanges:ranges
                                                  count:count
                                      regularExpression:regularExpression] autorelease];
+}
+
+-(NSString*)debugDescription;
+{
+  return [_ranges debugDescription];
 }
 
 -(void)dealloc
