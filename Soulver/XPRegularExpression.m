@@ -87,10 +87,10 @@
   
   slre_match(&_engine,
              buffer + matchRange.location,
-             (int)matchRange.length,
+             (int)[string length] - (int)matchRange.location,
              caps);
   
-  while (!XPIsNotFoundRange(matchRange)) {
+  while (matchRange.length > 0) {
     ranges = (XPRangePointer)malloc(sizeof(NSRange) * capCount);
     for (capIndex = 0; capIndex < capCount; capIndex++) {
       matchRange.location = (XPUInteger)(caps[capIndex].ptr - buffer);
@@ -103,15 +103,10 @@
                                                                     regularExpression:self]];
     free(ranges);
     matchRange.location = NSMaxRange(matchRange);
-    matchRange.length = range.length - matchRange.location;
-    if (NSMaxRange(matchRange) < NSMaxRange(range)) {
-      slre_match(&_engine,
-                 buffer + matchRange.location,
-                 (int)matchRange.length,
-                 caps);
-    } else {
-      matchRange = XPNotFoundRange;
-    }
+    matchRange.length = (XPUInteger)slre_match(&_engine,
+                                               buffer + matchRange.location,
+                                               (int)[string length] - (int)matchRange.location,
+                                               caps);
   }
   return output;
 }

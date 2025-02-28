@@ -232,9 +232,9 @@ void TestsUnitExecute(void)
   string = @"and 5+5 and 4-4 and 6*6 and 7/6 and 8^8 and";
   regex = [XPRegularExpression regularExpressionWithPattern:@"\\d(\\+|\\-|\\/|\\*|\\^)\\d" options:0 error:NULL];
   matches = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
-  NSAssert([matches count] == 1, @"");
+  NSAssert([matches count] == 5, @"");
   result = [matches objectAtIndex:0];
-  NSAssert([result numberOfRanges] == 5, @"");
+  NSAssert([result numberOfRanges] == 2, @"");
   substring = [string substringWithRange:[result rangeAtIndex:0]];
   NSAssert([substring isEqualToString:@"5+5"], @"");
   substring = [string substringWithRange:[result rangeAtIndex:1]];
