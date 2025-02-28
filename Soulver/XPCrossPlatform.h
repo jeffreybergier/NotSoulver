@@ -407,3 +407,20 @@ NSArray* XPRunOpenPanel(void);
 +(void)pause;
 +(void)logCheckedPoundDefines;
 @end
+
+// MARK: XPTest
+
+#define XPTestInt(_lhs, _rhs)    NSAssert2(_lhs == _rhs, @"[FAIL] '%d' != '%d'", (int)_lhs, (int)_rhs)
+#define XPTestFloat(_lhs, _rhs)  NSAssert2(_lhs == _rhs, @"[FAIL] '%g' != '%g'", _lhs, _rhs)
+#define XPTestObject(_lhs, _rhs) NSAssert2([_lhs isEqual:_rhs], @"[FAIL] %@ != %@", _lhs, _rhs)
+#define XPTestString(_lhs, _rhs) NSAssert2([_lhs isEqualToString:_rhs], @"[FAIL] '%@' != '%@'", _lhs, _rhs)
+#define XPTestRange(_lhs, _loc, _len) NSAssert2(NSEqualRanges(_lhs, NSMakeRange(_loc, _len)), @"[FAIL] %@ != %@", NSStringFromRange(_lhs), NSStringFromRange(NSMakeRange(_loc, _len)))
+
+/*
+do {						\
+    if (!(condition)) {				\
+        [[NSAssertionHandler currentHandler] handleFailureInFunction:[NSString stringWithCString:__PRETTY_FUNCTION__] file:[NSString stringWithCString:__FILE__] \
+            lineNumber:__LINE__ description:(desc), (arg1), (arg2), (arg3), (arg4), (arg5)];	\
+    }						\
+} while(0)
+*/
