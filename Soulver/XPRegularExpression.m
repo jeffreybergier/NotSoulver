@@ -73,6 +73,7 @@
                      range:(NSRange)range;
 {
   NSMutableArray *output = [[NSMutableArray new] autorelease];
+  NSRange maxRange = NSMakeRange(0, [string length]);
   NSRange matchRange = range; // length is serving double duty as matchfound variable
   const char* buffer = [string XP_UTF8String];
   unsigned long capCount = (unsigned long)_engine.num_caps + 1; // according to documentation in slre.h
@@ -80,9 +81,12 @@
   struct cap caps[capCount];
   XPRangePointer ranges = NULL;
   
+  NSAssert2(NSEqualRanges(NSUnionRange(range, maxRange), maxRange),
+           @"String Range %@ does not fully contain argument range %@", NSStringFromRange(maxRange), NSStringFromRange(range));
+  
   matchRange.length = (XPUInteger)slre_match(&_engine,
                                              buffer + matchRange.location,
-                                             (int)[string length] - (int)matchRange.location,
+                                             (int)range.length - (int)matchRange.location,
                                              caps);
   
   while (matchRange.length > 0) {
@@ -91,7 +95,7 @@
     for (capIndex = 0; capIndex < capCount; capIndex++) {
       // This if statement is needed if the capCount value is too large
       if (caps[capIndex].ptr > buffer + range.location
-          && caps[capIndex].ptr < buffer + [string length] - range.location)
+          && caps[capIndex].ptr < buffer + range.length - range.location)
       {
         matchRange.location = (XPUInteger)(caps[capIndex].ptr - buffer);
         matchRange.length = (XPUInteger)caps[capIndex].len;
@@ -108,7 +112,7 @@
     matchRange.location = NSMaxRange(matchRange);
     matchRange.length = (XPUInteger)slre_match(&_engine,
                                                buffer + matchRange.location,
-                                               (int)[string length] - (int)matchRange.location,
+                                               (int)range.length - (int)matchRange.location,
                                                caps);
   }
   return output;

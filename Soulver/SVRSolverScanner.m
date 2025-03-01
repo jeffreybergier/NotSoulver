@@ -105,8 +105,8 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
 -(void)__populateExpressions;
 {
   NSEnumerator *matches = [[[XPRegularExpression SVR_regexForExpressions]
-                                                 matchesInString:_string]
-                                                        objectEnumerator];
+                            matchesInString:_string]
+                            objectEnumerator];
   XPTextCheckingResult *match = nil;
   NSMutableSet *output = [NSMutableSet new];
   NSRange range = XPNotFoundRange;
@@ -165,20 +165,21 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
  -(void)__populateOperators;
  {
    NSMutableSet *output = [NSMutableSet new];
+   XPRegularExpression *regex = [XPRegularExpression SVR_regexForOperators];
+   NSEnumerator *matches = nil;
+   XPTextCheckingResult *match = nil;
    NSSet *expressions = [self expressionRanges];
    NSEnumerator *e = [expressions objectEnumerator];
    NSValue *nextExpression = nil;
    NSRange expressionRange = XPNotFoundRange;
-   SLRERegex *regex = nil;
-   SLRERegexMatch *match = nil;
    NSRange range = XPNotFoundRange;
    NSAssert(!_operators, @"This is a lazy init method, it assumes _operators is NIL");
    
    while ((nextExpression = [e nextObject])) {
      expressionRange = [nextExpression XP_rangeValue];
-     regex = [SLRERegex SVR_regexForOperatorsInString:[_string substringWithRange:expressionRange]];
-     while ((match = [regex nextObject])) {
-       range = [match groupRangeAtIndex:0];
+     matches = [[regex matchesInString:_string] objectEnumerator];
+     while ((match = [matches nextObject])) {
+       range = [match rangeAtIndex:1];
        // Adjust range to be in space of whole string
        range.location += expressionRange.location;
        XPLogExtra1(@"<+*> %@", [_string SVR_descriptionHighlightingRange:range]);
