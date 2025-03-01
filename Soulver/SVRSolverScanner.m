@@ -104,12 +104,14 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
 
 -(void)__populateExpressions;
 {
+  NSEnumerator *matches = [[[XPRegularExpression SVR_regexForExpressions]
+                                                 matchesInString:_string]
+                                                        objectEnumerator];
+  XPTextCheckingResult *match = nil;
   NSMutableSet *output = [NSMutableSet new];
   NSRange range = XPNotFoundRange;
-  SLRERegex *regex = [SLRERegex SVR_regexForExpressionsInString:_string];
-  SLRERegexMatch *match = nil;
   NSAssert(!_expressions, @"This is a lazy init method, it assumes _expressions is NIL");
-  while ((match = [regex nextObject])) {
+  while ((match = [matches nextObject])) {
     range = [match range];
     // Trim the = sign off
     range.length -= 1;

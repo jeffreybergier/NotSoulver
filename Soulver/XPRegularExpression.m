@@ -123,6 +123,20 @@
 
 @end
 
+@implementation XPRegularExpression (Extras)
+
+-(NSArray*)matchesInString:(NSString*)string;
+{
+  return [self matchesInString:string options:0 range:NSMakeRange(0, [string length])];
+}
+
++(XPRegularExpression*)regularExpressionWithPattern:(NSString*)pattern;
+{
+  return [self regularExpressionWithPattern:pattern options:0 error:NULL];
+}
+
+@end
+
 @implementation XPTextCheckingResult
 
 -(XPUInteger)numberOfRanges;

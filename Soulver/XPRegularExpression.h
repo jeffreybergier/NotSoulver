@@ -39,7 +39,7 @@
 }
 
 /// Options and Error are ignored
--(id)initWithPattern:(NSString *)pattern options:(int)options error:(id*)error;
+-(id)initWithPattern:(NSString*)pattern options:(int)options error:(id*)error;
 /// Options and Error are ignored
 +(XPRegularExpression*)regularExpressionWithPattern:(NSString*)pattern
                                             options:(int)options
@@ -53,6 +53,13 @@
 -(NSArray*)matchesInString:(NSString*)string
                    options:(int)options
                      range:(NSRange)range;
+
+@end
+
+@interface XPRegularExpression (Extras)
+
+-(NSArray*)matchesInString:(NSString*)string;
++(XPRegularExpression*)regularExpressionWithPattern:(NSString*)pattern;
 
 @end
 
