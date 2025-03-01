@@ -322,166 +322,58 @@ void TestsUnitExecute(void)
   XPTestString([string substringWithRange:[result rangeAtIndex:0]], @"L1");
   XPTestString([string substringWithRange:[result rangeAtIndex:1]], @"L");
   
-  // Super square root and logarithm finding
-  string = @"and 5+5 and 4-4 and 6*6 and 7/6 and 8^8 and";
-  regex = [XPRegularExpression regularExpressionWithPattern:@"\\d(\\+|\\-|\\/|\\*|\\^)\\d" options:0 error:NULL];
+  // MARK: SVR_regexForExpressions
+  string = @"abc12.32+333RL()222=AND7*7.3-66+22*(((45-67)=2+2-3*8/7(0.123--30.0)+7=";
+  regex = [XPRegularExpression SVR_regexForExpressions];
   matches = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
-  XPTestInt([matches count], 5);
+  XPTestInt([matches count], 3);
   result = [matches objectAtIndex:0];
-  XPTestInt([result numberOfRanges], 2);
-  XPTestRange([result rangeAtIndex:0], 4, 3);
-  XPTestRange([result rangeAtIndex:1], 5, 1);
-  XPTestString([string substringWithRange:[result rangeAtIndex:0]], @"5+5");
-  XPTestString([string substringWithRange:[result rangeAtIndex:1]], @"+");
+  XPTestInt([result numberOfRanges], 1);
+  XPTestString([string substringWithRange:[result rangeAtIndex:0]], @"12.32+333RL()222=");
   result = [matches objectAtIndex:1];
-  XPTestInt([result numberOfRanges], 2);
-  XPTestRange([result rangeAtIndex:0], 12, 3);
-  XPTestRange([result rangeAtIndex:1], 13, 1);
-  XPTestString([string substringWithRange:[result rangeAtIndex:0]], @"4-4");
-  XPTestString([string substringWithRange:[result rangeAtIndex:1]], @"-");
+  XPTestInt([result numberOfRanges], 1);
+  XPTestString([string substringWithRange:[result rangeAtIndex:0]], @"7*7.3-66+22*(((45-67)=");
   result = [matches objectAtIndex:2];
-  XPTestInt([result numberOfRanges], 2);
-  XPTestRange([result rangeAtIndex:0], 20, 3);
-  XPTestRange([result rangeAtIndex:1], 21, 1);
-  XPTestString([string substringWithRange:[result rangeAtIndex:0]], @"6*6");
-  XPTestString([string substringWithRange:[result rangeAtIndex:1]], @"*");
+  XPTestInt([result numberOfRanges], 1);
+  XPTestString([string substringWithRange:[result rangeAtIndex:0]], @"2+2-3*8/7(0.123--30.0)+7=");
+  
+  // MARK: SVR_regexForBrackets
+  regex = [XPRegularExpression SVR_regexForBrackets];
+  matches = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
+  XPTestInt([matches count], 8);
+  result = [matches objectAtIndex:0];
+  XPTestInt([result numberOfRanges], 1);
+  XPTestRange([result rangeAtIndex:0], 14,1);
+  XPTestString([string substringWithRange:[result rangeAtIndex:0]], @"(");
+  result = [matches objectAtIndex:1];
+  XPTestInt([result numberOfRanges], 1);
+  XPTestRange([result rangeAtIndex:0], 15,1);
+  XPTestString([string substringWithRange:[result rangeAtIndex:0]], @")");
+  result = [matches objectAtIndex:2];
+  XPTestInt([result numberOfRanges], 1);
+  XPTestRange([result rangeAtIndex:0], 35,1);
+  XPTestString([string substringWithRange:[result rangeAtIndex:0]], @"(");
   result = [matches objectAtIndex:3];
-  XPTestInt([result numberOfRanges], 2);
-  XPTestRange([result rangeAtIndex:0], 28, 3);
-  XPTestRange([result rangeAtIndex:1], 29, 1);
-  XPTestString([string substringWithRange:[result rangeAtIndex:0]], @"7/6");
-  XPTestString([string substringWithRange:[result rangeAtIndex:1]], @"/");
+  XPTestInt([result numberOfRanges], 1);
+  XPTestRange([result rangeAtIndex:0], 36,1);
+  XPTestString([string substringWithRange:[result rangeAtIndex:0]], @"(");
   result = [matches objectAtIndex:4];
-  XPTestInt([result numberOfRanges], 2);
-  XPTestRange([result rangeAtIndex:0], 36, 3);
-  XPTestRange([result rangeAtIndex:1], 37, 1);
-  XPTestString([string substringWithRange:[result rangeAtIndex:0]], @"8^8");
-  XPTestString([string substringWithRange:[result rangeAtIndex:1]], @"^");
-  
-  /*
-  NSAssert([[match groupRanges] count] == 1, @"");
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"5+5"], @"");
-  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@"+"], @"");
-  match = [regex nextObject];
-  NSAssert([[match groupRanges] count] == 1, @"");
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"4-4"], @"");
-  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@"-"], @"");
-  match = [regex nextObject];
-  NSAssert([[match groupRanges] count] == 1, @"");
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"6*6"], @"");
-  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@"*"], @"");
-  match = [regex nextObject];
-  NSAssert([[match groupRanges] count] == 1, @"");
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"7/6"], @"");
-  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@"/"], @"");
-  match = [regex nextObject];
-  NSAssert([[match groupRanges] count] == 1, @"");
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"8^8"], @"");
-  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@"^"], @"");
-  match = [regex nextObject];
-  NSAssert(match == nil, @"");
-  
-  // More Square root finding finding
-  regex = [SLRERegex SVR_regexForOperatorsInString:@"and 2R64 and"];
-  NSAssert([regex containsMatch], @"");
-  match = [regex nextObject];
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"R6"], @"");
-  
-  // More complete operator finding
-  regex = [SLRERegex SVR_regexForOperatorsInString:@"and (1+2)^(6*7)-3*4*(7) and 9-(4) and"];
-  NSAssert([regex containsMatch], @"");
-  match = [regex nextObject];
-  NSAssert([[match groupRanges] count] == 1, @"");
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"+2"], @"");
-  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@"+"], @"");
-  match = [regex nextObject];
-  NSAssert([[match groupRanges] count] == 1, @"");
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"^("], @"");
-  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@"^"], @"");
-  match = [regex nextObject];
-  NSAssert([[match groupRanges] count] == 1, @"");
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"*7"], @"");
-  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@"*"], @"");
-  match = [regex nextObject];
-  NSAssert([[match groupRanges] count] == 1, @"");
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"-3"], @"");
-  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@"-"], @"");
-  match = [regex nextObject];
-  NSAssert([[match groupRanges] count] == 1, @"");
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"*4"], @"");
-  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@"*"], @"");
-  match = [regex nextObject];
-  NSAssert([[match groupRanges] count] == 1, @"");
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"*("], @"");
-  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@"*"], @"");
-  match = [regex nextObject];
-  NSAssert([[match groupRanges] count] == 1, @"");
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"-("], @"");
-  NSAssert([[[regex string] substringWithRange:[match groupRangeAtIndex:0]] isEqualToString:@"-"], @"");
-  match = [regex nextObject];
-  NSAssert(match == nil, @"");
-  
-  // Number finding
-  regex = [SLRERegex SVR_regexForNumbersInString:@"and (-102.34+243.333)^(666*-700)-33.44*-4.444*(7...888) and -9-(400) and"];
-  match = [regex nextObject];
-  NSAssert([[match groupRanges] count] == 0, @"");
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"-102.34"], @"");
-  match = [regex nextObject];
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"243.333"], @"");
-  match = [regex nextObject];
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"666"], @"");
-  match = [regex nextObject];
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"-700"], @"");
-  match = [regex nextObject];
-  // This is a known issue that is adjusted for in -[SVRSolverScanner SVR_regexForNumbersInString:]
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"-33.44"], @"");
-  match = [regex nextObject];
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"-4.444"], @"");
-  match = [regex nextObject];
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"7"], @"");
-  match = [regex nextObject];
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"888"], @"");
-  match = [regex nextObject];
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"-9"], @"");
-  match = [regex nextObject];
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"400"], @"");
-  match = [regex nextObject];
-  NSAssert(match == nil, @"");
-  
-  
-  // Left Bracket Finding
-  regex = [SLRERegex SVR_regexForBracketsInString:@"and (-102.34+243.333)^(666*-700)-33.44*-4.444*(7...888) and -9-(400) and"];
-  match = [regex nextObject];
-   NSAssert([[match groupRanges] count] == 0, @"");
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"("], @"");
-  match = [regex nextObject];
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@")"], @"");
-  match = [regex nextObject];
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"("], @"");
-  match = [regex nextObject];
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@")"], @"");
-  match = [regex nextObject];
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"("], @"");
-  match = [regex nextObject];
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@")"], @"");
-  match = [regex nextObject];
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"("], @"");
-  match = [regex nextObject];
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@")"], @"");
-  match = [regex nextObject];
-  NSAssert(match == nil, @"");
-  
-  // Expression Finding
-  regex = [SLRERegex SVR_regexForExpressionsInString:@"and (-102.34+243.333)^(666*-700)-33.44*-4.444*(7...888)= and -9-(400)= and"];
-  match = [regex nextObject];
-  NSAssert([[match groupRanges] count] == 0, @"");
-  NSAssert([[[regex string] substringWithRange:[match range]]
-            isEqualToString:@"(-102.34+243.333)^(666*-700)-33.44*-4.444*(7...888)="], @"");
-  match = [regex nextObject];
-  NSAssert([[[regex string] substringWithRange:[match range]] isEqualToString:@"-9-(400)="], @"");
-  match = [regex nextObject];
-  NSAssert(match == nil, @"");
-  */
+  XPTestInt([result numberOfRanges], 1);
+  XPTestRange([result rangeAtIndex:0], 37,1);
+  XPTestString([string substringWithRange:[result rangeAtIndex:0]], @"(");
+  result = [matches objectAtIndex:5];
+  XPTestInt([result numberOfRanges], 1);
+  XPTestRange([result rangeAtIndex:0], 43,1);
+  XPTestString([string substringWithRange:[result rangeAtIndex:0]], @")");
+  result = [matches objectAtIndex:6];
+  XPTestInt([result numberOfRanges], 1);
+  XPTestRange([result rangeAtIndex:0], 54,1);
+  XPTestString([string substringWithRange:[result rangeAtIndex:0]], @"(");
+  result = [matches objectAtIndex:7];
+  XPTestInt([result numberOfRanges], 1);
+  XPTestRange([result rangeAtIndex:0], 66,1);
+  XPTestString([string substringWithRange:[result rangeAtIndex:0]], @")");
+
   NSLog(@"%@ Unit Tests: PASSED", self);
 }
 
