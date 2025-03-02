@@ -287,6 +287,15 @@ void TestsUnitExecute(void)
   XPTestInt([result numberOfRanges], 1);
   XPTestString([string substringWithRange:[result rangeAtIndex:0]], @"-30.30");
   
+  // MARK: SVR_regexForOperators - MegaSimple
+  string = @"a2+2=";
+  regex = [XPRegularExpression SVR_regexForOperators];
+  matches = [regex matchesInString:string options:0 range:NSMakeRange(1, [string length]-2)];
+  XPTestInt([matches count], 1);
+  result = [matches objectAtIndex:0];
+  XPTestString([string substringWithRange:[result rangeAtIndex:0]], @"+2");
+  XPTestString([string substringWithRange:[result rangeAtIndex:1]], @"+");
+  
   // MARK: SVR_regexForOperators
   // TODO: Make more robust to handle 6.3*-6.0
   string = @"___15+15 and 40-400 and 6.3*6.0 and 7/07 and 8^8 and 9R9 and 9r9 and 10l10 and 10L100_______";
@@ -321,6 +330,14 @@ void TestsUnitExecute(void)
   XPTestInt([result numberOfRanges], 2);
   XPTestString([string substringWithRange:[result rangeAtIndex:0]], @"L1");
   XPTestString([string substringWithRange:[result rangeAtIndex:1]], @"L");
+  
+  // MARK: SVR_regexForExpressions - MegaSimple
+  string = @"2+2=";
+  regex = [XPRegularExpression SVR_regexForExpressions];
+  matches = [regex matchesInString:string];
+  XPTestInt([matches count], 1);
+  result = [matches objectAtIndex:0];
+  XPTestString([string substringWithRange:[result rangeAtIndex:0]], @"2+2=");
   
   // MARK: SVR_regexForExpressions
   string = @"abc12.32+333RL()222=OR7r7=OR8l8=AND7*7.3-66+22*(((45-67)=2+2-3*8/7(0.123--30.0)+7=PPPPPPP";

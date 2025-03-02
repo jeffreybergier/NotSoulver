@@ -177,11 +177,9 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
    
    while ((nextExpression = [e nextObject])) {
      expressionRange = [nextExpression XP_rangeValue];
-     matches = [[regex matchesInString:_string] objectEnumerator];
+     matches = [[regex matchesInString:_string options:0 range:expressionRange] objectEnumerator];
      while ((match = [matches nextObject])) {
        range = [match rangeAtIndex:1];
-       // Adjust range to be in space of whole string
-       range.location += expressionRange.location;
        XPLogExtra1(@"<+*> %@", [_string SVR_descriptionHighlightingRange:range]);
        [output addObject:[NSValue XP_valueWithRange:range]];
      }

@@ -86,21 +86,24 @@
   
   matchRange.length = (XPUInteger)slre_match(&_engine,
                                              buffer + matchRange.location,
-                                             (int)range.length - (int)matchRange.location,
+                                             (int)range.length - ((int)matchRange.location - (int)range.location),
                                              caps);
+  XPLogExtra3(@"Found: %d, Scanned:%@, Pattern:%@",
+              (int)matchRange.length,
+              [string SVR_descriptionHighlightingRange:NSMakeRange(matchRange.location, range.length - (matchRange.location - range.location))],
+              _pattern);
   
   while (matchRange.length > 0) {
     ranges = (XPRangePointer)malloc(sizeof(NSRange) * capCount);
-    
     for (capIndex = 0; capIndex < capCount; capIndex++) {
       // This if statement is needed if the capCount value is too large
-      if (caps[capIndex].ptr > buffer + range.location
-          && caps[capIndex].ptr < buffer + range.length - range.location)
+      if (caps[capIndex].ptr >= buffer + range.location
+          && caps[capIndex].ptr + caps[capIndex].len <= buffer + range.location + range.length)
       {
         matchRange.location = (XPUInteger)(caps[capIndex].ptr - buffer);
         matchRange.length = (XPUInteger)caps[capIndex].len;
         ranges[capIndex] = matchRange;
-        XPLogExtra3(@"index:%d, range:%@ match:'%@'", capIndex, NSStringFromRange(matchRange), [string substringWithRange:matchRange]);
+        XPLogExtra2(@"index:%d, match:'%@'", capIndex, [string SVR_descriptionHighlightingRange:matchRange]);
       } else {
         ranges[capIndex] = XPNotFoundRange;
       }
@@ -112,8 +115,12 @@
     matchRange.location = NSMaxRange(matchRange);
     matchRange.length = (XPUInteger)slre_match(&_engine,
                                                buffer + matchRange.location,
-                                               (int)range.length - (int)matchRange.location,
+                                               (int)range.length - ((int)matchRange.location - (int)range.location),
                                                caps);
+    XPLogExtra3(@"Found: %d, Scanned:%@, Pattern:%@",
+                (int)matchRange.length,
+                [string SVR_descriptionHighlightingRange:NSMakeRange(matchRange.location, range.length - (matchRange.location - range.location))],
+                _pattern);
   }
   return output;
 }
