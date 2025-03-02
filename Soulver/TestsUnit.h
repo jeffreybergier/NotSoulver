@@ -28,17 +28,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SLRERegex.h"
 #import "XPCrossPlatform.h"
 #import "XPRegularExpression.h"
 
 void TestsUnitExecute(void);
 
 @interface XPLog (TestsUnit)
-+(void)executeTests;
-@end
-
-@interface SLRERegex (TestsUnit)
 +(void)executeTests;
 @end
 
