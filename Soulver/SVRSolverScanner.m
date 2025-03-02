@@ -232,63 +232,26 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
 
 @end
 
-@implementation SLRERegex (Soulver)
-
-+(id)SVR_regexForNumbersInString:(NSString*)string;
-{
-  return [self regexWithString:string
-                       pattern:@"\\-?\\d+(\\.\\d+)*"
-                          mode:SLRERegexAdvanceAfterMatch];
-}
-+(id)SVR_regexForOperatorsInString:(NSString*)string;
-{
-  // For some reason \d is not working in place of digits
-  return [self regexWithString:string
-                       pattern:@"(L|R|\\+|\\-|\\/|\\*|\\^)[\\-\\(0123456789]"
-                          mode:SLRERegexAdvanceAfterGroup];
-}
-
-+(id)SVR_regexForExpressionsInString:(NSString*)string;
-{
-  // For some reason \d is not working in place of digits
-  return [self regexWithString:string
-                       pattern:@"[0123456789LR\\.\\^\\*\\-\\+\\/\\(\\)]+\\="
-                          mode:SLRERegexAdvanceAfterMatch];
-}
-
-+(id)SVR_regexForBracketsInString:(NSString*)string;
-{
-  return [self regexWithString:string
-                       pattern:@"[\\(\\)]"
-                          mode:SLRERegexAdvanceAfterMatch];
-}
-
-@end
-
 @implementation XPRegularExpression (Soulver)
 
 +(id)SVR_regexForNumbers;
 {
-  // SLRERegexAdvanceAfterMatch
   return [self regularExpressionWithPattern:@"\\-?\\d+(\\.\\d+)*" options:0 error:NULL];
 }
 +(id)SVR_regexForOperators;
 {
-  // SLRERegexAdvanceAfterGroup
   // For some reason \d is not working in place of digits
   return [self regularExpressionWithPattern:@"(L|R|\\+|\\-|\\/|\\*|\\^)[\\-\\(0123456789]" options:0 error:NULL];
 }
 
 +(id)SVR_regexForExpressions;
 {
-  // SLRERegexAdvanceAfterMatch
   // For some reason \d is not working in place of digits
   return [self regularExpressionWithPattern:@"[0123456789LR\\.\\^\\*\\-\\+\\/\\(\\)]+\\=" options:0 error:NULL];
 }
 
 +(id)SVR_regexForBrackets;
 {
-  // SLRERegexAdvanceAfterMatch
   return [self regularExpressionWithPattern:@"[\\(\\)]" options:0 error:NULL];
 }
 

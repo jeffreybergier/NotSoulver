@@ -28,7 +28,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SLRERegex.h"
 #import "XPRegularExpression.h"
 
 @interface SVRSolverScanner: NSObject
@@ -62,15 +61,6 @@
 -(void)__populateNumbers;
 -(void)__populateOperators;
 -(void)__populateBrackets;
-
-@end
-
-@interface SLRERegex (Soulver)
-
-+(id)SVR_regexForNumbersInString:(NSString*)string;
-+(id)SVR_regexForOperatorsInString:(NSString*)string;
-+(id)SVR_regexForExpressionsInString:(NSString*)string;
-+(id)SVR_regexForBracketsInString:(NSString*)string;
 
 @end
 

@@ -4,7 +4,6 @@
     FILESTABLE = {
         CLASSES = (
             "NSUserDefaults+Soulver.m",
-            SLRERegex.m,
             SVRAppDelegate.m,
             SVRAccessoryWindowsOwner.m, 
             SVRDocument.m, 
@@ -25,9 +24,8 @@
         ); 
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
         H_FILES = (
-            "NSUserDefaults+Soulver.h",
             slre.h,
-            SLRERegex.h,
+            "NSUserDefaults+Soulver.h",
             SVRAppDelegate.h,
             SVRDocument.h, 
             SVRAccessoryWindowsOwner.h, 
