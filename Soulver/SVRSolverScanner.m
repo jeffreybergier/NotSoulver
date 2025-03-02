@@ -125,22 +125,22 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
 {
   NSSet *negativeNumberPrefixSet = SVRSolverScannerNegativeNumberPrefixSet;
   NSMutableSet *output = [NSMutableSet new];
-  NSSet *expressions = [self expressionRanges];
-  NSEnumerator *e = [expressions objectEnumerator];
-  NSValue *nextExpression = nil;
-  NSRange expressionRange = XPNotFoundRange;
-  SLRERegex *regex = nil;
-  SLRERegexMatch *match = nil;
+  XPRegularExpression *regex = [XPRegularExpression SVR_regexForNumbers];
+  NSEnumerator *matches = nil;
+  XPTextCheckingResult *match = nil;
+  NSEnumerator *expressions = [[self expressionRanges] objectEnumerator];
+  NSValue *expression = nil;
   NSDecimalNumber *matchedNumber = nil;
   NSRange range = XPNotFoundRange;
   NSAssert(!_numbers, @"This is a lazy init method, it assumes _numbers is NIL");
   
-  while ((nextExpression = [e nextObject])) {
-    expressionRange = [nextExpression XP_rangeValue];
-    regex = [SLRERegex SVR_regexForNumbersInString:[_string substringWithRange:expressionRange]];
-    while ((match = [regex nextObject])) {
+  while ((expression = [expressions nextObject])) {
+    matches = [[regex matchesInString:_string
+                              options:0
+                                range:[expression XP_rangeValue]]
+               objectEnumerator];
+    while ((match = [matches nextObject])) {
       range = [match range];
-      range.location += expressionRange.location; // Adjust range to be in space of whole string
       matchedNumber = [NSDecimalNumber decimalNumberWithString:[_string substringWithRange:range]];
       if ([matchedNumber SVR_isNotANumber]) { XPLogRaise(@"SVRSolverScanner __populateNumbers: Matched NaN"); }
       if (range.location > 0
@@ -174,7 +174,10 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
    NSAssert(!_operators, @"This is a lazy init method, it assumes _operators is NIL");
    
    while ((expression = [expressions nextObject])) {
-     matches = [[regex matchesInString:_string options:0 range:[expression XP_rangeValue]] objectEnumerator];
+     matches = [[regex matchesInString:_string
+                               options:0
+                                 range:[expression XP_rangeValue]]
+                objectEnumerator];
      while ((match = [matches nextObject])) {
        range = [match rangeAtIndex:1];
        XPLogExtra1(@"<+*> %@", [_string SVR_descriptionHighlightingRange:range]);
@@ -196,7 +199,10 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
   NSAssert(!_brackets, @"This is a lazy init method, it assumes _brackets is NIL");
   
   while ((expression = [expressions nextObject])) {
-    matches = [[regex matchesInString:_string options:0 range:[expression XP_rangeValue]] objectEnumerator];
+    matches = [[regex matchesInString:_string
+                              options:0
+                                range:[expression XP_rangeValue]]
+               objectEnumerator];
     while ((match = [matches nextObject])) {
       range = [match range];
       XPLogExtra1(@"<(> %@", [_string SVR_descriptionHighlightingRange:range]);
