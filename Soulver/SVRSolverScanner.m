@@ -168,16 +168,13 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
    XPRegularExpression *regex = [XPRegularExpression SVR_regexForOperators];
    NSEnumerator *matches = nil;
    XPTextCheckingResult *match = nil;
-   NSSet *expressions = [self expressionRanges];
-   NSEnumerator *e = [expressions objectEnumerator];
-   NSValue *nextExpression = nil;
-   NSRange expressionRange = XPNotFoundRange;
+   NSEnumerator *expressions = [[self expressionRanges] objectEnumerator];
+   NSValue *expression = nil;
    NSRange range = XPNotFoundRange;
    NSAssert(!_operators, @"This is a lazy init method, it assumes _operators is NIL");
    
-   while ((nextExpression = [e nextObject])) {
-     expressionRange = [nextExpression XP_rangeValue];
-     matches = [[regex matchesInString:_string options:0 range:expressionRange] objectEnumerator];
+   while ((expression = [expressions nextObject])) {
+     matches = [[regex matchesInString:_string options:0 range:[expression XP_rangeValue]] objectEnumerator];
      while ((match = [matches nextObject])) {
        range = [match rangeAtIndex:1];
        XPLogExtra1(@"<+*> %@", [_string SVR_descriptionHighlightingRange:range]);
@@ -190,22 +187,18 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
 -(void)__populateBrackets;
 {
   NSMutableSet *output = [NSMutableSet new];
-  NSSet *expressions = [self expressionRanges];
-  NSEnumerator *e = [expressions objectEnumerator];
-  NSValue *nextExpression = nil;
-  NSRange expressionRange = XPNotFoundRange;
-  SLRERegex *regex = nil;
-  SLRERegexMatch *match = nil;
+  XPRegularExpression *regex = [XPRegularExpression SVR_regexForBrackets];
+  NSEnumerator *matches = nil;
+  XPTextCheckingResult *match = nil;
+  NSEnumerator *expressions = [[self expressionRanges] objectEnumerator];
+  NSValue *expression = nil;
   NSRange range = XPNotFoundRange;
   NSAssert(!_brackets, @"This is a lazy init method, it assumes _brackets is NIL");
   
-  while ((nextExpression = [e nextObject])) {
-    expressionRange = [nextExpression XP_rangeValue];
-    regex = [SLRERegex SVR_regexForBracketsInString:[_string substringWithRange:expressionRange]];
-    while ((match = [regex nextObject])) {
+  while ((expression = [expressions nextObject])) {
+    matches = [[regex matchesInString:_string options:0 range:[expression XP_rangeValue]] objectEnumerator];
+    while ((match = [matches nextObject])) {
       range = [match range];
-      // Adjust range to be in space of whole string
-      range.location += expressionRange.location;
       XPLogExtra1(@"<(> %@", [_string SVR_descriptionHighlightingRange:range]);
       [output addObject:[NSValue XP_valueWithRange:range]];
     }
