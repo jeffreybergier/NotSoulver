@@ -82,6 +82,6 @@
 +(XPTextCheckingResult*)regularExpressionCheckingResultWithRanges:(XPRangePointer)ranges
                                                             count:(XPUInteger)count
                                                 regularExpression:(XPRegularExpression*)regularExpression;
--(NSString*)debugDescription;
+-(NSString*)description;
 
 @end

@@ -127,6 +127,7 @@
 
 - (void)dealloc
 {
+  XPLogExtra1(@"DEALLOC: %@", self);
   [_pattern release];
   _pattern = nil;
   [super dealloc];
@@ -196,13 +197,14 @@
                                      regularExpression:regularExpression] autorelease];
 }
 
--(NSString*)debugDescription;
+-(NSString*)description;
 {
-  return [_ranges debugDescription];
+  return [[super description] stringByAppendingString:[_ranges description]];
 }
 
 -(void)dealloc
 {
+  XPLogExtra1(@"DEALLOC: %@", self);
   [_expression release];
   [_ranges release];
   _expression = nil;

@@ -38,27 +38,20 @@ int main(int argc, const char *argv[]) {
 #pragma clang diagnostic pop
   
   // MARK: Boot Sequence
-  // And document support CFLAGS
-  
-  // 1. Create temporary autorelease pool before NSApplication loads
-  NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
+  // 1. Warn when build includes features that should not be in release build
+#if TESTING==1
+  int WARN_TESTING_ENABLED = TESTING;
+#endif
+#if DEBUGLEVEL >= LOGLEVELDEBUG
+  int WARN_HEAVY_LOGGING_ENABLED = LOGLEVEL;
+#endif
   
   // 2. Log the environment
   [XPLog logCheckedPoundDefines];
   
-  // 3. Execute Unit Tests if Needed
-#if TESTING == 1
-  [[NSUserDefaults standardUserDefaults] SVR_configure];
-  XPLogAlwys(@"<Main> Unit Tests: STARTING");
+  // 3. Execute Unit Tests
   TestsUnitExecute();
   TestsIntegrationExecute();
-  XPLogAlwys(@"<Main> Unit Tests: PASSED");
-#else
-  XPLogAlwys(@"<Main> Unit Tests: SKIPPED");
-#endif
-  
-  // 3. Release pool
-  [pool release];
   
   // 4. Load NSApplication
 #ifdef MAC_OS_X_VERSION_10_4

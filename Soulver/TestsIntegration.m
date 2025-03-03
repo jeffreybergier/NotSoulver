@@ -28,11 +28,17 @@
 //
 
 #import "TestsIntegration.h"
+#if TESTING==1
+#import "NSUserDefaults+Soulver.h"
+#endif
 
 void TestsIntegrationExecute(void)
 {
 #if TESTING==1
+  NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
+  [[NSUserDefaults standardUserDefaults] SVR_configure];
   [SVRSolver executeTests];
+  [pool release];
 #endif
 }
 
