@@ -37,18 +37,26 @@ void TestsIntegrationExecute(void)
 #if TESTING==1
   NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
   [[NSUserDefaults standardUserDefaults] SVR_configure];
-  [SVRSolver executeTests];
+  [SVRDocument executeTests];
   [pool release];
 #endif
 }
 
 #if TESTING==1
 
-@implementation SVRSolver (TestsIntegration)
+@implementation SVRDocument (TestsIntegration)
 
 +(void)executeTests;
 {
-  NSLog(@"+[SVRSolver executeTests] Unimplemented. Implement check to read file and check known good Attributed String output");
+  NSString *filePath = [[NSBundle mainBundle] pathForResource:@"TestsIntegration-01" ofType:@"solv"];
+  SVRDocument *controller = [SVRDocument documentWithContentsOfFile:filePath];
+  
+  NSLog(@"%@ Unit Tests: STARTING", self);
+  
+  XPTestNotNIL(filePath);
+  XPTestNotNIL(controller);
+  
+  NSLog(@"%@ Unit Tests: PASSED", self);
 }
 
 @end

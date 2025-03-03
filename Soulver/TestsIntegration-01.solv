@@ -1,0 +1,49 @@
+
+//*
+This is a file that is used for integration testing
+Modifying this file will cause the tests to fail unless
+the tests are updated as well.
+*/
+
+8^0= // 1
+8^1= // 8
+8^2= // 64
+8^3= // 512
+-8^2= // 64, positive answer when base is negative and power is even
+-8^3= // -512, negative answer when base is negative and power is odd
+8^-3= // 0.0019
+8^-2= // 0.0156s
+
+Added rooting by artibrary base
+2R64= // 8, Square root of 64
+3R64= // 4, Cube root of 64
+4R64= // 2.828
+5R64= // 2.973
+6R64= // 2
+
+Added Logarithms with arbitrary base
+10L1000= // 3, log10(1000)
+9L1000= // 3.1438 
+8L1000= // 3.3219
+7L1000= // 3.5498
+2L1000= // 9.9657, log2(1000)
+
+Added root errors
+0R64= Index Zero Error
+2R-64= Imaginary when base is negative and power is even
+3R-64= -4, not an error
+64^(1/2)=
+-64^(1/2)=
+-64^(1/3)= // -4, not an error
+
+
+Added logarithm errors
+10L-1000= Log argument less than 0
+-2L1000= Log base negative
+0L1000= Log base 0
+1L1000=Log base is 1
+0.5L1000= // -9.9657, not an error
+
+
+
+

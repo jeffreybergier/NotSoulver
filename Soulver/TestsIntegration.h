@@ -31,9 +31,9 @@ void TestsIntegrationExecute(void);
 
 #if TESTING==1
 
-#import "SVRSolver.h"
+#import "SVRDocument.h"
 
-@interface SVRSolver (TestsIntegration)
+@interface SVRDocument (TestsIntegration)
 +(void)executeTests;
 @end
 

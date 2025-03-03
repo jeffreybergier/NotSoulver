@@ -421,5 +421,6 @@ NSArray* XPRunOpenPanel(void);
 #define XPTestInt(_lhs, _rhs)    NSAssert5(_lhs == _rhs, @"[FAIL] '%d'!='%d' {%@:%d} %@", (int)_lhs, (int)_rhs, XPTestFile, __LINE__, XPTestFunc)
 #define XPTestFloat(_lhs, _rhs)  NSAssert5(_lhs == _rhs, @"[FAIL] '%g'!='%g' {%@:%d} %@", _lhs, _rhs, XPTestFile, __LINE__, XPTestFunc)
 #define XPTestObject(_lhs, _rhs) NSAssert5([_lhs isEqual:_rhs], @"[FAIL] '%@'!='%@' {%@:%d} %@", _lhs, _rhs, XPTestFile, __LINE__, XPTestFunc)
+#define XPTestNotNIL(_lhs)       NSAssert3(_lhs, @"[FAIL] Object was NIL {%@:%d} %@", XPTestFile, __LINE__, XPTestFunc)
 #define XPTestString(_lhs, _rhs) NSAssert5([_lhs isEqualToString:_rhs], @"[FAIL] '%@'!='%@' {%@:%d} %@", _lhs, _rhs, XPTestFile, __LINE__, XPTestFunc)
 #define XPTestRange(_lhs, _loc, _len) NSAssert5(NSEqualRanges(_lhs, NSMakeRange(_loc, _len)), @"[FAIL] %@!=%@ {%@:%d} %@", NSStringFromRange(_lhs), NSStringFromRange(NSMakeRange(_loc, _len)), XPTestFile, __LINE__, XPTestFunc)
