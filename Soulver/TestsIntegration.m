@@ -31,8 +31,12 @@
 
 void TestsIntegrationExecute(void)
 {
+#if TESTING==1
   [SVRSolver executeTests];
+#endif
 }
+
+#if TESTING==1
 
 @implementation SVRSolver (TestsIntegration)
 
@@ -42,3 +46,5 @@ void TestsIntegrationExecute(void)
 }
 
 @end
+
+#endif

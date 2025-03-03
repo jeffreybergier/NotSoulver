@@ -27,11 +27,14 @@
 // AT https://soulver.app INSTEAD OF USING THIS SOFTWARE.
 //
 
-#import <Foundation/Foundation.h>
-#import "SVRSolver.h"
-
 void TestsIntegrationExecute(void);
+
+#if TESTING==1
+
+#import "SVRSolver.h"
 
 @interface SVRSolver (TestsIntegration)
 +(void)executeTests;
 @end
+
+#endif

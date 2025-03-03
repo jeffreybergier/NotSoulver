@@ -27,11 +27,13 @@
 // AT https://soulver.app INSTEAD OF USING THIS SOFTWARE.
 //
 
-#import <Foundation/Foundation.h>
+void TestsUnitExecute(void);
+
+#if TESTING==1
+
 #import "XPCrossPlatform.h"
 #import "XPRegularExpression.h"
-
-void TestsUnitExecute(void);
+#import "SVRSolverScanner.h"
 
 @interface XPLog (TestsUnit)
 +(void)executeTests;
@@ -40,5 +42,11 @@ void TestsUnitExecute(void);
 @interface XPRegularExpression (TestsUnit)
 +(void)executeTests;
 @end
+
+@interface SVRSolverScanner (TestsUnit)
++(void)executeTests;
+@end
+
+#endif
 
 

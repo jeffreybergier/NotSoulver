@@ -28,14 +28,16 @@
 //
 
 #import "TestsUnit.h"
-#import "SVRSolverScanner.h"
 
 void TestsUnitExecute(void)
 {
+#if TESTING==1
   [XPLog executeTests];
   [XPRegularExpression executeTests];
+#endif
 }
 
+#if TESTING
 @implementation XPLog (TestsUnit)
 
 +(void)executeTests;
@@ -336,3 +338,4 @@ void TestsUnitExecute(void)
 
 @end
 
+#endif
