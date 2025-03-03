@@ -344,13 +344,13 @@ void TestsUnitExecute(void)
 +(void)executeTests;
 {
   NSString *string = @"/*This is a basic formula */\n"
-                     @"1.1+2.2-3.3*4.4/5.5^2=\n"
+                     @"(1.1+2.2))-3.3*4.4/5.5^2=\n"
                      @"/* This is all negative numbers */\n"
-                     @"-1.1+-2.2--3.3*-4.4/-5.5^-2=\n"
+                     @"-1.1+-2.2-(-3.3*-4.4)/-5.5^-2=\n"
                      @"10l1000=\n" // purposefully wrong operators
                      @"2r64=\n"    // purposefully wrong operators
                      @"10L1000=\n"
-                     @"2R64=\n";
+                     @"(2R64)=\n";
   SVRSolverScanner *scanner = [SVRSolverScanner scannerWithString:string];
   NSArray *ranges = nil;
   
@@ -397,7 +397,32 @@ void TestsUnitExecute(void)
   XPTestString([string substringWithRange:[[ranges objectAtIndex:15] XP_rangeValue]], @"-"); // ?
   XPTestString([string substringWithRange:[[ranges objectAtIndex:16] XP_rangeValue]], @"L");
   XPTestString([string substringWithRange:[[ranges objectAtIndex:17] XP_rangeValue]], @"R");
-
+  
+  ranges = [[[scanner bracketRanges] allObjects] sortedArrayUsingSelector:@selector(TEST_compare:)];
+  XPTestInt([ranges count], 7);
+  XPTestRange([[ranges objectAtIndex:0] XP_rangeValue], 29,  1);
+  XPTestRange([[ranges objectAtIndex:1] XP_rangeValue], 37,  1);
+  XPTestRange([[ranges objectAtIndex:2] XP_rangeValue], 38,  1);
+  XPTestRange([[ranges objectAtIndex:3] XP_rangeValue], 100, 1);
+  XPTestRange([[ranges objectAtIndex:4] XP_rangeValue], 110, 1);
+  XPTestRange([[ranges objectAtIndex:5] XP_rangeValue], 145, 1);
+  XPTestRange([[ranges objectAtIndex:6] XP_rangeValue], 150, 1);
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:0] XP_rangeValue]], @"(");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:1] XP_rangeValue]], @")");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:2] XP_rangeValue]], @")");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:3] XP_rangeValue]], @"(");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:4] XP_rangeValue]], @")");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:5] XP_rangeValue]], @"(");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:6] XP_rangeValue]], @")");
+  
+  ranges = [[[scanner expressionRanges] allObjects] sortedArrayUsingSelector:@selector(TEST_compare:)];
+  XPTestInt([ranges count], 6);
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:0] XP_rangeValue]], @"(1.1+2.2))-3.3*4.4/5.5^2");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:1] XP_rangeValue]], @"-1.1+-2.2-(-3.3*-4.4)/-5.5^-2");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:2] XP_rangeValue]], @"1000");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:3] XP_rangeValue]], @"64");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:4] XP_rangeValue]], @"10L1000");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:5] XP_rangeValue]], @"(2R64)");
   
   NSLog(@"%@ Unit Tests: PASSED", self);
 }
