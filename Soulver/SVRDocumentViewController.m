@@ -292,9 +292,8 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
                     nil]
              owner:nil];
   
-  // Attributes dictionary might be needed in OSX
-  // [NSDictionary dictionaryWithObject:NSRTFTextDocumentType forKey:NSDocumentTypeDocumentAttribute];
-  successRTF = [pb setData:[unsolvedString RTFFromRange:range documentAttributes:nil]
+  successRTF = [pb setData:[unsolvedString RTFFromRange:range
+                                     documentAttributes:XPRTFDocumentAttributes]
                    forType:XPPasteboardTypeRTF];
   successPlain = [pb setString:[unsolvedString string] forType:XPPasteboardTypeString];
   
@@ -318,9 +317,8 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
                     nil]
              owner:nil];
   
-  // Attributes dictionary might be needed in OSX
-  // [NSDictionary dictionaryWithObject:NSRTFTextDocumentType forKey:NSDocumentTypeDocumentAttribute];
-  successRTF = [pb setData:[solvedString RTFFromRange:range documentAttributes:nil]
+  successRTF = [pb setData:[solvedString RTFFromRange:range
+                                   documentAttributes:XPRTFDocumentAttributes]
                    forType:XPPasteboardTypeRTF];
   successPlain    = [pb setString:[solvedString string] forType:XPPasteboardTypeString];
   successUnsolved = [pb setString:unsolvedString forType:specialType];

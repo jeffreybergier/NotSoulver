@@ -42,7 +42,7 @@ int main(int argc, const char *argv[]) {
 #if TESTING==1
   int WARN_TESTING_ENABLED = TESTING;
 #endif
-#if DEBUGLEVEL >= LOGLEVELDEBUG
+#if LOGLEVEL >= LOGLEVELDEBUG
   int WARN_HEAVY_LOGGING_ENABLED = LOGLEVEL;
 #endif
   

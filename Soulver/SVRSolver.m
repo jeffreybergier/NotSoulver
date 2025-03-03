@@ -36,6 +36,12 @@
 #import "SVRSolverExpressionTagger.h"
 #import "SVRSolverTextAttachment.h"
 
+#ifndef MAC_OS_X_VERSION_10_0
+// Silences warning for these functions on OpenStep
+extern int isnan(double x);
+extern int isinf(double x);
+#endif
+
 NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
 
 // MARK: SVRSolver
