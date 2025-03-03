@@ -47,6 +47,10 @@ void TestsUnitExecute(void);
 +(void)executeTests;
 @end
 
+@interface NSValue (TestUnitComparison)
+-(NSComparisonResult)TEST_compare:(NSValue*)other;
+@end
+
 #endif
 
 

@@ -34,6 +34,7 @@ void TestsUnitExecute(void)
 #if TESTING==1
   [XPLog executeTests];
   [XPRegularExpression executeTests];
+  [SVRSolverScanner executeTests];
 #endif
 }
 
@@ -336,6 +337,93 @@ void TestsUnitExecute(void)
   NSLog(@"%@ Unit Tests: PASSED", self);
 }
 
+@end
+
+@implementation SVRSolverScanner (TestsUnit)
+
++(void)executeTests;
+{
+  NSString *string = @"/*This is a basic formula */\n"
+                     @"1.1+2.2-3.3*4.4/5.5^2=\n"
+                     @"/* This is all negative numbers */\n"
+                     @"-1.1+-2.2--3.3*-4.4/-5.5^-2=\n"
+                     @"10l1000=\n" // purposefully wrong operators
+                     @"2r64=\n"    // purposefully wrong operators
+                     @"10L1000=\n"
+                     @"2R64=\n";
+  SVRSolverScanner *scanner = [SVRSolverScanner scannerWithString:string];
+  NSArray *ranges = nil;
+  
+  NSLog(@"%@ Unit Tests: STARTING", self);
+  
+  ranges = [[[scanner numberRanges] allObjects] sortedArrayUsingSelector:@selector(TEST_compare:)];
+  XPTestInt([ranges count], 18);
+  XPTestString([string substringWithRange:[[ranges objectAtIndex: 0] XP_rangeValue]], @"1.1");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex: 1] XP_rangeValue]], @"2.2");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex: 2] XP_rangeValue]], @"3.3");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex: 3] XP_rangeValue]], @"4.4");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex: 4] XP_rangeValue]], @"5.5");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex: 5] XP_rangeValue]], @"2");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex: 6] XP_rangeValue]], @"-1.1");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex: 7] XP_rangeValue]], @"-2.2");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex: 8] XP_rangeValue]], @"-3.3");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex: 9] XP_rangeValue]], @"-4.4");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:10] XP_rangeValue]], @"-5.5");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:11] XP_rangeValue]], @"-2");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:12] XP_rangeValue]], @"1000");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:13] XP_rangeValue]], @"64");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:14] XP_rangeValue]], @"10");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:15] XP_rangeValue]], @"1000");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:16] XP_rangeValue]], @"2");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:17] XP_rangeValue]], @"64");
+
+  ranges = [[[scanner operatorRanges] allObjects] sortedArrayUsingSelector:@selector(TEST_compare:)];
+  XPTestInt([ranges count], 18);
+  XPTestString([string substringWithRange:[[ranges objectAtIndex: 0] XP_rangeValue]], @"+");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex: 1] XP_rangeValue]], @"-");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex: 2] XP_rangeValue]], @"*");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex: 3] XP_rangeValue]], @"/");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex: 4] XP_rangeValue]], @"^");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex: 5] XP_rangeValue]], @"-"); // TODO: These ranges mistakenly catch - symbols for negative numbers
+  XPTestString([string substringWithRange:[[ranges objectAtIndex: 6] XP_rangeValue]], @"+"); // ?
+  XPTestString([string substringWithRange:[[ranges objectAtIndex: 7] XP_rangeValue]], @"-"); // ?
+  XPTestString([string substringWithRange:[[ranges objectAtIndex: 8] XP_rangeValue]], @"-");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex: 9] XP_rangeValue]], @"-"); // ?
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:10] XP_rangeValue]], @"*");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:11] XP_rangeValue]], @"-"); // ?
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:12] XP_rangeValue]], @"/");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:13] XP_rangeValue]], @"-"); // ?
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:14] XP_rangeValue]], @"^");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:15] XP_rangeValue]], @"-"); // ?
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:16] XP_rangeValue]], @"L");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:17] XP_rangeValue]], @"R");
+
+  
+  NSLog(@"%@ Unit Tests: PASSED", self);
+}
+
+@end
+
+@implementation NSValue (TestUnitComparison)
+-(NSComparisonResult)TEST_compare:(NSValue*)other;
+{
+  NSRange lhs = [self  XP_rangeValue];
+  NSRange rhs = [other XP_rangeValue];
+  if (lhs.location < rhs.location) {
+    return NSOrderedAscending;
+  } else if (lhs.location > rhs.location) {
+    return NSOrderedDescending;
+  } else {
+    // If locations are the same, compare lengths
+    if (lhs.length < rhs.length) {
+      return NSOrderedAscending;
+    } else if (lhs.length > rhs.length) {
+      return NSOrderedDescending;
+    } else {
+      return NSOrderedSame;
+    }
+  }
+}
 @end
 
 #endif
