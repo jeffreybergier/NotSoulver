@@ -37,26 +37,59 @@ void TestsIntegrationExecute(void)
 #if TESTING==1
   NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
   [[NSUserDefaults standardUserDefaults] SVR_configure];
-  [SVRDocument executeTests];
+  [SVRDocumentModelController executeTests];
   [pool release];
 #endif
 }
 
 #if TESTING==1
 
-@implementation SVRDocument (TestsIntegration)
+@implementation SVRDocumentModelController (TestsIntegration)
 
 +(void)executeTests;
 {
-  NSString *filePath = [[NSBundle mainBundle] pathForResource:@"TestsIntegration-01" ofType:@"solv"];
-  SVRDocument *controller = [SVRDocument documentWithContentsOfFile:filePath];
+  /**
+   TODO: Strategy - There are 4 representations of any given file that
+   are managed by SVRDocumentModelController. The testing strategy to is to bundle 4 files
+   and then compare the code paths to the bundled version.
+   
+   1) Disk: The "data" version that is saved on disk - [controller dataRepresentationOfType:@"solv"]
+      - This should match the exact version of the data on disk
+   2) Display: The "real" version that is shown in the TextView - this version is [controller model]
+      - This version has all attributes and all the answers embedded as text attachments
+   3) Unsolved: The unsolved version [ViewController copyUnsolved] (needs to be moved to the model controller)
+      - This version has all the attributes but it has equals signs rather than answers embedded as text attachments
+   4) Solved: The solved version [ViewController copySolved] (this needs to be moved to the model controller)
+      - This version has all the attributes but it has equal signs and solutions embedded in the text
+   
+   ToDo List
+   1) Fix NSUserDefaults so that during testing it always uses default settings
+   2) Move the copyUnsolved and copySolved to the model controller
+   3) Make the 4 versions of the file and bundle them
+   4) Do the comparisons in the method below
+   */
+
   
-  NSLog(@"%@ Unit Tests: STARTING", self);
+  SVRDocumentModelController *controller = [[[SVRDocumentModelController alloc] init] autorelease];
+  NSData *diskData     = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestsIntegration-Disk" ofType:@"solv"]];
+  NSData *displayData  = nil;
+  NSData *unsolvedData = nil;
+  NSData *solvedData   = nil;
+    
+  NSLog(@"%@ Integration Tests: STARTING", self);
   
-  XPTestNotNIL(filePath);
+  // MARK: Initialization
   XPTestNotNIL(controller);
+  XPTestNotNIL(diskData);
+  // XPTestNotNIL(displayData);
+  // XPTestNotNIL(unsolvedData);
+  // XPTestNotNIL(solvedData);
+  [controller loadDataRepresentation:diskData ofType:@"solv"];
   
-  NSLog(@"%@ Unit Tests: PASSED", self);
+  // MARK: Compare Representations
+  XPTestObject(diskData, [controller dataRepresentationOfType:@"solv"]);
+  
+  NSLog(@"%@ Integration Tests: PASSED", self);
 }
 
 @end

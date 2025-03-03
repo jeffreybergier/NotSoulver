@@ -47,7 +47,7 @@
         IMAGES = ("about-image-512.tiff"); 
         INTERFACES = (NEXTSTEP_AccessoryWindows.nib, NEXTSTEP_Soulver.nib, NEXTSTEP_SVRDocument.nib); 
         OTHER_LINKED = (slre.c, Soulver_main.m); 
-        OTHER_RESOURCES = (Localizable.strings, "TestsIntegration-01.solv"); 
+        OTHER_RESOURCES = (Localizable.strings, "TestsIntegration-Disk.solv"); 
         OTHER_SOURCES = (
             Makefile.preamble, 
             Makefile, 
