@@ -89,6 +89,10 @@ typedef enum {
 #endif
 
 @interface NSUserDefaults (Soulver)
+
+// MARK: Get Right Instance
++(NSUserDefaults*)SVR_userDefaults;
+
 // MARK: Basics
 -(NSString*)SVR_savePanelLastDirectory;
 -(BOOL)SVR_setSavePanelLastDirectory:(NSString*)newValue;

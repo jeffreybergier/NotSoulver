@@ -69,6 +69,21 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 
 @implementation NSUserDefaults (Soulver)
 
+// MARK: Get Right Instance
++(NSUserDefaults*)SVR_userDefaults;
+{
+  if ([[NSApplication sharedApplication] delegate]) {
+    return [NSUserDefaults standardUserDefaults];
+  } else {
+#if TESTING == 1
+    // TODO: This approach won't work because this method is not available in OpenStep
+    return [[[NSUserDefaults alloc] initWithSuiteName:@"SoulverTesting"] autorelease];
+#else
+    XPLogRaise(@"NSApplication was NIL when NSUserDefaults were accessed");
+#endif
+  }
+}
+
 // MARK: Basics
 
 -(NSString*)SVR_savePanelLastDirectory;
