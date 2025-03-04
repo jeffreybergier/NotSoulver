@@ -66,32 +66,8 @@ NSString *SVRThemeMathFont                        = @"kSVRThemeMathFontKey";
 NSString *SVRThemeErrorFont                       = @"kSVRThemeErrorFontKey";
 
 NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyleKey";
-NSUserDefaults *SVRTestingUserDefaults = nil;
 
 @implementation NSUserDefaults (Soulver)
-
-// MARK: Get Right Instance
-+(NSUserDefaults*)SVR_userDefaults;
-{
-#if TESTING == 1
-  // If NSApplication has been configured, then behave as normal
-  // otherwise, we are in a unit testing environment.
-  return ([[NSApplication sharedApplication] delegate])
-        ? [NSUserDefaults standardUserDefaults]
-        : [NSUserDefaults __SVR_testingUserDefaults];
-#else
-  return [NSUserDefaults standardUserDefaults];
-#endif
-}
-
-+(NSUserDefaults*)__SVR_testingUserDefaults;
-{
-  if (SVRTestingUserDefaults == nil) {
-    SVRTestingUserDefaults = [[NSUserDefaults alloc] init];
-    [SVRTestingUserDefaults SVR_configure];
-  }
-  return SVRTestingUserDefaults;
-}
 
 // MARK: Basics
 
