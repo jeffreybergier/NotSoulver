@@ -40,6 +40,12 @@ typedef enum {
   SVRSolverTextAttachmentBorderStyleNone
 } SVRSolverTextAttachmentBorderStyle;
 
+extern NSString *const SVRSolverTextAttachmentStyleToDrawFont;
+extern NSString *const SVRSolverTextAttachmentStyleToDrawColor;
+extern NSString *const SVRSolverTextAttachmentStyleNeighborFont;
+extern NSString *const SVRSolverTextAttachmentStyleBorder;
+extern NSString *const SVRSolverTextAttachmentStyleUserInterface;
+
 @protocol SVRSolverTextAttachment <NSObject>
 
 -(NSString*)toDrawString;
@@ -47,6 +53,7 @@ typedef enum {
 -(NSColor*)toDrawColor;
 -(NSFont*)neighorFont;
 -(SVRSolverTextAttachmentBorderStyle)borderStyle;
+-(XPUserInterfaceStyle)userInterfaceStyle;
 
 @end
 
@@ -57,6 +64,7 @@ typedef enum {
   mm_retain NSColor   *_toDrawColor;
   mm_retain NSFont    *_neighorFont;
   SVRSolverTextAttachmentBorderStyle _borderStyle;
+  XPUserInterfaceStyle _userInterfaceStyle;
 }
 
 -(NSString*)toDrawString;
@@ -64,36 +72,27 @@ typedef enum {
 -(NSColor*)toDrawColor;
 -(NSFont*)neighorFont;
 -(SVRSolverTextAttachmentBorderStyle)borderStyle;
+-(XPUserInterfaceStyle)userInterfaceStyle;
+
+-(id)initWithString:(NSString*)stringToDraw styles:(NSDictionary*)styles;
 
 @end
 
-@interface SVRSolverSolutionTextAttachment: SVRSolverTextAttachmentImp <SVRSolverTextAttachment>
+@interface SVRSolverSolutionTextAttachment: SVRSolverTextAttachmentImp
 
 // MARK: Init
--(id)initWithSolution:(NSDecimalNumber*)solution;
-+(id)attachmentWithSolution:(NSDecimalNumber*)solution;
-
-// MARK: Business Logic
-+(NSString*)toDrawStringWithSolution:(NSDecimalNumber*)solution;
-+(NSFont*)toDrawFont;
-+(NSColor*)toDrawColor;
-+(NSFont*)neighborFont;
-+(SVRSolverTextAttachmentBorderStyle)borderStyle;
+-(id)initWithSolution:(NSDecimalNumber*)solution styles:(NSDictionary*)styles;
++(id)attachmentWithSolution:(NSDecimalNumber*)solution styles:(NSDictionary*)styles;
 
 @end
 
-@interface SVRSolverErrorTextAttachment: SVRSolverTextAttachmentImp <SVRSolverTextAttachment>
+@interface SVRSolverErrorTextAttachment: SVRSolverTextAttachmentImp
 
 // MARK: Init
--(id)initWithError:(SVRCalculationError)error;
-+(id)attachmentWithError:(SVRCalculationError)error;
-
-// MARK: Business Logic
-+(NSString*)toDrawStringWithError:(SVRCalculationError)error;
-+(NSFont*)toDrawFont;
-+(NSColor*)toDrawColor;
-+(NSFont*)neighborFont;
-+(SVRSolverTextAttachmentBorderStyle)borderStyle;
+-(id)initWithError:(SVRCalculationError)error
+            styles:(NSDictionary*)styles;
++(id)attachmentWithError:(SVRCalculationError)error
+                  styles:(NSDictionary*)styles;
 
 @end
 
@@ -101,17 +100,11 @@ typedef enum {
 
 // MARK: Init
 -(id)initWithPreviousSolution:(NSDecimalNumber*)previousSolution
-                     operator:(SVRSolverOperator)operator;
+                     operator:(SVRSolverOperator)operator
+                       styles:(NSDictionary*)styles;
 +(id)attachmentWithPreviousSolution:(NSDecimalNumber*)previousSolution
-                           operator:(SVRSolverOperator)operator;
-
-// MARK: Business Logic
-+(NSString*)toDrawStringWithPreviousSolution:(NSDecimalNumber*)previousSolution
-                                    operator:(SVRSolverOperator)operator;
-+(NSFont*)toDrawFont;
-+(NSColor*)toDrawColor;
-+(NSFont*)neighborFont;
-+(SVRSolverTextAttachmentBorderStyle)borderStyle;
+                           operator:(SVRSolverOperator)operator
+                             styles:(NSDictionary*)styles;
 
 @end
 

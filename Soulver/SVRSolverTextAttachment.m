@@ -30,6 +30,12 @@
 #import "SVRSolverTextAttachment.h"
 #import "NSUserDefaults+Soulver.h"
 
+NSString *const SVRSolverTextAttachmentStyleToDrawFont    = @"SVRSolverTextAttachmentStyleToDrawFont";
+NSString *const SVRSolverTextAttachmentStyleToDrawColor   = @"SVRSolverTextAttachmentStyleToDrawColor";
+NSString *const SVRSolverTextAttachmentStyleNeighborFont  = @"SVRSolverTextAttachmentStyleNeighborFont";
+NSString *const SVRSolverTextAttachmentStyleBorder        = @"SVRSolverTextAttachmentStyleBorder";
+NSString *const SVRSolverTextAttachmentStyleUserInterface = @"SVRSolverTextAttachmentStyleUserInterface";
+
 @implementation SVRSolverTextAttachmentImp
 
 -(NSString*)toDrawString;
@@ -57,14 +63,33 @@
   return _borderStyle;
 }
 
-// MARK: Init
--(id)init;
+-(XPUserInterfaceStyle)userInterfaceStyle;
 {
-  self = [super init];
-  _toDrawString = nil;
-  _toDrawFont   = nil;
-  _toDrawColor  = nil;
-  _neighorFont  = nil;
+  return _userInterfaceStyle;
+}
+
+-(id)initWithString:(NSString*)stringToDraw styles:(NSDictionary*)styles;
+{
+  NSNumber *borderStyleNumber        = [styles objectForKey:SVRSolverTextAttachmentStyleBorder];
+  NSNumber *userInterfaceStyleNumber = [styles objectForKey:SVRSolverTextAttachmentStyleUserInterface];
+  NSFileWrapper *wrapper = [[[NSFileWrapper alloc] init] autorelease];
+  self = [super initWithFileWrapper:wrapper];
+  _toDrawString = [stringToDraw retain];
+  _toDrawFont   = [[styles objectForKey:SVRSolverTextAttachmentStyleToDrawFont] retain];
+  _toDrawColor  = [[styles objectForKey:SVRSolverTextAttachmentStyleToDrawColor] retain];
+  _neighorFont  = [[styles objectForKey:SVRSolverTextAttachmentStyleNeighborFont] retain];
+  _borderStyle  = (SVRSolverTextAttachmentBorderStyle)[borderStyleNumber intValue];
+  _userInterfaceStyle = (XPUserInterfaceStyle)[userInterfaceStyleNumber intValue];
+  [wrapper setPreferredFilename:_toDrawString];
+  [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
+  
+  NSParameterAssert(_toDrawString);
+  NSParameterAssert(_toDrawFont);
+  NSParameterAssert(_toDrawColor);
+  NSParameterAssert(_neighorFont);
+  NSParameterAssert(borderStyleNumber);
+  NSParameterAssert(userInterfaceStyleNumber);
+  
   return self;
 }
 
@@ -90,42 +115,19 @@
 
 // MARK: Init
 
--(id)initWithSolution:(NSDecimalNumber*)solution;
+-(id)initWithSolution:(NSDecimalNumber*)solution styles:(NSDictionary*)styles;
 {
-  NSFileWrapper *wrapper = [[[NSFileWrapper alloc] init] autorelease];
-  self = [super initWithFileWrapper:wrapper];
-  _toDrawString = [[[self class] toDrawStringWithSolution:solution] retain];
-  _toDrawFont   = [[[self class] toDrawFont]   retain];
-  _toDrawColor  = [[[self class] toDrawColor]  retain];
-  _neighorFont  = [[[self class] neighborFont] retain];
-  _borderStyle  = [ [self class] borderStyle];
-  [wrapper setPreferredFilename:_toDrawString];
-  [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
+  self = [super initWithString:[@"=" stringByAppendingString:[solution description]]
+                        styles:styles];
   return self;
 }
 
-+(id)attachmentWithSolution:(NSDecimalNumber*)solution;
++(id)attachmentWithSolution:(NSDecimalNumber*)solution styles:(NSDictionary*)styles;
 {
-  return [[[SVRSolverSolutionTextAttachment alloc] initWithSolution:solution] autorelease];
+  return [[[SVRSolverSolutionTextAttachment alloc] initWithSolution:solution
+                                                             styles:styles] autorelease];
 }
-
-// MARK: Business Logic
-+(NSString*)toDrawStringWithSolution:(NSDecimalNumber*)solution;
-{
-  return [@"=" stringByAppendingString:[solution description]];
-}
-+(NSFont*)toDrawFont;
-{
-  return [[NSUserDefaults standardUserDefaults] SVR_fontForTheme:SVRThemeFontMath];
-}
-+(NSColor*)toDrawColor;
-{
-  return [[NSUserDefaults standardUserDefaults] SVR_colorForTheme:SVRThemeColorSolution];
-}
-+(NSFont*)neighborFont;
-{
-  return [[NSUserDefaults standardUserDefaults] SVR_fontForTheme:SVRThemeFontMath];
-}
+/*
 +(SVRSolverTextAttachmentBorderStyle)borderStyle;
 {
   switch ([[NSUserDefaults standardUserDefaults] SVR_userInterfaceStyle]) {
@@ -137,6 +139,7 @@
       return SVRSolverTextAttachmentBorderStyleRecessedWhite;
   }
 }
+*/
 
 // MARK: Silence warnings in Jaguar and Below
 // for some reason GCC doesn't see the superclass
@@ -155,52 +158,19 @@
 
 // MARK: Init
 
--(id)initWithError:(SVRCalculationError)error;
+-(id)initWithError:(SVRCalculationError)error
+            styles:(NSDictionary*)styles;
 {
-  NSFileWrapper *wrapper = [[[NSFileWrapper alloc] init] autorelease];
-  self = [super initWithFileWrapper:wrapper];
-  _toDrawString = [[[self class] toDrawStringWithError:error] retain];
-  _toDrawFont   = [[[self class] toDrawFont]   retain];
-  _toDrawColor  = [[[self class] toDrawColor]  retain];
-  _neighorFont  = [[[self class] neighborFont] retain];
-  _borderStyle  = [ [self class] borderStyle];
-  [wrapper setPreferredFilename:_toDrawString];
-  [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
+  self = [super initWithString:[@"=" stringByAppendingString:SVRSolverDescriptionForError(error)]
+                        styles:styles];
   return self;
 }
 
-+(id)attachmentWithError:(SVRCalculationError)error;
++(id)attachmentWithError:(SVRCalculationError)error
+                  styles:(NSDictionary*)styles;
 {
-  return [[[SVRSolverErrorTextAttachment alloc] initWithError:error] autorelease];
-}
-
-// MARK: Business Logic
-+(NSString*)toDrawStringWithError:(SVRCalculationError)error;
-{
-  return [@"=" stringByAppendingString:SVRSolverDescriptionForError(error)];
-}
-+(NSFont*)toDrawFont;
-{
-  return [[NSUserDefaults standardUserDefaults] SVR_fontForTheme:SVRThemeFontError];
-}
-+(NSColor*)toDrawColor;
-{
-  return [[NSUserDefaults standardUserDefaults] SVR_colorForTheme:SVRThemeColorErrorText];
-}
-+(NSFont*)neighborFont;
-{
-  return [[NSUserDefaults standardUserDefaults] SVR_fontForTheme:SVRThemeFontMath];
-}
-+(SVRSolverTextAttachmentBorderStyle)borderStyle;
-{
-  switch ([[NSUserDefaults standardUserDefaults] SVR_userInterfaceStyle]) {
-    case XPUserInterfaceStyleDark:
-      return SVRSolverTextAttachmentBorderStyleRecessedGray;
-    case XPUserInterfaceStyleLight:
-    case XPUserInterfaceStyleUnspecified:
-    default:
-      return SVRSolverTextAttachmentBorderStyleRecessedGray;
-  }
+  return [[[SVRSolverErrorTextAttachment alloc] initWithError:error
+                                                       styles:styles] autorelease];
 }
 
 // MARK: Silence warnings in Jaguar and Below
@@ -220,50 +190,29 @@
 
 // MARK: Init
 -(id)initWithPreviousSolution:(NSDecimalNumber*)previousSolution
-                     operator:(SVRSolverOperator)operator;
+                     operator:(SVRSolverOperator)operator
+                       styles:(NSDictionary*)styles;
 {
-  NSFileWrapper *wrapper = [[[NSFileWrapper alloc] init] autorelease];
-  self = [super initWithFileWrapper:wrapper];
-  _toDrawString = [[[self class] toDrawStringWithPreviousSolution:previousSolution
-                                                         operator:operator] retain];
-  _toDrawFont   = [[[self class] toDrawFont]   retain];
-  _toDrawColor  = [[[self class] toDrawColor]  retain];
-  _neighorFont  = [[[self class] neighborFont] retain];
-  _borderStyle  = [ [self class] borderStyle];
-  [wrapper setPreferredFilename:_toDrawString];
-  [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
+  NSString *toDrawString = [[previousSolution description] stringByAppendingString:RawStringForOperator(operator)];
+  self = [super initWithString:toDrawString styles:styles];
   return self;
 }
 
 +(id)attachmentWithPreviousSolution:(NSDecimalNumber*)previousSolution
-                           operator:(SVRSolverOperator)operator;
+                           operator:(SVRSolverOperator)operator
+                             styles:(NSDictionary*)styles;
 {
   return [[[SVRSolverPreviousSolutionTextAttachment alloc] initWithPreviousSolution:previousSolution
-                                                                           operator:operator] autorelease];
+                                                                           operator:operator
+                                                                             styles:styles] autorelease];
 }
 
-// MARK: Business Logic
-+(NSString*)toDrawStringWithPreviousSolution:(NSDecimalNumber*)previousSolution
-                                    operator:(SVRSolverOperator)operator;
-{
-  return [[previousSolution description] stringByAppendingString:RawStringForOperator(operator)];
-}
-+(NSFont*)toDrawFont;
-{
-  return [[NSUserDefaults standardUserDefaults] SVR_fontForTheme:SVRThemeFontMath];
-}
-+(NSColor*)toDrawColor;
-{
-  return [[NSUserDefaults standardUserDefaults] SVR_colorForTheme:SVRThemeColorOperator];
-}
-+(NSFont*)neighborFont;
-{
-  return [[NSUserDefaults standardUserDefaults] SVR_fontForTheme:SVRThemeFontMath];
-}
+/*
 +(SVRSolverTextAttachmentBorderStyle)borderStyle;
 {
   return SVRSolverTextAttachmentBorderStyleColored;
 }
+*/
 
 // MARK: Silence warnings in Jaguar and Below
 // for some reason GCC doesn't see the superclass
