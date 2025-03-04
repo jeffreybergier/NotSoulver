@@ -90,8 +90,8 @@ typedef enum {
 
 @interface NSUserDefaults (Soulver)
 
-// MARK: Support Testing
--(BOOL)hasRegisteredDefaults;
+// MARK: Get Right Instance
++(NSUserDefaults*)SVR_userDefaults;
 
 // MARK: Basics
 -(NSString*)SVR_savePanelLastDirectory;

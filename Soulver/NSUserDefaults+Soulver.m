@@ -67,14 +67,21 @@ NSString *SVRThemeErrorFont                       = @"kSVRThemeErrorFontKey";
 
 NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyleKey";
 
-BOOL SVRUserDefaultsHasRegisteredDefaults = NO;
-
 @implementation NSUserDefaults (Soulver)
 
 // MARK: Get Right Instance
--(BOOL)hasRegisteredDefaults;
++(NSUserDefaults*)SVR_userDefaults;
 {
-  return SVRUserDefaultsHasRegisteredDefaults;
+  if ([[NSApplication sharedApplication] delegate]) {
+    return [NSUserDefaults standardUserDefaults];
+  } else {
+#if TESTING == 1
+    // TODO: This approach won't work because this method is not available in OpenStep
+    return [[[NSUserDefaults alloc] initWithSuiteName:@"SoulverTesting"] autorelease];
+#else
+    XPLogRaise(@"NSApplication was NIL when NSUserDefaults were accessed");
+#endif
+  }
 }
 
 // MARK: Basics
@@ -206,14 +213,10 @@ BOOL SVRUserDefaultsHasRegisteredDefaults = NO;
 
 -(NSFont*)SVR_fontForTheme:(SVRThemeFont)theme;
 {
-  if ([self hasRegisteredDefaults]) {
-    NSData *data = [self dataForKey:[self __SVR_keyForThemeFont:theme]];
-    NSFont *font = [NSFont XP_fontWithData:data];
-    if (!font) { XPLogRaise(@"Font Not Found"); return nil; }
-    return font;
-  } else {
-    return [[NSUserDefaults __SVR_standardDictionary] objectForKey:[self __SVR_keyForThemeFont:theme]];
-  }
+  NSData *data = [self dataForKey:[self __SVR_keyForThemeFont:theme]];
+  NSFont *font = [NSFont XP_fontWithData:data];
+  if (!font) { XPLogRaise(@"Font Not Found"); return nil; }
+  return font;
 }
 
 -(BOOL)SVR_setFont:(NSFont*)font
@@ -281,8 +284,7 @@ BOOL SVRUserDefaultsHasRegisteredDefaults = NO;
 
 -(void)SVR_configure;
 {
-  [self registerDefaults:[NSUserDefaults __SVR_standardDictionary]];
-  SVRUserDefaultsHasRegisteredDefaults = YES;
+  return [self registerDefaults:[NSUserDefaults __SVR_standardDictionary]];
 }
 
 +(NSDictionary*)__SVR_standardDictionary;
