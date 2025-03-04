@@ -36,7 +36,6 @@ void TestsIntegrationExecute(void)
 {
 #if TESTING==1
   NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
-  [[NSUserDefaults standardUserDefaults] SVR_configure];
   [SVRDocumentModelController executeTests];
   [pool release];
 #endif

@@ -92,6 +92,7 @@ typedef enum {
 
 // MARK: Get Right Instance
 +(NSUserDefaults*)SVR_userDefaults;
++(NSUserDefaults*)__SVR_testingUserDefaults;
 
 // MARK: Basics
 -(NSString*)SVR_savePanelLastDirectory;
