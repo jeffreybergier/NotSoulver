@@ -84,9 +84,9 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
       // Step 2: If the previous solution is used, create a text attachment
       solutionString = [
         NSAttributedString attributedStringWithAttachment:
-          [SVRSolverPreviousSolutionTextAttachment attachmentWithPreviousSolution:solution
-                                                                         operator:previousSolutionOperator
-                                                                           styles:previousSolutionStyles]
+          [SVRSolverTextAttachment attachmentWithPreviousSolution:solution
+                                                         operator:previousSolutionOperator
+                                                           styles:previousSolutionStyles]
       ];
       // Step 3: Insert the previous solution text attachment
       [output replaceCharactersInRange:NSMakeRange(nextRange.location, 1)
@@ -101,14 +101,14 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     if (solution) {
       solutionString = [
         NSAttributedString attributedStringWithAttachment:
-          [SVRSolverSolutionTextAttachment attachmentWithSolution:solution
-                                                           styles:solutionStyles]
+          [SVRSolverTextAttachment attachmentWithSolution:solution
+                                                   styles:solutionStyles]
       ];
     } else {
       solutionString = [
         NSAttributedString attributedStringWithAttachment:
-          [SVRSolverErrorTextAttachment attachmentWithError:error
-                                                     styles:errorStyles]
+          [SVRSolverTextAttachment attachmentWithError:error
+                                                styles:errorStyles]
       ];
     }
     XPLogExtra2(@"=: %@<-%@", [[output string] SVR_descriptionHighlightingRange:solutionRange], solution);

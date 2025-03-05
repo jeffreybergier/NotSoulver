@@ -86,13 +86,34 @@ NSString *const SVRSolverTextAttachmentStyleUserInterface = @"SVRSolverTextAttac
   NSParameterAssert(_toDrawFont);
   NSParameterAssert(_toDrawColor);
   NSParameterAssert(_neighorFont);
-  NSParameterAssert(borderStyleNumber);
-  NSParameterAssert(userInterfaceStyleNumber);
+  NSParameterAssert(borderStyleNumber != nil);
+  NSParameterAssert(userInterfaceStyleNumber != nil);
   
   [wrapper setPreferredFilename:_toDrawString];
   [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
   
   return self;
+}
+
++(id)attachmentWithSolution:(NSDecimalNumber*)solution styles:(NSDictionary*)styles;
+{
+  return [[[SVRSolverTextAttachment alloc] initWithString:[@"=" stringByAppendingString:[solution description]]
+                                                   styles:styles] autorelease];
+}
+
++(id)attachmentWithPreviousSolution:(NSDecimalNumber*)previousSolution
+                           operator:(SVRSolverOperator)operator
+                             styles:(NSDictionary*)styles;
+{
+  return [[[SVRSolverTextAttachment alloc] initWithString:[[previousSolution description] stringByAppendingString:RawStringForOperator(operator)]
+                                                   styles:styles] autorelease];
+}
+
++(id)attachmentWithError:(SVRCalculationError)error
+                  styles:(NSDictionary*)styles;
+{
+  return [[[SVRSolverTextAttachment alloc] initWithString:[@"=" stringByAppendingString:SVRSolverDescriptionForError(error)]
+                                                                                 styles:styles] autorelease];
 }
 
 // MARK: Dealloc
@@ -113,22 +134,7 @@ NSString *const SVRSolverTextAttachmentStyleUserInterface = @"SVRSolverTextAttac
 
 @end
 
-@implementation SVRSolverSolutionTextAttachment
-
-// MARK: Init
-
--(id)initWithSolution:(NSDecimalNumber*)solution styles:(NSDictionary*)styles;
-{
-  self = [super initWithString:[@"=" stringByAppendingString:[solution description]]
-                        styles:styles];
-  return self;
-}
-
-+(id)attachmentWithSolution:(NSDecimalNumber*)solution styles:(NSDictionary*)styles;
-{
-  return [[[SVRSolverSolutionTextAttachment alloc] initWithSolution:solution
-                                                             styles:styles] autorelease];
-}
+// TODO: SVRSolverSolutionTextAttachmentBorderStyle
 /*
 +(SVRSolverTextAttachmentBorderStyle)borderStyle;
 {
@@ -143,58 +149,13 @@ NSString *const SVRSolverTextAttachmentStyleUserInterface = @"SVRSolverTextAttac
 }
 */
 
-@end
-
-@implementation SVRSolverErrorTextAttachment
-
-// MARK: Init
-
--(id)initWithError:(SVRCalculationError)error
-            styles:(NSDictionary*)styles;
-{
-  self = [super initWithString:[@"=" stringByAppendingString:SVRSolverDescriptionForError(error)]
-                        styles:styles];
-  return self;
-}
-
-+(id)attachmentWithError:(SVRCalculationError)error
-                  styles:(NSDictionary*)styles;
-{
-  return [[[SVRSolverErrorTextAttachment alloc] initWithError:error
-                                                       styles:styles] autorelease];
-}
-
-@end
-
-@implementation SVRSolverPreviousSolutionTextAttachment
-
-// MARK: Init
--(id)initWithPreviousSolution:(NSDecimalNumber*)previousSolution
-                     operator:(SVRSolverOperator)operator
-                       styles:(NSDictionary*)styles;
-{
-  NSString *toDrawString = [[previousSolution description] stringByAppendingString:RawStringForOperator(operator)];
-  self = [super initWithString:toDrawString styles:styles];
-  return self;
-}
-
-+(id)attachmentWithPreviousSolution:(NSDecimalNumber*)previousSolution
-                           operator:(SVRSolverOperator)operator
-                             styles:(NSDictionary*)styles;
-{
-  return [[[SVRSolverPreviousSolutionTextAttachment alloc] initWithPreviousSolution:previousSolution
-                                                                           operator:operator
-                                                                             styles:styles] autorelease];
-}
-
+// TODO: SVRSolverPreviousSolutionTextAttachmentBorderStyle
 /*
 +(SVRSolverTextAttachmentBorderStyle)borderStyle;
 {
   return SVRSolverTextAttachmentBorderStyleColored;
 }
 */
-
-@end
 
 @implementation SVRSolverTextAttachmentCell
 

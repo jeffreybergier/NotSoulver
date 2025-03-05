@@ -75,36 +75,12 @@ extern NSString *const SVRSolverTextAttachmentStyleUserInterface;
 -(XPUserInterfaceStyle)userInterfaceStyle;
 
 -(id)initWithString:(NSString*)stringToDraw styles:(NSDictionary*)styles;
-
-@end
-
-@interface SVRSolverSolutionTextAttachment: SVRSolverTextAttachment
-
-// MARK: Init
--(id)initWithSolution:(NSDecimalNumber*)solution styles:(NSDictionary*)styles;
 +(id)attachmentWithSolution:(NSDecimalNumber*)solution styles:(NSDictionary*)styles;
-
-@end
-
-@interface SVRSolverErrorTextAttachment: SVRSolverTextAttachment
-
-// MARK: Init
--(id)initWithError:(SVRCalculationError)error
-            styles:(NSDictionary*)styles;
-+(id)attachmentWithError:(SVRCalculationError)error
-                  styles:(NSDictionary*)styles;
-
-@end
-
-@interface SVRSolverPreviousSolutionTextAttachment: SVRSolverTextAttachment
-
-// MARK: Init
--(id)initWithPreviousSolution:(NSDecimalNumber*)previousSolution
-                     operator:(SVRSolverOperator)operator
-                       styles:(NSDictionary*)styles;
 +(id)attachmentWithPreviousSolution:(NSDecimalNumber*)previousSolution
                            operator:(SVRSolverOperator)operator
                              styles:(NSDictionary*)styles;
++(id)attachmentWithError:(SVRCalculationError)error
+                  styles:(NSDictionary*)styles;
 
 @end
 
