@@ -65,9 +65,9 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
 // MARK: Business Logic
 
 +(void)solveAttributedString:(NSMutableAttributedString*)input
-              solutionStyles:(SVRSolverTextAttachmentStyles*)solutionStyles
-      previousSolutionStyles:(SVRSolverTextAttachmentStyles*)previousSolutionStyles
-                 errorStyles:(SVRSolverTextAttachmentStyles*)errorStyles;
+              solutionStyles:(SVRSolverTextAttachmentStyles)solutionStyles
+      previousSolutionStyles:(SVRSolverTextAttachmentStyles)previousSolutionStyles
+                 errorStyles:(SVRSolverTextAttachmentStyles)errorStyles;
 {
   XPUInteger inputLength = [[input string] length];
   XPUInteger outputLength;
@@ -170,9 +170,9 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
 }
 
 +(void)__step4_solveAndTag:(NSMutableAttributedString*)input
-            solutionStyles:(SVRSolverTextAttachmentStyles*)solutionStyles
-    previousSolutionStyles:(SVRSolverTextAttachmentStyles*)previousSolutionStyles
-               errorStyles:(SVRSolverTextAttachmentStyles*)errorStyles;
+            solutionStyles:(SVRSolverTextAttachmentStyles)solutionStyles
+    previousSolutionStyles:(SVRSolverTextAttachmentStyles)previousSolutionStyles
+               errorStyles:(SVRSolverTextAttachmentStyles)errorStyles;
 {
   [SVRSolverSolutionTagger tagSolutionsInAttributedString:input
                                            solutionStyles:solutionStyles
@@ -580,3 +580,97 @@ NSString *const SVRSolverTextAttachmentStyleToDrawColor   = @"SVRSolverTextAttac
 NSString *const SVRSolverTextAttachmentStyleNeighborFont  = @"SVRSolverTextAttachmentStyleNeighborFont";
 NSString *const SVRSolverTextAttachmentStyleBorder        = @"SVRSolverTextAttachmentStyleBorder";
 NSString *const SVRSolverTextAttachmentStyleUserInterface = @"SVRSolverTextAttachmentStyleUserInterface";
+
+// MARK: NSUserDefaults Helper Methods
+
+@implementation NSUserDefaults (SVRSolverTextAttachmentStyles)
+
+-(SVRSolverTextAttachmentStyles)SVR_stylesForSolution;
+{
+  NSFont  *toDrawFont   = [self SVR_fontForTheme:SVRThemeFontMath];
+  NSColor *toDrawColor  = [self SVR_colorForTheme:SVRThemeColorSolution];
+  NSFont  *neighborFont = toDrawFont;
+  XPUserInterfaceStyle userInterfaceStyle = [self SVR_userInterfaceStyle];
+  SVRSolverTextAttachmentBorderStyle borderStyle;
+  
+  switch (userInterfaceStyle) {
+    case XPUserInterfaceStyleDark:
+      borderStyle = SVRSolverTextAttachmentBorderStyleRecessedGray;
+      break;
+    case XPUserInterfaceStyleLight:
+    case XPUserInterfaceStyleUnspecified:
+    default:
+      borderStyle = SVRSolverTextAttachmentBorderStyleRecessedWhite;
+      break;
+  }
+  
+  return [self __stylesWithToDrawFont:toDrawFont
+                         neighborFont:neighborFont
+                          toDrawColor:toDrawColor
+                   userInterfaceStyle:userInterfaceStyle
+                          borderStyle:borderStyle];
+}
+
+-(SVRSolverTextAttachmentStyles)SVR_stylesForPreviousSolution;
+{
+  NSFont  *toDrawFont   = [self SVR_fontForTheme:SVRThemeFontMath];
+  NSColor *toDrawColor  = [self SVR_colorForTheme:SVRThemeColorOperator];
+  NSFont  *neighborFont = toDrawFont;
+  XPUserInterfaceStyle userInterfaceStyle = [self SVR_userInterfaceStyle];
+  SVRSolverTextAttachmentBorderStyle borderStyle = SVRSolverTextAttachmentBorderStyleColored;
+  
+  return [self __stylesWithToDrawFont:toDrawFont
+                         neighborFont:neighborFont
+                          toDrawColor:toDrawColor
+                   userInterfaceStyle:userInterfaceStyle
+                          borderStyle:borderStyle];
+}
+
+-(SVRSolverTextAttachmentStyles)SVR_stylesForError;
+{
+  NSFont  *toDrawFont   = [self SVR_fontForTheme:SVRThemeFontError];
+  NSColor *toDrawColor  = [self SVR_colorForTheme:SVRThemeColorErrorText];
+  NSFont  *neighborFont = [self SVR_fontForTheme:SVRThemeFontMath];
+  XPUserInterfaceStyle userInterfaceStyle = [self SVR_userInterfaceStyle];
+  SVRSolverTextAttachmentBorderStyle borderStyle = SVRSolverTextAttachmentBorderStyleRecessedGray;
+  
+  return [self __stylesWithToDrawFont:toDrawFont
+                         neighborFont:neighborFont
+                          toDrawColor:toDrawColor
+                   userInterfaceStyle:userInterfaceStyle
+                          borderStyle:borderStyle];
+}
+
+-(SVRSolverTextAttachmentStyles)__stylesWithToDrawFont:(NSFont*)toDrawFont
+                                           neighborFont:(NSFont*)neighborFont
+                                            toDrawColor:(NSColor*)toDrawColor
+                                     userInterfaceStyle:(XPUserInterfaceStyle)userInterfaceStyle
+                                            borderStyle:(SVRSolverTextAttachmentBorderStyle)borderStyle;
+{
+  NSArray *values;
+  NSArray *keys;
+  
+  NSParameterAssert(toDrawFont);
+  NSParameterAssert(neighborFont);
+  NSParameterAssert(toDrawColor);
+  
+  values = [NSArray arrayWithObjects:
+            toDrawFont,
+            toDrawColor,
+            neighborFont,
+            [NSNumber XP_numberWithInteger:borderStyle],
+            [NSNumber XP_numberWithInteger:userInterfaceStyle],
+            nil];
+  
+  keys = [NSArray arrayWithObjects:
+          SVRSolverTextAttachmentStyleToDrawFont,
+          SVRSolverTextAttachmentStyleToDrawColor,
+          SVRSolverTextAttachmentStyleNeighborFont,
+          SVRSolverTextAttachmentStyleBorder,
+          SVRSolverTextAttachmentStyleUserInterface,
+          nil];
+  
+  return [NSDictionary dictionaryWithObjects:values forKeys:keys];
+}
+
+@end

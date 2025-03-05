@@ -30,7 +30,7 @@
 #import <Foundation/Foundation.h>
 #import "XPCrossPlatform.h"
 
-typedef NSDictionary SVRSolverTextAttachmentStyles;
+typedef NSDictionary* SVRSolverTextAttachmentStyles;
 
 // MARK: SVRSolver
 
@@ -41,9 +41,9 @@ typedef NSDictionary SVRSolverTextAttachmentStyles;
 
 // MARK: Business Logic
 +(void)solveAttributedString:(NSMutableAttributedString*)input
-              solutionStyles:(SVRSolverTextAttachmentStyles*)solutionStyles
-      previousSolutionStyles:(SVRSolverTextAttachmentStyles*)previousSolutionStyles
-                 errorStyles:(SVRSolverTextAttachmentStyles*)errorStyles;
+              solutionStyles:(SVRSolverTextAttachmentStyles)solutionStyles
+      previousSolutionStyles:(SVRSolverTextAttachmentStyles)previousSolutionStyles
+                 errorStyles:(SVRSolverTextAttachmentStyles)errorStyles;
 
 // Returns mutable string to avoid making an immutable copy, but it is still a copy of the original string
 +(NSMutableAttributedString*)replaceAttachmentsWithOriginalCharacters:(NSAttributedString*)input;
@@ -55,9 +55,9 @@ typedef NSDictionary SVRSolverTextAttachmentStyles;
 +(void)__step2_removeAllTags:(NSMutableAttributedString*)input;
 +(void)__step3_scanAndTag:(NSMutableAttributedString*)input;
 +(void)__step4_solveAndTag:(NSMutableAttributedString*)input
-            solutionStyles:(SVRSolverTextAttachmentStyles*)solutionStyles
-    previousSolutionStyles:(SVRSolverTextAttachmentStyles*)previousSolutionStyles
-               errorStyles:(SVRSolverTextAttachmentStyles*)errorStyles;
+            solutionStyles:(SVRSolverTextAttachmentStyles)solutionStyles
+    previousSolutionStyles:(SVRSolverTextAttachmentStyles)previousSolutionStyles
+               errorStyles:(SVRSolverTextAttachmentStyles)errorStyles;
 +(void)__step5_styleAndTag:(NSMutableAttributedString*)input;
 
 
@@ -169,4 +169,20 @@ NSString             *SVRSolverDebugDescriptionForError(SVRCalculationError erro
 /// 10L100=2 10=base 100=argument (self)
 -(NSDecimalNumber*)SVR_decimalNumberByLogarithmWithBase:(NSDecimalNumber*)base
                                            withBehavior:(SVRSolverDecimalBehavior*)behavior;
+@end
+
+// MARK: NSUserDefaults Helper Methods
+
+@interface NSUserDefaults (SVRSolverTextAttachmentStyles)
+
+-(SVRSolverTextAttachmentStyles)SVR_stylesForSolution;
+-(SVRSolverTextAttachmentStyles)SVR_stylesForPreviousSolution;
+-(SVRSolverTextAttachmentStyles)SVR_stylesForError;
+-(SVRSolverTextAttachmentStyles)__stylesWithToDrawFont:(NSFont*)toDrawFont
+                                           neighborFont:(NSFont*)neighborFont
+                                            toDrawColor:(NSColor*)toDrawColor
+                                     userInterfaceStyle:(XPUserInterfaceStyle)userInterfaceStyle
+                                            borderStyle:(SVRSolverTextAttachmentBorderStyle)borderStyle;
+
+
 @end

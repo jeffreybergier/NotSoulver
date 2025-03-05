@@ -89,6 +89,8 @@
 
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
 {
+  // TODO: Shit still need to figure out how to pass Styles to Model Controller
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   BOOL success = NO;
   NSTextStorage *model = [self model];
   NSString *string = [
@@ -100,9 +102,9 @@
     [model beginEditing];
     [[model mutableString] setString:string];
     [SVRSolver solveAttributedString:model
-                      solutionStyles:nil
-              previousSolutionStyles:nil
-                         errorStyles:nil];
+                      solutionStyles:[ud SVR_stylesForSolution]
+              previousSolutionStyles:[ud SVR_stylesForPreviousSolution]
+                         errorStyles:[ud SVR_stylesForError]];
     [model endEditing];
     success = YES;
   }
@@ -199,6 +201,8 @@
 
 -(void)waitTimerFired:(NSTimer*)timer;
 {
+  // TODO: Shit still need to figure out how to pass Styles to Model Controller
+  NSUserDefaults *ud   = [NSUserDefaults standardUserDefaults];
   NSTextStorage *model = [self model];
   NSTextView *textView = [self textView];
   
@@ -208,9 +212,9 @@
   // Solve the string
   [model beginEditing];
   [SVRSolver solveAttributedString:model
-                    solutionStyles:nil
-            previousSolutionStyles:nil
-                       errorStyles:nil];
+                    solutionStyles:[ud SVR_stylesForSolution]
+            previousSolutionStyles:[ud SVR_stylesForPreviousSolution]
+                       errorStyles:[ud SVR_stylesForError]];
   [model endEditing];
   
   // Restore the selection

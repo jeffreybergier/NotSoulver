@@ -48,7 +48,7 @@
 
 -(NSFont*)neighorFont;
 {
-  return [[_neighorFont retain] autorelease];
+  return [[_neighborFont retain] autorelease];
 }
 
 -(SVRSolverTextAttachmentBorderStyle)borderStyle;
@@ -61,7 +61,8 @@
   return _userInterfaceStyle;
 }
 
--(id)initWithString:(NSString*)stringToDraw styles:(SVRSolverTextAttachmentStyles*)styles;
+-(id)initWithString:(NSString*)stringToDraw
+             styles:(SVRSolverTextAttachmentStyles)styles;
 {
   NSNumber *borderStyleNumber        = [styles objectForKey:SVRSolverTextAttachmentStyleBorder];
   NSNumber *userInterfaceStyleNumber = [styles objectForKey:SVRSolverTextAttachmentStyleUserInterface];
@@ -72,14 +73,14 @@
   _toDrawString = [stringToDraw retain];
   _toDrawFont   = [[styles objectForKey:SVRSolverTextAttachmentStyleToDrawFont] retain];
   _toDrawColor  = [[styles objectForKey:SVRSolverTextAttachmentStyleToDrawColor] retain];
-  _neighorFont  = [[styles objectForKey:SVRSolverTextAttachmentStyleNeighborFont] retain];
+  _neighborFont = [[styles objectForKey:SVRSolverTextAttachmentStyleNeighborFont] retain];
   _borderStyle  = (SVRSolverTextAttachmentBorderStyle)[borderStyleNumber intValue];
   _userInterfaceStyle = (XPUserInterfaceStyle)[userInterfaceStyleNumber intValue];
   
   NSParameterAssert(_toDrawString);
   NSParameterAssert(_toDrawFont);
   NSParameterAssert(_toDrawColor);
-  NSParameterAssert(_neighorFont);
+  NSParameterAssert(_neighborFont);
   NSParameterAssert(borderStyleNumber != nil);
   NSParameterAssert(userInterfaceStyleNumber != nil);
   
@@ -89,7 +90,8 @@
   return self;
 }
 
-+(id)attachmentWithSolution:(NSDecimalNumber*)solution styles:(SVRSolverTextAttachmentStyles*)styles;
++(id)attachmentWithSolution:(NSDecimalNumber*)solution
+                     styles:(SVRSolverTextAttachmentStyles)styles;
 {
   return [[[SVRSolverTextAttachment alloc] initWithString:[@"=" stringByAppendingString:[solution description]]
                                                    styles:styles] autorelease];
@@ -97,14 +99,14 @@
 
 +(id)attachmentWithPreviousSolution:(NSDecimalNumber*)previousSolution
                            operator:(SVRSolverOperator)operator
-                             styles:(SVRSolverTextAttachmentStyles*)styles;
+                             styles:(SVRSolverTextAttachmentStyles)styles;
 {
   return [[[SVRSolverTextAttachment alloc] initWithString:[[previousSolution description] stringByAppendingString:RawStringForOperator(operator)]
                                                    styles:styles] autorelease];
 }
 
 +(id)attachmentWithError:(SVRCalculationError)error
-                  styles:(SVRSolverTextAttachmentStyles*)styles;
+                  styles:(SVRSolverTextAttachmentStyles)styles;
 {
   return [[[SVRSolverTextAttachment alloc] initWithString:[@"=" stringByAppendingString:SVRSolverDescriptionForError(error)]
                                                                                  styles:styles] autorelease];
@@ -118,11 +120,11 @@
   [_toDrawString release];
   [_toDrawFont   release];
   [_toDrawColor  release];
-  [_neighorFont  release];
+  [_neighborFont  release];
   _toDrawString = nil;
   _toDrawFont   = nil;
   _toDrawColor  = nil;
-  _neighorFont  = nil;
+  _neighborFont = nil;
   [super dealloc];
 }
 

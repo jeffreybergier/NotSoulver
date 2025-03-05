@@ -47,7 +47,7 @@
   mm_retain NSString  *_toDrawString;
   mm_retain NSFont    *_toDrawFont;
   mm_retain NSColor   *_toDrawColor;
-  mm_retain NSFont    *_neighorFont;
+  mm_retain NSFont    *_neighborFont;
   SVRSolverTextAttachmentBorderStyle _borderStyle;
   XPUserInterfaceStyle _userInterfaceStyle;
 }
@@ -59,13 +59,13 @@
 -(SVRSolverTextAttachmentBorderStyle)borderStyle;
 -(XPUserInterfaceStyle)userInterfaceStyle;
 
--(id)initWithString:(NSString*)stringToDraw styles:(SVRSolverTextAttachmentStyles*)styles;
-+(id)attachmentWithSolution:(NSDecimalNumber*)solution styles:(SVRSolverTextAttachmentStyles*)styles;
+-(id)initWithString:(NSString*)stringToDraw styles:(SVRSolverTextAttachmentStyles)styles;
++(id)attachmentWithSolution:(NSDecimalNumber*)solution styles:(SVRSolverTextAttachmentStyles)styles;
 +(id)attachmentWithPreviousSolution:(NSDecimalNumber*)previousSolution
                            operator:(SVRSolverOperator)operator
-                             styles:(SVRSolverTextAttachmentStyles*)styles;
+                             styles:(SVRSolverTextAttachmentStyles)styles;
 +(id)attachmentWithError:(SVRCalculationError)error
-                  styles:(SVRSolverTextAttachmentStyles*)styles;
+                  styles:(SVRSolverTextAttachmentStyles)styles;
 
 @end
 

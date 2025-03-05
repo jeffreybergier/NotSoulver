@@ -55,9 +55,9 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
 
 // MARK: Business Logic
 +(void)tagSolutionsInAttributedString:(NSMutableAttributedString*)output
-                       solutionStyles:(SVRSolverTextAttachmentStyles*)solutionStyles
-               previousSolutionStyles:(SVRSolverTextAttachmentStyles*)previousSolutionStyles
-                          errorStyles:(SVRSolverTextAttachmentStyles*)errorStyles;
+                       solutionStyles:(SVRSolverTextAttachmentStyles)solutionStyles
+               previousSolutionStyles:(SVRSolverTextAttachmentStyles)previousSolutionStyles
+                          errorStyles:(SVRSolverTextAttachmentStyles)errorStyles;
 {
   SVRCalculationError error = SVRCalculationNoError;
   NSMutableAttributedString *expressionToSolve = nil;
