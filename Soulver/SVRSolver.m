@@ -65,9 +65,9 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
 // MARK: Business Logic
 
 +(void)solveAttributedString:(NSMutableAttributedString*)input
-              solutionStyles:(NSDictionary*)solutionStyles
-      previousSolutionStyles:(NSDictionary*)previousSolutionStyles
-                 errorStyles:(NSDictionary*)errorStyles;
+              solutionStyles:(SVRSolverTextAttachmentStyles*)solutionStyles
+      previousSolutionStyles:(SVRSolverTextAttachmentStyles*)previousSolutionStyles
+                 errorStyles:(SVRSolverTextAttachmentStyles*)errorStyles;
 {
   XPUInteger inputLength = [[input string] length];
   XPUInteger outputLength;
@@ -170,9 +170,9 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
 }
 
 +(void)__step4_solveAndTag:(NSMutableAttributedString*)input
-            solutionStyles:(NSDictionary*)solutionStyles
-    previousSolutionStyles:(NSDictionary*)previousSolutionStyles
-               errorStyles:(NSDictionary*)errorStyles;
+            solutionStyles:(SVRSolverTextAttachmentStyles*)solutionStyles
+    previousSolutionStyles:(SVRSolverTextAttachmentStyles*)previousSolutionStyles
+               errorStyles:(SVRSolverTextAttachmentStyles*)errorStyles;
 {
   [SVRSolverSolutionTagger tagSolutionsInAttributedString:input
                                            solutionStyles:solutionStyles
@@ -572,3 +572,11 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
 }
 
 @end
+
+// MARK: SVRSolverTextAttachment Input
+
+NSString *const SVRSolverTextAttachmentStyleToDrawFont    = @"SVRSolverTextAttachmentStyleToDrawFont";
+NSString *const SVRSolverTextAttachmentStyleToDrawColor   = @"SVRSolverTextAttachmentStyleToDrawColor";
+NSString *const SVRSolverTextAttachmentStyleNeighborFont  = @"SVRSolverTextAttachmentStyleNeighborFont";
+NSString *const SVRSolverTextAttachmentStyleBorder        = @"SVRSolverTextAttachmentStyleBorder";
+NSString *const SVRSolverTextAttachmentStyleUserInterface = @"SVRSolverTextAttachmentStyleUserInterface";

@@ -30,6 +30,8 @@
 #import <Foundation/Foundation.h>
 #import "XPCrossPlatform.h"
 
+typedef NSDictionary SVRSolverTextAttachmentStyles;
+
 // MARK: SVRSolver
 
 @interface SVRSolver: NSObject
@@ -39,9 +41,9 @@
 
 // MARK: Business Logic
 +(void)solveAttributedString:(NSMutableAttributedString*)input
-              solutionStyles:(NSDictionary*)solutionStyles
-      previousSolutionStyles:(NSDictionary*)previousSolutionStyles
-                 errorStyles:(NSDictionary*)errorStyles;
+              solutionStyles:(SVRSolverTextAttachmentStyles*)solutionStyles
+      previousSolutionStyles:(SVRSolverTextAttachmentStyles*)previousSolutionStyles
+                 errorStyles:(SVRSolverTextAttachmentStyles*)errorStyles;
 
 // Returns mutable string to avoid making an immutable copy, but it is still a copy of the original string
 +(NSMutableAttributedString*)replaceAttachmentsWithOriginalCharacters:(NSAttributedString*)input;
@@ -53,9 +55,9 @@
 +(void)__step2_removeAllTags:(NSMutableAttributedString*)input;
 +(void)__step3_scanAndTag:(NSMutableAttributedString*)input;
 +(void)__step4_solveAndTag:(NSMutableAttributedString*)input
-            solutionStyles:(NSDictionary*)solutionStyles
-    previousSolutionStyles:(NSDictionary*)previousSolutionStyles
-               errorStyles:(NSDictionary*)errorStyles;
+            solutionStyles:(SVRSolverTextAttachmentStyles*)solutionStyles
+    previousSolutionStyles:(SVRSolverTextAttachmentStyles*)previousSolutionStyles
+               errorStyles:(SVRSolverTextAttachmentStyles*)errorStyles;
 +(void)__step5_styleAndTag:(NSMutableAttributedString*)input;
 
 
@@ -110,6 +112,23 @@ typedef enum {
 } SVRCalculationError;
 
 typedef SVRCalculationError* SVRCalculationErrorPointer;
+
+// MARK: SVRSolverTextAttachment Input
+
+typedef enum {
+  SVRSolverTextAttachmentBorderStyleColored,
+  SVRSolverTextAttachmentBorderStyleRecessedGray,
+  SVRSolverTextAttachmentBorderStyleRecessedWhite,
+  SVRSolverTextAttachmentBorderStyleGroove,
+  SVRSolverTextAttachmentBorderStyleDotted,
+  SVRSolverTextAttachmentBorderStyleNone
+} SVRSolverTextAttachmentBorderStyle;
+
+extern NSString *const SVRSolverTextAttachmentStyleToDrawFont;
+extern NSString *const SVRSolverTextAttachmentStyleToDrawColor;
+extern NSString *const SVRSolverTextAttachmentStyleNeighborFont;
+extern NSString *const SVRSolverTextAttachmentStyleBorder;
+extern NSString *const SVRSolverTextAttachmentStyleUserInterface;
 
 // MARK: Enumeration Helper Functions
 

@@ -31,21 +31,6 @@
 #import "SVRSolver.h"
 #import "XPCrossPlatform.h"
 
-typedef enum {
-  SVRSolverTextAttachmentBorderStyleColored,
-  SVRSolverTextAttachmentBorderStyleRecessedGray,
-  SVRSolverTextAttachmentBorderStyleRecessedWhite,
-  SVRSolverTextAttachmentBorderStyleGroove,
-  SVRSolverTextAttachmentBorderStyleDotted,
-  SVRSolverTextAttachmentBorderStyleNone
-} SVRSolverTextAttachmentBorderStyle;
-
-extern NSString *const SVRSolverTextAttachmentStyleToDrawFont;
-extern NSString *const SVRSolverTextAttachmentStyleToDrawColor;
-extern NSString *const SVRSolverTextAttachmentStyleNeighborFont;
-extern NSString *const SVRSolverTextAttachmentStyleBorder;
-extern NSString *const SVRSolverTextAttachmentStyleUserInterface;
-
 @protocol SVRSolverTextAttachmentProtocol <NSObject>
 
 -(NSString*)toDrawString;
@@ -74,13 +59,13 @@ extern NSString *const SVRSolverTextAttachmentStyleUserInterface;
 -(SVRSolverTextAttachmentBorderStyle)borderStyle;
 -(XPUserInterfaceStyle)userInterfaceStyle;
 
--(id)initWithString:(NSString*)stringToDraw styles:(NSDictionary*)styles;
-+(id)attachmentWithSolution:(NSDecimalNumber*)solution styles:(NSDictionary*)styles;
+-(id)initWithString:(NSString*)stringToDraw styles:(SVRSolverTextAttachmentStyles*)styles;
++(id)attachmentWithSolution:(NSDecimalNumber*)solution styles:(SVRSolverTextAttachmentStyles*)styles;
 +(id)attachmentWithPreviousSolution:(NSDecimalNumber*)previousSolution
                            operator:(SVRSolverOperator)operator
-                             styles:(NSDictionary*)styles;
+                             styles:(SVRSolverTextAttachmentStyles*)styles;
 +(id)attachmentWithError:(SVRCalculationError)error
-                  styles:(NSDictionary*)styles;
+                  styles:(SVRSolverTextAttachmentStyles*)styles;
 
 @end
 

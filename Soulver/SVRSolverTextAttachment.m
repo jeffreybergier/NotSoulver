@@ -29,12 +29,6 @@
 
 #import "SVRSolverTextAttachment.h"
 
-NSString *const SVRSolverTextAttachmentStyleToDrawFont    = @"SVRSolverTextAttachmentStyleToDrawFont";
-NSString *const SVRSolverTextAttachmentStyleToDrawColor   = @"SVRSolverTextAttachmentStyleToDrawColor";
-NSString *const SVRSolverTextAttachmentStyleNeighborFont  = @"SVRSolverTextAttachmentStyleNeighborFont";
-NSString *const SVRSolverTextAttachmentStyleBorder        = @"SVRSolverTextAttachmentStyleBorder";
-NSString *const SVRSolverTextAttachmentStyleUserInterface = @"SVRSolverTextAttachmentStyleUserInterface";
-
 @implementation SVRSolverTextAttachment
 
 -(NSString*)toDrawString;
@@ -67,7 +61,7 @@ NSString *const SVRSolverTextAttachmentStyleUserInterface = @"SVRSolverTextAttac
   return _userInterfaceStyle;
 }
 
--(id)initWithString:(NSString*)stringToDraw styles:(NSDictionary*)styles;
+-(id)initWithString:(NSString*)stringToDraw styles:(SVRSolverTextAttachmentStyles*)styles;
 {
   NSNumber *borderStyleNumber        = [styles objectForKey:SVRSolverTextAttachmentStyleBorder];
   NSNumber *userInterfaceStyleNumber = [styles objectForKey:SVRSolverTextAttachmentStyleUserInterface];
@@ -95,7 +89,7 @@ NSString *const SVRSolverTextAttachmentStyleUserInterface = @"SVRSolverTextAttac
   return self;
 }
 
-+(id)attachmentWithSolution:(NSDecimalNumber*)solution styles:(NSDictionary*)styles;
++(id)attachmentWithSolution:(NSDecimalNumber*)solution styles:(SVRSolverTextAttachmentStyles*)styles;
 {
   return [[[SVRSolverTextAttachment alloc] initWithString:[@"=" stringByAppendingString:[solution description]]
                                                    styles:styles] autorelease];
@@ -103,14 +97,14 @@ NSString *const SVRSolverTextAttachmentStyleUserInterface = @"SVRSolverTextAttac
 
 +(id)attachmentWithPreviousSolution:(NSDecimalNumber*)previousSolution
                            operator:(SVRSolverOperator)operator
-                             styles:(NSDictionary*)styles;
+                             styles:(SVRSolverTextAttachmentStyles*)styles;
 {
   return [[[SVRSolverTextAttachment alloc] initWithString:[[previousSolution description] stringByAppendingString:RawStringForOperator(operator)]
                                                    styles:styles] autorelease];
 }
 
 +(id)attachmentWithError:(SVRCalculationError)error
-                  styles:(NSDictionary*)styles;
+                  styles:(SVRSolverTextAttachmentStyles*)styles;
 {
   return [[[SVRSolverTextAttachment alloc] initWithString:[@"=" stringByAppendingString:SVRSolverDescriptionForError(error)]
                                                                                  styles:styles] autorelease];
