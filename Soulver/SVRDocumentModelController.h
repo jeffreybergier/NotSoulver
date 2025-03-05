@@ -36,6 +36,10 @@
   mm_new      NSTimer             *_waitTimer;
   mm_new      NSMutableDictionary *_dataCache;
   mm_unretain NSTextView          *_textView;
+  
+  mm_unretain NSDictionary *__TESTING_stylesForSolution;
+  mm_unretain NSDictionary *__TESTING_stylesForPreviousSolution;
+  mm_unretain NSDictionary *__TESTING_stylesForError;
 }
 
 // MARK: Properties

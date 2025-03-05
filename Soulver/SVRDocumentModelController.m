@@ -62,6 +62,11 @@
   _dataCache = [NSMutableDictionary new];
   _textView = nil;
   _waitTimer = nil;
+  
+  __TESTING_stylesForSolution = nil;
+  __TESTING_stylesForPreviousSolution = nil;
+  __TESTING_stylesForError = nil;
+  
   return self;
 }
 
@@ -89,7 +94,6 @@
 
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
 {
-  // TODO: Shit still need to figure out how to pass Styles to Model Controller
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   BOOL success = NO;
   NSTextStorage *model = [self model];
@@ -102,9 +106,9 @@
     [model beginEditing];
     [[model mutableString] setString:string];
     [SVRSolver solveAttributedString:model
-                      solutionStyles:[ud SVR_stylesForSolution]
-              previousSolutionStyles:[ud SVR_stylesForPreviousSolution]
-                         errorStyles:[ud SVR_stylesForError]];
+                      solutionStyles:__TESTING_stylesForSolution         ? __TESTING_stylesForSolution         : [ud SVR_stylesForSolution]
+              previousSolutionStyles:__TESTING_stylesForPreviousSolution ? __TESTING_stylesForPreviousSolution : [ud SVR_stylesForPreviousSolution]
+                         errorStyles:__TESTING_stylesForError            ? __TESTING_stylesForError            : [ud SVR_stylesForError]];
     [model endEditing];
     success = YES;
   }
@@ -201,7 +205,6 @@
 
 -(void)waitTimerFired:(NSTimer*)timer;
 {
-  // TODO: Shit still need to figure out how to pass Styles to Model Controller
   NSUserDefaults *ud   = [NSUserDefaults standardUserDefaults];
   NSTextStorage *model = [self model];
   NSTextView *textView = [self textView];
@@ -212,9 +215,9 @@
   // Solve the string
   [model beginEditing];
   [SVRSolver solveAttributedString:model
-                    solutionStyles:[ud SVR_stylesForSolution]
-            previousSolutionStyles:[ud SVR_stylesForPreviousSolution]
-                       errorStyles:[ud SVR_stylesForError]];
+                    solutionStyles:__TESTING_stylesForSolution         ? __TESTING_stylesForSolution         : [ud SVR_stylesForSolution]
+            previousSolutionStyles:__TESTING_stylesForPreviousSolution ? __TESTING_stylesForPreviousSolution : [ud SVR_stylesForPreviousSolution]
+                       errorStyles:__TESTING_stylesForError            ? __TESTING_stylesForError            : [ud SVR_stylesForError]];
   [model endEditing];
   
   // Restore the selection

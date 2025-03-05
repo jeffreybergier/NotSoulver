@@ -84,6 +84,10 @@ void TestsIntegrationExecute(void)
   // XPTestNotNIL(displayData);
   // XPTestNotNIL(unsolvedData);
   // XPTestNotNIL(solvedData);
+  // TODO: Come up with styles for tests
+  controller->__TESTING_stylesForSolution         = [NSDictionary new];
+  controller->__TESTING_stylesForPreviousSolution = [NSDictionary new];
+  controller->__TESTING_stylesForError            = [NSDictionary new];
   [controller loadDataRepresentation:diskData ofType:@"solv"];
   
   // MARK: Compare Representations
