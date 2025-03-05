@@ -35,7 +35,7 @@ NSString *const SVRSolverTextAttachmentStyleNeighborFont  = @"SVRSolverTextAttac
 NSString *const SVRSolverTextAttachmentStyleBorder        = @"SVRSolverTextAttachmentStyleBorder";
 NSString *const SVRSolverTextAttachmentStyleUserInterface = @"SVRSolverTextAttachmentStyleUserInterface";
 
-@implementation SVRSolverTextAttachmentImp
+@implementation SVRSolverTextAttachment
 
 -(NSString*)toDrawString;
 {
@@ -143,17 +143,6 @@ NSString *const SVRSolverTextAttachmentStyleUserInterface = @"SVRSolverTextAttac
 }
 */
 
-// MARK: Silence warnings in Jaguar and Below
-// for some reason GCC doesn't see the superclass
-// implementation of these methods and gives warnings
-#ifndef MAC_OS_X_VERSION_10_3
--(NSString*)toDrawString; { return [super toDrawString]; }
--(NSFont*)toDrawFont;     { return [super toDrawFont];   }
--(NSColor*)toDrawColor;   { return [super toDrawColor];  }
--(NSFont*)neighorFont;    { return [super neighorFont];  }
--(SVRSolverTextAttachmentBorderStyle)borderStyle; { return [super borderStyle]; }
-#endif
-
 @end
 
 @implementation SVRSolverErrorTextAttachment
@@ -174,17 +163,6 @@ NSString *const SVRSolverTextAttachmentStyleUserInterface = @"SVRSolverTextAttac
   return [[[SVRSolverErrorTextAttachment alloc] initWithError:error
                                                        styles:styles] autorelease];
 }
-
-// MARK: Silence warnings in Jaguar and Below
-// for some reason GCC doesn't see the superclass
-// implementation of these methods and gives warnings
-#ifndef MAC_OS_X_VERSION_10_3
--(NSString*)toDrawString; { return [super toDrawString]; }
--(NSFont*)toDrawFont;     { return [super toDrawFont];   }
--(NSColor*)toDrawColor;   { return [super toDrawColor];  }
--(NSFont*)neighorFont;    { return [super neighorFont];  }
--(SVRSolverTextAttachmentBorderStyle)borderStyle; { return [super borderStyle]; }
-#endif
 
 @end
 
@@ -216,17 +194,6 @@ NSString *const SVRSolverTextAttachmentStyleUserInterface = @"SVRSolverTextAttac
 }
 */
 
-// MARK: Silence warnings in Jaguar and Below
-// for some reason GCC doesn't see the superclass
-// implementation of these methods and gives warnings
-#ifndef MAC_OS_X_VERSION_10_3
--(NSString*)toDrawString; { return [super toDrawString]; }
--(NSFont*)toDrawFont;     { return [super toDrawFont];   }
--(NSColor*)toDrawColor;   { return [super toDrawColor];  }
--(NSFont*)neighorFont;    { return [super neighorFont];  }
--(SVRSolverTextAttachmentBorderStyle)borderStyle; { return [super borderStyle]; }
-#endif
-
 @end
 
 @implementation SVRSolverTextAttachmentCell
@@ -238,14 +205,14 @@ NSString *const SVRSolverTextAttachmentStyleUserInterface = @"SVRSolverTextAttac
   return [[_toDrawAttributes retain] autorelease];
 }
 
--(id<SVRSolverTextAttachment>)SVR_attachment;
+-(id<SVRSolverTextAttachmentProtocol>)SVR_attachment;
 {
-  return (id<SVRSolverTextAttachment>)[self attachment];
+  return (id<SVRSolverTextAttachmentProtocol>)[self attachment];
 }
 
 // MARK: Init
 
--(id)initWithAttachment:(NSTextAttachment<SVRSolverTextAttachment>*)attachment;
+-(id)initWithAttachment:(NSTextAttachment<SVRSolverTextAttachmentProtocol>*)attachment;
 {
   self = [super init];
   [self setAttachment:attachment];
@@ -256,7 +223,7 @@ NSString *const SVRSolverTextAttachmentStyleUserInterface = @"SVRSolverTextAttac
   return self;
 }
 
-+(id)cellWithAttachment:(NSTextAttachment<SVRSolverTextAttachment>*)attachment;
++(id)cellWithAttachment:(NSTextAttachment<SVRSolverTextAttachmentProtocol>*)attachment;
 {
   return [[[SVRSolverTextAttachmentCell alloc] initWithAttachment:attachment] autorelease];
 }

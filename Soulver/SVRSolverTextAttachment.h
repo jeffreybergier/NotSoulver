@@ -46,7 +46,7 @@ extern NSString *const SVRSolverTextAttachmentStyleNeighborFont;
 extern NSString *const SVRSolverTextAttachmentStyleBorder;
 extern NSString *const SVRSolverTextAttachmentStyleUserInterface;
 
-@protocol SVRSolverTextAttachment <NSObject>
+@protocol SVRSolverTextAttachmentProtocol <NSObject>
 
 -(NSString*)toDrawString;
 -(NSFont*)toDrawFont;
@@ -57,7 +57,7 @@ extern NSString *const SVRSolverTextAttachmentStyleUserInterface;
 
 @end
 
-@interface SVRSolverTextAttachmentImp: NSTextAttachment <SVRSolverTextAttachment>
+@interface SVRSolverTextAttachment: NSTextAttachment <SVRSolverTextAttachmentProtocol>
 {
   mm_retain NSString  *_toDrawString;
   mm_retain NSFont    *_toDrawFont;
@@ -78,7 +78,7 @@ extern NSString *const SVRSolverTextAttachmentStyleUserInterface;
 
 @end
 
-@interface SVRSolverSolutionTextAttachment: SVRSolverTextAttachmentImp
+@interface SVRSolverSolutionTextAttachment: SVRSolverTextAttachment
 
 // MARK: Init
 -(id)initWithSolution:(NSDecimalNumber*)solution styles:(NSDictionary*)styles;
@@ -86,7 +86,7 @@ extern NSString *const SVRSolverTextAttachmentStyleUserInterface;
 
 @end
 
-@interface SVRSolverErrorTextAttachment: SVRSolverTextAttachmentImp
+@interface SVRSolverErrorTextAttachment: SVRSolverTextAttachment
 
 // MARK: Init
 -(id)initWithError:(SVRCalculationError)error
@@ -96,7 +96,7 @@ extern NSString *const SVRSolverTextAttachmentStyleUserInterface;
 
 @end
 
-@interface SVRSolverPreviousSolutionTextAttachment: SVRSolverTextAttachmentImp
+@interface SVRSolverPreviousSolutionTextAttachment: SVRSolverTextAttachment
 
 // MARK: Init
 -(id)initWithPreviousSolution:(NSDecimalNumber*)previousSolution
@@ -115,11 +115,11 @@ extern NSString *const SVRSolverTextAttachmentStyleUserInterface;
 
 // MARK: Properties
 -(NSDictionary*)toDrawAttributes;
--(id<SVRSolverTextAttachment>)SVR_attachment;
+-(id<SVRSolverTextAttachmentProtocol>)SVR_attachment;
 
 // MARK: Init
--(id)initWithAttachment:(NSTextAttachment<SVRSolverTextAttachment>*)attachment;
-+(id)cellWithAttachment:(NSTextAttachment<SVRSolverTextAttachment>*)attachment;
+-(id)initWithAttachment:(NSTextAttachment<SVRSolverTextAttachmentProtocol>*)attachment;
++(id)cellWithAttachment:(NSTextAttachment<SVRSolverTextAttachmentProtocol>*)attachment;
 
 // MARK: Custom Drawing
 +(NSDictionary*)toDrawAttributesWithFont:(NSFont*)font
