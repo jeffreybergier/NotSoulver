@@ -99,7 +99,10 @@
     XPLogDebug1(@"%@ loadDataRepresentation: Rendering", self);
     [model beginEditing];
     [[model mutableString] setString:string];
-    [SVRSolver solveAttributedString:model];
+    [SVRSolver solveAttributedString:model
+                      solutionStyles:nil
+              previousSolutionStyles:nil
+                         errorStyles:nil];
     [model endEditing];
     success = YES;
   }
@@ -204,7 +207,10 @@
   
   // Solve the string
   [model beginEditing];
-  [SVRSolver solveAttributedString:model];
+  [SVRSolver solveAttributedString:model
+                    solutionStyles:nil
+            previousSolutionStyles:nil
+                       errorStyles:nil];
   [model endEditing];
   
   // Restore the selection

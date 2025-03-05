@@ -64,7 +64,10 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
 
 // MARK: Business Logic
 
-+(void)solveAttributedString:(NSMutableAttributedString*)input;
++(void)solveAttributedString:(NSMutableAttributedString*)input
+              solutionStyles:(NSDictionary*)solutionStyles
+      previousSolutionStyles:(NSDictionary*)previousSolutionStyles
+                 errorStyles:(NSDictionary*)errorStyles;
 {
   XPUInteger inputLength = [[input string] length];
   XPUInteger outputLength;
@@ -72,7 +75,10 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
   [self __step1_restoreOriginals:input];
   [self __step2_removeAllTags:input];
   [self __step3_scanAndTag:input];
-  [self __step4_solveAndTag:input];
+  [self __step4_solveAndTag:input
+             solutionStyles:solutionStyles
+     previousSolutionStyles:previousSolutionStyles
+                errorStyles:errorStyles];
   [self __step5_styleAndTag:input];
   outputLength = [[input string] length];
   if (inputLength != outputLength) {
@@ -163,9 +169,15 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
   return;
 }
 
-+(void)__step4_solveAndTag:(NSMutableAttributedString*)input;
++(void)__step4_solveAndTag:(NSMutableAttributedString*)input
+            solutionStyles:(NSDictionary*)solutionStyles
+    previousSolutionStyles:(NSDictionary*)previousSolutionStyles
+               errorStyles:(NSDictionary*)errorStyles;
 {
-  [SVRSolverSolutionTagger tagSolutionsInAttributedString:input];
+  [SVRSolverSolutionTagger tagSolutionsInAttributedString:input
+                                           solutionStyles:solutionStyles
+                                   previousSolutionStyles:previousSolutionStyles
+                                              errorStyles:errorStyles];
 }
 
 +(void)__step5_styleAndTag:(NSMutableAttributedString*)input;

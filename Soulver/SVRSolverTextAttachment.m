@@ -28,7 +28,6 @@
 //
 
 #import "SVRSolverTextAttachment.h"
-#import "NSUserDefaults+Soulver.h"
 
 NSString *const SVRSolverTextAttachmentStyleToDrawFont    = @"SVRSolverTextAttachmentStyleToDrawFont";
 NSString *const SVRSolverTextAttachmentStyleToDrawColor   = @"SVRSolverTextAttachmentStyleToDrawColor";
@@ -73,15 +72,15 @@ NSString *const SVRSolverTextAttachmentStyleUserInterface = @"SVRSolverTextAttac
   NSNumber *borderStyleNumber        = [styles objectForKey:SVRSolverTextAttachmentStyleBorder];
   NSNumber *userInterfaceStyleNumber = [styles objectForKey:SVRSolverTextAttachmentStyleUserInterface];
   NSFileWrapper *wrapper = [[[NSFileWrapper alloc] init] autorelease];
+  
   self = [super initWithFileWrapper:wrapper];
+  
   _toDrawString = [stringToDraw retain];
   _toDrawFont   = [[styles objectForKey:SVRSolverTextAttachmentStyleToDrawFont] retain];
   _toDrawColor  = [[styles objectForKey:SVRSolverTextAttachmentStyleToDrawColor] retain];
   _neighorFont  = [[styles objectForKey:SVRSolverTextAttachmentStyleNeighborFont] retain];
   _borderStyle  = (SVRSolverTextAttachmentBorderStyle)[borderStyleNumber intValue];
   _userInterfaceStyle = (XPUserInterfaceStyle)[userInterfaceStyleNumber intValue];
-  [wrapper setPreferredFilename:_toDrawString];
-  [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
   
   NSParameterAssert(_toDrawString);
   NSParameterAssert(_toDrawFont);
@@ -89,6 +88,9 @@ NSString *const SVRSolverTextAttachmentStyleUserInterface = @"SVRSolverTextAttac
   NSParameterAssert(_neighorFont);
   NSParameterAssert(borderStyleNumber);
   NSParameterAssert(userInterfaceStyleNumber);
+  
+  [wrapper setPreferredFilename:_toDrawString];
+  [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
   
   return self;
 }

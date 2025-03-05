@@ -38,7 +38,11 @@
 +(void)initialize;
 
 // MARK: Business Logic
-+(void)solveAttributedString:(NSMutableAttributedString*)input;
++(void)solveAttributedString:(NSMutableAttributedString*)input
+              solutionStyles:(NSDictionary*)solutionStyles
+      previousSolutionStyles:(NSDictionary*)previousSolutionStyles
+                 errorStyles:(NSDictionary*)errorStyles;
+
 // Returns mutable string to avoid making an immutable copy, but it is still a copy of the original string
 +(NSMutableAttributedString*)replaceAttachmentsWithOriginalCharacters:(NSAttributedString*)input;
 // Returns mutable string to avoid making an immutable copy, but it is still a copy of the original string
@@ -48,7 +52,10 @@
 +(void)__step1_restoreOriginals:(NSMutableAttributedString*)input;
 +(void)__step2_removeAllTags:(NSMutableAttributedString*)input;
 +(void)__step3_scanAndTag:(NSMutableAttributedString*)input;
-+(void)__step4_solveAndTag:(NSMutableAttributedString*)input;
++(void)__step4_solveAndTag:(NSMutableAttributedString*)input
+            solutionStyles:(NSDictionary*)solutionStyles
+    previousSolutionStyles:(NSDictionary*)previousSolutionStyles
+               errorStyles:(NSDictionary*)errorStyles;
 +(void)__step5_styleAndTag:(NSMutableAttributedString*)input;
 
 

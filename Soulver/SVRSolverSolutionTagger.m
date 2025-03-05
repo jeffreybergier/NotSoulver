@@ -54,7 +54,10 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
 }
 
 // MARK: Business Logic
-+(void)tagSolutionsInAttributedString:(NSMutableAttributedString*)output;
++(void)tagSolutionsInAttributedString:(NSMutableAttributedString*)output
+                       solutionStyles:(NSDictionary*)solutionStyles
+               previousSolutionStyles:(NSDictionary*)previousSolutionStyles
+                          errorStyles:(NSDictionary*)errorStyles;
 {
   SVRCalculationError error = SVRCalculationNoError;
   NSMutableAttributedString *expressionToSolve = nil;
@@ -82,7 +85,8 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
       solutionString = [
         NSAttributedString attributedStringWithAttachment:
           [SVRSolverPreviousSolutionTextAttachment attachmentWithPreviousSolution:solution
-                                                                         operator:previousSolutionOperator]
+                                                                         operator:previousSolutionOperator
+                                                                           styles:previousSolutionStyles]
       ];
       // Step 3: Insert the previous solution text attachment
       [output replaceCharactersInRange:NSMakeRange(nextRange.location, 1)
@@ -97,12 +101,14 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     if (solution) {
       solutionString = [
         NSAttributedString attributedStringWithAttachment:
-          [SVRSolverSolutionTextAttachment attachmentWithSolution:solution]
+          [SVRSolverSolutionTextAttachment attachmentWithSolution:solution
+                                                           styles:solutionStyles]
       ];
     } else {
       solutionString = [
         NSAttributedString attributedStringWithAttachment:
-          [SVRSolverErrorTextAttachment attachmentWithError:error]
+          [SVRSolverErrorTextAttachment attachmentWithError:error
+                                                     styles:errorStyles]
       ];
     }
     XPLogExtra2(@"=: %@<-%@", [[output string] SVR_descriptionHighlightingRange:solutionRange], solution);

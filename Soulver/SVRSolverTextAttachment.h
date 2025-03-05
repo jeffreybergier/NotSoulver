@@ -96,7 +96,7 @@ extern NSString *const SVRSolverTextAttachmentStyleUserInterface;
 
 @end
 
-@interface SVRSolverPreviousSolutionTextAttachment: SVRSolverTextAttachmentImp <SVRSolverTextAttachment>
+@interface SVRSolverPreviousSolutionTextAttachment: SVRSolverTextAttachmentImp
 
 // MARK: Init
 -(id)initWithPreviousSolution:(NSDecimalNumber*)previousSolution
