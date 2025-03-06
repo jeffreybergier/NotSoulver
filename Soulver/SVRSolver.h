@@ -31,6 +31,7 @@
 #import "XPCrossPlatform.h"
 
 typedef NSDictionary* SVRSolverTextAttachmentStyles;
+typedef NSDictionary* SVRSolverTextStyles;
 
 // MARK: SVRSolver
 
@@ -43,7 +44,8 @@ typedef NSDictionary* SVRSolverTextAttachmentStyles;
 +(void)solveAttributedString:(NSMutableAttributedString*)input
               solutionStyles:(SVRSolverTextAttachmentStyles)solutionStyles
       previousSolutionStyles:(SVRSolverTextAttachmentStyles)previousSolutionStyles
-                 errorStyles:(SVRSolverTextAttachmentStyles)errorStyles;
+                 errorStyles:(SVRSolverTextAttachmentStyles)errorStyles
+                  textStyles:(SVRSolverTextStyles)textStyles;
 
 // Returns mutable string to avoid making an immutable copy, but it is still a copy of the original string
 +(NSMutableAttributedString*)replaceAttachmentsWithOriginalCharacters:(NSAttributedString*)input;
@@ -58,7 +60,8 @@ typedef NSDictionary* SVRSolverTextAttachmentStyles;
             solutionStyles:(SVRSolverTextAttachmentStyles)solutionStyles
     previousSolutionStyles:(SVRSolverTextAttachmentStyles)previousSolutionStyles
                errorStyles:(SVRSolverTextAttachmentStyles)errorStyles;
-+(void)__step5_styleAndTag:(NSMutableAttributedString*)input;
++(void)__step5_styleAndTag:(NSMutableAttributedString*)input
+                    styles:(SVRSolverTextStyles)styles;
 
 
 @end
@@ -130,6 +133,13 @@ extern NSString *const SVRSolverTextAttachmentStyleNeighborFont;
 extern NSString *const SVRSolverTextAttachmentStyleBorder;
 extern NSString *const SVRSolverTextAttachmentStyleUserInterface;
 
+extern NSString *const SVRSolverTextStyleMathFont;
+extern NSString *const SVRSolverTextStyleOtherFont;
+extern NSString *const SVRSolverTextStyleOtherColor;
+extern NSString *const SVRSolverTextStyleOperandColor;
+extern NSString *const SVRSolverTextStyleOperatorColor;
+extern NSString *const SVRSolverTextStyleBracketColor;
+
 // MARK: Enumeration Helper Functions
 
 XPAttributedStringKey XPAttributedStringKeyForTag(SVRSolverTag tag);
@@ -178,6 +188,7 @@ NSString             *SVRSolverDebugDescriptionForError(SVRCalculationError erro
 -(SVRSolverTextAttachmentStyles)SVR_stylesForSolution;
 -(SVRSolverTextAttachmentStyles)SVR_stylesForPreviousSolution;
 -(SVRSolverTextAttachmentStyles)SVR_stylesForError;
+-(SVRSolverTextStyles)SVR_stylesForText;
 -(SVRSolverTextAttachmentStyles)__stylesWithToDrawFont:(NSFont*)toDrawFont
                                            neighborFont:(NSFont*)neighborFont
                                             toDrawColor:(NSColor*)toDrawColor

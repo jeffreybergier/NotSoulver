@@ -40,6 +40,7 @@
   mm_unretain NSDictionary *__TESTING_stylesForSolution;
   mm_unretain NSDictionary *__TESTING_stylesForPreviousSolution;
   mm_unretain NSDictionary *__TESTING_stylesForError;
+  mm_unretain NSDictionary *__TESTING_stylesForText;
 }
 
 // MARK: Properties

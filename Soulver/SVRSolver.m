@@ -67,7 +67,8 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
 +(void)solveAttributedString:(NSMutableAttributedString*)input
               solutionStyles:(SVRSolverTextAttachmentStyles)solutionStyles
       previousSolutionStyles:(SVRSolverTextAttachmentStyles)previousSolutionStyles
-                 errorStyles:(SVRSolverTextAttachmentStyles)errorStyles;
+                 errorStyles:(SVRSolverTextAttachmentStyles)errorStyles
+                  textStyles:(SVRSolverTextStyles)textStyles;
 {
   XPUInteger inputLength = [[input string] length];
   XPUInteger outputLength;
@@ -79,7 +80,7 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
              solutionStyles:solutionStyles
      previousSolutionStyles:previousSolutionStyles
                 errorStyles:errorStyles];
-  [self __step5_styleAndTag:input];
+  [self __step5_styleAndTag:input styles:textStyles];
   outputLength = [[input string] length];
   if (inputLength != outputLength) {
     XPLogPause2(@"SVRSolver solveAttributedString: String changed length: %ld->%ld", inputLength, outputLength);
@@ -180,9 +181,10 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
                                               errorStyles:errorStyles];
 }
 
-+(void)__step5_styleAndTag:(NSMutableAttributedString*)input;
++(void)__step5_styleAndTag:(NSMutableAttributedString*)input
+                    styles:(SVRSolverTextStyles)styles;
 {
-  [SVRSolverStyler styleTaggedExpression:input];
+  [SVRSolverStyler styleTaggedExpression:input styles:styles];
 }
 
 @end
@@ -581,6 +583,13 @@ NSString *const SVRSolverTextAttachmentStyleNeighborFont  = @"SVRSolverTextAttac
 NSString *const SVRSolverTextAttachmentStyleBorder        = @"SVRSolverTextAttachmentStyleBorder";
 NSString *const SVRSolverTextAttachmentStyleUserInterface = @"SVRSolverTextAttachmentStyleUserInterface";
 
+NSString *const SVRSolverTextStyleMathFont      = @"SVRSolverTextStyleMathFont";
+NSString *const SVRSolverTextStyleOtherFont     = @"SVRSolverTextStyleOtherFont";
+NSString *const SVRSolverTextStyleOtherColor    = @"SVRSolverTextStyleOtherColor";
+NSString *const SVRSolverTextStyleOperandColor  = @"SVRSolverTextStyleOperandColor";
+NSString *const SVRSolverTextStyleOperatorColor = @"SVRSolverTextStyleOperatorColor";
+NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketColor";
+
 // MARK: NSUserDefaults Helper Methods
 
 @implementation NSUserDefaults (SVRSolverTextAttachmentStyles)
@@ -639,6 +648,45 @@ NSString *const SVRSolverTextAttachmentStyleUserInterface = @"SVRSolverTextAttac
                           toDrawColor:toDrawColor
                    userInterfaceStyle:userInterfaceStyle
                           borderStyle:borderStyle];
+}
+
+-(SVRSolverTextStyles)SVR_stylesForText;
+{
+  NSFont  *mathFont       = [self SVR_fontForTheme:SVRThemeFontMath];
+  NSFont  *otherTextFont  = [self SVR_fontForTheme:SVRThemeFontOther];
+  NSColor *otherTextColor = [self SVR_colorForTheme:SVRThemeColorOtherText];
+  NSColor *operandColor   = [self SVR_colorForTheme:SVRThemeColorOperand];
+  NSColor *operatorColor  = [self SVR_colorForTheme:SVRThemeColorOperator];
+  NSColor *bracketColor   = [self SVR_colorForTheme:SVRThemeColorBracket];
+  NSArray *keys;
+  NSArray *values;
+  
+  NSParameterAssert(mathFont);
+  NSParameterAssert(otherTextFont);
+  NSParameterAssert(otherTextColor);
+  NSParameterAssert(operandColor);
+  NSParameterAssert(operatorColor);
+  NSParameterAssert(bracketColor);
+  
+  values = [NSArray arrayWithObjects:
+            mathFont,
+            otherTextFont,
+            otherTextColor,
+            operandColor,
+            operatorColor,
+            bracketColor,
+            nil];
+  
+  keys = [NSArray arrayWithObjects:
+          SVRSolverTextStyleMathFont,
+          SVRSolverTextStyleOtherFont,
+          SVRSolverTextStyleOtherColor,
+          SVRSolverTextStyleOperandColor,
+          SVRSolverTextStyleOperatorColor,
+          SVRSolverTextStyleBracketColor,
+          nil];
+  
+  return [NSDictionary dictionaryWithObjects:values forKeys:keys];
 }
 
 -(SVRSolverTextAttachmentStyles)__stylesWithToDrawFont:(NSFont*)toDrawFont

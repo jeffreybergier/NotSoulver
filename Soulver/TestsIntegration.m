@@ -28,15 +28,11 @@
 //
 
 #import "TestsIntegration.h"
-#if TESTING==1
-#import "NSUserDefaults+Soulver.h"
-#endif
 
 void TestsIntegrationExecute(void)
 {
 #if TESTING==1
   NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
-  [[NSUserDefaults standardUserDefaults] SVR_configure];
   [SVRDocumentModelController executeTests];
   [pool release];
 #endif
@@ -88,6 +84,7 @@ void TestsIntegrationExecute(void)
   controller->__TESTING_stylesForSolution         = [NSDictionary new];
   controller->__TESTING_stylesForPreviousSolution = [NSDictionary new];
   controller->__TESTING_stylesForError            = [NSDictionary new];
+  controller->__TESTING_stylesForText             = [NSDictionary new];
   [controller loadDataRepresentation:diskData ofType:@"solv"];
   
   // MARK: Compare Representations
