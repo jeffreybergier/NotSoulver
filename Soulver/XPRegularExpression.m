@@ -174,8 +174,10 @@
 {
   XPUInteger index = 0;
   NSRange range = XPNotFoundRange;
-  if (count == 0) { return nil; }
+  
   self = [super init];
+  NSCParameterAssert(self);
+  
   _expression = [regularExpression retain];
   _ranges = [[NSMutableArray alloc] initWithCapacity:count];
   for (index = 0; index < count; index++) {
@@ -183,7 +185,8 @@
     if (XPIsNotFoundRange(range)) { break; }
     [_ranges addObject:[NSValue XP_valueWithRange:range]];
   }
-  if ([_ranges count] == 0) { return nil; }
+  
+  if ([_ranges count] == 0) { [self release]; return nil; }
   return self;
 }
 
