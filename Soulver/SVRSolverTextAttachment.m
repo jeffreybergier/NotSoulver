@@ -162,14 +162,14 @@
   return [[_toDrawAttributes retain] autorelease];
 }
 
--(id<SVRSolverTextAttachmentProtocol>)SVR_attachment;
+-(SVRSolverTextAttachment*)SVR_attachment;
 {
-  return (id<SVRSolverTextAttachmentProtocol>)[self attachment];
+  return (SVRSolverTextAttachment*)[self attachment];
 }
 
 // MARK: Init
 
--(id)initWithAttachment:(NSTextAttachment<SVRSolverTextAttachmentProtocol>*)attachment;
+-(id)initWithAttachment:(SVRSolverTextAttachment*)attachment;
 {
   self = [super init];
   [self setAttachment:attachment];
@@ -180,7 +180,7 @@
   return self;
 }
 
-+(id)cellWithAttachment:(NSTextAttachment<SVRSolverTextAttachmentProtocol>*)attachment;
++(id)cellWithAttachment:(SVRSolverTextAttachment*)attachment;
 {
   return [[[SVRSolverTextAttachmentCell alloc] initWithAttachment:attachment] autorelease];
 }

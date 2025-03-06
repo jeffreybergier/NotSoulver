@@ -99,7 +99,7 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
   NSCharacterSet *set = SVRSolverTextAttachmentCharacterSet;
   NSRange range = XPNotFoundRange;
   NSValue *next = nil;
-  id<SVRSolverTextAttachmentProtocol> attachment = nil;
+  SVRSolverTextAttachment *attachment = nil;
   NSEnumerator *e = [[input string] XP_enumeratorForCharactersInSet:set
                                                             options:NSBackwardsSearch];
   NSMutableAttributedString *output = [[input mutableCopy] autorelease];

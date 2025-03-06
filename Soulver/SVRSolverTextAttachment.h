@@ -31,18 +31,7 @@
 #import "SVRSolver.h"
 #import "XPCrossPlatform.h"
 
-@protocol SVRSolverTextAttachmentProtocol <NSObject>
-
--(NSString*)toDrawString;
--(NSFont*)toDrawFont;
--(NSColor*)toDrawColor;
--(NSFont*)neighorFont;
--(SVRSolverTextAttachmentBorderStyle)borderStyle;
--(XPUserInterfaceStyle)userInterfaceStyle;
-
-@end
-
-@interface SVRSolverTextAttachment: NSTextAttachment <SVRSolverTextAttachmentProtocol>
+@interface SVRSolverTextAttachment: NSTextAttachment
 {
   mm_retain NSString  *_toDrawString;
   mm_retain NSFont    *_toDrawFont;
@@ -76,11 +65,11 @@
 
 // MARK: Properties
 -(NSDictionary*)toDrawAttributes;
--(id<SVRSolverTextAttachmentProtocol>)SVR_attachment;
+-(SVRSolverTextAttachment*)SVR_attachment;
 
 // MARK: Init
--(id)initWithAttachment:(NSTextAttachment<SVRSolverTextAttachmentProtocol>*)attachment;
-+(id)cellWithAttachment:(NSTextAttachment<SVRSolverTextAttachmentProtocol>*)attachment;
+-(id)initWithAttachment:(SVRSolverTextAttachment*)attachment;
++(id)cellWithAttachment:(SVRSolverTextAttachment*)attachment;
 
 // MARK: Custom Drawing
 +(NSDictionary*)toDrawAttributesWithFont:(NSFont*)font
