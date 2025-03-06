@@ -151,6 +151,7 @@ NSArray* XPRunOpenPanel(void)
    usingLongestEffectiveRange:(BOOL)usesLongest;
 {
   self = [super init];
+  NSCParameterAssert(self);
   _key = [key retain];
   _string = [attributedString copy];
   _index = 0;
@@ -233,6 +234,7 @@ NSArray* XPRunOpenPanel(void)
 -(id)initWithString:(NSString*)string characterSet:(NSCharacterSet*)aSet options:(XPStringCompareOptions)mask;
 {
   self = [super init];
+  NSCParameterAssert(self);
   _string = [string retain];
   _set = [aSet retain];
   _options = mask;

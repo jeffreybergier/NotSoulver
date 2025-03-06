@@ -47,6 +47,7 @@
 -(id)initWithContentsOfFile:(NSString*)fileName;
 {
   self = [super initWithContentsOfFile:fileName ofType:@"solv"];
+  NSCParameterAssert(self);
   return self;
 }
 

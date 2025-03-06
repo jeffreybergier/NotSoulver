@@ -35,13 +35,14 @@
 {
   BOOL isCompiled = NO;
   self = [super init];
+  NSCParameterAssert(self);
   
   _pattern = [pattern copy];
   _options = options;
   
   isCompiled = slre_compile(&_engine, [_pattern XP_UTF8String]);
   NSAssert2(isCompiled, @"%@ Failed to compile pattern: %@", self, pattern);
-  if (!isCompiled) { return nil; }
+  if (!isCompiled) { [self release]; return nil; }
   
   return self;
 }

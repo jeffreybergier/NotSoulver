@@ -356,6 +356,7 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
 -(id)initWithErrorPtr:(SVRCalculationErrorPointer)errorPtr;
 {
   self = [super init];
+  NSCParameterAssert(self);
   _errorPtr = errorPtr;
   return self;
 }

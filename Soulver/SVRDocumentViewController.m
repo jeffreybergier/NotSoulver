@@ -39,6 +39,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 -(id)init;
 {
   self = [super init];
+  NSCParameterAssert(self);
   _modelController = [[SVRDocumentModelController alloc] init];
   _textView = nil;
   return self;

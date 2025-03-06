@@ -37,6 +37,7 @@
 -(id)init;
 {
   self = [super init];
+  NSCParameterAssert(self);
   _openDocuments = [NSMutableSet new];
   _accessoryWindowsOwner = nil; // Set in applicationDidFinishLaunching:
   return self;

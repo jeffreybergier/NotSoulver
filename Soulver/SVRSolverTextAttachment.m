@@ -69,6 +69,7 @@
   NSFileWrapper *wrapper = [[[NSFileWrapper alloc] init] autorelease];
   
   self = [super initWithFileWrapper:wrapper];
+  NSCParameterAssert(self);
   
   _toDrawString = [stringToDraw retain];
   _toDrawFont   = [[styles objectForKey:SVRSolverTextAttachmentStyleToDrawFont] retain];
@@ -175,11 +176,10 @@
 -(id)initWithAttachment:(SVRSolverTextAttachment*)attachment;
 {
   self = [super init];
+  NSCParameterAssert(self);
   [self setAttachment:attachment];
-  _toDrawAttributes = [
-    [SVRSolverTextAttachmentCell toDrawAttributesWithFont:[attachment toDrawFont]
-                                                    color:[attachment toDrawColor]]
-    retain];
+  _toDrawAttributes = [[SVRSolverTextAttachmentCell toDrawAttributesWithFont:[attachment toDrawFont]
+                                                                       color:[attachment toDrawColor]] retain];
   return self;
 }
 

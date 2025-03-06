@@ -58,6 +58,8 @@
 -(id)init;
 {
   self = [super init];
+  NSCParameterAssert(self);
+  
   _model = [NSTextStorage new];
   _dataCache = [NSMutableDictionary new];
   _textView = nil;
