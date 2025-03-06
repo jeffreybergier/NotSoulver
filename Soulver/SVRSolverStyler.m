@@ -48,12 +48,12 @@
   NSColor *operatorColor  = [styles objectForKey:SVRSolverTextStyleOperatorColor];
   NSColor *bracketColor   = [styles objectForKey:SVRSolverTextStyleBracketColor];
 
-  NSParameterAssert(mathFont);
-  NSParameterAssert(otherTextFont);
-  NSParameterAssert(otherTextColor);
-  NSParameterAssert(operandColor);
-  NSParameterAssert(operatorColor);
-  NSParameterAssert(bracketColor);
+  NSCParameterAssert(mathFont);
+  NSCParameterAssert(otherTextFont);
+  NSCParameterAssert(otherTextColor);
+  NSCParameterAssert(operandColor);
+  NSCParameterAssert(operatorColor);
+  NSCParameterAssert(bracketColor);
   
   // Give everything default appearance
   [input addAttribute:NSFontAttributeName

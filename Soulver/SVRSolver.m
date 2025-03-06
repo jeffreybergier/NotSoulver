@@ -661,12 +661,12 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
   NSArray *keys;
   NSArray *values;
   
-  NSParameterAssert(mathFont);
-  NSParameterAssert(otherTextFont);
-  NSParameterAssert(otherTextColor);
-  NSParameterAssert(operandColor);
-  NSParameterAssert(operatorColor);
-  NSParameterAssert(bracketColor);
+  NSCParameterAssert(mathFont);
+  NSCParameterAssert(otherTextFont);
+  NSCParameterAssert(otherTextColor);
+  NSCParameterAssert(operandColor);
+  NSCParameterAssert(operatorColor);
+  NSCParameterAssert(bracketColor);
   
   values = [NSArray arrayWithObjects:
             mathFont,
@@ -698,9 +698,9 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
   NSArray *values;
   NSArray *keys;
   
-  NSParameterAssert(toDrawFont);
-  NSParameterAssert(neighborFont);
-  NSParameterAssert(toDrawColor);
+  NSCParameterAssert(toDrawFont);
+  NSCParameterAssert(neighborFont);
+  NSCParameterAssert(toDrawColor);
   
   values = [NSArray arrayWithObjects:
             toDrawFont,

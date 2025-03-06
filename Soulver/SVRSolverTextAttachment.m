@@ -74,15 +74,15 @@
   _toDrawFont   = [[styles objectForKey:SVRSolverTextAttachmentStyleToDrawFont] retain];
   _toDrawColor  = [[styles objectForKey:SVRSolverTextAttachmentStyleToDrawColor] retain];
   _neighborFont = [[styles objectForKey:SVRSolverTextAttachmentStyleNeighborFont] retain];
-  _borderStyle  = (SVRSolverTextAttachmentBorderStyle)[borderStyleNumber intValue];
-  _userInterfaceStyle = (XPUserInterfaceStyle)[userInterfaceStyleNumber intValue];
+  _borderStyle  = (SVRSolverTextAttachmentBorderStyle)[borderStyleNumber XP_integerValue];
+  _userInterfaceStyle  = (XPUserInterfaceStyle)[userInterfaceStyleNumber XP_integerValue];
   
-  NSParameterAssert(_toDrawString);
-  NSParameterAssert(_toDrawFont);
-  NSParameterAssert(_toDrawColor);
-  NSParameterAssert(_neighborFont);
-  NSParameterAssert(borderStyleNumber != nil);
-  NSParameterAssert(userInterfaceStyleNumber != nil);
+  NSCParameterAssert(_toDrawString);
+  NSCParameterAssert(_toDrawFont);
+  NSCParameterAssert(_toDrawColor);
+  NSCParameterAssert(_neighborFont);
+  NSCParameterAssert(borderStyleNumber != nil);
+  NSCParameterAssert(userInterfaceStyleNumber != nil);
   
   [wrapper setPreferredFilename:_toDrawString];
   [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
@@ -93,7 +93,8 @@
 +(id)attachmentWithSolution:(NSDecimalNumber*)solution
                      styles:(SVRSolverTextAttachmentStyles)styles;
 {
-  return [[[SVRSolverTextAttachment alloc] initWithString:[@"=" stringByAppendingString:[solution description]]
+  NSString *toDrawString = [@"=" stringByAppendingString:[solution description]];
+  return [[[SVRSolverTextAttachment alloc] initWithString:toDrawString
                                                    styles:styles] autorelease];
 }
 
@@ -101,15 +102,17 @@
                            operator:(SVRSolverOperator)operator
                              styles:(SVRSolverTextAttachmentStyles)styles;
 {
-  return [[[SVRSolverTextAttachment alloc] initWithString:[[previousSolution description] stringByAppendingString:RawStringForOperator(operator)]
+  NSString *toDrawString = [[previousSolution description] stringByAppendingString:RawStringForOperator(operator)];
+  return [[[SVRSolverTextAttachment alloc] initWithString:toDrawString
                                                    styles:styles] autorelease];
 }
 
 +(id)attachmentWithError:(SVRCalculationError)error
                   styles:(SVRSolverTextAttachmentStyles)styles;
 {
-  return [[[SVRSolverTextAttachment alloc] initWithString:[@"=" stringByAppendingString:SVRSolverDescriptionForError(error)]
-                                                                                 styles:styles] autorelease];
+  NSString *toDrawString = [@"=" stringByAppendingString:SVRSolverDescriptionForError(error)];
+  return [[[SVRSolverTextAttachment alloc] initWithString:toDrawString
+                                                   styles:styles] autorelease];
 }
 
 // MARK: Dealloc
