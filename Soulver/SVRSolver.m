@@ -613,10 +613,10 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
       break;
   }
   
-  return [self __stylesWithToDrawFont:toDrawFont
-                         neighborFont:neighborFont
-                          toDrawColor:toDrawColor
-                          borderStyle:borderStyle];
+  return [NSUserDefaults __stylesWithToDrawFont:toDrawFont
+                                   neighborFont:neighborFont
+                                    toDrawColor:toDrawColor
+                                    borderStyle:borderStyle];
 }
 
 -(SVRSolverTextAttachmentStyles)SVR_stylesForPreviousSolution;
@@ -626,10 +626,10 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
   NSFont  *neighborFont = toDrawFont;
   SVRSolverTextAttachmentBorderStyle borderStyle = SVRSolverTextAttachmentBorderStyleColored;
   
-  return [self __stylesWithToDrawFont:toDrawFont
-                         neighborFont:neighborFont
-                          toDrawColor:toDrawColor
-                          borderStyle:borderStyle];
+  return [NSUserDefaults __stylesWithToDrawFont:toDrawFont
+                                   neighborFont:neighborFont
+                                    toDrawColor:toDrawColor
+                                    borderStyle:borderStyle];
 }
 
 -(SVRSolverTextAttachmentStyles)SVR_stylesForError;
@@ -639,10 +639,10 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
   NSFont  *neighborFont = [self SVR_fontForTheme:SVRThemeFontMath];
   SVRSolverTextAttachmentBorderStyle borderStyle = SVRSolverTextAttachmentBorderStyleRecessedGray;
   
-  return [self __stylesWithToDrawFont:toDrawFont
-                         neighborFont:neighborFont
-                          toDrawColor:toDrawColor
-                          borderStyle:borderStyle];
+  return [NSUserDefaults __stylesWithToDrawFont:toDrawFont
+                                   neighborFont:neighborFont
+                                    toDrawColor:toDrawColor
+                                    borderStyle:borderStyle];
 }
 
 -(SVRSolverTextStyles)SVR_stylesForText;
@@ -684,7 +684,7 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
   return [NSDictionary dictionaryWithObjects:values forKeys:keys];
 }
 
--(SVRSolverTextAttachmentStyles)__stylesWithToDrawFont:(NSFont*)toDrawFont
++(SVRSolverTextAttachmentStyles)__stylesWithToDrawFont:(NSFont*)toDrawFont
                                           neighborFont:(NSFont*)neighborFont
                                            toDrawColor:(NSColor*)toDrawColor
                                            borderStyle:(SVRSolverTextAttachmentBorderStyle)borderStyle;

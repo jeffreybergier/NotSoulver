@@ -188,7 +188,7 @@ NSString             *SVRSolverDebugDescriptionForError(SVRCalculationError erro
 -(SVRSolverTextAttachmentStyles)SVR_stylesForPreviousSolution;
 -(SVRSolverTextAttachmentStyles)SVR_stylesForError;
 -(SVRSolverTextStyles)SVR_stylesForText;
--(SVRSolverTextAttachmentStyles)__stylesWithToDrawFont:(NSFont*)toDrawFont
++(SVRSolverTextAttachmentStyles)__stylesWithToDrawFont:(NSFont*)toDrawFont
                                           neighborFont:(NSFont*)neighborFont
                                            toDrawColor:(NSColor*)toDrawColor
                                            borderStyle:(SVRSolverTextAttachmentBorderStyle)borderStyle;

@@ -59,10 +59,10 @@ void TestsIntegrationExecute(void)
       - This version has all the attributes but it has equal signs and solutions embedded in the text
    
    ToDo List
-   1) Fix NSUserDefaults so that during testing it always uses default settings
-   2) Move the copyUnsolved and copySolved to the model controller
-   3) Make the 4 versions of the file and bundle them
-   4) Do the comparisons in the method below
+   1) [x] Fix NSUserDefaults so that during testing it always uses default settings
+   2) [ ] Move the copyUnsolved and copySolved to the model controller
+   3) [ ] Make the 4 versions of the file and bundle them
+   4) [ ] Do the comparisons in the method below
    */
 
   
@@ -81,16 +81,91 @@ void TestsIntegrationExecute(void)
   // XPTestNotNIL(unsolvedData);
   // XPTestNotNIL(solvedData);
   // TODO: Come up with styles for tests
-  controller->__TESTING_stylesForSolution         = [NSDictionary new];
-  controller->__TESTING_stylesForPreviousSolution = [NSDictionary new];
-  controller->__TESTING_stylesForError            = [NSDictionary new];
-  controller->__TESTING_stylesForText             = [NSDictionary new];
+  controller->__TESTING_stylesForSolution         = [self stylesForSolution];
+  controller->__TESTING_stylesForPreviousSolution = [self stylesForPreviousSolution];
+  controller->__TESTING_stylesForError            = [self stylesForError];
+  controller->__TESTING_stylesForText             = [self stylesForText];
   [controller loadDataRepresentation:diskData ofType:@"solv"];
   
   // MARK: Compare Representations
   XPTestObject(diskData, [controller dataRepresentationOfType:@"solv"]);
   
   NSLog(@"%@ Integration Tests: PASSED", self);
+}
+
++(SVRSolverTextAttachmentStyles)stylesForSolution;
+{
+  NSFont  *toDrawFont   = [NSFont fontWithName:@"Courier" size:12];
+  NSColor *toDrawColor  = [NSColor blueColor];
+  NSFont  *neighborFont = [NSFont fontWithName:@"Courier" size:12];
+  SVRSolverTextAttachmentBorderStyle borderStyle = SVRSolverTextAttachmentBorderStyleRecessedWhite;
+  
+  return [NSUserDefaults __stylesWithToDrawFont:toDrawFont
+                                   neighborFont:neighborFont
+                                    toDrawColor:toDrawColor
+                                    borderStyle:borderStyle];
+}
++(SVRSolverTextAttachmentStyles)stylesForPreviousSolution;
+{
+  NSFont  *toDrawFont   = [NSFont fontWithName:@"Courier" size:8];
+  NSColor *toDrawColor  = [NSColor greenColor];
+  NSFont  *neighborFont = [NSFont fontWithName:@"Helvetica" size:14];
+  SVRSolverTextAttachmentBorderStyle borderStyle = SVRSolverTextAttachmentBorderStyleColored;
+  
+  return [NSUserDefaults __stylesWithToDrawFont:toDrawFont
+                                   neighborFont:neighborFont
+                                    toDrawColor:toDrawColor
+                                    borderStyle:borderStyle];
+}
++(SVRSolverTextAttachmentStyles)stylesForError;
+{
+  NSFont  *toDrawFont   = [NSFont fontWithName:@"Helvetica" size:10];
+  NSColor *toDrawColor  = [NSColor redColor];
+  NSFont  *neighborFont = [NSFont fontWithName:@"Courier" size:12];
+  SVRSolverTextAttachmentBorderStyle borderStyle = SVRSolverTextAttachmentBorderStyleColored;
+  
+  return [NSUserDefaults __stylesWithToDrawFont:toDrawFont
+                                   neighborFont:neighborFont
+                                    toDrawColor:toDrawColor
+                                    borderStyle:borderStyle];
+}
++(SVRSolverTextStyles)stylesForText;
+{
+  NSFont  *mathFont       = [NSFont fontWithName:@"Courier" size:14];
+  NSFont  *otherTextFont  = [NSFont fontWithName:@"Helvetica" size:12];
+  NSColor *otherTextColor = [NSColor grayColor];
+  NSColor *operandColor   = [NSColor yellowColor];
+  NSColor *operatorColor  = [NSColor blueColor];
+  NSColor *bracketColor   = [NSColor yellowColor];
+  NSArray *keys;
+  NSArray *values;
+  
+  NSCParameterAssert(mathFont);
+  NSCParameterAssert(otherTextFont);
+  NSCParameterAssert(otherTextColor);
+  NSCParameterAssert(operandColor);
+  NSCParameterAssert(operatorColor);
+  NSCParameterAssert(bracketColor);
+  
+  values = [NSArray arrayWithObjects:
+            mathFont,
+            otherTextFont,
+            otherTextColor,
+            operandColor,
+            operatorColor,
+            bracketColor,
+            nil];
+  
+  keys = [NSArray arrayWithObjects:
+          SVRSolverTextStyleMathFont,
+          SVRSolverTextStyleOtherFont,
+          SVRSolverTextStyleOtherColor,
+          SVRSolverTextStyleOperandColor,
+          SVRSolverTextStyleOperatorColor,
+          SVRSolverTextStyleBracketColor,
+          nil];
+  
+  return [NSDictionary dictionaryWithObjects:values forKeys:keys];
 }
 
 @end

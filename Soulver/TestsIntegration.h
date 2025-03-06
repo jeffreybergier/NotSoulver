@@ -32,9 +32,14 @@ void TestsIntegrationExecute(void);
 #if TESTING==1
 
 #import "SVRDocumentModelController.h"
+#import "SVRSolver.h"
 
 @interface SVRDocumentModelController (TestsIntegration)
 +(void)executeTests;
++(SVRSolverTextAttachmentStyles)stylesForSolution;
++(SVRSolverTextAttachmentStyles)stylesForPreviousSolution;
++(SVRSolverTextAttachmentStyles)stylesForError;
++(SVRSolverTextStyles)stylesForText;
 @end
 
 #endif
