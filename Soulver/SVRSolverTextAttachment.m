@@ -56,16 +56,10 @@
   return _borderStyle;
 }
 
--(XPUserInterfaceStyle)userInterfaceStyle;
-{
-  return _userInterfaceStyle;
-}
-
 -(id)initWithString:(NSString*)stringToDraw
              styles:(SVRSolverTextAttachmentStyles)styles;
 {
   NSNumber *borderStyleNumber        = [styles objectForKey:SVRSolverTextAttachmentStyleBorder];
-  NSNumber *userInterfaceStyleNumber = [styles objectForKey:SVRSolverTextAttachmentStyleUserInterface];
   NSFileWrapper *wrapper = [[[NSFileWrapper alloc] init] autorelease];
   
   self = [super initWithFileWrapper:wrapper];
@@ -76,14 +70,12 @@
   _toDrawColor  = [[styles objectForKey:SVRSolverTextAttachmentStyleToDrawColor] retain];
   _neighborFont = [[styles objectForKey:SVRSolverTextAttachmentStyleNeighborFont] retain];
   _borderStyle  = (SVRSolverTextAttachmentBorderStyle)[borderStyleNumber XP_integerValue];
-  _userInterfaceStyle  = (XPUserInterfaceStyle)[userInterfaceStyleNumber XP_integerValue];
   
   NSCParameterAssert(_toDrawString);
   NSCParameterAssert(_toDrawFont);
   NSCParameterAssert(_toDrawColor);
   NSCParameterAssert(_neighborFont);
   NSCParameterAssert(borderStyleNumber != nil);
-  NSCParameterAssert(userInterfaceStyleNumber != nil);
   
   [wrapper setPreferredFilename:_toDrawString];
   [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
@@ -133,29 +125,6 @@
 }
 
 @end
-
-// TODO: SVRSolverSolutionTextAttachmentBorderStyle
-/*
-+(SVRSolverTextAttachmentBorderStyle)borderStyle;
-{
-  switch ([[NSUserDefaults standardUserDefaults] SVR_userInterfaceStyle]) {
-    case XPUserInterfaceStyleDark:
-      return SVRSolverTextAttachmentBorderStyleRecessedGray;
-    case XPUserInterfaceStyleLight:
-    case XPUserInterfaceStyleUnspecified:
-    default:
-      return SVRSolverTextAttachmentBorderStyleRecessedWhite;
-  }
-}
-*/
-
-// TODO: SVRSolverPreviousSolutionTextAttachmentBorderStyle
-/*
-+(SVRSolverTextAttachmentBorderStyle)borderStyle;
-{
-  return SVRSolverTextAttachmentBorderStyleColored;
-}
-*/
 
 @implementation SVRSolverTextAttachmentCell
 

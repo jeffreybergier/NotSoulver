@@ -131,7 +131,6 @@ extern NSString *const SVRSolverTextAttachmentStyleToDrawFont;
 extern NSString *const SVRSolverTextAttachmentStyleToDrawColor;
 extern NSString *const SVRSolverTextAttachmentStyleNeighborFont;
 extern NSString *const SVRSolverTextAttachmentStyleBorder;
-extern NSString *const SVRSolverTextAttachmentStyleUserInterface;
 
 extern NSString *const SVRSolverTextStyleMathFont;
 extern NSString *const SVRSolverTextStyleOtherFont;
@@ -190,10 +189,9 @@ NSString             *SVRSolverDebugDescriptionForError(SVRCalculationError erro
 -(SVRSolverTextAttachmentStyles)SVR_stylesForError;
 -(SVRSolverTextStyles)SVR_stylesForText;
 -(SVRSolverTextAttachmentStyles)__stylesWithToDrawFont:(NSFont*)toDrawFont
-                                           neighborFont:(NSFont*)neighborFont
-                                            toDrawColor:(NSColor*)toDrawColor
-                                     userInterfaceStyle:(XPUserInterfaceStyle)userInterfaceStyle
-                                            borderStyle:(SVRSolverTextAttachmentBorderStyle)borderStyle;
+                                          neighborFont:(NSFont*)neighborFont
+                                           toDrawColor:(NSColor*)toDrawColor
+                                           borderStyle:(SVRSolverTextAttachmentBorderStyle)borderStyle;
 
 
 @end

@@ -582,7 +582,6 @@ NSString *const SVRSolverTextAttachmentStyleToDrawFont    = @"SVRSolverTextAttac
 NSString *const SVRSolverTextAttachmentStyleToDrawColor   = @"SVRSolverTextAttachmentStyleToDrawColor";
 NSString *const SVRSolverTextAttachmentStyleNeighborFont  = @"SVRSolverTextAttachmentStyleNeighborFont";
 NSString *const SVRSolverTextAttachmentStyleBorder        = @"SVRSolverTextAttachmentStyleBorder";
-NSString *const SVRSolverTextAttachmentStyleUserInterface = @"SVRSolverTextAttachmentStyleUserInterface";
 
 NSString *const SVRSolverTextStyleMathFont      = @"SVRSolverTextStyleMathFont";
 NSString *const SVRSolverTextStyleOtherFont     = @"SVRSolverTextStyleOtherFont";
@@ -617,7 +616,6 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
   return [self __stylesWithToDrawFont:toDrawFont
                          neighborFont:neighborFont
                           toDrawColor:toDrawColor
-                   userInterfaceStyle:userInterfaceStyle
                           borderStyle:borderStyle];
 }
 
@@ -626,13 +624,11 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
   NSFont  *toDrawFont   = [self SVR_fontForTheme:SVRThemeFontMath];
   NSColor *toDrawColor  = [self SVR_colorForTheme:SVRThemeColorOperator];
   NSFont  *neighborFont = toDrawFont;
-  XPUserInterfaceStyle userInterfaceStyle = [self SVR_userInterfaceStyle];
   SVRSolverTextAttachmentBorderStyle borderStyle = SVRSolverTextAttachmentBorderStyleColored;
   
   return [self __stylesWithToDrawFont:toDrawFont
                          neighborFont:neighborFont
                           toDrawColor:toDrawColor
-                   userInterfaceStyle:userInterfaceStyle
                           borderStyle:borderStyle];
 }
 
@@ -641,13 +637,11 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
   NSFont  *toDrawFont   = [self SVR_fontForTheme:SVRThemeFontError];
   NSColor *toDrawColor  = [self SVR_colorForTheme:SVRThemeColorErrorText];
   NSFont  *neighborFont = [self SVR_fontForTheme:SVRThemeFontMath];
-  XPUserInterfaceStyle userInterfaceStyle = [self SVR_userInterfaceStyle];
   SVRSolverTextAttachmentBorderStyle borderStyle = SVRSolverTextAttachmentBorderStyleRecessedGray;
   
   return [self __stylesWithToDrawFont:toDrawFont
                          neighborFont:neighborFont
                           toDrawColor:toDrawColor
-                   userInterfaceStyle:userInterfaceStyle
                           borderStyle:borderStyle];
 }
 
@@ -691,10 +685,9 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
 }
 
 -(SVRSolverTextAttachmentStyles)__stylesWithToDrawFont:(NSFont*)toDrawFont
-                                           neighborFont:(NSFont*)neighborFont
-                                            toDrawColor:(NSColor*)toDrawColor
-                                     userInterfaceStyle:(XPUserInterfaceStyle)userInterfaceStyle
-                                            borderStyle:(SVRSolverTextAttachmentBorderStyle)borderStyle;
+                                          neighborFont:(NSFont*)neighborFont
+                                           toDrawColor:(NSColor*)toDrawColor
+                                           borderStyle:(SVRSolverTextAttachmentBorderStyle)borderStyle;
 {
   NSArray *values;
   NSArray *keys;
@@ -708,7 +701,6 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
             toDrawColor,
             neighborFont,
             [NSNumber XP_numberWithInteger:borderStyle],
-            [NSNumber XP_numberWithInteger:userInterfaceStyle],
             nil];
   
   keys = [NSArray arrayWithObjects:
@@ -716,7 +708,6 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
           SVRSolverTextAttachmentStyleToDrawColor,
           SVRSolverTextAttachmentStyleNeighborFont,
           SVRSolverTextAttachmentStyleBorder,
-          SVRSolverTextAttachmentStyleUserInterface,
           nil];
   
   return [NSDictionary dictionaryWithObjects:values forKeys:keys];

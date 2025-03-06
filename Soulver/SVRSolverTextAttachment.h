@@ -38,7 +38,6 @@
   mm_retain NSColor   *_toDrawColor;
   mm_retain NSFont    *_neighborFont;
   SVRSolverTextAttachmentBorderStyle _borderStyle;
-  XPUserInterfaceStyle _userInterfaceStyle;
 }
 
 -(NSString*)toDrawString;
@@ -46,7 +45,6 @@
 -(NSColor*)toDrawColor;
 -(NSFont*)neighorFont;
 -(SVRSolverTextAttachmentBorderStyle)borderStyle;
--(XPUserInterfaceStyle)userInterfaceStyle;
 
 -(id)initWithString:(NSString*)stringToDraw styles:(SVRSolverTextAttachmentStyles)styles;
 +(id)attachmentWithSolution:(NSDecimalNumber*)solution styles:(SVRSolverTextAttachmentStyles)styles;
