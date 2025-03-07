@@ -31,6 +31,11 @@
 #import "NSUserDefaults+Soulver.h"
 #import "SVRSolver.h"
 
+NSString *const SVRDocumentModelRepDisk     = @"SVRDocumentModelRepDisk";
+NSString *const SVRDocumentModelRepDisplay  = @"SVRDocumentModelRepDisplay";
+NSString *const SVRDocumentModelRepSolved   = @"SVRDocumentModelRepSolved";
+NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
+
 @implementation SVRDocumentModelController
 
 // MARK: Properties
@@ -74,7 +79,7 @@
 }
 
 // MARK: NSDocument Support
--(NSData*)dataRepresentationOfType:(NSString*)type;
+-(NSData*)dataRepresentationOfType:(SVRDocumentModelRep)type;
 {
   NSMutableDictionary *dataCache = [self dataCache];
   NSString *key = [[self model] string];
@@ -95,7 +100,7 @@
   }
 }
 
--(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
+-(BOOL)loadDataRepresentation:(NSData*)data ofType:(SVRDocumentModelRep)type;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   BOOL success = NO;

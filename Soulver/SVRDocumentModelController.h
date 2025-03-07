@@ -30,6 +30,21 @@
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
 
+/// A version of the data for saving to the disk
+/// This version is plain text and unsolved
+extern NSString *const SVRDocumentModelRepDisk;
+/// A version of the data that is displayed in the NSTextView
+/// This version is styled and has NSTextAttachments for solutions
+extern NSString *const SVRDocumentModelRepDisplay;
+/// A version that is used for the pasteboard
+/// This version is styled and remove the NSTextAttachments and replaces them with normal text that shows the solutions
+extern NSString *const SVRDocumentModelRepSolved;
+/// A version that is used for the pasteboard when the user chooses a custom copy command
+/// This version is styled and unsolved
+extern NSString *const SVRDocumentModelRepUnsolved;
+
+typedef NSString* SVRDocumentModelRep;
+
 @interface SVRDocumentModelController: NSObject
 {
   mm_new      NSTextStorage       *_model;
@@ -53,8 +68,9 @@
 -(id)init;
 
 // MARK: NSDocument Support
--(NSData*)dataRepresentationOfType:(NSString*)type;
--(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
+-(NSData*)dataRepresentationOfType:(SVRDocumentModelRep)type;
+/// This method ignores of type parameter and always assumes `SVRDocumentModelRepDisk`
+-(BOOL)loadDataRepresentation:(NSData*)data ofType:(SVRDocumentModelRep)type;
 
 // MARK: Usage
 -(void)appendCharacter:(NSString*)aString;
