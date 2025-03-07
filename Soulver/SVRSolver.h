@@ -188,10 +188,21 @@ NSString             *SVRSolverDebugDescriptionForError(SVRCalculationError erro
 -(SVRSolverTextAttachmentStyles)SVR_stylesForPreviousSolution;
 -(SVRSolverTextAttachmentStyles)SVR_stylesForError;
 -(SVRSolverTextStyles)SVR_stylesForText;
-+(SVRSolverTextAttachmentStyles)__stylesWithToDrawFont:(NSFont*)toDrawFont
-                                          neighborFont:(NSFont*)neighborFont
-                                           toDrawColor:(NSColor*)toDrawColor
-                                           borderStyle:(SVRSolverTextAttachmentBorderStyle)borderStyle;
 
+@end
+
+@interface NSDictionary (SVRSolverTextAttachmentStyles)
+
++(SVRSolverTextAttachmentStyles)__SVR_stylesWithToDrawFont:(NSFont*)toDrawFont
+                                              neighborFont:(NSFont*)neighborFont
+                                               toDrawColor:(NSColor*)toDrawColor
+                                               borderStyle:(SVRSolverTextAttachmentBorderStyle)borderStyle;
+
++(SVRSolverTextAttachmentStyles)__SVR_stylesWithMathFont:(NSFont*)mathFont
+                                            neighborFont:(NSFont*)otherTextFont
+                                          otherTextColor:(NSColor*)otherTextColor
+                                            operandColor:(NSColor*)operandColor
+                                           operatorColor:(NSColor*)operatorColor
+                                            bracketColor:(NSColor*)bracketColor;
 
 @end

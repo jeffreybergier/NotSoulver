@@ -100,10 +100,10 @@ void TestsIntegrationExecute(void)
   NSFont  *neighborFont = [NSFont fontWithName:@"Courier" size:12];
   SVRSolverTextAttachmentBorderStyle borderStyle = SVRSolverTextAttachmentBorderStyleRecessedWhite;
   
-  return [NSUserDefaults __stylesWithToDrawFont:toDrawFont
-                                   neighborFont:neighborFont
-                                    toDrawColor:toDrawColor
-                                    borderStyle:borderStyle];
+  return [NSDictionary __SVR_stylesWithToDrawFont:toDrawFont
+                                     neighborFont:neighborFont
+                                      toDrawColor:toDrawColor
+                                      borderStyle:borderStyle];
 }
 +(SVRSolverTextAttachmentStyles)stylesForPreviousSolution;
 {
@@ -112,10 +112,10 @@ void TestsIntegrationExecute(void)
   NSFont  *neighborFont = [NSFont fontWithName:@"Helvetica" size:14];
   SVRSolverTextAttachmentBorderStyle borderStyle = SVRSolverTextAttachmentBorderStyleColored;
   
-  return [NSUserDefaults __stylesWithToDrawFont:toDrawFont
-                                   neighborFont:neighborFont
-                                    toDrawColor:toDrawColor
-                                    borderStyle:borderStyle];
+  return [NSDictionary __SVR_stylesWithToDrawFont:toDrawFont
+                                     neighborFont:neighborFont
+                                      toDrawColor:toDrawColor
+                                      borderStyle:borderStyle];
 }
 +(SVRSolverTextAttachmentStyles)stylesForError;
 {
@@ -124,48 +124,26 @@ void TestsIntegrationExecute(void)
   NSFont  *neighborFont = [NSFont fontWithName:@"Courier" size:12];
   SVRSolverTextAttachmentBorderStyle borderStyle = SVRSolverTextAttachmentBorderStyleColored;
   
-  return [NSUserDefaults __stylesWithToDrawFont:toDrawFont
-                                   neighborFont:neighborFont
-                                    toDrawColor:toDrawColor
-                                    borderStyle:borderStyle];
+  return [NSDictionary __SVR_stylesWithToDrawFont:toDrawFont
+                                     neighborFont:neighborFont
+                                      toDrawColor:toDrawColor
+                                      borderStyle:borderStyle];
 }
 +(SVRSolverTextStyles)stylesForText;
 {
-  NSFont  *mathFont       = [NSFont fontWithName:@"Courier" size:14];
+  NSFont  *mathFont       = [NSFont fontWithName:@"Courier"   size:14];
   NSFont  *otherTextFont  = [NSFont fontWithName:@"Helvetica" size:12];
   NSColor *otherTextColor = [NSColor grayColor];
   NSColor *operandColor   = [NSColor yellowColor];
   NSColor *operatorColor  = [NSColor blueColor];
   NSColor *bracketColor   = [NSColor yellowColor];
-  NSArray *keys;
-  NSArray *values;
   
-  NSCParameterAssert(mathFont);
-  NSCParameterAssert(otherTextFont);
-  NSCParameterAssert(otherTextColor);
-  NSCParameterAssert(operandColor);
-  NSCParameterAssert(operatorColor);
-  NSCParameterAssert(bracketColor);
-  
-  values = [NSArray arrayWithObjects:
-            mathFont,
-            otherTextFont,
-            otherTextColor,
-            operandColor,
-            operatorColor,
-            bracketColor,
-            nil];
-  
-  keys = [NSArray arrayWithObjects:
-          SVRSolverTextStyleMathFont,
-          SVRSolverTextStyleOtherFont,
-          SVRSolverTextStyleOtherColor,
-          SVRSolverTextStyleOperandColor,
-          SVRSolverTextStyleOperatorColor,
-          SVRSolverTextStyleBracketColor,
-          nil];
-  
-  return [NSDictionary dictionaryWithObjects:values forKeys:keys];
+  return [NSDictionary __SVR_stylesWithMathFont:mathFont
+                                   neighborFont:otherTextFont
+                                 otherTextColor:otherTextColor
+                                   operandColor:operandColor
+                                  operatorColor:operatorColor
+                                   bracketColor:bracketColor];
 }
 
 @end
