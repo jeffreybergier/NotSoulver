@@ -222,6 +222,8 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   return NO;
 }
 
+// TODO: Convert this copy code to use model controller
+
 -(IBAction)cutUnsolved:(id)sender;
 {
   NSRange range = [[self textView] selectedRange];

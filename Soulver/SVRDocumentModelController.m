@@ -79,20 +79,25 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
 }
 
 // MARK: NSDocument Support
--(NSData*)dataRepresentationOfType:(SVRDocumentModelRep)type;
+-(NSData*)dataRepresentationOfType:(SVRDocumentModelRep)type withRange:(NSRange)range;
 {
   if ([type isEqualToString:SVRDocumentModelRepDisk]) {
-    return [self __dataRepresentationOfDiskType];
+    return [self __dataRepresentationOfDiskTypeWithRange:range];
   } else if ([type isEqualToString:SVRDocumentModelRepDisplay]) {
-    return [self __dataRepresentationOfDisplayType];
+    return [self __dataRepresentationOfDisplayTypeWithRange:range];
   } else if ([type isEqualToString:SVRDocumentModelRepSolved]) {
-    return [self __dataRepresentationOfSolvedType];
+    return [self __dataRepresentationOfSolvedTypeWithRange:range];
   } else if ([type isEqualToString:SVRDocumentModelRepUnsolved]) {
-    return [self __dataRepresentationOfUnsolvedType];
+    return [self __dataRepresentationOfUnsolvedTypeWithRange:range];
   } else {
     XPLogRaise1(@"Unknown Type: %@", type);
     return nil;
   }
+}
+
+-(NSData*)dataRepresentationOfType:(SVRDocumentModelRep)type;
+{
+  return [self dataRepresentationOfType:type withRange:XPNotFoundRange];
 }
 
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(SVRDocumentModelRep)type;
@@ -163,40 +168,73 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
 
 // MARK: Private
 
--(NSData*)__dataRepresentationOfDiskType;
+-(NSData*)__dataRepresentationOfDiskTypeWithRange:(NSRange)_range;
 {
-  NSMutableDictionary *dataCache = [self dataCache];
-  NSString *key = [[self model] string];
-  NSData *output = [dataCache objectForKey:key];
-  if (output) {
-    XPLogExtra1(@"%@ dataRepresentationOfType: Cache Hit", self);
-    return output;
-  } else {
+  NSMutableDictionary *dataCache = nil;
+  NSString *key = nil;
+  NSRange range = XPNotFoundRange;
+  NSAttributedString *input = nil;
+  NSData *output = nil;
+  if (XPIsNotFoundRange(_range)) {
+    // If no range provided, use fast path with caching
+    dataCache = [self dataCache];
+    key = [[self model] string];
+    output = [dataCache objectForKey:key];
+    if (output) {
+      XPLogExtra1(@"%@ __dataRepresentationOfDiskTypeWithRange: Cache Hit", self);
+      return output;
+    }
     if ([dataCache count] > 20) {
       XPLogDebug1(@"%@ dataRepresentationOfType: Cache Clear", self);
       [dataCache removeAllObjects];
     }
     XPLogExtra1(@"%@ dataRepresentationOfType: Cache Miss", self);
-    output = [[[SVRSolver replaceAttachmentsWithOriginalCharacters:[self model]] string]
-                              dataUsingEncoding:NSUTF8StringEncoding];
+    output = [[[SVRSolver replaceAttachmentsWithOriginalCharacters:[self model]] string] dataUsingEncoding:NSUTF8StringEncoding];
     [dataCache setObject:output forKey:key];
+    return output;
+  } else {
+    // If a range is provided, do the work slowly with no caching
+    range = _range;
+    input = [[self model] attributedSubstringFromRange:range];
+    output = [[[SVRSolver replaceAttachmentsWithOriginalCharacters:input] string] dataUsingEncoding:NSUTF8StringEncoding];
+    NSAssert(output, @"__dataRepresentationOfDiskTypeWithRange: NIL");
     return output;
   }
 }
 
--(NSData*)__dataRepresentationOfDisplayType;
+-(NSData*)__dataRepresentationOfDisplayTypeWithRange:(NSRange)_range;
 {
-  return nil;
+  NSRange range = XPIsNotFoundRange(_range)
+                ? NSMakeRange(0, [[self model] length])
+                : _range;
+  NSAttributedString *input = [[self model] attributedSubstringFromRange:range];
+  NSData *output = [input RTFFromRange:range documentAttributes:XPRTFDocumentAttributes];
+  NSAssert(output, @"__dataRepresentationOfDisplayTypeWithRange: NIL");
+  return output;
 }
 
--(NSData*)__dataRepresentationOfSolvedType;
+-(NSData*)__dataRepresentationOfSolvedTypeWithRange:(NSRange)_range;
 {
-  return nil;
+  NSRange range = XPIsNotFoundRange(_range)
+                ? NSMakeRange(0, [[self model] length])
+                : _range;
+  NSAttributedString *original = [[self model] attributedSubstringFromRange:range];
+  NSAttributedString *solved = [SVRSolver replaceAttachmentsWithStringValue:original];
+  NSData *output = [solved RTFFromRange:range documentAttributes:XPRTFDocumentAttributes];
+  NSAssert(output, @"__dataRepresentationOfSolvedTypeWithRange: NIL");
+  return output;
 }
 
--(NSData*)__dataRepresentationOfUnsolvedType;
+-(NSData*)__dataRepresentationOfUnsolvedTypeWithRange:(NSRange)_range;
 {
-  return nil;
+  NSRange range = XPIsNotFoundRange(_range)
+                ? NSMakeRange(0, [[self model] length])
+                : _range;
+  NSAttributedString *original = [[self model] attributedSubstringFromRange:range];
+  NSAttributedString *unsolved = [SVRSolver replaceAttachmentsWithOriginalCharacters:original];
+  NSData *output = [unsolved RTFFromRange:range documentAttributes:XPRTFDocumentAttributes];
+  NSAssert(output, @"__dataRepresentationOfUnsolvedTypeWithRange: NIL");
+  return output;
 }
 
 -(BOOL)__loadDataRepresentationOfDiskType:(NSData*)data;

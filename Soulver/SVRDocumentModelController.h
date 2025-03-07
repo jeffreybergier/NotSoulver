@@ -69,6 +69,7 @@ typedef NSString* SVRDocumentModelRep;
 
 // MARK: NSDocument Support
 -(NSData*)dataRepresentationOfType:(SVRDocumentModelRep)type;
+-(NSData*)dataRepresentationOfType:(SVRDocumentModelRep)type withRange:(NSRange)range;
 /// This method ignores of type parameter and always assumes `SVRDocumentModelRepDisk`
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(SVRDocumentModelRep)type;
 
@@ -81,10 +82,10 @@ typedef NSString* SVRDocumentModelRep;
 -(void)deleteCharactersInRange:(NSRange)range;
 
 // MARK: Private
--(NSData*)__dataRepresentationOfDiskType;
--(NSData*)__dataRepresentationOfDisplayType;
--(NSData*)__dataRepresentationOfSolvedType;
--(NSData*)__dataRepresentationOfUnsolvedType;
+-(NSData*)__dataRepresentationOfDiskTypeWithRange:(NSRange)range;
+-(NSData*)__dataRepresentationOfDisplayTypeWithRange:(NSRange)range;
+-(NSData*)__dataRepresentationOfSolvedTypeWithRange:(NSRange)range;
+-(NSData*)__dataRepresentationOfUnsolvedTypeWithRange:(NSRange)range;
 -(BOOL)__loadDataRepresentationOfDiskType:(NSData*)data;
 
 @end

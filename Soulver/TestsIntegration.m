@@ -60,7 +60,7 @@ void TestsIntegrationExecute(void)
    
    ToDo List
    1) [x] Fix NSUserDefaults so that during testing it always uses default settings
-   2) [ ] Move the copyUnsolved and copySolved to the model controller
+   2) [x] Move the copyUnsolved and copySolved to the model controller
    3) [ ] Make the 4 versions of the file and bundle them
    4) [ ] Do the comparisons in the method below
    */
@@ -99,9 +99,9 @@ void TestsIntegrationExecute(void)
   repUnsolvedRHS = [controller dataRepresentationOfType:SVRDocumentModelRepUnsolved];
   
   XPTestNotNIL(repDiskRHS);
-  // XPTestNotNIL(repDisplayRHS);
-  // XPTestNotNIL(repSolvedRHS);
-  // XPTestNotNIL(repUnsolvedRHS);
+  XPTestNotNIL(repDisplayRHS);
+  XPTestNotNIL(repSolvedRHS);
+  XPTestNotNIL(repUnsolvedRHS);
   
   // MARK: Compare Representations
   XPTestObject(repDiskLHS,     repDiskRHS);
