@@ -80,6 +80,13 @@ typedef NSString* SVRDocumentModelRep;
 -(void)replaceCharactersInRange:(NSRange)range withString:(NSString*)string;
 -(void)deleteCharactersInRange:(NSRange)range;
 
+// MARK: Private
+-(NSData*)__dataRepresentationOfDiskType;
+-(NSData*)__dataRepresentationOfDisplayType;
+-(NSData*)__dataRepresentationOfSolvedType;
+-(NSData*)__dataRepresentationOfUnsolvedType;
+-(BOOL)__loadDataRepresentationOfDiskType:(NSData*)data;
+
 @end
 
 #ifdef MAC_OS_X_VERSION_10_6

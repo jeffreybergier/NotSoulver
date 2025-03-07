@@ -46,7 +46,8 @@
 // MARK: INIT
 -(id)initWithContentsOfFile:(NSString*)fileName;
 {
-  self = [super initWithContentsOfFile:fileName ofType:@"solv"];
+  self = [super initWithContentsOfFile:fileName
+                                ofType:SVRDocumentModelRepDisk];
   NSCParameterAssert(self);
   return self;
 }

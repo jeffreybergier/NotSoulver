@@ -67,28 +67,47 @@ void TestsIntegrationExecute(void)
 
   
   SVRDocumentModelController *controller = [[[SVRDocumentModelController alloc] init] autorelease];
-  NSData *diskData     = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestsIntegration-Disk" ofType:@"solv"]];
-  NSData *displayData  = nil;
-  NSData *unsolvedData = nil;
-  NSData *solvedData   = nil;
+  NSData *repDiskLHS     = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestsIntegration-Disk" ofType:@"solv"]];
+  NSData *repDisplayLHS  = nil;
+  NSData *repSolvedLHS   = nil;
+  NSData *repUnsolvedLHS = nil;
+  NSData *repDiskRHS     = nil;
+  NSData *repDisplayRHS  = nil;
+  NSData *repSolvedRHS   = nil;
+  NSData *repUnsolvedRHS = nil;
     
   NSLog(@"%@ Integration Tests: STARTING", self);
   
   // MARK: Initialization
   XPTestNotNIL(controller);
-  XPTestNotNIL(diskData);
-  // XPTestNotNIL(displayData);
-  // XPTestNotNIL(unsolvedData);
-  // XPTestNotNIL(solvedData);
+  XPTestNotNIL(repDiskLHS);
+  // XPTestNotNIL(repDisplayLHS);
+  // XPTestNotNIL(repSolvedLHS);
+  // XPTestNotNIL(repUnsolvedLHS);
+  
   // TODO: Come up with styles for tests
   controller->__TESTING_stylesForSolution         = [self stylesForSolution];
   controller->__TESTING_stylesForPreviousSolution = [self stylesForPreviousSolution];
   controller->__TESTING_stylesForError            = [self stylesForError];
   controller->__TESTING_stylesForText             = [self stylesForText];
-  [controller loadDataRepresentation:diskData ofType:@"solv"];
+  [controller loadDataRepresentation:repDiskLHS ofType:SVRDocumentModelRepDisk];
+  
+  // Load all of the representations
+  repDiskRHS     = [controller dataRepresentationOfType:SVRDocumentModelRepDisk];
+  repDisplayRHS  = [controller dataRepresentationOfType:SVRDocumentModelRepDisplay];
+  repSolvedRHS   = [controller dataRepresentationOfType:SVRDocumentModelRepSolved];
+  repUnsolvedRHS = [controller dataRepresentationOfType:SVRDocumentModelRepUnsolved];
+  
+  XPTestNotNIL(repDiskRHS);
+  // XPTestNotNIL(repDisplayRHS);
+  // XPTestNotNIL(repSolvedRHS);
+  // XPTestNotNIL(repUnsolvedRHS);
   
   // MARK: Compare Representations
-  XPTestObject(diskData, [controller dataRepresentationOfType:@"solv"]);
+  XPTestObject(repDiskLHS,     repDiskRHS);
+  // XPTestObject(repDisplayLHS,  repDisplayRHS);
+  // XPTestObject(repSolvedLHS,   repSolvedRHS);
+  // XPTestObject(repUnsolvedLHS, repUnsolvedRHS);
   
   NSLog(@"%@ Integration Tests: PASSED", self);
 }

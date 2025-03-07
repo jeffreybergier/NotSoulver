@@ -81,47 +81,28 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
 // MARK: NSDocument Support
 -(NSData*)dataRepresentationOfType:(SVRDocumentModelRep)type;
 {
-  NSMutableDictionary *dataCache = [self dataCache];
-  NSString *key = [[self model] string];
-  NSData *output = [dataCache objectForKey:key];
-  if (output) {
-    XPLogExtra1(@"%@ dataRepresentationOfType: Cache Hit", self);
-    return output;
+  if ([type isEqualToString:SVRDocumentModelRepDisk]) {
+    return [self __dataRepresentationOfDiskType];
+  } else if ([type isEqualToString:SVRDocumentModelRepDisplay]) {
+    return [self __dataRepresentationOfDisplayType];
+  } else if ([type isEqualToString:SVRDocumentModelRepSolved]) {
+    return [self __dataRepresentationOfSolvedType];
+  } else if ([type isEqualToString:SVRDocumentModelRepUnsolved]) {
+    return [self __dataRepresentationOfUnsolvedType];
   } else {
-    if ([dataCache count] > 20) {
-      XPLogDebug1(@"%@ dataRepresentationOfType: Cache Clear", self);
-      [dataCache removeAllObjects];
-    }
-    XPLogExtra1(@"%@ dataRepresentationOfType: Cache Miss", self);
-    output = [[[SVRSolver replaceAttachmentsWithOriginalCharacters:[self model]] string]
-                              dataUsingEncoding:NSUTF8StringEncoding];
-    [dataCache setObject:output forKey:key];
-    return output;
+    XPLogRaise1(@"Unknown Type: %@", type);
+    return nil;
   }
 }
 
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(SVRDocumentModelRep)type;
 {
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  BOOL success = NO;
-  NSTextStorage *model = [self model];
-  NSString *string = [
-    [[NSString alloc] initWithData:data
-                          encoding:NSUTF8StringEncoding]
-    autorelease];
-  if (string) {
-    XPLogDebug1(@"%@ loadDataRepresentation: Rendering", self);
-    [model beginEditing];
-    [[model mutableString] setString:string];
-    [SVRSolver solveAttributedString:model
-                      solutionStyles:__TESTING_stylesForSolution         ? __TESTING_stylesForSolution         : [ud SVR_stylesForSolution]
-              previousSolutionStyles:__TESTING_stylesForPreviousSolution ? __TESTING_stylesForPreviousSolution : [ud SVR_stylesForPreviousSolution]
-                         errorStyles:__TESTING_stylesForError            ? __TESTING_stylesForError            : [ud SVR_stylesForError]
-                          textStyles:__TESTING_stylesForText             ? __TESTING_stylesForText             : [ud SVR_stylesForText]];
-    [model endEditing];
-    success = YES;
+  if ([type isEqualToString:SVRDocumentModelRepDisk]) {
+    return [self __loadDataRepresentationOfDiskType:data];
+  } else {
+    XPLogRaise1(@"Unknown Type: %@", type);
+    return NO;
   }
-  return success;
 }
 
 // MARK: Usage
@@ -178,6 +159,69 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
   [model deleteCharactersInRange:range];
   [model endEditing];
   [self textDidChange:nil];
+}
+
+// MARK: Private
+
+-(NSData*)__dataRepresentationOfDiskType;
+{
+  NSMutableDictionary *dataCache = [self dataCache];
+  NSString *key = [[self model] string];
+  NSData *output = [dataCache objectForKey:key];
+  if (output) {
+    XPLogExtra1(@"%@ dataRepresentationOfType: Cache Hit", self);
+    return output;
+  } else {
+    if ([dataCache count] > 20) {
+      XPLogDebug1(@"%@ dataRepresentationOfType: Cache Clear", self);
+      [dataCache removeAllObjects];
+    }
+    XPLogExtra1(@"%@ dataRepresentationOfType: Cache Miss", self);
+    output = [[[SVRSolver replaceAttachmentsWithOriginalCharacters:[self model]] string]
+                              dataUsingEncoding:NSUTF8StringEncoding];
+    [dataCache setObject:output forKey:key];
+    return output;
+  }
+}
+
+-(NSData*)__dataRepresentationOfDisplayType;
+{
+  return nil;
+}
+
+-(NSData*)__dataRepresentationOfSolvedType;
+{
+  return nil;
+}
+
+-(NSData*)__dataRepresentationOfUnsolvedType;
+{
+  return nil;
+}
+
+-(BOOL)__loadDataRepresentationOfDiskType:(NSData*)data;
+{
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  BOOL success = NO;
+  NSTextStorage *model = [self model];
+  NSString *string = [
+    [[NSString alloc] initWithData:data
+                          encoding:NSUTF8StringEncoding]
+    autorelease];
+  if (string) {
+    // TODO: Figure out how I can combine this with waitTimerFired:
+    XPLogDebug1(@"%@ loadDataRepresentation: Rendering", self);
+    [model beginEditing];
+    [[model mutableString] setString:string];
+    [SVRSolver solveAttributedString:model
+                      solutionStyles:__TESTING_stylesForSolution         ? __TESTING_stylesForSolution         : [ud SVR_stylesForSolution]
+              previousSolutionStyles:__TESTING_stylesForPreviousSolution ? __TESTING_stylesForPreviousSolution : [ud SVR_stylesForPreviousSolution]
+                         errorStyles:__TESTING_stylesForError            ? __TESTING_stylesForError            : [ud SVR_stylesForError]
+                          textStyles:__TESTING_stylesForText             ? __TESTING_stylesForText             : [ud SVR_stylesForText]];
+    [model endEditing];
+    success = YES;
+  }
+  return success;
 }
 
 -(void)dealloc;
