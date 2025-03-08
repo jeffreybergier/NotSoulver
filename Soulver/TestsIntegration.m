@@ -66,8 +66,10 @@ void TestsIntegrationExecute(void)
    4) [x] Do the comparisons in the method below
    5) [x] Remake the files in OpenStep as this test passes on the mac but fails in OpenStep
           Perhaps if they are made in OpenStep, it will pass on both platforms.
-   6) [ ] Files created in OpenStep are different, so tests pass on OS4.2 but fail on Mac
+   6) [x] Files created in OpenStep are different, so tests pass on OS4.2 but fail on Mac
           Need to convert them to NSAttributedString and then compare. Hopefully that will make it platform agnostic
+   7) [ ] Create different files for modern mac vs old mac. At some point the engine changes and exact comparison is not possible
+          This is whether comparing NSAttributedString directly or the raw data. They are both incompatible across systems
    */
 
   
