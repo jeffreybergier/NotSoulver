@@ -34,6 +34,7 @@ void TestsIntegrationExecute(void)
 #if TESTING==1
   NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
   [SVRDocumentModelController executeTests];
+//[SVRDocumentModelController saveTestFiles];
   [pool release];
 #endif
 }
@@ -61,16 +62,18 @@ void TestsIntegrationExecute(void)
    ToDo List
    1) [x] Fix NSUserDefaults so that during testing it always uses default settings
    2) [x] Move the copyUnsolved and copySolved to the model controller
-   3) [ ] Make the 4 versions of the file and bundle them
-   4) [ ] Do the comparisons in the method below
+   3) [x] Make the 4 versions of the file and bundle them
+   4) [x] Do the comparisons in the method below
+   5) [ ] Remake the files in OpenStep as this test passes on the mac but fails in OpenStep
+          Perhaps if they are made in OpenStep, it will pass on both platforms.
    */
 
   
   SVRDocumentModelController *controller = [[[SVRDocumentModelController alloc] init] autorelease];
-  NSData *repDiskLHS     = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestsIntegration-Disk" ofType:@"solv"]];
-  NSData *repDisplayLHS  = nil;
-  NSData *repSolvedLHS   = nil;
-  NSData *repUnsolvedLHS = nil;
+  NSData *repDiskLHS     = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestsIntegration-DiskRep"     ofType:@"txt"]];
+  NSData *repDisplayLHS  = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestsIntegration-DisplayRep"  ofType:@"rtf"]];
+  NSData *repSolvedLHS   = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestsIntegration-SolvedRep"   ofType:@"rtf"]];
+  NSData *repUnsolvedLHS = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestsIntegration-UnsolvedRep" ofType:@"rtf"]];
   NSData *repDiskRHS     = nil;
   NSData *repDisplayRHS  = nil;
   NSData *repSolvedRHS   = nil;
@@ -81,9 +84,9 @@ void TestsIntegrationExecute(void)
   // MARK: Initialization
   XPTestNotNIL(controller);
   XPTestNotNIL(repDiskLHS);
-  // XPTestNotNIL(repDisplayLHS);
-  // XPTestNotNIL(repSolvedLHS);
-  // XPTestNotNIL(repUnsolvedLHS);
+  XPTestNotNIL(repDisplayLHS);
+  XPTestNotNIL(repSolvedLHS);
+  XPTestNotNIL(repUnsolvedLHS);
   
   // TODO: Come up with styles for tests
   controller->__TESTING_stylesForSolution         = [self stylesForSolution];
@@ -105,11 +108,55 @@ void TestsIntegrationExecute(void)
   
   // MARK: Compare Representations
   XPTestObject(repDiskLHS,     repDiskRHS);
-  // XPTestObject(repDisplayLHS,  repDisplayRHS);
-  // XPTestObject(repSolvedLHS,   repSolvedRHS);
-  // XPTestObject(repUnsolvedLHS, repUnsolvedRHS);
+  XPTestObject(repDisplayLHS,  repDisplayRHS);
+  XPTestObject(repSolvedLHS,   repSolvedRHS);
+  XPTestObject(repUnsolvedLHS, repUnsolvedRHS);
   
   NSLog(@"%@ Integration Tests: PASSED", self);
+}
+
++(void)saveTestFiles;
+{
+  NSWorkspace *ws = [NSWorkspace sharedWorkspace];
+  SVRDocumentModelController *controller = [[[SVRDocumentModelController alloc] init] autorelease];
+  NSString *destDir          = NSTemporaryDirectory();
+  NSString *repDisplayPath   = [destDir stringByAppendingPathComponent:@"TestsIntegration-DisplayRep.rtf"];
+  NSString *repSolvedPath    = [destDir stringByAppendingPathComponent:@"TestsIntegration-SolvedRep.rtf"];
+  NSString *repUnsolvedPath  = [destDir stringByAppendingPathComponent:@"TestsIntegration-UnsolvedRep.rtf"];
+  NSData *repDisk     = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestsIntegration-DiskRep" ofType:@"txt"]];
+  NSData *repDisplay  = nil;
+  NSData *repSolved   = nil;
+  NSData *repUnsolved = nil;
+  
+  XPTestNotNIL(controller);
+  XPTestNotNIL(repDisk);
+  XPTestNotNIL(repDisplayPath);
+  XPTestNotNIL(repSolvedPath);
+  XPTestNotNIL(repUnsolvedPath);
+  
+  // TODO: Come up with styles for tests
+  controller->__TESTING_stylesForSolution         = [self stylesForSolution];
+  controller->__TESTING_stylesForPreviousSolution = [self stylesForPreviousSolution];
+  controller->__TESTING_stylesForError            = [self stylesForError];
+  controller->__TESTING_stylesForText             = [self stylesForText];
+  [controller loadDataRepresentation:repDisk ofType:SVRDocumentModelRepDisk];
+  
+  // Load all of the representations
+  repDisplay  = [controller dataRepresentationOfType:SVRDocumentModelRepDisplay];
+  repSolved   = [controller dataRepresentationOfType:SVRDocumentModelRepSolved];
+  repUnsolved = [controller dataRepresentationOfType:SVRDocumentModelRepUnsolved];
+  
+  XPTestNotNIL(repDisplay);
+  XPTestNotNIL(repSolved);
+  XPTestNotNIL(repUnsolved);
+  
+  XPTestBool([repDisplay  writeToFile:repDisplayPath  atomically:YES]);
+  XPTestBool([repSolved   writeToFile:repSolvedPath   atomically:YES]);
+  XPTestBool([repUnsolved writeToFile:repUnsolvedPath atomically:YES]);
+  
+  [ws XP_openFile:repDisplayPath];
+  [ws XP_openFile:repSolvedPath];
+  [ws XP_openFile:repUnsolvedPath];
 }
 
 +(SVRSolverTextAttachmentStyles)stylesForSolution;

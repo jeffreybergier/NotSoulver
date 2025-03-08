@@ -36,6 +36,7 @@ void TestsIntegrationExecute(void);
 
 @interface SVRDocumentModelController (TestsIntegration)
 +(void)executeTests;
++(void)saveTestFiles;
 +(SVRSolverTextAttachmentStyles)stylesForSolution;
 +(SVRSolverTextAttachmentStyles)stylesForPreviousSolution;
 +(SVRSolverTextAttachmentStyles)stylesForError;

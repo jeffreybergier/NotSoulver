@@ -421,6 +421,7 @@ NSArray* XPRunOpenPanel(void);
 #endif
 
 #define XPTestInt(_lhs, _rhs)    NSAssert5(_lhs == _rhs, @"[FAIL] '%d'!='%d' {%@:%d} %@", (int)_lhs, (int)_rhs, XPTestFile, __LINE__, XPTestFunc)
+#define XPTestBool(_lhs)         NSAssert3(_lhs, @"[FAIL] Bool was NO {%@:%d} %@", XPTestFile, __LINE__, XPTestFunc)
 #define XPTestFloat(_lhs, _rhs)  NSAssert5(_lhs == _rhs, @"[FAIL] '%g'!='%g' {%@:%d} %@", _lhs, _rhs, XPTestFile, __LINE__, XPTestFunc)
 #define XPTestObject(_lhs, _rhs) NSAssert5([_lhs isEqual:_rhs], @"[FAIL] '%@'!='%@' {%@:%d} %@", _lhs, _rhs, XPTestFile, __LINE__, XPTestFunc)
 #define XPTestNotNIL(_lhs)       NSAssert3(_lhs, @"[FAIL] Object was NIL {%@:%d} %@", XPTestFile, __LINE__, XPTestFunc)

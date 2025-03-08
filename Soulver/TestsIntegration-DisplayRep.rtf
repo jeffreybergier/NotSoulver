@@ -1,0 +1,116 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2821
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;\red108\green108\blue108;\red255\green255\blue11;\red0\green0\blue255;
+}
+{\*\expandedcolortbl;;\csgray\c50000;\cssrgb\c100000\c100000\c0;\cssrgb\c0\c0\c100000;
+}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf2 \
+//*\
+This is a file that is used for integration testing\
+Modifying this file will cause the tests to fail unless\
+the tests are updated as well.\
+*/\
+\
+
+\f1\fs28 \cf3 8\cf4 ^\cf3 0
+\f0\fs24 \cf2  // 1\
+
+\f1\fs28 \cf3 8\cf4 ^\cf3 1
+\f0\fs24 \cf2  // 8\
+
+\f1\fs28 \cf3 8\cf4 ^\cf3 2
+\f0\fs24 \cf2  // 64\
+
+\f1\fs28 \cf3 8\cf4 ^\cf3 3
+\f0\fs24 \cf2  // 512\
+
+\f1\fs28 \cf3 -8\cf4 ^\cf3 2
+\f0\fs24 \cf2  // 64, positive answer when base is negative and power is even\
+
+\f1\fs28 \cf3 -8\cf4 ^\cf3 3
+\f0\fs24 \cf2  // -512, negative answer when base is negative and power is odd\
+
+\f1\fs28 \cf3 8\cf4 ^\cf3 -3
+\f0\fs24 \cf2  // 0.0019\
+
+\f1\fs28 \cf3 8\cf4 ^\cf3 -2
+\f0\fs24 \cf2  // 0.0156s\
+\
+Added rooting by artibrary base\
+
+\f1\fs28 \cf3 2\cf4 R\cf3 64
+\f0\fs24 \cf2  // 8, Square root of 64\
+
+\f1\fs28 \cf3 3\cf4 R\cf3 64
+\f0\fs24 \cf2  // 4, Cube root of 64\
+
+\f1\fs28 \cf3 4\cf4 R\cf3 64
+\f0\fs24 \cf2  // 2.828\
+
+\f1\fs28 \cf3 5\cf4 R\cf3 64
+\f0\fs24 \cf2  // 2.973\
+
+\f1\fs28 \cf3 6\cf4 R\cf3 64
+\f0\fs24 \cf2  // 2\
+\
+Added Logarithms with arbitrary base\
+
+\f1\fs28 \cf3 10\cf4 L\cf3 1000
+\f0\fs24 \cf2  // 3, log10(1000)\
+
+\f1\fs28 \cf3 9\cf4 L\cf3 1000
+\f0\fs24 \cf2  // 3.1438 \
+
+\f1\fs28 \cf3 8\cf4 L\cf3 1000
+\f0\fs24 \cf2  // 3.3219\
+
+\f1\fs28 \cf3 7\cf4 L\cf3 1000
+\f0\fs24 \cf2  // 3.5498\
+
+\f1\fs28 \cf3 2\cf4 L\cf3 1000
+\f0\fs24 \cf2  // 9.9657, log2(1000)\
+\
+Added root errors\
+
+\f1\fs28 \cf3 0\cf4 R\cf3 64
+\f0\fs24 \cf2  Index Zero Error\
+
+\f1\fs28 \cf3 2\cf4 R\cf3 -64
+\f0\fs24 \cf2  Imaginary when base is negative and power is even\
+
+\f1\fs28 \cf3 3\cf4 R\cf3 -64
+\f0\fs24 \cf2  -4, not an error\
+
+\f1\fs28 \cf3 64\cf4 ^\cf3 (1\cf4 /\cf3 2)
+\f0\fs24 \cf2 \
+
+\f1\fs28 \cf3 -64\cf4 ^\cf3 (1\cf4 /\cf3 2)
+\f0\fs24 \cf2 \
+
+\f1\fs28 \cf3 -64\cf4 ^\cf3 (1\cf4 /\cf3 3)
+\f0\fs24 \cf2  // -4, not an error\
+\
+\
+Added logarithm errors\
+
+\f1\fs28 \cf3 10\cf4 L\cf3 -1000
+\f0\fs24 \cf2  Log argument less than 0\
+
+\f1\fs28 \cf3 -2\cf4 L\cf3 1000
+\f0\fs24 \cf2  Log base negative\
+
+\f1\fs28 \cf3 0\cf4 L\cf3 1000
+\f0\fs24 \cf2  Log base 0\
+
+\f1\fs28 \cf3 1\cf4 L\cf3 1000
+\f0\fs24 \cf2 Log base is 1\
+
+\f1\fs28 \cf3 0.5\cf4 L\cf3 1000
+\f0\fs24 \cf2  // -9.9657, not an error\
+\
+\
+\
+\
+}

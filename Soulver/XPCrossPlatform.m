@@ -427,9 +427,9 @@ NSArray* XPRunOpenPanel(void)
 -(BOOL)XP_openFile:(NSString*)file;
 {
 #ifdef MAC_OS_X_VERSION_10_0
-    return [self openURL:[NSURL URLWithString:file]];
+  return [self openURL:[NSURL fileURLWithPath:file]];
 #else
-    return [self openFile:file];
+  return [self openFile:file];
 #endif
 }
 @end
