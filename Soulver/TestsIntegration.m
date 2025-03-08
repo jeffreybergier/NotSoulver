@@ -64,8 +64,10 @@ void TestsIntegrationExecute(void)
    2) [x] Move the copyUnsolved and copySolved to the model controller
    3) [x] Make the 4 versions of the file and bundle them
    4) [x] Do the comparisons in the method below
-   5) [ ] Remake the files in OpenStep as this test passes on the mac but fails in OpenStep
+   5) [x] Remake the files in OpenStep as this test passes on the mac but fails in OpenStep
           Perhaps if they are made in OpenStep, it will pass on both platforms.
+   6) [ ] Files created in OpenStep are different, so tests pass on OS4.2 but fail on Mac
+          Need to convert them to NSAttributedString and then compare. Hopefully that will make it platform agnostic
    */
 
   
@@ -153,7 +155,8 @@ void TestsIntegrationExecute(void)
   XPTestBool([repDisplay  writeToFile:repDisplayPath  atomically:YES]);
   XPTestBool([repSolved   writeToFile:repSolvedPath   atomically:YES]);
   XPTestBool([repUnsolved writeToFile:repUnsolvedPath atomically:YES]);
-  
+
+  [ws XP_openFile:destDir];
   [ws XP_openFile:repDisplayPath];
   [ws XP_openFile:repSolvedPath];
   [ws XP_openFile:repUnsolvedPath];
