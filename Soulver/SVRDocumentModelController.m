@@ -207,8 +207,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
   NSRange range = XPIsNotFoundRange(_range)
                 ? NSMakeRange(0, [[self model] length])
                 : _range;
-  NSAttributedString *input = [[self model] attributedSubstringFromRange:range];
-  NSData *output = [input RTFFromRange:range documentAttributes:XPRTFDocumentAttributes];
+  NSData *output = [[self model] RTFFromRange:range documentAttributes:XPRTFDocumentAttributes];
   NSAssert(output, @"__dataRepresentationOfDisplayTypeWithRange: NIL");
   return output;
 }
@@ -220,7 +219,8 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
                 : _range;
   NSAttributedString *original = [[self model] attributedSubstringFromRange:range];
   NSAttributedString *solved = [SVRSolver replaceAttachmentsWithStringValue:original];
-  NSData *output = [solved RTFFromRange:range documentAttributes:XPRTFDocumentAttributes];
+  NSData *output = [solved RTFFromRange:NSMakeRange(0, [solved length])
+                     documentAttributes:XPRTFDocumentAttributes];
   NSAssert(output, @"__dataRepresentationOfSolvedTypeWithRange: NIL");
   return output;
 }
@@ -232,7 +232,8 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
                 : _range;
   NSAttributedString *original = [[self model] attributedSubstringFromRange:range];
   NSAttributedString *unsolved = [SVRSolver replaceAttachmentsWithOriginalCharacters:original];
-  NSData *output = [unsolved RTFFromRange:range documentAttributes:XPRTFDocumentAttributes];
+  NSData *output = [unsolved RTFFromRange:NSMakeRange(0, [unsolved length])
+                       documentAttributes:XPRTFDocumentAttributes];
   NSAssert(output, @"__dataRepresentationOfUnsolvedTypeWithRange: NIL");
   return output;
 }
