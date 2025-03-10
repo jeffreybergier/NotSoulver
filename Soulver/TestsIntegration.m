@@ -68,20 +68,23 @@ void TestsIntegrationExecute(void)
           Perhaps if they are made in OpenStep, it will pass on both platforms.
    6) [x] Files created in OpenStep are different, so tests pass on OS4.2 but fail on Mac
           Need to convert them to NSAttributedString and then compare. Hopefully that will make it platform agnostic
-   7) [ ] Create different files for modern mac vs old mac. At some point the engine changes and exact comparison is not possible
-          This is whether comparing NSAttributedString directly or the raw data. They are both incompatible across systems
+   7) [ ] Add NSParagraphStyle Left to the attributed string. Remove color profile information from NSColor
+          A diff of the NSAttributedString output shows that there is implicit NSParagraphStyle "natural" on modern macOS and Left on OpenStep
+          A diff of the NSAttributedString output shows that there is a color profile of "sRGB IEC61966-2.1" on modern macOS and "NSCalibratedRGBColorSpace" on OpenStep
+          Or create a custom compare function that analyzes the RGB values but ignores the color space
    */
 
   
   SVRDocumentModelController *controller = [[[SVRDocumentModelController alloc] init] autorelease];
-  NSData *repDiskLHS     = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestsIntegration-DiskRep"     ofType:@"txt"]];
-  NSData *repDisplayLHS  = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestsIntegration-DisplayRep"  ofType:@"rtf"]];
-  NSData *repSolvedLHS   = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestsIntegration-SolvedRep"   ofType:@"rtf"]];
-  NSData *repUnsolvedLHS = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestsIntegration-UnsolvedRep" ofType:@"rtf"]];
-  NSData *repDiskRHS     = nil;
-  NSData *repDisplayRHS  = nil;
-  NSData *repSolvedRHS   = nil;
-  NSData *repUnsolvedRHS = nil;
+  NSData *repDiskLHSData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestsIntegration-DiskRep" ofType:@"txt"]];
+  NSString *repDiskLHS   = [[NSString alloc] initWithData:repDiskLHSData encoding:NSUTF8StringEncoding];
+  NSString *repDiskRHS   = nil;
+  NSAttributedString *repDisplayLHS  = [[[NSAttributedString alloc] initWithRTF:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestsIntegration-DisplayRep"  ofType:@"rtf"]] documentAttributes:NULL] autorelease];
+  NSAttributedString *repSolvedLHS   = [[[NSAttributedString alloc] initWithRTF:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestsIntegration-SolvedRep"   ofType:@"rtf"]] documentAttributes:NULL] autorelease];
+  NSAttributedString *repUnsolvedLHS = [[[NSAttributedString alloc] initWithRTF:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestsIntegration-UnsolvedRep" ofType:@"rtf"]] documentAttributes:NULL] autorelease];
+  NSAttributedString *repDisplayRHS  = nil;
+  NSAttributedString *repSolvedRHS   = nil;
+  NSAttributedString *repUnsolvedRHS = nil;
     
   NSLog(@"%@ Integration Tests: STARTING", self);
   
@@ -97,13 +100,13 @@ void TestsIntegrationExecute(void)
   controller->__TESTING_stylesForPreviousSolution = [self stylesForPreviousSolution];
   controller->__TESTING_stylesForError            = [self stylesForError];
   controller->__TESTING_stylesForText             = [self stylesForText];
-  [controller loadDataRepresentation:repDiskLHS ofType:SVRDocumentModelRepDisk];
+  [controller loadDataRepresentation:repDiskLHSData ofType:SVRDocumentModelRepDisk];
   
   // Load all of the representations
-  repDiskRHS     = [controller dataRepresentationOfType:SVRDocumentModelRepDisk];
-  repDisplayRHS  = [controller dataRepresentationOfType:SVRDocumentModelRepDisplay];
-  repSolvedRHS   = [controller dataRepresentationOfType:SVRDocumentModelRepSolved];
-  repUnsolvedRHS = [controller dataRepresentationOfType:SVRDocumentModelRepUnsolved];
+  repDiskRHS     = [[NSString alloc] initWithData:[controller dataRepresentationOfType:SVRDocumentModelRepDisk] encoding:NSUTF8StringEncoding];
+  repDisplayRHS  = [[[NSAttributedString alloc] initWithRTF:[controller dataRepresentationOfType:SVRDocumentModelRepDisplay ] documentAttributes:NULL] autorelease];
+  repSolvedRHS   = [[[NSAttributedString alloc] initWithRTF:[controller dataRepresentationOfType:SVRDocumentModelRepSolved  ] documentAttributes:NULL] autorelease];
+  repUnsolvedRHS = [[[NSAttributedString alloc] initWithRTF:[controller dataRepresentationOfType:SVRDocumentModelRepUnsolved] documentAttributes:NULL] autorelease];
   
   XPTestNotNIL(repDiskRHS);
   XPTestNotNIL(repDisplayRHS);
@@ -111,10 +114,10 @@ void TestsIntegrationExecute(void)
   XPTestNotNIL(repUnsolvedRHS);
   
   // MARK: Compare Representations
-  XPTestObject(repDiskLHS,     repDiskRHS);
-  XPTestObject(repDisplayLHS,  repDisplayRHS);
-  XPTestObject(repSolvedLHS,   repSolvedRHS);
-  XPTestObject(repUnsolvedLHS, repUnsolvedRHS);
+  XPTestString(repDiskLHS,     repDiskRHS);
+  XPTestAttrString(repDisplayLHS,  repDisplayRHS);
+  XPTestAttrString(repSolvedLHS,   repSolvedRHS);
+  XPTestAttrString(repUnsolvedLHS, repUnsolvedRHS);
   
   NSLog(@"%@ Integration Tests: PASSED", self);
 }
