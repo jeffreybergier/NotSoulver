@@ -205,7 +205,7 @@ void TestsIntegrationExecute(void)
   NSFont  *mathFont       = [NSFont fontWithName:@"Courier"   size:14];
   NSFont  *otherTextFont  = [NSFont fontWithName:@"Helvetica" size:12];
   NSColor *otherTextColor = [NSColor grayColor];
-  NSColor *operandColor   = [NSColor yellowColor];
+  NSColor *operandColor   = [NSColor purpleColor];
   NSColor *operatorColor  = [NSColor blueColor];
   NSColor *bracketColor   = [NSColor yellowColor];
   

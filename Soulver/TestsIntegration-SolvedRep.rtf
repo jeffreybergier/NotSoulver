@@ -1,14 +1,192 @@
 {\rtf0\ansi{\fonttbl\f0\fswiss Helvetica;\f1\fmodern Courier;}
-{\colortbl;\red128\green128\blue128;\red255\green255\blue0;\red0\green0\blue255;}
+{\colortbl;\red128\green128\blue128;\red128\green0\blue128;\red0\green0\blue255;\red255\green255\blue0;
+}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
 
-\f0\fs24 \cf1 \
-//*\
-This is a file that is used for integration testing\
-Modifying this file will cause the tests to fail unless\
-the tests are updated as well.\
-*/\
+\f0\fs24 \cf1 This is a file for integration testing\
+If you change this file,\
+THE INTEGRATION TESTS WILL BREAK\
 \
+Integer Operator Tests\
+
+\f1\fs28 \cf2 1\cf3 +\cf2 2\cf0 =3
+\f0\fs24 \cf1  // Confirmed 3\
+
+\f1\fs28 \cf2 3\cf3 -\cf2 4\cf0 =-1
+\f0\fs24 \cf1  // Confirmed -1\
+
+\f1\fs28 \cf2 5\cf3 *\cf2 6\cf0 =30
+\f0\fs24 \cf1  // Confirmed 30\
+
+\f1\fs28 \cf2 7\cf3 /\cf2 8\cf0 =0.875
+\f0\fs24 \cf1  // Confirmed 0.875\
+
+\f1\fs28 \cf2 10\cf3 ^\cf2 2\cf0 =100
+\f0\fs24 \cf1  // Confirmed 100\
+
+\f1\fs28 \cf2 2\cf3 R\cf2 64\cf0 =8
+\f0\fs24 \cf1  // Confirmed 8\
+
+\f1\fs28 \cf2 10\cf3 L\cf2 1000\cf0 =3
+\f0\fs24 \cf1  // Confirmed 3\
+\
+Float Operator Tests\
+
+\f1\fs28 \cf2 1.1\cf3 +\cf2 2.2\cf0 =3.3
+\f0\fs24 \cf1  // Confirmed 3.3\
+
+\f1\fs28 \cf2 3.3\cf3 -\cf2 4.4\cf0 =-1.1
+\f0\fs24 \cf1  // Confirmed -1.1\
+
+\f1\fs28 \cf2 5.5\cf3 *\cf2 6.6\cf0 =36.3
+\f0\fs24 \cf1  // Confirmed 36.3\
+
+\f1\fs28 \cf2 7.7\cf3 /\cf2 8.8\cf0 =0.875
+\f0\fs24 \cf1  // Confirmed 0.875\
+
+\f1\fs28 \cf2 10.10\cf3 ^\cf2 2.2\cf0 =161.997019
+\f0\fs24 \cf1  // Confirmed 161.997019\
+
+\f1\fs28 \cf2 2.2\cf3 R\cf2 64.4\cf0 =6.640807
+\f0\fs24 \cf1  // Confirmed 6.640807\
+
+\f1\fs28 \cf2 5.5\cf3 L\cf2 666.666\cf0 =3.814223
+\f0\fs24 \cf1  // Confirmed 3.814223\
+\
+Negative Integer Tests\
+
+\f1\fs28 \cf2 -1\cf3 +\cf2 -2\cf0 =-3
+\f0\fs24 \cf1  // Confirmed -3\
+
+\f1\fs28 \cf2 -3\cf3 -\cf2 -4\cf0 =1
+\f0\fs24 \cf1  // Confirmed 1\
+
+\f1\fs28 \cf2 -5\cf3 *\cf2 -6\cf0 =30
+\f0\fs24 \cf1  // Confirmed 30\
+
+\f1\fs28 \cf2 -7\cf3 /\cf2 -8\cf0 =0.875
+\f0\fs24 \cf1  // Confirmed 0.875\
+
+\f1\fs28 \cf2 -10\cf3 ^\cf2 -2\cf0 =0.01
+\f0\fs24 \cf1  // -0.01\
+
+\f1\fs28 \cf2 -2\cf3 R\cf2 64\cf0 =0.125
+\f0\fs24 \cf1  // Confirmed 0.125\
+
+\f1\fs28 \cf2 -5.5\cf3 L\cf2 666.666\cf0 =113|Base <= 0
+\f0\fs24 \cf1  // Confirmed Error 113\
+\
+Negative Float Operator Tests\
+
+\f1\fs28 \cf2 -1.1\cf3 +\cf2 -2.2\cf0 =-3.3
+\f0\fs24 \cf1  // Confirmed -3.3\
+
+\f1\fs28 \cf2 -3.3\cf3 -\cf2 -4.4\cf0 =1.1
+\f0\fs24 \cf1  // Confirmed 1.1\
+
+\f1\fs28 \cf2 -5.5\cf3 *\cf2 -6.6\cf0 =36.3
+\f0\fs24 \cf1  // Confirmed 36.3\
+
+\f1\fs28 \cf2 -7.7\cf3 /\cf2 -8.8\cf0 =0.875
+\f0\fs24 \cf1  // Confirmed 0.875\
+
+\f1\fs28 \cf2 -10.10\cf3 ^\cf2 -2.2\cf0 =-0.006173
+\f0\fs24 \cf1  // Confirmed -0.06173\
+\
+Order of Operations Tests\
+
+\f1\fs28 \cf2 4\cf3 +\cf2 2\cf3 -\cf2 3\cf3 *\cf2 6\cf3 ^\cf2 2\cf3 /\cf2 4\cf0 =-21
+\f0\fs24 \cf1  // Confirmed -21\
+
+\f1\fs28 \cf4 (\cf2 4\cf3 +\cf2 2\cf3 -\cf2 3\cf4 )\cf3 *\cf4 (\cf2 6\cf3 ^\cf2 2\cf3 /\cf2 4\cf4 )\cf0 =27
+\f0\fs24 \cf1  // Confirmed 27\
+
+\f1\fs28 \cf2 4.4\cf3 +\cf2 2.2\cf3 -\cf2 3.3\cf3 *\cf2 6.6\cf3 ^\cf2 2.2\cf3 /\cf2 4.4\cf0 =-41.04945
+\f0\fs24 \cf1  // Confirmed -41.04945\
+
+\f1\fs28 \cf4 (\cf2 4.4\cf3 +\cf2 2.2\cf3 -\cf2 3.3\cf4 )\cf3 *\cf4 (\cf2 6.6\cf3 ^\cf2 2.2\cf3 /\cf2 4.4\cf4 )\cf0 =47.64946
+\f0\fs24 \cf1  // 47.64946\
+
+\f1\fs28 \cf2 -4\cf3 +\cf2 -2\cf3 -\cf2 -3\cf3 *\cf2 -6\cf3 ^\cf2 2\cf3 /\cf2 -4\cf0 =-33
+\f0\fs24 \cf1  // Confirmed -33\
+
+\f1\fs28 \cf4 (\cf2 -4\cf3 +\cf2 -2\cf3 -\cf2 -3\cf4 )\cf3 *\cf4 (\cf2 -6\cf3 ^\cf2 2\cf3 /\cf2 -4\cf4 )\cf0 =27
+\f0\fs24 \cf1  // Confirmed 27\
+
+\f1\fs28 \cf4 (\cf2 1\cf3 *\cf2 2\cf4 )\cf3 R\cf4 (\cf2 8\cf3 ^\cf2 2\cf4 )\cf0 =8
+\f0\fs24 \cf1  // Confirmed 8\
+
+\f1\fs28 \cf4 (\cf2 5\cf3 +\cf2 5\cf4 )\cf3 L\cf4 (\cf2 500\cf3 *\cf2 2\cf4 )\cf0 =3
+\f0\fs24 \cf1  // Confirmed 3\
+\
+Brackets Tests\
+
+\f1\fs28 \cf4 (\cf2 4\cf4 )\cf3 +\cf4 (\cf2 5\cf4 )\cf3 +\cf2 6\cf0 =15
+\f0\fs24 \cf1  // Confirmed 15\
+
+\f1\fs28 \cf4 (\cf2 4\cf4 )\cf3 -\cf4 (\cf2 5\cf4 )\cf3 -\cf2 6\cf0 =-7
+\f0\fs24 \cf1  // Confirmed -7\
+
+\f1\fs28 \cf4 (\cf2 4\cf4 )\cf3 *\cf4 (\cf2 5\cf4 )\cf3 *\cf2 6\cf0 =120
+\f0\fs24 \cf1  // Confirmed 120\
+
+\f1\fs28 \cf4 (\cf2 4\cf4 )\cf3 /\cf4 (\cf2 5\cf4 )\cf3 /\cf2 6\cf0 =0.13333
+\f0\fs24 \cf1  // Confirmed 0.13333\
+
+\f1\fs28 \cf4 (\cf2 4\cf4 )\cf3 ^\cf4 (\cf2 2\cf4 )\cf3 ^\cf2 3\cf0 =4096
+\f0\fs24 \cf1  // Confirmed 4096\
+
+\f1\fs28 \cf4 (\cf2 2\cf4 )\cf3 R\cf4 (\cf2 64\cf4 )\cf3 R\cf2 256\cf0 =2
+\f0\fs24 \cf1  // Confirmed 2\
+
+\f1\fs28 \cf4 (\cf2 10\cf4 )\cf3 L\cf4 (\cf2 1000\cf4 )\cf0 =3
+\f0\fs24 \cf1  // Confirmed 3\
+\
+Brackets with Negatives Test\
+
+\f1\fs28 \cf4 (\cf2 -4\cf4 )\cf3 +\cf4 (\cf2 -5\cf4 )\cf3 +\cf2 -6\cf0 =-15
+\f0\fs24 \cf1  // Confirmed -15\
+
+\f1\fs28 \cf4 (\cf2 -4\cf4 )\cf3 -\cf4 (\cf2 -5\cf4 )\cf3 -\cf2 -6\cf0 =7
+\f0\fs24 \cf1  // Confirmed 7\
+
+\f1\fs28 \cf4 (\cf2 -4\cf4 )\cf3 *\cf4 (\cf2 -5\cf4 )\cf3 *\cf2 -6\cf0 =-120
+\f0\fs24 \cf1  // Confirmed -120\
+
+\f1\fs28 \cf4 (\cf2 -4\cf4 )\cf3 /\cf4 (\cf2 -5\cf4 )\cf3 /\cf2 -6\cf0 =-0.13333
+\f0\fs24 \cf1  // Confirmed -0.133333\
+
+\f1\fs28 \cf4 (\cf2 -4\cf4 )\cf3 ^\cf4 (\cf2 2\cf4 )\cf3 ^\cf2 3\cf0 =4096
+\f0\fs24 \cf1  // Confirmed 4096\
+
+\f1\fs28 \cf4 (\cf2 -2\cf4 )\cf3 R\cf4 (\cf2 64\cf4 )\cf3 R\cf2 256\cf0 =18446744073709552000
+\f0\fs24 \cf1  // Confirmed 18446744073709552000\
+
+\f1\fs28 \cf4 (\cf2 -10\cf4 )\cf3 L\cf4 (\cf2 1000\cf4 )\cf0 =113|Base <= 0
+\f0\fs24 \cf1  // Confirmed Error 113\
+\
+Divide by Zero Errors\
+
+\f1\fs28 \cf2 100\cf3 /\cf2 0\cf0 =4|Divide by zero
+\f0\fs24 \cf1 \
+-0 // TODO: -0 gets initialized as NaN in NSDecimalNumber which throws exception\
+\
+Math Notes Tests\
+This test ensures that 
+\f1\fs28 \cf2 2\cf3 +\cf2 2\cf0 =4
+\f0\fs24 \cf1  and 
+\f1\fs28 \cf2 -2\cf3 -\cf2 -3\cf0 =1
+\f0\fs24 \cf1  and other 10/0 errors get shown in mid sentence like Math Notes that Apple added in macOS 
+\f1\fs28 \cf2 15\cf0 =15
+\f0\fs24 \cf1  Sequoia. This should also work if
+\f1\fs28 \cf2 2\cf3 +\cf2 2\cf0 =4
+\f0\fs24 \cf1 text directly abutts the numbers. Same with brackets like 
+\f1\fs28 \cf4 (\cf2 2\cf4 )\cf0 =2
+\f0\fs24 \cf1  and
+\f1\fs28 \cf4 (\cf2 2\cf4 )\cf0 =2
+\f0\fs24 \cf1 like that.\
+\
+Roots and Logs Tests\
 
 \f1\fs28 \cf2 8\cf3 ^\cf2 0\cf0 =1
 \f0\fs24 \cf1  // 1\
@@ -34,7 +212,7 @@ the tests are updated as well.\
 \f1\fs28 \cf2 8\cf3 ^\cf2 -2\cf0 =0.015625
 \f0\fs24 \cf1  // 0.0156s\
 \
-Added rooting by artibrary base\
+Rooting with arbitrary bases\
 
 \f1\fs28 \cf2 2\cf3 R\cf2 64\cf0 =8
 \f0\fs24 \cf1  // 8, Square root of 64\
@@ -51,7 +229,7 @@ Added rooting by artibrary base\
 \f1\fs28 \cf2 6\cf3 R\cf2 64\cf0 =2
 \f0\fs24 \cf1  // 2\
 \
-Added Logarithms with arbitrary base\
+Logarithm with arbitrary bases\
 
 \f1\fs28 \cf2 10\cf3 L\cf2 1000\cf0 =3
 \f0\fs24 \cf1  // 3, log10(1000)\
@@ -68,7 +246,7 @@ Added Logarithms with arbitrary base\
 \f1\fs28 \cf2 2\cf3 L\cf2 1000\cf0 =9.965784
 \f0\fs24 \cf1  // 9.9657, log2(1000)\
 \
-Added root errors\
+Root Errors\
 
 \f1\fs28 \cf2 0\cf3 R\cf2 64\cf0 =111|Index <= 0
 \f0\fs24 \cf1  Index Zero Error\
@@ -79,17 +257,16 @@ Added root errors\
 \f1\fs28 \cf2 3\cf3 R\cf2 -64\cf0 =-4
 \f0\fs24 \cf1  -4, not an error\
 
-\f1\fs28 \cf2 64\cf3 ^\cf2 (1\cf3 /\cf2 2)\cf0 =8
-\f0\fs24 \cf1 \
+\f1\fs28 \cf2 64\cf3 ^\cf4 (\cf2 1\cf3 /\cf2 2\cf4 )\cf0 =8
+\f0\fs24 \cf1  // Confirmed 8\
 
-\f1\fs28 \cf2 -64\cf3 ^\cf2 (1\cf3 /\cf2 2)\cf0 =110|Imaginary
-\f0\fs24 \cf1 \
+\f1\fs28 \cf2 -64\cf3 ^\cf4 (\cf2 1\cf3 /\cf2 2\cf4 )\cf0 =110|Imaginary
+\f0\fs24 \cf1  // Confirmed Imaginary\
 
-\f1\fs28 \cf2 -64\cf3 ^\cf2 (1\cf3 /\cf2 3)\cf0 =110|Imaginary
-\f0\fs24 \cf1  // -4, not an error\
+\f1\fs28 \cf2 -64\cf3 ^\cf4 (\cf2 1\cf3 /\cf2 3\cf4 )\cf0 =110|Imaginary
+\f0\fs24 \cf1  // TODO: Confirmed -4\
 \
-\
-Added logarithm errors\
+Logarithm Errors\
 
 \f1\fs28 \cf2 10\cf3 L\cf2 -1000\cf0 =112|Argument < 0
 \f0\fs24 \cf1  Log argument less than 0\
@@ -105,8 +282,5 @@ Added logarithm errors\
 
 \f1\fs28 \cf2 0.5\cf3 L\cf2 1000\cf0 =-9.965784
 \f0\fs24 \cf1  // -9.9657, not an error\
-\
-\
-\
 \
 }
