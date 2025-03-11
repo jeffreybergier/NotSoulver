@@ -43,4 +43,8 @@ void TestsIntegrationExecute(void);
 +(SVRSolverTextStyles)stylesForText;
 @end
 
+@interface NSAttributedString (TestsIntegration)
+-(BOOL)TEST_isEqualToAttributedString:(NSAttributedString*)rhs;
+@end
+
 #endif

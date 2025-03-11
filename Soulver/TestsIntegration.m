@@ -114,10 +114,10 @@ void TestsIntegrationExecute(void)
   XPTestNotNIL(repUnsolvedRHS);
   
   // MARK: Compare Representations
-  XPTestString(repDiskLHS,     repDiskRHS);
-  XPTestAttrString(repDisplayLHS,  repDisplayRHS);
-  XPTestAttrString(repSolvedLHS,   repSolvedRHS);
-  XPTestAttrString(repUnsolvedLHS, repUnsolvedRHS);
+  XPTestString(repDiskLHS,   repDiskRHS);
+  XPTestBool([repDisplayLHS  TEST_isEqualToAttributedString:repDisplayRHS ]);
+  XPTestBool([repSolvedLHS   TEST_isEqualToAttributedString:repSolvedRHS  ]);
+  XPTestBool([repUnsolvedLHS TEST_isEqualToAttributedString:repUnsolvedRHS]);
   
   NSLog(@"%@ Integration Tests: PASSED", self);
 }
@@ -218,6 +218,34 @@ void TestsIntegrationExecute(void)
                                    operandColor:operandColor
                                   operatorColor:operatorColor
                                    bracketColor:bracketColor];
+}
+
+@end
+
+@implementation NSAttributedString (TestsIntegration)
+-(BOOL)TEST_isEqualToAttributedString:(NSAttributedString*)rhs;
+{
+  NSDictionary *lhsDict = nil;
+  NSDictionary *rhsDict = nil;
+  XPUInteger idx = 0;
+  
+  if (![rhs isKindOfClass:[NSAttributedString class]]) {
+    return NO;
+  }
+  if (![[self string] isEqualToString:[rhs string]]) {
+    return NO;
+  }
+  
+  for (idx = 0; idx < [self length]; idx++) {
+    lhsDict = [self attributesAtIndex:0 effectiveRange:NULL];
+    rhsDict = [rhs attributesAtIndex:0 effectiveRange:NULL];
+    if ([lhsDict count] != [rhsDict count]) {
+      return NO;
+    }
+    
+  }
+  
+  return YES;
 }
 
 @end
