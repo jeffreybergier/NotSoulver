@@ -119,6 +119,11 @@ void TestsIntegrationExecute(void)
   XPTestBool([repSolvedLHS   TEST_isEqualToAttributedString:repSolvedRHS  ]);
   XPTestBool([repUnsolvedLHS TEST_isEqualToAttributedString:repUnsolvedRHS]);
   
+  XPTestString(repDiskLHS,         repDiskRHS);
+  XPTestAttrString(repDisplayLHS,  repDisplayRHS);
+  XPTestAttrString(repSolvedLHS,   repSolvedRHS);
+  XPTestAttrString(repUnsolvedLHS, repUnsolvedRHS);
+  
   NSLog(@"%@ Integration Tests: PASSED", self);
 }
 
@@ -238,14 +243,30 @@ void TestsIntegrationExecute(void)
   
   for (idx = 0; idx < [self length]; idx++) {
     lhsDict = [self attributesAtIndex:0 effectiveRange:NULL];
-    rhsDict = [rhs attributesAtIndex:0 effectiveRange:NULL];
+    rhsDict = [rhs attributesAtIndex:0  effectiveRange:NULL];
     if ([lhsDict count] != [rhsDict count]) {
+      return NO;
+    }
+    if (![lhsDict TEST_NSForegroundColorIsEqual:rhsDict]) {
       return NO;
     }
     
   }
   
   return YES;
+}
+
+@end
+
+@implementation NSDictionary (TestsIntegration)
+-(BOOL)TEST_NSForegroundColorIsEqual:(NSDictionary*)rhsDict;
+{
+  NSColor *lhs = [self objectForKey:NSForegroundColorAttributeName];
+  NSColor *rhs = [rhsDict objectForKey:NSForegroundColorAttributeName];
+  if (lhs == nil && rhs == nil) { return YES; }
+  return [lhs redComponent]   == [rhs redComponent]
+      && [lhs greenComponent] == [rhs greenComponent]
+      && [lhs blueComponent]  == [rhs blueComponent];
 }
 
 @end

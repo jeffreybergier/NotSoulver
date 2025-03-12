@@ -47,4 +47,8 @@ void TestsIntegrationExecute(void);
 -(BOOL)TEST_isEqualToAttributedString:(NSAttributedString*)rhs;
 @end
 
+@interface NSDictionary (TestsIntegration)
+-(BOOL)TEST_NSForegroundColorIsEqual:(NSDictionary*)rhsDict;
+@end
+
 #endif
