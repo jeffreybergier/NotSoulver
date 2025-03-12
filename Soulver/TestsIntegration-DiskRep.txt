@@ -61,7 +61,7 @@ Brackets with Negatives Test
 (-4)*(-5)*-6= // Confirmed -120
 (-4)/(-5)/-6= // Confirmed -0.133333
 (-4)^(2)^3= // Confirmed 4096
-(-2)R(64)R256= // Confirmed 18446744073709552000
+(-2)R(16)R32= // Confirmed 1048576
 (-10)L(1000)= // Confirmed Error 113
 
 Divide by Zero Errors

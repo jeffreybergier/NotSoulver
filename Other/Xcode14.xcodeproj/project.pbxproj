@@ -30,6 +30,7 @@
 		8CDD4AA32D7C25D3000A5AD1 /* TestsIntegration-SolvedRep.rtf in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CDD4AA02D7C25BF000A5AD1 /* TestsIntegration-SolvedRep.rtf */; };
 		8CDD4AA42D7C25D3000A5AD1 /* TestsIntegration-UnsolvedRep.rtf in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CDD4AA12D7C25BF000A5AD1 /* TestsIntegration-UnsolvedRep.rtf */; };
 		F26DEDB92D75BA7200EADE32 /* TestsIntegration-DiskRep.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = F26DEDB72D75B5BD00EADE32 /* TestsIntegration-DiskRep.txt */; };
+		F26DEDD52D81129100EADE32 /* English.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CD4022A2D6AFE3C00024E10 /* English.lproj */; };
 		F2EF2C802D6D78090011DE22 /* TestsIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = F2EF2C7F2D6D78090011DE22 /* TestsIntegration.m */; };
 		F2EF2C832D6D78320011DE22 /* TestsUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = F2EF2C822D6D78320011DE22 /* TestsUnit.m */; };
 /* End PBXBuildFile section */
@@ -41,6 +42,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 6;
 			files = (
+				F26DEDD52D81129100EADE32 /* English.lproj in CopyFiles */,
 				8CDD4AA22D7C25D3000A5AD1 /* TestsIntegration-DisplayRep.rtf in CopyFiles */,
 				8CDD4AA32D7C25D3000A5AD1 /* TestsIntegration-SolvedRep.rtf in CopyFiles */,
 				8CDD4AA42D7C25D3000A5AD1 /* TestsIntegration-UnsolvedRep.rtf in CopyFiles */,
