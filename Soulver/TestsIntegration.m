@@ -170,7 +170,7 @@ void TestsIntegrationExecute(void)
 +(SVRSolverTextAttachmentStyles)stylesForSolution;
 {
   NSFont  *toDrawFont   = [NSFont fontWithName:@"Courier" size:12];
-  NSColor *toDrawColor  = [NSColor blueColor];
+  NSColor *toDrawColor  = [NSColor colorWithCalibratedRed:0 green:0 blue:1 alpha:1];
   NSFont  *neighborFont = [NSFont fontWithName:@"Courier" size:12];
   SVRSolverTextAttachmentBorderStyle borderStyle = SVRSolverTextAttachmentBorderStyleRecessedWhite;
   
@@ -182,7 +182,7 @@ void TestsIntegrationExecute(void)
 +(SVRSolverTextAttachmentStyles)stylesForPreviousSolution;
 {
   NSFont  *toDrawFont   = [NSFont fontWithName:@"Courier" size:8];
-  NSColor *toDrawColor  = [NSColor greenColor];
+  NSColor *toDrawColor  = [NSColor colorWithCalibratedRed:0 green:1 blue:0 alpha:1];
   NSFont  *neighborFont = [NSFont fontWithName:@"Helvetica" size:14];
   SVRSolverTextAttachmentBorderStyle borderStyle = SVRSolverTextAttachmentBorderStyleColored;
   
@@ -194,7 +194,7 @@ void TestsIntegrationExecute(void)
 +(SVRSolverTextAttachmentStyles)stylesForError;
 {
   NSFont  *toDrawFont   = [NSFont fontWithName:@"Helvetica" size:10];
-  NSColor *toDrawColor  = [NSColor redColor];
+  NSColor *toDrawColor  = [NSColor colorWithCalibratedRed:1 green:0 blue:0 alpha:1];
   NSFont  *neighborFont = [NSFont fontWithName:@"Courier" size:12];
   SVRSolverTextAttachmentBorderStyle borderStyle = SVRSolverTextAttachmentBorderStyleColored;
   
@@ -207,10 +207,10 @@ void TestsIntegrationExecute(void)
 {
   NSFont  *mathFont       = [NSFont fontWithName:@"Courier"   size:14];
   NSFont  *otherTextFont  = [NSFont fontWithName:@"Helvetica" size:12];
-  NSColor *otherTextColor = [NSColor grayColor];
-  NSColor *operandColor   = [NSColor purpleColor];
-  NSColor *operatorColor  = [NSColor blueColor];
-  NSColor *bracketColor   = [NSColor yellowColor];
+  NSColor *otherTextColor = [NSColor colorWithCalibratedRed:0.5 green:0.5 blue:0.5 alpha:1];
+  NSColor *operandColor   = [NSColor colorWithCalibratedRed:1 green:0 blue:1 alpha:1];
+  NSColor *operatorColor  = [NSColor colorWithCalibratedRed:0 green:0 blue:1 alpha:1];
+  NSColor *bracketColor   = [NSColor colorWithCalibratedRed:1 green:1 blue:0 alpha:0];
   
   return [NSDictionary __SVR_stylesWithMathFont:mathFont
                                    neighborFont:otherTextFont
