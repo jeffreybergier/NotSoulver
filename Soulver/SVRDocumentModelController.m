@@ -84,7 +84,9 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
   if ([type isEqualToString:SVRDocumentModelRepDisk]) {
     return [self __dataRepresentationOfDiskTypeWithRange:range];
   } else if ([type isEqualToString:SVRDocumentModelRepDisplay]) {
-    return [self __dataRepresentationOfDisplayTypeWithRange:range];
+    // TODO: Convert this to NSCoding
+    return nil;
+    // return [self __dataRepresentationOfDisplayTypeWithRange:range];
   } else if ([type isEqualToString:SVRDocumentModelRepSolved]) {
     return [self __dataRepresentationOfSolvedTypeWithRange:range];
   } else if ([type isEqualToString:SVRDocumentModelRepUnsolved]) {
