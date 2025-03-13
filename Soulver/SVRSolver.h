@@ -48,9 +48,9 @@ typedef NSDictionary* SVRSolverTextStyles;
                   textStyles:(SVRSolverTextStyles)textStyles;
 
 // Returns mutable string to avoid making an immutable copy, but it is still a copy of the original string
-+(NSMutableAttributedString*)replaceAttachmentsWithOriginalCharacters:(NSAttributedString*)input;
++(NSAttributedString*)replacingAttachmentsWithOriginalCharacters:(NSAttributedString*)input;
 // Returns mutable string to avoid making an immutable copy, but it is still a copy of the original string
-+(NSMutableAttributedString*)replaceAttachmentsWithStringValue:(NSAttributedString*)input;
++(NSAttributedString*)replacingAttachmentsWithStringValue:(NSAttributedString*)input;
 
 // MARK: Private
 +(void)__step1_restoreOriginals:(NSMutableAttributedString*)input;

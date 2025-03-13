@@ -88,14 +88,14 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
   [input autorelease];
 }
 
-+(NSMutableAttributedString*)replaceAttachmentsWithOriginalCharacters:(NSAttributedString*)input;
++(NSAttributedString*)replacingAttachmentsWithOriginalCharacters:(NSAttributedString*)input;
 {
   NSMutableAttributedString *output = [[input mutableCopy] autorelease];
   [self __step1_restoreOriginals:output];
   return output;
 }
 
-+(NSMutableAttributedString*)replaceAttachmentsWithStringValue:(NSAttributedString*)input;
++(NSAttributedString*)replacingAttachmentsWithStringValue:(NSAttributedString*)input;
 {
   NSArray *dictKeys = [NSArray arrayWithObjects:NSForegroundColorAttributeName, NSFontAttributeName, nil];
   NSRange range = XPNotFoundRange;
@@ -137,13 +137,12 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
   NSAttributedString *toReplace = nil;
   NSEnumerator *e = [[input string] XP_enumeratorForCharactersInSet:SVRSolverTextAttachmentCharacterSet
                                                             options:NSBackwardsSearch];
-  NSMutableAttributedString *output = [[input mutableCopy] autorelease];
   while ((next = [e nextObject])) {
     range = [next XP_rangeValue];
-    attachment = [output attribute:NSAttachmentAttributeName
+    attachment = [input attribute:NSAttachmentAttributeName
                            atIndex:range.location
                     effectiveRange:NULL];
-    originalString = [output attribute:XPAttributedStringKeyForTag(SVRSolverTagOriginal)
+    originalString = [input attribute:XPAttributedStringKeyForTag(SVRSolverTagOriginal)
                                atIndex:range.location
                         effectiveRange:NULL];
     if (range.length > 1 || attachment == nil || originalString == nil) {
@@ -153,7 +152,7 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
     dictValues = [NSArray arrayWithObjects:[attachment toDrawColor], [attachment toDrawFont], nil];
     toReplace  = [[[NSAttributedString alloc] initWithString:originalString
                                                   attributes:[NSDictionary dictionaryWithObjects:dictValues forKeys:dictKeys]] autorelease];
-    [output replaceCharactersInRange:range withAttributedString:toReplace];
+    [input replaceCharactersInRange:range withAttributedString:toReplace];
     dictValues = nil;
     toReplace  = nil;
     attachment = nil;

@@ -188,12 +188,12 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
       [dataCache setObject:output forKey:key];
     }
     XPLogExtra1(@"%@ dataRepresentationOfType: Cache Miss", self);
-    output = [[[SVRSolver replaceAttachmentsWithOriginalCharacters:[self model]] string] dataUsingEncoding:NSUTF8StringEncoding];
+    output = [[[SVRSolver replacingAttachmentsWithOriginalCharacters:[self model]] string] dataUsingEncoding:NSUTF8StringEncoding];
     [dataCache setObject:output forKey:key];
     return output;
   } else {
     // If a range is provided, do the work slowly with no caching
-    output = [[[SVRSolver replaceAttachmentsWithOriginalCharacters:[[self model] attributedSubstringFromRange:range]] string] dataUsingEncoding:NSUTF8StringEncoding];
+    output = [[[SVRSolver replacingAttachmentsWithOriginalCharacters:[[self model] attributedSubstringFromRange:range]] string] dataUsingEncoding:NSUTF8StringEncoding];
     NSAssert(output, @"__dataRepresentationOfDiskTypeWithRange: NIL");
     return output;
   }
@@ -215,7 +215,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
                 ? NSMakeRange(0, [[self model] length])
                 : _range;
   NSAttributedString *original = [[self model] attributedSubstringFromRange:range];
-  NSAttributedString *solved = [SVRSolver replaceAttachmentsWithStringValue:original];
+  NSAttributedString *solved = [SVRSolver replacingAttachmentsWithStringValue:original];
   NSData *output = [solved RTFFromRange:NSMakeRange(0, [solved length])
                      documentAttributes:XPRTFDocumentAttributes];
   NSAssert(output, @"__dataRepresentationOfSolvedTypeWithRange: NIL");
@@ -228,8 +228,8 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
                 ? NSMakeRange(0, [[self model] length])
                 : _range;
   NSAttributedString *original = [[self model] attributedSubstringFromRange:range];
-  NSAttributedString *unsolved = [SVRSolver replaceAttachmentsWithOriginalCharacters:original];
-  NSData *output = [unsolved RTFFromRange:NSMakeRange(0, [unsolved length])
+  NSAttributedString *unsolved = [SVRSolver replacingAttachmentsWithOriginalCharacters:original];
+  NSData *output = [unsolved RTFFromRange:range
                        documentAttributes:XPRTFDocumentAttributes];
   NSAssert(output, @"__dataRepresentationOfUnsolvedTypeWithRange: NIL");
   return output;
