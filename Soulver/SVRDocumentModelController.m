@@ -168,14 +168,12 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
 
 // MARK: Private
 
--(NSData*)__dataRepresentationOfDiskTypeWithRange:(NSRange)_range;
+-(NSData*)__dataRepresentationOfDiskTypeWithRange:(NSRange)range;
 {
   NSMutableDictionary *dataCache = nil;
   NSString *key = nil;
-  NSRange range = XPNotFoundRange;
-  NSAttributedString *input = nil;
   NSData *output = nil;
-  if (XPIsNotFoundRange(_range)) {
+  if (XPIsNotFoundRange(range)) {
     // If no range provided, use fast path with caching
     dataCache = [self dataCache];
     key = [[self model] string];
@@ -187,6 +185,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
     if ([dataCache count] > 20) {
       XPLogDebug1(@"%@ dataRepresentationOfType: Cache Clear", self);
       [dataCache removeAllObjects];
+      [dataCache setObject:output forKey:key];
     }
     XPLogExtra1(@"%@ dataRepresentationOfType: Cache Miss", self);
     output = [[[SVRSolver replaceAttachmentsWithOriginalCharacters:[self model]] string] dataUsingEncoding:NSUTF8StringEncoding];
@@ -194,9 +193,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
     return output;
   } else {
     // If a range is provided, do the work slowly with no caching
-    range = _range;
-    input = [[self model] attributedSubstringFromRange:range];
-    output = [[[SVRSolver replaceAttachmentsWithOriginalCharacters:input] string] dataUsingEncoding:NSUTF8StringEncoding];
+    output = [[[SVRSolver replaceAttachmentsWithOriginalCharacters:[[self model] attributedSubstringFromRange:range]] string] dataUsingEncoding:NSUTF8StringEncoding];
     NSAssert(output, @"__dataRepresentationOfDiskTypeWithRange: NIL");
     return output;
   }
