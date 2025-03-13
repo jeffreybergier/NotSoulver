@@ -31,7 +31,7 @@
 #import "NSUserDefaults+Soulver.h"
 #import "SVRSolver.h"
 
-NSString *const SVRDocumentModelRepDisk     = @"SVRDocumentModelRepDisk";
+NSString *const SVRDocumentModelRepDisk     = @"nsv";
 NSString *const SVRDocumentModelRepDisplay  = @"SVRDocumentModelRepDisplay";
 NSString *const SVRDocumentModelRepSolved   = @"SVRDocumentModelRepSolved";
 NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";

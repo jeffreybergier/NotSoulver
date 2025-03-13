@@ -97,11 +97,13 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
 
 +(NSMutableAttributedString*)replaceAttachmentsWithStringValue:(NSAttributedString*)input;
 {
-  NSCharacterSet *set = SVRSolverTextAttachmentCharacterSet;
+  NSArray *dictKeys = [NSArray arrayWithObjects:NSForegroundColorAttributeName, NSFontAttributeName, nil];
   NSRange range = XPNotFoundRange;
   NSValue *next = nil;
   SVRSolverTextAttachment *attachment = nil;
-  NSEnumerator *e = [[input string] XP_enumeratorForCharactersInSet:set
+  NSArray *dictValues = nil;
+  NSAttributedString *toReplace = nil;
+  NSEnumerator *e = [[input string] XP_enumeratorForCharactersInSet:SVRSolverTextAttachmentCharacterSet
                                                             options:NSBackwardsSearch];
   NSMutableAttributedString *output = [[input mutableCopy] autorelease];
   while ((next = [e nextObject])) {
@@ -113,7 +115,13 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
       XPLogPause1(@"SVRSolver __step1_restoreOriginals: Invalid Range:%@",
                   NSStringFromRange(range));
     }
-    [output replaceCharactersInRange:range withString:[attachment toDrawString]];
+    dictValues = [NSArray arrayWithObjects:[attachment toDrawColor], [attachment toDrawFont], nil];
+    toReplace  = [[[NSAttributedString alloc] initWithString:[attachment toDrawString]
+                                                  attributes:[NSDictionary dictionaryWithObjects:dictValues forKeys:dictKeys]] autorelease];
+    [output replaceCharactersInRange:range withAttributedString:toReplace];
+    dictValues = nil;
+    toReplace  = nil;
+    attachment = nil;
   }
   return output;
 }

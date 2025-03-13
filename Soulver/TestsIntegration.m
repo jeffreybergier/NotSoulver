@@ -114,10 +114,10 @@ void TestsIntegrationExecute(void)
   XPTestNotNIL(repUnsolvedRHS);
   
   // MARK: Compare Representations
-  XPTestString(repDiskLHS,   repDiskRHS);
-  XPTestBool([repDisplayLHS  TEST_isEqualToAttributedString:repDisplayRHS ]);
-  XPTestBool([repSolvedLHS   TEST_isEqualToAttributedString:repSolvedRHS  ]);
-  XPTestBool([repUnsolvedLHS TEST_isEqualToAttributedString:repUnsolvedRHS]);
+//  XPTestString(repDiskLHS,   repDiskRHS);
+//  XPTestBool([repDisplayLHS  TEST_isEqualToAttributedString:repDisplayRHS ]);
+//  XPTestBool([repSolvedLHS   TEST_isEqualToAttributedString:repSolvedRHS  ]);
+//  XPTestBool([repUnsolvedLHS TEST_isEqualToAttributedString:repUnsolvedRHS]);
   
   XPTestString(repDiskLHS,         repDiskRHS);
   XPTestAttrString(repDisplayLHS,  repDisplayRHS);
@@ -212,7 +212,7 @@ void TestsIntegrationExecute(void)
 {
   NSFont  *mathFont       = [NSFont fontWithName:@"Courier"   size:14];
   NSFont  *otherTextFont  = [NSFont fontWithName:@"Helvetica" size:12];
-  NSColor *otherTextColor = [NSColor colorWithCalibratedRed:0.5 green:0.5 blue:0.5 alpha:1];
+  NSColor *otherTextColor = [NSColor colorWithCalibratedRed:0.3 green:0.3 blue:0.3 alpha:1];
   NSColor *operandColor   = [NSColor colorWithCalibratedRed:1 green:0 blue:1 alpha:1];
   NSColor *operatorColor  = [NSColor colorWithCalibratedRed:0 green:0 blue:1 alpha:1];
   NSColor *bracketColor   = [NSColor colorWithCalibratedRed:1 green:1 blue:0 alpha:0];
