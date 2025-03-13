@@ -111,7 +111,7 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
     attachment = [output attribute:NSAttachmentAttributeName
                            atIndex:range.location
                     effectiveRange:NULL];
-    if (range.length > 1) {
+    if (range.length > 1 || attachment == nil) {
       XPLogPause1(@"SVRSolver __step1_restoreOriginals: Invalid Range:%@",
                   NSStringFromRange(range));
     }
