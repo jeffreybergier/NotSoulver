@@ -381,9 +381,12 @@ NSArray* XPRunOpenPanel(void)
 +(NSData*)XP_archivedDataWithRootObject:(id)object;
 {
 #ifdef MAC_OS_X_VERSION_10_13
-  return [self archivedDataWithRootObject:object
-                    requiringSecureCoding:YES
-                                    error:NULL];
+  NSError *error = nil;
+  NSData *output = [self archivedDataWithRootObject:object
+                              requiringSecureCoding:YES
+                                              error:&error];
+  NSAssert1(!error, @"%@", error);
+  return output;
 #else
   return [self archivedDataWithRootObject:object];
 #endif
@@ -396,7 +399,12 @@ NSArray* XPRunOpenPanel(void)
 +(id)XP_unarchivedObjectOfClass:(Class)cls fromData:(NSData*)someData;
 {
 #ifdef MAC_OS_X_VERSION_10_13
-  return [self unarchivedObjectOfClass:cls fromData:someData error:NULL];
+  NSError *error = nil;
+  NSAttributedString *output = [self unarchivedObjectOfClass:cls
+                                                    fromData:someData
+                                                       error:&error];
+  NSAssert1(!error, @"%@", error);
+  return output;
 #else
   id output = [self unarchiveObjectWithData:someData];
   if (!output) { return nil; }

@@ -85,3 +85,15 @@
           inView:(NSView*)controlView;
 
 @end
+
+@interface SVRSolverTextAttachment (NSCoding) <NSSecureCoding>
++(BOOL)supportsSecureCoding;
+-(id)initWithCoder:(NSCoder *)coder;
+-(void)encodeWithCoder:(NSCoder*)coder;
+@end
+
+@interface SVRSolverTextAttachmentCell (NSCoding) <NSSecureCoding>
++(BOOL)supportsSecureCoding;
+-(id)initWithCoder:(NSCoder *)coder;
+-(void)encodeWithCoder:(NSCoder*)coder;
+@end
