@@ -398,7 +398,8 @@ NSArray* XPRunOpenPanel(void)
 // and causes warning in OpenStep
 +(id)XP_unarchivedObjectOfClass:(Class)cls fromData:(NSData*)someData;
 {
-#ifdef MAC_OS_X_VERSION_10_13
+// TODO: Fix this to use NSSecureCoding
+#ifdef MAC_OS_X_VERSION_10_13__INVALID
   NSError *error = nil;
   NSAttributedString *output = [self unarchivedObjectOfClass:cls
                                                     fromData:someData

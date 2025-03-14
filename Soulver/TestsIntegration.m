@@ -68,10 +68,10 @@ void TestsIntegrationExecute(void)
           Perhaps if they are made in OpenStep, it will pass on both platforms.
    6) [x] Files created in OpenStep are different, so tests pass on OS4.2 but fail on Mac
           Need to convert them to NSAttributedString and then compare. Hopefully that will make it platform agnostic
-   7) [ ] Add NSParagraphStyle Left to the attributed string. Remove color profile information from NSColor
-          A diff of the NSAttributedString output shows that there is implicit NSParagraphStyle "natural" on modern macOS and Left on OpenStep
-          A diff of the NSAttributedString output shows that there is a color profile of "sRGB IEC61966-2.1" on modern macOS and "NSCalibratedRGBColorSpace" on OpenStep
-          Or create a custom compare function that analyzes the RGB values but ignores the color space
+   7) [x] Fixed NSAttributedString comparison by cleaning up how solutions are manually inserted into the string
+          Important that the RTF files need to be generated on modern macOS. Then they pass on both modern macOS AND OpenStep
+   8) [x] Add NSCoding based compare for the Display version
+   9) [ ] Get NSSecureCoding working on modern macOS
    */
 
   
