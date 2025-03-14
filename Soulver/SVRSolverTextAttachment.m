@@ -46,7 +46,7 @@
   return [[_toDrawColor retain] autorelease];
 }
 
--(NSFont*)neighorFont;
+-(NSFont*)neighborFont;
 {
   return [[_neighborFont retain] autorelease];
 }
@@ -252,8 +252,32 @@
 @end
 
 @implementation SVRSolverTextAttachment (NSCoding)
+
 +(BOOL)supportsSecureCoding;
 {
+  return YES;
+}
+
+-(BOOL)isEqual:(SVRSolverTextAttachment*)rhs;
+{
+  if ([rhs class] != [SVRSolverTextAttachment class]) {
+    return NO;
+  }
+  if (![[self toDrawString] isEqualToString:[rhs toDrawString]]) {
+    return NO;
+  }
+  if (![[self toDrawFont]   isEqual:[rhs toDrawFont]]) {
+    return NO;
+  }
+  if (![[self toDrawColor]  isEqual:[rhs toDrawColor]]) {
+    return NO;
+  }
+  if (![[self neighborFont] isEqual:[rhs neighborFont]]) {
+    return NO;
+  }
+  if ([self borderStyle] != [rhs borderStyle]) {
+    return NO;
+  }
   return YES;
 }
 

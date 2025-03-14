@@ -43,7 +43,7 @@
 -(NSString*)toDrawString;
 -(NSFont*)toDrawFont;
 -(NSColor*)toDrawColor;
--(NSFont*)neighorFont;
+-(NSFont*)neighborFont;
 -(SVRSolverTextAttachmentBorderStyle)borderStyle;
 
 -(id)initWithString:(NSString*)stringToDraw styles:(SVRSolverTextAttachmentStyles)styles;
@@ -88,6 +88,7 @@
 
 @interface SVRSolverTextAttachment (NSCoding) <NSSecureCoding>
 +(BOOL)supportsSecureCoding;
+-(BOOL)isEqual:(SVRSolverTextAttachment*)rhs;
 -(id)initWithCoder:(NSCoder *)coder;
 -(void)encodeWithCoder:(NSCoder*)coder;
 @end
