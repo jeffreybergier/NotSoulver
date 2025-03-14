@@ -84,9 +84,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
   if ([type isEqualToString:SVRDocumentModelRepDisk]) {
     return [self __dataRepresentationOfDiskTypeWithRange:range];
   } else if ([type isEqualToString:SVRDocumentModelRepDisplay]) {
-    // TODO: Convert this to NSCoding
-    return nil;
-    // return [self __dataRepresentationOfDisplayTypeWithRange:range];
+    return [self __dataRepresentationOfDisplayTypeWithRange:range];
   } else if ([type isEqualToString:SVRDocumentModelRepSolved]) {
     return [self __dataRepresentationOfSolvedTypeWithRange:range];
   } else if ([type isEqualToString:SVRDocumentModelRepUnsolved]) {
@@ -206,7 +204,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
   NSRange range = XPIsNotFoundRange(_range)
                 ? NSMakeRange(0, [[self model] length])
                 : _range;
-  NSData *output = [[self model] RTFFromRange:range documentAttributes:XPRTFDocumentAttributes];
+  NSData *output = [XPKeyedArchiver XP_archivedDataWithRootObject:[[self model] attributedSubstringFromRange:range]];
   NSAssert(output, @"__dataRepresentationOfDisplayTypeWithRange: NIL");
   return output;
 }
