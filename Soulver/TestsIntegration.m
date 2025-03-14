@@ -102,6 +102,8 @@ void TestsIntegrationExecute(void)
   controller->__TESTING_stylesForText             = [self stylesForText];
   [controller loadDataRepresentation:repDiskLHSData ofType:SVRDocumentModelRepDisk];
   
+  repDisplayLHS  = [XPKeyedUnarchiver XP_unarchivedObjectOfClass:[NSAttributedString class] fromData:[controller dataRepresentationOfType:SVRDocumentModelRepDisplay]];
+  
   // Load all of the representations
   repDiskRHS     = [[NSString alloc] initWithData:[controller dataRepresentationOfType:SVRDocumentModelRepDisk] encoding:NSUTF8StringEncoding];
   repDisplayRHS  = [XPKeyedUnarchiver XP_unarchivedObjectOfClass:[NSAttributedString class] fromData:[controller dataRepresentationOfType:SVRDocumentModelRepDisplay]];

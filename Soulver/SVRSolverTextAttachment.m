@@ -260,25 +260,12 @@
 
 -(BOOL)isEqual:(SVRSolverTextAttachment*)rhs;
 {
-  if ([rhs class] != [SVRSolverTextAttachment class]) {
-    return NO;
-  }
-  if (![[self toDrawString] isEqualToString:[rhs toDrawString]]) {
-    return NO;
-  }
-  if (![[self toDrawFont]   isEqual:[rhs toDrawFont]]) {
-    return NO;
-  }
-  if (![[self toDrawColor]  isEqual:[rhs toDrawColor]]) {
-    return NO;
-  }
-  if (![[self neighborFont] isEqual:[rhs neighborFont]]) {
-    return NO;
-  }
-  if ([self borderStyle] != [rhs borderStyle]) {
-    return NO;
-  }
-  return YES;
+  if ([rhs class] != [SVRSolverTextAttachment class]) { return NO; }
+  return [[self toDrawString] isEqualToString:[rhs toDrawString]]
+      && [[self toDrawFont]   isEqual:[rhs toDrawFont]]
+      && [[self toDrawColor]  isEqual:[rhs toDrawColor]]
+      && [[self neighborFont] isEqual:[rhs neighborFont]]
+      && [self borderStyle] == [rhs borderStyle];
 }
 
 -(id)initWithCoder:(NSCoder *)coder;
