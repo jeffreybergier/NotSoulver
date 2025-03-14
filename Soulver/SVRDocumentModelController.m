@@ -185,7 +185,6 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
     if ([dataCache count] > 20) {
       XPLogDebug1(@"%@ dataRepresentationOfType: Cache Clear", self);
       [dataCache removeAllObjects];
-      [dataCache setObject:output forKey:key];
     }
     XPLogExtra1(@"%@ dataRepresentationOfType: Cache Miss", self);
     output = [[[SVRSolver replacingAttachmentsWithOriginalCharacters:[self model]] string] dataUsingEncoding:NSUTF8StringEncoding];

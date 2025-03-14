@@ -159,7 +159,7 @@ typedef enum {
 
 XPAlertReturn XPRunQuitAlert(void);
 XPAlertReturn XPRunCopyWebURLToPasteboardAlert(NSString* webURL);
-NSArray* XPRunOpenPanel(void);
+NSArray* XPRunOpenPanel(NSString *extension);
 
 @interface XPAttributeEnumerator: NSEnumerator
 {

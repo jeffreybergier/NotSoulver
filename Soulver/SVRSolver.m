@@ -112,8 +112,9 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
                            atIndex:range.location
                     effectiveRange:NULL];
     if (range.length > 1 || attachment == nil) {
-      XPLogPause1(@"SVRSolver __step1_restoreOriginals: Invalid Range:%@",
+      XPLogRaise1(@"SVRSolver __step1_restoreOriginals: Invalid Range:%@",
                   NSStringFromRange(range));
+      return nil;
     }
     dictValues = [NSArray arrayWithObjects:[attachment toDrawColor], [attachment toDrawFont], nil];
     toReplace  = [[[NSAttributedString alloc] initWithString:[attachment toDrawString]
@@ -146,8 +147,9 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
                                atIndex:range.location
                         effectiveRange:NULL];
     if (range.length > 1 || attachment == nil || originalString == nil) {
-      XPLogPause1(@"SVRSolver __step1_restoreOriginals: Invalid Range:%@",
+      XPLogRaise1(@"SVRSolver __step1_restoreOriginals: Invalid Range:%@",
                   NSStringFromRange(range));
+      return;
     }
     dictValues = [NSArray arrayWithObjects:[attachment toDrawColor], [attachment toDrawFont], nil];
     toReplace  = [[[NSAttributedString alloc] initWithString:originalString

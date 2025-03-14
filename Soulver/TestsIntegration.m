@@ -77,7 +77,7 @@ void TestsIntegrationExecute(void)
   
   SVRDocumentModelController *controller = [[[SVRDocumentModelController alloc] init] autorelease];
   NSData *repDiskLHSData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestsIntegration-DiskRep" ofType:@"txt"]];
-  NSString *repDiskLHS   = [[NSString alloc] initWithData:repDiskLHSData encoding:NSUTF8StringEncoding];
+  NSString *repDiskLHS   = [[[NSString alloc] initWithData:repDiskLHSData encoding:NSUTF8StringEncoding] autorelease];
   NSString *repDiskRHS   = nil;
   NSAttributedString *repDisplayLHS  = [[[NSAttributedString alloc] initWithRTF:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestsIntegration-DisplayRep"  ofType:@"rtf"]] documentAttributes:NULL] autorelease];
   NSAttributedString *repSolvedLHS   = [[[NSAttributedString alloc] initWithRTF:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestsIntegration-SolvedRep"   ofType:@"rtf"]] documentAttributes:NULL] autorelease];
@@ -103,7 +103,7 @@ void TestsIntegrationExecute(void)
   [controller loadDataRepresentation:repDiskLHSData ofType:SVRDocumentModelRepDisk];
   
   // Load all of the representations
-  repDiskRHS     = [[NSString alloc] initWithData:[controller dataRepresentationOfType:SVRDocumentModelRepDisk] encoding:NSUTF8StringEncoding];
+  repDiskRHS     = [[[NSString alloc] initWithData:[controller dataRepresentationOfType:SVRDocumentModelRepDisk] encoding:NSUTF8StringEncoding] autorelease];
   repDisplayRHS  = [[[NSAttributedString alloc] initWithRTF:[controller dataRepresentationOfType:SVRDocumentModelRepDisplay ] documentAttributes:NULL] autorelease];
   repSolvedRHS   = [[[NSAttributedString alloc] initWithRTF:[controller dataRepresentationOfType:SVRDocumentModelRepSolved  ] documentAttributes:NULL] autorelease];
   repUnsolvedRHS = [[[NSAttributedString alloc] initWithRTF:[controller dataRepresentationOfType:SVRDocumentModelRepUnsolved] documentAttributes:NULL] autorelease];
