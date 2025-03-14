@@ -68,10 +68,7 @@ void TestsIntegrationExecute(void)
           Perhaps if they are made in OpenStep, it will pass on both platforms.
    6) [x] Files created in OpenStep are different, so tests pass on OS4.2 but fail on Mac
           Need to convert them to NSAttributedString and then compare. Hopefully that will make it platform agnostic
-   7) [ ] Add NSParagraphStyle Left to the attributed string. Remove color profile information from NSColor
-          A diff of the NSAttributedString output shows that there is implicit NSParagraphStyle "natural" on modern macOS and Left on OpenStep
-          A diff of the NSAttributedString output shows that there is a color profile of "sRGB IEC61966-2.1" on modern macOS and "NSCalibratedRGBColorSpace" on OpenStep
-          Or create a custom compare function that analyzes the RGB values but ignores the color space
+   7) [x] As long as RTF files are created on Modern MacOS they now pass on new systems and OpenStep
    */
 
   
@@ -88,18 +85,19 @@ void TestsIntegrationExecute(void)
     
   NSLog(@"%@ Integration Tests: STARTING", self);
   
-  // MARK: Initialization
   XPTestNotNIL(controller);
   XPTestNotNIL(repDiskLHS);
   XPTestNotNIL(repDisplayLHS);
   XPTestNotNIL(repSolvedLHS);
   XPTestNotNIL(repUnsolvedLHS);
   
-  // TODO: Come up with styles for tests
+  // Configure Styles
   controller->__TESTING_stylesForSolution         = [self stylesForSolution];
   controller->__TESTING_stylesForPreviousSolution = [self stylesForPreviousSolution];
   controller->__TESTING_stylesForError            = [self stylesForError];
   controller->__TESTING_stylesForText             = [self stylesForText];
+  
+  // Configure the controller
   [controller loadDataRepresentation:repDiskLHSData ofType:SVRDocumentModelRepDisk];
   
   // Load all of the representations
@@ -113,12 +111,7 @@ void TestsIntegrationExecute(void)
   XPTestNotNIL(repSolvedRHS);
   XPTestNotNIL(repUnsolvedRHS);
   
-  // MARK: Compare Representations
-//  XPTestString(repDiskLHS,   repDiskRHS);
-//  XPTestBool([repDisplayLHS  TEST_isEqualToAttributedString:repDisplayRHS ]);
-//  XPTestBool([repSolvedLHS   TEST_isEqualToAttributedString:repSolvedRHS  ]);
-//  XPTestBool([repUnsolvedLHS TEST_isEqualToAttributedString:repUnsolvedRHS]);
-  
+  // Do comparisons
   XPTestString(repDiskLHS,         repDiskRHS);
   XPTestAttrString(repDisplayLHS,  repDisplayRHS);
   XPTestAttrString(repSolvedLHS,   repSolvedRHS);
@@ -223,50 +216,6 @@ void TestsIntegrationExecute(void)
                                    operandColor:operandColor
                                   operatorColor:operatorColor
                                    bracketColor:bracketColor];
-}
-
-@end
-
-@implementation NSAttributedString (TestsIntegration)
--(BOOL)TEST_isEqualToAttributedString:(NSAttributedString*)rhs;
-{
-  NSDictionary *lhsDict = nil;
-  NSDictionary *rhsDict = nil;
-  XPUInteger idx = 0;
-  
-  if (![rhs isKindOfClass:[NSAttributedString class]]) {
-    return NO;
-  }
-  if (![[self string] isEqualToString:[rhs string]]) {
-    return NO;
-  }
-  
-  for (idx = 0; idx < [self length]; idx++) {
-    lhsDict = [self attributesAtIndex:0 effectiveRange:NULL];
-    rhsDict = [rhs attributesAtIndex:0  effectiveRange:NULL];
-    if ([lhsDict count] != [rhsDict count]) {
-      return NO;
-    }
-    if (![lhsDict TEST_NSForegroundColorIsEqual:rhsDict]) {
-      return NO;
-    }
-    
-  }
-  
-  return YES;
-}
-
-@end
-
-@implementation NSDictionary (TestsIntegration)
--(BOOL)TEST_NSForegroundColorIsEqual:(NSDictionary*)rhsDict;
-{
-  NSColor *lhs = [self objectForKey:NSForegroundColorAttributeName];
-  NSColor *rhs = [rhsDict objectForKey:NSForegroundColorAttributeName];
-  if (lhs == nil && rhs == nil) { return YES; }
-  return [lhs redComponent]   == [rhs redComponent]
-      && [lhs greenComponent] == [rhs greenComponent]
-      && [lhs blueComponent]  == [rhs blueComponent];
 }
 
 @end
