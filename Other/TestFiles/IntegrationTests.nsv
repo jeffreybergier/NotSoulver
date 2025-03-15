@@ -71,6 +71,21 @@ Divide by Zero Errors
 Math Notes Tests
 This test ensures that 2+2= and -2--3= and other 10/0 errors get shown in mid sentence like Math Notes that Apple added in macOS 15= Sequoia. This should also work if2+2=text directly abutts the numbers. Same with brackets like (2)= and(2)=like that.
 
+Previous Solution Tests
+2+2= // Confirmed 4
++4= // Confirmed 8
+*2= // Confirmed 16
+/4= // Confirmed 4
+^2= // Confirmed 16
+-2= // Confirmed -2 (minus not supported for previous solution)
+
+2.2+2.2= // Confirmed 4.4
++4.4= // Confirmed 8.8
+*2.2= // Confirmed 19.36 
+/3.3= // Confirmed 5.86667 
+^2.2= // Confirmed 49.029973
+-2.2= // Confirmed -2.2 (minus not supported for previous solution)
+
 Roots and Logs Tests
 8^0= // 1
 8^1= // 8
