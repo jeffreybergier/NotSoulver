@@ -1,0 +1,328 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2821
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;\red77\green77\blue77;\red179\green0\blue179;\red0\green179\blue179;
+\red179\green179\blue0;}
+{\*\expandedcolortbl;;\csgenericrgb\c30000\c30000\c30000;\csgenericrgb\c70000\c0\c70000;\csgenericrgb\c0\c70000\c70000;
+\csgenericrgb\c70000\c70000\c0;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf2 This is a file for integration testing\
+If you change this file,\
+THE INTEGRATION TESTS WILL BREAK\
+\
+Integer Operator Tests\
+
+\f1\fs28 \cf3 1\cf4 +\cf3 2
+\f0\fs24 \cf2  // Confirmed 3\
+
+\f1\fs28 \cf3 3\cf4 -\cf3 4
+\f0\fs24 \cf2  // Confirmed -1\
+
+\f1\fs28 \cf3 5\cf4 *\cf3 6
+\f0\fs24 \cf2  // Confirmed 30\
+
+\f1\fs28 \cf3 7\cf4 /\cf3 8
+\f0\fs24 \cf2  // Confirmed 0.875\
+
+\f1\fs28 \cf3 10\cf4 ^\cf3 2
+\f0\fs24 \cf2  // Confirmed 100\
+
+\f1\fs28 \cf3 2\cf4 R\cf3 64
+\f0\fs24 \cf2  // Confirmed 8\
+
+\f1\fs28 \cf3 10\cf4 L\cf3 1000
+\f0\fs24 \cf2  // Confirmed 3\
+\
+Float Operator Tests\
+
+\f1\fs28 \cf3 1.1\cf4 +\cf3 2.2
+\f0\fs24 \cf2  // Confirmed 3.3\
+
+\f1\fs28 \cf3 3.3\cf4 -\cf3 4.4
+\f0\fs24 \cf2  // Confirmed -1.1\
+
+\f1\fs28 \cf3 5.5\cf4 *\cf3 6.6
+\f0\fs24 \cf2  // Confirmed 36.3\
+
+\f1\fs28 \cf3 7.7\cf4 /\cf3 8.8
+\f0\fs24 \cf2  // Confirmed 0.875\
+
+\f1\fs28 \cf3 10.10\cf4 ^\cf3 2.2
+\f0\fs24 \cf2  // Confirmed 161.997019\
+
+\f1\fs28 \cf3 2.2\cf4 R\cf3 64.4
+\f0\fs24 \cf2  // Confirmed 6.640807\
+
+\f1\fs28 \cf3 5.5\cf4 L\cf3 666.666
+\f0\fs24 \cf2  // Confirmed 3.814223\
+\
+Negative Integer Tests\
+
+\f1\fs28 \cf3 -1\cf4 +\cf3 -2
+\f0\fs24 \cf2  // Confirmed -3\
+
+\f1\fs28 \cf3 -3\cf4 -\cf3 -4
+\f0\fs24 \cf2  // Confirmed 1\
+
+\f1\fs28 \cf3 -5\cf4 *\cf3 -6
+\f0\fs24 \cf2  // Confirmed 30\
+
+\f1\fs28 \cf3 -7\cf4 /\cf3 -8
+\f0\fs24 \cf2  // Confirmed 0.875\
+
+\f1\fs28 \cf3 -10\cf4 ^\cf3 -2
+\f0\fs24 \cf2  // -0.01\
+
+\f1\fs28 \cf3 -2\cf4 R\cf3 64
+\f0\fs24 \cf2  // Confirmed 0.125\
+
+\f1\fs28 \cf3 -5.5\cf4 L\cf3 666.666
+\f0\fs24 \cf2  // Confirmed Error 113\
+\
+Negative Float Operator Tests\
+
+\f1\fs28 \cf3 -1.1\cf4 +\cf3 -2.2
+\f0\fs24 \cf2  // Confirmed -3.3\
+
+\f1\fs28 \cf3 -3.3\cf4 -\cf3 -4.4
+\f0\fs24 \cf2  // Confirmed 1.1\
+
+\f1\fs28 \cf3 -5.5\cf4 *\cf3 -6.6
+\f0\fs24 \cf2  // Confirmed 36.3\
+
+\f1\fs28 \cf3 -7.7\cf4 /\cf3 -8.8
+\f0\fs24 \cf2  // Confirmed 0.875\
+
+\f1\fs28 \cf3 -10.10\cf4 ^\cf3 -2.2
+\f0\fs24 \cf2  // Confirmed -0.06173\
+\
+Order of Operations Tests\
+
+\f1\fs28 \cf3 4\cf4 +\cf3 2\cf4 -\cf3 3\cf4 *\cf3 6\cf4 ^\cf3 2\cf4 /\cf3 4
+\f0\fs24 \cf2  // Confirmed -21\
+
+\f1\fs28 \cf5 (\cf3 4\cf4 +\cf3 2\cf4 -\cf3 3\cf5 )\cf4 *\cf5 (\cf3 6\cf4 ^\cf3 2\cf4 /\cf3 4\cf5 )
+\f0\fs24 \cf2  // Confirmed 27\
+
+\f1\fs28 \cf3 4.4\cf4 +\cf3 2.2\cf4 -\cf3 3.3\cf4 *\cf3 6.6\cf4 ^\cf3 2.2\cf4 /\cf3 4.4
+\f0\fs24 \cf2  // Confirmed -41.04945\
+
+\f1\fs28 \cf5 (\cf3 4.4\cf4 +\cf3 2.2\cf4 -\cf3 3.3\cf5 )\cf4 *\cf5 (\cf3 6.6\cf4 ^\cf3 2.2\cf4 /\cf3 4.4\cf5 )
+\f0\fs24 \cf2  // 47.64946\
+
+\f1\fs28 \cf3 -4\cf4 +\cf3 -2\cf4 -\cf3 -3\cf4 *\cf3 -6\cf4 ^\cf3 2\cf4 /\cf3 -4
+\f0\fs24 \cf2  // Confirmed -33\
+
+\f1\fs28 \cf5 (\cf3 -4\cf4 +\cf3 -2\cf4 -\cf3 -3\cf5 )\cf4 *\cf5 (\cf3 -6\cf4 ^\cf3 2\cf4 /\cf3 -4\cf5 )
+\f0\fs24 \cf2  // Confirmed 27\
+
+\f1\fs28 \cf5 (\cf3 1\cf4 *\cf3 2\cf5 )\cf4 R\cf5 (\cf3 8\cf4 ^\cf3 2\cf5 )
+\f0\fs24 \cf2  // Confirmed 8\
+
+\f1\fs28 \cf5 (\cf3 5\cf4 +\cf3 5\cf5 )\cf4 L\cf5 (\cf3 500\cf4 *\cf3 2\cf5 )
+\f0\fs24 \cf2  // Confirmed 3\
+\
+Brackets Tests\
+
+\f1\fs28 \cf5 (\cf3 4\cf5 )\cf4 +\cf5 (\cf3 5\cf5 )\cf4 +\cf3 6
+\f0\fs24 \cf2  // Confirmed 15\
+
+\f1\fs28 \cf5 (\cf3 4\cf5 )\cf4 -\cf5 (\cf3 5\cf5 )\cf4 -\cf3 6
+\f0\fs24 \cf2  // Confirmed -7\
+
+\f1\fs28 \cf5 (\cf3 4\cf5 )\cf4 *\cf5 (\cf3 5\cf5 )\cf4 *\cf3 6
+\f0\fs24 \cf2  // Confirmed 120\
+
+\f1\fs28 \cf5 (\cf3 4\cf5 )\cf4 /\cf5 (\cf3 5\cf5 )\cf4 /\cf3 6
+\f0\fs24 \cf2  // Confirmed 0.13333\
+
+\f1\fs28 \cf5 (\cf3 4\cf5 )\cf4 ^\cf5 (\cf3 2\cf5 )\cf4 ^\cf3 3
+\f0\fs24 \cf2  // Confirmed 4096\
+
+\f1\fs28 \cf5 (\cf3 2\cf5 )\cf4 R\cf5 (\cf3 64\cf5 )\cf4 R\cf3 256
+\f0\fs24 \cf2  // Confirmed 2\
+
+\f1\fs28 \cf5 (\cf3 10\cf5 )\cf4 L\cf5 (\cf3 1000\cf5 )
+\f0\fs24 \cf2  // Confirmed 3\
+\
+Brackets with Negatives Test\
+
+\f1\fs28 \cf5 (\cf3 -4\cf5 )\cf4 +\cf5 (\cf3 -5\cf5 )\cf4 +\cf3 -6
+\f0\fs24 \cf2  // Confirmed -15\
+
+\f1\fs28 \cf5 (\cf3 -4\cf5 )\cf4 -\cf5 (\cf3 -5\cf5 )\cf4 -\cf3 -6
+\f0\fs24 \cf2  // Confirmed 7\
+
+\f1\fs28 \cf5 (\cf3 -4\cf5 )\cf4 *\cf5 (\cf3 -5\cf5 )\cf4 *\cf3 -6
+\f0\fs24 \cf2  // Confirmed -120\
+
+\f1\fs28 \cf5 (\cf3 -4\cf5 )\cf4 /\cf5 (\cf3 -5\cf5 )\cf4 /\cf3 -6
+\f0\fs24 \cf2  // Confirmed -0.133333\
+
+\f1\fs28 \cf5 (\cf3 -4\cf5 )\cf4 ^\cf5 (\cf3 2\cf5 )\cf4 ^\cf3 3
+\f0\fs24 \cf2  // Confirmed 4096\
+
+\f1\fs28 \cf5 (\cf3 -2\cf5 )\cf4 R\cf5 (\cf3 16\cf5 )\cf4 R\cf3 32
+\f0\fs24 \cf2  // Confirmed 1048576\
+
+\f1\fs28 \cf5 (\cf3 -10\cf5 )\cf4 L\cf5 (\cf3 1000\cf5 )
+\f0\fs24 \cf2  // Confirmed Error 113\
+\
+Divide by Zero Errors\
+
+\f1\fs28 \cf3 100\cf4 /\cf3 0
+\f0\fs24 \cf2 \
+-0 // TODO: -0 gets initialized as NaN in NSDecimalNumber which throws exception\
+\
+Math Notes Tests\
+This test ensures that 
+\f1\fs28 \cf3 2\cf4 +\cf3 2
+\f0\fs24 \cf2  and 
+\f1\fs28 \cf3 -2\cf4 -\cf3 -3
+\f0\fs24 \cf2  and other 10/0 errors get shown in mid sentence like Math Notes that Apple added in macOS 
+\f1\fs28 \cf3 15
+\f0\fs24 \cf2  Sequoia. This should also work if
+\f1\fs28 \cf3 2\cf4 +\cf3 2
+\f0\fs24 \cf2 text directly abutts the numbers. Same with brackets like 
+\f1\fs28 \cf5 (\cf3 2\cf5 )
+\f0\fs24 \cf2  and
+\f1\fs28 \cf5 (\cf3 2\cf5 )
+\f0\fs24 \cf2 like that.\
+\
+Previous Solution Tests\
+
+\f1\fs28 \cf3 2\cf4 +\cf3 2
+\f0\fs24 \cf2  // Confirmed 4\
+
+\f1\fs28 \cf3 4
+\f0\fs24 \cf2  // Confirmed 8\
+
+\f1\fs28 \cf3 2
+\f0\fs24 \cf2  // Confirmed 16\
+
+\f1\fs28 \cf3 4
+\f0\fs24 \cf2  // Confirmed 4\
+
+\f1\fs28 \cf3 2
+\f0\fs24 \cf2  // Confirmed 16\
+
+\f1\fs28 \cf3 -2
+\f0\fs24 \cf2  // Confirmed -2 (minus not supported for previous solution)\
+\
+
+\f1\fs28 \cf3 2.2\cf4 +\cf3 2.2
+\f0\fs24 \cf2  // Confirmed 4.4\
+
+\f1\fs28 \cf3 4.4
+\f0\fs24 \cf2  // Confirmed 8.8\
+
+\f1\fs28 \cf3 2.2
+\f0\fs24 \cf2  // Confirmed 19.36 \
+
+\f1\fs28 \cf3 3.3
+\f0\fs24 \cf2  // Confirmed 5.86667 \
+
+\f1\fs28 \cf3 2.2
+\f0\fs24 \cf2  // Confirmed 49.029973\
+
+\f1\fs28 \cf3 -2.2
+\f0\fs24 \cf2  // Confirmed -2.2 (minus not supported for previous solution)\
+\
+Roots and Logs Tests\
+
+\f1\fs28 \cf3 8\cf4 ^\cf3 0
+\f0\fs24 \cf2  // 1\
+
+\f1\fs28 \cf3 8\cf4 ^\cf3 1
+\f0\fs24 \cf2  // 8\
+
+\f1\fs28 \cf3 8\cf4 ^\cf3 2
+\f0\fs24 \cf2  // 64\
+
+\f1\fs28 \cf3 8\cf4 ^\cf3 3
+\f0\fs24 \cf2  // 512\
+
+\f1\fs28 \cf3 -8\cf4 ^\cf3 2
+\f0\fs24 \cf2  // 64, positive answer when base is negative and power is even\
+
+\f1\fs28 \cf3 -8\cf4 ^\cf3 3
+\f0\fs24 \cf2  // -512, negative answer when base is negative and power is odd\
+
+\f1\fs28 \cf3 8\cf4 ^\cf3 -3
+\f0\fs24 \cf2  // 0.0019\
+
+\f1\fs28 \cf3 8\cf4 ^\cf3 -2
+\f0\fs24 \cf2  // 0.0156s\
+\
+Rooting with arbitrary bases\
+
+\f1\fs28 \cf3 2\cf4 R\cf3 64
+\f0\fs24 \cf2  // 8, Square root of 64\
+
+\f1\fs28 \cf3 3\cf4 R\cf3 64
+\f0\fs24 \cf2  // 4, Cube root of 64\
+
+\f1\fs28 \cf3 4\cf4 R\cf3 64
+\f0\fs24 \cf2  // 2.828\
+
+\f1\fs28 \cf3 5\cf4 R\cf3 64
+\f0\fs24 \cf2  // 2.973\
+
+\f1\fs28 \cf3 6\cf4 R\cf3 64
+\f0\fs24 \cf2  // 2\
+\
+Logarithm with arbitrary bases\
+
+\f1\fs28 \cf3 10\cf4 L\cf3 1000
+\f0\fs24 \cf2  // 3, log10(1000)\
+
+\f1\fs28 \cf3 9\cf4 L\cf3 1000
+\f0\fs24 \cf2  // 3.1438 \
+
+\f1\fs28 \cf3 8\cf4 L\cf3 1000
+\f0\fs24 \cf2  // 3.3219\
+
+\f1\fs28 \cf3 7\cf4 L\cf3 1000
+\f0\fs24 \cf2  // 3.5498\
+
+\f1\fs28 \cf3 2\cf4 L\cf3 1000
+\f0\fs24 \cf2  // 9.9657, log2(1000)\
+\
+Root Errors\
+
+\f1\fs28 \cf3 0\cf4 R\cf3 64
+\f0\fs24 \cf2  Index Zero Error\
+
+\f1\fs28 \cf3 2\cf4 R\cf3 -64
+\f0\fs24 \cf2  Imaginary when base is negative and power is even\
+
+\f1\fs28 \cf3 3\cf4 R\cf3 -64
+\f0\fs24 \cf2  -4, not an error\
+
+\f1\fs28 \cf3 64\cf4 ^\cf5 (\cf3 1\cf4 /\cf3 2\cf5 )
+\f0\fs24 \cf2  // Confirmed 8\
+
+\f1\fs28 \cf3 -64\cf4 ^\cf5 (\cf3 1\cf4 /\cf3 2\cf5 )
+\f0\fs24 \cf2  // Confirmed Imaginary\
+
+\f1\fs28 \cf3 -64\cf4 ^\cf5 (\cf3 1\cf4 /\cf3 3\cf5 )
+\f0\fs24 \cf2  // TODO: Confirmed -4\
+\
+Logarithm Errors\
+
+\f1\fs28 \cf3 10\cf4 L\cf3 -1000
+\f0\fs24 \cf2  Log argument less than 0\
+
+\f1\fs28 \cf3 -2\cf4 L\cf3 1000
+\f0\fs24 \cf2  Log base negative\
+
+\f1\fs28 \cf3 0\cf4 L\cf3 1000
+\f0\fs24 \cf2  Log base 0\
+
+\f1\fs28 \cf3 1\cf4 L\cf3 1000
+\f0\fs24 \cf2 Log base is 1\
+
+\f1\fs28 \cf3 0.5\cf4 L\cf3 1000
+\f0\fs24 \cf2  // -9.9657, not an error\
+\
+}

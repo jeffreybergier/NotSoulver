@@ -37,7 +37,11 @@
 +(void)initialize;
 
 // MARK: Business Logic
-+(void)tagSolutionsInAttributedString:(NSMutableAttributedString*)string;
++(void)tagSolutionsInAttributedString:(NSMutableAttributedString*)string
+                       solutionStyles:(SVRSolverTextAttachmentStyles)solutionStyles
+               previousSolutionStyles:(SVRSolverTextAttachmentStyles)previousSolutionStyles
+                          errorStyles:(SVRSolverTextAttachmentStyles)errorStyles;
+
 
 // MARK: Private
 +(BOOL)__prepareExpression:(NSMutableAttributedString*)input

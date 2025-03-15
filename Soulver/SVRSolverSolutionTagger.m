@@ -54,7 +54,10 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
 }
 
 // MARK: Business Logic
-+(void)tagSolutionsInAttributedString:(NSMutableAttributedString*)output;
++(void)tagSolutionsInAttributedString:(NSMutableAttributedString*)output
+                       solutionStyles:(SVRSolverTextAttachmentStyles)solutionStyles
+               previousSolutionStyles:(SVRSolverTextAttachmentStyles)previousSolutionStyles
+                          errorStyles:(SVRSolverTextAttachmentStyles)errorStyles;
 {
   SVRCalculationError error = SVRCalculationNoError;
   NSMutableAttributedString *expressionToSolve = nil;
@@ -81,8 +84,9 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
       // Step 2: If the previous solution is used, create a text attachment
       solutionString = [
         NSAttributedString attributedStringWithAttachment:
-          [SVRSolverPreviousSolutionTextAttachment attachmentWithPreviousSolution:solution
-                                                                         operator:previousSolutionOperator]
+          [SVRSolverTextAttachment attachmentWithPreviousSolution:solution
+                                                         operator:previousSolutionOperator
+                                                           styles:previousSolutionStyles]
       ];
       // Step 3: Insert the previous solution text attachment
       [output replaceCharactersInRange:NSMakeRange(nextRange.location, 1)
@@ -97,12 +101,14 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     if (solution) {
       solutionString = [
         NSAttributedString attributedStringWithAttachment:
-          [SVRSolverSolutionTextAttachment attachmentWithSolution:solution]
+          [SVRSolverTextAttachment attachmentWithSolution:solution
+                                                   styles:solutionStyles]
       ];
     } else {
       solutionString = [
         NSAttributedString attributedStringWithAttachment:
-          [SVRSolverErrorTextAttachment attachmentWithError:error]
+          [SVRSolverTextAttachment attachmentWithError:error
+                                                styles:errorStyles]
       ];
     }
     XPLogExtra2(@"=: %@<-%@", [[output string] SVR_descriptionHighlightingRange:solutionRange], solution);
@@ -367,7 +373,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
   SVRSolverDecimalBehavior *ohBehave = [SVRSolverDecimalBehavior behaviorWithErrorPtr:errorPtr];
   switch (operator) {
     case SVRSolverOperatorExponent:
-      return [lhs SVR_decimalNumberByRaisingToPower:rhs withBehavior:ohBehave];
+      return [lhs SVR_decimalNumberByRaisingWithExponent:rhs withBehavior:ohBehave];
     case SVRSolverOperatorDivide:
       return [lhs decimalNumberByDividingBy:rhs withBehavior:ohBehave];
     case SVRSolverOperatorMultiply:
@@ -377,7 +383,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     case SVRSolverOperatorAdd:
       return [lhs decimalNumberByAdding:rhs withBehavior:ohBehave];
     case SVRSolverOperatorRoot:
-      return [rhs SVR_decimalNumberByRootingWithIndex:lhs withBehavior:ohBehave];
+      return [rhs SVR_decimalNumberByRootingWithExponent:lhs withBehavior:ohBehave];
     case SVRSolverOperatorLog:
       return [rhs SVR_decimalNumberByLogarithmWithBase:lhs withBehavior:ohBehave];
     default:

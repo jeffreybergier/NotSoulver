@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C662C4E2D6F4C1300068A08 /* XPRegularExpression.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C662C4D2D6F4C1300068A08 /* XPRegularExpression.m */; };
 		8CD4023E2D6AFE3D00024E10 /* XPCrossPlatform.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD4020F2D6AFE3B00024E10 /* XPCrossPlatform.m */; };
 		8CD4023F2D6AFE3D00024E10 /* SVRAccessoryWindowsOwner.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD402152D6AFE3B00024E10 /* SVRAccessoryWindowsOwner.m */; };
 		8CD402402D6AFE3D00024E10 /* SVRSolverTextAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD402182D6AFE3B00024E10 /* SVRSolverTextAttachment.m */; };
@@ -15,7 +16,6 @@
 		8CD402432D6AFE3D00024E10 /* SVRSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD402202D6AFE3C00024E10 /* SVRSettingsViewController.m */; };
 		8CD402442D6AFE3D00024E10 /* SVRDocumentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD402212D6AFE3C00024E10 /* SVRDocumentViewController.m */; };
 		8CD402452D6AFE3D00024E10 /* SVRSolverScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD402222D6AFE3C00024E10 /* SVRSolverScanner.m */; };
-		8CD402462D6AFE3D00024E10 /* SLRERegex.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD402232D6AFE3C00024E10 /* SLRERegex.m */; };
 		8CD402472D6AFE3D00024E10 /* SVRSolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD402242D6AFE3C00024E10 /* SVRSolver.m */; };
 		8CD402482D6AFE3D00024E10 /* SVRDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD402272D6AFE3C00024E10 /* SVRDocument.m */; };
 		8CD402492D6AFE3D00024E10 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 8CD4022E2D6AFE3C00024E10 /* Makefile */; };
@@ -26,22 +26,36 @@
 		8CD4024E2D6AFE3D00024E10 /* slre.c in Sources */ = {isa = PBXBuildFile; fileRef = 8CD402382D6AFE3D00024E10 /* slre.c */; };
 		8CD4024F2D6AFE3D00024E10 /* NSUserDefaults+Soulver.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD4023B2D6AFE3D00024E10 /* NSUserDefaults+Soulver.m */; };
 		8CD402502D6AFE3D00024E10 /* SVRAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD4023C2D6AFE3D00024E10 /* SVRAppDelegate.m */; };
+		8CDD4AA22D7C25D3000A5AD1 /* TestsIntegration-DisplayRep.rtf in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CDD4A9F2D7C25BF000A5AD1 /* TestsIntegration-DisplayRep.rtf */; };
+		8CDD4AA32D7C25D3000A5AD1 /* TestsIntegration-SolvedRep.rtf in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CDD4AA02D7C25BF000A5AD1 /* TestsIntegration-SolvedRep.rtf */; };
+		8CDD4AA42D7C25D3000A5AD1 /* TestsIntegration-UnsolvedRep.rtf in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CDD4AA12D7C25BF000A5AD1 /* TestsIntegration-UnsolvedRep.rtf */; };
+		F26DEDB92D75BA7200EADE32 /* TestsIntegration-DiskRep.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = F26DEDB72D75B5BD00EADE32 /* TestsIntegration-DiskRep.txt */; };
+		F26DEDD52D81129100EADE32 /* English.lproj in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CD4022A2D6AFE3C00024E10 /* English.lproj */; };
+		F2EF2C802D6D78090011DE22 /* TestsIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = F2EF2C7F2D6D78090011DE22 /* TestsIntegration.m */; };
+		F2EF2C832D6D78320011DE22 /* TestsUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = F2EF2C822D6D78320011DE22 /* TestsUnit.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		8CD402012D6AFCAF00024E10 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 6;
 			files = (
+				F26DEDD52D81129100EADE32 /* English.lproj in CopyFiles */,
+				8CDD4AA22D7C25D3000A5AD1 /* TestsIntegration-DisplayRep.rtf in CopyFiles */,
+				8CDD4AA32D7C25D3000A5AD1 /* TestsIntegration-SolvedRep.rtf in CopyFiles */,
+				8CDD4AA42D7C25D3000A5AD1 /* TestsIntegration-UnsolvedRep.rtf in CopyFiles */,
+				F26DEDB92D75BA7200EADE32 /* TestsIntegration-DiskRep.txt in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		8C6587BA2D6C17620055E7EA /* .gdbinit */ = {isa = PBXFileReference; lastKnownFileType = text; name = .gdbinit; path = ../Soulver/.gdbinit; sourceTree = "<group>"; };
+		8C662C4C2D6F4C1300068A08 /* XPRegularExpression.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = XPRegularExpression.h; path = ../Soulver/XPRegularExpression.h; sourceTree = SOURCE_ROOT; };
+		8C662C4D2D6F4C1300068A08 /* XPRegularExpression.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XPRegularExpression.m; path = ../Soulver/XPRegularExpression.m; sourceTree = SOURCE_ROOT; };
 		8CD402032D6AFCAF00024E10 /* Xcode14 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Xcode14; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CD4020F2D6AFE3B00024E10 /* XPCrossPlatform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XPCrossPlatform.m; path = ../Soulver/XPCrossPlatform.m; sourceTree = "<group>"; };
 		8CD402132D6AFE3B00024E10 /* PB.project */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = PB.project; path = ../Soulver/PB.project; sourceTree = "<group>"; };
@@ -60,10 +74,8 @@
 		8CD402202D6AFE3C00024E10 /* SVRSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SVRSettingsViewController.m; path = ../Soulver/SVRSettingsViewController.m; sourceTree = "<group>"; };
 		8CD402212D6AFE3C00024E10 /* SVRDocumentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SVRDocumentViewController.m; path = ../Soulver/SVRDocumentViewController.m; sourceTree = "<group>"; };
 		8CD402222D6AFE3C00024E10 /* SVRSolverScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SVRSolverScanner.m; path = ../Soulver/SVRSolverScanner.m; sourceTree = "<group>"; };
-		8CD402232D6AFE3C00024E10 /* SLRERegex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SLRERegex.m; path = ../Soulver/SLRERegex.m; sourceTree = "<group>"; };
 		8CD402242D6AFE3C00024E10 /* SVRSolver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SVRSolver.m; path = ../Soulver/SVRSolver.m; sourceTree = "<group>"; };
 		8CD402252D6AFE3C00024E10 /* SVRSolverScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SVRSolverScanner.h; path = ../Soulver/SVRSolverScanner.h; sourceTree = "<group>"; };
-		8CD402262D6AFE3C00024E10 /* SLRERegex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SLRERegex.h; path = ../Soulver/SLRERegex.h; sourceTree = "<group>"; };
 		8CD402272D6AFE3C00024E10 /* SVRDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SVRDocument.m; path = ../Soulver/SVRDocument.m; sourceTree = "<group>"; };
 		8CD402282D6AFE3C00024E10 /* SVRSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SVRSettingsViewController.h; path = ../Soulver/SVRSettingsViewController.h; sourceTree = "<group>"; };
 		8CD402292D6AFE3C00024E10 /* SVRSolverExpressionTagger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SVRSolverExpressionTagger.h; path = ../Soulver/SVRSolverExpressionTagger.h; sourceTree = "<group>"; };
@@ -87,6 +99,14 @@
 		8CD4023B2D6AFE3D00024E10 /* NSUserDefaults+Soulver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSUserDefaults+Soulver.m"; path = "../Soulver/NSUserDefaults+Soulver.m"; sourceTree = "<group>"; };
 		8CD4023C2D6AFE3D00024E10 /* SVRAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SVRAppDelegate.m; path = ../Soulver/SVRAppDelegate.m; sourceTree = "<group>"; };
 		8CD4023D2D6AFE3D00024E10 /* about-image-512.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "about-image-512.tiff"; path = "../Soulver/about-image-512.tiff"; sourceTree = "<group>"; };
+		8CDD4A9F2D7C25BF000A5AD1 /* TestsIntegration-DisplayRep.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = "TestsIntegration-DisplayRep.rtf"; path = "../Soulver/TestsIntegration-DisplayRep.rtf"; sourceTree = SOURCE_ROOT; };
+		8CDD4AA02D7C25BF000A5AD1 /* TestsIntegration-SolvedRep.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = "TestsIntegration-SolvedRep.rtf"; path = "../Soulver/TestsIntegration-SolvedRep.rtf"; sourceTree = SOURCE_ROOT; };
+		8CDD4AA12D7C25BF000A5AD1 /* TestsIntegration-UnsolvedRep.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = "TestsIntegration-UnsolvedRep.rtf"; path = "../Soulver/TestsIntegration-UnsolvedRep.rtf"; sourceTree = SOURCE_ROOT; };
+		F26DEDB72D75B5BD00EADE32 /* TestsIntegration-DiskRep.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "TestsIntegration-DiskRep.txt"; path = "../Soulver/TestsIntegration-DiskRep.txt"; sourceTree = SOURCE_ROOT; };
+		F2EF2C7E2D6D78090011DE22 /* TestsIntegration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TestsIntegration.h; path = ../Soulver/TestsIntegration.h; sourceTree = SOURCE_ROOT; };
+		F2EF2C7F2D6D78090011DE22 /* TestsIntegration.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TestsIntegration.m; path = ../Soulver/TestsIntegration.m; sourceTree = SOURCE_ROOT; };
+		F2EF2C812D6D78320011DE22 /* TestsUnit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TestsUnit.h; path = ../Soulver/TestsUnit.h; sourceTree = SOURCE_ROOT; };
+		F2EF2C822D6D78320011DE22 /* TestsUnit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TestsUnit.m; path = ../Soulver/TestsUnit.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,12 +150,10 @@
 				8CD4022B2D6AFE3C00024E10 /* NSUserDefaults+Soulver.h */,
 				8CD4023B2D6AFE3D00024E10 /* NSUserDefaults+Soulver.m */,
 				8CD402132D6AFE3B00024E10 /* PB.project */,
-				8CD402382D6AFE3D00024E10 /* slre.c */,
 				8CD402162D6AFE3B00024E10 /* slre.h */,
-				8CD402262D6AFE3C00024E10 /* SLRERegex.h */,
-				8CD402232D6AFE3C00024E10 /* SLRERegex.m */,
-				8CD402342D6AFE3D00024E10 /* Soulver_main.m */,
+				8CD402382D6AFE3D00024E10 /* slre.c */,
 				8CD4021F2D6AFE3B00024E10 /* Soulver.iconheader */,
+				8CD402342D6AFE3D00024E10 /* Soulver_main.m */,
 				8CD402392D6AFE3D00024E10 /* SVRAccessoryWindowsOwner.h */,
 				8CD402152D6AFE3B00024E10 /* SVRAccessoryWindowsOwner.m */,
 				8CD4022D2D6AFE3C00024E10 /* SVRAppDelegate.h */,
@@ -160,10 +178,20 @@
 				8CD402302D6AFE3C00024E10 /* SVRSolverStyler.m */,
 				8CD4023A2D6AFE3D00024E10 /* SVRSolverTextAttachment.h */,
 				8CD402182D6AFE3B00024E10 /* SVRSolverTextAttachment.m */,
+				F26DEDB72D75B5BD00EADE32 /* TestsIntegration-DiskRep.txt */,
+				8CDD4A9F2D7C25BF000A5AD1 /* TestsIntegration-DisplayRep.rtf */,
+				8CDD4AA02D7C25BF000A5AD1 /* TestsIntegration-SolvedRep.rtf */,
+				8CDD4AA12D7C25BF000A5AD1 /* TestsIntegration-UnsolvedRep.rtf */,
+				F2EF2C7E2D6D78090011DE22 /* TestsIntegration.h */,
+				F2EF2C7F2D6D78090011DE22 /* TestsIntegration.m */,
+				F2EF2C812D6D78320011DE22 /* TestsUnit.h */,
+				F2EF2C822D6D78320011DE22 /* TestsUnit.m */,
 				8CD402352D6AFE3D00024E10 /* XPCrossPlatform.h */,
 				8CD4020F2D6AFE3B00024E10 /* XPCrossPlatform.m */,
 				8CD4021A2D6AFE3B00024E10 /* XPDocument.h */,
 				8CD4021B2D6AFE3B00024E10 /* XPDocument.m */,
+				8C662C4C2D6F4C1300068A08 /* XPRegularExpression.h */,
+				8C662C4D2D6F4C1300068A08 /* XPRegularExpression.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -229,6 +257,8 @@
 				8CD4024D2D6AFE3D00024E10 /* SVRSolverSolutionTagger.m in Sources */,
 				8CD402472D6AFE3D00024E10 /* SVRSolver.m in Sources */,
 				8CD4024E2D6AFE3D00024E10 /* slre.c in Sources */,
+				8C662C4E2D6F4C1300068A08 /* XPRegularExpression.m in Sources */,
+				F2EF2C802D6D78090011DE22 /* TestsIntegration.m in Sources */,
 				8CD402502D6AFE3D00024E10 /* SVRAppDelegate.m in Sources */,
 				8CD402442D6AFE3D00024E10 /* SVRDocumentViewController.m in Sources */,
 				8CD402402D6AFE3D00024E10 /* SVRSolverTextAttachment.m in Sources */,
@@ -237,9 +267,9 @@
 				8CD4023F2D6AFE3D00024E10 /* SVRAccessoryWindowsOwner.m in Sources */,
 				8CD4024B2D6AFE3D00024E10 /* SVRSolverExpressionTagger.m in Sources */,
 				8CD402492D6AFE3D00024E10 /* Makefile in Sources */,
+				F2EF2C832D6D78320011DE22 /* TestsUnit.m in Sources */,
 				8CD402422D6AFE3D00024E10 /* SVRDocumentModelController.m in Sources */,
 				8CD402452D6AFE3D00024E10 /* SVRSolverScanner.m in Sources */,
-				8CD402462D6AFE3D00024E10 /* SLRERegex.m in Sources */,
 				8CD402412D6AFE3D00024E10 /* XPDocument.m in Sources */,
 				8CD4023E2D6AFE3D00024E10 /* XPCrossPlatform.m in Sources */,
 				8CD4024F2D6AFE3D00024E10 /* NSUserDefaults+Soulver.m in Sources */,

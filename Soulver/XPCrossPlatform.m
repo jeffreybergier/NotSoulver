@@ -106,7 +106,7 @@ XPAlertReturn XPRunCopyWebURLToPasteboardAlert(NSString* webURL)
                          webURL);
 }
 
-NSArray* XPRunOpenPanel(void)
+NSArray* XPRunOpenPanel(NSString *extension)
 {
   // This method was occasionally causing a crash with NSOpenPanel,
   // thus I added the additional memory management.
@@ -123,7 +123,7 @@ NSArray* XPRunOpenPanel(void)
   [panel setAllowsMultipleSelection:YES];
   result = [panel runModalForDirectory:lastDirectory
                                   file:nil
-                                 types:[NSArray arrayWithObject:@"solv"]];
+                                 types:[NSArray arrayWithObject:extension]];
   [ud SVR_setSavePanelLastDirectory:[panel directory]];
   
   switch (result) {
@@ -151,6 +151,7 @@ NSArray* XPRunOpenPanel(void)
    usingLongestEffectiveRange:(BOOL)usesLongest;
 {
   self = [super init];
+  NSCParameterAssert(self);
   _key = [key retain];
   _string = [attributedString copy];
   _index = 0;
@@ -233,6 +234,7 @@ NSArray* XPRunOpenPanel(void)
 -(id)initWithString:(NSString*)string characterSet:(NSCharacterSet*)aSet options:(XPStringCompareOptions)mask;
 {
   self = [super init];
+  NSCParameterAssert(self);
   _string = [string retain];
   _set = [aSet retain];
   _options = mask;
@@ -375,15 +377,6 @@ NSArray* XPRunOpenPanel(void)
 
 @end
 
-@implementation CrossPlatform
-+(void)executeUnitTests;
-{
-  XPLogAlwys(@"XPTESTS: Start");
-  [XPLog executeUnitTests];
-  XPLogAlwys(@"XPTESTS: Pass");
-}
-@end
-
 @implementation XPKeyedArchiver (CrossPlatform)
 +(NSData*)XP_archivedDataWithRootObject:(id)object;
 {
@@ -434,9 +427,9 @@ NSArray* XPRunOpenPanel(void)
 -(BOOL)XP_openFile:(NSString*)file;
 {
 #ifdef MAC_OS_X_VERSION_10_0
-    return [self openURL:[NSURL URLWithString:file]];
+  return [self openURL:[NSURL fileURLWithPath:file]];
 #else
-    return [self openFile:file];
+  return [self openFile:file];
 #endif
 }
 @end
@@ -444,37 +437,6 @@ NSArray* XPRunOpenPanel(void)
 @implementation XPLog
 
 +(void)pause {}
-
-+(void)executeUnitTests;
-{
-  XPLogAlwys (@"XPLogAlwys");
-  XPLogAlwys1(@"XPLogAlwys1: %d", 1);
-  XPLogAlwys2(@"XPLogAlwys2: %d, %d", 1, 2);
-  XPLogAlwys3(@"XPLogAlwys3: %d, %d, %d", 1, 2, 3);
-  XPLogAlwys4(@"XPLogAlwys4: %d, %d, %d, %d", 1, 2, 3, 4);
-  XPLogDebug (@"XPLogDebug");
-  XPLogDebug1(@"XPLogDebug1: %d", 1);
-  XPLogDebug2(@"XPLogDebug2: %d, %d", 1, 2);
-  XPLogDebug3(@"XPLogDebug3: %d, %d, %d", 1, 2, 3);
-  XPLogDebug4(@"XPLogDebug4: %d, %d, %d, %d", 1, 2, 3, 4);
-  XPLogExtra (@"XPLogExtra");
-  XPLogExtra1(@"XPLogExtra1: %d", 1);
-  XPLogExtra2(@"XPLogExtra2: %d, %d", 1, 2);
-  XPLogExtra3(@"XPLogExtra3: %d, %d, %d", 1, 2, 3);
-  XPLogExtra4(@"XPLogExtra4: %d, %d, %d, %d", 1, 2, 3, 4);
-  /*
-  XPLogPause (@"XPLogPause");
-  XPLogPause1(@"XPLogPause1: %d", 1);
-  XPLogPause2(@"XPLogPause2: %d, %d", 1, 2);
-  XPLogPause3(@"XPLogPause3: %d, %d, %d", 1, 2, 3);
-  XPLogPause4(@"XPLogPause4: %d, %d, %d, %d", 1, 2, 3, 4);
-  XPLogRaise(@"XPLogRaise");
-  XPLogRaise1(@"XPLogRaise1: %d", 1);
-  XPLogRaise2(@"XPLogRaise2: %d, %d", 1, 2);
-  XPLogRaise3(@"XPLogRaise3: %d, %d, %d", 1, 2, 3);
-  XPLogRaise4(@"XPLogRaise4: %d, %d, %d, %d", 1, 2, 3, 4);
-  */
-}
 
 +(void)logCheckedPoundDefines;
 {

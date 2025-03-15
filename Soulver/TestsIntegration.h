@@ -1,7 +1,7 @@
 //
 // MIT License
 //
-// Copyright (c) 2024 Jeffrey Bergier
+// Copyright (c) 2025 Jeffrey Bergier
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -27,47 +27,20 @@
 // AT https://soulver.app INSTEAD OF USING THIS SOFTWARE.
 //
 
-#import <AppKit/AppKit.h>
+void TestsIntegrationExecute(void);
+
+#if TESTING==1
+
 #import "SVRDocumentModelController.h"
-#import "XPCrossPlatform.h"
+#import "SVRSolver.h"
 
-@interface SVRDocumentViewController: NSResponder
-{
-  mm_unretain IBOutlet NSTextView *_textView;
-  mm_new SVRDocumentModelController *_modelController;
-}
-
-// MARK: Init
--(id)init;
-
-// MARK: awakeFromNib
--(void)awakeFromNib;
--(void)themeDidChangeNotification:(NSNotification*)aNotification;
-
-// MARK: IBActions
--(IBAction)keypadAppend:(id)sender;
-
-// MARK: Interface Builder
--(NSTextView*)textView;
--(SVRDocumentModelController*)modelController;
--(IBAction)append:(NSButton*)sender;
-
-// MARK: Private
--(void)__append:(XPInteger)tag;
--(NSString*)__mapKeyWithTag:(XPInteger)tag control:(int*)control;
--(NSDictionary*)__typingAttributes;
-
+@interface SVRDocumentModelController (TestsIntegration)
++(void)executeTests;
++(void)saveTestFiles;
++(SVRSolverTextAttachmentStyles)stylesForSolution;
++(SVRSolverTextAttachmentStyles)stylesForPreviousSolution;
++(SVRSolverTextAttachmentStyles)stylesForError;
++(SVRSolverTextStyles)stylesForText;
 @end
 
-@interface SVRDocumentViewController (IBActions)
-
--(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
--(IBAction)cutUnsolved:(id)sender;
--(IBAction)cutUniversal:(id)sender;
--(IBAction)copyUnsolved:(id)sender;
--(IBAction)copyUniversal:(id)sender;
--(IBAction)pasteUniversal:(id)sender;
--(BOOL)__universalCopyRTFData:(NSData*)rtfData
-                  diskRepData:(NSData*)diskRepData;
-
-@end
+#endif
