@@ -117,6 +117,12 @@ void TestsIntegrationExecute(void)
   XPTestAttrString(repSolvedLHS,   repSolvedRHS);
   XPTestAttrString(repUnsolvedLHS, repUnsolvedRHS);
   
+  /* // TODO: Get NSCoding working
+  repDisplayLHS = [XPKeyedUnarchiver XP_unarchivedObjectOfClass:[NSAttributedString class] fromData:[XPKeyedArchiver archivedDataWithRootObject:[[[controller model] copy] autorelease]]];
+  repDisplayRHS = [XPKeyedUnarchiver XP_unarchivedObjectOfClass:[NSAttributedString class] fromData:[XPKeyedArchiver archivedDataWithRootObject:[[[controller model] copy] autorelease]]];
+  XPTestAttrString(repDisplayLHS,  repDisplayRHS);
+  */
+  
   NSLog(@"%@ Integration Tests: PASSED", self);
 }
 
