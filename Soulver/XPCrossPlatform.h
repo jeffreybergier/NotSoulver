@@ -97,6 +97,12 @@ typedef NSRange* XPRangePointer;
 #define XPPasteboardTypeString NSStringPboardType
 #endif
 
+#ifdef MAC_OS_X_VERSION_10_8
+#define XPSecureCoding NSSecureCoding
+#else
+#define XPSecureCoding NSCoding
+#endif
+
 #ifdef MAC_OS_X_VERSION_10_9
 #define XPModalResponseOK NSModalResponseOK
 #define XPModalResponseCancel NSModalResponseCancel
@@ -224,6 +230,13 @@ NSArray* XPRunOpenPanel(NSString *extension);
 @interface NSColor (CrossPlatform)
 -(NSData*)XP_data;
 +(id)XP_colorWithData:(NSData*)data;
+@end
+
+@interface NSCoder (CrossPlatform)
+/// On 10.1, 10.0, and OpenStep the key is ignored. Order matters!
+-(id)XP_decodeObjectOfClass:(Class)aClass forKey:(NSString*)key;
+/// On 10.1, 10.0, and OpenStep the key is ignored. Order matters!
+-(void)XP_encodeObject:(id)object forKey:(NSString*)key;
 @end
 
 @interface XPKeyedArchiver (CrossPlatform)
