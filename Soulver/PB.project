@@ -45,7 +45,12 @@
             XPRegularExpression.h
         );
         IMAGES = ("about-image-512.tiff"); 
-        INTERFACES = (NEXTSTEP_AccessoryWindows.nib, NEXTSTEP_Soulver.nib, NEXTSTEP_SVRDocument.nib); 
+        INTERFACES = (
+            MACOSX_Soulver.nib, 
+            NEXTSTEP_AccessoryWindows.nib, 
+            NEXTSTEP_Soulver.nib, 
+            NEXTSTEP_SVRDocument.nib
+        ); 
         OTHER_LINKED = (slre.c, Soulver_main.m); 
         OTHER_RESOURCES = (Localizable.strings, "TestsIntegration-DiskRep.txt", "TestsIntegration-DisplayRep.rtf", "TestsIntegration-SolvedRep.rtf", "TestsIntegration-UnsolvedRep.rtf"); 
         OTHER_SOURCES = (
@@ -63,6 +68,7 @@
     LANGUAGE = English; 
     LOCALIZABLE_FILES = {
         Localizable.strings = Localizable.strings; 
+        MACOSX_Soulver.nib = MACOSX_Soulver.nib; 
         NEXTSTEP_AccessoryWindows.nib = NEXTSTEP_AccessoryWindows.nib; 
         NEXTSTEP_SVRDocument.nib = NEXTSTEP_SVRDocument.nib; 
         NEXTSTEP_Soulver.nib = NEXTSTEP_Soulver.nib; 
