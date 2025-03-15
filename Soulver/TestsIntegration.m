@@ -111,16 +111,21 @@ void TestsIntegrationExecute(void)
   XPTestNotNIL(repSolvedRHS);
   XPTestNotNIL(repUnsolvedRHS);
   
-  // Do comparisons
-  XPTestString(repDiskLHS,         repDiskRHS);
-  XPTestAttrString(repDisplayLHS,  repDisplayRHS);
-  XPTestAttrString(repSolvedLHS,   repSolvedRHS);
+  // Test On-Disk Versions for breaking changes
+  XPTestString(repDiskLHS, repDiskRHS);
+  XPTestAttrString(repDisplayLHS, repDisplayRHS);
+  XPTestAttrString(repSolvedLHS, repSolvedRHS);
   XPTestAttrString(repUnsolvedLHS, repUnsolvedRHS);
   
+  // Test Basic Comparison
+  XPTestAttrString([[[controller model] copy] autorelease],
+                   [[[controller model] copy] autorelease]);
+  
+  // Test NSArchiving / Unarchiving Comparison
   /* // TODO: Get NSCoding working
   repDisplayLHS = [XPKeyedUnarchiver XP_unarchivedObjectOfClass:[NSAttributedString class] fromData:[XPKeyedArchiver archivedDataWithRootObject:[[[controller model] copy] autorelease]]];
   repDisplayRHS = [XPKeyedUnarchiver XP_unarchivedObjectOfClass:[NSAttributedString class] fromData:[XPKeyedArchiver archivedDataWithRootObject:[[[controller model] copy] autorelease]]];
-  XPTestAttrString(repDisplayLHS,  repDisplayRHS);
+  XPTestAttrString(repDisplayLHS, repDisplayRHS);
   */
   
   NSLog(@"%@ Integration Tests: PASSED", self);
