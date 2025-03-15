@@ -47,6 +47,7 @@ NSPoint XPDocumentPointForCascading;
 -(id)init;
 {
   self = [super init];
+  NSCParameterAssert(self);
   _fileName = nil;
   _fileType = nil;
   _isNibLoaded = NO;

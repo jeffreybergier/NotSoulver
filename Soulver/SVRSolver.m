@@ -36,6 +36,12 @@
 #import "SVRSolverExpressionTagger.h"
 #import "SVRSolverTextAttachment.h"
 
+#ifndef MAC_OS_X_VERSION_10_0
+// Silences warning for these functions on OpenStep
+extern int isnan(double x);
+extern int isinf(double x);
+#endif
+
 NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
 
 // MARK: SVRSolver
@@ -58,7 +64,11 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
 
 // MARK: Business Logic
 
-+(void)solveAttributedString:(NSMutableAttributedString*)input;
++(void)solveAttributedString:(NSMutableAttributedString*)input
+              solutionStyles:(SVRSolverTextAttachmentStyles)solutionStyles
+      previousSolutionStyles:(SVRSolverTextAttachmentStyles)previousSolutionStyles
+                 errorStyles:(SVRSolverTextAttachmentStyles)errorStyles
+                  textStyles:(SVRSolverTextStyles)textStyles;
 {
   XPUInteger inputLength = [[input string] length];
   XPUInteger outputLength;
@@ -66,8 +76,11 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
   [self __step1_restoreOriginals:input];
   [self __step2_removeAllTags:input];
   [self __step3_scanAndTag:input];
-  [self __step4_solveAndTag:input];
-  [self __step5_styleAndTag:input];
+  [self __step4_solveAndTag:input
+             solutionStyles:solutionStyles
+     previousSolutionStyles:previousSolutionStyles
+                errorStyles:errorStyles];
+  [self __step5_styleAndTag:input styles:textStyles];
   outputLength = [[input string] length];
   if (inputLength != outputLength) {
     XPLogPause2(@"SVRSolver solveAttributedString: String changed length: %ld->%ld", inputLength, outputLength);
@@ -75,20 +88,22 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
   [input autorelease];
 }
 
-+(NSMutableAttributedString*)replaceAttachmentsWithOriginalCharacters:(NSAttributedString*)input;
++(NSAttributedString*)replacingAttachmentsWithOriginalCharacters:(NSAttributedString*)input;
 {
   NSMutableAttributedString *output = [[input mutableCopy] autorelease];
   [self __step1_restoreOriginals:output];
   return output;
 }
 
-+(NSMutableAttributedString*)replaceAttachmentsWithStringValue:(NSAttributedString*)input;
++(NSAttributedString*)replacingAttachmentsWithStringValue:(NSAttributedString*)input;
 {
-  NSCharacterSet *set = SVRSolverTextAttachmentCharacterSet;
+  NSArray *dictKeys = [NSArray arrayWithObjects:NSForegroundColorAttributeName, NSFontAttributeName, nil];
   NSRange range = XPNotFoundRange;
   NSValue *next = nil;
-  id<SVRSolverTextAttachment> attachment = nil;
-  NSEnumerator *e = [[input string] XP_enumeratorForCharactersInSet:set
+  SVRSolverTextAttachment *attachment = nil;
+  NSArray *dictValues = nil;
+  NSAttributedString *toReplace = nil;
+  NSEnumerator *e = [[input string] XP_enumeratorForCharactersInSet:SVRSolverTextAttachmentCharacterSet
                                                             options:NSBackwardsSearch];
   NSMutableAttributedString *output = [[input mutableCopy] autorelease];
   while ((next = [e nextObject])) {
@@ -96,35 +111,54 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
     attachment = [output attribute:NSAttachmentAttributeName
                            atIndex:range.location
                     effectiveRange:NULL];
-    if (range.length > 1) {
-      XPLogPause1(@"SVRSolver __step1_restoreOriginals: Invalid Range:%@",
+    if (range.length > 1 || attachment == nil) {
+      XPLogRaise1(@"SVRSolver __step1_restoreOriginals: Invalid Range:%@",
                   NSStringFromRange(range));
+      return nil;
     }
-    [output replaceCharactersInRange:range withString:[attachment toDrawString]];
+    dictValues = [NSArray arrayWithObjects:[attachment toDrawColor], [attachment toDrawFont], nil];
+    toReplace  = [[[NSAttributedString alloc] initWithString:[attachment toDrawString]
+                                                  attributes:[NSDictionary dictionaryWithObjects:dictValues forKeys:dictKeys]] autorelease];
+    [output replaceCharactersInRange:range withAttributedString:toReplace];
+    dictValues = nil;
+    toReplace  = nil;
+    attachment = nil;
   }
   return output;
 }
 
 +(void)__step1_restoreOriginals:(NSMutableAttributedString*)input;
 {
-  NSCharacterSet *set = SVRSolverTextAttachmentCharacterSet;
+  NSArray *dictKeys = [NSArray arrayWithObjects:NSForegroundColorAttributeName, NSFontAttributeName, nil];
   NSRange range = XPNotFoundRange;
   NSValue *next = nil;
+  SVRSolverTextAttachment *attachment = nil;
   NSString *originalString = nil;
-  NSEnumerator *e = [[input string] XP_enumeratorForCharactersInSet:set];
+  NSArray *dictValues = nil;
+  NSAttributedString *toReplace = nil;
+  NSEnumerator *e = [[input string] XP_enumeratorForCharactersInSet:SVRSolverTextAttachmentCharacterSet
+                                                            options:NSBackwardsSearch];
   while ((next = [e nextObject])) {
     range = [next XP_rangeValue];
+    attachment = [input attribute:NSAttachmentAttributeName
+                           atIndex:range.location
+                    effectiveRange:NULL];
     originalString = [input attribute:XPAttributedStringKeyForTag(SVRSolverTagOriginal)
-                              atIndex:range.location
-                       effectiveRange:NULL];
-    if (!originalString) {
-      XPLogPause(@"SVRSolver __step1_restoreOriginals: No attribute for text attachment character");
-      originalString = @"~";
+                               atIndex:range.location
+                        effectiveRange:NULL];
+    if (range.length > 1 || attachment == nil || originalString == nil) {
+      XPLogRaise1(@"SVRSolver __step1_restoreOriginals: Invalid Range:%@",
+                  NSStringFromRange(range));
+      return;
     }
-    if (range.length > 1) {
-      XPLogPause1(@"SVRSolver __step1_restoreOriginals: Invalid Range:%@", NSStringFromRange(range));
-    }
-    [input replaceCharactersInRange:range withString:originalString];
+    dictValues = [NSArray arrayWithObjects:[attachment toDrawColor], [attachment toDrawFont], nil];
+    toReplace  = [[[NSAttributedString alloc] initWithString:originalString
+                                                  attributes:[NSDictionary dictionaryWithObjects:dictValues forKeys:dictKeys]] autorelease];
+    [input replaceCharactersInRange:range withAttributedString:toReplace];
+    dictValues = nil;
+    toReplace  = nil;
+    attachment = nil;
+    originalString = nil;
   }
 }
 
@@ -157,23 +191,21 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
   return;
 }
 
-+(void)__step4_solveAndTag:(NSMutableAttributedString*)input;
++(void)__step4_solveAndTag:(NSMutableAttributedString*)input
+            solutionStyles:(SVRSolverTextAttachmentStyles)solutionStyles
+    previousSolutionStyles:(SVRSolverTextAttachmentStyles)previousSolutionStyles
+               errorStyles:(SVRSolverTextAttachmentStyles)errorStyles;
 {
-  [SVRSolverSolutionTagger tagSolutionsInAttributedString:input];
+  [SVRSolverSolutionTagger tagSolutionsInAttributedString:input
+                                           solutionStyles:solutionStyles
+                                   previousSolutionStyles:previousSolutionStyles
+                                              errorStyles:errorStyles];
 }
 
-+(void)__step5_styleAndTag:(NSMutableAttributedString*)input;
++(void)__step5_styleAndTag:(NSMutableAttributedString*)input
+                    styles:(SVRSolverTextStyles)styles;
 {
-  [SVRSolverStyler styleTaggedExpression:input];
-}
-
-@end
-
-@implementation SVRSolver (Testing)
-
-+(void)executeTests;
-{
-  NSLog(@"+[SVRSolver executeTests] Unimplemented. Implement check to read file and check known good Attributed String output");
+  [SVRSolverStyler styleTaggedExpression:input styles:styles];
 }
 
 @end
@@ -286,7 +318,7 @@ NSString *SVRSolverDescriptionForError(SVRCalculationError error)
       return [NSString stringWithFormat:[Localized phraseErrorInfinite], error];
     case SVRCalculationResultImaginary:
       return [NSString stringWithFormat:[Localized phraseErrorImaginary], error];
-    case SVRCalculationIndexZero:
+    case SVRCalculationRootByZero:
       return [NSString stringWithFormat:[Localized phraseErrorIndexZero], error];
     case SVRCalculationArgumentNegative:
       return [NSString stringWithFormat:[Localized phraseErrorArgumentNegative], error];
@@ -324,7 +356,7 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
       return @"SVRCalculationResultInfinite";
     case SVRCalculationResultImaginary:
       return @"SVRCalculationResultImaginary";
-    case SVRCalculationIndexZero:
+    case SVRCalculationRootByZero:
       return @"SVRCalculationIndexZero";
     case SVRCalculationArgumentNegative:
       return @"SVRCalculationArgumentNegative";
@@ -345,6 +377,7 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
 -(id)initWithErrorPtr:(SVRCalculationErrorPointer)errorPtr;
 {
   self = [super init];
+  NSCParameterAssert(self);
   _errorPtr = errorPtr;
   return self;
 }
@@ -417,29 +450,31 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
   return [lhsDescription isEqualToString:rhsDescription];
 }
 
--(NSDecimalNumber*)SVR_decimalNumberByRootingWithIndex:(NSDecimalNumber*)index
-                                          withBehavior:(SVRSolverDecimalBehavior*)behavior;
+-(NSDecimalNumber*)SVR_decimalNumberByRaisingWithExponent:(NSDecimalNumber*)exponent
+                                             withBehavior:(SVRSolverDecimalBehavior*)behavior;
 {
-  double radicandRaw = [self doubleValue];
-  double indexRaw    = [index doubleValue];
+  double baseRaw     = [self doubleValue];
+  double exponentRaw = [exponent doubleValue];
+  double baseMult    = (baseRaw < 0 && fmod(exponentRaw, 2) != 0) ? -1.0 : 1.0;
   double resultRaw   = 0;
-  double radMult     = 1; // Used to counteract odd root of negative number
   SVRCalculationError error = SVRCalculationNoError;
   
-  if (indexRaw == 0) {
-    error = SVRCalculationIndexZero;
+  if (exponentRaw == 0) {
+    return [NSDecimalNumber one];
   }
   
-  if (radicandRaw < 0) {
-    if (fmod(indexRaw, 2) != 1) {
-      error = SVRCalculationResultImaginary;
-    } else {
-      radMult = -1;
-    }
+  if (exponentRaw == 1) {
+    return self;
+  }
+
+  if (exponentRaw > -1 && exponentRaw < 1) {
+    // This is actually a root calculation not a power calculation
+    return [self SVR_decimalNumberByRootingWithExponent:[[NSDecimalNumber one] decimalNumberByDividingBy:exponent]
+                                           withBehavior:behavior];
   }
   
   if (error == SVRCalculationNoError) {
-    resultRaw = pow(radMult*radicandRaw, 1.0 / indexRaw) * radMult;
+    resultRaw = pow(baseMult*baseRaw, exponentRaw) * baseMult;
     if (isnan(resultRaw)) {
       error = SVRCalculationResultNaN;
     }
@@ -454,9 +489,57 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
     return result;
   } else {
     if (behavior) {
-      [behavior exceptionDuringOperation:@selector(SVR_decimalNumberByRootingWithIndex:withBehavior:)
+      [behavior exceptionDuringOperation:@selector(SVR_decimalNumberByRaisingWithExponent:withBehavior:)
                                    error:error
-                             leftOperand:index
+                             leftOperand:self
+                            rightOperand:exponent];
+    } else {
+      XPLogRaise1(@"NSCalculationError: %u", error);
+    }
+    return [NSDecimalNumber notANumber];
+  }
+}
+
+-(NSDecimalNumber*)SVR_decimalNumberByRootingWithExponent:(NSDecimalNumber*)exponent
+                                             withBehavior:(SVRSolverDecimalBehavior*)behavior;
+{
+  double baseRaw     = [self doubleValue];
+  double exponentRaw = [exponent doubleValue];
+  double baseMult    = 1; // Used to counteract odd root of negative number
+  double resultRaw   = 0;
+  SVRCalculationError error = SVRCalculationNoError;
+  
+  if (exponentRaw == 0) {
+    error = SVRCalculationRootByZero;
+  }
+  
+  if (baseRaw < 0) {
+    if (fmod(exponentRaw, 2) != 1) {
+      error = SVRCalculationResultImaginary;
+    } else {
+      baseMult = -1;
+    }
+  }
+  
+  if (error == SVRCalculationNoError) {
+    resultRaw = pow(baseMult * baseRaw, 1.0 / exponentRaw) * baseMult;
+    if (isnan(resultRaw)) {
+      error = SVRCalculationResultNaN;
+    }
+    if (isinf(resultRaw)) {
+      error = SVRCalculationResultInfinite;
+    }
+  }
+  
+  if (error == NSCalculationNoError) {
+    NSString *resultString = [NSString stringWithFormat:@"%f", resultRaw];
+    NSDecimalNumber *result = [NSDecimalNumber decimalNumberWithString:resultString];
+    return result;
+  } else {
+    if (behavior) {
+      [behavior exceptionDuringOperation:@selector(SVR_decimalNumberByRootingWithExponent:withBehavior:)
+                                   error:error
+                             leftOperand:exponent
                             rightOperand:self];
     } else {
       XPLogRaise1(@"NSCalculationError: %u", error);
@@ -501,7 +584,7 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
     return result;
   } else {
     if (behavior) {
-      [behavior exceptionDuringOperation:@selector(SVR_decimalNumberByRootingWithIndex:withBehavior:)
+      [behavior exceptionDuringOperation:@selector(SVR_decimalNumberByRootingWithExponent:withBehavior:)
                                    error:error
                              leftOperand:base
                             rightOperand:self];
@@ -512,31 +595,163 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
   }
 }
 
-// TODO: Update this to match SVR_decimalNumberByRootingWithIndex
-// Make this the primary method and the other method just uses root 1/exponent
--(NSDecimalNumber*)SVR_decimalNumberByRaisingToPower:(NSDecimalNumber*)power
-                                        withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
+@end
+
+// MARK: SVRSolverTextAttachment Input
+
+NSString *const SVRSolverTextAttachmentStyleToDrawFont    = @"SVRSolverTextAttachmentStyleToDrawFont";
+NSString *const SVRSolverTextAttachmentStyleToDrawColor   = @"SVRSolverTextAttachmentStyleToDrawColor";
+NSString *const SVRSolverTextAttachmentStyleNeighborFont  = @"SVRSolverTextAttachmentStyleNeighborFont";
+NSString *const SVRSolverTextAttachmentStyleBorder        = @"SVRSolverTextAttachmentStyleBorder";
+
+NSString *const SVRSolverTextStyleMathFont      = @"SVRSolverTextStyleMathFont";
+NSString *const SVRSolverTextStyleOtherFont     = @"SVRSolverTextStyleOtherFont";
+NSString *const SVRSolverTextStyleOtherColor    = @"SVRSolverTextStyleOtherColor";
+NSString *const SVRSolverTextStyleOperandColor  = @"SVRSolverTextStyleOperandColor";
+NSString *const SVRSolverTextStyleOperatorColor = @"SVRSolverTextStyleOperatorColor";
+NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketColor";
+
+// MARK: NSUserDefaults Helper Methods
+
+@implementation NSUserDefaults (SVRSolverTextAttachmentStyles)
+
+-(SVRSolverTextAttachmentStyles)SVR_stylesForSolution;
 {
-  NSDecimalNumber *output = nil;
-  BOOL powerIsNegative = ([power compare:[NSDecimalNumber zero]] == NSOrderedAscending);
-  BOOL selfIsNegative = ([self compare:[NSDecimalNumber zero]] == NSOrderedAscending);
+  NSFont  *toDrawFont   = [self SVR_fontForTheme:SVRThemeFontMath];
+  NSColor *toDrawColor  = [self SVR_colorForTheme:SVRThemeColorSolution];
+  NSFont  *neighborFont = toDrawFont;
+  XPUserInterfaceStyle userInterfaceStyle = [self SVR_userInterfaceStyle];
+  SVRSolverTextAttachmentBorderStyle borderStyle;
   
-  if (powerIsNegative) {
-    output = [[NSDecimalNumber one] decimalNumberByDividingBy:
-                          [self decimalNumberByRaisingToPower:(XPUInteger)abs([power intValue])
-                                                 withBehavior:behavior]
-                                                 withBehavior:behavior];
-  } else {
-    output = [self decimalNumberByRaisingToPower:(XPUInteger)[power unsignedIntValue]
-                                    withBehavior:behavior];
+  switch (userInterfaceStyle) {
+    case XPUserInterfaceStyleDark:
+      borderStyle = SVRSolverTextAttachmentBorderStyleRecessedGray;
+      break;
+    case XPUserInterfaceStyleLight:
+    case XPUserInterfaceStyleUnspecified:
+    default:
+      borderStyle = SVRSolverTextAttachmentBorderStyleRecessedWhite;
+      break;
   }
   
-  if (selfIsNegative) {
-    output = [output decimalNumberByMultiplyingBy:[NSDecimalNumber decimalNumberWithString:@"-1"]
-                                     withBehavior:behavior];
-  }
+  return [NSDictionary __SVR_stylesWithToDrawFont:toDrawFont
+                                     neighborFont:neighborFont
+                                      toDrawColor:toDrawColor
+                                      borderStyle:borderStyle];
+}
+
+-(SVRSolverTextAttachmentStyles)SVR_stylesForPreviousSolution;
+{
+  NSFont  *toDrawFont   = [self SVR_fontForTheme:SVRThemeFontMath];
+  NSColor *toDrawColor  = [self SVR_colorForTheme:SVRThemeColorOperator];
+  NSFont  *neighborFont = toDrawFont;
+  SVRSolverTextAttachmentBorderStyle borderStyle = SVRSolverTextAttachmentBorderStyleColored;
   
-  return output;
+  return [NSDictionary __SVR_stylesWithToDrawFont:toDrawFont
+                                     neighborFont:neighborFont
+                                      toDrawColor:toDrawColor
+                                      borderStyle:borderStyle];
+}
+
+-(SVRSolverTextAttachmentStyles)SVR_stylesForError;
+{
+  NSFont  *toDrawFont   = [self SVR_fontForTheme:SVRThemeFontError];
+  NSColor *toDrawColor  = [self SVR_colorForTheme:SVRThemeColorErrorText];
+  NSFont  *neighborFont = [self SVR_fontForTheme:SVRThemeFontMath];
+  SVRSolverTextAttachmentBorderStyle borderStyle = SVRSolverTextAttachmentBorderStyleRecessedGray;
+  
+  return [NSDictionary __SVR_stylesWithToDrawFont:toDrawFont
+                                     neighborFont:neighborFont
+                                      toDrawColor:toDrawColor
+                                      borderStyle:borderStyle];
+}
+
+-(SVRSolverTextStyles)SVR_stylesForText;
+{
+  NSFont  *mathFont       = [self SVR_fontForTheme:SVRThemeFontMath];
+  NSFont  *otherTextFont  = [self SVR_fontForTheme:SVRThemeFontOther];
+  NSColor *otherTextColor = [self SVR_colorForTheme:SVRThemeColorOtherText];
+  NSColor *operandColor   = [self SVR_colorForTheme:SVRThemeColorOperand];
+  NSColor *operatorColor  = [self SVR_colorForTheme:SVRThemeColorOperator];
+  NSColor *bracketColor   = [self SVR_colorForTheme:SVRThemeColorBracket];
+  
+  return [NSDictionary __SVR_stylesWithMathFont:mathFont
+                                   neighborFont:otherTextFont
+                                 otherTextColor:otherTextColor
+                                   operandColor:operandColor
+                                  operatorColor:operatorColor
+                                   bracketColor:bracketColor];
+}
+
+@end
+
+@implementation NSDictionary (SVRSolverTextAttachmentStyles)
+
++(SVRSolverTextAttachmentStyles)__SVR_stylesWithToDrawFont:(NSFont*)toDrawFont
+                                              neighborFont:(NSFont*)neighborFont
+                                               toDrawColor:(NSColor*)toDrawColor
+                                               borderStyle:(SVRSolverTextAttachmentBorderStyle)borderStyle;
+{
+  NSArray *values;
+  NSArray *keys;
+  
+  NSCParameterAssert(toDrawFont);
+  NSCParameterAssert(neighborFont);
+  NSCParameterAssert(toDrawColor);
+  
+  values = [NSArray arrayWithObjects:
+            toDrawFont,
+            toDrawColor,
+            neighborFont,
+            [NSNumber XP_numberWithInteger:borderStyle],
+            nil];
+  
+  keys = [NSArray arrayWithObjects:
+          SVRSolverTextAttachmentStyleToDrawFont,
+          SVRSolverTextAttachmentStyleToDrawColor,
+          SVRSolverTextAttachmentStyleNeighborFont,
+          SVRSolverTextAttachmentStyleBorder,
+          nil];
+  
+  return [NSDictionary dictionaryWithObjects:values forKeys:keys];
+}
+
++(SVRSolverTextAttachmentStyles)__SVR_stylesWithMathFont:(NSFont*)mathFont
+                                            neighborFont:(NSFont*)otherTextFont
+                                          otherTextColor:(NSColor*)otherTextColor
+                                            operandColor:(NSColor*)operandColor
+                                           operatorColor:(NSColor*)operatorColor
+                                            bracketColor:(NSColor*)bracketColor;
+{
+  NSArray *keys;
+  NSArray *values;
+  
+  NSCParameterAssert(mathFont);
+  NSCParameterAssert(otherTextFont);
+  NSCParameterAssert(otherTextColor);
+  NSCParameterAssert(operandColor);
+  NSCParameterAssert(operatorColor);
+  NSCParameterAssert(bracketColor);
+  
+  values = [NSArray arrayWithObjects:
+            mathFont,
+            otherTextFont,
+            otherTextColor,
+            operandColor,
+            operatorColor,
+            bracketColor,
+            nil];
+  
+  keys = [NSArray arrayWithObjects:
+          SVRSolverTextStyleMathFont,
+          SVRSolverTextStyleOtherFont,
+          SVRSolverTextStyleOtherColor,
+          SVRSolverTextStyleOperandColor,
+          SVRSolverTextStyleOperatorColor,
+          SVRSolverTextStyleBracketColor,
+          nil];
+  
+  return [NSDictionary dictionaryWithObjects:values forKeys:keys];
 }
 
 @end

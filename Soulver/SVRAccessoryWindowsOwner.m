@@ -71,6 +71,7 @@
 {
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
   self = [super init];
+  NSCParameterAssert(self);
   [[NSBundle mainBundle] XP_loadNibNamed:@"NEXTSTEP_AccessoryWindows"
                                    owner:self
                          topLevelObjects:&_topLevelObjects];

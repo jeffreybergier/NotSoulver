@@ -31,6 +31,11 @@
 #import "NSUserDefaults+Soulver.h"
 #import "SVRSolver.h"
 
+NSString *const SVRDocumentModelRepDisk     = @"nsv";
+NSString *const SVRDocumentModelRepDisplay  = @"SVRDocumentModelRepDisplay";
+NSString *const SVRDocumentModelRepSolved   = @"SVRDocumentModelRepSolved";
+NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
+
 @implementation SVRDocumentModelController
 
 // MARK: Properties
@@ -58,52 +63,51 @@
 -(id)init;
 {
   self = [super init];
+  NSCParameterAssert(self);
+  
   _model = [NSTextStorage new];
   _dataCache = [NSMutableDictionary new];
   _textView = nil;
   _waitTimer = nil;
+  
+  __TESTING_stylesForSolution = nil;
+  __TESTING_stylesForPreviousSolution = nil;
+  __TESTING_stylesForError = nil;
+  __TESTING_stylesForText = nil;
+  
   return self;
 }
 
 // MARK: NSDocument Support
--(NSData*)dataRepresentationOfType:(NSString*)type;
+-(NSData*)dataRepresentationOfType:(SVRDocumentModelRep)type withRange:(NSRange)range;
 {
-  NSMutableDictionary *dataCache = [self dataCache];
-  NSString *key = [[self model] string];
-  NSData *output = [dataCache objectForKey:key];
-  if (output) {
-    XPLogExtra1(@"%@ dataRepresentationOfType: Cache Hit", self);
-    return output;
+  if ([type isEqualToString:SVRDocumentModelRepDisk]) {
+    return [self __dataRepresentationOfDiskTypeWithRange:range];
+  } else if ([type isEqualToString:SVRDocumentModelRepDisplay]) {
+    return [self __dataRepresentationOfDisplayTypeWithRange:range];
+  } else if ([type isEqualToString:SVRDocumentModelRepSolved]) {
+    return [self __dataRepresentationOfSolvedTypeWithRange:range];
+  } else if ([type isEqualToString:SVRDocumentModelRepUnsolved]) {
+    return [self __dataRepresentationOfUnsolvedTypeWithRange:range];
   } else {
-    if ([dataCache count] > 20) {
-      XPLogDebug1(@"%@ dataRepresentationOfType: Cache Clear", self);
-      [dataCache removeAllObjects];
-    }
-    XPLogExtra1(@"%@ dataRepresentationOfType: Cache Miss", self);
-    output = [[[SVRSolver replaceAttachmentsWithOriginalCharacters:[self model]] string]
-                              dataUsingEncoding:NSUTF8StringEncoding];
-    [dataCache setObject:output forKey:key];
-    return output;
+    XPLogRaise1(@"Unknown Type: %@", type);
+    return nil;
   }
 }
 
--(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
+-(NSData*)dataRepresentationOfType:(SVRDocumentModelRep)type;
 {
-  BOOL success = NO;
-  NSTextStorage *model = [self model];
-  NSString *string = [
-    [[NSString alloc] initWithData:data
-                          encoding:NSUTF8StringEncoding]
-    autorelease];
-  if (string) {
-    XPLogDebug1(@"%@ loadDataRepresentation: Rendering", self);
-    [model beginEditing];
-    [[model mutableString] setString:string];
-    [SVRSolver solveAttributedString:model];
-    [model endEditing];
-    success = YES;
+  return [self dataRepresentationOfType:type withRange:XPNotFoundRange];
+}
+
+-(BOOL)loadDataRepresentation:(NSData*)data ofType:(SVRDocumentModelRep)type;
+{
+  if ([type isEqualToString:SVRDocumentModelRepDisk]) {
+    return [self __loadDataRepresentationOfDiskType:data];
+  } else {
+    XPLogRaise1(@"Unknown Type: %@", type);
+    return NO;
   }
-  return success;
 }
 
 // MARK: Usage
@@ -162,6 +166,99 @@
   [self textDidChange:nil];
 }
 
+// MARK: Private
+
+-(NSData*)__dataRepresentationOfDiskTypeWithRange:(NSRange)range;
+{
+  NSMutableDictionary *dataCache = nil;
+  NSString *key = nil;
+  NSData *output = nil;
+  if (XPIsNotFoundRange(range)) {
+    // If no range provided, use fast path with caching
+    dataCache = [self dataCache];
+    key = [[self model] string];
+    output = [dataCache objectForKey:key];
+    if (output) {
+      XPLogExtra1(@"%@ __dataRepresentationOfDiskTypeWithRange: Cache Hit", self);
+      return output;
+    }
+    if ([dataCache count] > 20) {
+      XPLogDebug1(@"%@ dataRepresentationOfType: Cache Clear", self);
+      [dataCache removeAllObjects];
+    }
+    XPLogExtra1(@"%@ dataRepresentationOfType: Cache Miss", self);
+    output = [[[SVRSolver replacingAttachmentsWithOriginalCharacters:[self model]] string] dataUsingEncoding:NSUTF8StringEncoding];
+    [dataCache setObject:output forKey:key];
+    return output;
+  } else {
+    // If a range is provided, do the work slowly with no caching
+    output = [[[SVRSolver replacingAttachmentsWithOriginalCharacters:[[self model] attributedSubstringFromRange:range]] string] dataUsingEncoding:NSUTF8StringEncoding];
+    NSAssert(output, @"__dataRepresentationOfDiskTypeWithRange: NIL");
+    return output;
+  }
+}
+
+-(NSData*)__dataRepresentationOfDisplayTypeWithRange:(NSRange)_range;
+{
+  NSRange range = XPIsNotFoundRange(_range)
+                ? NSMakeRange(0, [[self model] length])
+                : _range;
+  NSData *output = [[self model] RTFFromRange:range documentAttributes:XPRTFDocumentAttributes];
+  NSAssert(output, @"__dataRepresentationOfDisplayTypeWithRange: NIL");
+  return output;
+}
+
+-(NSData*)__dataRepresentationOfSolvedTypeWithRange:(NSRange)_range;
+{
+  NSRange range = XPIsNotFoundRange(_range)
+                ? NSMakeRange(0, [[self model] length])
+                : _range;
+  NSAttributedString *original = [[self model] attributedSubstringFromRange:range];
+  NSAttributedString *solved = [SVRSolver replacingAttachmentsWithStringValue:original];
+  NSData *output = [solved RTFFromRange:NSMakeRange(0, [solved length])
+                     documentAttributes:XPRTFDocumentAttributes];
+  NSAssert(output, @"__dataRepresentationOfSolvedTypeWithRange: NIL");
+  return output;
+}
+
+-(NSData*)__dataRepresentationOfUnsolvedTypeWithRange:(NSRange)_range;
+{
+  NSRange range = XPIsNotFoundRange(_range)
+                ? NSMakeRange(0, [[self model] length])
+                : _range;
+  NSAttributedString *original = [[self model] attributedSubstringFromRange:range];
+  NSAttributedString *unsolved = [SVRSolver replacingAttachmentsWithOriginalCharacters:original];
+  NSData *output = [unsolved RTFFromRange:range
+                       documentAttributes:XPRTFDocumentAttributes];
+  NSAssert(output, @"__dataRepresentationOfUnsolvedTypeWithRange: NIL");
+  return output;
+}
+
+-(BOOL)__loadDataRepresentationOfDiskType:(NSData*)data;
+{
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  BOOL success = NO;
+  NSTextStorage *model = [self model];
+  NSString *string = [
+    [[NSString alloc] initWithData:data
+                          encoding:NSUTF8StringEncoding]
+    autorelease];
+  if (string) {
+    // TODO: Figure out how I can combine this with waitTimerFired:
+    XPLogDebug1(@"%@ loadDataRepresentation: Rendering", self);
+    [model beginEditing];
+    [[model mutableString] setString:string];
+    [SVRSolver solveAttributedString:model
+                      solutionStyles:__TESTING_stylesForSolution         ? __TESTING_stylesForSolution         : [ud SVR_stylesForSolution]
+              previousSolutionStyles:__TESTING_stylesForPreviousSolution ? __TESTING_stylesForPreviousSolution : [ud SVR_stylesForPreviousSolution]
+                         errorStyles:__TESTING_stylesForError            ? __TESTING_stylesForError            : [ud SVR_stylesForError]
+                          textStyles:__TESTING_stylesForText             ? __TESTING_stylesForText             : [ud SVR_stylesForText]];
+    [model endEditing];
+    success = YES;
+  }
+  return success;
+}
+
 -(void)dealloc;
 {
   XPLogDebug1(@"DEALLOC: %@", self);
@@ -196,6 +293,7 @@
 
 -(void)waitTimerFired:(NSTimer*)timer;
 {
+  NSUserDefaults *ud   = [NSUserDefaults standardUserDefaults];
   NSTextStorage *model = [self model];
   NSTextView *textView = [self textView];
   
@@ -204,7 +302,11 @@
   
   // Solve the string
   [model beginEditing];
-  [SVRSolver solveAttributedString:model];
+  [SVRSolver solveAttributedString:model
+                    solutionStyles:__TESTING_stylesForSolution         ? __TESTING_stylesForSolution         : [ud SVR_stylesForSolution]
+            previousSolutionStyles:__TESTING_stylesForPreviousSolution ? __TESTING_stylesForPreviousSolution : [ud SVR_stylesForPreviousSolution]
+                       errorStyles:__TESTING_stylesForError            ? __TESTING_stylesForError            : [ud SVR_stylesForError]
+                        textStyles:__TESTING_stylesForText             ? __TESTING_stylesForText             : [ud SVR_stylesForText]];
   [model endEditing];
   
   // Restore the selection

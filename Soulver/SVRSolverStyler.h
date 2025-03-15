@@ -28,9 +28,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SVRSolver.h"
 
 @interface SVRSolverStyler: NSObject
 
-+(void)styleTaggedExpression:(NSMutableAttributedString*)input;
++(void)styleTaggedExpression:(NSMutableAttributedString*)input
+                      styles:(SVRSolverTextAttachmentStyles)styles;
 
 @end

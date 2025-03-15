@@ -31,23 +31,36 @@
 #import "XPCrossPlatform.h"
 #import "SVRSolverSolutionTagger.h"
 #import "SVRSolver.h"
-#import "NSUserDefaults+Soulver.h"
 
 @implementation SVRSolverStyler
 
-+(void)styleTaggedExpression:(NSMutableAttributedString*)input;
++(void)styleTaggedExpression:(NSMutableAttributedString*)input
+                      styles:(SVRSolverTextAttachmentStyles)styles;
 {
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   XPUInteger index = 0;
   NSRange checkRange = XPNotFoundRange;
   id check = nil;
   
+  NSFont  *mathFont       = [styles objectForKey:SVRSolverTextStyleMathFont];
+  NSFont  *otherTextFont  = [styles objectForKey:SVRSolverTextStyleOtherFont];
+  NSColor *otherTextColor = [styles objectForKey:SVRSolverTextStyleOtherColor];
+  NSColor *operandColor   = [styles objectForKey:SVRSolverTextStyleOperandColor];
+  NSColor *operatorColor  = [styles objectForKey:SVRSolverTextStyleOperatorColor];
+  NSColor *bracketColor   = [styles objectForKey:SVRSolverTextStyleBracketColor];
+
+  NSCParameterAssert(mathFont);
+  NSCParameterAssert(otherTextFont);
+  NSCParameterAssert(otherTextColor);
+  NSCParameterAssert(operandColor);
+  NSCParameterAssert(operatorColor);
+  NSCParameterAssert(bracketColor);
+  
   // Give everything default appearance
   [input addAttribute:NSFontAttributeName
-                value:[ud SVR_fontForTheme:SVRThemeFontOther]
+                value:otherTextFont
                 range:NSMakeRange(0, [input length])];
   [input addAttribute:NSForegroundColorAttributeName
-                value:[ud SVR_colorForTheme:SVRThemeColorOtherText]
+                value:otherTextColor
                 range:NSMakeRange(0, [input length])];
   
   while (index < [input length]) {
@@ -56,10 +69,10 @@
               effectiveRange:&checkRange];
     if (check) {
       [input addAttribute:NSFontAttributeName
-                    value:[ud SVR_fontForTheme:SVRThemeFontMath]
+                    value:mathFont
                     range:checkRange];
       [input addAttribute:NSForegroundColorAttributeName
-                    value:[ud SVR_colorForTheme:SVRThemeColorOperand]
+                    value:operandColor
                     range:checkRange];
     } else {
       check = [input attribute:XPAttributedStringKeyForTag(SVRSolverTagBracket)
@@ -67,10 +80,10 @@
                 effectiveRange:&checkRange];
       if (check) {
         [input addAttribute:NSFontAttributeName
-                      value:[ud SVR_fontForTheme:SVRThemeFontMath]
+                      value:mathFont
                       range:checkRange];
         [input addAttribute:NSForegroundColorAttributeName
-                      value:[ud SVR_colorForTheme:SVRThemeColorBracket]
+                      value:bracketColor
                       range:checkRange];
       } else {
         check = [input attribute:XPAttributedStringKeyForTag(SVRSolverTagOperator)
@@ -78,10 +91,10 @@
                   effectiveRange:&checkRange];
         if (check) {
           [input addAttribute:NSFontAttributeName
-                        value:[ud SVR_fontForTheme:SVRThemeFontMath]
+                        value:mathFont
                         range:checkRange];
           [input addAttribute:NSForegroundColorAttributeName
-                        value:[ud SVR_colorForTheme:SVRThemeColorOperator]
+                        value:operatorColor
                         range:checkRange];
         }
       }

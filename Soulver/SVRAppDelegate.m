@@ -37,6 +37,7 @@
 -(id)init;
 {
   self = [super init];
+  NSCParameterAssert(self);
   _openDocuments = [NSMutableSet new];
   _accessoryWindowsOwner = nil; // Set in applicationDidFinishLaunching:
   return self;
@@ -68,7 +69,7 @@
   NSString *nextF;
   SVRDocument *nextC;
   
-  filenames = XPRunOpenPanel();
+  filenames = XPRunOpenPanel(SVRDocumentModelRepDisk);
   if ([filenames count] == 0) { XPLogDebug1(@"%@ Open Cancelled", self); return; }
   e = [filenames objectEnumerator];
   while ((nextF = [e nextObject])) {

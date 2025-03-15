@@ -3,7 +3,8 @@
     DYNAMIC_CODE_GEN = YES; 
     FILESTABLE = {
         CLASSES = (
-            SVRAppDelegate.m, 
+            "NSUserDefaults+Soulver.m",
+            SVRAppDelegate.m,
             SVRAccessoryWindowsOwner.m, 
             SVRDocument.m, 
             SVRDocumentModelController.m, 
@@ -14,15 +15,18 @@
             SVRSolverScanner.m, 
             SVRSolverSolutionTagger.m, 
             SVRSolverStyler.m, 
-            SVRSolverTextAttachment.m, 
-            XPCrossPlatform.m, 
-            XPDocument.m, 
-            SLRERegex.m, 
-            "NSUserDefaults+Soulver.m"
+            SVRSolverTextAttachment.m,
+            TestsIntegration.m,
+            TestsUnit.m,
+            XPCrossPlatform.m,
+            XPDocument.m,
+            XPRegularExpression.m
         ); 
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
         H_FILES = (
-            SVRAppDelegate.h, 
+            slre.h,
+            "NSUserDefaults+Soulver.h",
+            SVRAppDelegate.h,
             SVRDocument.h, 
             SVRAccessoryWindowsOwner.h, 
             SVRDocumentModelController.h, 
@@ -33,17 +37,17 @@
             SVRSolverScanner.h, 
             SVRSolverSolutionTagger.h, 
             SVRSolverStyler.h, 
-            SVRSolverTextAttachment.h, 
-            XPCrossPlatform.h, 
-            XPDocument.h, 
-            slre.h, 
-            SLRERegex.h, 
-            "NSUserDefaults+Soulver.h"
-        ); 
+            SVRSolverTextAttachment.h,
+            TestsIntegration.h,
+            TestsUnit.h,
+            XPCrossPlatform.h,
+            XPDocument.h,
+            XPRegularExpression.h
+        );
         IMAGES = ("about-image-512.tiff"); 
         INTERFACES = (NEXTSTEP_AccessoryWindows.nib, NEXTSTEP_Soulver.nib, NEXTSTEP_SVRDocument.nib); 
         OTHER_LINKED = (slre.c, Soulver_main.m); 
-        OTHER_RESOURCES = (Localizable.strings); 
+        OTHER_RESOURCES = (Localizable.strings, "TestsIntegration-DiskRep.txt", "TestsIntegration-DisplayRep.rtf", "TestsIntegration-SolvedRep.rtf", "TestsIntegration-UnsolvedRep.rtf"); 
         OTHER_SOURCES = (
             Makefile.preamble, 
             Makefile, 
@@ -66,7 +70,7 @@
     MAKEFILEDIR = "$(NEXT_ROOT)/NextDeveloper/Makefiles/pb_makefiles"; 
     NEXTSTEP_BUILDDIR = "$(HOME)/Library/DerivedData/Soulver"; 
     NEXTSTEP_BUILDTOOL = /bin/gnumake; 
-    NEXTSTEP_DOCUMENTEXTENSIONS = ({Extension = solv; Image = ""; }); 
+    NEXTSTEP_DOCUMENTEXTENSIONS = ({Extension = nsv; Image = ""; }); 
     NEXTSTEP_INSTALLDIR = "$(HOME)/Apps"; 
     NEXTSTEP_MAINNIB = NEXTSTEP_Soulver.nib; 
     PDO_UNIX_BUILDTOOL = $NEXT_ROOT/NextDeveloper/bin/make; 
