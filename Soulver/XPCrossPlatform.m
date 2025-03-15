@@ -381,9 +381,12 @@ NSArray* XPRunOpenPanel(NSString *extension)
 +(NSData*)XP_archivedDataWithRootObject:(id)object;
 {
 #ifdef MAC_OS_X_VERSION_10_13
-  return [self archivedDataWithRootObject:object
-                    requiringSecureCoding:YES
-                                    error:NULL];
+  NSError *error = nil;
+  NSData *output = [self archivedDataWithRootObject:object
+                              requiringSecureCoding:YES
+                                              error:&error];
+  NSAssert1(!error, @"%@", error);
+  return output;
 #else
   return [self archivedDataWithRootObject:object];
 #endif
@@ -395,8 +398,14 @@ NSArray* XPRunOpenPanel(NSString *extension)
 // and causes warning in OpenStep
 +(id)XP_unarchivedObjectOfClass:(Class)cls fromData:(NSData*)someData;
 {
-#ifdef MAC_OS_X_VERSION_10_13
-  return [self unarchivedObjectOfClass:cls fromData:someData error:NULL];
+// TODO: Fix this to use NSSecureCoding
+#ifdef MAC_OS_X_VERSION_10_13__INVALID
+  NSError *error = nil;
+  NSAttributedString *output = [self unarchivedObjectOfClass:cls
+                                                    fromData:someData
+                                                       error:&error];
+  NSAssert1(!error, @"%@", error);
+  return output;
 #else
   id output = [self unarchiveObjectWithData:someData];
   if (!output) { return nil; }

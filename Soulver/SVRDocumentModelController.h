@@ -32,15 +32,19 @@
 
 /// A version of the data for saving to the disk
 /// This version is plain text and unsolved
+/// Data format is UTF8 String
 extern NSString *const SVRDocumentModelRepDisk;
 /// A version of the data that is displayed in the NSTextView
 /// This version is styled and has NSTextAttachments for solutions
+/// Data format is RTF
 extern NSString *const SVRDocumentModelRepDisplay;
 /// A version that is used for the pasteboard
 /// This version is styled and remove the NSTextAttachments and replaces them with normal text that shows the solutions
+/// Data format is RTF
 extern NSString *const SVRDocumentModelRepSolved;
 /// A version that is used for the pasteboard when the user chooses a custom copy command
 /// This version is styled and unsolved
+/// Data format is RTF
 extern NSString *const SVRDocumentModelRepUnsolved;
 
 typedef NSString* SVRDocumentModelRep;

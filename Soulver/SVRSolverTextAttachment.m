@@ -46,7 +46,7 @@
   return [[_toDrawColor retain] autorelease];
 }
 
--(NSFont*)neighorFont;
+-(NSFont*)neighborFont;
 {
   return [[_neighborFont retain] autorelease];
 }
@@ -59,7 +59,7 @@
 -(id)initWithString:(NSString*)stringToDraw
              styles:(SVRSolverTextAttachmentStyles)styles;
 {
-  NSNumber *borderStyleNumber        = [styles objectForKey:SVRSolverTextAttachmentStyleBorder];
+  NSNumber *borderStyleNumber = [styles objectForKey:SVRSolverTextAttachmentStyleBorder];
   NSFileWrapper *wrapper = [[[NSFileWrapper alloc] init] autorelease];
   
   self = [super initWithFileWrapper:wrapper];
@@ -247,6 +247,82 @@
   [_toDrawAttributes release];
   _toDrawAttributes = nil;
   [super dealloc];
+}
+
+@end
+
+@implementation SVRSolverTextAttachment (NSCoding)
+
++(BOOL)supportsSecureCoding;
+{
+  return YES;
+}
+
+-(BOOL)isEqual:(SVRSolverTextAttachment*)rhs;
+{
+  if ([rhs class] != [SVRSolverTextAttachment class]) { return NO; }
+  return [[self toDrawString] isEqualToString:[rhs toDrawString]]
+      && [[self toDrawFont]   isEqual:[rhs toDrawFont]]
+      && [[self toDrawColor]  isEqual:[rhs toDrawColor]]
+      && [[self neighborFont] isEqual:[rhs neighborFont]]
+      && [self borderStyle] == [rhs borderStyle];
+}
+
+-(id)initWithCoder:(NSCoder *)coder;
+{
+  NSFileWrapper *wrapper = [[[NSFileWrapper alloc] init] autorelease];
+  NSNumber *__borderStyle = nil;
+  
+  self = [super initWithCoder:coder];
+  NSCParameterAssert(self);
+  
+  _toDrawString = [[coder decodeObjectOfClass:[NSString class] forKey:@"toDrawString"] retain];
+  _toDrawFont   = [[coder decodeObjectOfClass:[NSFont   class] forKey:@"toDrawFont"]   retain];
+  _toDrawColor  = [[coder decodeObjectOfClass:[NSColor  class] forKey:@"toDrawColor"]  retain];
+  _neighborFont = [[coder decodeObjectOfClass:[NSFont   class] forKey:@"neighborFont"] retain];
+  __borderStyle =  [coder decodeObjectOfClass:[NSNumber class] forKey:@"borderStyle"];
+  _borderStyle  = (SVRSolverTextAttachmentBorderStyle)[__borderStyle XP_integerValue];
+  
+  NSCParameterAssert(_toDrawString);
+  NSCParameterAssert(_toDrawFont);
+  NSCParameterAssert(_toDrawColor);
+  NSCParameterAssert(_neighborFont);
+  NSCParameterAssert(__borderStyle != nil);
+  
+  [wrapper setPreferredFilename:_toDrawString];
+  [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
+  
+  return self;
+}
+
+-(void)encodeWithCoder:(NSCoder*)coder;
+{
+  [super encodeWithCoder:coder];
+  [coder encodeObject:_toDrawString forKey:@"toDrawString"];
+  [coder encodeObject:_toDrawFont   forKey:@"toDrawFont"];
+  [coder encodeObject:_toDrawColor  forKey:@"toDrawColor"];
+  [coder encodeObject:_neighborFont forKey:@"neighborFont"];
+  [coder encodeObject:[NSNumber XP_numberWithInteger:_borderStyle] forKey:@"borderStyle"];
+}
+
+@end
+
+@implementation SVRSolverTextAttachmentCell (NSCoding)
++(BOOL)supportsSecureCoding;
+{
+  return YES;
+}
+
+-(id)initWithCoder:(NSCoder *)coder;
+{
+  self = [super initWithCoder:coder];
+  NSCParameterAssert(self);
+  return self;
+}
+
+-(void)encodeWithCoder:(NSCoder*)coder;
+{
+  [super encodeWithCoder:coder];
 }
 
 @end

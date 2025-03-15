@@ -43,7 +43,7 @@
 -(NSString*)toDrawString;
 -(NSFont*)toDrawFont;
 -(NSColor*)toDrawColor;
--(NSFont*)neighorFont;
+-(NSFont*)neighborFont;
 -(SVRSolverTextAttachmentBorderStyle)borderStyle;
 
 -(id)initWithString:(NSString*)stringToDraw styles:(SVRSolverTextAttachmentStyles)styles;
@@ -84,4 +84,17 @@
        withFrame:(NSRect)cellFrame
           inView:(NSView*)controlView;
 
+@end
+
+@interface SVRSolverTextAttachment (NSCoding) <NSSecureCoding>
++(BOOL)supportsSecureCoding;
+-(BOOL)isEqual:(SVRSolverTextAttachment*)rhs;
+-(id)initWithCoder:(NSCoder *)coder;
+-(void)encodeWithCoder:(NSCoder*)coder;
+@end
+
+@interface SVRSolverTextAttachmentCell (NSCoding) <NSSecureCoding>
++(BOOL)supportsSecureCoding;
+-(id)initWithCoder:(NSCoder *)coder;
+-(void)encodeWithCoder:(NSCoder*)coder;
 @end
