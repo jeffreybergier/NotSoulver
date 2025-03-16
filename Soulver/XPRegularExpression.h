@@ -35,7 +35,7 @@
 {
   mm_copy NSString *_pattern;
   int _options;
-  struct slre _engine;
+  int _numCaps;
 }
 
 /// Options and Error are ignored
@@ -47,7 +47,8 @@
 
 -(NSString*)pattern;
 -(int)options;
--(XPUInteger)numberOfCaptureGroups;
+-(int)numberOfCaptureGroups;
+-(void)setNumberOfCaptureGroups:(int)newValue;
 
 /// Options are ignored
 -(NSArray*)matchesInString:(NSString*)string
