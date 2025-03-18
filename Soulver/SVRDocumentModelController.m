@@ -203,7 +203,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
   NSRange range = XPIsNotFoundRange(_range)
                 ? NSMakeRange(0, [[self model] length])
                 : _range;
-  NSData *output = [XPKeyedArchiver XP_archivedDataWithRootObject:[[self model] attributedSubstringFromRange:range]];
+  NSData *output = [[self model] RTFFromRange:range documentAttributes:XPRTFDocumentAttributes];
   NSAssert(output, @"__dataRepresentationOfDisplayTypeWithRange: NIL");
   return output;
 }

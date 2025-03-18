@@ -377,13 +377,38 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 @end
 
+@implementation NSCoder (CrossPlatform)
+-(id)XP_decodeObjectOfClass:(Class)aClass forKey:(NSString*)key;
+{
+#ifdef MAC_OS_X_VERSION_10_8
+  id output = [self decodeObjectOfClass:aClass forKey:key];
+  NSAssert2(output, @"XP_decodeObjectOfClass:%@ forKey:%@", NSStringFromClass(aClass), key);
+  return output;
+#elif MAC_OS_X_VERSION_10_2
+  return [self decodeObjectForKey:key];
+#else
+  return [self decodeObject];
+#endif
+}
+
+-(void)XP_encodeObject:(id)object forKey:(NSString*)key;
+{
+#if MAC_OS_X_VERSION_10_2
+  [self encodeObject:object forKey:key];
+#else
+  [self encodeObject:object];
+#endif
+}
+@end
+
 @implementation XPKeyedArchiver (CrossPlatform)
 +(NSData*)XP_archivedDataWithRootObject:(id)object;
 {
+  // TODO: Fix this to use NSSecureCoding
 #ifdef MAC_OS_X_VERSION_10_13
   NSError *error = nil;
   NSData *output = [self archivedDataWithRootObject:object
-                              requiringSecureCoding:YES
+                              requiringSecureCoding:NO
                                               error:&error];
   NSAssert1(!error, @"%@", error);
   return output;
@@ -398,8 +423,8 @@ NSArray* XPRunOpenPanel(NSString *extension)
 // and causes warning in OpenStep
 +(id)XP_unarchivedObjectOfClass:(Class)cls fromData:(NSData*)someData;
 {
-// TODO: Fix this to use NSSecureCoding
-#ifdef MAC_OS_X_VERSION_10_13__INVALID
+  // TODO: Fix this to use NSSecureCoding
+#ifdef MAC_OS_X_VERSION_10_13__
   NSError *error = nil;
   NSAttributedString *output = [self unarchivedObjectOfClass:cls
                                                     fromData:someData

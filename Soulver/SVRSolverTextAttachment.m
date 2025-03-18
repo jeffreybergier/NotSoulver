@@ -276,11 +276,11 @@
   self = [super initWithCoder:coder];
   NSCParameterAssert(self);
   
-  _toDrawString = [[coder decodeObjectOfClass:[NSString class] forKey:@"toDrawString"] retain];
-  _toDrawFont   = [[coder decodeObjectOfClass:[NSFont   class] forKey:@"toDrawFont"]   retain];
-  _toDrawColor  = [[coder decodeObjectOfClass:[NSColor  class] forKey:@"toDrawColor"]  retain];
-  _neighborFont = [[coder decodeObjectOfClass:[NSFont   class] forKey:@"neighborFont"] retain];
-  __borderStyle =  [coder decodeObjectOfClass:[NSNumber class] forKey:@"borderStyle"];
+  _toDrawString = [[coder XP_decodeObjectOfClass:[NSString class] forKey:@"toDrawString"] retain];
+  _toDrawFont   = [[coder XP_decodeObjectOfClass:[NSFont   class] forKey:@"toDrawFont"]   retain];
+  _toDrawColor  = [[coder XP_decodeObjectOfClass:[NSColor  class] forKey:@"toDrawColor"]  retain];
+  _neighborFont = [[coder XP_decodeObjectOfClass:[NSFont   class] forKey:@"neighborFont"] retain];
+  __borderStyle =  [coder XP_decodeObjectOfClass:[NSNumber class] forKey:@"borderStyle"];
   _borderStyle  = (SVRSolverTextAttachmentBorderStyle)[__borderStyle XP_integerValue];
   
   NSCParameterAssert(_toDrawString);
@@ -298,11 +298,11 @@
 -(void)encodeWithCoder:(NSCoder*)coder;
 {
   [super encodeWithCoder:coder];
-  [coder encodeObject:_toDrawString forKey:@"toDrawString"];
-  [coder encodeObject:_toDrawFont   forKey:@"toDrawFont"];
-  [coder encodeObject:_toDrawColor  forKey:@"toDrawColor"];
-  [coder encodeObject:_neighborFont forKey:@"neighborFont"];
-  [coder encodeObject:[NSNumber XP_numberWithInteger:_borderStyle] forKey:@"borderStyle"];
+  [coder XP_encodeObject:_toDrawString forKey:@"toDrawString"];
+  [coder XP_encodeObject:_toDrawFont   forKey:@"toDrawFont"];
+  [coder XP_encodeObject:_toDrawColor  forKey:@"toDrawColor"];
+  [coder XP_encodeObject:_neighborFont forKey:@"neighborFont"];
+  [coder XP_encodeObject:[NSNumber XP_numberWithInteger:_borderStyle] forKey:@"borderStyle"];
 }
 
 @end
@@ -311,6 +311,12 @@
 +(BOOL)supportsSecureCoding;
 {
   return YES;
+}
+
+-(BOOL)isEqual:(SVRSolverTextAttachmentCell*)rhs;
+{
+  if ([rhs class] != [SVRSolverTextAttachmentCell class]) { return NO; }
+  return [[self attachment] isEqual:[rhs attachment]];
 }
 
 -(id)initWithCoder:(NSCoder *)coder;

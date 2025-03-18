@@ -97,6 +97,12 @@ typedef NSRange* XPRangePointer;
 #define XPPasteboardTypeString NSStringPboardType
 #endif
 
+#ifdef MAC_OS_X_VERSION_10_8
+#define XPSecureCoding NSSecureCoding
+#else
+#define XPSecureCoding NSCoding
+#endif
+
 #ifdef MAC_OS_X_VERSION_10_9
 #define XPModalResponseOK NSModalResponseOK
 #define XPModalResponseCancel NSModalResponseCancel
@@ -224,6 +230,13 @@ NSArray* XPRunOpenPanel(NSString *extension);
 @interface NSColor (CrossPlatform)
 -(NSData*)XP_data;
 +(id)XP_colorWithData:(NSData*)data;
+@end
+
+@interface NSCoder (CrossPlatform)
+/// On 10.1, 10.0, and OpenStep the key is ignored. Order matters!
+-(id)XP_decodeObjectOfClass:(Class)aClass forKey:(NSString*)key;
+/// On 10.1, 10.0, and OpenStep the key is ignored. Order matters!
+-(void)XP_encodeObject:(id)object forKey:(NSString*)key;
 @end
 
 @interface XPKeyedArchiver (CrossPlatform)
@@ -412,6 +425,8 @@ NSArray* XPRunOpenPanel(NSString *extension);
 
 // MARK: XPTest
 
+#if TESTING==1
+// TODO: Move these into XPLog macros above
 #ifdef MAC_OS_X_VERSION_10_4
 #define XPTestFunc [NSString stringWithCString:__PRETTY_FUNCTION__ encoding:NSUTF8StringEncoding]
 #define XPTestFile [[[NSString stringWithCString:__FILE__ encoding:NSUTF8StringEncoding] componentsSeparatedByString:@"/"] lastObject]
@@ -428,3 +443,4 @@ NSArray* XPRunOpenPanel(NSString *extension);
 #define XPTestString(_lhs, _rhs) NSAssert5([_lhs isEqualToString:_rhs], @"[FAIL] '%@'!='%@' {%@:%d} %@", _lhs, _rhs, XPTestFile, __LINE__, XPTestFunc)
 #define XPTestRange(_lhs, _loc, _len) NSAssert5(NSEqualRanges(_lhs, NSMakeRange(_loc, _len)), @"[FAIL] %@!=%@ {%@:%d} %@", NSStringFromRange(_lhs), NSStringFromRange(NSMakeRange(_loc, _len)), XPTestFile, __LINE__, XPTestFunc)
 #define XPTestAttrString(_lhs, _rhs)  NSAssert5([_lhs isEqualToAttributedString:_rhs], @"[FAIL] '%@'!='%@' {%@:%d} %@", _lhs, _rhs, XPTestFile, __LINE__, XPTestFunc)
+#endif

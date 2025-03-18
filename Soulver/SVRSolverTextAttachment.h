@@ -86,15 +86,16 @@
 
 @end
 
-@interface SVRSolverTextAttachment (NSCoding) <NSSecureCoding>
+@interface SVRSolverTextAttachment (NSCoding) <XPSecureCoding>
 +(BOOL)supportsSecureCoding;
 -(BOOL)isEqual:(SVRSolverTextAttachment*)rhs;
 -(id)initWithCoder:(NSCoder *)coder;
 -(void)encodeWithCoder:(NSCoder*)coder;
 @end
 
-@interface SVRSolverTextAttachmentCell (NSCoding) <NSSecureCoding>
+@interface SVRSolverTextAttachmentCell (NSCoding) <XPSecureCoding>
 +(BOOL)supportsSecureCoding;
+-(BOOL)isEqual:(SVRSolverTextAttachmentCell*)rhs;
 -(id)initWithCoder:(NSCoder *)coder;
 -(void)encodeWithCoder:(NSCoder*)coder;
 @end

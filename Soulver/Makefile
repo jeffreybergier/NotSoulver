@@ -20,7 +20,7 @@ ICONSECTIONS =	-sectcreate __ICON app /NextLibrary/Frameworks/AppKit.framework/R
 LOCAL_RESOURCES = NEXTSTEP_AccessoryWindows.nib NEXTSTEP_Soulver.nib\
                   NEXTSTEP_SVRDocument.nib Localizable.strings
 
-GLOBAL_RESOURCES = about-image-512.tiff TestsIntegration-DiskRep.txt TestsIntegration-DisplayRep.plist TestsIntegration-SolvedRep.rtf TestsIntegration-UnsolvedRep.rtf
+GLOBAL_RESOURCES = about-image-512.tiff TestsIntegration-DiskRep.txt TestsIntegration-DisplayRep.rtf TestsIntegration-SolvedRep.rtf TestsIntegration-UnsolvedRep.rtf
 
 CLASSES = SVRAppDelegate.m SVRAccessoryWindowsOwner.m SVRDocument.m\
           SVRDocumentModelController.m SVRDocumentViewController.m\

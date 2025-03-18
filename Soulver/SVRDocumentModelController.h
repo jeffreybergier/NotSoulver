@@ -36,7 +36,7 @@
 extern NSString *const SVRDocumentModelRepDisk;
 /// A version of the data that is displayed in the NSTextView
 /// This version is styled and has NSTextAttachments for solutions
-/// Data format is NSAttributedString stored as NSCoding Archive
+/// Data format is RTF
 extern NSString *const SVRDocumentModelRepDisplay;
 /// A version that is used for the pasteboard
 /// This version is styled and remove the NSTextAttachments and replaces them with normal text that shows the solutions
