@@ -106,7 +106,7 @@ XPAlertReturn XPRunCopyWebURLToPasteboardAlert(NSString* webURL)
                          webURL);
 }
 
-NSArray* XPRunOpenPanel(void)
+NSArray* XPRunOpenPanel(NSString *extension)
 {
   // This method was occasionally causing a crash with NSOpenPanel,
   // thus I added the additional memory management.
@@ -123,7 +123,7 @@ NSArray* XPRunOpenPanel(void)
   [panel setAllowsMultipleSelection:YES];
   result = [panel runModalForDirectory:lastDirectory
                                   file:nil
-                                 types:[NSArray arrayWithObject:@"solv"]];
+                                 types:[NSArray arrayWithObject:extension]];
   [ud SVR_setSavePanelLastDirectory:[panel directory]];
   
   switch (result) {
