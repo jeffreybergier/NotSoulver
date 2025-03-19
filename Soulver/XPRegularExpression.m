@@ -33,9 +33,6 @@
 
 -(id)initWithPattern:(NSString *)aPattern options:(int)options error:(id*)error;
 {
-  self = [super init];
-  NSCParameterAssert(self);
-  
   // Need to manually find cap count as SLRE no longer does this automatically
   NSString *pattern   =  aPattern;
   NSArray  *capFalse  = [aPattern componentsSeparatedByString:@"\\("];
@@ -46,7 +43,10 @@
   struct slre_cap *testCaps;
   NSString *testString = @" ";
   int testStatus = -10;
-  
+
+  // Finally do the init stuff
+  self = [super init];
+  NSCParameterAssert(self);
   NSCAssert(capCount >= 0, @"Error calculating capture groups");
   
   // Need to add a capture if there is none in the pattern
@@ -70,7 +70,7 @@
     return nil;
   }
   
-  // Findally do the init stuff
+  // Finally do the init stuff
   _pattern = [pattern copy];
   _options = options;
   _numCaps = (int)capCount;
