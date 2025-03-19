@@ -31,14 +31,49 @@
 
 @implementation XPRegularExpression
 
--(id)initWithPattern:(NSString *)pattern options:(int)options error:(id*)error;
+-(id)initWithPattern:(NSString *)aPattern options:(int)options error:(id*)error;
 {
   self = [super init];
   NSCParameterAssert(self);
   
+  // Need to manually find cap count as SLRE no longer does this automatically
+  NSString *pattern   =  aPattern;
+  NSArray  *capFalse  = [aPattern componentsSeparatedByString:@"\\("];
+  NSArray  *capAll    = [aPattern componentsSeparatedByString:@"("];
+  XPUInteger capCount  = ([capAll count] - 1) - ([capFalse count] - 1);
+  
+  // Need to test as SLRE no longer compiles the pattern ahead of time
+  struct slre_cap *testCaps;
+  NSString *testString = @" ";
+  int testStatus = -10;
+  
+  NSCAssert(capCount >= 0, @"Error calculating capture groups");
+  
+  // Need to add a capture if there is none in the pattern
+  // SLRE used to give the results if no capture present
+  if (capCount == 0) {
+    pattern = [[@"(" stringByAppendingString:aPattern] stringByAppendingString:@")"];
+    capCount = 1;
+  }
+  
+  // Need to test as SLRE no longer compiles the pattern ahead of time
+  testCaps = malloc(sizeof(struct slre_cap) * (unsigned long)capCount);
+  testStatus = slre_match([pattern UTF8String], [testString UTF8String],
+                          (int)[testString length], testCaps, (int)capCount, 0);
+  free(testCaps);
+  if (testStatus < -1) {
+    if (error != NULL) {
+      *error = [NSString stringWithFormat:@"SLRE Error: %d", testStatus];
+    } else {
+      XPLogRaise1(@"SLRE Error: %d", testStatus);
+    }
+    return nil;
+  }
+  
+  // Findally do the init stuff
   _pattern = [pattern copy];
   _options = options;
-  _numCaps = 1;
+  _numCaps = (int)capCount;
   
   return self;
 }
