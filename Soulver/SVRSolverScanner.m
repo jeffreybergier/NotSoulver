@@ -180,7 +180,7 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
                                  range:[expression XP_rangeValue]]
                 objectEnumerator];
      while ((match = [matches nextObject])) {
-       range = [match rangeAtIndex:1];
+       range = [match rangeAtIndex:0];
        XPLogExtra1(@"<+*> %@", [_string SVR_descriptionHighlightingRange:range]);
        [output addObject:[NSValue XP_valueWithRange:range]];
      }
@@ -237,18 +237,17 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
 
 +(id)SVR_regexForNumbers;
 {
-  return [self regularExpressionWithPattern:@"-?\\d+(\\.\\d+)*" options:0 error:NULL];
+  return [self regularExpressionWithPattern:@"-?\\d+\\.?\\d*" options:0 error:NULL];
 }
 +(id)SVR_regexForOperators;
 {
-  // For some reason \d is not working in place of digits
-  return [self regularExpressionWithPattern:@"(L|R|\\+|\\-|\\/|\\*|\\^)[\\-\\(0123456789]" options:0 error:NULL];
+  return [self regularExpressionWithPattern:@"(L|R|\\+|-|/|\\*|\\^)[-\\(\\d]" options:0 error:NULL];
 }
 
 +(id)SVR_regexForExpressions;
 {
   // For some reason \d is not working in place of digits
-  return [self regularExpressionWithPattern:@"[0123456789LR\\.\\^\\*\\-\\+\\/\\(\\)]+\\=" options:0 error:NULL];
+  return [self regularExpressionWithPattern:@"[\\dLR\\.\\^\\*-\\+/\\(\\)]+=" options:0 error:NULL];
 }
 
 +(id)SVR_regexForBrackets;
