@@ -47,7 +47,7 @@
 
 -(NSString*)pattern;
 -(int)options;
--(int)numberOfCaptureGroups;
+-(XPUInteger)numberOfCaptureGroups;
 
 /// Options are ignored
 -(NSArray*)matchesInString:(NSString*)string

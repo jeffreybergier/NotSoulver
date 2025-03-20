@@ -95,9 +95,9 @@
 {
   return _options;
 }
--(int)numberOfCaptureGroups;
+-(XPUInteger)numberOfCaptureGroups;
 {
-  return 1;
+  return (XPUInteger)_numCaps;
 }
 
 -(NSArray*)matchesInString:(NSString*)string
