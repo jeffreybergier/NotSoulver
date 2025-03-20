@@ -310,7 +310,7 @@ void TestsUnitExecute(void)
   match = [matches objectAtIndex:6];
   XPTestInt([match numberOfRanges], 1);
   // TODO: Known issue where multiple dots cannot be handled correctly
-  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"7.");
+  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"7");
   match = [matches objectAtIndex:7];
   XPTestInt([match numberOfRanges], 1);
   XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"888");

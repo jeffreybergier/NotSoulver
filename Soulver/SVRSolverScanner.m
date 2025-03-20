@@ -237,7 +237,7 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
 
 +(id)SVR_regexForNumbers;
 {
-  return [self regularExpressionWithPattern:@"-?\\d+\\.?\\d*" options:0 error:NULL];
+  return [self regularExpressionWithPattern:@"(-?\\d+\\.\\d+|-?\\d+)" options:0 error:NULL];
 }
 +(id)SVR_regexForOperators;
 {
