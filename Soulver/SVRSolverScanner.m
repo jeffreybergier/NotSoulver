@@ -246,7 +246,6 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
 
 +(id)SVR_regexForExpressions;
 {
-  // For some reason \d is not working in place of digits
   return [self regularExpressionWithPattern:@"[\\dLR\\.\\^\\*-\\+/\\(\\)]+=" options:0 error:NULL];
 }
 
