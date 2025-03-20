@@ -155,8 +155,7 @@ void TestsUnitExecute(void)
   matches = [regex matchesInString:string options:0 range:NSMakeRange(1, [string length]-2)];
   XPTestInt([matches count], 1);
   match = [matches objectAtIndex:0];
-  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"+2");
-  XPTestString([string substringWithRange:[match rangeAtIndex:1]], @"+");
+  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"+");
   
   // MARK: SVR_regexForOperators
   // TODO: Make more robust to handle 6.3*-6.0
@@ -165,33 +164,26 @@ void TestsUnitExecute(void)
   matches = [regex matchesInString:string options:0 range:NSMakeRange(3, [string length]-6)];
   XPTestInt([matches count], 7);
   match = [matches objectAtIndex:0];
-  XPTestInt([match numberOfRanges], 2);
-  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"+1");
-  XPTestString([string substringWithRange:[match rangeAtIndex:1]], @"+");
+  XPTestInt([match numberOfRanges], 1);
+  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"+");
   match = [matches objectAtIndex:1];
-  XPTestInt([match numberOfRanges], 2);
-  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"-4");
-  XPTestString([string substringWithRange:[match rangeAtIndex:1]], @"-");
+  XPTestInt([match numberOfRanges], 1);
+  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"-");
   match = [matches objectAtIndex:2];
-  XPTestInt([match numberOfRanges], 2);
-  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"*6");
-  XPTestString([string substringWithRange:[match rangeAtIndex:1]], @"*");
+  XPTestInt([match numberOfRanges], 1);
+  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"*");
   match = [matches objectAtIndex:3];
-  XPTestInt([match numberOfRanges], 2);
-  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"/0");
-  XPTestString([string substringWithRange:[match rangeAtIndex:1]], @"/");
+  XPTestInt([match numberOfRanges], 1);
+  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"/");
   match = [matches objectAtIndex:4];
-  XPTestInt([match numberOfRanges], 2);
-  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"^8");
-  XPTestString([string substringWithRange:[match rangeAtIndex:1]], @"^");
+  XPTestInt([match numberOfRanges], 1);
+  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"^");
   match = [matches objectAtIndex:5];
-  XPTestInt([match numberOfRanges], 2);
-  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"R9");
-  XPTestString([string substringWithRange:[match rangeAtIndex:1]], @"R");
+  XPTestInt([match numberOfRanges], 1);
+  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"R");
   match = [matches objectAtIndex:6];
-  XPTestInt([match numberOfRanges], 2);
-  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"L1");
-  XPTestString([string substringWithRange:[match rangeAtIndex:1]], @"L");
+  XPTestInt([match numberOfRanges], 1);
+  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"L");
   
   // MARK: SVR_regexForExpressions - MegaSimple
   string = @"2+2=";
@@ -265,37 +257,29 @@ void TestsUnitExecute(void)
   matches = [regex matchesInString:string];
   XPTestInt([matches count], 7);
   match = [matches objectAtIndex:0];
-  XPTestInt([match numberOfRanges], 2);
-  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"+2");
-  XPTestString([string substringWithRange:[match rangeAtIndex:1]], @"+");
+  XPTestInt([match numberOfRanges], 1);
+  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"+");
   match = [matches objectAtIndex:0];
-  XPTestInt([match numberOfRanges], 2);
-  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"+2");
-  XPTestString([string substringWithRange:[match rangeAtIndex:1]], @"+");
+  XPTestInt([match numberOfRanges], 1);
+  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"+");
   match = [matches objectAtIndex:1];
-  XPTestInt([match numberOfRanges], 2);
-  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"^(");
-  XPTestString([string substringWithRange:[match rangeAtIndex:1]], @"^");
+  XPTestInt([match numberOfRanges], 1);
+  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"^");
   match = [matches objectAtIndex:2];
-  XPTestInt([match numberOfRanges], 2);
-  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"*7");
-  XPTestString([string substringWithRange:[match rangeAtIndex:1]], @"*");
+  XPTestInt([match numberOfRanges], 1);
+  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"*");
   match = [matches objectAtIndex:3];
-  XPTestInt([match numberOfRanges], 2);
-  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"-3");
-  XPTestString([string substringWithRange:[match rangeAtIndex:1]], @"-");
+  XPTestInt([match numberOfRanges], 1);
+  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"-");
   match = [matches objectAtIndex:4];
-  XPTestInt([match numberOfRanges], 2);
-  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"*4");
-  XPTestString([string substringWithRange:[match rangeAtIndex:1]], @"*");
+  XPTestInt([match numberOfRanges], 1);
+  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"*");
   match = [matches objectAtIndex:5];
-  XPTestInt([match numberOfRanges], 2);
-  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"*(");
-  XPTestString([string substringWithRange:[match rangeAtIndex:1]], @"*");
+  XPTestInt([match numberOfRanges], 1);
+  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"*");
   match = [matches objectAtIndex:6];
-  XPTestInt([match numberOfRanges], 2);
-  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"-(");
-  XPTestString([string substringWithRange:[match rangeAtIndex:1]], @"-");
+  XPTestInt([match numberOfRanges], 1);
+  XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"-");
   
   // MARK: Legacy SLRE Number Finding Tests
   regex = [XPRegularExpression SVR_regexForNumbers];
@@ -325,6 +309,7 @@ void TestsUnitExecute(void)
   XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"-4.444");
   match = [matches objectAtIndex:6];
   XPTestInt([match numberOfRanges], 1);
+  // TODO: Known issue where multiple dots cannot be handled correctly
   XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"7");
   match = [matches objectAtIndex:7];
   XPTestInt([match numberOfRanges], 1);
@@ -380,7 +365,7 @@ void TestsUnitExecute(void)
   XPTestString([string substringWithRange:[[ranges objectAtIndex:17] XP_rangeValue]], @"64");
 
   ranges = [[[scanner operatorRanges] allObjects] sortedArrayUsingSelector:@selector(TEST_compare:)];
-  XPTestInt([ranges count], 18);
+  XPTestInt([ranges count], 14);
   XPTestString([string substringWithRange:[[ranges objectAtIndex: 0] XP_rangeValue]], @"+");
   XPTestString([string substringWithRange:[[ranges objectAtIndex: 1] XP_rangeValue]], @"-");
   XPTestString([string substringWithRange:[[ranges objectAtIndex: 2] XP_rangeValue]], @"*");
@@ -390,15 +375,11 @@ void TestsUnitExecute(void)
   XPTestString([string substringWithRange:[[ranges objectAtIndex: 6] XP_rangeValue]], @"+"); // ?
   XPTestString([string substringWithRange:[[ranges objectAtIndex: 7] XP_rangeValue]], @"-"); // ?
   XPTestString([string substringWithRange:[[ranges objectAtIndex: 8] XP_rangeValue]], @"-");
-  XPTestString([string substringWithRange:[[ranges objectAtIndex: 9] XP_rangeValue]], @"-"); // ?
-  XPTestString([string substringWithRange:[[ranges objectAtIndex:10] XP_rangeValue]], @"*");
-  XPTestString([string substringWithRange:[[ranges objectAtIndex:11] XP_rangeValue]], @"-"); // ?
-  XPTestString([string substringWithRange:[[ranges objectAtIndex:12] XP_rangeValue]], @"/");
-  XPTestString([string substringWithRange:[[ranges objectAtIndex:13] XP_rangeValue]], @"-"); // ?
-  XPTestString([string substringWithRange:[[ranges objectAtIndex:14] XP_rangeValue]], @"^");
-  XPTestString([string substringWithRange:[[ranges objectAtIndex:15] XP_rangeValue]], @"-"); // ?
-  XPTestString([string substringWithRange:[[ranges objectAtIndex:16] XP_rangeValue]], @"L");
-  XPTestString([string substringWithRange:[[ranges objectAtIndex:17] XP_rangeValue]], @"R");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex: 9] XP_rangeValue]], @"*");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:10] XP_rangeValue]], @"/");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:11] XP_rangeValue]], @"^");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:12] XP_rangeValue]], @"L");
+  XPTestString([string substringWithRange:[[ranges objectAtIndex:13] XP_rangeValue]], @"R");
   
   ranges = [[[scanner bracketRanges] allObjects] sortedArrayUsingSelector:@selector(TEST_compare:)];
   XPTestInt([ranges count], 7);

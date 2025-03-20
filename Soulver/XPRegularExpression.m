@@ -31,18 +31,49 @@
 
 @implementation XPRegularExpression
 
--(id)initWithPattern:(NSString *)pattern options:(int)options error:(id*)error;
+-(id)initWithPattern:(NSString *)aPattern options:(int)options error:(id*)error;
 {
-  BOOL isCompiled = NO;
+  // Need to manually find cap count as SLRE no longer does this automatically
+  NSString *pattern   =  aPattern;
+  NSArray  *capFalse  = [aPattern componentsSeparatedByString:@"\\("];
+  NSArray  *capAll    = [aPattern componentsSeparatedByString:@"("];
+  XPUInteger capCount  = ([capAll count] - 1) - ([capFalse count] - 1);
+  
+  // Need to test as SLRE no longer compiles the pattern ahead of time
+  struct slre_cap *testCaps;
+  NSString *testString = @" ";
+  int testStatus = -10;
+
+  // Finally do the init stuff
   self = [super init];
   NSCParameterAssert(self);
+  NSCAssert(capCount >= 0, @"Error calculating capture groups");
   
+  // Need to add a capture if there is none in the pattern
+  // SLRE used to give the results if no capture present
+  if (capCount == 0) {
+    pattern = [[@"(" stringByAppendingString:aPattern] stringByAppendingString:@")"];
+    capCount = 1;
+  }
+  
+  // Need to test as SLRE no longer compiles the pattern ahead of time
+  testCaps = malloc(sizeof(struct slre_cap) * (unsigned long)capCount);
+  testStatus = slre_match([pattern XP_UTF8String], [testString XP_UTF8String],
+                          (int)[testString length], testCaps, (int)capCount, 0);
+  free(testCaps);
+  if (testStatus < -1) {
+    if (error != NULL) {
+      *error = [NSString stringWithFormat:@"SLRE Error: %d", testStatus];
+    } else {
+      XPLogRaise1(@"SLRE Error: %d", testStatus);
+    }
+    return nil;
+  }
+  
+  // Finally do the init stuff
   _pattern = [pattern copy];
   _options = options;
-  
-  isCompiled = slre_compile(&_engine, [_pattern XP_UTF8String]);
-  NSAssert2(isCompiled, @"%@ Failed to compile pattern: %@", self, pattern);
-  if (!isCompiled) { [self release]; return nil; }
+  _numCaps = (int)capCount;
   
   return self;
 }
@@ -66,7 +97,7 @@
 }
 -(XPUInteger)numberOfCaptureGroups;
 {
-  return (XPUInteger)_engine.num_caps;
+  return (XPUInteger)_numCaps;
 }
 
 -(NSArray*)matchesInString:(NSString*)string
@@ -74,55 +105,37 @@
                      range:(NSRange)range;
 {
   NSMutableArray *output = [[NSMutableArray new] autorelease];
-  NSRange maxRange = NSMakeRange(0, [string length]);
-  NSRange matchRange = range; // length is serving double duty as matchfound variable
-  const char* buffer = [string XP_UTF8String];
-  unsigned long capCount = (unsigned long)_engine.num_caps + 1; // according to documentation in slre.h
-  int capIndex = 0;
-  struct cap caps[capCount];
-  XPRangePointer ranges = NULL;
   
-  NSAssert2(NSEqualRanges(NSUnionRange(range, maxRange), maxRange),
-           @"String Range %@ does not fully contain argument range %@", NSStringFromRange(maxRange), NSStringFromRange(range));
+  NSRange     maxRange  = NSMakeRange(0, [string length]);
+  const char *maxBuffer = [string XP_UTF8String];
+  const char *buffer    = maxBuffer + range.location;
   
-  matchRange.length = (XPUInteger)slre_match(&_engine,
-                                             buffer + matchRange.location,
-                                             (int)range.length - ((int)matchRange.location - (int)range.location),
-                                             caps);
-  XPLogExtra3(@"Found: %d, Scanned:%@, Pattern:%@",
-              (int)matchRange.length,
-              [string SVR_descriptionHighlightingRange:NSMakeRange(matchRange.location, range.length - (matchRange.location - range.location))],
-              _pattern);
+  XPRangePointer  capRanges = NULL;
+  struct slre_cap caps[_numCaps];
+  int capIdx = 0;
+  int status = 0;
   
-  while (matchRange.length > 0) {
-    ranges = (XPRangePointer)malloc(sizeof(NSRange) * capCount);
-    for (capIndex = 0; capIndex < capCount; capIndex++) {
-      // This if statement is needed if the capCount value is too large
-      if (caps[capIndex].ptr >= buffer + range.location
-          && caps[capIndex].ptr + caps[capIndex].len <= buffer + range.location + range.length)
-      {
-        matchRange.location = (XPUInteger)(caps[capIndex].ptr - buffer);
-        matchRange.length = (XPUInteger)caps[capIndex].len;
-        ranges[capIndex] = matchRange;
-        XPLogExtra2(@"index:%d, match:'%@'", capIndex, [string SVR_descriptionHighlightingRange:matchRange]);
-      } else {
-        ranges[capIndex] = XPNotFoundRange;
-      }
+  NSCAssert1(NSMaxRange(maxRange)>=NSMaxRange(range), @"Invalid Range:%@", NSStringFromRange(range));
+  
+  while (status >= 0) {
+    buffer += status;
+    status = slre_match([_pattern XP_UTF8String], buffer,
+                        (int)NSMaxRange(range)-(int)(buffer-maxBuffer),
+                        caps, _numCaps, 0);
+    if (status < 0) { break; }
+    capRanges = malloc(sizeof(NSRange) * (unsigned long)_numCaps);
+    for (capIdx = 0; capIdx<_numCaps; capIdx++) {
+      capRanges[capIdx] = NSMakeRange((XPUInteger)(caps[capIdx].ptr - maxBuffer),
+                                      (XPUInteger)caps[capIdx].len);
+      XPLogExtra1(@"%@", [string SVR_descriptionHighlightingRange:capRanges[capIdx]]);
     }
-    [output addObject:[XPTextCheckingResult regularExpressionCheckingResultWithRanges:ranges
-                                                                                count:capCount
+    [output addObject:[XPTextCheckingResult regularExpressionCheckingResultWithRanges:capRanges
+                                                                                count:(XPUInteger)_numCaps
                                                                     regularExpression:self]];
-    free(ranges);
-    matchRange.location = NSMaxRange(matchRange);
-    matchRange.length = (XPUInteger)slre_match(&_engine,
-                                               buffer + matchRange.location,
-                                               (int)range.length - ((int)matchRange.location - (int)range.location),
-                                               caps);
-    XPLogExtra3(@"Found: %d, Scanned:%@, Pattern:%@",
-                (int)matchRange.length,
-                [string SVR_descriptionHighlightingRange:NSMakeRange(matchRange.location, range.length - (matchRange.location - range.location))],
-                _pattern);
+    free(capRanges);
   }
+  
+  NSCAssert1(status == -1, @"SLRE Error: %d", status);
   return output;
 }
 
@@ -195,7 +208,6 @@
                                                             count:(XPUInteger)count
                                                 regularExpression:(XPRegularExpression*)regularExpression;
 {
-  // TODO: Figure out memory leak in static analyzer
   return [[[XPTextCheckingResult alloc] initWithRanges:ranges
                                                  count:count
                                      regularExpression:regularExpression] autorelease];

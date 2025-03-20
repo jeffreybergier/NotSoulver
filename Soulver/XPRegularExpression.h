@@ -35,7 +35,7 @@
 {
   mm_copy NSString *_pattern;
   int _options;
-  struct slre _engine;
+  int _numCaps;
 }
 
 /// Options and Error are ignored

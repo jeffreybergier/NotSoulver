@@ -308,12 +308,6 @@ NSArray* XPRunOpenPanel(NSString *extension);
 #define LOGLEVEL LOGLEVELALWYS
 #endif
 
-// If debug is defined and loglevel is less than debug, forcefully set to debug
-#if defined(DEBUG) && DEBUG == 1 && LOGLEVEL < LOGLEVELDEBUG
-#undef  LOGLEVEL
-#define LOGLEVEL LOGLEVELDEBUG
-#endif
-
 // Define Always Macros
 #if LOGLEVEL >= LOGLEVELALWYS && C99 == VARGNO
 #define XPLogAlwys(_formatString) NSLog(@"%@", _formatString)
