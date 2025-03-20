@@ -3,7 +3,7 @@ fb -[NSException raise]
 fb +[XPLog pause]
 
 ## Remove later
-fb -[SVRDocumentViewController copyUniversal:]
+fb -[SVRDocumentViewController __universalCopyRTFData:diskRepData:]
 
 ## Run automatically
 run

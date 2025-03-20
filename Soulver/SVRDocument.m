@@ -46,6 +46,7 @@
 // MARK: INIT
 -(id)initWithContentsOfFile:(NSString*)fileName;
 {
+  XPLogAlwys1(@"-[SVRDocument initWithContentsOfFile:%@]", fileName);
   self = [super initWithContentsOfFile:fileName
                                 ofType:SVRDocumentModelRepDisk];
   NSCParameterAssert(self);
