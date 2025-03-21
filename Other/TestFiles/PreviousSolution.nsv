@@ -1,0 +1,7 @@
+I finally added the feature where the previous solution can be carried forward in the next expression. So now I can do 20*200= and then later in the document, I can divide that like so /50= and I can keep going after that:
+
+^2=
+*-300=
+/-367=
+
+And when I change the original numbers at the top, it all just recalculates and flows naturally. See the other document open in the screenshot.

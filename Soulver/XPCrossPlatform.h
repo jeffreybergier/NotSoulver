@@ -58,8 +58,10 @@ typedef float XPFloat;
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_0
+#define XPRTFDocumentAttributes [NSDictionary dictionaryWithObject:NSRTFTextDocumentType forKey:NSDocumentTypeDocumentAttribute]
 typedef NSRangePointer XPRangePointer;
 #else
+#define XPRTFDocumentAttributes nil
 typedef NSRange* XPRangePointer;
 #endif
 
@@ -93,6 +95,12 @@ typedef NSRange* XPRangePointer;
 #else
 #define XPPasteboardTypeRTF NSRTFPboardType
 #define XPPasteboardTypeString NSStringPboardType
+#endif
+
+#ifdef MAC_OS_X_VERSION_10_8
+#define XPSecureCoding NSSecureCoding
+#else
+#define XPSecureCoding NSCoding
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_9
@@ -157,7 +165,7 @@ typedef enum {
 
 XPAlertReturn XPRunQuitAlert(void);
 XPAlertReturn XPRunCopyWebURLToPasteboardAlert(NSString* webURL);
-NSArray* XPRunOpenPanel(void);
+NSArray* XPRunOpenPanel(NSString *extension);
 
 @interface XPAttributeEnumerator: NSEnumerator
 {
@@ -199,18 +207,15 @@ NSArray* XPRunOpenPanel(void);
 @end
 
 @interface NSString (CrossPlatform)
++(NSString*)SVR_rootRawString;
++(NSString*)SVR_rootDisplayString;
++(NSString*)SVR_logRawString;
++(NSString*)SVR_logDisplayString;
 -(NSString*)SVR_descriptionHighlightingRange:(NSRange)range;
 -(const char*)XP_UTF8String;
 -(NSEnumerator*)XP_enumeratorForCharactersInSet:(NSCharacterSet*)aSet;
 -(NSEnumerator*)XP_enumeratorForCharactersInSet:(NSCharacterSet*)aSet
                                         options:(XPStringCompareOptions)mask;
-@end
-
-@interface NSDecimalNumber (Soulver)
-/// In OpenStep, NaN comparisons are weird, so this uses a string comparison
--(BOOL)SVR_isNotANumber;
--(NSDecimalNumber*)SVR_decimalNumberByRaisingToPower:(NSDecimalNumber*)power
-                                        withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
 @end
 
 /// NSFont is stored in UserDefaults as archived Data.
@@ -227,8 +232,11 @@ NSArray* XPRunOpenPanel(void);
 +(id)XP_colorWithData:(NSData*)data;
 @end
 
-@interface CrossPlatform: NSObject
-+(void)executeUnitTests;
+@interface NSCoder (CrossPlatform)
+/// On 10.1, 10.0, and OpenStep the key is ignored. Order matters!
+-(id)XP_decodeObjectOfClass:(Class)aClass forKey:(NSString*)key;
+/// On 10.1, 10.0, and OpenStep the key is ignored. Order matters!
+-(void)XP_encodeObject:(id)object forKey:(NSString*)key;
 @end
 
 @interface XPKeyedArchiver (CrossPlatform)
@@ -298,12 +306,6 @@ NSArray* XPRunOpenPanel(void);
 #if LOGLEVEL != LOGLEVELALWYS && LOGLEVEL != LOGLEVELDEBUG && LOGLEVEL != LOGLEVELEXTRA
 #undef  LOGLEVEL
 #define LOGLEVEL LOGLEVELALWYS
-#endif
-
-// If debug is defined and loglevel is less than debug, forcefully set to debug
-#if defined(DEBUG) && DEBUG == 1 && LOGLEVEL < LOGLEVELDEBUG
-#undef  LOGLEVEL
-#define LOGLEVEL LOGLEVELDEBUG
 #endif
 
 // Define Always Macros
@@ -412,6 +414,27 @@ NSArray* XPRunOpenPanel(void);
 @interface XPLog: NSObject
 /// Requires `fb +[XPLog pause]` in GDB to Pause Debugger
 +(void)pause;
-+(void)executeUnitTests;
 +(void)logCheckedPoundDefines;
 @end
+
+// MARK: XPTest
+
+#if TESTING==1
+// TODO: Move these into XPLog macros above
+#ifdef MAC_OS_X_VERSION_10_4
+#define XPTestFunc [NSString stringWithCString:__PRETTY_FUNCTION__ encoding:NSUTF8StringEncoding]
+#define XPTestFile [[[NSString stringWithCString:__FILE__ encoding:NSUTF8StringEncoding] componentsSeparatedByString:@"/"] lastObject]
+#else
+#define XPTestFunc [NSString stringWithCString:__PRETTY_FUNCTION__]
+#define XPTestFile [[[NSString stringWithCString:__FILE__] componentsSeparatedByString:@"/"] lastObject]
+#endif
+
+#define XPTestInt(_lhs, _rhs)    NSAssert5(_lhs == _rhs, @"[FAIL] '%d'!='%d' {%@:%d} %@", (int)_lhs, (int)_rhs, XPTestFile, __LINE__, XPTestFunc)
+#define XPTestBool(_lhs)         NSAssert3(_lhs, @"[FAIL] Bool was NO {%@:%d} %@", XPTestFile, __LINE__, XPTestFunc)
+#define XPTestFloat(_lhs, _rhs)  NSAssert5(_lhs == _rhs, @"[FAIL] '%g'!='%g' {%@:%d} %@", _lhs, _rhs, XPTestFile, __LINE__, XPTestFunc)
+#define XPTestObject(_lhs, _rhs) NSAssert5([_lhs isEqual:_rhs], @"[FAIL] '%@'!='%@' {%@:%d} %@", _lhs, _rhs, XPTestFile, __LINE__, XPTestFunc)
+#define XPTestNotNIL(_lhs)       NSAssert3(_lhs, @"[FAIL] Object was NIL {%@:%d} %@", XPTestFile, __LINE__, XPTestFunc)
+#define XPTestString(_lhs, _rhs) NSAssert5([_lhs isEqualToString:_rhs], @"[FAIL] '%@'!='%@' {%@:%d} %@", _lhs, _rhs, XPTestFile, __LINE__, XPTestFunc)
+#define XPTestRange(_lhs, _loc, _len) NSAssert5(NSEqualRanges(_lhs, NSMakeRange(_loc, _len)), @"[FAIL] %@!=%@ {%@:%d} %@", NSStringFromRange(_lhs), NSStringFromRange(NSMakeRange(_loc, _len)), XPTestFile, __LINE__, XPTestFunc)
+#define XPTestAttrString(_lhs, _rhs)  NSAssert5([_lhs isEqualToAttributedString:_rhs], @"[FAIL] '%@'!='%@' {%@:%d} %@", _lhs, _rhs, XPTestFile, __LINE__, XPTestFunc)
+#endif

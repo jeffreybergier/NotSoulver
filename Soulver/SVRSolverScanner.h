@@ -28,8 +28,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "XPCrossPlatform.h"
-#import "SLRERegex.h"
+#import "XPRegularExpression.h"
 
 @interface SVRSolverScanner: NSObject
 {
@@ -65,11 +64,11 @@
 
 @end
 
-@interface SLRERegex (Soulver)
+@interface XPRegularExpression (Soulver)
 
-+(id)SVR_regexForNumbersInString:(NSString*)string;
-+(id)SVR_regexForOperatorsInString:(NSString*)string;
-+(id)SVR_regexForExpressionsInString:(NSString*)string;
-+(id)SVR_regexForBracketsInString:(NSString*)string;
++(id)SVR_regexForNumbers;
++(id)SVR_regexForOperators;
++(id)SVR_regexForExpressions;
++(id)SVR_regexForBrackets;
 
 @end

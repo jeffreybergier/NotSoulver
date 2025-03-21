@@ -106,7 +106,7 @@ XPAlertReturn XPRunCopyWebURLToPasteboardAlert(NSString* webURL)
                          webURL);
 }
 
-NSArray* XPRunOpenPanel(void)
+NSArray* XPRunOpenPanel(NSString *extension)
 {
   // This method was occasionally causing a crash with NSOpenPanel,
   // thus I added the additional memory management.
@@ -123,7 +123,7 @@ NSArray* XPRunOpenPanel(void)
   [panel setAllowsMultipleSelection:YES];
   result = [panel runModalForDirectory:lastDirectory
                                   file:nil
-                                 types:[NSArray arrayWithObject:@"solv"]];
+                                 types:[NSArray arrayWithObject:extension]];
   [ud SVR_setSavePanelLastDirectory:[panel directory]];
   
   switch (result) {
@@ -151,6 +151,7 @@ NSArray* XPRunOpenPanel(void)
    usingLongestEffectiveRange:(BOOL)usesLongest;
 {
   self = [super init];
+  NSCParameterAssert(self);
   _key = [key retain];
   _string = [attributedString copy];
   _index = 0;
@@ -233,6 +234,7 @@ NSArray* XPRunOpenPanel(void)
 -(id)initWithString:(NSString*)string characterSet:(NSCharacterSet*)aSet options:(XPStringCompareOptions)mask;
 {
   self = [super init];
+  NSCParameterAssert(self);
   _string = [string retain];
   _set = [aSet retain];
   _options = mask;
@@ -272,6 +274,28 @@ NSArray* XPRunOpenPanel(void)
 
 @implementation NSString (CrossPlatform)
 
++(NSString*)SVR_rootDisplayString;
+{
+  // This breaks the regex engine because its shit
+  unichar sqrtChar = 0x221A;
+  return [NSString stringWithCharacters:&sqrtChar length:1];
+}
+
++(NSString*)SVR_rootRawString;
+{
+  return @"R";
+}
+
++(NSString*)SVR_logRawString;
+{
+  return @"L";
+}
+
++(NSString*)SVR_logDisplayString;
+{
+  return @"log";
+}
+
 -(NSString*)SVR_descriptionHighlightingRange:(NSRange)range;
 {
   NSString *leading  = @">>";
@@ -303,45 +327,6 @@ NSArray* XPRunOpenPanel(void)
   return [XPCharacterSetEnumerator enumeratorWithString:self
                                            characterSet:aSet
                                                 options:mask];
-}
-
-@end
-
-// MARK: NSDecimalNumber
-@implementation NSDecimalNumber (Soulver)
-
--(BOOL)SVR_isNotANumber;
-{
-  NSString *lhsDescription = [self description];
-  NSString *rhsDescription = [[NSDecimalNumber notANumber] description];
-  return [lhsDescription isEqualToString:rhsDescription];
-}
-
-// NSDecimalNumber handles exponents extremely strangely
-// This provides a little wrapper around the oddities
--(NSDecimalNumber*)SVR_decimalNumberByRaisingToPower:(NSDecimalNumber*)power
-                                        withBehavior:(id<NSDecimalNumberBehaviors>)behavior;
-{
-  NSDecimalNumber *output = nil;
-  BOOL powerIsNegative = ([power compare:[NSDecimalNumber zero]] == NSOrderedAscending);
-  BOOL selfIsNegative = ([self compare:[NSDecimalNumber zero]] == NSOrderedAscending);
-  
-  if (powerIsNegative) {
-    output = [[NSDecimalNumber one] decimalNumberByDividingBy:
-                          [self decimalNumberByRaisingToPower:(XPUInteger)abs([power intValue])
-                                                 withBehavior:behavior]
-                                                 withBehavior:behavior];
-  } else {
-    output = [self decimalNumberByRaisingToPower:(XPUInteger)[power unsignedIntValue]
-                                    withBehavior:behavior];
-  }
-  
-  if (selfIsNegative) {
-    output = [output decimalNumberByMultiplyingBy:[NSDecimalNumber decimalNumberWithString:@"-1"]
-                                     withBehavior:behavior];
-  }
-  
-  return output;
 }
 
 @end
@@ -392,22 +377,41 @@ NSArray* XPRunOpenPanel(void)
 
 @end
 
-@implementation CrossPlatform
-+(void)executeUnitTests;
+@implementation NSCoder (CrossPlatform)
+-(id)XP_decodeObjectOfClass:(Class)aClass forKey:(NSString*)key;
 {
-  XPLogAlwys(@"XPTESTS: Start");
-  [XPLog executeUnitTests];
-  XPLogAlwys(@"XPTESTS: Pass");
+#ifdef MAC_OS_X_VERSION_10_8
+  id output = [self decodeObjectOfClass:aClass forKey:key];
+  NSAssert2(output, @"XP_decodeObjectOfClass:%@ forKey:%@", NSStringFromClass(aClass), key);
+  return output;
+#elif MAC_OS_X_VERSION_10_2
+  return [self decodeObjectForKey:key];
+#else
+  return [self decodeObject];
+#endif
+}
+
+-(void)XP_encodeObject:(id)object forKey:(NSString*)key;
+{
+#if MAC_OS_X_VERSION_10_2
+  [self encodeObject:object forKey:key];
+#else
+  [self encodeObject:object];
+#endif
 }
 @end
 
 @implementation XPKeyedArchiver (CrossPlatform)
 +(NSData*)XP_archivedDataWithRootObject:(id)object;
 {
+  // TODO: Fix this to use NSSecureCoding
 #ifdef MAC_OS_X_VERSION_10_13
-  return [self archivedDataWithRootObject:object
-                    requiringSecureCoding:YES
-                                    error:NULL];
+  NSError *error = nil;
+  NSData *output = [self archivedDataWithRootObject:object
+                              requiringSecureCoding:NO
+                                              error:&error];
+  NSAssert1(!error, @"%@", error);
+  return output;
 #else
   return [self archivedDataWithRootObject:object];
 #endif
@@ -419,8 +423,14 @@ NSArray* XPRunOpenPanel(void)
 // and causes warning in OpenStep
 +(id)XP_unarchivedObjectOfClass:(Class)cls fromData:(NSData*)someData;
 {
-#ifdef MAC_OS_X_VERSION_10_13
-  return [self unarchivedObjectOfClass:cls fromData:someData error:NULL];
+  // TODO: Fix this to use NSSecureCoding
+#ifdef MAC_OS_X_VERSION_10_13__
+  NSError *error = nil;
+  NSAttributedString *output = [self unarchivedObjectOfClass:cls
+                                                    fromData:someData
+                                                       error:&error];
+  NSAssert1(!error, @"%@", error);
+  return output;
 #else
   id output = [self unarchiveObjectWithData:someData];
   if (!output) { return nil; }
@@ -451,9 +461,9 @@ NSArray* XPRunOpenPanel(void)
 -(BOOL)XP_openFile:(NSString*)file;
 {
 #ifdef MAC_OS_X_VERSION_10_0
-    return [self openURL:[NSURL URLWithString:file]];
+  return [self openURL:[NSURL fileURLWithPath:file]];
 #else
-    return [self openFile:file];
+  return [self openFile:file];
 #endif
 }
 @end
@@ -461,37 +471,6 @@ NSArray* XPRunOpenPanel(void)
 @implementation XPLog
 
 +(void)pause {}
-
-+(void)executeUnitTests;
-{
-  XPLogAlwys (@"XPLogAlwys");
-  XPLogAlwys1(@"XPLogAlwys1: %d", 1);
-  XPLogAlwys2(@"XPLogAlwys2: %d, %d", 1, 2);
-  XPLogAlwys3(@"XPLogAlwys3: %d, %d, %d", 1, 2, 3);
-  XPLogAlwys4(@"XPLogAlwys4: %d, %d, %d, %d", 1, 2, 3, 4);
-  XPLogDebug (@"XPLogDebug");
-  XPLogDebug1(@"XPLogDebug1: %d", 1);
-  XPLogDebug2(@"XPLogDebug2: %d, %d", 1, 2);
-  XPLogDebug3(@"XPLogDebug3: %d, %d, %d", 1, 2, 3);
-  XPLogDebug4(@"XPLogDebug4: %d, %d, %d, %d", 1, 2, 3, 4);
-  XPLogExtra (@"XPLogExtra");
-  XPLogExtra1(@"XPLogExtra1: %d", 1);
-  XPLogExtra2(@"XPLogExtra2: %d, %d", 1, 2);
-  XPLogExtra3(@"XPLogExtra3: %d, %d, %d", 1, 2, 3);
-  XPLogExtra4(@"XPLogExtra4: %d, %d, %d, %d", 1, 2, 3, 4);
-  /*
-  XPLogPause (@"XPLogPause");
-  XPLogPause1(@"XPLogPause1: %d", 1);
-  XPLogPause2(@"XPLogPause2: %d, %d", 1, 2);
-  XPLogPause3(@"XPLogPause3: %d, %d, %d", 1, 2, 3);
-  XPLogPause4(@"XPLogPause4: %d, %d, %d, %d", 1, 2, 3, 4);
-  XPLogRaise(@"XPLogRaise");
-  XPLogRaise1(@"XPLogRaise1: %d", 1);
-  XPLogRaise2(@"XPLogRaise2: %d, %d", 1, 2);
-  XPLogRaise3(@"XPLogRaise3: %d, %d, %d", 1, 2, 3);
-  XPLogRaise4(@"XPLogRaise4: %d, %d, %d, %d", 1, 2, 3, 4);
-  */
-}
 
 +(void)logCheckedPoundDefines;
 {

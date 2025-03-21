@@ -39,6 +39,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 -(id)init;
 {
   self = [super init];
+  NSCParameterAssert(self);
   _modelController = [[SVRDocumentModelController alloc] init];
   _textView = nil;
   return self;
@@ -150,17 +151,11 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
     case 19: return @"/";
     case 20: return @"(";
     case 21: return @"^";
+    case 22: return [@"2" stringByAppendingString:[NSString SVR_rootRawString]];
+    case 23: return [@"10" stringByAppendingString:[NSString SVR_logRawString]];
     case 13:
       // Backspace Button
       *control = -1;
-      return nil;
-    case 22:
-      // Clear Line Button
-      *control = -2;
-      return nil;
-    case 23:
-      // Clear All Button
-      *control = -3;
       return nil;
   }
   XPLogRaise2(@"<%@> Button with unknown tag: %ld", self, tag);
@@ -227,6 +222,8 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   return NO;
 }
 
+// TODO: Convert this copy code to use model controller
+
 -(IBAction)cutUnsolved:(id)sender;
 {
   NSRange range = [[self textView] selectedRange];
@@ -244,39 +241,44 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 {
   BOOL success = NO;
   NSRange range = [[self textView] selectedRange];
-  NSAttributedString *original = [[[self modelController] model] attributedSubstringFromRange:range];
-  NSAttributedString *unsolved = [SVRSolver replaceAttachmentsWithOriginalCharacters:original];
-  success = [self __copyUnsolvedAttributedString:unsolved];
+  NSData *rtfData = [[self modelController] dataRepresentationOfType:SVRDocumentModelRepUnsolved
+                                                           withRange:range];
+  NSData *diskRepData = [[self modelController] dataRepresentationOfType:SVRDocumentModelRepDisk
+                                                               withRange:range];
+  success = [self __universalCopyRTFData:rtfData diskRepData:diskRepData];
   if (success) { return; }
-  XPLogPause2(@"%@ copySolved: Failed: %@", self, [unsolved string]);
+  XPLogPause1(@"%@ copySolved: Failed", self);
 }
 
 -(IBAction)copyUniversal:(id)sender;
 {
   BOOL success = NO;
   NSRange range = [[self textView] selectedRange];
-  NSAttributedString *original = [[[self modelController] model] attributedSubstringFromRange:range];
-  NSAttributedString *solved = [SVRSolver replaceAttachmentsWithStringValue:original];
-  NSAttributedString *unsolved = [SVRSolver replaceAttachmentsWithOriginalCharacters:original];
-  success = [self __universalCopySolvedAttributedString:solved andUnsolvedString:[unsolved string]];
+  NSData *rtfData = [[self modelController] dataRepresentationOfType:SVRDocumentModelRepSolved
+                                                           withRange:range];
+  NSData *diskRepData = [[self modelController] dataRepresentationOfType:SVRDocumentModelRepDisk
+                                                               withRange:range];
+  success = [self __universalCopyRTFData:rtfData diskRepData:diskRepData];
   if (success) { return; }
-  XPLogPause2(@"%@ copySolved: Failed: %@", self, [solved string]);
+  XPLogPause1(@"%@ copySolved: Failed", self);
 }
 
 -(IBAction)pasteUniversal:(id)sender;
 {
-  NSString *specialType = SVRDocumentViewControllerUnsolvedPasteboardType;
-  NSTextView *textView = [self textView];
   NSPasteboard *pb = [NSPasteboard generalPasteboard];
-  NSString *unsolvedString = nil;
+  NSTextView *textView = [self textView];
+  NSString *specialType = SVRDocumentViewControllerUnsolvedPasteboardType;
+  NSString *diskRepString = nil;
+  NSData *diskRepData = nil;
   
   if ([pb availableTypeFromArray:[NSArray arrayWithObject:specialType]]
-      && (unsolvedString = [pb stringForType:specialType]))
+      && (diskRepData = [pb dataForType:specialType])
+      && (diskRepString = [[[NSString alloc] initWithData:diskRepData encoding:NSUTF8StringEncoding] autorelease]))
   {
     // Do Universal Paste
     XPLogDebug1(@"%@ pasteUniversal: Universal Paste", self);
     [[self modelController] replaceCharactersInRange:[textView selectedRange]
-                                          withString:unsolvedString];
+                                          withString:diskRepString];
   } else {
     // Fail universal paste and forward the message to the textview
     XPLogDebug1(@"%@ pasteUniversal: NOT Universal Paste", self);
@@ -285,37 +287,20 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   }
 }
 
--(BOOL)__copyUnsolvedAttributedString:(NSAttributedString*)unsolvedString;
+-(BOOL)__universalCopyRTFData:(NSData*)rtfData
+                  diskRepData:(NSData*)diskRepData;
 {
-  BOOL successPlain = NO;
-  BOOL successRTF   = NO;
-  NSRange range = NSMakeRange(0, [unsolvedString length]);
   NSPasteboard *pb = [NSPasteboard generalPasteboard];
-  
-  [pb declareTypes:[NSArray arrayWithObjects:
-                    XPPasteboardTypeRTF,
-                    XPPasteboardTypeString,
-                    nil]
-             owner:nil];
-  
-  // Attributes dictionary might be needed in OSX
-  // [NSDictionary dictionaryWithObject:NSRTFTextDocumentType forKey:NSDocumentTypeDocumentAttribute];
-  successRTF = [pb setData:[unsolvedString RTFFromRange:range documentAttributes:nil]
-                   forType:XPPasteboardTypeRTF];
-  successPlain = [pb setString:[unsolvedString string] forType:XPPasteboardTypeString];
-  
-  return successRTF && successPlain;
-}
-
--(BOOL)__universalCopySolvedAttributedString:(NSAttributedString*)solvedString
-                           andUnsolvedString:(NSString*)unsolvedString;
-{
   BOOL successRTF = NO;
   BOOL successPlain = NO;
-  BOOL successUnsolved = NO;
-  NSRange range = NSMakeRange(0, [solvedString length]);
+  BOOL successSpecial = NO;
   NSString *specialType = SVRDocumentViewControllerUnsolvedPasteboardType;
-  NSPasteboard *pb = [NSPasteboard generalPasteboard];
+  NSString *plainString = [[[[NSAttributedString alloc] initWithRTF:rtfData
+                                                 documentAttributes:NULL] autorelease] string];
+  
+  NSCParameterAssert(rtfData);
+  NSCParameterAssert(diskRepData);
+  NSCParameterAssert(plainString);
   
   [pb declareTypes:[NSArray arrayWithObjects:
                     XPPasteboardTypeRTF,
@@ -324,14 +309,11 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
                     nil]
              owner:nil];
   
-  // Attributes dictionary might be needed in OSX
-  // [NSDictionary dictionaryWithObject:NSRTFTextDocumentType forKey:NSDocumentTypeDocumentAttribute];
-  successRTF = [pb setData:[solvedString RTFFromRange:range documentAttributes:nil]
-                   forType:XPPasteboardTypeRTF];
-  successPlain    = [pb setString:[solvedString string] forType:XPPasteboardTypeString];
-  successUnsolved = [pb setString:unsolvedString forType:specialType];
+  successRTF      = [pb setData:rtfData       forType:XPPasteboardTypeRTF];
+  successSpecial  = [pb setData:diskRepData   forType:specialType];
+  successPlain    = [pb setString:plainString forType:XPPasteboardTypeString];
   
-  return successRTF && successPlain && successUnsolved;
+  return successRTF && successPlain && successSpecial;
 }
 
 @end

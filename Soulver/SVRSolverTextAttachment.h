@@ -31,87 +31,28 @@
 #import "SVRSolver.h"
 #import "XPCrossPlatform.h"
 
-typedef enum {
-  SVRSolverTextAttachmentBorderStyleColored,
-  SVRSolverTextAttachmentBorderStyleRecessedGray,
-  SVRSolverTextAttachmentBorderStyleRecessedWhite,
-  SVRSolverTextAttachmentBorderStyleGroove,
-  SVRSolverTextAttachmentBorderStyleDotted,
-  SVRSolverTextAttachmentBorderStyleNone
-} SVRSolverTextAttachmentBorderStyle;
-
-@protocol SVRSolverTextAttachment <NSObject>
-
--(NSString*)toDrawString;
--(NSFont*)toDrawFont;
--(NSColor*)toDrawColor;
--(NSFont*)neighorFont;
--(SVRSolverTextAttachmentBorderStyle)borderStyle;
-
-@end
-
-@interface SVRSolverTextAttachmentImp: NSTextAttachment <SVRSolverTextAttachment>
+@interface SVRSolverTextAttachment: NSTextAttachment
 {
   mm_retain NSString  *_toDrawString;
   mm_retain NSFont    *_toDrawFont;
   mm_retain NSColor   *_toDrawColor;
-  mm_retain NSFont    *_neighorFont;
+  mm_retain NSFont    *_neighborFont;
   SVRSolverTextAttachmentBorderStyle _borderStyle;
 }
 
 -(NSString*)toDrawString;
 -(NSFont*)toDrawFont;
 -(NSColor*)toDrawColor;
--(NSFont*)neighorFont;
+-(NSFont*)neighborFont;
 -(SVRSolverTextAttachmentBorderStyle)borderStyle;
 
-@end
-
-@interface SVRSolverSolutionTextAttachment: SVRSolverTextAttachmentImp <SVRSolverTextAttachment>
-
-// MARK: Init
--(id)initWithSolution:(NSDecimalNumber*)solution;
-+(id)attachmentWithSolution:(NSDecimalNumber*)solution;
-
-// MARK: Business Logic
-+(NSString*)toDrawStringWithSolution:(NSDecimalNumber*)solution;
-+(NSFont*)toDrawFont;
-+(NSColor*)toDrawColor;
-+(NSFont*)neighborFont;
-+(SVRSolverTextAttachmentBorderStyle)borderStyle;
-
-@end
-
-@interface SVRSolverErrorTextAttachment: SVRSolverTextAttachmentImp <SVRSolverTextAttachment>
-
-// MARK: Init
--(id)initWithError:(SVRSolverError)error;
-+(id)attachmentWithError:(SVRSolverError)error;
-
-// MARK: Business Logic
-+(NSString*)toDrawStringWithError:(SVRSolverError)error;
-+(NSFont*)toDrawFont;
-+(NSColor*)toDrawColor;
-+(NSFont*)neighborFont;
-+(SVRSolverTextAttachmentBorderStyle)borderStyle;
-
-@end
-
-@interface SVRSolverPreviousSolutionTextAttachment: SVRSolverTextAttachmentImp <SVRSolverTextAttachment>
-
-// MARK: Init
--(id)initWithPreviousSolution:(NSDecimalNumber*)previousSolution
-                     operator:(SVRSolverOperator)operator;
+-(id)initWithString:(NSString*)stringToDraw styles:(SVRSolverTextAttachmentStyles)styles;
++(id)attachmentWithSolution:(NSDecimalNumber*)solution styles:(SVRSolverTextAttachmentStyles)styles;
 +(id)attachmentWithPreviousSolution:(NSDecimalNumber*)previousSolution
-                           operator:(SVRSolverOperator)operator;
-
-// MARK: Business Logic
-+(NSString*)toDrawStringWithPreviousSolution:(NSDecimalNumber*)previousSolution
-                                    operator:(SVRSolverOperator)operator;
-+(NSFont*)toDrawFont;
-+(NSColor*)toDrawColor;
-+(NSFont*)neighborFont;
-+(SVRSolverTextAttachmentBorderStyle)borderStyle;
+                           operator:(SVRSolverOperator)operator
+                             styles:(SVRSolverTextAttachmentStyles)styles;
++(id)attachmentWithError:(SVRCalculationError)error
+                  styles:(SVRSolverTextAttachmentStyles)styles;
 
 @end
 
@@ -122,11 +63,11 @@ typedef enum {
 
 // MARK: Properties
 -(NSDictionary*)toDrawAttributes;
--(id<SVRSolverTextAttachment>)SVR_attachment;
+-(SVRSolverTextAttachment*)SVR_attachment;
 
 // MARK: Init
--(id)initWithAttachment:(NSTextAttachment<SVRSolverTextAttachment>*)attachment;
-+(id)cellWithAttachment:(NSTextAttachment<SVRSolverTextAttachment>*)attachment;
+-(id)initWithAttachment:(SVRSolverTextAttachment*)attachment;
++(id)cellWithAttachment:(SVRSolverTextAttachment*)attachment;
 
 // MARK: Custom Drawing
 +(NSDictionary*)toDrawAttributesWithFont:(NSFont*)font
@@ -143,4 +84,18 @@ typedef enum {
        withFrame:(NSRect)cellFrame
           inView:(NSView*)controlView;
 
+@end
+
+@interface SVRSolverTextAttachment (NSCoding) <XPSecureCoding>
++(BOOL)supportsSecureCoding;
+-(BOOL)isEqual:(SVRSolverTextAttachment*)rhs;
+-(id)initWithCoder:(NSCoder *)coder;
+-(void)encodeWithCoder:(NSCoder*)coder;
+@end
+
+@interface SVRSolverTextAttachmentCell (NSCoding) <XPSecureCoding>
++(BOOL)supportsSecureCoding;
+-(BOOL)isEqual:(SVRSolverTextAttachmentCell*)rhs;
+-(id)initWithCoder:(NSCoder *)coder;
+-(void)encodeWithCoder:(NSCoder*)coder;
 @end

@@ -30,6 +30,9 @@
 #import <Foundation/Foundation.h>
 #import "XPCrossPlatform.h"
 
+typedef NSDictionary* SVRSolverTextAttachmentStyles;
+typedef NSDictionary* SVRSolverTextStyles;
+
 // MARK: SVRSolver
 
 @interface SVRSolver: NSObject
@@ -38,24 +41,29 @@
 +(void)initialize;
 
 // MARK: Business Logic
-+(void)solveAttributedString:(NSMutableAttributedString*)input;
++(void)solveAttributedString:(NSMutableAttributedString*)input
+              solutionStyles:(SVRSolverTextAttachmentStyles)solutionStyles
+      previousSolutionStyles:(SVRSolverTextAttachmentStyles)previousSolutionStyles
+                 errorStyles:(SVRSolverTextAttachmentStyles)errorStyles
+                  textStyles:(SVRSolverTextStyles)textStyles;
+
 // Returns mutable string to avoid making an immutable copy, but it is still a copy of the original string
-+(NSMutableAttributedString*)replaceAttachmentsWithOriginalCharacters:(NSAttributedString*)input;
++(NSAttributedString*)replacingAttachmentsWithOriginalCharacters:(NSAttributedString*)input;
 // Returns mutable string to avoid making an immutable copy, but it is still a copy of the original string
-+(NSMutableAttributedString*)replaceAttachmentsWithStringValue:(NSAttributedString*)input;
++(NSAttributedString*)replacingAttachmentsWithStringValue:(NSAttributedString*)input;
 
 // MARK: Private
 +(void)__step1_restoreOriginals:(NSMutableAttributedString*)input;
 +(void)__step2_removeAllTags:(NSMutableAttributedString*)input;
 +(void)__step3_scanAndTag:(NSMutableAttributedString*)input;
-+(void)__step4_solveAndTag:(NSMutableAttributedString*)input;
-+(void)__step5_styleAndTag:(NSMutableAttributedString*)input;
++(void)__step4_solveAndTag:(NSMutableAttributedString*)input
+            solutionStyles:(SVRSolverTextAttachmentStyles)solutionStyles
+    previousSolutionStyles:(SVRSolverTextAttachmentStyles)previousSolutionStyles
+               errorStyles:(SVRSolverTextAttachmentStyles)errorStyles;
++(void)__step5_styleAndTag:(NSMutableAttributedString*)input
+                    styles:(SVRSolverTextStyles)styles;
 
 
-@end
-
-@interface SVRSolver (Testing)
-+(void)executeTests;
 @end
 
 // MARK: Enumerations
@@ -82,19 +90,54 @@ typedef enum {
   SVRSolverOperatorMultiply,
   SVRSolverOperatorSubtract,
   SVRSolverOperatorAdd,
+  SVRSolverOperatorRoot,
+  SVRSolverOperatorLog,
   SVRSolverOperatorUnknown
   // TODO: Consider adding √ (option v) and log ∫ (option + [shift] + b)
 } SVRSolverOperator;
 
 typedef enum {
-  SVRSolverErrorNone = -1,
-  SVRSolverErrorInvalidCharacter = -1001,
-  SVRSolverErrorMismatchedBrackets = -1002,
-  SVRSolverErrorMissingOperand = -1003,
-  SVRSolverErrorDivideByZero = -1004,
-} SVRSolverError;
+  SVRCalculationNoError            = NSCalculationNoError,
+  SVRCalculationLossOfPrecision    = NSCalculationLossOfPrecision,
+  SVRCalculationUnderflow          = NSCalculationUnderflow,
+  SVRCalculationOverflow           = NSCalculationOverflow,
+  SVRCalculationDivideByZero       = NSCalculationDivideByZero,
+  SVRCalculationInvalidCharacter   = 105,
+  SVRCalculationMismatchedBrackets = 106,
+  SVRCalculationMissingOperand     = 107,
+  SVRCalculationResultNaN          = 108,
+  SVRCalculationResultInfinite     = 109,
+  SVRCalculationResultImaginary    = 110,
+  SVRCalculationRootByZero         = 111,
+  SVRCalculationArgumentNegative   = 112,
+  SVRCalculationBaseNegative       = 113,
+  SVRCalculationBaseOne            = 114,
+} SVRCalculationError;
 
-typedef SVRSolverError* SVRSolverErrorPointer;
+typedef SVRCalculationError* SVRCalculationErrorPointer;
+
+// MARK: SVRSolverTextAttachment Input
+
+typedef enum {
+  SVRSolverTextAttachmentBorderStyleColored,
+  SVRSolverTextAttachmentBorderStyleRecessedGray,
+  SVRSolverTextAttachmentBorderStyleRecessedWhite,
+  SVRSolverTextAttachmentBorderStyleGroove,
+  SVRSolverTextAttachmentBorderStyleDotted,
+  SVRSolverTextAttachmentBorderStyleNone
+} SVRSolverTextAttachmentBorderStyle;
+
+extern NSString *const SVRSolverTextAttachmentStyleToDrawFont;
+extern NSString *const SVRSolverTextAttachmentStyleToDrawColor;
+extern NSString *const SVRSolverTextAttachmentStyleNeighborFont;
+extern NSString *const SVRSolverTextAttachmentStyleBorder;
+
+extern NSString *const SVRSolverTextStyleMathFont;
+extern NSString *const SVRSolverTextStyleOtherFont;
+extern NSString *const SVRSolverTextStyleOtherColor;
+extern NSString *const SVRSolverTextStyleOperandColor;
+extern NSString *const SVRSolverTextStyleOperatorColor;
+extern NSString *const SVRSolverTextStyleBracketColor;
 
 // MARK: Enumeration Helper Functions
 
@@ -104,5 +147,62 @@ NSNumber             *NSNumberForOperator(SVRSolverOperator operator);
 SVRSolverOperator     SVRSolverOperatorForNumber(NSNumber *number);
 SVRSolverOperator     SVRSolverOperatorForRawString(NSString *string);
 NSString             *RawStringForOperator(SVRSolverOperator operator);
-NSString             *SVRSolverDescriptionForError(SVRSolverError error);
-NSString             *SVRSolverDebugDescriptionForError(SVRSolverError error);
+NSString             *SVRSolverDescriptionForError(SVRCalculationError error);
+NSString             *SVRSolverDebugDescriptionForError(SVRCalculationError error);
+
+// MARK: NSDecimalNumber Helper Methods
+
+@interface SVRSolverDecimalBehavior: NSObject <NSDecimalNumberBehaviors>
+{
+  SVRCalculationErrorPointer _errorPtr;
+}
+-(id)initWithErrorPtr:(SVRCalculationErrorPointer)errorPtr;
++(id)behaviorWithErrorPtr:(SVRCalculationErrorPointer)errorPtr;
+-(NSRoundingMode)roundingMode;
+-(short)scale;
+-(NSDecimalNumber*)exceptionDuringOperation:(SEL)operation
+                                      error:(SVRCalculationError)error
+                                leftOperand:(NSDecimalNumber*)leftOperand
+                               rightOperand:(NSDecimalNumber*)rightOperand;
+@end
+
+@interface NSDecimalNumber (Soulver)
+
+/// In OpenStep, NaN comparisons are weird, so this uses a string comparison
+-(BOOL)SVR_isNotANumber;
+
+-(NSDecimalNumber*)SVR_decimalNumberByRaisingWithExponent:(NSDecimalNumber*)exponent
+                                             withBehavior:(SVRSolverDecimalBehavior*)behavior;
+-(NSDecimalNumber*)SVR_decimalNumberByRootingWithExponent:(NSDecimalNumber*)exponent
+                                             withBehavior:(SVRSolverDecimalBehavior*)behavior;
+/// 10L100=2 10=base 100=argument (self)
+-(NSDecimalNumber*)SVR_decimalNumberByLogarithmWithBase:(NSDecimalNumber*)base
+                                           withBehavior:(SVRSolverDecimalBehavior*)behavior;
+@end
+
+// MARK: NSUserDefaults Helper Methods
+
+@interface NSUserDefaults (SVRSolverTextAttachmentStyles)
+
+-(SVRSolverTextAttachmentStyles)SVR_stylesForSolution;
+-(SVRSolverTextAttachmentStyles)SVR_stylesForPreviousSolution;
+-(SVRSolverTextAttachmentStyles)SVR_stylesForError;
+-(SVRSolverTextStyles)SVR_stylesForText;
+
+@end
+
+@interface NSDictionary (SVRSolverTextAttachmentStyles)
+
++(SVRSolverTextAttachmentStyles)__SVR_stylesWithToDrawFont:(NSFont*)toDrawFont
+                                              neighborFont:(NSFont*)neighborFont
+                                               toDrawColor:(NSColor*)toDrawColor
+                                               borderStyle:(SVRSolverTextAttachmentBorderStyle)borderStyle;
+
++(SVRSolverTextAttachmentStyles)__SVR_stylesWithMathFont:(NSFont*)mathFont
+                                            neighborFont:(NSFont*)otherTextFont
+                                          otherTextColor:(NSColor*)otherTextColor
+                                            operandColor:(NSColor*)operandColor
+                                           operatorColor:(NSColor*)operatorColor
+                                            bracketColor:(NSColor*)bracketColor;
+
+@end
