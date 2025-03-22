@@ -57,7 +57,7 @@ typedef CGFloat XPFloat;
 typedef float XPFloat;
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_0
+#ifdef MAC_OS_X_VERSION_10_3
 #define XPRTFDocumentAttributes [NSDictionary dictionaryWithObject:NSRTFTextDocumentType forKey:NSDocumentTypeDocumentAttribute]
 typedef NSRangePointer XPRangePointer;
 #else
