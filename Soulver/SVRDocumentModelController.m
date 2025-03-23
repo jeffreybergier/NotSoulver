@@ -261,7 +261,8 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
 
 -(void)dealloc;
 {
-  XPLogDebug1(@"DEALLOC: %@", self);
+  // TODO: Restore this log. It crashes on jaguar
+  //XPLogDebug1(@"DEALLOC: %@", self);
   [_waitTimer invalidate];
   [_waitTimer release];
   [_model release];
