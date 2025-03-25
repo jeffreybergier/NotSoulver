@@ -117,6 +117,7 @@
 -(IBAction)newDocument:(id)sender
 {
   SVRDocument *document = [[[SVRDocument alloc] init] autorelease];
+  [document setFileType:SVRDocumentModelRepDisk];
   [document showWindows];
   [[self openDocuments] addObject:document];
 }

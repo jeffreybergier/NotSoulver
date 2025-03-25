@@ -145,7 +145,7 @@ NSPoint XPDocumentPointForCascading;
   }
   
   // Update window chrome
-  [self updateChangeCount:0];
+  [self updateChangeCount:2];
 
   // Set the delegate
   [window setDelegate:self];
@@ -295,13 +295,13 @@ NSPoint XPDocumentPointForCascading;
   } else {
     [self __runModalSavePanelAndSetFileName];
   }
-  [self updateChangeCount:0];
+  [self updateChangeCount:2];
 }
 
 -(IBAction)saveDocumentAs:(id)sender;
 {
   [self __runModalSavePanelAndSetFileName];
-  [self updateChangeCount:0];
+  [self updateChangeCount:2];
 }
 
 -(IBAction)saveDocumentTo:(id)sender;
@@ -324,7 +324,7 @@ NSPoint XPDocumentPointForCascading;
     default:
       XPLogRaise1(@"Unexpected alert panel result: %ld", result);
   }
-  [self updateChangeCount:0];
+  [self updateChangeCount:2];
 }
 
 // MARK: NSWindowDelegate

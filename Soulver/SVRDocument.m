@@ -50,7 +50,7 @@
   id previousNextResponder = nil;
   NSString *fileName = [self fileName];
 
-  if ([XPDocument respondsToSelector:@selector(awakeFromNib)]) {
+  if ([XPDocument instancesRespondToSelector:@selector(awakeFromNib)]) {
     [super awakeFromNib];
   }
 

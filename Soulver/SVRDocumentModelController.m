@@ -81,6 +81,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
 // MARK: NSDocument Support
 -(NSData*)dataRepresentationOfType:(SVRDocumentModelRep)type withRange:(NSRange)range;
 {
+  NSCParameterAssert(type);
   if ([type isEqualToString:SVRDocumentModelRepDisk]) {
     return [self __dataRepresentationOfDiskTypeWithRange:range];
   } else if ([type isEqualToString:SVRDocumentModelRepDisplay]) {
