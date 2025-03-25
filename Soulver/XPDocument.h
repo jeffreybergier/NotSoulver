@@ -35,8 +35,8 @@
 #ifndef XPSupportsNSDocument
 @interface XPDocument: NSResponder
 {
-  // TODO: Change NIB to use ivar `window` instead of `_window`
-  mm_retain IBOutlet NSWindow *_window;
+  /// Named without underscore for NSDocument compatibility
+  mm_retain IBOutlet NSWindow *window;
   mm_copy   NSString *_fileName;
   mm_copy   NSString *_fileType;
   BOOL _isNibLoaded;

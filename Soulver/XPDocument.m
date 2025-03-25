@@ -123,7 +123,7 @@ NSPoint XPDocumentPointForCascading;
 
 -(NSWindow*)XP_windowForSheet;
 {
-  return [[_window retain] autorelease];
+  return [[window retain] autorelease];
 }
 
 /// Override to read your file and prepare
@@ -131,7 +131,7 @@ NSPoint XPDocumentPointForCascading;
 {
   NSString *fileName = [self fileName];
   NSString *fileType = [self fileType];
-  NSWindow *window   = [self XP_windowForSheet];
+  NSWindow *myWindow = [self XP_windowForSheet];
   
   // Read the data
   if ([[self fileName] isAbsolutePath]) {
@@ -140,7 +140,7 @@ NSPoint XPDocumentPointForCascading;
   
   // Update window frame
   if ([[self fileName] isAbsolutePath]) {
-    [window setFrameUsingName:fileName];
+    [myWindow setFrameUsingName:fileName];
   } else {
     XPDocumentPointForCascading = [window cascadeTopLeftFromPoint:XPDocumentPointForCascading];
   }
@@ -149,7 +149,7 @@ NSPoint XPDocumentPointForCascading;
   [self updateChangeCount:2];
 
   // Set the delegate
-  [window setDelegate:self];
+  [myWindow setDelegate:self];
 
   // Declare that we are loaded
   [self windowControllerDidLoadNib:nil];
@@ -177,18 +177,18 @@ NSPoint XPDocumentPointForCascading;
 
 -(void)updateChangeCount:(int)change;
 {
-  NSWindow *window = [self XP_windowForSheet];
+  NSWindow *myWindow = [self XP_windowForSheet];
   NSString *fileName = [self fileName];
 
   _isEdited = (change == 2) ? NO : YES;
 
   if ([fileName isAbsolutePath]) {
-    [window setRepresentedFilename:fileName];
+    [myWindow setRepresentedFilename:fileName];
   } else {
-    [window setRepresentedFilename:@""];
+    [myWindow setRepresentedFilename:@""];
   }
-  [window setTitle:[self displayName]];
-  [window setDocumentEdited:[self isDocumentEdited]];
+  [myWindow setTitle:[self displayName]];
+  [myWindow setDocumentEdited:[self isDocumentEdited]];
 }
 
 -(NSString*)fileName;
@@ -419,13 +419,13 @@ NSPoint XPDocumentPointForCascading;
 - (void)dealloc
 {
   XPLogDebug1(@"DEALLOC: %@", self);
-  [_window setDelegate:nil];
+  [window setDelegate:nil];
   // this autorelease (instead of release) is necessary
   // to prevent crashes when the window is closing
-  [_window   autorelease];
+  [window   autorelease];
   [_fileName release];
   [_fileType release];
-  _window   = nil;
+  window   = nil;
   _fileName = nil;
   _fileType = nil;
   [super dealloc];
