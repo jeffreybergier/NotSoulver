@@ -41,10 +41,6 @@
 -(SVRDocumentViewController*)viewController;
 -(NSString*)windowNibName;
 
-// MARK: INIT
--(id)initWithContentsOfFile:(NSString*)fileName;
-+(id)documentWithContentsOfFile:(NSString*)fileName;
-
 // MARK: NSDocument subclass
 -(void)awakeFromNib;
 -(NSData*)dataRepresentationOfType:(NSString*)type;

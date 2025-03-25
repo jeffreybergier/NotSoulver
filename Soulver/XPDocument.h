@@ -32,16 +32,14 @@
 
 // This is a best effort implementation of NSDocument only for use in OpenStep.
 // Its insanely minimal because it won't be used once Mac OS X Ships
-#ifdef MAC_OS_X_VERSION_10_6
-@interface XPDocument: NSResponder <NSWindowDelegate>
-#else
+#ifndef XPSupportsNSDocument
 @interface XPDocument: NSResponder
-#endif
 {
   mm_retain IBOutlet NSWindow *_window;
   mm_copy   NSString *_fileName;
   mm_copy   NSString *_fileType;
   BOOL _isNibLoaded;
+  BOOL _isEdited;
 }
 
 // MARK: Window Placement
@@ -64,11 +62,10 @@
 /// Return YES to allow the document to close
 -(BOOL)windowShouldClose:(id)sender;
 /// _window should be set as IBOutlet
--(NSWindow*)window;
+-(NSWindow*)XP_windowForSheet;
 /// Default implementation populates rawData property if fileName is set
 /// and sets self as window delegate
 -(void)awakeFromNib;
--(void)updateWindowChrome;
 
 // MARK: Document Status
 
@@ -76,7 +73,9 @@
 -(NSString*)displayName;
 /// Default implementation reads file on disk and compares with _rawData property
 -(BOOL)isDocumentEdited;
-/// Filename on disk is NIL if the document is not saved
+/// supported values are NSChangeDone (0) and NSChangeCleared (2)
+-(void)updateChangeCount:(int)change;
+/// Filename on disk is @"" if the document is not saved
 -(NSString*)fileName;
 -(void)setFileName:(NSString*)fileName;
 -(NSString*)fileType;
@@ -121,3 +120,14 @@
 -(XPAlertReturn)runRevertToSavedAlert;
 
 @end
+#else
+
+#define XPDocument NSDocument
+
+@interface NSDocument (CrossPlatform)
+
+-(NSWindow*)XP_windowForSheet;
+
+@end
+
+#endif

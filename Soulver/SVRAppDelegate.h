@@ -45,21 +45,26 @@
 -(SVRAccessoryWindowsOwner*)accessoryWindowsOwner;
 
 // MARK: IBActions
--(IBAction)newDoc:(id)sender;
--(IBAction)openDoc:(id)sender;
--(IBAction)saveAll:(id)sender;
 -(IBAction)toggleKeypadPanel:(id)sender;
 -(IBAction)showSettingsWindow:(id)sender;
 -(IBAction)showAboutWindow:(id)sender;
 
-// MARK: Notifications
--(void)__windowWillCloseNotification:(NSNotification*)aNotification;
 @end
 
 @interface SVRAppDelegate (NSApplicationDelegate)
 -(void)applicationWillFinishLaunching:(NSNotification*)aNotification;
+@end
+
+#ifndef XPSupportsNSDocument
+@interface SVRAppDelegate (PreDocument)
+
+-(IBAction)newDocument:(id)sender;
+-(IBAction)openDocument:(id)sender;
 -(BOOL)applicationShouldTerminate:(NSApplication *)sender;
 -(BOOL)__applicationShouldTerminateAfterReviewingAllDocuments:(NSApplication*)sender;
 -(BOOL)application:(NSApplication *)sender openFile:(NSString *)filename;
 -(BOOL)applicationOpenUntitledFile:(NSApplication *)sender;
+-(void)windowWillCloseNotification:(NSNotification*)aNotification;
+
 @end
+#endif
