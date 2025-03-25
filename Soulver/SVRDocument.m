@@ -54,12 +54,14 @@
     [super awakeFromNib];
   }
 
+  // Add view controller into the responder chain
+  previousNextResponder = [[self XP_windowForSheet] nextResponder];
+  [[self XP_windowForSheet] setNextResponder:[self viewController]];
   if ([self isKindOfClass:[NSResponder class]]) {
-    // Add view controller into the responder chain
-    previousNextResponder = [[self XP_windowForSheet] nextResponder];
-    [[self XP_windowForSheet] setNextResponder:[self viewController]];
     [[self viewController] setNextResponder:(NSResponder*)self];
     [(NSResponder*)self setNextResponder:previousNextResponder];
+  } else {
+    [[self viewController] setNextResponder:previousNextResponder];
   }
   
   // Subscribe to model updates

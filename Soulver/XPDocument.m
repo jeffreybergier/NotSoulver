@@ -432,8 +432,9 @@ NSPoint XPDocumentPointForCascading;
 
 -(NSWindow*)XP_windowForSheet;
 {
-  NSAssert(NO, @"");
-  return nil;
+  NSWindow *window = self->_window;
+  NSCParameterAssert(window);
+  return window;
 }
 
 @end

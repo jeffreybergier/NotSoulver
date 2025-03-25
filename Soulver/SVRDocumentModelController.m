@@ -229,7 +229,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
                 : _range;
   NSAttributedString *original = [[self model] attributedSubstringFromRange:range];
   NSAttributedString *unsolved = [SVRSolver replacingAttachmentsWithOriginalCharacters:original];
-  NSData *output = [unsolved RTFFromRange:range
+  NSData *output = [unsolved RTFFromRange:NSMakeRange(0, [unsolved length])
                        documentAttributes:XPRTFDocumentAttributes];
   NSAssert(output, @"__dataRepresentationOfUnsolvedTypeWithRange: NIL");
   return output;
