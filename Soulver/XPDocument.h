@@ -35,6 +35,7 @@
 #ifndef XPSupportsNSDocument
 @interface XPDocument: NSResponder
 {
+  // TODO: Change NIB to use ivar `window` instead of `_window`
   mm_retain IBOutlet NSWindow *_window;
   mm_copy   NSString *_fileName;
   mm_copy   NSString *_fileType;
@@ -63,9 +64,10 @@
 -(BOOL)windowShouldClose:(id)sender;
 /// _window should be set as IBOutlet
 -(NSWindow*)XP_windowForSheet;
-/// Default implementation populates rawData property if fileName is set
-/// and sets self as window delegate
+// Nib Loading
 -(void)awakeFromNib;
+-(void)windowControllerWillLoadNib:(NSWindowController*)windowController;
+-(void)windowControllerDidLoadNib:(NSWindowController*)windowController;
 
 // MARK: Document Status
 

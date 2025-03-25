@@ -45,6 +45,7 @@
 -(void)awakeFromNib;
 -(NSData*)dataRepresentationOfType:(NSString*)type;
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
+-(void)windowControllerDidLoadNib:(NSWindowController*)windowController;
 
 // MARK: Model Changed Notifications
 -(void)modelDidProcessEditingNotification:(NSNotification*)aNotification;

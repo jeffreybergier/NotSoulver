@@ -47,21 +47,10 @@
 
 -(void)awakeFromNib;
 {
-  id previousNextResponder = nil;
   NSString *fileName = [self fileName];
 
   if ([XPDocument instancesRespondToSelector:@selector(awakeFromNib)]) {
     [super awakeFromNib];
-  }
-
-  // Add view controller into the responder chain
-  previousNextResponder = [[self XP_windowForSheet] nextResponder];
-  [[self XP_windowForSheet] setNextResponder:[self viewController]];
-  if ([self isKindOfClass:[NSResponder class]]) {
-    [[self viewController] setNextResponder:(NSResponder*)self];
-    [(NSResponder*)self setNextResponder:previousNextResponder];
-  } else {
-    [[self viewController] setNextResponder:previousNextResponder];
   }
   
   // Subscribe to model updates
@@ -91,6 +80,19 @@
   return [modelController loadDataRepresentation:data ofType:type];
 }
 
+-(void)windowControllerDidLoadNib:(NSWindowController*)windowController;
+{
+  // Add view controller into the responder chain
+  id previousNextResponder = [[self XP_windowForSheet] nextResponder];
+  [[self XP_windowForSheet] setNextResponder:[self viewController]];
+  if ([self isKindOfClass:[NSResponder class]]) {
+    [[self viewController] setNextResponder:(NSResponder*)self];
+    [(NSResponder*)self setNextResponder:previousNextResponder];
+  } else {
+    [[self viewController] setNextResponder:previousNextResponder];
+  }
+}
+
 // MARK: Model Changed Notifications
 -(void)modelDidProcessEditingNotification:(NSNotification*)aNotification;
 {
@@ -111,7 +113,6 @@
 
 -(void)dealloc;
 {
-  // TODO: Change NIB to use ivar `window` instead of `_window`
   [_viewController release];
   _viewController = nil;
   [[NSNotificationCenter defaultCenter] removeObserver:self];

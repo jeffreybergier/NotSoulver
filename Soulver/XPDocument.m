@@ -87,6 +87,7 @@ NSPoint XPDocumentPointForCascading;
 {
   if (!_isNibLoaded) {
     _isNibLoaded = YES;
+    [self windowControllerWillLoadNib:nil];
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [NSBundle loadNibNamed:[self windowNibName] owner:self];
@@ -149,8 +150,20 @@ NSPoint XPDocumentPointForCascading;
 
   // Set the delegate
   [window setDelegate:self];
+
+  // Declare that we are loaded
+  [self windowControllerDidLoadNib:nil];
   
   XPLogDebug1(@"awakeFromNib: %@", self);
+}
+
+-(void)windowControllerWillLoadNib:(NSWindowController*)windowController;
+{
+  
+}
+-(void)windowControllerDidLoadNib:(NSWindowController*)windowController;
+{
+  
 }
 
 // MARK: Document Status
@@ -432,7 +445,7 @@ NSPoint XPDocumentPointForCascading;
 
 -(NSWindow*)XP_windowForSheet;
 {
-  NSWindow *window = self->_window;
+  NSWindow *window = [[[self windowControllers] lastObject] window];
   NSCParameterAssert(window);
   return window;
 }
