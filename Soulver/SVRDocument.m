@@ -80,7 +80,7 @@
   return [modelController loadDataRepresentation:data ofType:type];
 }
 
--(void)windowControllerDidLoadNib:(NSWindowController*)windowController;
+-(void)windowControllerDidLoadNib:(id)windowController;
 {
   // Add view controller into the responder chain
   id previousNextResponder = [[self XP_windowForSheet] nextResponder];

@@ -66,8 +66,8 @@
 -(NSWindow*)XP_windowForSheet;
 // Nib Loading
 -(void)awakeFromNib;
--(void)windowControllerWillLoadNib:(NSWindowController*)windowController;
--(void)windowControllerDidLoadNib:(NSWindowController*)windowController;
+-(void)windowControllerWillLoadNib:(id)windowController;
+-(void)windowControllerDidLoadNib:(id)windowController;
 
 // MARK: Document Status
 

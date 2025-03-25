@@ -157,14 +157,8 @@ NSPoint XPDocumentPointForCascading;
   XPLogDebug1(@"awakeFromNib: %@", self);
 }
 
--(void)windowControllerWillLoadNib:(NSWindowController*)windowController;
-{
-  
-}
--(void)windowControllerDidLoadNib:(NSWindowController*)windowController;
-{
-  
-}
+-(void)windowControllerWillLoadNib:(id)windowController; {}
+-(void)windowControllerDidLoadNib:(id)windowController; {}
 
 // MARK: Document Status
 

@@ -16,9 +16,8 @@
 };
 "SVRAppDelegate" = {
     ACTIONS = {
-        "newDoc:" = id; 
-        "openDoc:" = id; 
-        "saveAll:" = id; 
+        "newDocument:" = id; 
+        "openDocument:" = id; 
         "showAboutWindow:" = id; 
         "showSettingsWindow:" = id; 
         "toggleKeypadPanel:" = id; 
