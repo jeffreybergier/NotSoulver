@@ -424,7 +424,9 @@ NSArray* XPRunOpenPanel(NSString *extension)
 +(id)XP_unarchivedObjectOfClass:(Class)cls fromData:(NSData*)someData;
 {
   // TODO: Fix this to use NSSecureCoding
-#ifdef MAC_OS_X_VERSION_10_13__
+  // NSCoding of my custom attributed strings seems not work completely
+  // NSSecureCoding does not seem to work even though it should
+#ifdef MAC_OS_X_VERSION_10_13
   NSError *error = nil;
   NSAttributedString *output = [self unarchivedObjectOfClass:cls
                                                     fromData:someData
