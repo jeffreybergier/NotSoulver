@@ -30,9 +30,17 @@
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
 
+#ifdef XPSupportsNSDocument
+
+#define XPDocument NSDocument
+@interface NSDocument (CrossPlatform)
+-(NSWindow*)XP_windowForSheet;
+@end
+
+#else
+
 // This is a best effort implementation of NSDocument only for use in OpenStep.
 // Its insanely minimal because it won't be used once Mac OS X Ships
-#ifndef XPSupportsNSDocument
 @interface XPDocument: NSResponder
 {
   /// Named without underscore for NSDocument compatibility
@@ -120,15 +128,6 @@
 -(XPInteger)__runModalSavePanelAndSetFileName;
 -(XPAlertReturn)runUnsavedChangesAlert;
 -(XPAlertReturn)runRevertToSavedAlert;
-
-@end
-#else
-
-#define XPDocument NSDocument
-
-@interface NSDocument (CrossPlatform)
-
--(NSWindow*)XP_windowForSheet;
 
 @end
 

@@ -30,7 +30,20 @@
 #import "XPDocument.h"
 #import "NSUserDefaults+Soulver.h"
 
-#ifndef XPSupportsNSDocument
+#ifdef XPSupportsNSDocument
+
+@implementation NSDocument (CrossPlatform)
+
+-(NSWindow*)XP_windowForSheet;
+{
+  NSWindow *window = [[[self windowControllers] lastObject] window];
+  NSCParameterAssert(window);
+  return window;
+}
+
+@end
+
+#else
 
 NSPoint XPDocumentPointForCascading;
 
@@ -353,8 +366,6 @@ NSPoint XPDocumentPointForCascading;
 }
 
 // MARK: Panels and Alerts
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 -(BOOL)prepareSavePanel:(NSSavePanel*)savePanel;
 {
   [savePanel setRequiredFileType:[self fileType]];
@@ -429,19 +440,6 @@ NSPoint XPDocumentPointForCascading;
   _fileName = nil;
   _fileType = nil;
   [super dealloc];
-}
-#pragma clang diagnostic pop
-@end
-
-#else
-
-@implementation NSDocument (CrossPlatform)
-
--(NSWindow*)XP_windowForSheet;
-{
-  NSWindow *window = [[[self windowControllers] lastObject] window];
-  NSCParameterAssert(window);
-  return window;
 }
 
 @end
