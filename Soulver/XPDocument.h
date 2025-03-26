@@ -47,6 +47,7 @@
   mm_retain IBOutlet NSWindow *window;
   mm_copy   NSString *_fileName;
   mm_copy   NSString *_fileType;
+  mm_copy   NSString *_fileExtension;
   BOOL _isNibLoaded;
   BOOL _isEdited;
 }
@@ -90,6 +91,8 @@
 -(void)setFileName:(NSString*)fileName;
 -(NSString*)fileType;
 -(void)setFileType:(NSString*)type;
+-(NSString*)fileExtension;
+-(void)setFileExtension:(NSString*)type;
 
 // MARK: NSObject basics
 /// Returns hash of the filename or calls super

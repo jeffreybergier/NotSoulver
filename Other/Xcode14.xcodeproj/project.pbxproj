@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C04BBBB2D94447600DCCDFA /* Localizable.strings in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C04BBB02D94443F00DCCDFA /* Localizable.strings */; };
 		8CCAA33C2D936C920050DD4A /* NSUserDefaults+Soulver.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCAA33B2D936C920050DD4A /* NSUserDefaults+Soulver.m */; };
 		8CCAA3552D936CA20050DD4A /* SVRSolverScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCAA34E2D936CA20050DD4A /* SVRSolverScanner.m */; };
 		8CCAA3562D936CA20050DD4A /* SVRSolverSolutionTagger.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCAA3502D936CA20050DD4A /* SVRSolverSolutionTagger.m */; };
@@ -32,7 +33,6 @@
 		8CCAA3922D936DA30050DD4A /* TestsIntegration-SolvedRep.rtf in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CCAA36E2D936CC80050DD4A /* TestsIntegration-SolvedRep.rtf */; };
 		8CCAA3932D936DA30050DD4A /* TestsIntegration-UnsolvedRep.rtf in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CCAA36F2D936CC80050DD4A /* TestsIntegration-UnsolvedRep.rtf */; };
 		8CCAA3942D936DA30050DD4A /* about-image-512.tiff in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CCAA37A2D936D180050DD4A /* about-image-512.tiff */; };
-		8CCAA3952D936DA30050DD4A /* Localizable.strings in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CCAA37D2D936D4B0050DD4A /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -42,18 +42,25 @@
 			dstPath = "";
 			dstSubfolderSpec = 6;
 			files = (
+				8C04BBBB2D94447600DCCDFA /* Localizable.strings in CopyFiles */,
 				8CCAA3902D936DA30050DD4A /* TestsIntegration-DiskRep.txt in CopyFiles */,
 				8CCAA3912D936DA30050DD4A /* TestsIntegration-DisplayRep.rtf in CopyFiles */,
 				8CCAA3922D936DA30050DD4A /* TestsIntegration-SolvedRep.rtf in CopyFiles */,
 				8CCAA3932D936DA30050DD4A /* TestsIntegration-UnsolvedRep.rtf in CopyFiles */,
 				8CCAA3942D936DA30050DD4A /* about-image-512.tiff in CopyFiles */,
-				8CCAA3952D936DA30050DD4A /* Localizable.strings in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8C04BBB42D94443F00DCCDFA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = ../Soulver/English.lproj/MainMenu_42.nib; sourceTree = "<group>"; };
+		8C04BBB52D94443F00DCCDFA /* English */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = English; path = ../Soulver/English.lproj/Localizable.strings; sourceTree = "<group>"; };
+		8C04BBB62D94443F00DCCDFA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = ../Soulver/English.lproj/AccessoryWindows_42.nib; sourceTree = "<group>"; };
+		8C04BBB72D94443F00DCCDFA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = ../Soulver/English.lproj/AccessoryWindows_X2.nib; sourceTree = "<group>"; };
+		8C04BBB82D94443F00DCCDFA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = ../Soulver/English.lproj/MainMenu_X2.nib; sourceTree = "<group>"; };
+		8C04BBB92D94443F00DCCDFA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = ../Soulver/English.lproj/SVRDocument_42.nib; sourceTree = "<group>"; };
+		8C04BBBA2D94443F00DCCDFA /* English */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = English; path = ../Soulver/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8CCAA33A2D936C920050DD4A /* NSUserDefaults+Soulver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "NSUserDefaults+Soulver.h"; path = "../Soulver/NSUserDefaults+Soulver.h"; sourceTree = SOURCE_ROOT; };
 		8CCAA33B2D936C920050DD4A /* NSUserDefaults+Soulver.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "NSUserDefaults+Soulver.m"; path = "../Soulver/NSUserDefaults+Soulver.m"; sourceTree = SOURCE_ROOT; };
 		8CCAA33D2D936CA20050DD4A /* SVRAccessoryWindowsOwner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SVRAccessoryWindowsOwner.h; path = ../Soulver/SVRAccessoryWindowsOwner.h; sourceTree = SOURCE_ROOT; };
@@ -99,12 +106,6 @@
 		8CCAA3772D936CF10050DD4A /* slre.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = slre.h; path = ../Soulver/slre.h; sourceTree = SOURCE_ROOT; };
 		8CCAA3782D936CF10050DD4A /* slre.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = slre.c; path = ../Soulver/slre.c; sourceTree = SOURCE_ROOT; };
 		8CCAA37A2D936D180050DD4A /* about-image-512.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "about-image-512.tiff"; path = "../Soulver/about-image-512.tiff"; sourceTree = SOURCE_ROOT; };
-		8CCAA3812D936D4B0050DD4A /* English */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = English; path = ../../Soulver/English.lproj/Localizable.strings; sourceTree = "<group>"; };
-		8CCAA3822D936D4B0050DD4A /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = ../../Soulver/English.lproj/SVRDocument_42.nib; sourceTree = "<group>"; };
-		8CCAA3832D936D4B0050DD4A /* English */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = English; path = ../../Soulver/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		8CCAA3842D936D4B0050DD4A /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = ../../Soulver/English.lproj/MainMenu_42.nib; sourceTree = "<group>"; };
-		8CCAA3852D936D4B0050DD4A /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = ../../Soulver/English.lproj/AccessoryWindows_42.nib; sourceTree = "<group>"; };
-		8CCAA3862D936D4B0050DD4A /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = ../../Soulver/English.lproj/MainMenu_X2.nib; sourceTree = "<group>"; };
 		8CCAA3872D936D600050DD4A /* h.template */ = {isa = PBXFileReference; lastKnownFileType = text; name = h.template; path = ../Soulver/h.template; sourceTree = SOURCE_ROOT; };
 		8CCAA3882D936D600050DD4A /* Import Log.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = "Import Log.rtf"; path = "../Soulver/Import Log.rtf"; sourceTree = SOURCE_ROOT; };
 		8CCAA3892D936D600050DD4A /* m.template */ = {isa = PBXFileReference; lastKnownFileType = text; name = m.template; path = ../Soulver/m.template; sourceTree = SOURCE_ROOT; };
@@ -114,7 +115,6 @@
 		8CCAA38D2D936D600050DD4A /* PB.project */ = {isa = PBXFileReference; lastKnownFileType = text; name = PB.project; path = ../Soulver/PB.project; sourceTree = SOURCE_ROOT; };
 		8CCAA38E2D936D7E0050DD4A /* Soulver.iconheader */ = {isa = PBXFileReference; lastKnownFileType = text; name = Soulver.iconheader; path = ../Soulver/Soulver.iconheader; sourceTree = SOURCE_ROOT; };
 		8CCAA38F2D936D890050DD4A /* .gdbinit */ = {isa = PBXFileReference; lastKnownFileType = text; name = .gdbinit; path = ../Soulver/.gdbinit; sourceTree = SOURCE_ROOT; };
-		8CCAA3972D93EF1E0050DD4A /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = ../../Soulver/English.lproj/AccessoryWindows_X2.nib; sourceTree = "<group>"; };
 		8CD402032D6AFCAF00024E10 /* Xcode14 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Xcode14; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -141,7 +141,7 @@
 				8CCAA3702D936CC80050DD4A /* TestsUnit.h */,
 				8CCAA3712D936CC80050DD4A /* TestsUnit.m */,
 			);
-			path = Tests;
+			name = Tests;
 			sourceTree = "<group>";
 		};
 		8CCAA3362D936C280050DD4A /* Other Sources */ = {
@@ -150,7 +150,7 @@
 				8CCAA3742D936CE60050DD4A /* Soulver_main.m */,
 				8CCAA3752D936CE60050DD4A /* Soulver_Prefix.h */,
 			);
-			path = "Other Sources";
+			name = "Other Sources";
 			sourceTree = "<group>";
 		};
 		8CCAA3372D936C2F0050DD4A /* Images */ = {
@@ -158,37 +158,37 @@
 			children = (
 				8CCAA37A2D936D180050DD4A /* about-image-512.tiff */,
 			);
-			path = Images;
+			name = Images;
 			sourceTree = "<group>";
 		};
 		8CCAA3382D936C390050DD4A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				8CCAA37B2D936D4B0050DD4A /* AccessoryWindows_42.nib */,
-				8CCAA3962D93EF1E0050DD4A /* AccessoryWindows_X2.nib */,
-				8CCAA37C2D936D4B0050DD4A /* InfoPlist.strings */,
-				8CCAA37D2D936D4B0050DD4A /* Localizable.strings */,
-				8CCAA37E2D936D4B0050DD4A /* MainMenu_42.nib */,
-				8CCAA37F2D936D4B0050DD4A /* MainMenu_X2.nib */,
-				8CCAA3802D936D4B0050DD4A /* SVRDocument_42.nib */,
+				8C04BBAD2D94443F00DCCDFA /* AccessoryWindows_42.nib */,
+				8C04BBAE2D94443F00DCCDFA /* AccessoryWindows_X2.nib */,
+				8C04BBAF2D94443F00DCCDFA /* InfoPlist.strings */,
+				8C04BBB02D94443F00DCCDFA /* Localizable.strings */,
+				8C04BBB12D94443F00DCCDFA /* MainMenu_42.nib */,
+				8C04BBB22D94443F00DCCDFA /* MainMenu_X2.nib */,
+				8C04BBB32D94443F00DCCDFA /* SVRDocument_42.nib */,
 			);
-			path = Resources;
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		8CCAA3392D936C410050DD4A /* Legacy */ = {
 			isa = PBXGroup;
 			children = (
-				8CCAA38E2D936D7E0050DD4A /* Soulver.iconheader */,
-				8CCAA3872D936D600050DD4A /* h.template */,
-				8CCAA3882D936D600050DD4A /* Import Log.rtf */,
-				8CCAA3892D936D600050DD4A /* m.template */,
+				8CCAA38D2D936D600050DD4A /* PB.project */,
+				8CCAA38C2D936D600050DD4A /* Makefile.preamble */,
 				8CCAA38A2D936D600050DD4A /* Makefile */,
 				8CCAA38B2D936D600050DD4A /* Makefile.postamble */,
-				8CCAA38C2D936D600050DD4A /* Makefile.preamble */,
-				8CCAA38D2D936D600050DD4A /* PB.project */,
+				8CCAA38E2D936D7E0050DD4A /* Soulver.iconheader */,
 				8CCAA38F2D936D890050DD4A /* .gdbinit */,
+				8CCAA3882D936D600050DD4A /* Import Log.rtf */,
+				8CCAA3872D936D600050DD4A /* h.template */,
+				8CCAA3892D936D600050DD4A /* m.template */,
 			);
-			path = Legacy;
+			name = Legacy;
 			sourceTree = "<group>";
 		};
 		8CD401FA2D6AFCAF00024E10 = {
@@ -337,60 +337,60 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		8CCAA37B2D936D4B0050DD4A /* AccessoryWindows_42.nib */ = {
+		8C04BBAD2D94443F00DCCDFA /* AccessoryWindows_42.nib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				8CCAA3852D936D4B0050DD4A /* English */,
+				8C04BBB62D94443F00DCCDFA /* English */,
 			);
 			name = AccessoryWindows_42.nib;
 			sourceTree = "<group>";
 		};
-		8CCAA37C2D936D4B0050DD4A /* InfoPlist.strings */ = {
+		8C04BBAE2D94443F00DCCDFA /* AccessoryWindows_X2.nib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				8CCAA3832D936D4B0050DD4A /* English */,
+				8C04BBB72D94443F00DCCDFA /* English */,
+			);
+			name = AccessoryWindows_X2.nib;
+			sourceTree = "<group>";
+		};
+		8C04BBAF2D94443F00DCCDFA /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8C04BBBA2D94443F00DCCDFA /* English */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		8CCAA37D2D936D4B0050DD4A /* Localizable.strings */ = {
+		8C04BBB02D94443F00DCCDFA /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				8CCAA3812D936D4B0050DD4A /* English */,
+				8C04BBB52D94443F00DCCDFA /* English */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
-		8CCAA37E2D936D4B0050DD4A /* MainMenu_42.nib */ = {
+		8C04BBB12D94443F00DCCDFA /* MainMenu_42.nib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				8CCAA3842D936D4B0050DD4A /* English */,
+				8C04BBB42D94443F00DCCDFA /* English */,
 			);
 			name = MainMenu_42.nib;
 			sourceTree = "<group>";
 		};
-		8CCAA37F2D936D4B0050DD4A /* MainMenu_X2.nib */ = {
+		8C04BBB22D94443F00DCCDFA /* MainMenu_X2.nib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				8CCAA3862D936D4B0050DD4A /* English */,
+				8C04BBB82D94443F00DCCDFA /* English */,
 			);
 			name = MainMenu_X2.nib;
 			sourceTree = "<group>";
 		};
-		8CCAA3802D936D4B0050DD4A /* SVRDocument_42.nib */ = {
+		8C04BBB32D94443F00DCCDFA /* SVRDocument_42.nib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				8CCAA3822D936D4B0050DD4A /* English */,
+				8C04BBB92D94443F00DCCDFA /* English */,
 			);
 			name = SVRDocument_42.nib;
-			sourceTree = "<group>";
-		};
-		8CCAA3962D93EF1E0050DD4A /* AccessoryWindows_X2.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				8CCAA3972D93EF1E0050DD4A /* English */,
-			);
-			name = AccessoryWindows_X2.nib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

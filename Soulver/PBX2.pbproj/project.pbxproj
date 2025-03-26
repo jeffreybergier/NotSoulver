@@ -292,18 +292,24 @@
 			</array>
 			<key>CFBundleTypeMIMETypes</key>
 			<array>
-				<string>plain-text</string>
+				<string>text/plain</string>
 			</array>
 			<key>CFBundleTypeName</key>
-			<string>nsv</string>
+			<string>SVRDocumentModelRepDisk</string>
 			<key>CFBundleTypeOSTypes</key>
 			<array>
 				<string>NSVR</string>
+				<string>TEXT</string>
 			</array>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>NSDocumentClass</key>
 			<string>SVRDocument</string>
+			<key>NSExportableAs</key>
+			<array>
+				<string>NSRTFDPboardType</string>
+				<string>NSStringPboardType</string>
+			</array>
 		</dict>
 	</array>
 	<key>CFBundleExecutable</key>

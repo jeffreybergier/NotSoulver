@@ -147,12 +147,12 @@ NSPoint XPDocumentPointForCascading;
   NSWindow *myWindow = [self XP_windowForSheet];
   
   // Read the data
-  if ([[self fileName] isAbsolutePath]) {
+  if ([fileName isAbsolutePath]) {
     [self readFromFile:fileName ofType:fileType];
   }
   
   // Update window frame
-  if ([[self fileName] isAbsolutePath]) {
+  if ([fileName isAbsolutePath]) {
     [myWindow setFrameUsingName:fileName];
   } else {
     XPDocumentPointForCascading = [window cascadeTopLeftFromPoint:XPDocumentPointForCascading];
@@ -227,6 +227,20 @@ NSPoint XPDocumentPointForCascading;
   if ([type isEqualToString:_fileType]) { return; }
   [_fileType release];
   _fileType = [type copy];
+}
+
+-(NSString*)fileExtension;
+{
+  NSCParameterAssert(_fileExtension);
+  return [[_fileExtension retain] autorelease];
+}
+
+-(void)setFileExtension:(NSString*)type;
+{
+  NSCParameterAssert(type);
+  if ([type isEqualToString:_fileExtension]) { return; }
+  [_fileExtension release];
+  _fileExtension = [type copy];
 }
 
 /// Returns hash of the filename or calls super
@@ -368,7 +382,7 @@ NSPoint XPDocumentPointForCascading;
 // MARK: Panels and Alerts
 -(BOOL)prepareSavePanel:(NSSavePanel*)savePanel;
 {
-  [savePanel setRequiredFileType:[self fileType]];
+  [savePanel setRequiredFileType:[self fileExtension]];
   [savePanel setDirectory:[[NSUserDefaults standardUserDefaults] SVR_savePanelLastDirectory]];
   return YES;
 }
@@ -433,12 +447,14 @@ NSPoint XPDocumentPointForCascading;
   [window setDelegate:nil];
   // this autorelease (instead of release) is necessary
   // to prevent crashes when the window is closing
-  [window   autorelease];
+  [window autorelease];
   [_fileName release];
   [_fileType release];
-  window   = nil;
+  [_fileExtension release];
+  window = nil;
   _fileName = nil;
   _fileType = nil;
+  _fileExtension = nil;
   [super dealloc];
 }
 

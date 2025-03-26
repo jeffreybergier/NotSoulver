@@ -114,6 +114,7 @@
 {
   SVRDocument *document = [[[SVRDocument alloc] init] autorelease];
   [document setFileType:SVRDocumentModelRepDisk];
+  [document setFileExtension:SVRDocumentModelExtension];
   [document showWindows];
   [[self openDocuments] addObject:document];
 }
@@ -125,7 +126,7 @@
   NSString *nextF;
   SVRDocument *nextC;
 
-  filenames = XPRunOpenPanel(SVRDocumentModelRepDisk);
+  filenames = XPRunOpenPanel(SVRDocumentModelExtension);
   if ([filenames count] == 0) { XPLogDebug1(@"%@ Open Cancelled", self); return; }
   e = [filenames objectEnumerator];
   while ((nextF = [e nextObject])) {

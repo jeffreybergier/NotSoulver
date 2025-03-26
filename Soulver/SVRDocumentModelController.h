@@ -30,6 +30,7 @@
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
 
+extern NSString *const SVRDocumentModelExtension;
 /// A version of the data for saving to the disk
 /// This version is plain text and unsolved
 /// Data format is UTF8 String
