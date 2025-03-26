@@ -34,7 +34,12 @@
 
 @interface SVRDocument: XPDocument
 {
+  // Nib Lifecycle differs when using NSDocument
+#ifdef XPSupportsNSDocument
   mm_unretain IBOutlet SVRDocumentViewController *_viewController;
+#else
+  mm_retain IBOutlet SVRDocumentViewController *_viewController;
+#endif
 }
 
 // MARK: Properties
