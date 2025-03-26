@@ -45,7 +45,7 @@
             XPRegularExpression.h
         ); 
         IMAGES = ("about-image-512.tiff"); 
-        INTERFACES = (AccessoryWindows_42.nib, MainMenu_42.nib, MainMenu_X2.nib, SVRDocument_42.nib); 
+        INTERFACES = (AccessoryWindows_42.nib, MainMenu_42.nib, SVRDocument_42.nib); 
         OTHER_LINKED = (slre.c, Soulver_main.m); 
         OTHER_RESOURCES = (
             Localizable.strings, 
@@ -70,8 +70,7 @@
     LOCALIZABLE_FILES = {
         AccessoryWindows_42.nib = AccessoryWindows_42.nib; 
         Localizable.strings = Localizable.strings; 
-        MainMenu_42.nib = MainMenu_42.nib;
-        MainMenu_X2.nib = MainMenu_X2.nib; 
+        MainMenu_42.nib = MainMenu_42.nib; 
         SVRDocument_42.nib = SVRDocument_42.nib; 
     }; 
     MAKEFILEDIR = "$(NEXT_ROOT)/NextDeveloper/Makefiles/pb_makefiles"; 
