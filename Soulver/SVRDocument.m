@@ -113,8 +113,8 @@
 
 -(void)dealloc;
 {
-  [_viewController release];
-  _viewController = nil;
+  XPLogDebug1(@"DEALLOC: %@", self);
+  _viewController = nil; // Lifecycle managed by NIB
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
 }

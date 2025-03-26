@@ -34,7 +34,7 @@
 
 @interface SVRDocument: XPDocument
 {
-  mm_retain IBOutlet SVRDocumentViewController *_viewController;
+  mm_unretain IBOutlet SVRDocumentViewController *_viewController;
 }
 
 // MARK: Properties
