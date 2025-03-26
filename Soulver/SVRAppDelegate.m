@@ -33,7 +33,6 @@
 
 @implementation SVRAppDelegate
 
-// MARK: Init;
 -(id)init;
 {
   self = [super init];
@@ -43,18 +42,10 @@
   return self;
 }
 
-// MARK: Properties
--(NSMutableSet*)openDocuments;
-{
-  return [[_openDocuments retain] autorelease];
-}
-
 -(SVRAccessoryWindowsOwner*)accessoryWindowsOwner;
 {
   return [[_accessoryWindowsOwner retain] autorelease];
 }
-
-// MARK: IBActions
 
 -(IBAction)toggleKeypadPanel:(id)sender;
 {
@@ -113,6 +104,11 @@
 
 #ifndef XPSupportsNSDocument
 @implementation SVRAppDelegate (PreDocument)
+
+-(NSMutableSet*)openDocuments;
+{
+  return [[_openDocuments retain] autorelease];
+}
 
 -(IBAction)newDocument:(id)sender
 {

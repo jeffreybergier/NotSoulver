@@ -41,7 +41,6 @@
 -(id)init;
 
 // MARK: Properties
--(NSMutableSet*)openDocuments;
 -(SVRAccessoryWindowsOwner*)accessoryWindowsOwner;
 
 // MARK: IBActions
@@ -58,8 +57,14 @@
 #ifndef XPSupportsNSDocument
 @interface SVRAppDelegate (PreDocument)
 
+// MARK: Properties
+-(NSMutableSet*)openDocuments;
+
+// MARK: IBActions
 -(IBAction)newDocument:(id)sender;
 -(IBAction)openDocument:(id)sender;
+
+// MARK: Handle Application Events
 -(BOOL)applicationShouldTerminate:(NSApplication *)sender;
 -(BOOL)__applicationShouldTerminateAfterReviewingAllDocuments:(NSApplication*)sender;
 -(BOOL)application:(NSApplication *)sender openFile:(NSString *)filename;
