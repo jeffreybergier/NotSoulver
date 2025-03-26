@@ -462,8 +462,8 @@ NSArray* XPRunOpenPanel(NSString *extension)
 @implementation NSWorkspace (CrossPlatform)
 -(BOOL)XP_openFile:(NSString*)file;
 {
-#ifdef MAC_OS_X_VERSION_10_0
-  return [self openURL:[NSURL fileURLWithPath:file]];
+#ifdef MAC_OS_X_VERSION_10_2
+  return [self openURL:[NSURL URLWithString:file]];
 #else
   return [self openFile:file];
 #endif

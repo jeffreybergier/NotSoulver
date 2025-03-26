@@ -69,10 +69,15 @@
 // MARK: Init
 -(id)init;
 {
+#ifdef MAC_OS_X_VERSION_10_2
+  NSString *nibName = @"AccessoryWindows_X2";
+#else
+  NSString *nibName = @"AccessoryWindows_42";
+#endif
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
   self = [super init];
   NSCParameterAssert(self);
-  [[NSBundle mainBundle] XP_loadNibNamed:@"AccessoryWindows_42"
+  [[NSBundle mainBundle] XP_loadNibNamed:nibName
                                    owner:self
                          topLevelObjects:&_topLevelObjects];
   [self __restoreWindowState];

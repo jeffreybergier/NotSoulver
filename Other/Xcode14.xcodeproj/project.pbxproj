@@ -114,6 +114,7 @@
 		8CCAA38D2D936D600050DD4A /* PB.project */ = {isa = PBXFileReference; lastKnownFileType = text; name = PB.project; path = ../Soulver/PB.project; sourceTree = SOURCE_ROOT; };
 		8CCAA38E2D936D7E0050DD4A /* Soulver.iconheader */ = {isa = PBXFileReference; lastKnownFileType = text; name = Soulver.iconheader; path = ../Soulver/Soulver.iconheader; sourceTree = SOURCE_ROOT; };
 		8CCAA38F2D936D890050DD4A /* .gdbinit */ = {isa = PBXFileReference; lastKnownFileType = text; name = .gdbinit; path = ../Soulver/.gdbinit; sourceTree = SOURCE_ROOT; };
+		8CCAA3972D93EF1E0050DD4A /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = ../../Soulver/English.lproj/AccessoryWindows_X2.nib; sourceTree = "<group>"; };
 		8CD402032D6AFCAF00024E10 /* Xcode14 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Xcode14; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -164,6 +165,7 @@
 			isa = PBXGroup;
 			children = (
 				8CCAA37B2D936D4B0050DD4A /* AccessoryWindows_42.nib */,
+				8CCAA3962D93EF1E0050DD4A /* AccessoryWindows_X2.nib */,
 				8CCAA37C2D936D4B0050DD4A /* InfoPlist.strings */,
 				8CCAA37D2D936D4B0050DD4A /* Localizable.strings */,
 				8CCAA37E2D936D4B0050DD4A /* MainMenu_42.nib */,
@@ -381,6 +383,14 @@
 				8CCAA3822D936D4B0050DD4A /* English */,
 			);
 			name = SVRDocument_42.nib;
+			sourceTree = "<group>";
+		};
+		8CCAA3962D93EF1E0050DD4A /* AccessoryWindows_X2.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8CCAA3972D93EF1E0050DD4A /* English */,
+			);
+			name = AccessoryWindows_X2.nib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
