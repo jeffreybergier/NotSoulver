@@ -239,7 +239,10 @@
   SVRThemeFont theme = -1;
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   SVRFontManager *fm = (SVRFontManager*)[NSFontManager sharedFontManager];
-  if (![fm isKindOfClass:[SVRFontManager class]]) { XPLogRaise(@""); return; }
+  if (![fm isKindOfClass:[SVRFontManager class]]) {
+    XPLogRaise1(@"NSFontManager not configured correctly: %@", NSStringFromClass([fm class]));
+    return;
+  }
   decoded = [self decodeThemeFont:&theme fromButton:sender];
   if (!decoded) { XPLogDebug1(@"fontChangeRequest:%@ Failed", sender); return; }
   [fm setSelectedFont:[ud SVR_fontForTheme:theme] isMultiple:NO];

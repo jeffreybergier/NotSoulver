@@ -28,11 +28,16 @@
 //
 
 #import "TestsIntegration.h"
+#import "SVRAccessoryWindowsOwner.h"
 
 void TestsIntegrationExecute(void)
 {
 #if TESTING==1
   NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
+  // SVRFontManager is configured in applicationWillFinishLaunching
+  // However, the RTF implementation calls the sharedFontManager
+  // so the configuration is ineffective if tests are run.
+  [NSFontManager setFontManagerFactory:[SVRFontManager class]];
   [SVRDocumentModelController executeTests];
 //[SVRDocumentModelController saveTestFiles];
   [pool release];
