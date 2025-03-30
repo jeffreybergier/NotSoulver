@@ -226,7 +226,7 @@
   NSPoint output = [super cellBaselineOffset];
   XPFloat height = [self cellSize].height;
   NSFont *toDrawFont = [[self SVR_attachment] toDrawFont];
-  output.y -= (height/2.0) + ([toDrawFont descender]*2.0);
+  output.y -= (height/2.0) + ([toDrawFont descender]/2.0);
   return output;
 }
 
