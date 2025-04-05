@@ -31,13 +31,38 @@
 
 @implementation SVRSolverDrawing
 
-+(void)drawBackgroundInRect:(NSRect)rect
++(void)drawBackgroundInRect:(NSRect)_rect
                        type:(int)type
-               primaryColor:(NSColor*)primaryColor
-             secondaryColor:(NSColor*)secondaryColor;
+                      color:(NSColor*)color;
 {
-  [[NSColor greenColor] set];
-  NSRectFill(rect);
+  // Prepare Object Variables
+  NSBezierPath *path = nil;
+  NSGradient *gradient = nil;
+  NSArray *colors = nil;
+  NSColor *colorLight = nil;
+  NSColor *colorDark = nil;
+  
+  // Prepare Drawing Settings
+  CGFloat stroke = 2.0;
+  NSRect rect = NSInsetRect(_rect, stroke, stroke);
+  CGFloat radius = NSHeight(rect) / 2.0;
+  
+  NSCParameterAssert(color);
+  
+  // Define Gradient
+  colorLight = [color blendedColorWithFraction:0.3 ofColor:[NSColor whiteColor]];
+  colorDark  = [color blendedColorWithFraction:0.3 ofColor:[NSColor blackColor]];
+  colors = [NSArray arrayWithObjects:colorDark, color, colorLight, nil];
+  gradient = [[[NSGradient alloc] initWithColors:colors] autorelease];
+  
+  // Define the path
+  path = [NSBezierPath bezierPathWithRoundedRect:rect xRadius:radius yRadius:radius];
+
+  // Draw
+  [gradient drawInBezierPath:path angle:90];
+  [colorDark setStroke];
+  [path setLineWidth:stroke];
+  [path stroke];
 }
 
 @end

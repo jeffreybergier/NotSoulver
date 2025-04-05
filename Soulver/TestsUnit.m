@@ -434,7 +434,9 @@ void TestsUnitExecute(void)
   image = [[NSImage alloc] initWithSize:rect.size];
   [image addRepresentation:bitmap];
   [image lockFocus];
-  [SVRSolverDrawing drawBackgroundInRect:rect type:0 primaryColor:nil secondaryColor:nil];
+  [SVRSolverDrawing drawBackgroundInRect:rect
+                                    type:0
+                                   color:[NSColor colorWithCalibratedRed:40/255.0 green:92/255.0 blue:246/255.0 alpha:1]];
   [image unlockFocus];
   NSLog(@"%@ Unit Tests: PASSED", self);
 }
