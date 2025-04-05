@@ -29,6 +29,6 @@
 
 #import "SVRSolverDrawing.h"
 
-@implementation XPRegularExpression
+@implementation SVRSolverDrawing
 
 @end

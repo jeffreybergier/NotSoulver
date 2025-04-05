@@ -30,6 +30,6 @@
 #import <Foundation/Foundation.h>
 #import "XPCrossPlatform.h"
 
-@interface XPRegularExpression: NSObject
+@interface SVRSolverDrawing: NSObject
 
 @end
