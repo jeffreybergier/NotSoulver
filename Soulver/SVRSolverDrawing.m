@@ -31,4 +31,13 @@
 
 @implementation SVRSolverDrawing
 
++(void)drawBackgroundInRect:(NSRect)rect
+                       type:(int)type
+               primaryColor:(NSColor*)primaryColor
+             secondaryColor:(NSColor*)secondaryColor;
+{
+  [[NSColor greenColor] set];
+  NSRectFill(rect);
+}
+
 @end

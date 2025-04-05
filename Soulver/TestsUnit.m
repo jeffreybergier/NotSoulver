@@ -36,6 +36,7 @@ void TestsUnitExecute(void)
   [XPLog executeTests];
   [XPRegularExpression executeTests];
   [SVRSolverScanner executeTests];
+  [SVRSolverDrawing executeTests];
   [pool release];
 #endif
 }
@@ -410,6 +411,33 @@ void TestsUnitExecute(void)
   NSLog(@"%@ Unit Tests: PASSED", self);
 }
 
+@end
+
+@implementation SVRSolverDrawing (TestsUnit)
++(void)executeTests;
+{
+  NSRect rect = NSMakeRect(0, 0, 600, 200);
+  NSBitmapImageRep *bitmap = nil;
+  NSImage *image = nil;
+  NSLog(@"%@ Unit Tests: STARTING", self);
+  
+  bitmap = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
+                                                   pixelsWide:rect.size.width
+                                                   pixelsHigh:rect.size.height
+                                                bitsPerSample:8
+                                              samplesPerPixel:4
+                                                     hasAlpha:YES
+                                                     isPlanar:NO
+                                               colorSpaceName:NSCalibratedRGBColorSpace
+                                                  bytesPerRow:0
+                                                 bitsPerPixel:0];
+  image = [[NSImage alloc] initWithSize:rect.size];
+  [image addRepresentation:bitmap];
+  [image lockFocus];
+  [SVRSolverDrawing drawBackgroundInRect:rect type:0 primaryColor:nil secondaryColor:nil];
+  [image unlockFocus];
+  NSLog(@"%@ Unit Tests: PASSED", self);
+}
 @end
 
 @implementation NSValue (TestUnitComparison)

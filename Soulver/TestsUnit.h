@@ -34,6 +34,7 @@ void TestsUnitExecute(void);
 #import "XPCrossPlatform.h"
 #import "XPRegularExpression.h"
 #import "SVRSolverScanner.h"
+#import "SVRSolverDrawing.h"
 
 @interface XPLog (TestsUnit)
 +(void)executeTests;
@@ -44,6 +45,10 @@ void TestsUnitExecute(void);
 @end
 
 @interface SVRSolverScanner (TestsUnit)
++(void)executeTests;
+@end
+
+@interface SVRSolverDrawing (TestsUnit)
 +(void)executeTests;
 @end
 

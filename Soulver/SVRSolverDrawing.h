@@ -32,4 +32,11 @@
 
 @interface SVRSolverDrawing: NSObject
 
++(void)drawBackgroundInRect:(NSRect)rect
+                       type:(int)type
+               primaryColor:(NSColor*)primaryColor
+             secondaryColor:(NSColor*)secondaryColor;
+
+
+
 @end
