@@ -475,7 +475,7 @@ void TestsUnitExecute(void)
                                               samplesPerPixel:4
                                                      hasAlpha:YES
                                                      isPlanar:NO
-                                               colorSpaceName:NSCalibratedRGBColorSpace
+                                               colorSpaceName:NSDeviceRGBColorSpace
                                                   bytesPerRow:0
                                                  bitsPerPixel:0];
   [bitmap setSize:rect.size]; // disables automatic retina resizing?
