@@ -470,20 +470,13 @@ NSArray* XPRunOpenPanel(NSString *extension)
 }
 @end
 
-@implementation NSBezierPath (CrossPlatform)
+@implementation XPBezierPath
 
-+(NSBezierPath*)XP_bezierPathWithRoundedRect:(NSRect)rect
-                                     xRadius:(CGFloat)rx
-                                     yRadius:(CGFloat)ry;
++(id)XP_bezierPathWithRoundedRect:(NSRect)rect
+                          xRadius:(CGFloat)rx
+                          yRadius:(CGFloat)ry;
 {
-#ifdef MAC_OS_X_VERSION_10_5
-  return [NSBezierPath bezierPathWithRoundedRect:rect
-                                         xRadius:rx
-                                         yRadius:ry];
-#else
-  // Sorry, this method was developed through a long conversation with ChatGPT
-  // I don't have a good source for this, and my BezierPath skills are not so
-  // strong. But it works, and thats all the matters.
+#ifdef MAC_OS_X_VERSION_10_2
   
   // Prepare variables
   XPFloat kappa;
@@ -497,9 +490,19 @@ NSArray* XPRunOpenPanel(NSString *extension)
   XPFloat y1;
   XPFloat y2;
   XPFloat y3;
+  NSBezierPath *path = nil;
+  
+  if ([NSBezierPath respondsToSelector:@selector(bezierPathWithRoundedRect:xRadius:yRadius:)]) {
+    return [NSBezierPath bezierPathWithRoundedRect:rect
+                                        xRadius:rx
+                                        yRadius:ry];
+  }
+  // Sorry, this method was developed through a long conversation with ChatGPT
+  // I don't have a good source for this, and my BezierPath skills are not so
+  // strong. But it works, and thats all the matters.
   
   // Prepare path
-  NSBezierPath *path = [NSBezierPath bezierPath];
+  path = [NSBezierPath bezierPath];
 
   // Bail if the radius specified is invalid
   if (rx <= 0 || ry <= 0) {
@@ -557,6 +560,8 @@ NSArray* XPRunOpenPanel(NSString *extension)
   // Close the path and return
   [path closePath];
   return path;
+#else
+  return nil;
 #endif
 }
 

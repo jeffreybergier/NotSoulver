@@ -56,7 +56,7 @@
   gradient = [[[NSGradient alloc] initWithColors:colors] autorelease];
   
   // Define the path
-  path = [NSBezierPath XP_bezierPathWithRoundedRect:rect xRadius:radius yRadius:radius];
+  path = [XPBezierPath XP_bezierPathWithRoundedRect:rect xRadius:radius yRadius:radius];
 
   // Draw
   [gradient drawInBezierPath:path angle:90];

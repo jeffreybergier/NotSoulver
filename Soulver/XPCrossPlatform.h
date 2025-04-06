@@ -57,14 +57,6 @@ typedef CGFloat XPFloat;
 typedef float XPFloat;
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_3
-#define XPRTFDocumentAttributes [NSDictionary dictionaryWithObject:NSRTFTextDocumentType forKey:NSDocumentTypeDocumentAttribute]
-typedef NSRangePointer XPRangePointer;
-#else
-#define XPRTFDocumentAttributes nil
-typedef NSRange* XPRangePointer;
-#endif
-
 #ifdef MAC_OS_X_VERSION_10_2
 #define XPKeyedArchiver NSKeyedArchiver
 #define XPKeyedUnarchiver NSKeyedUnarchiver
@@ -72,6 +64,14 @@ typedef NSRange* XPRangePointer;
 #else
 #define XPKeyedArchiver NSArchiver
 #define XPKeyedUnarchiver NSUnarchiver
+#endif
+
+#ifdef MAC_OS_X_VERSION_10_3
+#define XPRTFDocumentAttributes [NSDictionary dictionaryWithObject:NSRTFTextDocumentType forKey:NSDocumentTypeDocumentAttribute]
+typedef NSRangePointer XPRangePointer;
+#else
+#define XPRTFDocumentAttributes nil
+typedef NSRange* XPRangePointer;
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_4
@@ -258,11 +258,11 @@ NSArray* XPRunOpenPanel(NSString *extension);
 -(BOOL)XP_openFile:(NSString*)file;
 @end
 
-@interface NSBezierPath (CrossPlatform)
+@interface XPBezierPath: NSObject
 
-+(NSBezierPath*)XP_bezierPathWithRoundedRect:(NSRect)rect
-                                     xRadius:(CGFloat)xRadius
-                                     yRadius:(CGFloat)yRadius;
++(id)XP_bezierPathWithRoundedRect:(NSRect)rect
+                          xRadius:(CGFloat)xRadius
+                          yRadius:(CGFloat)yRadius;
 
 @end
 
