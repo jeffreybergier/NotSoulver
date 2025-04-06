@@ -258,6 +258,14 @@ NSArray* XPRunOpenPanel(NSString *extension);
 -(BOOL)XP_openFile:(NSString*)file;
 @end
 
+@interface NSBezierPath (CrossPlatform)
+
++(NSBezierPath*)XP_bezierPathWithRoundedRect:(NSRect)rect
+                                     xRadius:(CGFloat)xRadius
+                                     yRadius:(CGFloat)yRadius;
+
+@end
+
 // MARK: XPLogging
 
 // In C99 the ability was added for Macros to have Variadic arguments

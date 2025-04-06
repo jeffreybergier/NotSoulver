@@ -470,6 +470,98 @@ NSArray* XPRunOpenPanel(NSString *extension)
 }
 @end
 
+@implementation NSBezierPath (CrossPlatform)
+
++(NSBezierPath*)XP_bezierPathWithRoundedRect:(NSRect)rect
+                                     xRadius:(CGFloat)rx
+                                     yRadius:(CGFloat)ry;
+{
+#ifdef MAC_OS_X_VERSION_10_5
+  return [NSBezierPath bezierPathWithRoundedRect:rect
+                                         xRadius:rx
+                                         yRadius:ry];
+#else
+  // Sorry, this method was developed through a long conversation with ChatGPT
+  // I don't have a good source for this, and my BezierPath skills are not so
+  // strong. But it works, and thats all the matters.
+  
+  // Prepare variables
+  XPFloat kappa;
+  XPFloat ox;
+  XPFloat oy;
+  XPFloat x0;
+  XPFloat x1;
+  XPFloat x2;
+  XPFloat x3;
+  XPFloat y0;
+  XPFloat y1;
+  XPFloat y2;
+  XPFloat y3;
+  
+  // Prepare path
+  NSBezierPath *path = [NSBezierPath bezierPath];
+
+  // Bail if the radius specified is invalid
+  if (rx <= 0 || ry <= 0) {
+      [path appendBezierPathWithRect:rect];
+      return path;
+  }
+
+  // Clamp radii to half width/height
+  rx = MIN(rx, NSWidth(rect) / 2.0);
+  ry = MIN(ry, NSHeight(rect) / 2.0);
+
+  // Magic number for approximating a quarter-circle with a Bézier curve
+  kappa = 0.45;
+  ox = rx * kappa; // control point offset horizontal
+  oy = ry * kappa; // control point offset vertical
+
+  // Calculate the points
+  x0 = NSMinX(rect);
+  x1 = x0 + rx;
+  x2 = NSMaxX(rect) - rx;
+  x3 = NSMaxX(rect);
+
+  y0 = NSMinY(rect);
+  y1 = y0 + ry;
+  y2 = NSMaxY(rect) - ry;
+  y3 = NSMaxY(rect);
+
+  // Draw the path
+  [path moveToPoint:NSMakePoint(x1, y3)];
+
+  // Top edge + top-right corner
+  [path lineToPoint:NSMakePoint(x2, y3)];
+  [path curveToPoint:NSMakePoint(x3, y2)
+       controlPoint1:NSMakePoint(x3 - ox, y3)
+       controlPoint2:NSMakePoint(x3, y3 - oy)];
+
+  // Right edge + bottom-right corner
+  [path lineToPoint:NSMakePoint(x3, y1)];
+  [path curveToPoint:NSMakePoint(x2, y0)
+       controlPoint1:NSMakePoint(x3, y0 + oy)
+       controlPoint2:NSMakePoint(x3 - ox, y0)];
+
+  // Bottom edge + bottom-left corner
+  [path lineToPoint:NSMakePoint(x1, y0)];
+  [path curveToPoint:NSMakePoint(x0, y1)
+       controlPoint1:NSMakePoint(x0 + ox, y0)
+       controlPoint2:NSMakePoint(x0, y0 + oy)];
+
+  // Left edge + top-left corner
+  [path lineToPoint:NSMakePoint(x0, y2)];
+  [path curveToPoint:NSMakePoint(x1, y3)
+       controlPoint1:NSMakePoint(x0, y3 - oy)
+       controlPoint2:NSMakePoint(x0 + ox, y3)];
+
+  // Close the path and return
+  [path closePath];
+  return path;
+#endif
+}
+
+@end
+
 @implementation XPLog
 
 +(void)pause {}

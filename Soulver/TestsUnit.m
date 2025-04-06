@@ -422,8 +422,8 @@ void TestsUnitExecute(void)
   NSLog(@"%@ Unit Tests: STARTING", self);
   
   bitmap = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
-                                                   pixelsWide:rect.size.width
-                                                   pixelsHigh:rect.size.height
+                                                   pixelsWide:(XPInteger)rect.size.width
+                                                   pixelsHigh:(XPInteger)rect.size.height
                                                 bitsPerSample:8
                                               samplesPerPixel:4
                                                      hasAlpha:YES
@@ -436,7 +436,10 @@ void TestsUnitExecute(void)
   [image lockFocus];
   [SVRSolverDrawing drawBackgroundInRect:rect
                                     type:0
-                                   color:[NSColor colorWithCalibratedRed:40/255.0 green:92/255.0 blue:246/255.0 alpha:1]];
+                                   color:[NSColor colorWithCalibratedRed:40/255.0
+                                                                   green:92/255.0
+                                                                    blue:246/255.0
+                                                                   alpha:1]];
   [image unlockFocus];
   NSLog(@"%@ Unit Tests: PASSED", self);
 }
