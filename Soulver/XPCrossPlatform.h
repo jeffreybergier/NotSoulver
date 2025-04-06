@@ -261,8 +261,8 @@ NSArray* XPRunOpenPanel(NSString *extension);
 @interface XPBezierPath: NSObject
 
 +(id)XP_bezierPathWithRoundedRect:(NSRect)rect
-                          xRadius:(CGFloat)xRadius
-                          yRadius:(CGFloat)yRadius;
+                          xRadius:(XPFloat)xRadius
+                          yRadius:(XPFloat)yRadius;
 
 @end
 

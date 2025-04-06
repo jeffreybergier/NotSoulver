@@ -379,6 +379,9 @@
 				8CD62EBF2D91DF290000020F,
 				8CD62EC22D91DF730000020F,
 				8C9A4EE02D93CD2700A80066,
+				8C0D5D852DA2904800A80066,
+				8C0D5D862DA2904800A80066,
+				8C0D5D872DA2904800A80066,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -500,6 +503,39 @@
 		};
 		8C0D5D7E2DA10BFA00A80066 = {
 			fileRef = 8C0D5D7C2DA10BFA00A80066;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C0D5D822DA2904800A80066 = {
+			isa = PBXFileReference;
+			path = "TestUnitBezierPath-42.tiff";
+			refType = 2;
+		};
+		8C0D5D832DA2904800A80066 = {
+			isa = PBXFileReference;
+			path = "TestUnitBezierPath-X2.tiff";
+			refType = 2;
+		};
+		8C0D5D842DA2904800A80066 = {
+			isa = PBXFileReference;
+			path = "TestUnitBezierPath-X5.tiff";
+			refType = 2;
+		};
+		8C0D5D852DA2904800A80066 = {
+			fileRef = 8C0D5D822DA2904800A80066;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C0D5D862DA2904800A80066 = {
+			fileRef = 8C0D5D832DA2904800A80066;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C0D5D872DA2904800A80066 = {
+			fileRef = 8C0D5D842DA2904800A80066;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -1062,6 +1098,9 @@
 				8CD62E742D91DCE00000020F,
 				8CD62E752D91DCE00000020F,
 				8CD62E762D91DCE00000020F,
+				8C0D5D822DA2904800A80066,
+				8C0D5D832DA2904800A80066,
+				8C0D5D842DA2904800A80066,
 				8CD62E772D91DCE00000020F,
 				8CD62E782D91DCE00000020F,
 				8CD62E792D91DCE00000020F,

@@ -473,8 +473,8 @@ NSArray* XPRunOpenPanel(NSString *extension)
 @implementation XPBezierPath
 
 +(id)XP_bezierPathWithRoundedRect:(NSRect)rect
-                          xRadius:(CGFloat)rx
-                          yRadius:(CGFloat)ry;
+                          xRadius:(XPFloat)rx
+                          yRadius:(XPFloat)ry;
 {
 #ifdef MAC_OS_X_VERSION_10_2
   

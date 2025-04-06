@@ -459,7 +459,7 @@ void TestsUnitExecute(void)
   NSString *destDir = NSTemporaryDirectory();
   NSString *imagePath = [destDir stringByAppendingPathComponent:@"TestUnitBezierPath.tiff"];
   [[self createTiffData] writeToFile:imagePath atomically:YES];
-  [ws openFile:imagePath];
+  [ws XP_openFile:imagePath];
 }
 
 +(NSData*)createTiffData;

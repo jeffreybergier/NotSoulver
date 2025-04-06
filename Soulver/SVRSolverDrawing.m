@@ -31,36 +31,42 @@
 
 @implementation SVRSolverDrawing
 
+/* Consider Using NSGradient on 10.5+
+ NSGradient *gradient = nil;
+ NSArray *colors = nil;
+ NSColor *colorLight = nil;
+ NSColor *colorDark = nil;
+ 
+ colorLight = [color blendedColorWithFraction:0.3 ofColor:[NSColor whiteColor]];
+ colorDark  = [color blendedColorWithFraction:0.3 ofColor:[NSColor blackColor]];
+ gradient = [[[NSGradient alloc] initWithColors:colors] autorelease];
+ [gradient drawInBezierPath:path angle:90];
+ colors = [NSArray arrayWithObjects:colorDark, color, colorLight, nil];
+*/
+
 +(void)drawBackgroundInRect:(NSRect)_rect
                        type:(int)type
                       color:(NSColor*)color;
 {
   // Prepare Object Variables
   id path = nil;
-  NSGradient *gradient = nil;
-  NSArray *colors = nil;
-  NSColor *colorLight = nil;
   NSColor *colorDark = nil;
   
   // Prepare Drawing Settings
-  CGFloat stroke = 2.0;
+  XPFloat stroke = 2.0;
   NSRect rect = NSInsetRect(_rect, stroke, stroke);
-  CGFloat radius = NSHeight(rect) / 2.0;
+  XPFloat radius = NSHeight(rect) / 2.0;
+  colorDark  = [color blendedColorWithFraction:0.3 ofColor:[NSColor blackColor]];
   
   NSCParameterAssert(color);
-  
-  // Define Gradient
-  colorLight = [color blendedColorWithFraction:0.3 ofColor:[NSColor whiteColor]];
-  colorDark  = [color blendedColorWithFraction:0.3 ofColor:[NSColor blackColor]];
-  colors = [NSArray arrayWithObjects:colorDark, color, colorLight, nil];
-  gradient = [[[NSGradient alloc] initWithColors:colors] autorelease];
   
   // Define the path
   path = [XPBezierPath XP_bezierPathWithRoundedRect:rect xRadius:radius yRadius:radius];
   if (path) {
     // Draw
-    [gradient drawInBezierPath:path angle:90];
+    [color setFill];
     [colorDark setStroke];
+    [path fill];
     [path setLineWidth:stroke];
     [path stroke];
   } else {
