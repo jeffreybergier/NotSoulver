@@ -37,6 +37,7 @@ void TestsUnitExecute(void)
   [XPRegularExpression executeTests];
   [SVRSolverScanner executeTests];
   [SVRSolverDrawing executeTests];
+//[SVRSolverDrawing saveTestFiles];
   [pool release];
 #endif
 }
@@ -416,10 +417,56 @@ void TestsUnitExecute(void)
 @implementation SVRSolverDrawing (TestsUnit)
 +(void)executeTests;
 {
-  NSRect rect = NSMakeRect(0, 0, 600, 200);
+#ifdef MAC_OS_X_VERSION_10_5
+  NSString *fileName = @"TestUnitBezierPath-X5";
+#elif defined(MAC_OS_X_VERSION_10_2)
+  NSString *fileName = @"TestUnitBezierPath-X2";
+#else
+  NSString *fileName = @"TestUnitBezierPath-42";
+#endif
+  
+  // Prepare variables
+  NSData *tiffDataRHS   = nil;
+  NSImage *tiffImageRHS = nil;
+  NSData *tiffDataLHS   = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:fileName ofType:@"tiff"]];
+  NSImage *tiffImageLHS = [[[NSImage alloc] initWithData:tiffDataLHS] autorelease];
+
+  NSLog(@"%@ Unit Tests: STARTING", self);
+  
+  // Prepare test data
+  tiffDataRHS  = [self createTiffData];
+  tiffImageRHS = [[[NSImage alloc] initWithData:tiffDataRHS] autorelease];
+  
+  // Make sure nothing is NIL
+  XPTestNotNIL(tiffDataRHS);
+  XPTestNotNIL(tiffImageRHS);
+  XPTestNotNIL(tiffDataLHS);
+  XPTestNotNIL(tiffImageLHS);
+  
+  // Do the actual comparison
+  
+  // Adding this comparison of the images because I am worried that the encoding
+  // of TIFFRepresentation will change slightly over time
+  XPTestObject([tiffImageLHS TIFFRepresentation], [tiffImageRHS TIFFRepresentation]);
+  XPTestObject(tiffDataLHS, tiffDataRHS);
+  
+  NSLog(@"%@ Unit Tests: PASSED", self);
+}
+
++(void)saveTestFiles;
+{
+  NSWorkspace *ws = [NSWorkspace sharedWorkspace];
+  NSString *destDir = NSTemporaryDirectory();
+  NSString *imagePath = [destDir stringByAppendingPathComponent:@"TestUnitBezierPath.tiff"];
+  [[self createTiffData] writeToFile:imagePath atomically:YES];
+  [ws openFile:imagePath];
+}
+
++(NSData*)createTiffData;
+{
+  NSRect rect = NSMakeRect(0, 0, 300, 100);
   NSBitmapImageRep *bitmap = nil;
   NSImage *image = nil;
-  NSLog(@"%@ Unit Tests: STARTING", self);
   
   bitmap = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
                                                    pixelsWide:(XPInteger)rect.size.width
@@ -431,6 +478,7 @@ void TestsUnitExecute(void)
                                                colorSpaceName:NSCalibratedRGBColorSpace
                                                   bytesPerRow:0
                                                  bitsPerPixel:0];
+  [bitmap setSize:rect.size]; // disables automatic retina resizing?
   image = [[NSImage alloc] initWithSize:rect.size];
   [image addRepresentation:bitmap];
   [image lockFocus];
@@ -441,8 +489,10 @@ void TestsUnitExecute(void)
                                                                     blue:246/255.0
                                                                    alpha:1]];
   [image unlockFocus];
-  NSLog(@"%@ Unit Tests: PASSED", self);
+  return [image TIFFRepresentation];
 }
+
+
 @end
 
 @implementation NSValue (TestUnitComparison)

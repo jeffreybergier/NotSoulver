@@ -36,7 +36,7 @@
                       color:(NSColor*)color;
 {
   // Prepare Object Variables
-  NSBezierPath *path = nil;
+  id path = nil;
   NSGradient *gradient = nil;
   NSArray *colors = nil;
   NSColor *colorLight = nil;
@@ -57,12 +57,15 @@
   
   // Define the path
   path = [XPBezierPath XP_bezierPathWithRoundedRect:rect xRadius:radius yRadius:radius];
-
-  // Draw
-  [gradient drawInBezierPath:path angle:90];
-  [colorDark setStroke];
-  [path setLineWidth:stroke];
-  [path stroke];
+  if (path) {
+    // Draw
+    [gradient drawInBezierPath:path angle:90];
+    [colorDark setStroke];
+    [path setLineWidth:stroke];
+    [path stroke];
+  } else {
+    NSDrawWhiteBezel(_rect, _rect);
+  }
 }
 
 @end

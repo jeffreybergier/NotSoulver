@@ -50,6 +50,8 @@ void TestsUnitExecute(void);
 
 @interface SVRSolverDrawing (TestsUnit)
 +(void)executeTests;
++(void)saveTestFiles;
++(NSData*)createTiffData;
 @end
 
 @interface NSValue (TestUnitComparison)

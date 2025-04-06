@@ -34,6 +34,9 @@
 		8CCAA3932D936DA30050DD4A /* TestsIntegration-UnsolvedRep.rtf in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CCAA36F2D936CC80050DD4A /* TestsIntegration-UnsolvedRep.rtf */; };
 		8CCAA3942D936DA30050DD4A /* about-image-512.tiff in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CCAA37A2D936D180050DD4A /* about-image-512.tiff */; };
 		8CF03DFC2DA0E7C7001D6A72 /* SVRSolverDrawing.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF03DFB2DA0E7C7001D6A72 /* SVRSolverDrawing.m */; };
+		8CF03E002DA26F71001D6A72 /* TestUnitBezierPath-42.tiff in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CF03DFD2DA26F61001D6A72 /* TestUnitBezierPath-42.tiff */; };
+		8CF03E012DA26F71001D6A72 /* TestUnitBezierPath-X2.tiff in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CF03DFE2DA26F61001D6A72 /* TestUnitBezierPath-X2.tiff */; };
+		8CF03E022DA26F71001D6A72 /* TestUnitBezierPath-X5.tiff in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CF03DFF2DA26F61001D6A72 /* TestUnitBezierPath-X5.tiff */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -43,6 +46,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 6;
 			files = (
+				8CF03E002DA26F71001D6A72 /* TestUnitBezierPath-42.tiff in CopyFiles */,
+				8CF03E012DA26F71001D6A72 /* TestUnitBezierPath-X2.tiff in CopyFiles */,
+				8CF03E022DA26F71001D6A72 /* TestUnitBezierPath-X5.tiff in CopyFiles */,
 				8C04BBBB2D94447600DCCDFA /* Localizable.strings in CopyFiles */,
 				8CCAA3902D936DA30050DD4A /* TestsIntegration-DiskRep.txt in CopyFiles */,
 				8CCAA3912D936DA30050DD4A /* TestsIntegration-DisplayRep.rtf in CopyFiles */,
@@ -119,6 +125,9 @@
 		8CD402032D6AFCAF00024E10 /* Xcode14 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Xcode14; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CF03DFA2DA0E7C7001D6A72 /* SVRSolverDrawing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SVRSolverDrawing.h; path = ../Soulver/SVRSolverDrawing.h; sourceTree = SOURCE_ROOT; };
 		8CF03DFB2DA0E7C7001D6A72 /* SVRSolverDrawing.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SVRSolverDrawing.m; path = ../Soulver/SVRSolverDrawing.m; sourceTree = SOURCE_ROOT; };
+		8CF03DFD2DA26F61001D6A72 /* TestUnitBezierPath-42.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "TestUnitBezierPath-42.tiff"; path = "../Soulver/TestUnitBezierPath-42.tiff"; sourceTree = SOURCE_ROOT; };
+		8CF03DFE2DA26F61001D6A72 /* TestUnitBezierPath-X2.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "TestUnitBezierPath-X2.tiff"; path = "../Soulver/TestUnitBezierPath-X2.tiff"; sourceTree = SOURCE_ROOT; };
+		8CF03DFF2DA26F61001D6A72 /* TestUnitBezierPath-X5.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "TestUnitBezierPath-X5.tiff"; path = "../Soulver/TestUnitBezierPath-X5.tiff"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,14 +144,17 @@
 		8CCAA3352D936C210050DD4A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				8CCAA3702D936CC80050DD4A /* TestsUnit.h */,
+				8CCAA3712D936CC80050DD4A /* TestsUnit.m */,
 				8CCAA36A2D936CC80050DD4A /* TestsIntegration.h */,
 				8CCAA36B2D936CC80050DD4A /* TestsIntegration.m */,
 				8CCAA36C2D936CC80050DD4A /* TestsIntegration-DiskRep.txt */,
 				8CCAA36D2D936CC80050DD4A /* TestsIntegration-DisplayRep.rtf */,
 				8CCAA36E2D936CC80050DD4A /* TestsIntegration-SolvedRep.rtf */,
 				8CCAA36F2D936CC80050DD4A /* TestsIntegration-UnsolvedRep.rtf */,
-				8CCAA3702D936CC80050DD4A /* TestsUnit.h */,
-				8CCAA3712D936CC80050DD4A /* TestsUnit.m */,
+				8CF03DFD2DA26F61001D6A72 /* TestUnitBezierPath-42.tiff */,
+				8CF03DFE2DA26F61001D6A72 /* TestUnitBezierPath-X2.tiff */,
+				8CF03DFF2DA26F61001D6A72 /* TestUnitBezierPath-X5.tiff */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
