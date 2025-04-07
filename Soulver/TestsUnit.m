@@ -426,9 +426,9 @@ void TestsUnitExecute(void)
 #endif
   
   // Prepare variables
-  NSData *tiffDataRHS   = nil;
+  NSData  *tiffDataRHS  = nil;
   NSImage *tiffImageRHS = nil;
-  NSData *tiffDataLHS   = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:fileName ofType:@"tiff"]];
+  NSData  *tiffDataLHS  = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:fileName ofType:@"tiff"]];
   NSImage *tiffImageLHS = [[[NSImage alloc] initWithData:tiffDataLHS] autorelease];
 
   NSLog(@"%@ Unit Tests: STARTING", self);
@@ -466,9 +466,13 @@ void TestsUnitExecute(void)
 {
   NSRect rect = NSMakeRect(0, 0, 300, 100);
   NSBitmapImageRep *bitmap = nil;
-  NSImage *image = nil;
+  NSGraphicsContext *context = nil;
+  NSData *tiffData = nil;
+  NSColor *color = [NSColor colorWithDeviceRed:40/255.0 green:92/255.0 blue:246/255.0 alpha:1.0];
+  NSDictionary *tiffProps = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[NSNumber XP_numberWithInteger:NSTIFFCompressionNone], [NSData data], nil]
+                                                        forKeys:[NSArray arrayWithObjects:NSImageCompressionMethod, NSImageColorSyncProfileData, nil]];
   
-  bitmap = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
+  bitmap = [[[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
                                                    pixelsWide:(XPInteger)rect.size.width
                                                    pixelsHigh:(XPInteger)rect.size.height
                                                 bitsPerSample:8
@@ -477,21 +481,17 @@ void TestsUnitExecute(void)
                                                      isPlanar:NO
                                                colorSpaceName:NSDeviceRGBColorSpace
                                                   bytesPerRow:0
-                                                 bitsPerPixel:0];
-  [bitmap setSize:rect.size]; // disables automatic retina resizing?
-  image = [[NSImage alloc] initWithSize:rect.size];
-  [image addRepresentation:bitmap];
-  [image lockFocus];
+                                                 bitsPerPixel:0] autorelease];
+  context = [NSGraphicsContext graphicsContextWithBitmapImageRep:bitmap];
+  [NSGraphicsContext saveGraphicsState];
+  [NSGraphicsContext setCurrentContext:context];
   [SVRSolverDrawing drawBackgroundInRect:rect
                                     type:0
-                                   color:[NSColor colorWithCalibratedRed:40/255.0
-                                                                   green:92/255.0
-                                                                    blue:246/255.0
-                                                                   alpha:1]];
-  [image unlockFocus];
-  return [image TIFFRepresentation];
+                                   color:color];
+  [NSGraphicsContext restoreGraphicsState];
+  tiffData = [bitmap representationUsingType:NSBitmapImageFileTypeTIFF properties:tiffProps];
+  return tiffData;
 }
-
 
 @end
 
