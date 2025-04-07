@@ -471,6 +471,13 @@ void TestsUnitExecute(void)
   NSColor *color = [NSColor colorWithDeviceRed:40/255.0 green:92/255.0 blue:246/255.0 alpha:1.0];
   NSDictionary *tiffProps = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[NSNumber XP_numberWithInteger:NSTIFFCompressionNone], [NSData data], nil]
                                                         forKeys:[NSArray arrayWithObjects:NSImageCompressionMethod, NSImageColorSyncProfileData, nil]];
+  /* TODO: Use this suggestio from ChatGPT to make it work in Jaguar
+   NSString *test = NSGraphicsContextDestinationAttributeName;
+   NSDictionary *attributes = @{
+       NSGraphicsContextDestinationAttributeName: bitmapRep
+   };
+   NSGraphicsContext *context = [NSGraphicsContext graphicsContextWithAttributes:attributes];
+   */
   
   bitmap = [[[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
                                                    pixelsWide:(XPInteger)rect.size.width
@@ -489,7 +496,8 @@ void TestsUnitExecute(void)
                                     type:0
                                    color:color];
   [NSGraphicsContext restoreGraphicsState];
-  tiffData = [bitmap representationUsingType:NSBitmapImageFileTypeTIFF properties:tiffProps];
+  // TODO: Make XPBitmapImageFileTypeTIFF = NSTIFFFileType
+  tiffData = [bitmap representationUsingType:NSTIFFFileType properties:tiffProps];
   return tiffData;
 }
 
