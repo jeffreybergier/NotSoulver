@@ -64,10 +64,10 @@
   path = [XPBezierPath XP_bezierPathWithRoundedRect:rect xRadius:radius yRadius:radius];
   if (path) {
     // Draw
-    [color setFill];
-    [colorDark setStroke];
+    [color set];
     [path fill];
     [path setLineWidth:stroke];
+    [colorDark set];
     [path stroke];
   } else {
     NSDrawWhiteBezel(_rect, _rect);

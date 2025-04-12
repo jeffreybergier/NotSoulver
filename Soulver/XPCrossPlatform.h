@@ -61,11 +61,9 @@ typedef float XPFloat;
 #define XPKeyedArchiver NSKeyedArchiver
 #define XPKeyedUnarchiver NSKeyedUnarchiver
 #define XPSupportsNSDocument
-#define XPBitmapImageFileTypeTIFF NSBitmapImageFileTypeTIFF
 #else
 #define XPKeyedArchiver NSArchiver
 #define XPKeyedUnarchiver NSUnarchiver
-#define XPBitmapImageFileTypeTIFF NSTIFFFileType
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_3
@@ -82,8 +80,10 @@ typedef NSRange* XPRangePointer;
 // It could be 10.3 or 10.4 or later. No way to know
 // until I get to that version of OSX
 #define XPTextAlignmentCenter NSTextAlignmentCenter
+#define XPBitmapImageFileTypeTIFF NSBitmapImageFileTypeTIFF
 #else
 #define XPTextAlignmentCenter NSCenterTextAlignment
+#define XPBitmapImageFileTypeTIFF NSTIFFFileType
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_5
