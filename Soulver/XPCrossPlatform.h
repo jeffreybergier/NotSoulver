@@ -275,9 +275,8 @@ NSArray* XPRunOpenPanel(NSString *extension);
 +(id)__MANUAL_bezierPathWithRoundedRect:(NSRect)rect
                                 xRadius:(XPFloat)xRadius
                                 yRadius:(XPFloat)yRadius;
-#endif
-
 @end
+#endif
 
 // MARK: XPLogging
 

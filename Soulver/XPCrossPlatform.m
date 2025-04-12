@@ -583,9 +583,8 @@ NSArray* XPRunOpenPanel(NSString *extension)
   return path;
 }
 
-#endif
-
 @end
+#endif
 
 @implementation XPLog
 
