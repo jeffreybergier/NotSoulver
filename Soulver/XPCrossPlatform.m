@@ -469,14 +469,41 @@ NSArray* XPRunOpenPanel(NSString *extension)
 }
 @end
 
-@implementation XPBezierPath
+#ifdef XPSupportsNSBezierPath
+@implementation NSBezierPath (CrossPlatform)
 
 +(id)XP_bezierPathWithRoundedRect:(NSRect)rect
-                          xRadius:(XPFloat)rx
-                          yRadius:(XPFloat)ry;
+                          xRadius:(XPFloat)xRadius
+                          yRadius:(XPFloat)yRadius;
 {
-#ifdef MAC_OS_X_VERSION_10_2
-  
+#ifdef MAC_OS_X_VERSION_10_5
+  return [NSBezierPath __REAL_bezierPathWithRoundedRect:rect
+                                                xRadius:xRadius
+                                                yRadius:yRadius];
+#else
+  return [NSBezierPath __REAL_bezierPathWithRoundedRect:rect
+                                                xRadius:xRadius
+                                                yRadius:yRadius];
+#endif
+}
+
++(id)__REAL_bezierPathWithRoundedRect:(NSRect)rect
+                              xRadius:(XPFloat)xRadius
+                              yRadius:(XPFloat)yRadius;
+{
+#ifdef MAC_OS_X_VERSION_10_5
+  return [NSBezierPath bezierPathWithRoundedRect:rect
+                                         xRadius:xRadius
+                                         yRadius:yRadius];
+#else
+  NSCAssert(NO, @"Mac OS X 10.5 Required to use NSBezierPath convenience initializer");
+#endif
+}
+
++(id)__MANUAL_bezierPathWithRoundedRect:(NSRect)rect
+                                xRadius:(XPFloat)rx
+                                yRadius:(XPFloat)ry;
+{
   // Prepare variables
   XPFloat kappa;
   XPFloat ox;
@@ -491,11 +518,6 @@ NSArray* XPRunOpenPanel(NSString *extension)
   XPFloat y3;
   NSBezierPath *path = nil;
   
-  if ([NSBezierPath respondsToSelector:@selector(bezierPathWithRoundedRect:xRadius:yRadius:)]) {
-    return [NSBezierPath bezierPathWithRoundedRect:rect
-                                        xRadius:rx
-                                        yRadius:ry];
-  }
   // Sorry, this method was developed through a long conversation with ChatGPT
   // I don't have a good source for this, and my BezierPath skills are not so
   // strong. But it works, and thats all the matters.
@@ -559,10 +581,9 @@ NSArray* XPRunOpenPanel(NSString *extension)
   // Close the path and return
   [path closePath];
   return path;
-#else
-  return nil;
-#endif
 }
+
+#endif
 
 @end
 

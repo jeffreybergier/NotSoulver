@@ -48,30 +48,27 @@
                        type:(int)type
                       color:(NSColor*)color;
 {
+#ifdef XPSupportsNSBezierPath
   // Prepare Object Variables
-  id path = nil;
-  NSColor *colorDark = nil;
-  
-  // Prepare Drawing Settings
   XPFloat stroke = 2.0;
   NSRect rect = NSInsetRect(_rect, stroke, stroke);
   XPFloat radius = NSHeight(rect) / 2.0;
-  colorDark  = [color blendedColorWithFraction:0.3 ofColor:[NSColor blackColor]];
+  NSColor *colorDark = [color blendedColorWithFraction:0.3 ofColor:[NSColor blackColor]];
+  NSBezierPath *path = [NSBezierPath XP_bezierPathWithRoundedRect:rect
+                                                          xRadius:radius
+                                                          yRadius:radius];
   
   NSCParameterAssert(color);
+  NSCParameterAssert(path);
   
-  // Define the path
-  path = [XPBezierPath XP_bezierPathWithRoundedRect:rect xRadius:radius yRadius:radius];
-  if (path) {
-    // Draw
-    [color set];
-    [path fill];
-    [path setLineWidth:stroke];
-    [colorDark set];
-    [path stroke];
-  } else {
+  [color set];
+  [path fill];
+  [path setLineWidth:stroke];
+  [colorDark set];
+  [path stroke];
+#else
     NSDrawWhiteBezel(_rect, _rect);
-  }
+#endif
 }
 
 @end

@@ -175,10 +175,7 @@ void TestsIntegrationExecute(void)
   XPTestBool([repSolved   writeToFile:repSolvedPath   atomically:YES]);
   XPTestBool([repUnsolved writeToFile:repUnsolvedPath atomically:YES]);
 
-  [ws XP_openFile:destDir];
-  [ws XP_openFile:repDisplayPath];
-  [ws XP_openFile:repSolvedPath];
-  [ws XP_openFile:repUnsolvedPath];
+  [ws selectFile:repDisplayPath inFileViewerRootedAtPath:destDir];
 }
 
 +(SVRSolverTextAttachmentStyles)stylesForSolution;

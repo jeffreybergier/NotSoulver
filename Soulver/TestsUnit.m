@@ -36,8 +36,10 @@ void TestsUnitExecute(void)
   [XPLog executeTests];
   [XPRegularExpression executeTests];
   [SVRSolverScanner executeTests];
-  [SVRSolverDrawing executeTests];
-//[SVRSolverDrawing saveTestFiles];
+#ifdef MAC_OS_X_VERSION_10_4
+//[NSBezierPath saveTestFiles];
+  [NSBezierPath executeTests];
+#endif
   [pool release];
 #endif
 }
@@ -414,40 +416,32 @@ void TestsUnitExecute(void)
 
 @end
 
-@implementation SVRSolverDrawing (TestsUnit)
+#ifdef MAC_OS_X_VERSION_10_4
+
+@implementation NSBezierPath (TestsUnit)
 +(void)executeTests;
 {
-#ifdef MAC_OS_X_VERSION_10_5
-  NSString *fileName = @"TestUnitBezierPath-X5";
-#elif defined(MAC_OS_X_VERSION_10_2)
-  NSString *fileName = @"TestUnitBezierPath-X2";
-#else
-  NSString *fileName = @"TestUnitBezierPath-42";
-#endif
-  
   // Prepare variables
-  NSData  *tiffDataRHS  = nil;
-  NSImage *tiffImageRHS = nil;
-  NSData  *tiffDataLHS  = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:fileName ofType:@"tiff"]];
-  NSImage *tiffImageLHS = [[[NSImage alloc] initWithData:tiffDataLHS] autorelease];
+  NSData  *dataRHS = nil;
+  NSData  *dataLHS = nil;
 
   NSLog(@"%@ Unit Tests: STARTING", self);
   
-  // Prepare test data
-  tiffDataRHS  = [self createTiffData];
-  tiffImageRHS = [[[NSImage alloc] initWithData:tiffDataRHS] autorelease];
+  // Compare REAL BezierPath
+  dataRHS = [self createTIFFWithSelector:@selector(__REAL_bezierPathWithRoundedRect:xRadius:yRadius:)];
+  dataLHS = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestUnitBezierPath-REAL"
+                                                                           ofType:@"tiff"]];
+  XPTestNotNIL(dataRHS);
+  XPTestNotNIL(dataLHS);
+  XPTestObject(dataLHS, dataRHS);
   
-  // Make sure nothing is NIL
-  XPTestNotNIL(tiffDataRHS);
-  XPTestNotNIL(tiffImageRHS);
-  XPTestNotNIL(tiffDataLHS);
-  XPTestNotNIL(tiffImageLHS);
-  
-  // Do the actual comparison
-  // Adding this comparison of the images because I am worried that the encoding
-  // of TIFFRepresentation will change slightly over time
-  XPTestObject([tiffImageLHS TIFFRepresentation], [tiffImageRHS TIFFRepresentation]);
-  XPTestObject(tiffDataLHS, tiffDataRHS);
+  // Compare REAL BezierPath
+  dataRHS = [self createTIFFWithSelector:@selector(__MANUAL_bezierPathWithRoundedRect:xRadius:yRadius:)];
+  dataLHS = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestUnitBezierPath-MANUAL"
+                                                                           ofType:@"tiff"]];
+  XPTestNotNIL(dataRHS);
+  XPTestNotNIL(dataLHS);
+  XPTestObject(dataLHS, dataRHS);
   
   NSLog(@"%@ Unit Tests: PASSED", self);
 }
@@ -456,21 +450,37 @@ void TestsUnitExecute(void)
 {
   NSWorkspace *ws = [NSWorkspace sharedWorkspace];
   NSString *destDir = NSTemporaryDirectory();
-  NSString *imagePath = [destDir stringByAppendingPathComponent:@"TestUnitBezierPath.tiff"];
-  [[self createTiffData] writeToFile:imagePath atomically:YES];
-  [ws XP_openFile:imagePath];
+  NSString *realPath = [destDir stringByAppendingPathComponent:@"TestUnitBezierPath-REAL.tiff"];
+  NSString *manualPath = [destDir stringByAppendingPathComponent:@"TestUnitBezierPath-MANUAL.tiff"];
+  [[self createTIFFWithSelector:@selector(__REAL_bezierPathWithRoundedRect:xRadius:yRadius:)] writeToFile:realPath atomically:YES];
+  [[self createTIFFWithSelector:@selector(__MANUAL_bezierPathWithRoundedRect:xRadius:yRadius:)] writeToFile:manualPath atomically:YES];
+  [ws selectFile:realPath inFileViewerRootedAtPath:destDir];
 }
 
-+(NSData*)createTiffData;
++(NSData*)createTIFFWithSelector:(SEL)selector;
 {
-  id context = nil;
+  NSGraphicsContext *context = nil;
   NSBitmapImageRep *bitmap = nil;
   NSData *tiffData = nil;
   NSRect rect = NSMakeRect(0, 0, 300, 100);
+  XPFloat radius = 50;
   NSColor *color = [NSColor colorWithCalibratedRed:40/255.0
                                              green:92/255.0
                                               blue:246/255.0
                                              alpha:1.0];
+  // Prepare Path
+  NSBezierPath *path = nil;
+  if (selector == @selector(__REAL_bezierPathWithRoundedRect:xRadius:yRadius:)) {
+    path = [NSBezierPath __REAL_bezierPathWithRoundedRect:rect xRadius:radius yRadius:radius];
+  } else if (selector == @selector(__MANUAL_bezierPathWithRoundedRect:xRadius:yRadius:)) {
+    path = [NSBezierPath __MANUAL_bezierPathWithRoundedRect:rect xRadius:radius yRadius:radius];
+  }
+  XPTestNotNIL(path);
+  
+  // Prepare drawing context
+  [NSBezierPath XP_bezierPathWithRoundedRect:rect
+                                                          xRadius:radius
+                                                          yRadius:radius];
   
   bitmap = [[[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
                                                    pixelsWide:(XPInteger)rect.size.width
@@ -483,37 +493,30 @@ void TestsUnitExecute(void)
                                                   bytesPerRow:0
                                                  bitsPerPixel:0] autorelease];
   
-  XPTestNotNIL(bitmap);
-#ifdef MAC_OS_X_VERSION_10_5
   context = [NSGraphicsContext graphicsContextWithBitmapImageRep:bitmap];
+  XPTestNotNIL(bitmap);
   XPTestNotNIL(context);
+  
+  // Draw
   [NSGraphicsContext saveGraphicsState];
   [NSGraphicsContext setCurrentContext:context];
-  [SVRSolverDrawing drawBackgroundInRect:rect
-                                    type:0
-                                   color:color];
+  [color setFill];
+  [path fill];
   [NSGraphicsContext restoreGraphicsState];
+  
+  // Get TIFF Data
   tiffData = [bitmap representationUsingType:XPBitmapImageFileTypeTIFF
                                   properties:
                 [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[NSNumber XP_numberWithInteger:NSTIFFCompressionNone], [NSData data], nil]
                                             forKeys:[NSArray arrayWithObjects:NSImageCompressionMethod, NSImageColorSyncProfileData, nil]]
   ];
-#else
-  context = [[NSImage alloc] initWithSize:rect.size];
-  XPTestNotNIL(context);
-  [context addRepresentation:bitmap];
-  [context lockFocus];
-  [SVRSolverDrawing drawBackgroundInRect:rect
-                                    type:0
-                                   color:color];
-  [context unlockFocus];
-  tiffData = [context TIFFRepresentation];
-#endif
   XPTestNotNIL(tiffData);
   return tiffData;
 }
 
 @end
+
+#endif
 
 @implementation NSValue (TestUnitComparison)
 -(NSComparisonResult)TEST_compare:(NSValue*)other;

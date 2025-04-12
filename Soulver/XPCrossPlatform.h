@@ -61,6 +61,7 @@ typedef float XPFloat;
 #define XPKeyedArchiver NSKeyedArchiver
 #define XPKeyedUnarchiver NSKeyedUnarchiver
 #define XPSupportsNSDocument
+#define XPSupportsNSBezierPath
 #else
 #define XPKeyedArchiver NSArchiver
 #define XPKeyedUnarchiver NSUnarchiver
@@ -260,11 +261,21 @@ NSArray* XPRunOpenPanel(NSString *extension);
 -(BOOL)XP_openFile:(NSString*)file;
 @end
 
-@interface XPBezierPath: NSObject
+#ifdef XPSupportsNSBezierPath
+@interface NSBezierPath (CrossPlatform)
 
 +(id)XP_bezierPathWithRoundedRect:(NSRect)rect
                           xRadius:(XPFloat)xRadius
                           yRadius:(XPFloat)yRadius;
+
++(id)__REAL_bezierPathWithRoundedRect:(NSRect)rect
+                              xRadius:(XPFloat)xRadius
+                              yRadius:(XPFloat)yRadius;
+
++(id)__MANUAL_bezierPathWithRoundedRect:(NSRect)rect
+                                xRadius:(XPFloat)xRadius
+                                yRadius:(XPFloat)yRadius;
+#endif
 
 @end
 
