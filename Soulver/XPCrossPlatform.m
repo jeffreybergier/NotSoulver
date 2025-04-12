@@ -497,6 +497,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
                                          yRadius:yRadius];
 #else
   NSCAssert(NO, @"Mac OS X 10.5 Required to use NSBezierPath convenience initializer");
+  return nil;
 #endif
 }
 
