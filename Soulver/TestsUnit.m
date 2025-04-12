@@ -489,15 +489,15 @@ void TestsUnitExecute(void)
                                                colorSpaceName:NSDeviceRGBColorSpace
                                                   bytesPerRow:0
                                                  bitsPerPixel:0] autorelease];
-  context = [NSGraphicsContext graphicsContextWithBitmapImageRep:bitmap];
+  context = [XPGraphicsContext XP_graphicsContextWithBitmapImageRep:bitmap];
   [NSGraphicsContext saveGraphicsState];
   [NSGraphicsContext setCurrentContext:context];
   [SVRSolverDrawing drawBackgroundInRect:rect
                                     type:0
                                    color:color];
   [NSGraphicsContext restoreGraphicsState];
-  // TODO: Make XPBitmapImageFileTypeTIFF = NSTIFFFileType
-  tiffData = [bitmap representationUsingType:NSTIFFFileType properties:tiffProps];
+  tiffData = [bitmap representationUsingType:XPBitmapImageFileTypeTIFF
+                                  properties:tiffProps];
   return tiffData;
 }
 

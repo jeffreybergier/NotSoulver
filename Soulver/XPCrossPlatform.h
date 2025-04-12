@@ -61,9 +61,11 @@ typedef float XPFloat;
 #define XPKeyedArchiver NSKeyedArchiver
 #define XPKeyedUnarchiver NSKeyedUnarchiver
 #define XPSupportsNSDocument
+#define XPBitmapImageFileTypeTIFF NSBitmapImageFileTypeTIFF
 #else
 #define XPKeyedArchiver NSArchiver
 #define XPKeyedUnarchiver NSUnarchiver
+#define XPBitmapImageFileTypeTIFF NSTIFFFileType
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_3
@@ -263,6 +265,12 @@ NSArray* XPRunOpenPanel(NSString *extension);
 +(id)XP_bezierPathWithRoundedRect:(NSRect)rect
                           xRadius:(XPFloat)xRadius
                           yRadius:(XPFloat)yRadius;
+
+@end
+
+@interface XPGraphicsContext: NSObject
+
++(id)XP_graphicsContextWithBitmapImageRep:(NSBitmapImageRep*)bitmapRef;
 
 @end
 

@@ -51,7 +51,7 @@ void TestsIntegrationExecute(void)
 +(void)executeTests;
 {
   /**
-   TODO: Strategy - There are 4 representations of any given file that
+   // MARK: Strategy - There are 4 representations of any given file that
    are managed by SVRDocumentModelController. The testing strategy to is to bundle 4 files
    and then compare the code paths to the bundled version.
    
