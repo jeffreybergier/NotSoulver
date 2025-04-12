@@ -417,8 +417,8 @@ void TestsUnitExecute(void)
 @implementation SVRSolverDrawing (TestsUnit)
 +(void)executeTests;
 {
-#ifdef MAC_OS_X_VERSION_10_4
-  NSString *fileName = @"TestUnitBezierPath-X4";
+#ifdef MAC_OS_X_VERSION_10_5
+  NSString *fileName = @"TestUnitBezierPath-X5";
 #elif defined(MAC_OS_X_VERSION_10_2)
   NSString *fileName = @"TestUnitBezierPath-X2";
 #else
@@ -444,7 +444,6 @@ void TestsUnitExecute(void)
   XPTestNotNIL(tiffImageLHS);
   
   // Do the actual comparison
-  
   // Adding this comparison of the images because I am worried that the encoding
   // of TIFFRepresentation will change slightly over time
   XPTestObject([tiffImageLHS TIFFRepresentation], [tiffImageRHS TIFFRepresentation]);
@@ -485,7 +484,7 @@ void TestsUnitExecute(void)
                                                  bitsPerPixel:0] autorelease];
   
   XPTestNotNIL(bitmap);
-#ifdef MAC_OS_X_VERSION_10_4
+#ifdef MAC_OS_X_VERSION_10_5
   context = [NSGraphicsContext graphicsContextWithBitmapImageRep:bitmap];
   XPTestNotNIL(context);
   [NSGraphicsContext saveGraphicsState];
