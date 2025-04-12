@@ -268,12 +268,6 @@ NSArray* XPRunOpenPanel(NSString *extension);
 
 @end
 
-@interface XPGraphicsContext: NSObject
-
-+(id)XP_graphicsContextWithBitmapImageRep:(NSBitmapImageRep*)bitmapRef;
-
-@end
-
 // MARK: XPLogging
 
 // In C99 the ability was added for Macros to have Variadic arguments

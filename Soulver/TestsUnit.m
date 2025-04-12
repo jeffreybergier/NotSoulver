@@ -417,8 +417,8 @@ void TestsUnitExecute(void)
 @implementation SVRSolverDrawing (TestsUnit)
 +(void)executeTests;
 {
-#ifdef MAC_OS_X_VERSION_10_5
-  NSString *fileName = @"TestUnitBezierPath-X5";
+#ifdef MAC_OS_X_VERSION_10_4
+  NSString *fileName = @"TestUnitBezierPath-X4";
 #elif defined(MAC_OS_X_VERSION_10_2)
   NSString *fileName = @"TestUnitBezierPath-X2";
 #else
@@ -464,20 +464,14 @@ void TestsUnitExecute(void)
 
 +(NSData*)createTiffData;
 {
-  NSRect rect = NSMakeRect(0, 0, 300, 100);
+  id context = nil;
   NSBitmapImageRep *bitmap = nil;
-  NSGraphicsContext *context = nil;
   NSData *tiffData = nil;
-  NSColor *color = [NSColor colorWithDeviceRed:40/255.0 green:92/255.0 blue:246/255.0 alpha:1.0];
-  NSDictionary *tiffProps = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[NSNumber XP_numberWithInteger:NSTIFFCompressionNone], [NSData data], nil]
-                                                        forKeys:[NSArray arrayWithObjects:NSImageCompressionMethod, NSImageColorSyncProfileData, nil]];
-  /* TODO: Use this suggestio from ChatGPT to make it work in Jaguar
-   NSString *test = NSGraphicsContextDestinationAttributeName;
-   NSDictionary *attributes = @{
-       NSGraphicsContextDestinationAttributeName: bitmapRep
-   };
-   NSGraphicsContext *context = [NSGraphicsContext graphicsContextWithAttributes:attributes];
-   */
+  NSRect rect = NSMakeRect(0, 0, 300, 100);
+  NSColor *color = [NSColor colorWithCalibratedRed:40/255.0
+                                             green:92/255.0
+                                              blue:246/255.0
+                                             alpha:1.0];
   
   bitmap = [[[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
                                                    pixelsWide:(XPInteger)rect.size.width
@@ -486,10 +480,14 @@ void TestsUnitExecute(void)
                                               samplesPerPixel:4
                                                      hasAlpha:YES
                                                      isPlanar:NO
-                                               colorSpaceName:NSDeviceRGBColorSpace
+                                               colorSpaceName:NSCalibratedRGBColorSpace
                                                   bytesPerRow:0
                                                  bitsPerPixel:0] autorelease];
-  context = [XPGraphicsContext XP_graphicsContextWithBitmapImageRep:bitmap];
+  
+  XPTestNotNIL(bitmap);
+#ifdef MAC_OS_X_VERSION_10_4
+  context = [NSGraphicsContext graphicsContextWithBitmapImageRep:bitmap];
+  XPTestNotNIL(context);
   [NSGraphicsContext saveGraphicsState];
   [NSGraphicsContext setCurrentContext:context];
   [SVRSolverDrawing drawBackgroundInRect:rect
@@ -497,7 +495,22 @@ void TestsUnitExecute(void)
                                    color:color];
   [NSGraphicsContext restoreGraphicsState];
   tiffData = [bitmap representationUsingType:XPBitmapImageFileTypeTIFF
-                                  properties:tiffProps];
+                                  properties:
+                [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[NSNumber XP_numberWithInteger:NSTIFFCompressionNone], [NSData data], nil]
+                                            forKeys:[NSArray arrayWithObjects:NSImageCompressionMethod, NSImageColorSyncProfileData, nil]]
+  ];
+#else
+  context = [[NSImage alloc] initWithSize:rect.size];
+  XPTestNotNIL(context);
+  [context addRepresentation:bitmap];
+  [context lockFocus];
+  [SVRSolverDrawing drawBackgroundInRect:rect
+                                    type:0
+                                   color:color];
+  [context unlockFocus];
+  tiffData = [context TIFFRepresentation];
+#endif
+  XPTestNotNIL(tiffData);
   return tiffData;
 }
 

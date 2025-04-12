@@ -566,24 +566,6 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 @end
 
-@implementation XPGraphicsContext
-
-+(id)XP_graphicsContextWithBitmapImageRep:(NSBitmapImageRep*)bitmapRef;
-{
-#ifdef MAC_OS_X_VERSION_10_4
-  return [NSGraphicsContext graphicsContextWithBitmapImageRep:bitmapRef];
-#elif defined(MAC_OS_X_VERSION_10_2)
-  return [NSGraphicsContext graphicsContextWithAttributes:
-            [NSDictionary dictionaryWithObject:bitmapRef
-                                        forKey:NSGraphicsContextDestinationAttributeName]
-  ];
-#else
-  return nil;
-#endif
-}
-
-@end
-
 @implementation XPLog
 
 +(void)pause {}

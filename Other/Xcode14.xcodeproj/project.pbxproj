@@ -36,7 +36,7 @@
 		8CF03DFC2DA0E7C7001D6A72 /* SVRSolverDrawing.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF03DFB2DA0E7C7001D6A72 /* SVRSolverDrawing.m */; };
 		8CF03E002DA26F71001D6A72 /* TestUnitBezierPath-42.tiff in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CF03DFD2DA26F61001D6A72 /* TestUnitBezierPath-42.tiff */; };
 		8CF03E012DA26F71001D6A72 /* TestUnitBezierPath-X2.tiff in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CF03DFE2DA26F61001D6A72 /* TestUnitBezierPath-X2.tiff */; };
-		8CF03E022DA26F71001D6A72 /* TestUnitBezierPath-X5.tiff in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CF03DFF2DA26F61001D6A72 /* TestUnitBezierPath-X5.tiff */; };
+		8CF03E022DA26F71001D6A72 /* TestUnitBezierPath-X4.tiff in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CF03DFF2DA26F61001D6A72 /* TestUnitBezierPath-X4.tiff */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -48,7 +48,7 @@
 			files = (
 				8CF03E002DA26F71001D6A72 /* TestUnitBezierPath-42.tiff in CopyFiles */,
 				8CF03E012DA26F71001D6A72 /* TestUnitBezierPath-X2.tiff in CopyFiles */,
-				8CF03E022DA26F71001D6A72 /* TestUnitBezierPath-X5.tiff in CopyFiles */,
+				8CF03E022DA26F71001D6A72 /* TestUnitBezierPath-X4.tiff in CopyFiles */,
 				8C04BBBB2D94447600DCCDFA /* Localizable.strings in CopyFiles */,
 				8CCAA3902D936DA30050DD4A /* TestsIntegration-DiskRep.txt in CopyFiles */,
 				8CCAA3912D936DA30050DD4A /* TestsIntegration-DisplayRep.rtf in CopyFiles */,
@@ -127,7 +127,7 @@
 		8CF03DFB2DA0E7C7001D6A72 /* SVRSolverDrawing.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SVRSolverDrawing.m; path = ../Soulver/SVRSolverDrawing.m; sourceTree = SOURCE_ROOT; };
 		8CF03DFD2DA26F61001D6A72 /* TestUnitBezierPath-42.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "TestUnitBezierPath-42.tiff"; path = "../Soulver/TestUnitBezierPath-42.tiff"; sourceTree = SOURCE_ROOT; };
 		8CF03DFE2DA26F61001D6A72 /* TestUnitBezierPath-X2.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "TestUnitBezierPath-X2.tiff"; path = "../Soulver/TestUnitBezierPath-X2.tiff"; sourceTree = SOURCE_ROOT; };
-		8CF03DFF2DA26F61001D6A72 /* TestUnitBezierPath-X5.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "TestUnitBezierPath-X5.tiff"; path = "../Soulver/TestUnitBezierPath-X5.tiff"; sourceTree = SOURCE_ROOT; };
+		8CF03DFF2DA26F61001D6A72 /* TestUnitBezierPath-X4.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "TestUnitBezierPath-X4.tiff"; path = "../Soulver/TestUnitBezierPath-X4.tiff"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,7 +154,7 @@
 				8CCAA36F2D936CC80050DD4A /* TestsIntegration-UnsolvedRep.rtf */,
 				8CF03DFD2DA26F61001D6A72 /* TestUnitBezierPath-42.tiff */,
 				8CF03DFE2DA26F61001D6A72 /* TestUnitBezierPath-X2.tiff */,
-				8CF03DFF2DA26F61001D6A72 /* TestUnitBezierPath-X5.tiff */,
+				8CF03DFF2DA26F61001D6A72 /* TestUnitBezierPath-X4.tiff */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
