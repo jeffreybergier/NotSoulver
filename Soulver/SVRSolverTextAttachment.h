@@ -33,17 +33,15 @@
 
 @interface SVRSolverTextAttachment: NSTextAttachment
 {
-  mm_retain NSString  *_toDrawString;
-  mm_retain NSFont    *_toDrawFont;
-  mm_retain NSColor   *_toDrawColor;
-  mm_retain NSFont    *_neighborFont;
-  SVRSolverTextAttachmentBackground _background;
+  mm_retain NSString *_string;
+  mm_retain NSDictionary *_configuration;
 }
 
--(NSString*)toDrawString;
--(NSFont*)toDrawFont;
--(NSColor*)toDrawColor;
+-(NSString*)string;
+-(NSFont*)font;
 -(NSFont*)neighborFont;
+-(NSColor*)foregroundColor;
+-(NSColor*)backgroundColor;
 -(SVRSolverTextAttachmentBackground)background;
 
 -(id)initWithString:(NSString*)stringToDraw styles:(SVRSolverTextAttachmentStyles)styles;

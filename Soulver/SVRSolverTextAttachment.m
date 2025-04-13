@@ -31,53 +31,55 @@
 
 @implementation SVRSolverTextAttachment
 
--(NSString*)toDrawString;
+-(NSString*)string;
 {
-  return [[_toDrawString retain] autorelease];
+  return [[_string retain] autorelease];
 }
 
--(NSFont*)toDrawFont;
+-(NSFont*)font;
 {
-  return [[_toDrawFont retain] autorelease];
+  return [_configuration objectForKey:NSFontAttributeName];
 }
 
--(NSColor*)toDrawColor;
+-(NSColor*)foregroundColor;
 {
-  return [[_toDrawColor retain] autorelease];
+  return [_configuration objectForKey:NSForegroundColorAttributeName];
+}
+
+-(NSColor*)backgroundColor;
+{
+  return [_configuration objectForKey:NSBackgroundColorAttributeName];
 }
 
 -(NSFont*)neighborFont;
 {
-  return [[_neighborFont retain] autorelease];
+  return [_configuration objectForKey:SVRSolverTextAttachmentNeighborFontKey];
 }
 
 -(SVRSolverTextAttachmentBackground)background;
 {
-  return _background;
+  return (SVRSolverTextAttachmentBackground)[[_configuration objectForKey:SVRSolverTextAttachmentBackgroundKey] XP_integerValue];
 }
 
--(id)initWithString:(NSString*)stringToDraw
+-(id)initWithString:(NSString*)string
              styles:(SVRSolverTextAttachmentStyles)styles;
 {
-  NSNumber *backgroundNumber = [styles objectForKey:SVRSolverTextAttachmentPurpose];
   NSFileWrapper *wrapper = [[[NSFileWrapper alloc] init] autorelease];
   
   self = [super initWithFileWrapper:wrapper];
+  
   NSCParameterAssert(self);
+  NSCParameterAssert(string);
+  NSCParameterAssert([styles objectForKey:NSFontAttributeName]);
+  NSCParameterAssert([styles objectForKey:SVRSolverTextAttachmentNeighborFontKey]);
+  NSCParameterAssert([styles objectForKey:NSForegroundColorAttributeName]);
+  NSCParameterAssert([styles objectForKey:NSBackgroundColorAttributeName]);
+  NSCParameterAssert([styles objectForKey:SVRSolverTextAttachmentBackgroundKey]);
+
+  _string = [string retain];
+  _configuration = [styles retain];
   
-  _toDrawString = [stringToDraw retain];
-  _toDrawFont   = [[styles objectForKey:NSFontAttributeName] retain];
-  _toDrawColor  = [[styles objectForKey:NSForegroundColorAttributeName] retain];
-  _neighborFont = [[styles objectForKey:SVRSolverTextAttachmentPurposeNeighborFont] retain];
-  _background   = (SVRSolverTextAttachmentBackground)[backgroundNumber XP_integerValue];
-  
-  NSCParameterAssert(_toDrawString);
-  NSCParameterAssert(_toDrawFont);
-  NSCParameterAssert(_toDrawColor);
-  NSCParameterAssert(_neighborFont);
-  NSCParameterAssert(backgroundNumber != nil);
-  
-  [wrapper setPreferredFilename:_toDrawString];
+  [wrapper setPreferredFilename:string];
   [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
   
   return self;
@@ -113,14 +115,10 @@
 -(void)dealloc;
 {
   XPLogExtra1(@"DEALLOC: %@", self);
-  [_toDrawString release];
-  [_toDrawFont   release];
-  [_toDrawColor  release];
-  [_neighborFont  release];
-  _toDrawString = nil;
-  _toDrawFont   = nil;
-  _toDrawColor  = nil;
-  _neighborFont = nil;
+  [_string release];
+  [_configuration release];
+  _string = nil;
+  _configuration = nil;
   [super dealloc];
 }
 
@@ -147,8 +145,8 @@
   self = [super init];
   NSCParameterAssert(self);
   [self setAttachment:attachment];
-  _toDrawAttributes = [[SVRSolverTextAttachmentCell toDrawAttributesWithFont:[attachment toDrawFont]
-                                                                       color:[attachment toDrawColor]] retain];
+  _toDrawAttributes = [[SVRSolverTextAttachmentCell toDrawAttributesWithFont:[attachment font]
+                                                                       color:[attachment foregroundColor]] retain];
   return self;
 }
 
@@ -198,7 +196,7 @@
       NSDrawGrayBezel(cellFrame, cellFrame);
       break;
     case SVRSolverTextAttachmentBackgroundLegacyBoxStroke:
-      [[[self SVR_attachment] toDrawColor] set];
+      [[[self SVR_attachment] foregroundColor] set];
       NSFrameRect(cellFrame);
       break;
     default:
@@ -206,9 +204,9 @@
                  self, [[self SVR_attachment] background]);
       break;
   }
-  [[[self SVR_attachment] toDrawString] drawInRect:cellFrame
+  [[[self SVR_attachment] string] drawInRect:cellFrame
                                     withAttributes:[self toDrawAttributes]];
-  XPLogExtra2(@"drawString:`%@` withFrame:%@", [[self SVR_attachment] toDrawString], NSStringFromRect(cellFrame));
+  XPLogExtra2(@"drawString:`%@` withFrame:%@", [[self SVR_attachment] string], NSStringFromRect(cellFrame));
 }
 
 -(void)__drawBackgroundCapsuleFillInRect:(NSRect)_rect;
@@ -273,7 +271,7 @@
 -(NSSize)cellSize;
 {
   NSDictionary *attributes = [self toDrawAttributes];
-  NSSize size = [[[self SVR_attachment] toDrawString] sizeWithAttributes:attributes];
+  NSSize size = [[[self SVR_attachment] string] sizeWithAttributes:attributes];
   size.width += 8;
   return size;
 }
@@ -282,7 +280,7 @@
 {
   NSPoint output = [super cellBaselineOffset];
   XPFloat height = [self cellSize].height;
-  NSFont *toDrawFont = [[self SVR_attachment] toDrawFont];
+  NSFont *toDrawFont = [[self SVR_attachment] font];
   output.y -= (height/2.0) + ([toDrawFont descender]/2.0);
   return output;
 }
@@ -318,9 +316,9 @@
 -(BOOL)isEqual:(SVRSolverTextAttachment*)rhs;
 {
   if ([rhs class] != [SVRSolverTextAttachment class]) { return NO; }
-  return [[self toDrawString] isEqualToString:[rhs toDrawString]]
-      && [[self toDrawFont]   isEqual:[rhs toDrawFont]]
-      && [[self toDrawColor]  isEqual:[rhs toDrawColor]]
+  return [[self string] isEqualToString:[rhs string]]
+      && [[self font]   isEqual:[rhs font]]
+      && [[self foregroundColor]  isEqual:[rhs foregroundColor]]
       && [[self neighborFont] isEqual:[rhs neighborFont]]
       && [self background] == [rhs background];
 }
@@ -328,25 +326,17 @@
 -(id)initWithCoder:(NSCoder *)coder;
 {
   NSFileWrapper *wrapper = [[[NSFileWrapper alloc] init] autorelease];
-  NSNumber *backgroundNum = nil;
   
   self = [super initWithCoder:coder];
   NSCParameterAssert(self);
   
-  backgroundNum =  [coder XP_decodeObjectOfClass:[NSNumber class] forKey:@"borderStyle"];
-  _toDrawString = [[coder XP_decodeObjectOfClass:[NSString class] forKey:@"toDrawString"] retain];
-  _toDrawFont   = [[coder XP_decodeObjectOfClass:[NSFont   class] forKey:@"toDrawFont"]   retain];
-  _toDrawColor  = [[coder XP_decodeObjectOfClass:[NSColor  class] forKey:@"toDrawColor"]  retain];
-  _neighborFont = [[coder XP_decodeObjectOfClass:[NSFont   class] forKey:@"neighborFont"] retain];
-  _background   = (SVRSolverTextAttachmentBackground)[backgroundNum XP_integerValue];
+  _string = [[coder XP_decodeObjectOfClass:[NSString class] forKey:@"string"] retain];
+  _configuration = [[coder XP_decodeObjectOfClass:[NSDictionary class] forKey:@"configuration"] retain];
   
-  NSCParameterAssert(_toDrawString);
-  NSCParameterAssert(_toDrawFont);
-  NSCParameterAssert(_toDrawColor);
-  NSCParameterAssert(_neighborFont);
-  NSCParameterAssert(backgroundNum != nil);
+  NSCParameterAssert(_string);
+  NSCParameterAssert(_configuration);
   
-  [wrapper setPreferredFilename:_toDrawString];
+  [wrapper setPreferredFilename:_string];
   [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
   
   return self;
@@ -355,11 +345,8 @@
 -(void)encodeWithCoder:(NSCoder*)coder;
 {
   [super encodeWithCoder:coder];
-  [coder XP_encodeObject:_toDrawString forKey:@"toDrawString"];
-  [coder XP_encodeObject:_toDrawFont   forKey:@"toDrawFont"];
-  [coder XP_encodeObject:_toDrawColor  forKey:@"toDrawColor"];
-  [coder XP_encodeObject:_neighborFont forKey:@"neighborFont"];
-  [coder XP_encodeObject:[NSNumber XP_numberWithInteger:_background] forKey:@"borderStyle"];
+  [coder XP_encodeObject:_string forKey:@"string"];
+  [coder XP_encodeObject:_configuration forKey:@"configuration"];
 }
 
 @end

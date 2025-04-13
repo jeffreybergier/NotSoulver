@@ -126,8 +126,8 @@ typedef enum {
   SVRSolverTextAttachmentBackgroundLegacyBoxStroke
 } SVRSolverTextAttachmentBackground;
 
-extern NSString *const SVRSolverTextAttachmentPurposeNeighborFont;
-extern NSString *const SVRSolverTextAttachmentPurpose;
+extern NSString *const SVRSolverTextAttachmentNeighborFontKey;
+extern NSString *const SVRSolverTextAttachmentBackgroundKey;
 
 extern NSString *const SVRSolverTextStyleMathFont;
 extern NSString *const SVRSolverTextStyleOtherFont;

@@ -116,8 +116,8 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
                   NSStringFromRange(range));
       return nil;
     }
-    dictValues = [NSArray arrayWithObjects:[attachment toDrawColor], [attachment toDrawFont], nil];
-    toReplace  = [[[NSAttributedString alloc] initWithString:[attachment toDrawString]
+    dictValues = [NSArray arrayWithObjects:[attachment foregroundColor], [attachment font], nil];
+    toReplace  = [[[NSAttributedString alloc] initWithString:[attachment string]
                                                   attributes:[NSDictionary dictionaryWithObjects:dictValues forKeys:dictKeys]] autorelease];
     [output replaceCharactersInRange:range withAttributedString:toReplace];
     dictValues = nil;
@@ -151,7 +151,7 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
                   NSStringFromRange(range));
       return;
     }
-    dictValues = [NSArray arrayWithObjects:[attachment toDrawColor], [attachment toDrawFont], nil];
+    dictValues = [NSArray arrayWithObjects:[attachment foregroundColor], [attachment font], nil];
     toReplace  = [[[NSAttributedString alloc] initWithString:originalString
                                                   attributes:[NSDictionary dictionaryWithObjects:dictValues forKeys:dictKeys]] autorelease];
     [input replaceCharactersInRange:range withAttributedString:toReplace];
@@ -599,8 +599,8 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
 
 // MARK: SVRSolverTextAttachment Input
 
-NSString *const SVRSolverTextAttachmentPurposeNeighborFont  = @"SVRSolverTextAttachmentPurposeNeighborFont";
-NSString *const SVRSolverTextAttachmentPurpose              = @"SVRSolverTextAttachmentPurpose";
+NSString *const SVRSolverTextAttachmentNeighborFontKey = @"SVRSolverTextAttachmentNeighborFont";
+NSString *const SVRSolverTextAttachmentBackgroundKey   = @"SVRSolverTextAttachmentBackground";
 
 NSString *const SVRSolverTextStyleMathFont      = @"SVRSolverTextStyleMathFont";
 NSString *const SVRSolverTextStyleOtherFont     = @"SVRSolverTextStyleOtherFont";
@@ -703,10 +703,10 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
   
   keys = [NSArray arrayWithObjects:
           NSFontAttributeName,
-          SVRSolverTextAttachmentPurposeNeighborFont,
+          SVRSolverTextAttachmentNeighborFontKey,
           NSForegroundColorAttributeName,
           NSBackgroundColorAttributeName,
-          SVRSolverTextAttachmentPurpose,
+          SVRSolverTextAttachmentBackgroundKey,
           nil];
   
   return [NSDictionary dictionaryWithObjects:values forKeys:keys];
