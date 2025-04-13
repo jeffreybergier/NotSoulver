@@ -196,14 +196,8 @@
     case SVRSolverTextAttachmentBorderStyleRecessedWhite:
       NSDrawWhiteBezel(cellFrame, cellFrame);
       break;
-    case SVRSolverTextAttachmentBorderStyleGroove:
-      NSDrawGroove(cellFrame, cellFrame);
-      break;
-    case SVRSolverTextAttachmentBorderStyleDotted:
-      NSDottedFrameRect(cellFrame);
-      break;
-    case SVRSolverTextAttachmentBorderStyleNone:
     default:
+      XPLogRaise2(@"%@ borderStyle(%d) unsupported", self, [[self SVR_attachment] borderStyle]);
       break;
   }
   [[[self SVR_attachment] toDrawString] drawInRect:cellFrame

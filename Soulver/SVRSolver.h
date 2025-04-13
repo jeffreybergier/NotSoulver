@@ -122,9 +122,6 @@ typedef enum {
   SVRSolverTextAttachmentBorderStyleColored,
   SVRSolverTextAttachmentBorderStyleRecessedGray,
   SVRSolverTextAttachmentBorderStyleRecessedWhite,
-  SVRSolverTextAttachmentBorderStyleGroove,
-  SVRSolverTextAttachmentBorderStyleDotted,
-  SVRSolverTextAttachmentBorderStyleNone
 } SVRSolverTextAttachmentBorderStyle;
 
 extern NSString *const SVRSolverTextAttachmentStyleToDrawFont;
