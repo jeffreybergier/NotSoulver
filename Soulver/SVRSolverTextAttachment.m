@@ -28,6 +28,7 @@
 //
 
 #import "SVRSolverTextAttachment.h"
+#import "SVRSolverDrawing.h"
 
 @implementation SVRSolverTextAttachment
 
@@ -185,21 +186,24 @@
 -(void)drawWithFrame:(NSRect)cellFrame
               inView:(NSView*)controlView;
 {
-  switch ([[self SVR_attachment] borderStyle]) {
-    case SVRSolverTextAttachmentBorderStyleColored:
-      [[[self SVR_attachment] toDrawColor] set];
-      NSFrameRect(cellFrame);
-      break;
-    case SVRSolverTextAttachmentBorderStyleRecessedGray:
-      NSDrawGrayBezel(cellFrame, cellFrame);
-      break;
-    case SVRSolverTextAttachmentBorderStyleRecessedWhite:
-      NSDrawWhiteBezel(cellFrame, cellFrame);
-      break;
-    default:
-      XPLogRaise2(@"%@ borderStyle(%d) unsupported", self, [[self SVR_attachment] borderStyle]);
-      break;
-  }
+  [SVRSolverDrawing drawBackgroundInRect:cellFrame
+                                    type:0
+                                   color:[NSColor blueColor]];
+//  switch ([[self SVR_attachment] borderStyle]) {
+//    case SVRSolverTextAttachmentBorderStyleColored:
+//      [[[self SVR_attachment] toDrawColor] set];
+//      NSFrameRect(cellFrame);
+//      break;
+//    case SVRSolverTextAttachmentBorderStyleRecessedGray:
+//      NSDrawGrayBezel(cellFrame, cellFrame);
+//      break;
+//    case SVRSolverTextAttachmentBorderStyleRecessedWhite:
+//      NSDrawWhiteBezel(cellFrame, cellFrame);
+//      break;
+//    default:
+//      XPLogRaise2(@"%@ borderStyle(%d) unsupported", self, [[self SVR_attachment] borderStyle]);
+//      break;
+//  }
   [[[self SVR_attachment] toDrawString] drawInRect:cellFrame
                                     withAttributes:[self toDrawAttributes]];
   XPLogExtra2(@"drawString:`%@` withFrame:%@", [[self SVR_attachment] toDrawString], NSStringFromRect(cellFrame));

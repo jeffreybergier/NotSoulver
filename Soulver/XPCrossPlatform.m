@@ -481,9 +481,9 @@ NSArray* XPRunOpenPanel(NSString *extension)
                                                 xRadius:xRadius
                                                 yRadius:yRadius];
 #else
-  return [NSBezierPath __REAL_bezierPathWithRoundedRect:rect
-                                                xRadius:xRadius
-                                                yRadius:yRadius];
+  return [NSBezierPath __MANUAL_bezierPathWithRoundedRect:rect
+                                                  xRadius:xRadius
+                                                  yRadius:yRadius];
 #endif
 }
 
