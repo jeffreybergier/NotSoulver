@@ -33,7 +33,6 @@
 		8CCAA3922D936DA30050DD4A /* TestsIntegration-SolvedRep.rtf in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CCAA36E2D936CC80050DD4A /* TestsIntegration-SolvedRep.rtf */; };
 		8CCAA3932D936DA30050DD4A /* TestsIntegration-UnsolvedRep.rtf in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CCAA36F2D936CC80050DD4A /* TestsIntegration-UnsolvedRep.rtf */; };
 		8CCAA3942D936DA30050DD4A /* about-image-512.tiff in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CCAA37A2D936D180050DD4A /* about-image-512.tiff */; };
-		8CF03DFC2DA0E7C7001D6A72 /* SVRSolverDrawing.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF03DFB2DA0E7C7001D6A72 /* SVRSolverDrawing.m */; };
 		8CF03E012DA26F71001D6A72 /* TestUnitBezierPath-MANUAL.tiff in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CF03DFE2DA26F61001D6A72 /* TestUnitBezierPath-MANUAL.tiff */; };
 		8CF03E022DA26F71001D6A72 /* TestUnitBezierPath-REAL.tiff in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CF03DFF2DA26F61001D6A72 /* TestUnitBezierPath-REAL.tiff */; };
 /* End PBXBuildFile section */
@@ -121,8 +120,6 @@
 		8CCAA38E2D936D7E0050DD4A /* Soulver.iconheader */ = {isa = PBXFileReference; lastKnownFileType = text; name = Soulver.iconheader; path = ../Soulver/Soulver.iconheader; sourceTree = SOURCE_ROOT; };
 		8CCAA38F2D936D890050DD4A /* .gdbinit */ = {isa = PBXFileReference; lastKnownFileType = text; name = .gdbinit; path = ../Soulver/.gdbinit; sourceTree = SOURCE_ROOT; };
 		8CD402032D6AFCAF00024E10 /* Xcode14 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Xcode14; sourceTree = BUILT_PRODUCTS_DIR; };
-		8CF03DFA2DA0E7C7001D6A72 /* SVRSolverDrawing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SVRSolverDrawing.h; path = ../Soulver/SVRSolverDrawing.h; sourceTree = SOURCE_ROOT; };
-		8CF03DFB2DA0E7C7001D6A72 /* SVRSolverDrawing.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SVRSolverDrawing.m; path = ../Soulver/SVRSolverDrawing.m; sourceTree = SOURCE_ROOT; };
 		8CF03DFE2DA26F61001D6A72 /* TestUnitBezierPath-MANUAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "TestUnitBezierPath-MANUAL.tiff"; path = "../Soulver/TestUnitBezierPath-MANUAL.tiff"; sourceTree = SOURCE_ROOT; };
 		8CF03DFF2DA26F61001D6A72 /* TestUnitBezierPath-REAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "TestUnitBezierPath-REAL.tiff"; path = "../Soulver/TestUnitBezierPath-REAL.tiff"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -242,8 +239,6 @@
 				8CCAA3482D936CA20050DD4A /* SVRSettingsViewController.m */,
 				8CCAA3492D936CA20050DD4A /* SVRSolver.h */,
 				8CCAA34A2D936CA20050DD4A /* SVRSolver.m */,
-				8CF03DFA2DA0E7C7001D6A72 /* SVRSolverDrawing.h */,
-				8CF03DFB2DA0E7C7001D6A72 /* SVRSolverDrawing.m */,
 				8CCAA34B2D936CA20050DD4A /* SVRSolverExpressionTagger.h */,
 				8CCAA34C2D936CA20050DD4A /* SVRSolverExpressionTagger.m */,
 				8CCAA34D2D936CA20050DD4A /* SVRSolverScanner.h */,
@@ -331,7 +326,6 @@
 				8CCAA3722D936CC80050DD4A /* TestsIntegration.m in Sources */,
 				8CCAA3792D936CF10050DD4A /* slre.c in Sources */,
 				8CCAA3732D936CC80050DD4A /* TestsUnit.m in Sources */,
-				8CF03DFC2DA0E7C7001D6A72 /* SVRSolverDrawing.m in Sources */,
 				8CCAA3582D936CA20050DD4A /* SVRAppDelegate.m in Sources */,
 				8CCAA3592D936CA20050DD4A /* SVRDocumentViewController.m in Sources */,
 				8CCAA35A2D936CA20050DD4A /* SVRSolverExpressionTagger.m in Sources */,

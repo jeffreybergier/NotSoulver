@@ -28,7 +28,6 @@
 //
 
 #import "SVRSolverTextAttachment.h"
-#import "SVRSolverDrawing.h"
 
 @implementation SVRSolverTextAttachment
 
@@ -186,9 +185,6 @@
 -(void)drawWithFrame:(NSRect)cellFrame
               inView:(NSView*)controlView;
 {
-  [SVRSolverDrawing drawBackgroundInRect:cellFrame
-                                    type:0
-                                   color:[NSColor blueColor]];
 //  switch ([[self SVR_attachment] borderStyle]) {
 //    case SVRSolverTextAttachmentBorderStyleColored:
 //      [[[self SVR_attachment] toDrawColor] set];
@@ -204,9 +200,49 @@
 //      XPLogRaise2(@"%@ borderStyle(%d) unsupported", self, [[self SVR_attachment] borderStyle]);
 //      break;
 //  }
+  [self __drawBackgroundForSolutionInRect:cellFrame];
   [[[self SVR_attachment] toDrawString] drawInRect:cellFrame
                                     withAttributes:[self toDrawAttributes]];
   XPLogExtra2(@"drawString:`%@` withFrame:%@", [[self SVR_attachment] toDrawString], NSStringFromRect(cellFrame));
+}
+
+-(void)__drawBackgroundForSolutionInRect:(NSRect)_rect;
+{
+#ifdef XPSupportsNSBezierPath
+  // Prepare Object Variables
+  XPFloat stroke = 2.0;
+  NSRect rect = NSInsetRect(_rect, stroke, stroke);
+  XPFloat radius = NSHeight(rect) / 2.0;
+  NSColor *color = [NSColor colorWithCalibratedRed:40/255.0
+                                             green:92/255.0
+                                              blue:246/255.0
+                                             alpha:1.0];
+  NSColor *colorDark = [color blendedColorWithFraction:0.3 ofColor:[NSColor blackColor]];
+  NSBezierPath *path = [NSBezierPath XP_bezierPathWithRoundedRect:rect
+                                                          xRadius:radius
+                                                          yRadius:radius];
+  
+  NSCParameterAssert(color);
+  NSCParameterAssert(path);
+  
+  [color set];
+  [path fill];
+  [path setLineWidth:stroke];
+  [colorDark set];
+  [path stroke];
+#else
+  NSDrawWhiteBezel(_rect, _rect);
+#endif
+}
+
+-(void)__drawBackgroundForPreviousSolutionInRect:(NSRect)_rect;
+{
+  
+}
+
+-(void)__drawBackgroundForErrorInRect:(NSRect)_rect;
+{
+  
 }
 
 // MARK: Protocol (Used)

@@ -74,6 +74,9 @@
                                    color:(NSColor*)color;
 -(void)drawWithFrame:(NSRect)cellFrame
               inView:(NSView*)controlView;
+-(void)__drawBackgroundForSolutionInRect:(NSRect)_rect;
+-(void)__drawBackgroundForPreviousSolutionInRect:(NSRect)_rect;
+-(void)__drawBackgroundForErrorInRect:(NSRect)_rect;
 
 // MARK: Protocol (Used)
 -(NSSize)cellSize;
