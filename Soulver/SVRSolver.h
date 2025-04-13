@@ -119,15 +119,13 @@ typedef SVRCalculationError* SVRCalculationErrorPointer;
 // MARK: SVRSolverTextAttachment Input
 
 typedef enum {
-  SVRSolverTextAttachmentBorderStyleColored,
-  SVRSolverTextAttachmentBorderStyleRecessedGray,
-  SVRSolverTextAttachmentBorderStyleRecessedWhite,
-} SVRSolverTextAttachmentBorderStyle;
+  SVRSolverTextAttachmentPurposeSolution,
+  SVRSolverTextAttachmentPurposePreviousSolution,
+  SVRSolverTextAttachmentPurposeError,
+} SVRSolverAttachmentTextPurpose;
 
-extern NSString *const SVRSolverTextAttachmentStyleToDrawFont;
-extern NSString *const SVRSolverTextAttachmentStyleToDrawColor;
-extern NSString *const SVRSolverTextAttachmentStyleNeighborFont;
-extern NSString *const SVRSolverTextAttachmentStyleBorder;
+extern NSString *const SVRSolverTextAttachmentPurposeNeighborFont;
+extern NSString *const SVRSolverTextAttachmentPurpose;
 
 extern NSString *const SVRSolverTextStyleMathFont;
 extern NSString *const SVRSolverTextStyleOtherFont;
@@ -190,10 +188,11 @@ NSString             *SVRSolverDebugDescriptionForError(SVRCalculationError erro
 
 @interface NSDictionary (SVRSolverTextAttachmentStyles)
 
-+(SVRSolverTextAttachmentStyles)__SVR_stylesWithToDrawFont:(NSFont*)toDrawFont
-                                              neighborFont:(NSFont*)neighborFont
-                                               toDrawColor:(NSColor*)toDrawColor
-                                               borderStyle:(SVRSolverTextAttachmentBorderStyle)borderStyle;
++(SVRSolverTextAttachmentStyles)__SVR_stylesWithFont:(NSFont*)font
+                                        neighborFont:(NSFont*)neighborFont
+                                     foregroundColor:(NSColor*)foregroundColor
+                                     backgroundColor:(NSColor*)backgroundColor
+                                             purpose:(SVRSolverAttachmentTextPurpose)purpose;
 
 +(SVRSolverTextAttachmentStyles)__SVR_stylesWithMathFont:(NSFont*)mathFont
                                             neighborFont:(NSFont*)otherTextFont

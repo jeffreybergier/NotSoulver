@@ -51,7 +51,7 @@
   return [[_neighborFont retain] autorelease];
 }
 
--(SVRSolverTextAttachmentBorderStyle)borderStyle;
+-(SVRSolverAttachmentTextPurpose)borderStyle;
 {
   return _borderStyle;
 }
@@ -59,17 +59,17 @@
 -(id)initWithString:(NSString*)stringToDraw
              styles:(SVRSolverTextAttachmentStyles)styles;
 {
-  NSNumber *borderStyleNumber = [styles objectForKey:SVRSolverTextAttachmentStyleBorder];
+  NSNumber *borderStyleNumber = [styles objectForKey:SVRSolverTextAttachmentPurpose];
   NSFileWrapper *wrapper = [[[NSFileWrapper alloc] init] autorelease];
   
   self = [super initWithFileWrapper:wrapper];
   NSCParameterAssert(self);
   
   _toDrawString = [stringToDraw retain];
-  _toDrawFont   = [[styles objectForKey:SVRSolverTextAttachmentStyleToDrawFont] retain];
-  _toDrawColor  = [[styles objectForKey:SVRSolverTextAttachmentStyleToDrawColor] retain];
-  _neighborFont = [[styles objectForKey:SVRSolverTextAttachmentStyleNeighborFont] retain];
-  _borderStyle  = (SVRSolverTextAttachmentBorderStyle)[borderStyleNumber XP_integerValue];
+  _toDrawFont   = [[styles objectForKey:NSFontAttributeName] retain];
+  _toDrawColor  = [[styles objectForKey:NSForegroundColorAttributeName] retain];
+  _neighborFont = [[styles objectForKey:SVRSolverTextAttachmentPurposeNeighborFont] retain];
+  _borderStyle  = (SVRSolverAttachmentTextPurpose)[borderStyleNumber XP_integerValue];
   
   NSCParameterAssert(_toDrawString);
   NSCParameterAssert(_toDrawFont);
@@ -315,7 +315,7 @@
   _toDrawColor  = [[coder XP_decodeObjectOfClass:[NSColor  class] forKey:@"toDrawColor"]  retain];
   _neighborFont = [[coder XP_decodeObjectOfClass:[NSFont   class] forKey:@"neighborFont"] retain];
   __borderStyle =  [coder XP_decodeObjectOfClass:[NSNumber class] forKey:@"borderStyle"];
-  _borderStyle  = (SVRSolverTextAttachmentBorderStyle)[__borderStyle XP_integerValue];
+  _borderStyle  = (SVRSolverAttachmentTextPurpose)[__borderStyle XP_integerValue];
   
   NSCParameterAssert(_toDrawString);
   NSCParameterAssert(_toDrawFont);

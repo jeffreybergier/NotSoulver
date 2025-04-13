@@ -37,14 +37,14 @@
   mm_retain NSFont    *_toDrawFont;
   mm_retain NSColor   *_toDrawColor;
   mm_retain NSFont    *_neighborFont;
-  SVRSolverTextAttachmentBorderStyle _borderStyle;
+  SVRSolverAttachmentTextPurpose _borderStyle;
 }
 
 -(NSString*)toDrawString;
 -(NSFont*)toDrawFont;
 -(NSColor*)toDrawColor;
 -(NSFont*)neighborFont;
--(SVRSolverTextAttachmentBorderStyle)borderStyle;
+-(SVRSolverAttachmentTextPurpose)borderStyle;
 
 -(id)initWithString:(NSString*)stringToDraw styles:(SVRSolverTextAttachmentStyles)styles;
 +(id)attachmentWithSolution:(NSDecimalNumber*)solution styles:(SVRSolverTextAttachmentStyles)styles;
