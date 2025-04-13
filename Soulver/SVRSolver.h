@@ -119,10 +119,12 @@ typedef SVRCalculationError* SVRCalculationErrorPointer;
 // MARK: SVRSolverTextAttachment Input
 
 typedef enum {
-  SVRSolverTextAttachmentPurposeSolution,
-  SVRSolverTextAttachmentPurposePreviousSolution,
-  SVRSolverTextAttachmentPurposeError,
-} SVRSolverAttachmentTextPurpose;
+  SVRSolverTextAttachmentBackgroundCapsuleFill,
+  SVRSolverTextAttachmentBackgroundCapsuleStroke,
+  SVRSolverTextAttachmentBackgroundLegacyBoxWhite,
+  SVRSolverTextAttachmentBackgroundLegacyBoxGray,
+  SVRSolverTextAttachmentBackgroundLegacyBoxStroke
+} SVRSolverTextAttachmentBackground;
 
 extern NSString *const SVRSolverTextAttachmentPurposeNeighborFont;
 extern NSString *const SVRSolverTextAttachmentPurpose;
@@ -192,7 +194,7 @@ NSString             *SVRSolverDebugDescriptionForError(SVRCalculationError erro
                                         neighborFont:(NSFont*)neighborFont
                                      foregroundColor:(NSColor*)foregroundColor
                                      backgroundColor:(NSColor*)backgroundColor
-                                             purpose:(SVRSolverAttachmentTextPurpose)purpose;
+                                             background:(SVRSolverTextAttachmentBackground)purpose;
 
 +(SVRSolverTextAttachmentStyles)__SVR_stylesWithMathFont:(NSFont*)mathFont
                                             neighborFont:(NSFont*)otherTextFont

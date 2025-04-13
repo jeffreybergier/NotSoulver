@@ -180,39 +180,42 @@ void TestsIntegrationExecute(void)
 
 +(SVRSolverTextAttachmentStyles)stylesForSolution;
 {
-  NSFont  *toDrawFont   = [NSFont fontWithName:@"Courier" size:12];
-  NSColor *toDrawColor  = [NSColor colorWithCalibratedRed:0 green:0 blue:0.7 alpha:1];
-  NSFont  *neighborFont = [NSFont fontWithName:@"Courier" size:12];
-  SVRSolverAttachmentTextPurpose borderStyle = SVRSolverTextAttachmentPurposeError;
-  
-  return [NSDictionary __SVR_stylesWithFont:toDrawFont
-                                     neighborFont:neighborFont
-                                      foregroundColor:toDrawColor
-                                      purpose:borderStyle];
+  NSFont *font = [NSFont fontWithName:@"Courier" size:12];
+  NSFont *neighborFont = [NSFont fontWithName:@"Courier" size:12];
+  NSColor *foregroundColor = [NSColor colorWithCalibratedRed:0 green:0 blue:0.7 alpha:1];
+  NSColor *backgroundColor = [NSColor colorWithCalibratedRed:1 green:1 blue:1 alpha:1];
+  SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxWhite;
+  return [NSDictionary __SVR_stylesWithFont:font
+                               neighborFont:neighborFont
+                            foregroundColor:foregroundColor
+                            backgroundColor:backgroundColor
+                                 background:background];
 }
 +(SVRSolverTextAttachmentStyles)stylesForPreviousSolution;
 {
-  NSFont  *toDrawFont   = [NSFont fontWithName:@"Courier" size:8];
-  NSColor *toDrawColor  = [NSColor colorWithCalibratedRed:0 green:0.7 blue:0 alpha:1];
-  NSFont  *neighborFont = [NSFont fontWithName:@"Helvetica" size:14];
-  SVRSolverAttachmentTextPurpose borderStyle = SVRSolverTextAttachmentPurposeSolution;
-  
-  return [NSDictionary __SVR_stylesWithFont:toDrawFont
-                                     neighborFont:neighborFont
-                                      foregroundColor:toDrawColor
-                                      purpose:borderStyle];
+  NSFont *font = [NSFont fontWithName:@"Courier" size:8];
+  NSFont *neighborFont = [NSFont fontWithName:@"Helvetica" size:14];
+  NSColor *foregroundColor  = [NSColor colorWithCalibratedRed:0 green:0.7 blue:0 alpha:1];
+  NSColor *backgroundColor = [NSColor colorWithCalibratedRed:1 green:1 blue:1 alpha:1];
+  SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
+  return [NSDictionary __SVR_stylesWithFont:font
+                               neighborFont:neighborFont
+                            foregroundColor:foregroundColor
+                            backgroundColor:backgroundColor
+                                 background:background];
 }
 +(SVRSolverTextAttachmentStyles)stylesForError;
 {
-  NSFont  *toDrawFont   = [NSFont fontWithName:@"Helvetica" size:10];
-  NSColor *toDrawColor  = [NSColor colorWithCalibratedRed:0.7 green:0 blue:0 alpha:1];
-  NSFont  *neighborFont = [NSFont fontWithName:@"Courier" size:12];
-  SVRSolverAttachmentTextPurpose borderStyle = SVRSolverTextAttachmentPurposeSolution;
-  
-  return [NSDictionary __SVR_stylesWithFont:toDrawFont
-                                     neighborFont:neighborFont
-                                      foregroundColor:toDrawColor
-                                      purpose:borderStyle];
+  NSFont *font = [NSFont fontWithName:@"Helvetica" size:10];
+  NSFont *neighborFont = [NSFont fontWithName:@"Courier" size:12];
+  NSColor *foregroundColor = [NSColor colorWithCalibratedRed:0.7 green:0 blue:0 alpha:1];
+  NSColor *backgroundColor = [NSColor colorWithCalibratedRed:1 green:1 blue:1 alpha:1];
+  SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
+  return [NSDictionary __SVR_stylesWithFont:font
+                               neighborFont:neighborFont
+                            foregroundColor:foregroundColor
+                            backgroundColor:backgroundColor
+                                 background:background];
 }
 +(SVRSolverTextStyles)stylesForText;
 {

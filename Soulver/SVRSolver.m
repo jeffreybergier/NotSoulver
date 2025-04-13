@@ -615,34 +615,47 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
 
 -(SVRSolverTextAttachmentStyles)SVR_stylesForSolution;
 {
+#ifdef XPSupportsNSBezierPath
+  SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundCapsuleFill;
+#else
+  XPUserInterfaceStyle userInterfaceStyle = [self SVR_userInterfaceStyle];
+  SVRSolverTextAttachmentBackground background = userInterfaceStyle == XPUserInterfaceStyleDark
+                                               ? SVRSolverTextAttachmentBackgroundLegacyBoxGray
+                                               : SVRSolverTextAttachmentBackgroundLegacyBoxWhite;
+#endif
   return [NSDictionary __SVR_stylesWithFont:[self SVR_fontForTheme:SVRThemeFontMath]
                                neighborFont:[self SVR_fontForTheme:SVRThemeFontMath]
                             foregroundColor:[self SVR_colorForTheme:SVRThemeColorSolution]
-                            backgroundColor:[NSColor greenColor]
-                                    purpose:SVRSolverTextAttachmentPurposeSolution];
+                            backgroundColor:[NSColor blueColor] // TODO: Change color
+                                    background:background];
 }
 
 -(SVRSolverTextAttachmentStyles)SVR_stylesForPreviousSolution;
 {
+#ifdef XPSupportsNSBezierPath
+  SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundCapsuleStroke;
+#else
+  SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
+#endif
   return [NSDictionary __SVR_stylesWithFont:[self SVR_fontForTheme:SVRThemeFontMath]
                                neighborFont:[self SVR_fontForTheme:SVRThemeFontMath]
                             foregroundColor:[self SVR_colorForTheme:SVRThemeColorOperator]
-                            backgroundColor:[NSColor greenColor]
-                                    purpose:SVRSolverTextAttachmentPurposePreviousSolution];
+                            backgroundColor:[NSColor greenColor] // TODO: Change color
+                                 background:background];
 }
 
 -(SVRSolverTextAttachmentStyles)SVR_stylesForError;
 {
-  NSFont  *toDrawFont   = [self SVR_fontForTheme:SVRThemeFontError];
-  NSColor *toDrawColor  = [self SVR_colorForTheme:SVRThemeColorErrorText];
-  NSFont  *neighborFont = [self SVR_fontForTheme:SVRThemeFontMath];
-  SVRSolverAttachmentTextPurpose purpose = SVRSolverTextAttachmentPurposePreviousSolution;
-  
+#ifdef XPSupportsNSBezierPath
+  SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundCapsuleStroke;
+#else
+  SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
+#endif
   return [NSDictionary __SVR_stylesWithFont:[self SVR_fontForTheme:SVRThemeFontError]
                                neighborFont:[self SVR_fontForTheme:SVRThemeFontMath]
                             foregroundColor:[self SVR_colorForTheme:SVRThemeColorErrorText]
-                            backgroundColor:[NSColor greenColor]
-                                    purpose:SVRSolverTextAttachmentPurposeError];
+                            backgroundColor:[NSColor redColor] // TODO: Change color
+                                 background:background];
 }
 
 -(SVRSolverTextStyles)SVR_stylesForText;
@@ -670,7 +683,7 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
                                         neighborFont:(NSFont*)neighborFont
                                      foregroundColor:(NSColor*)foregroundColor
                                      backgroundColor:(NSColor*)backgroundColor
-                                             purpose:(SVRSolverAttachmentTextPurpose)purpose;
+                                             background:(SVRSolverTextAttachmentBackground)purpose;
 {
   NSArray *values;
   NSArray *keys;

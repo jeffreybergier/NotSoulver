@@ -37,14 +37,14 @@
   mm_retain NSFont    *_toDrawFont;
   mm_retain NSColor   *_toDrawColor;
   mm_retain NSFont    *_neighborFont;
-  SVRSolverAttachmentTextPurpose _borderStyle;
+  SVRSolverTextAttachmentBackground _background;
 }
 
 -(NSString*)toDrawString;
 -(NSFont*)toDrawFont;
 -(NSColor*)toDrawColor;
 -(NSFont*)neighborFont;
--(SVRSolverAttachmentTextPurpose)borderStyle;
+-(SVRSolverTextAttachmentBackground)background;
 
 -(id)initWithString:(NSString*)stringToDraw styles:(SVRSolverTextAttachmentStyles)styles;
 +(id)attachmentWithSolution:(NSDecimalNumber*)solution styles:(SVRSolverTextAttachmentStyles)styles;
@@ -72,11 +72,9 @@
 // MARK: Custom Drawing
 +(NSDictionary*)toDrawAttributesWithFont:(NSFont*)font
                                    color:(NSColor*)color;
--(void)drawWithFrame:(NSRect)cellFrame
-              inView:(NSView*)controlView;
--(void)__drawBackgroundForSolutionInRect:(NSRect)_rect;
--(void)__drawBackgroundForPreviousSolutionInRect:(NSRect)_rect;
--(void)__drawBackgroundForErrorInRect:(NSRect)_rect;
+-(void)drawWithFrame:(NSRect)cellFrame inView:(NSView*)controlView;
+-(void)__drawBackgroundCapsuleFillInRect:(NSRect)_rect;
+-(void)__drawBackgroundCapsuleStrokeInRect:(NSRect)_rect;
 
 // MARK: Protocol (Used)
 -(NSSize)cellSize;

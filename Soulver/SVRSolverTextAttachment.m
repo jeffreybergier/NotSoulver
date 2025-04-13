@@ -51,15 +51,15 @@
   return [[_neighborFont retain] autorelease];
 }
 
--(SVRSolverAttachmentTextPurpose)borderStyle;
+-(SVRSolverTextAttachmentBackground)background;
 {
-  return _borderStyle;
+  return _background;
 }
 
 -(id)initWithString:(NSString*)stringToDraw
              styles:(SVRSolverTextAttachmentStyles)styles;
 {
-  NSNumber *borderStyleNumber = [styles objectForKey:SVRSolverTextAttachmentPurpose];
+  NSNumber *backgroundNumber = [styles objectForKey:SVRSolverTextAttachmentPurpose];
   NSFileWrapper *wrapper = [[[NSFileWrapper alloc] init] autorelease];
   
   self = [super initWithFileWrapper:wrapper];
@@ -69,13 +69,13 @@
   _toDrawFont   = [[styles objectForKey:NSFontAttributeName] retain];
   _toDrawColor  = [[styles objectForKey:NSForegroundColorAttributeName] retain];
   _neighborFont = [[styles objectForKey:SVRSolverTextAttachmentPurposeNeighborFont] retain];
-  _borderStyle  = (SVRSolverAttachmentTextPurpose)[borderStyleNumber XP_integerValue];
+  _background   = (SVRSolverTextAttachmentBackground)[backgroundNumber XP_integerValue];
   
   NSCParameterAssert(_toDrawString);
   NSCParameterAssert(_toDrawFont);
   NSCParameterAssert(_toDrawColor);
   NSCParameterAssert(_neighborFont);
-  NSCParameterAssert(borderStyleNumber != nil);
+  NSCParameterAssert(backgroundNumber != nil);
   
   [wrapper setPreferredFilename:_toDrawString];
   [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
@@ -182,37 +182,43 @@
   return [NSDictionary dictionaryWithObjects:vals forKeys:keys];
 }
 
--(void)drawWithFrame:(NSRect)cellFrame
-              inView:(NSView*)controlView;
+-(void)drawWithFrame:(NSRect)cellFrame inView:(NSView*)controlView;
 {
-//  switch ([[self SVR_attachment] borderStyle]) {
-//    case SVRSolverTextAttachmentBorderStyleColored:
-//      [[[self SVR_attachment] toDrawColor] set];
-//      NSFrameRect(cellFrame);
-//      break;
-//    case SVRSolverTextAttachmentBorderStyleRecessedGray:
-//      NSDrawGrayBezel(cellFrame, cellFrame);
-//      break;
-//    case SVRSolverTextAttachmentBorderStyleRecessedWhite:
-//      NSDrawWhiteBezel(cellFrame, cellFrame);
-//      break;
-//    default:
-//      XPLogRaise2(@"%@ borderStyle(%d) unsupported", self, [[self SVR_attachment] borderStyle]);
-//      break;
-//  }
-  [self __drawBackgroundForSolutionInRect:cellFrame];
+  switch ([[self SVR_attachment] background]) {
+    case SVRSolverTextAttachmentBackgroundCapsuleFill:
+      [self __drawBackgroundCapsuleFillInRect:cellFrame];
+      break;
+    case SVRSolverTextAttachmentBackgroundCapsuleStroke:
+      [self __drawBackgroundCapsuleStrokeInRect:cellFrame];
+      break;
+    case SVRSolverTextAttachmentBackgroundLegacyBoxWhite:
+      NSDrawWhiteBezel(cellFrame, cellFrame);
+      break;
+    case SVRSolverTextAttachmentBackgroundLegacyBoxGray:
+      NSDrawGrayBezel(cellFrame, cellFrame);
+      break;
+    case SVRSolverTextAttachmentBackgroundLegacyBoxStroke:
+      [[[self SVR_attachment] toDrawColor] set];
+      NSFrameRect(cellFrame);
+      break;
+    default:
+      NSCAssert2(NO, @"%@ SVRSolverTextAttachmentBackground(%d) unknown case",
+                 self, [[self SVR_attachment] background]);
+      break;
+  }
   [[[self SVR_attachment] toDrawString] drawInRect:cellFrame
                                     withAttributes:[self toDrawAttributes]];
   XPLogExtra2(@"drawString:`%@` withFrame:%@", [[self SVR_attachment] toDrawString], NSStringFromRect(cellFrame));
 }
 
--(void)__drawBackgroundForSolutionInRect:(NSRect)_rect;
+-(void)__drawBackgroundCapsuleFillInRect:(NSRect)_rect;
 {
 #ifdef XPSupportsNSBezierPath
   // Prepare Object Variables
   XPFloat stroke = 2.0;
   NSRect rect = NSInsetRect(_rect, stroke, stroke);
   XPFloat radius = NSHeight(rect) / 2.0;
+  // TODO: Change color
   NSColor *color = [NSColor colorWithCalibratedRed:40/255.0
                                              green:92/255.0
                                               blue:246/255.0
@@ -231,18 +237,35 @@
   [colorDark set];
   [path stroke];
 #else
-  NSDrawWhiteBezel(_rect, _rect);
+  NSCAssert1(NO, @"%@ System does not support NSBezierPath", self);
 #endif
 }
 
--(void)__drawBackgroundForPreviousSolutionInRect:(NSRect)_rect;
+-(void)__drawBackgroundCapsuleStrokeInRect:(NSRect)_rect;
 {
+#ifdef XPSupportsNSBezierPath
+  // Prepare Object Variables
+  XPFloat stroke = 2.0;
+  NSRect rect = NSInsetRect(_rect, stroke, stroke);
+  XPFloat radius = NSHeight(rect) / 2.0;
+  // TODO: Change color
+  NSColor *color = [NSColor colorWithCalibratedRed:40/255.0
+                                             green:92/255.0
+                                              blue:246/255.0
+                                             alpha:1.0];
+  NSBezierPath *path = [NSBezierPath XP_bezierPathWithRoundedRect:rect
+                                                          xRadius:radius
+                                                          yRadius:radius];
   
-}
-
--(void)__drawBackgroundForErrorInRect:(NSRect)_rect;
-{
+  NSCParameterAssert(color);
+  NSCParameterAssert(path);
   
+  [color set];
+  [path setLineWidth:stroke];
+  [path stroke];
+#else
+  NSCAssert1(NO, @"%@ System does not support NSBezierPath", self);
+#endif
 }
 
 // MARK: Protocol (Used)
@@ -299,29 +322,29 @@
       && [[self toDrawFont]   isEqual:[rhs toDrawFont]]
       && [[self toDrawColor]  isEqual:[rhs toDrawColor]]
       && [[self neighborFont] isEqual:[rhs neighborFont]]
-      && [self borderStyle] == [rhs borderStyle];
+      && [self background] == [rhs background];
 }
 
 -(id)initWithCoder:(NSCoder *)coder;
 {
   NSFileWrapper *wrapper = [[[NSFileWrapper alloc] init] autorelease];
-  NSNumber *__borderStyle = nil;
+  NSNumber *backgroundNum = nil;
   
   self = [super initWithCoder:coder];
   NSCParameterAssert(self);
   
+  backgroundNum =  [coder XP_decodeObjectOfClass:[NSNumber class] forKey:@"borderStyle"];
   _toDrawString = [[coder XP_decodeObjectOfClass:[NSString class] forKey:@"toDrawString"] retain];
   _toDrawFont   = [[coder XP_decodeObjectOfClass:[NSFont   class] forKey:@"toDrawFont"]   retain];
   _toDrawColor  = [[coder XP_decodeObjectOfClass:[NSColor  class] forKey:@"toDrawColor"]  retain];
   _neighborFont = [[coder XP_decodeObjectOfClass:[NSFont   class] forKey:@"neighborFont"] retain];
-  __borderStyle =  [coder XP_decodeObjectOfClass:[NSNumber class] forKey:@"borderStyle"];
-  _borderStyle  = (SVRSolverAttachmentTextPurpose)[__borderStyle XP_integerValue];
+  _background   = (SVRSolverTextAttachmentBackground)[backgroundNum XP_integerValue];
   
   NSCParameterAssert(_toDrawString);
   NSCParameterAssert(_toDrawFont);
   NSCParameterAssert(_toDrawColor);
   NSCParameterAssert(_neighborFont);
-  NSCParameterAssert(__borderStyle != nil);
+  NSCParameterAssert(backgroundNum != nil);
   
   [wrapper setPreferredFilename:_toDrawString];
   [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
@@ -336,7 +359,7 @@
   [coder XP_encodeObject:_toDrawFont   forKey:@"toDrawFont"];
   [coder XP_encodeObject:_toDrawColor  forKey:@"toDrawColor"];
   [coder XP_encodeObject:_neighborFont forKey:@"neighborFont"];
-  [coder XP_encodeObject:[NSNumber XP_numberWithInteger:_borderStyle] forKey:@"borderStyle"];
+  [coder XP_encodeObject:[NSNumber XP_numberWithInteger:_background] forKey:@"borderStyle"];
 }
 
 @end
