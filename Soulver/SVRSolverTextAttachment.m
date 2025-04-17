@@ -128,11 +128,6 @@
 
 // MARK: Properties
 
--(NSDictionary*)toDrawAttributes;
-{
-  return [[_toDrawAttributes retain] autorelease];
-}
-
 -(SVRSolverTextAttachment*)SVR_attachment;
 {
   return (SVRSolverTextAttachment*)[self attachment];
@@ -145,8 +140,6 @@
   self = [super init];
   NSCParameterAssert(self);
   [self setAttachment:attachment];
-  _toDrawAttributes = [[SVRSolverTextAttachmentCell toDrawAttributesWithFont:[attachment font]
-                                                                       color:[attachment foregroundColor]] retain];
   return self;
 }
 
@@ -157,8 +150,8 @@
 
 // MARK: Custom Drawing
 
-+(NSDictionary*)toDrawAttributesWithFont:(NSFont*)font
-                                   color:(NSColor*)color;
++(NSDictionary*)attributesWithFont:(NSFont*)font
+                             color:(NSColor*)color;
 {
   NSArray *keys;
   NSArray *vals;
@@ -182,6 +175,8 @@
 
 -(void)drawWithFrame:(NSRect)cellFrame inView:(NSView*)controlView;
 {
+  NSDictionary *attributes = [[self class] attributesWithFont:[[self SVR_attachment] font]
+                                                        color:[[self SVR_attachment] foregroundColor]];
   switch ([[self SVR_attachment] background]) {
     case SVRSolverTextAttachmentBackgroundCapsuleFill:
       [self __drawBackgroundCapsuleFillInRect:cellFrame];
@@ -204,8 +199,7 @@
                  self, [[self SVR_attachment] background]);
       break;
   }
-  [[[self SVR_attachment] string] drawInRect:cellFrame
-                                    withAttributes:[self toDrawAttributes]];
+  [[[self SVR_attachment] string] drawInRect:cellFrame withAttributes:attributes];
   XPLogExtra2(@"drawString:`%@` withFrame:%@", [[self SVR_attachment] string], NSStringFromRect(cellFrame));
 }
 
@@ -270,7 +264,8 @@
 
 -(NSSize)cellSize;
 {
-  NSDictionary *attributes = [self toDrawAttributes];
+  NSDictionary *attributes = [[self class] attributesWithFont:[[self SVR_attachment] font]
+                                                        color:[[self SVR_attachment] foregroundColor]];
   NSSize size = [[[self SVR_attachment] string] sizeWithAttributes:attributes];
   size.width += 8;
   return size;
@@ -299,8 +294,6 @@
 -(void)dealloc;
 {
   XPLogExtra1(@"DEALLOC: %@", self);
-  [_toDrawAttributes release];
-  _toDrawAttributes = nil;
   [super dealloc];
 }
 

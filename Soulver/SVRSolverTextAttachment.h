@@ -55,12 +55,8 @@
 @end
 
 @interface SVRSolverTextAttachmentCell: NSTextAttachmentCell
-{
-  mm_new NSDictionary *_toDrawAttributes;
-}
 
 // MARK: Properties
--(NSDictionary*)toDrawAttributes;
 -(SVRSolverTextAttachment*)SVR_attachment;
 
 // MARK: Init
@@ -68,8 +64,8 @@
 +(id)cellWithAttachment:(SVRSolverTextAttachment*)attachment;
 
 // MARK: Custom Drawing
-+(NSDictionary*)toDrawAttributesWithFont:(NSFont*)font
-                                   color:(NSColor*)color;
++(NSDictionary*)attributesWithFont:(NSFont*)font
+                             color:(NSColor*)color;
 -(void)drawWithFrame:(NSRect)cellFrame inView:(NSView*)controlView;
 -(void)__drawBackgroundCapsuleFillInRect:(NSRect)_rect;
 -(void)__drawBackgroundCapsuleStrokeInRect:(NSRect)_rect;
