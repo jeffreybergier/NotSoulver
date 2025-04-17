@@ -210,11 +210,7 @@
   XPFloat stroke = 2.0;
   NSRect rect = NSInsetRect(_rect, stroke, stroke);
   XPFloat radius = NSHeight(rect) / 2.0;
-  // TODO: Change color
-  NSColor *color = [NSColor colorWithCalibratedRed:40/255.0
-                                             green:92/255.0
-                                              blue:246/255.0
-                                             alpha:1.0];
+  NSColor *color = [[self SVR_attachment] backgroundColor];
   NSColor *colorDark = [color blendedColorWithFraction:0.3 ofColor:[NSColor blackColor]];
   NSBezierPath *path = [NSBezierPath XP_bezierPathWithRoundedRect:rect
                                                           xRadius:radius
@@ -240,11 +236,7 @@
   XPFloat stroke = 2.0;
   NSRect rect = NSInsetRect(_rect, stroke, stroke);
   XPFloat radius = NSHeight(rect) / 2.0;
-  // TODO: Change color
-  NSColor *color = [NSColor colorWithCalibratedRed:40/255.0
-                                             green:92/255.0
-                                              blue:246/255.0
-                                             alpha:1.0];
+  NSColor *color = [[self SVR_attachment] backgroundColor];
   NSBezierPath *path = [NSBezierPath XP_bezierPathWithRoundedRect:rect
                                                           xRadius:radius
                                                           yRadius:radius];
