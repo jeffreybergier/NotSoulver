@@ -155,7 +155,6 @@ void TestsIntegrationExecute(void)
   XPTestNotNIL(repSolvedPath);
   XPTestNotNIL(repUnsolvedPath);
   
-  // TODO: Come up with styles for tests
   controller->__TESTING_stylesForSolution         = [self stylesForSolution];
   controller->__TESTING_stylesForPreviousSolution = [self stylesForPreviousSolution];
   controller->__TESTING_stylesForError            = [self stylesForError];
@@ -191,6 +190,7 @@ void TestsIntegrationExecute(void)
                             backgroundColor:backgroundColor
                                  background:background];
 }
+
 +(SVRSolverTextAttachmentStyles)stylesForPreviousSolution;
 {
   NSFont *font = [NSFont fontWithName:@"Courier" size:8];

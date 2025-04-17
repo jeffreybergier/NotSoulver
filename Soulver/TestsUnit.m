@@ -162,7 +162,6 @@ void TestsUnitExecute(void)
   XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"+");
   
   // MARK: SVR_regexForOperators
-  // TODO: Make more robust to handle 6.3*-6.0
   string = @"___15+15 and 40-400 and 6.3*6.0 and 7/07 and 8^8 and 9R9 and 9r9 and 10l10 and 10L100_______";
   regex = [XPRegularExpression SVR_regexForOperators];
   matches = [regex matchesInString:string options:0 range:NSMakeRange(3, [string length]-6)];
@@ -304,7 +303,7 @@ void TestsUnitExecute(void)
   XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"-700");
   match = [matches objectAtIndex:4];
   XPTestInt([match numberOfRanges], 1);
-  // TODO: Known issue where negative number is detected
+  // Known issue where negative number is detected
   // even though its next to bracket (meaning its a minus operator)
   // this is corrected in -[SVRSolverScanner populateNumbers:]
   XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"-33.44");
@@ -313,7 +312,6 @@ void TestsUnitExecute(void)
   XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"-4.444");
   match = [matches objectAtIndex:6];
   XPTestInt([match numberOfRanges], 1);
-  // TODO: Known issue where multiple dots cannot be handled correctly
   XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"7");
   match = [matches objectAtIndex:7];
   XPTestInt([match numberOfRanges], 1);
@@ -375,7 +373,7 @@ void TestsUnitExecute(void)
   XPTestString([string substringWithRange:[[ranges objectAtIndex: 2] XP_rangeValue]], @"*");
   XPTestString([string substringWithRange:[[ranges objectAtIndex: 3] XP_rangeValue]], @"/");
   XPTestString([string substringWithRange:[[ranges objectAtIndex: 4] XP_rangeValue]], @"^");
-  XPTestString([string substringWithRange:[[ranges objectAtIndex: 5] XP_rangeValue]], @"-"); // TODO: These ranges mistakenly catch - symbols for negative numbers
+  XPTestString([string substringWithRange:[[ranges objectAtIndex: 5] XP_rangeValue]], @"-"); // These ranges mistakenly catch - symbols for negative numbers
   XPTestString([string substringWithRange:[[ranges objectAtIndex: 6] XP_rangeValue]], @"+"); // ?
   XPTestString([string substringWithRange:[[ranges objectAtIndex: 7] XP_rangeValue]], @"-"); // ?
   XPTestString([string substringWithRange:[[ranges objectAtIndex: 8] XP_rangeValue]], @"-");

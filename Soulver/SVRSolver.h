@@ -93,7 +93,6 @@ typedef enum {
   SVRSolverOperatorRoot,
   SVRSolverOperatorLog,
   SVRSolverOperatorUnknown
-  // TODO: Consider adding √ (option v) and log ∫ (option + [shift] + b)
 } SVRSolverOperator;
 
 typedef enum {
