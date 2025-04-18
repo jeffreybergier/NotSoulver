@@ -476,10 +476,6 @@ void TestsUnitExecute(void)
   XPTestNotNIL(path);
   
   // Prepare drawing context
-  [NSBezierPath XP_bezierPathWithRoundedRect:rect
-                                                          xRadius:radius
-                                                          yRadius:radius];
-  
   bitmap = [[[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
                                                    pixelsWide:(XPInteger)rect.size.width
                                                    pixelsHigh:(XPInteger)rect.size.height
