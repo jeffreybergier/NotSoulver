@@ -265,13 +265,12 @@
 
 -(NSPoint)cellBaselineOffset;
 {
-  NSFont *neighborFont = [[self SVR_attachment] neighborFont]; // You'll need to store this
-  NSFont *attachmentFont = [[self SVR_attachment] font];
-  XPFloat neighborBaseline = [neighborFont ascender];
-  XPFloat attachmentBaseline = [attachmentFont ascender];
-  XPFloat baselineDelta = neighborBaseline - attachmentBaseline;
+  NSFont *neighborFont = [[self SVR_attachment] neighborFont];
+  XPFloat neighborCapHeight = [neighborFont capHeight];
+  XPFloat attachmentHeight = [self cellSize].height;
+  XPFloat offset = (neighborCapHeight - attachmentHeight) / 2.0;
   NSPoint output = [super cellBaselineOffset];
-  output.y += baselineDelta;
+  output.y += offset;
   return output;
 }
 
