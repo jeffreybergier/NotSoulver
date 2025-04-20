@@ -46,7 +46,7 @@
                 "_wellDarkOperand" = id; 
                 "_wellDarkOperator" = id; 
                 "_wellDarkOther" = id; 
-                "_wellDarkParenthesis" = id; 
+                "_wellDarkPrevious" = id; 
                 "_wellDarkSolution" = id; 
                 "_wellLightBackground" = id; 
                 "_wellLightError" = id; 
@@ -54,7 +54,7 @@
                 "_wellLightOperand" = id; 
                 "_wellLightOperator" = id; 
                 "_wellLightOther" = id; 
-                "_wellLightParenthesis" = id; 
+                "_wellLightPrevious" = id; 
                 "_wellLightSolution" = id; 
                 "_window" = id; 
             }; 
