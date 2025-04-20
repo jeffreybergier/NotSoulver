@@ -183,7 +183,7 @@ void TestsIntegrationExecute(void)
   NSFont *neighborFont = [NSFont fontWithName:@"Courier" size:12];
   NSColor *foregroundColor = [NSColor colorWithCalibratedRed:0 green:0 blue:0.7 alpha:1];
   NSColor *backgroundColor = [NSColor colorWithCalibratedRed:1 green:1 blue:1 alpha:1];
-  SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxWhite;
+  SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
   return [NSDictionary __SVR_stylesWithFont:font
                                neighborFont:neighborFont
                             foregroundColor:foregroundColor

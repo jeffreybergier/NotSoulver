@@ -120,8 +120,6 @@ typedef SVRCalculationError* SVRCalculationErrorPointer;
 typedef XP_ENUM(XPInteger, SVRSolverTextAttachmentBackground) {
   SVRSolverTextAttachmentBackgroundCapsuleFill,
   SVRSolverTextAttachmentBackgroundCapsuleStroke,
-  SVRSolverTextAttachmentBackgroundLegacyBoxWhite,
-  SVRSolverTextAttachmentBackgroundLegacyBoxGray,
   SVRSolverTextAttachmentBackgroundLegacyBoxStroke
 };
 

@@ -56,22 +56,22 @@
 {
   // Uses Bitwise Packing to store both enumerations within the tag.
   // I got the info for how to do this from ChatGPT so can't provide attributions :-/
-  short int dkBG = (SVRThemeColorBackground     & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
-  short int dkER = (SVRThemeColorErrorText      & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
-  short int dkIP = (SVRThemeColorInsertionPoint & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
-  short int dkOD = (SVRThemeColorOperandText    & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
-  short int dkOR = (SVRThemeColorOperatorText   & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
-  short int dkOT = (SVRThemeColorOtherText      & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
-  short int dkPS = (SVRThemeColor_UNUSED_       & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
-  short int dkSL = (SVRThemeColorSolution       & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
-  short int ltBG = (SVRThemeColorBackground     & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
-  short int ltER = (SVRThemeColorErrorText      & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
-  short int ltIP = (SVRThemeColorInsertionPoint & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
-  short int ltOD = (SVRThemeColorOperandText    & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
-  short int ltOR = (SVRThemeColorOperatorText   & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
-  short int ltOT = (SVRThemeColorOtherText      & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
-  short int ltPS = (SVRThemeColor_UNUSED_       & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
-  short int ltSL = (SVRThemeColorSolution       & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
+  short int dkBG = (SVRThemeColorBackground        & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
+  short int dkER = (SVRThemeColorErrorText         & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
+  short int dkIP = (SVRThemeColorInsertionPoint    & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
+  short int dkOD = (SVRThemeColorOperandText       & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
+  short int dkOR = (SVRThemeColorOperatorText      & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
+  short int dkOT = (SVRThemeColorOtherText         & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
+  short int dkPS = (SVRThemeColorSolutionSecondary & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
+  short int dkSL = (SVRThemeColorSolution          & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
+  short int ltBG = (SVRThemeColorBackground        & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
+  short int ltER = (SVRThemeColorErrorText         & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
+  short int ltIP = (SVRThemeColorInsertionPoint    & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
+  short int ltOD = (SVRThemeColorOperandText       & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
+  short int ltOR = (SVRThemeColorOperatorText      & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
+  short int ltOT = (SVRThemeColorOtherText         & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
+  short int ltPS = (SVRThemeColorSolutionSecondary & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
+  short int ltSL = (SVRThemeColorSolution          & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
   
   [_wellDarkBackground      setTag:dkBG];
   [_wellDarkError           setTag:dkER];
@@ -309,7 +309,6 @@
   switch (color) {
     case SVRThemeColorOperandText:
     case SVRThemeColorOperatorText:
-    case SVRThemeColor_UNUSED_:
     case SVRThemeColorSolution:
     case SVRThemeColorSolutionSecondary:
     case SVRThemeColorErrorText:
@@ -340,7 +339,6 @@
   switch (tag) {
     case SVRThemeColorOperandText:
     case SVRThemeColorOperatorText:
-    case SVRThemeColor_UNUSED_:
     case SVRThemeColorSolution:
     case SVRThemeColorSolutionSecondary:
     case SVRThemeColorErrorText:

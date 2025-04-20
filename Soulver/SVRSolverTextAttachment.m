@@ -184,12 +184,6 @@
     case SVRSolverTextAttachmentBackgroundCapsuleStroke:
       [self __drawBackgroundCapsuleStrokeInRect:cellFrame];
       break;
-    case SVRSolverTextAttachmentBackgroundLegacyBoxWhite:
-      NSDrawWhiteBezel(cellFrame, cellFrame);
-      break;
-    case SVRSolverTextAttachmentBackgroundLegacyBoxGray:
-      NSDrawGrayBezel(cellFrame, cellFrame);
-      break;
     case SVRSolverTextAttachmentBackgroundLegacyBoxStroke:
       [[[self SVR_attachment] backgroundColor] set];
       NSFrameRect(cellFrame);

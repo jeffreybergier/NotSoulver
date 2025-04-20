@@ -617,21 +617,14 @@ NSString *const SVRSolverTextStylePreviousColor = @"SVRSolverTextStylePreviousCo
 {
 #ifdef XPSupportsNSBezierPath
   SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundCapsuleFill;
-  NSColor *backgroundColor = [self SVR_colorForTheme:SVRThemeColorSolution];
-  NSColor *foregroundColor = [self SVR_colorForTheme:SVRThemeColorOperandText];
 #else
-  XPUserInterfaceStyle userInterfaceStyle = [self SVR_userInterfaceStyle];
-  SVRSolverTextAttachmentBackground background = userInterfaceStyle == XPUserInterfaceStyleDark
-                                               ? SVRSolverTextAttachmentBackgroundLegacyBoxGray
-                                               : SVRSolverTextAttachmentBackgroundLegacyBoxWhite;
-  NSColor *backgroundColor = [self SVR_colorForTheme:SVRThemeColorSolution];
-  NSColor *foregroundColor = [self SVR_colorForTheme:SVRThemeColorSolution];
+  SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
 #endif
   return [NSDictionary __SVR_stylesWithFont:[self SVR_fontForTheme:SVRThemeFontMath]
                                neighborFont:[self SVR_fontForTheme:SVRThemeFontMath]
-                            foregroundColor:foregroundColor
-                            backgroundColor:backgroundColor
-                                    background:background];
+                            foregroundColor:[self SVR_colorForTheme:SVRThemeColorOperandText]
+                            backgroundColor:[self SVR_colorForTheme:SVRThemeColorSolution]
+                                 background:background];
 }
 
 -(SVRSolverTextAttachmentStyles)SVR_stylesForPreviousSolution;
@@ -644,7 +637,7 @@ NSString *const SVRSolverTextStylePreviousColor = @"SVRSolverTextStylePreviousCo
   return [NSDictionary __SVR_stylesWithFont:[self SVR_fontForTheme:SVRThemeFontMath]
                                neighborFont:[self SVR_fontForTheme:SVRThemeFontMath]
                             foregroundColor:[self SVR_colorForTheme:SVRThemeColorOperandText]
-                            backgroundColor:[self SVR_colorForTheme:SVRThemeColorSolution]
+                            backgroundColor:[self SVR_colorForTheme:SVRThemeColorSolutionSecondary]
                                  background:background];
 }
 
