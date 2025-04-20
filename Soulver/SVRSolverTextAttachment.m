@@ -191,7 +191,7 @@
       NSDrawGrayBezel(cellFrame, cellFrame);
       break;
     case SVRSolverTextAttachmentBackgroundLegacyBoxStroke:
-      [[[self SVR_attachment] foregroundColor] set];
+      [[[self SVR_attachment] backgroundColor] set];
       NSFrameRect(cellFrame);
       break;
     default:
@@ -206,12 +206,11 @@
 -(void)__drawBackgroundCapsuleFillInRect:(NSRect)_rect;
 {
 #ifdef XPSupportsNSBezierPath
-  // Prepare Object Variables
-  XPFloat stroke = 2.0;
+  XPFloat stroke = 1.0;
   NSRect rect = NSInsetRect(_rect, stroke, stroke);
   XPFloat radius = NSHeight(rect) / 2.0;
   NSColor *color = [[self SVR_attachment] backgroundColor];
-  NSColor *colorDark = [color blendedColorWithFraction:0.3 ofColor:[NSColor blackColor]];
+  NSColor *colorDark = [color blendedColorWithFraction:0.5 ofColor:[NSColor blackColor]];
   NSBezierPath *path = [NSBezierPath XP_bezierPathWithRoundedRect:rect
                                                           xRadius:radius
                                                           yRadius:radius];
@@ -232,10 +231,9 @@
 -(void)__drawBackgroundCapsuleStrokeInRect:(NSRect)_rect;
 {
 #ifdef XPSupportsNSBezierPath
-  // Prepare Object Variables
   XPFloat stroke = 2.0;
   NSRect rect = NSInsetRect(_rect, stroke, stroke);
-  XPFloat radius = NSHeight(rect) / 2.0;
+  XPFloat radius = NSHeight(rect) / 4.0;
   NSColor *color = [[self SVR_attachment] backgroundColor];
   NSBezierPath *path = [NSBezierPath XP_bezierPathWithRoundedRect:rect
                                                           xRadius:radius

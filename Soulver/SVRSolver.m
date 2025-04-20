@@ -638,17 +638,13 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
 {
 #ifdef XPSupportsNSBezierPath
   SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundCapsuleStroke;
-  NSColor *backgroundColor = [self SVR_colorForTheme:SVRThemeColorOperator];
-  NSColor *foregroundColor = [self SVR_colorForTheme:SVRThemeColorOperand];
 #else
   SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
-  NSColor *backgroundColor = [[NSColor new] autorelease];
-  NSColor *foregroundColor = [self SVR_colorForTheme:SVRThemeColorOperator];
 #endif
   return [NSDictionary __SVR_stylesWithFont:[self SVR_fontForTheme:SVRThemeFontMath]
                                neighborFont:[self SVR_fontForTheme:SVRThemeFontMath]
-                            foregroundColor:foregroundColor
-                            backgroundColor:backgroundColor
+                            foregroundColor:[self SVR_colorForTheme:SVRThemeColorOperand]
+                            backgroundColor:[self SVR_colorForTheme:SVRThemeColorSolution]
                                  background:background];
 }
 
