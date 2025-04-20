@@ -59,18 +59,18 @@
   short int dkBG = (SVRThemeColorBackground     & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
   short int dkER = (SVRThemeColorErrorText      & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
   short int dkIP = (SVRThemeColorInsertionPoint & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
-  short int dkOD = (SVRThemeColorOperand        & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
-  short int dkOR = (SVRThemeColorOperator       & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
+  short int dkOD = (SVRThemeColorOperandText    & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
+  short int dkOR = (SVRThemeColorOperatorText   & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
   short int dkOT = (SVRThemeColorOtherText      & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
-  short int dkPS = (SVRThemeColorBracket        & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
+  short int dkPS = (SVRThemeColor_UNUSED_       & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
   short int dkSL = (SVRThemeColorSolution       & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
   short int ltBG = (SVRThemeColorBackground     & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
   short int ltER = (SVRThemeColorErrorText      & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
   short int ltIP = (SVRThemeColorInsertionPoint & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
-  short int ltOD = (SVRThemeColorOperand        & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
-  short int ltOR = (SVRThemeColorOperator       & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
+  short int ltOD = (SVRThemeColorOperandText    & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
+  short int ltOR = (SVRThemeColorOperatorText   & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
   short int ltOT = (SVRThemeColorOtherText      & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
-  short int ltPS = (SVRThemeColorBracket        & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
+  short int ltPS = (SVRThemeColor_UNUSED_       & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
   short int ltSL = (SVRThemeColorSolution       & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
   
   [_wellDarkBackground      setTag:dkBG];
@@ -79,7 +79,7 @@
   [_wellDarkOperand         setTag:dkOD];
   [_wellDarkOperator        setTag:dkOR];
   [_wellDarkOther           setTag:dkOT];
-  [_wellDarkParenthesis     setTag:dkPS];
+  [_wellDarkPrevious        setTag:dkPS];
   [_wellDarkSolution        setTag:dkSL];
   [_wellLightBackground     setTag:ltBG];
   [_wellLightError          setTag:ltER];
@@ -87,7 +87,7 @@
   [_wellLightOperand        setTag:ltOD];
   [_wellLightOperator       setTag:ltOR];
   [_wellLightOther          setTag:ltOT];
-  [_wellLightParenthesis    setTag:ltPS];
+  [_wellLightPrevious       setTag:ltPS];
   [_wellLightSolution       setTag:ltSL];
 }
 
@@ -108,14 +108,14 @@
                                        withStyle:XPUserInterfaceStyleDark]];
   [_wellDarkInsertionPoint setColor:[ud SVR_colorForTheme:SVRThemeColorInsertionPoint
                                                 withStyle:XPUserInterfaceStyleDark]];
-  [_wellDarkOperand setColor:[ud SVR_colorForTheme:SVRThemeColorOperand
+  [_wellDarkOperand setColor:[ud SVR_colorForTheme:SVRThemeColorOperandText
                                          withStyle:XPUserInterfaceStyleDark]];
-  [_wellDarkOperator setColor:[ud SVR_colorForTheme:SVRThemeColorOperator
+  [_wellDarkOperator setColor:[ud SVR_colorForTheme:SVRThemeColorOperatorText
                                           withStyle:XPUserInterfaceStyleDark]];
   [_wellDarkOther setColor:[ud SVR_colorForTheme:SVRThemeColorOtherText
                                        withStyle:XPUserInterfaceStyleDark]];
-  [_wellDarkParenthesis setColor:[ud SVR_colorForTheme:SVRThemeColorBracket
-                                             withStyle:XPUserInterfaceStyleDark]];
+  [_wellDarkPrevious setColor:[ud SVR_colorForTheme:SVRThemeColorSolutionSecondary
+                                          withStyle:XPUserInterfaceStyleDark]];
   [_wellDarkSolution setColor:[ud SVR_colorForTheme:SVRThemeColorSolution
                                           withStyle:XPUserInterfaceStyleDark]];
   // Light Theme Colors
@@ -125,14 +125,14 @@
                                         withStyle:XPUserInterfaceStyleLight]];
   [_wellLightInsertionPoint setColor:[ud SVR_colorForTheme:SVRThemeColorInsertionPoint
                                                  withStyle:XPUserInterfaceStyleLight]];
-  [_wellLightOperand setColor:[ud SVR_colorForTheme:SVRThemeColorOperand
+  [_wellLightOperand setColor:[ud SVR_colorForTheme:SVRThemeColorOperandText
                                           withStyle:XPUserInterfaceStyleLight]];
-  [_wellLightOperator setColor:[ud SVR_colorForTheme:SVRThemeColorOperator
+  [_wellLightOperator setColor:[ud SVR_colorForTheme:SVRThemeColorOperatorText
                                            withStyle:XPUserInterfaceStyleLight]];
   [_wellLightOther setColor:[ud SVR_colorForTheme:SVRThemeColorOtherText
                                         withStyle:XPUserInterfaceStyleLight]];
-  [_wellLightParenthesis setColor:[ud SVR_colorForTheme:SVRThemeColorBracket
-                                              withStyle:XPUserInterfaceStyleLight]];
+  [_wellLightPrevious setColor:[ud SVR_colorForTheme:SVRThemeColorSolutionSecondary
+                                           withStyle:XPUserInterfaceStyleLight]];
   [_wellLightSolution setColor:[ud SVR_colorForTheme:SVRThemeColorSolution
                                            withStyle:XPUserInterfaceStyleLight]];
   // Time Text Field
@@ -307,9 +307,9 @@
   
   // Do basic validation of the received values
   switch (color) {
-    case SVRThemeColorOperand:
-    case SVRThemeColorOperator:
-    case SVRThemeColorBracket:
+    case SVRThemeColorOperandText:
+    case SVRThemeColorOperatorText:
+    case SVRThemeColor_UNUSED_:
     case SVRThemeColorSolution:
     case SVRThemeColorSolutionSecondary:
     case SVRThemeColorErrorText:
@@ -338,9 +338,9 @@
 {
   SVRThemeColor tag = [sender tag];
   switch (tag) {
-    case SVRThemeColorOperand:
-    case SVRThemeColorOperator:
-    case SVRThemeColorBracket:
+    case SVRThemeColorOperandText:
+    case SVRThemeColorOperatorText:
+    case SVRThemeColor_UNUSED_:
     case SVRThemeColorSolution:
     case SVRThemeColorSolutionSecondary:
     case SVRThemeColorErrorText:
@@ -387,7 +387,7 @@
   _wellDarkOperand = nil;
   _wellDarkOperator = nil;
   _wellDarkOther = nil;
-  _wellDarkParenthesis = nil;
+  _wellDarkPrevious = nil;
   _wellDarkSolution = nil;
   _wellLightBackground = nil;
   _wellLightError = nil;
@@ -395,7 +395,7 @@
   _wellLightOperand = nil;
   _wellLightOperator = nil;
   _wellLightOther = nil;
-  _wellLightParenthesis = nil;
+  _wellLightPrevious = nil;
   _wellLightSolution = nil;
   _fieldTime = nil;
   _fieldTextMath = nil;

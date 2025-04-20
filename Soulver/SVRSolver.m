@@ -116,7 +116,11 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
                   NSStringFromRange(range));
       return nil;
     }
+#ifdef XPSupportsNSBezierPath
+    dictValues = [NSArray arrayWithObjects:[attachment backgroundColor], [attachment font], nil];
+#else
     dictValues = [NSArray arrayWithObjects:[attachment foregroundColor], [attachment font], nil];
+#endif
     toReplace  = [[[NSAttributedString alloc] initWithString:[attachment string]
                                                   attributes:[NSDictionary dictionaryWithObjects:dictValues forKeys:dictKeys]] autorelease];
     [output replaceCharactersInRange:range withAttributedString:toReplace];
@@ -607,7 +611,7 @@ NSString *const SVRSolverTextStyleOtherFont     = @"SVRSolverTextStyleOtherFont"
 NSString *const SVRSolverTextStyleOtherColor    = @"SVRSolverTextStyleOtherColor";
 NSString *const SVRSolverTextStyleOperandColor  = @"SVRSolverTextStyleOperandColor";
 NSString *const SVRSolverTextStyleOperatorColor = @"SVRSolverTextStyleOperatorColor";
-NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketColor";
+NSString *const SVRSolverTextStylePreviousColor = @"SVRSolverTextStylePreviousColor";
 
 // MARK: NSUserDefaults Helper Methods
 
@@ -618,7 +622,7 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
 #ifdef XPSupportsNSBezierPath
   SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundCapsuleFill;
   NSColor *backgroundColor = [self SVR_colorForTheme:SVRThemeColorSolution];
-  NSColor *foregroundColor = [self SVR_colorForTheme:SVRThemeColorOperand];
+  NSColor *foregroundColor = [self SVR_colorForTheme:SVRThemeColorOperandText];
 #else
   XPUserInterfaceStyle userInterfaceStyle = [self SVR_userInterfaceStyle];
   SVRSolverTextAttachmentBackground background = userInterfaceStyle == XPUserInterfaceStyleDark
@@ -643,7 +647,7 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
 #endif
   return [NSDictionary __SVR_stylesWithFont:[self SVR_fontForTheme:SVRThemeFontMath]
                                neighborFont:[self SVR_fontForTheme:SVRThemeFontMath]
-                            foregroundColor:[self SVR_colorForTheme:SVRThemeColorOperand]
+                            foregroundColor:[self SVR_colorForTheme:SVRThemeColorOperandText]
                             backgroundColor:[self SVR_colorForTheme:SVRThemeColorSolution]
                                  background:background];
 }
@@ -653,7 +657,7 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
 #ifdef XPSupportsNSBezierPath
   SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundCapsuleStroke;
   NSColor *backgroundColor = [self SVR_colorForTheme:SVRThemeColorErrorText];
-  NSColor *foregroundColor = [self SVR_colorForTheme:SVRThemeColorOperand];
+  NSColor *foregroundColor = [self SVR_colorForTheme:SVRThemeColorOperandText];
 #else
   SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
   NSColor *backgroundColor = [[NSColor new] autorelease];
@@ -671,16 +675,16 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
   NSFont  *mathFont       = [self SVR_fontForTheme:SVRThemeFontMath];
   NSFont  *otherTextFont  = [self SVR_fontForTheme:SVRThemeFontOther];
   NSColor *otherTextColor = [self SVR_colorForTheme:SVRThemeColorOtherText];
-  NSColor *operandColor   = [self SVR_colorForTheme:SVRThemeColorOperand];
-  NSColor *operatorColor  = [self SVR_colorForTheme:SVRThemeColorOperator];
-  NSColor *bracketColor   = [self SVR_colorForTheme:SVRThemeColorBracket];
+  NSColor *operandColor   = [self SVR_colorForTheme:SVRThemeColorOperandText];
+  NSColor *operatorColor  = [self SVR_colorForTheme:SVRThemeColorOperatorText];
+  NSColor *previousColor  = [self SVR_colorForTheme:SVRThemeColorSolutionSecondary];
   
   return [NSDictionary __SVR_stylesWithMathFont:mathFont
                                    neighborFont:otherTextFont
                                  otherTextColor:otherTextColor
                                    operandColor:operandColor
                                   operatorColor:operatorColor
-                                   bracketColor:bracketColor];
+                                   previousColor:previousColor];
 }
 
 @end
@@ -691,7 +695,7 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
                                         neighborFont:(NSFont*)neighborFont
                                      foregroundColor:(NSColor*)foregroundColor
                                      backgroundColor:(NSColor*)backgroundColor
-                                             background:(SVRSolverTextAttachmentBackground)purpose;
+                                          background:(SVRSolverTextAttachmentBackground)purpose;
 {
   NSArray *values;
   NSArray *keys;
@@ -725,7 +729,7 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
                                           otherTextColor:(NSColor*)otherTextColor
                                             operandColor:(NSColor*)operandColor
                                            operatorColor:(NSColor*)operatorColor
-                                            bracketColor:(NSColor*)bracketColor;
+                                           previousColor:(NSColor*)previousColor;
 {
   NSArray *keys;
   NSArray *values;
@@ -735,7 +739,7 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
   NSCParameterAssert(otherTextColor);
   NSCParameterAssert(operandColor);
   NSCParameterAssert(operatorColor);
-  NSCParameterAssert(bracketColor);
+  NSCParameterAssert(previousColor);
   
   values = [NSArray arrayWithObjects:
             mathFont,
@@ -743,7 +747,7 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
             otherTextColor,
             operandColor,
             operatorColor,
-            bracketColor,
+            previousColor,
             nil];
   
   keys = [NSArray arrayWithObjects:
@@ -752,7 +756,7 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
           SVRSolverTextStyleOtherColor,
           SVRSolverTextStyleOperandColor,
           SVRSolverTextStyleOperatorColor,
-          SVRSolverTextStyleBracketColor,
+          SVRSolverTextStylePreviousColor,
           nil];
   
   return [NSDictionary dictionaryWithObjects:values forKeys:keys];

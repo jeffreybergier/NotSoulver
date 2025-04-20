@@ -57,6 +57,12 @@ typedef CGFloat XPFloat;
 typedef float XPFloat;
 #endif
 
+#ifdef NS_ENUM
+  #define XP_ENUM(type, name) NS_ENUM(type, name)
+#else
+  #define XP_ENUM(_type, _name) _type _name; enum
+#endif
+
 #ifdef MAC_OS_X_VERSION_10_2
 #define XPKeyedArchiver NSKeyedArchiver
 #define XPKeyedUnarchiver NSKeyedUnarchiver

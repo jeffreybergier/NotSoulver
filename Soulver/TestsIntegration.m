@@ -231,7 +231,7 @@ void TestsIntegrationExecute(void)
                                  otherTextColor:otherTextColor
                                    operandColor:operandColor
                                   operatorColor:operatorColor
-                                   bracketColor:bracketColor];
+                                   previousColor:bracketColor];
 }
 
 @end

@@ -193,13 +193,13 @@ NSString             *SVRSolverDebugDescriptionForError(SVRCalculationError erro
                                         neighborFont:(NSFont*)neighborFont
                                      foregroundColor:(NSColor*)foregroundColor
                                      backgroundColor:(NSColor*)backgroundColor
-                                             background:(SVRSolverTextAttachmentBackground)purpose;
+                                          background:(SVRSolverTextAttachmentBackground)purpose;
 
 +(SVRSolverTextAttachmentStyles)__SVR_stylesWithMathFont:(NSFont*)mathFont
                                             neighborFont:(NSFont*)otherTextFont
                                           otherTextColor:(NSColor*)otherTextColor
                                             operandColor:(NSColor*)operandColor
                                            operatorColor:(NSColor*)operatorColor
-                                            bracketColor:(NSColor*)bracketColor;
+                                            previousColor:(NSColor*)previousColor;
 
 @end

@@ -41,9 +41,9 @@ NSString *SVRAccessoryWindowSettingsVisibility    = @"kSVRAccessoryWindowSetting
 NSString *SVRAccessoryWindowAboutVisibility       = @"kSVRAccessoryWindowAboutVisibilityKey";
 NSString *SVRAccessoryWindowKeypadVisibility      = @"kSVRAccessoryWindowKeypadVisibilityKey";
 
-NSString *SVRThemeLightOperandColor               = @"kSVRThemeLightOperandColorKey";
-NSString *SVRThemeLightOperatorColor              = @"kSVRThemeLightOperatorColorKey";
-NSString *SVRThemeLightBracketColor               = @"kSVRThemeLightBracketColorKey";
+NSString *SVRThemeLightOperandTextColor           = @"kSVRThemeLightOperandTextColor";
+NSString *SVRThemeLightOperatorTextColor          = @"kSVRThemeLightOperatorTextColor";
+NSString *SVRThemeLight_UNUSED_                   = @"kSVRThemeLight_UNUSED_";
 NSString *SVRThemeLightSolutionColor              = @"kSVRThemeLightSolutionColorKey";
 NSString *SVRThemeLightSolutionSecondaryColor     = @"kSVRThemeLightSolutionSecondaryColorKey";
 NSString *SVRThemeLightErrorTextColor             = @"kSVRThemeLightErrorTextColorKey";
@@ -51,9 +51,9 @@ NSString *SVRThemeLightOtherTextColor             = @"kSVRThemeLightOtherTextCol
 NSString *SVRThemeLightBackgroundColor            = @"kSVRThemeLightBackgroundColorKey";
 NSString *SVRThemeLightInsertionPoint             = @"kSVRThemeLightInsertionPointKey";
 
-NSString *SVRThemeDarkOperandColor                = @"kSVRThemeDarkOperandColorKey";
-NSString *SVRThemeDarkOperatorColor               = @"kSVRThemeDarkOperatorColorKey";
-NSString *SVRThemeDarkBracketColor                = @"kSVRThemeDarkBracketColorKey";
+NSString *SVRThemeDarkOperandTextColor            = @"kSVRThemeDarkOperandTextColor";
+NSString *SVRThemeDarkOperatorTextColor           = @"kSVRThemeDarkOperatorTextColor";
+NSString *SVRThemeDark_UNUSED_                    = @"kSVRThemeDark_UNUSED_";
 NSString *SVRThemeDarkSolutionColor               = @"kSVRThemeDarkSolutionColorKey";
 NSString *SVRThemeDarkSolutionSecondaryColor      = @"kSVRThemeDarkSolutionSecondaryColorKey";
 NSString *SVRThemeDarkErrorTextColor              = @"kSVRThemeDarkErrorTextColorKey";
@@ -227,9 +227,9 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
   switch (style) {
     case XPUserInterfaceStyleDark:
       switch (theme) {
-        case SVRThemeColorOperand:           return SVRThemeDarkOperandColor;
-        case SVRThemeColorOperator:          return SVRThemeDarkOperatorColor;
-        case SVRThemeColorBracket:           return SVRThemeDarkBracketColor;
+        case SVRThemeColorOperandText:       return SVRThemeDarkOperandTextColor;
+        case SVRThemeColorOperatorText:      return SVRThemeDarkOperatorTextColor;
+        case SVRThemeColor_UNUSED_:          return SVRThemeDark_UNUSED_;
         case SVRThemeColorSolution:          return SVRThemeDarkSolutionColor;
         case SVRThemeColorSolutionSecondary: return SVRThemeDarkSolutionSecondaryColor;
         case SVRThemeColorErrorText:         return SVRThemeDarkErrorTextColor;
@@ -241,9 +241,9 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
     case XPUserInterfaceStyleLight:
     default:
       switch (theme) {
-        case SVRThemeColorOperand:           return SVRThemeLightOperandColor;
-        case SVRThemeColorOperator:          return SVRThemeLightOperatorColor;
-        case SVRThemeColorBracket:           return SVRThemeLightBracketColor;
+        case SVRThemeColorOperandText:       return SVRThemeLightOperandTextColor;
+        case SVRThemeColorOperatorText:      return SVRThemeLightOperatorTextColor;
+        case SVRThemeColor_UNUSED_:          return SVRThemeLight_UNUSED_;
         case SVRThemeColorSolution:          return SVRThemeLightSolutionColor;
         case SVRThemeColorSolutionSecondary: return SVRThemeLightSolutionSecondaryColor;
         case SVRThemeColorErrorText:         return SVRThemeLightErrorTextColor;
@@ -279,9 +279,9 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
   
   keys = [NSArray arrayWithObjects:
           // Light Theme
-          SVRThemeLightOperandColor,
-          SVRThemeLightOperatorColor,
-          SVRThemeLightBracketColor,
+          SVRThemeLightOperandTextColor,
+          SVRThemeLightOperatorTextColor,
+          SVRThemeLight_UNUSED_,
           SVRThemeLightSolutionColor,
           SVRThemeLightSolutionSecondaryColor,
           SVRThemeLightErrorTextColor,
@@ -289,9 +289,9 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
           SVRThemeLightBackgroundColor,
           SVRThemeLightInsertionPoint,
           // Dark Theme
-          SVRThemeDarkOperandColor,
-          SVRThemeDarkOperatorColor,
-          SVRThemeDarkBracketColor,
+          SVRThemeDarkOperandTextColor,
+          SVRThemeDarkOperatorTextColor,
+          SVRThemeDark_UNUSED_,
           SVRThemeDarkSolutionColor,
           SVRThemeDarkSolutionSecondaryColor,
           SVRThemeDarkErrorTextColor,

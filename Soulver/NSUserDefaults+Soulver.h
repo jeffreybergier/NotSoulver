@@ -32,23 +32,11 @@
 
 extern NSString * const SVRThemeDidChangeNotificationName;
 
-#ifdef NS_ENUM
-typedef NS_ENUM(XPInteger, SVRThemeColor) {
-  SVRThemeColorOperand = 0,
-  SVRThemeColorOperator = 1,
-  SVRThemeColorBracket = 2,
-  SVRThemeColorSolution = 3,
-  SVRThemeColorSolutionSecondary = 4,
-  SVRThemeColorErrorText = 5,
-  SVRThemeColorOtherText = 6,
-  SVRThemeColorBackground = 7,
-  SVRThemeColorInsertionPoint = 8
-};
-#else
+
 typedef enum {
-  SVRThemeColorOperand = 0,
-  SVRThemeColorOperator = 1,
-  SVRThemeColorBracket = 2,
+  SVRThemeColorOperandText = 0,
+  SVRThemeColorOperatorText = 1,
+  SVRThemeColor_UNUSED_ = 2,
   SVRThemeColorSolution = 3,
   SVRThemeColorSolutionSecondary = 4,
   SVRThemeColorErrorText = 5,
@@ -56,37 +44,19 @@ typedef enum {
   SVRThemeColorBackground = 7,
   SVRThemeColorInsertionPoint = 8
 } SVRThemeColor;
-#endif
 
-#ifdef NS_ENUM
-typedef NS_ENUM(XPInteger, SVRThemeFont) {
+typedef XP_ENUM(XPInteger, SVRThemeFont) {
   SVRThemeFontOther = 0,
   SVRThemeFontMath = 1,
   SVRThemeFontError = 2
 };
-#else
-typedef enum {
-  SVRThemeFontOther = 0,
-  SVRThemeFontMath = 1,
-  SVRThemeFontError = 2
-} SVRThemeFont;
-#endif
 
-#ifdef NS_ENUM
-typedef NS_ENUM(XPInteger, SVRAccessoryWindow) {
-  SVRAccessoryWindowSettings = 0,
-  SVRAccessoryWindowAbout = 1,
-  SVRAccessoryWindowKeypad = 2,
-  SVRAccessoryWindowNone = 3
-};
-#else
 typedef enum {
   SVRAccessoryWindowSettings = 0,
   SVRAccessoryWindowAbout = 1,
   SVRAccessoryWindowKeypad = 2,
   SVRAccessoryWindowNone = 3
 } SVRAccessoryWindow;
-#endif
 
 @interface NSUserDefaults (Soulver)
 // MARK: Basics
