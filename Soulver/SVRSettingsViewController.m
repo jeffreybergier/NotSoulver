@@ -98,43 +98,46 @@
   NSAttributedString *currentFontString = nil;
   NSMutableDictionary *currentFontAttribs = [[NSMutableDictionary new] autorelease];
   
+  // TODO: Add memory for panel selected in settings
+  // [_popUpPage selectItemAtIndex:[ud SVR_selectedSettingsPage]];
+  
   // Configure theme
   [_popUpTheme selectItemAtIndex:[ud SVR_userInterfaceStyle]];
   
   // Dark Theme Colors
-  [_wellDarkBackground setColor:[ud SVR_colorForTheme:SVRThemeColorBackground
-                                            withStyle:XPUserInterfaceStyleDark]];
-  [_wellDarkError setColor:[ud SVR_colorForTheme:SVRThemeColorErrorText
-                                       withStyle:XPUserInterfaceStyleDark]];
+  [_wellDarkBackground     setColor:[ud SVR_colorForTheme:SVRThemeColorBackground
+                                                withStyle:XPUserInterfaceStyleDark]];
+  [_wellDarkError          setColor:[ud SVR_colorForTheme:SVRThemeColorErrorText
+                                                withStyle:XPUserInterfaceStyleDark]];
   [_wellDarkInsertionPoint setColor:[ud SVR_colorForTheme:SVRThemeColorInsertionPoint
                                                 withStyle:XPUserInterfaceStyleDark]];
-  [_wellDarkOperand setColor:[ud SVR_colorForTheme:SVRThemeColorOperandText
-                                         withStyle:XPUserInterfaceStyleDark]];
-  [_wellDarkOperator setColor:[ud SVR_colorForTheme:SVRThemeColorOperatorText
-                                          withStyle:XPUserInterfaceStyleDark]];
-  [_wellDarkOther setColor:[ud SVR_colorForTheme:SVRThemeColorOtherText
-                                       withStyle:XPUserInterfaceStyleDark]];
-  [_wellDarkPrevious setColor:[ud SVR_colorForTheme:SVRThemeColorSolutionSecondary
-                                          withStyle:XPUserInterfaceStyleDark]];
-  [_wellDarkSolution setColor:[ud SVR_colorForTheme:SVRThemeColorSolution
-                                          withStyle:XPUserInterfaceStyleDark]];
+  [_wellDarkOperand        setColor:[ud SVR_colorForTheme:SVRThemeColorOperandText
+                                                withStyle:XPUserInterfaceStyleDark]];
+  [_wellDarkOperator       setColor:[ud SVR_colorForTheme:SVRThemeColorOperatorText
+                                                withStyle:XPUserInterfaceStyleDark]];
+  [_wellDarkOther          setColor:[ud SVR_colorForTheme:SVRThemeColorOtherText
+                                                withStyle:XPUserInterfaceStyleDark]];
+  [_wellDarkPrevious       setColor:[ud SVR_colorForTheme:SVRThemeColorSolutionSecondary
+                                                withStyle:XPUserInterfaceStyleDark]];
+  [_wellDarkSolution       setColor:[ud SVR_colorForTheme:SVRThemeColorSolution
+                                                withStyle:XPUserInterfaceStyleDark]];
   // Light Theme Colors
-  [_wellLightBackground setColor:[ud SVR_colorForTheme:SVRThemeColorBackground
-                                             withStyle:XPUserInterfaceStyleLight]];
-  [_wellLightError setColor:[ud SVR_colorForTheme:SVRThemeColorErrorText
-                                        withStyle:XPUserInterfaceStyleLight]];
+  [_wellLightBackground     setColor:[ud SVR_colorForTheme:SVRThemeColorBackground
+                                                 withStyle:XPUserInterfaceStyleLight]];
+  [_wellLightError          setColor:[ud SVR_colorForTheme:SVRThemeColorErrorText
+                                                 withStyle:XPUserInterfaceStyleLight]];
   [_wellLightInsertionPoint setColor:[ud SVR_colorForTheme:SVRThemeColorInsertionPoint
                                                  withStyle:XPUserInterfaceStyleLight]];
-  [_wellLightOperand setColor:[ud SVR_colorForTheme:SVRThemeColorOperandText
-                                          withStyle:XPUserInterfaceStyleLight]];
-  [_wellLightOperator setColor:[ud SVR_colorForTheme:SVRThemeColorOperatorText
-                                           withStyle:XPUserInterfaceStyleLight]];
-  [_wellLightOther setColor:[ud SVR_colorForTheme:SVRThemeColorOtherText
-                                        withStyle:XPUserInterfaceStyleLight]];
-  [_wellLightPrevious setColor:[ud SVR_colorForTheme:SVRThemeColorSolutionSecondary
-                                           withStyle:XPUserInterfaceStyleLight]];
-  [_wellLightSolution setColor:[ud SVR_colorForTheme:SVRThemeColorSolution
-                                           withStyle:XPUserInterfaceStyleLight]];
+  [_wellLightOperand        setColor:[ud SVR_colorForTheme:SVRThemeColorOperandText
+                                                 withStyle:XPUserInterfaceStyleLight]];
+  [_wellLightOperator       setColor:[ud SVR_colorForTheme:SVRThemeColorOperatorText
+                                                 withStyle:XPUserInterfaceStyleLight]];
+  [_wellLightOther          setColor:[ud SVR_colorForTheme:SVRThemeColorOtherText
+                                                 withStyle:XPUserInterfaceStyleLight]];
+  [_wellLightPrevious       setColor:[ud SVR_colorForTheme:SVRThemeColorSolutionSecondary
+                                                 withStyle:XPUserInterfaceStyleLight]];
+  [_wellLightSolution       setColor:[ud SVR_colorForTheme:SVRThemeColorSolution
+                                                 withStyle:XPUserInterfaceStyleLight]];
   // Time Text Field
   [_fieldTime setStringValue:[NSString stringWithFormat:@"%.1f", [ud SVR_waitTimeForRendering]]];
   
