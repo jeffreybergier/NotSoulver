@@ -58,7 +58,7 @@ typedef float XPFloat;
 #endif
 
 #ifdef NS_ENUM
-  #define XP_ENUM(type, name) NS_ENUM(type, name)
+  #define XP_ENUM(_type, _name) NS_ENUM(_type, _name)
 #else
   #define XP_ENUM(_type, _name) _type _name; enum
 #endif
