@@ -116,11 +116,7 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
                   NSStringFromRange(range));
       return nil;
     }
-#ifdef XPSupportsNSBezierPath
     dictValues = [NSArray arrayWithObjects:[attachment backgroundColor], [attachment font], nil];
-#else
-    dictValues = [NSArray arrayWithObjects:[attachment foregroundColor], [attachment font], nil];
-#endif
     toReplace  = [[[NSAttributedString alloc] initWithString:[attachment string]
                                                   attributes:[NSDictionary dictionaryWithObjects:dictValues forKeys:dictKeys]] autorelease];
     [output replaceCharactersInRange:range withAttributedString:toReplace];
@@ -628,7 +624,7 @@ NSString *const SVRSolverTextStylePreviousColor = @"SVRSolverTextStylePreviousCo
   SVRSolverTextAttachmentBackground background = userInterfaceStyle == XPUserInterfaceStyleDark
                                                ? SVRSolverTextAttachmentBackgroundLegacyBoxGray
                                                : SVRSolverTextAttachmentBackgroundLegacyBoxWhite;
-  NSColor *backgroundColor = [[NSColor new] autorelease];
+  NSColor *backgroundColor = [self SVR_colorForTheme:SVRThemeColorSolution];
   NSColor *foregroundColor = [self SVR_colorForTheme:SVRThemeColorSolution];
 #endif
   return [NSDictionary __SVR_stylesWithFont:[self SVR_fontForTheme:SVRThemeFontMath]
@@ -656,17 +652,13 @@ NSString *const SVRSolverTextStylePreviousColor = @"SVRSolverTextStylePreviousCo
 {
 #ifdef XPSupportsNSBezierPath
   SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundCapsuleStroke;
-  NSColor *backgroundColor = [self SVR_colorForTheme:SVRThemeColorErrorText];
-  NSColor *foregroundColor = [self SVR_colorForTheme:SVRThemeColorOperandText];
 #else
   SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
-  NSColor *backgroundColor = [[NSColor new] autorelease];
-  NSColor *foregroundColor = [self SVR_colorForTheme:SVRThemeColorErrorText];
 #endif
   return [NSDictionary __SVR_stylesWithFont:[self SVR_fontForTheme:SVRThemeFontError]
                                neighborFont:[self SVR_fontForTheme:SVRThemeFontMath]
-                            foregroundColor:foregroundColor
-                            backgroundColor:backgroundColor
+                            foregroundColor:[self SVR_colorForTheme:SVRThemeColorOperandText]
+                            backgroundColor:[self SVR_colorForTheme:SVRThemeColorErrorText]
                                  background:background];
 }
 
