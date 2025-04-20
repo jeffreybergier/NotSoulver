@@ -196,7 +196,7 @@
       break;
     default:
       NSCAssert2(NO, @"%@ SVRSolverTextAttachmentBackground(%d) unknown case",
-                 self, [[self SVR_attachment] background]);
+                 self, (int)[[self SVR_attachment] background]);
       break;
   }
   [[[self SVR_attachment] string] drawInRect:cellFrame withAttributes:attributes];

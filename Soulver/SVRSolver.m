@@ -221,7 +221,7 @@ NSString *XPAttributedStringKeyForTag(SVRSolverTag tag)
     case SVRSolverTagExpression: return @"kSVRSoulverTagExpressionKey";
     case SVRSolverTagOriginal:   return @"kSVRSolverTagOriginalKey";
     default:
-      XPLogRaise1(@"SVR_stringForTagUnknown: %d", tag);
+      XPLogRaise1(@"SVR_stringForTagUnknown: %d", (int)tag);
       return nil;
   }
 }
@@ -240,7 +240,7 @@ SVRSolverTag SVRSolverTagForKey(XPAttributedStringKey string)
     return SVRSolverTagOriginal;
   } else {
     XPLogRaise1(@"SVR_tagForStringUnknown: %@", string);
-    return (SVRSolverTag)-1;
+    return -1;
   }
 }
 
@@ -288,7 +288,7 @@ NSString *RawStringForOperator(SVRSolverOperator operator)
     case SVRSolverOperatorLog:      return [NSString SVR_logRawString];
     case SVRSolverOperatorUnknown:
     default:
-      XPLogRaise1(@"RawStringForOperatorUnknown: %d", operator);
+      XPLogRaise1(@"RawStringForOperatorUnknown: %d", (int)operator);
       return nil;
   }
 }
@@ -300,7 +300,7 @@ NSString *SVRSolverDescriptionForError(SVRCalculationError error)
     case SVRCalculationLossOfPrecision:
     case SVRCalculationUnderflow:
     case SVRCalculationOverflow:
-      XPLogRaise1(@"Should not show error: %d", error);
+      XPLogRaise1(@"Should not show error: %d", (int)error);
       return nil;
     case SVRCalculationNoError:
       return nil;
@@ -327,7 +327,7 @@ NSString *SVRSolverDescriptionForError(SVRCalculationError error)
     case SVRCalculationBaseOne:
       return [NSString stringWithFormat:[Localized phraseErrorBaseOne], error];
     default:
-      XPLogRaise1(@"SVRSolverDescriptionForErrorUnknown: %d", error);
+      XPLogRaise1(@"SVRSolverDescriptionForErrorUnknown: %d", (int)error);
       return nil;
   }
 }
@@ -365,7 +365,7 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
     case SVRCalculationBaseOne:
       return @"SVRCalculationBaseOne";
     default:
-      XPLogRaise1(@"SVRSolverDebugDescriptionForError: %d", error);
+      XPLogRaise1(@"SVRSolverDebugDescriptionForError: %d", (int)error);
       return nil;
   }
 }
@@ -494,7 +494,7 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
                              leftOperand:self
                             rightOperand:exponent];
     } else {
-      XPLogRaise1(@"NSCalculationError: %u", error);
+      XPLogRaise1(@"NSCalculationError: %d", (int)error);
     }
     return [NSDecimalNumber notANumber];
   }
@@ -542,7 +542,7 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
                              leftOperand:exponent
                             rightOperand:self];
     } else {
-      XPLogRaise1(@"NSCalculationError: %u", error);
+      XPLogRaise1(@"NSCalculationError: %d", (int)error);
     }
     return [NSDecimalNumber notANumber];
   }
@@ -589,7 +589,7 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
                              leftOperand:base
                             rightOperand:self];
     } else {
-      XPLogRaise1(@"NSCalculationError: %u", error);
+      XPLogRaise1(@"NSCalculationError: %d", (int)error);
     }
     return [NSDecimalNumber notANumber];
   }

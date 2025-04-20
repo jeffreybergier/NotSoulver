@@ -68,7 +68,7 @@ typedef NSDictionary* SVRSolverTextStyles;
 
 // MARK: Enumerations
 
-typedef enum {
+typedef XP_ENUM(XPInteger, SVRSolverTag) {
   // Stores NSDecimalNumber
   SVRSolverTagNumber,
   // Stores NSString of the range of the bracket
@@ -82,9 +82,9 @@ typedef enum {
   // Stores NSString with the original value
   // before it was replaced with NSTextAttachment
   SVRSolverTagOriginal
-} SVRSolverTag;
+};
 
-typedef enum {
+typedef XP_ENUM(XPInteger, SVRSolverOperator) {
   SVRSolverOperatorExponent,
   SVRSolverOperatorDivide,
   SVRSolverOperatorMultiply,
@@ -93,9 +93,9 @@ typedef enum {
   SVRSolverOperatorRoot,
   SVRSolverOperatorLog,
   SVRSolverOperatorUnknown
-} SVRSolverOperator;
+};
 
-typedef enum {
+typedef XP_ENUM(XPInteger, SVRCalculationError) {
   SVRCalculationNoError            = NSCalculationNoError,
   SVRCalculationLossOfPrecision    = NSCalculationLossOfPrecision,
   SVRCalculationUnderflow          = NSCalculationUnderflow,
@@ -111,19 +111,19 @@ typedef enum {
   SVRCalculationArgumentNegative   = 112,
   SVRCalculationBaseNegative       = 113,
   SVRCalculationBaseOne            = 114,
-} SVRCalculationError;
+};
 
 typedef SVRCalculationError* SVRCalculationErrorPointer;
 
 // MARK: SVRSolverTextAttachment Input
 
-typedef enum {
+typedef XP_ENUM(XPInteger, SVRSolverTextAttachmentBackground) {
   SVRSolverTextAttachmentBackgroundCapsuleFill,
   SVRSolverTextAttachmentBackgroundCapsuleStroke,
   SVRSolverTextAttachmentBackgroundLegacyBoxWhite,
   SVRSolverTextAttachmentBackgroundLegacyBoxGray,
   SVRSolverTextAttachmentBackgroundLegacyBoxStroke
-} SVRSolverTextAttachmentBackground;
+};
 
 extern NSString *const SVRSolverTextAttachmentNeighborFontKey;
 extern NSString *const SVRSolverTextAttachmentBackgroundKey;

@@ -141,37 +141,20 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs);
 -(XPInteger)XP_integerValue;
 @end
 
-#ifdef NS_ENUM
 /// These match XPAlertButtonDefault
 /// NSAlertDefaultReturn
-typedef NS_ENUM(XPInteger, XPAlertReturn) {
+typedef XP_ENUM(XPInteger, XPAlertReturn) {
 XPAlertReturnDefault   =  1,
 XPAlertReturnAlternate =  0,
 XPAlertReturnOther     = -1,
 XPAlertReturnError     = -2
 };
-#else
-typedef enum {
-  XPAlertReturnDefault   = (XPInteger)1,
-  XPAlertReturnAlternate = (XPInteger)0,
-  XPAlertReturnOther     = (XPInteger)-1,
-  XPAlertReturnError     = (XPInteger)-2
-} XPAlertReturn;
-#endif
 
-#ifdef NS_ENUM
-typedef NS_ENUM(XPInteger, XPUserInterfaceStyle) {
+typedef XP_ENUM(XPInteger, XPUserInterfaceStyle) {
   XPUserInterfaceStyleUnspecified = 0,
   XPUserInterfaceStyleLight = 1,
   XPUserInterfaceStyleDark = 2
 };
-#else
-typedef enum {
-  XPUserInterfaceStyleUnspecified = 0,
-  XPUserInterfaceStyleLight = 1,
-  XPUserInterfaceStyleDark = 2
-} XPUserInterfaceStyle;
-#endif
 
 XPAlertReturn XPRunQuitAlert(void);
 XPAlertReturn XPRunCopyWebURLToPasteboardAlert(NSString* webURL);

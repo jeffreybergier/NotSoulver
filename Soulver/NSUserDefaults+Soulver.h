@@ -33,7 +33,7 @@
 extern NSString * const SVRThemeDidChangeNotificationName;
 
 
-typedef enum {
+typedef XP_ENUM(XPInteger, SVRThemeColor) {
   SVRThemeColorOperandText = 0,
   SVRThemeColorOperatorText = 1,
   SVRThemeColor_UNUSED_ = 2,
@@ -43,7 +43,7 @@ typedef enum {
   SVRThemeColorOtherText = 6,
   SVRThemeColorBackground = 7,
   SVRThemeColorInsertionPoint = 8
-} SVRThemeColor;
+};
 
 typedef XP_ENUM(XPInteger, SVRThemeFont) {
   SVRThemeFontOther = 0,
@@ -51,12 +51,12 @@ typedef XP_ENUM(XPInteger, SVRThemeFont) {
   SVRThemeFontError = 2
 };
 
-typedef enum {
+typedef XP_ENUM(XPInteger, SVRAccessoryWindow) {
   SVRAccessoryWindowSettings = 0,
   SVRAccessoryWindowAbout = 1,
   SVRAccessoryWindowKeypad = 2,
   SVRAccessoryWindowNone = 3
-} SVRAccessoryWindow;
+};
 
 @interface NSUserDefaults (Soulver)
 // MARK: Basics
