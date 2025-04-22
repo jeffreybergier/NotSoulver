@@ -201,21 +201,24 @@
 {
 #ifdef XPSupportsNSBezierPath
   XPFloat stroke = 1.0;
-  NSRect rect = NSInsetRect(_rect, stroke, stroke);
+  NSRect  rect = NSInsetRect(_rect, stroke, stroke);
   XPFloat radius = NSHeight(rect) / 2.0;
-  NSColor *color = [[self SVR_attachment] backgroundColor];
-  NSColor *colorDark = [color blendedColorWithFraction:0.5 ofColor:[NSColor blackColor]];
+  NSColor *fillColor   = [[self SVR_attachment] backgroundColor];
+  // TODO: Pass the dark/light mode status here so we can choose
+  // to mix white or blackColor when appropriate
+  NSColor *strokeColor = [fillColor blendedColorWithFraction:0.5
+                                                     ofColor:[NSColor whiteColor]];
   NSBezierPath *path = [NSBezierPath XP_bezierPathWithRoundedRect:rect
                                                           xRadius:radius
                                                           yRadius:radius];
   
-  NSCParameterAssert(color);
+  NSCParameterAssert(fillColor);
   NSCParameterAssert(path);
   
-  [color set];
+  [fillColor set];
   [path fill];
   [path setLineWidth:stroke];
-  [colorDark set];
+  [strokeColor set];
   [path stroke];
 #else
   NSCAssert1(NO, @"%@ System does not support NSBezierPath", self);
@@ -226,17 +229,17 @@
 {
 #ifdef XPSupportsNSBezierPath
   XPFloat stroke = 2.0;
-  NSRect rect = NSInsetRect(_rect, stroke, stroke);
-  XPFloat radius = NSHeight(rect) / 4.0;
-  NSColor *color = [[self SVR_attachment] backgroundColor];
-  NSBezierPath *path = [NSBezierPath XP_bezierPathWithRoundedRect:rect
-                                                          xRadius:radius
-                                                          yRadius:radius];
+  NSRect  rect   = NSInsetRect(_rect, stroke, stroke);
+  XPFloat radius = NSHeight(rect) / 2.0;
+  NSColor *strokeColor = [[self SVR_attachment] backgroundColor];
+  NSBezierPath *path   = [NSBezierPath XP_bezierPathWithRoundedRect:rect
+                                                            xRadius:radius
+                                                            yRadius:radius];
   
-  NSCParameterAssert(color);
+  NSCParameterAssert(strokeColor);
   NSCParameterAssert(path);
   
-  [color set];
+  [strokeColor set];
   [path setLineWidth:stroke];
   [path stroke];
 #else
@@ -252,6 +255,7 @@
                                                         color:[[self SVR_attachment] foregroundColor]];
   NSSize size = [[[self SVR_attachment] string] sizeWithAttributes:attributes];
   size.width += 8;
+  // TODO: consider adding height as well to make the Capsule shapes not hit the letters
   return size;
 }
 
