@@ -181,8 +181,8 @@ void TestsIntegrationExecute(void)
 {
   NSFont *font = [NSFont fontWithName:@"Courier" size:12];
   NSFont *neighborFont = [NSFont fontWithName:@"Courier" size:12];
-  NSColor *foregroundColor = [NSColor colorWithCalibratedRed:0 green:0 blue:0.7 alpha:1];
-  NSColor *backgroundColor = [NSColor colorWithCalibratedRed:1 green:1 blue:1 alpha:1];
+  NSColor *foregroundColor = [NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:1];
+  NSColor *backgroundColor = [NSColor colorWithCalibratedRed:0 green:0 blue:0.7 alpha:1];
   SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
   return [NSDictionary __SVR_stylesWithFont:font
                                neighborFont:neighborFont
@@ -193,10 +193,10 @@ void TestsIntegrationExecute(void)
 
 +(SVRSolverTextAttachmentStyles)stylesForPreviousSolution;
 {
-  NSFont *font = [NSFont fontWithName:@"Courier" size:8];
-  NSFont *neighborFont = [NSFont fontWithName:@"Helvetica" size:14];
-  NSColor *foregroundColor  = [NSColor colorWithCalibratedRed:0 green:0.7 blue:0 alpha:1];
-  NSColor *backgroundColor = [NSColor colorWithCalibratedRed:1 green:1 blue:1 alpha:1];
+  NSFont *font = [NSFont fontWithName:@"Courier" size:14];
+  NSFont *neighborFont = [NSFont fontWithName:@"Helvetica" size:8];
+  NSColor *foregroundColor = [NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:1];
+  NSColor *backgroundColor = [NSColor colorWithCalibratedRed:0.7 green:0.7 blue:0 alpha:1];
   SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
   return [NSDictionary __SVR_stylesWithFont:font
                                neighborFont:neighborFont
@@ -208,8 +208,8 @@ void TestsIntegrationExecute(void)
 {
   NSFont *font = [NSFont fontWithName:@"Helvetica" size:10];
   NSFont *neighborFont = [NSFont fontWithName:@"Courier" size:12];
-  NSColor *foregroundColor = [NSColor colorWithCalibratedRed:0.7 green:0 blue:0 alpha:1];
-  NSColor *backgroundColor = [NSColor colorWithCalibratedRed:1 green:1 blue:1 alpha:1];
+  NSColor *foregroundColor = [NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:1];
+  NSColor *backgroundColor = [NSColor colorWithCalibratedRed:0.7 green:0 blue:0 alpha:1];
   SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
   return [NSDictionary __SVR_stylesWithFont:font
                                neighborFont:neighborFont
@@ -224,14 +224,14 @@ void TestsIntegrationExecute(void)
   NSColor *otherTextColor = [NSColor colorWithCalibratedRed:0.3 green:0.3 blue:0.3 alpha:1];
   NSColor *operandColor   = [NSColor colorWithCalibratedRed:0.7 green:0 blue:0.7 alpha:1];
   NSColor *operatorColor  = [NSColor colorWithCalibratedRed:0 green:0.7 blue:0.7 alpha:1];
-  NSColor *bracketColor   = [NSColor colorWithCalibratedRed:0.7 green:0.7 blue:0 alpha:1];
+  NSColor *previousColor  = [NSColor colorWithCalibratedRed:0.7 green:0.7 blue:0 alpha:1];
   
   return [NSDictionary __SVR_stylesWithMathFont:mathFont
                                    neighborFont:otherTextFont
                                  otherTextColor:otherTextColor
                                    operandColor:operandColor
                                   operatorColor:operatorColor
-                                   previousColor:bracketColor];
+                                  previousColor:previousColor];
 }
 
 @end
