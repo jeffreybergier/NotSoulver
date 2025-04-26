@@ -188,6 +188,7 @@ void TestsIntegrationExecute(void)
                                neighborFont:neighborFont
                             foregroundColor:foregroundColor
                             backgroundColor:backgroundColor
+                                   mixColor:[NSColor blackColor]
                                  background:background];
 }
 
@@ -202,6 +203,7 @@ void TestsIntegrationExecute(void)
                                neighborFont:neighborFont
                             foregroundColor:foregroundColor
                             backgroundColor:backgroundColor
+                                   mixColor:[NSColor blackColor]
                                  background:background];
 }
 +(SVRSolverTextAttachmentStyles)stylesForError;
@@ -215,6 +217,7 @@ void TestsIntegrationExecute(void)
                                neighborFont:neighborFont
                             foregroundColor:foregroundColor
                             backgroundColor:backgroundColor
+                                   mixColor:[NSColor blackColor]
                                  background:background];
 }
 +(SVRSolverTextStyles)stylesForText;

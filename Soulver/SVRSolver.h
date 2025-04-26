@@ -125,6 +125,7 @@ typedef XP_ENUM(XPInteger, SVRSolverTextAttachmentBackground) {
 
 extern NSString *const SVRSolverTextAttachmentNeighborFontKey;
 extern NSString *const SVRSolverTextAttachmentBackgroundKey;
+extern NSString *const SVRSolverTextAttachmentMixColorKey;
 
 extern NSString *const SVRSolverTextStyleMathFont;
 extern NSString *const SVRSolverTextStyleOtherFont;
@@ -191,6 +192,7 @@ NSString             *SVRSolverDebugDescriptionForError(SVRCalculationError erro
                                         neighborFont:(NSFont*)neighborFont
                                      foregroundColor:(NSColor*)foregroundColor
                                      backgroundColor:(NSColor*)backgroundColor
+                                            mixColor:(NSColor*)mixColor
                                           background:(SVRSolverTextAttachmentBackground)purpose;
 
 +(SVRSolverTextAttachmentStyles)__SVR_stylesWithMathFont:(NSFont*)mathFont

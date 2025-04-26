@@ -51,6 +51,11 @@
   return [_configuration objectForKey:NSBackgroundColorAttributeName];
 }
 
+-(NSColor*)mixColor;
+{
+  return [_configuration objectForKey:SVRSolverTextAttachmentMixColorKey];
+}
+
 -(NSFont*)neighborFont;
 {
   return [_configuration objectForKey:SVRSolverTextAttachmentNeighborFontKey];
@@ -74,6 +79,7 @@
   NSCParameterAssert([styles objectForKey:SVRSolverTextAttachmentNeighborFontKey]);
   NSCParameterAssert([styles objectForKey:NSForegroundColorAttributeName]);
   NSCParameterAssert([styles objectForKey:NSBackgroundColorAttributeName]);
+  NSCParameterAssert([styles objectForKey:SVRSolverTextAttachmentMixColorKey]);
   NSCParameterAssert([styles objectForKey:SVRSolverTextAttachmentBackgroundKey]);
 
   _string = [string retain];
@@ -203,19 +209,19 @@
   XPFloat stroke = 1.0;
   NSRect  rect = NSInsetRect(_rect, stroke, stroke);
   XPFloat radius = NSHeight(rect) / 2.0;
-  NSColor *fillColor   = [[self SVR_attachment] backgroundColor];
-  // TODO: Pass the dark/light mode status here so we can choose
-  // to mix white or blackColor when appropriate
-  NSColor *strokeColor = [fillColor blendedColorWithFraction:0.5
-                                                     ofColor:[NSColor whiteColor]];
+  NSColor *mixColor = [[self SVR_attachment] mixColor];
+  NSColor *backgroundColor = [[self SVR_attachment] backgroundColor];
+  NSColor *strokeColor = [backgroundColor blendedColorWithFraction:0.5 ofColor:mixColor];
   NSBezierPath *path = [NSBezierPath XP_bezierPathWithRoundedRect:rect
                                                           xRadius:radius
                                                           yRadius:radius];
   
-  NSCParameterAssert(fillColor);
+  NSCParameterAssert(mixColor);
+  NSCParameterAssert(backgroundColor);
+  NSCParameterAssert(strokeColor);
   NSCParameterAssert(path);
   
-  [fillColor set];
+  [backgroundColor set];
   [path fill];
   [path setLineWidth:stroke];
   [strokeColor set];

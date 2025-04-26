@@ -42,6 +42,7 @@
 -(NSFont*)neighborFont;
 -(NSColor*)foregroundColor;
 -(NSColor*)backgroundColor;
+-(NSColor*)mixColor;
 -(SVRSolverTextAttachmentBackground)background;
 
 -(id)initWithString:(NSString*)stringToDraw styles:(SVRSolverTextAttachmentStyles)styles;

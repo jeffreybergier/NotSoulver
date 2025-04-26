@@ -601,6 +601,7 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
 
 NSString *const SVRSolverTextAttachmentNeighborFontKey = @"SVRSolverTextAttachmentNeighborFont";
 NSString *const SVRSolverTextAttachmentBackgroundKey   = @"SVRSolverTextAttachmentBackground";
+NSString *const SVRSolverTextAttachmentMixColorKey     = @"SVRSolverTextAttachmentMixColor";
 
 NSString *const SVRSolverTextStyleMathFont      = @"SVRSolverTextStyleMathFont";
 NSString *const SVRSolverTextStyleOtherFont     = @"SVRSolverTextStyleOtherFont";
@@ -620,10 +621,14 @@ NSString *const SVRSolverTextStylePreviousColor = @"SVRSolverTextStylePreviousCo
 #else
   SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
 #endif
+  NSColor *mixColor = [self SVR_userInterfaceStyle] == XPUserInterfaceStyleDark
+                      ? [NSColor whiteColor]
+                      : [NSColor blackColor];
   return [NSDictionary __SVR_stylesWithFont:[self SVR_fontForTheme:SVRThemeFontMath]
                                neighborFont:[self SVR_fontForTheme:SVRThemeFontMath]
                             foregroundColor:[self SVR_colorForTheme:SVRThemeColorOperandText]
                             backgroundColor:[self SVR_colorForTheme:SVRThemeColorSolution]
+                                   mixColor:mixColor
                                  background:background];
 }
 
@@ -634,10 +639,14 @@ NSString *const SVRSolverTextStylePreviousColor = @"SVRSolverTextStylePreviousCo
 #else
   SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
 #endif
+  NSColor *mixColor = [self SVR_userInterfaceStyle] == XPUserInterfaceStyleDark
+                      ? [NSColor whiteColor]
+                      : [NSColor blackColor];
   return [NSDictionary __SVR_stylesWithFont:[self SVR_fontForTheme:SVRThemeFontMath]
                                neighborFont:[self SVR_fontForTheme:SVRThemeFontMath]
                             foregroundColor:[self SVR_colorForTheme:SVRThemeColorOperandText]
                             backgroundColor:[self SVR_colorForTheme:SVRThemeColorSolutionSecondary]
+                                   mixColor:mixColor
                                  background:background];
 }
 
@@ -648,10 +657,14 @@ NSString *const SVRSolverTextStylePreviousColor = @"SVRSolverTextStylePreviousCo
 #else
   SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
 #endif
+  NSColor *mixColor = [self SVR_userInterfaceStyle] == XPUserInterfaceStyleDark
+                      ? [NSColor whiteColor]
+                      : [NSColor blackColor];
   return [NSDictionary __SVR_stylesWithFont:[self SVR_fontForTheme:SVRThemeFontError]
                                neighborFont:[self SVR_fontForTheme:SVRThemeFontMath]
                             foregroundColor:[self SVR_colorForTheme:SVRThemeColorOperandText]
                             backgroundColor:[self SVR_colorForTheme:SVRThemeColorErrorText]
+                                   mixColor:mixColor
                                  background:background];
 }
 
@@ -680,6 +693,7 @@ NSString *const SVRSolverTextStylePreviousColor = @"SVRSolverTextStylePreviousCo
                                         neighborFont:(NSFont*)neighborFont
                                      foregroundColor:(NSColor*)foregroundColor
                                      backgroundColor:(NSColor*)backgroundColor
+                                            mixColor:(NSColor*)mixColor
                                           background:(SVRSolverTextAttachmentBackground)purpose;
 {
   NSArray *values;
@@ -689,12 +703,14 @@ NSString *const SVRSolverTextStylePreviousColor = @"SVRSolverTextStylePreviousCo
   NSCParameterAssert(neighborFont);
   NSCParameterAssert(foregroundColor);
   NSCParameterAssert(backgroundColor);
+  NSCParameterAssert(mixColor);
   
   values = [NSArray arrayWithObjects:
             font,
             neighborFont,
             foregroundColor,
             backgroundColor,
+            mixColor,
             [NSNumber XP_numberWithInteger:purpose],
             nil];
   
@@ -703,6 +719,7 @@ NSString *const SVRSolverTextStylePreviousColor = @"SVRSolverTextStylePreviousCo
           SVRSolverTextAttachmentNeighborFontKey,
           NSForegroundColorAttributeName,
           NSBackgroundColorAttributeName,
+          SVRSolverTextAttachmentMixColorKey,
           SVRSolverTextAttachmentBackgroundKey,
           nil];
   
