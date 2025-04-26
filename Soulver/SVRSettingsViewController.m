@@ -102,7 +102,7 @@
   // [_popUpPage selectItemAtIndex:[ud SVR_selectedSettingsPage]];
   
   // Configure theme
-  [_popUpTheme selectItemAtIndex:[ud SVR_userInterfaceStyle]];
+  [_popUpTheme selectItemAtIndex:[ud SVR_userInterfaceStyleSetting]];
   
   // Dark Theme Colors
   [_wellDarkBackground     setColor:[ud SVR_colorForTheme:SVRThemeColorBackground
@@ -200,10 +200,10 @@
     case XPUserInterfaceStyleUnspecified:
     case XPUserInterfaceStyleLight:
     case XPUserInterfaceStyleDark:
-      [ud SVR_setUserInterfaceStyle:newStyle];
+      [ud SVR_setUserInterfaceStyleSetting:newStyle];
       break;
     default:
-      NSBeep();
+      XPLogRaise2(@"%@ SVRThemeUserInterfaceStyleSetting INVALID: %d ", self, (int)newStyle);
       break;
   }
 }
@@ -301,7 +301,7 @@
 {
   // See configureWellTags for more info about this bitwise packing
   short int packed = (short int)[sender tag];
-  SVRThemeColor        color = packed & 0xFF;
+  SVRThemeColor color = packed & 0xFF;
   XPUserInterfaceStyle style = (packed >> 8) & 0xFF;
   
   // Set Defaults for Failure

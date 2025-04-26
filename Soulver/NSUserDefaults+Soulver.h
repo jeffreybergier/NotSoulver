@@ -72,8 +72,11 @@ typedef XP_ENUM(XPInteger, SVRAccessoryWindow) {
 
 // MARK: Theming
 -(void)__postChangeNotification;
+/// Returns the preference for user interface style (this should only be used by the settings window)
+-(XPUserInterfaceStyle)SVR_userInterfaceStyleSetting;
+-(BOOL)SVR_setUserInterfaceStyleSetting:(XPUserInterfaceStyle)style;
+/// Returns the apparant user interface style
 -(XPUserInterfaceStyle)SVR_userInterfaceStyle;
--(BOOL)SVR_setUserInterfaceStyle:(XPUserInterfaceStyle)style;
 -(NSColor*)SVR_colorForTheme:(SVRThemeColor)theme;
 -(NSColor*)SVR_colorForTheme:(SVRThemeColor)theme
                    withStyle:(XPUserInterfaceStyle)style;

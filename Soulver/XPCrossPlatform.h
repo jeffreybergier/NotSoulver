@@ -127,6 +127,10 @@ typedef NSAttributedStringKey XPAttributedStringKey;
 typedef NSString* XPAttributedStringKey;
 #endif
 
+#ifdef MAC_OS_X_VERSION_10_14
+#define XPSupportsDarkMode
+#endif
+
 extern const NSRange XPNotFoundRange;
 BOOL XPIsNotFoundRange(NSRange range);
 BOOL XPContainsRange(NSRange lhs, NSRange rhs);

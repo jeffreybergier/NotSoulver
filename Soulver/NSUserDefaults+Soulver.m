@@ -150,13 +150,50 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 
 -(XPUserInterfaceStyle)SVR_userInterfaceStyle;
 {
+#ifdef XPSupportsDarkMode
+  NSAppearance *appearance = [[NSApplication sharedApplication] effectiveAppearance];
+  NSArray *names = [NSArray arrayWithObjects:NSAppearanceNameAqua, NSAppearanceNameDarkAqua, nil];
+  NSAppearanceName bestMatch = [appearance bestMatchFromAppearancesWithNames:names];
+  XPUserInterfaceStyle setting = [self SVR_userInterfaceStyleSetting];
+  switch (setting) {
+    case XPUserInterfaceStyleUnspecified:
+      if ([bestMatch isEqualToString:NSAppearanceNameDarkAqua]) {
+        return XPUserInterfaceStyleDark;
+      } else {
+        return XPUserInterfaceStyleLight;
+      }
+    case XPUserInterfaceStyleLight:
+      return XPUserInterfaceStyleLight;
+    case XPUserInterfaceStyleDark:
+      return XPUserInterfaceStyleDark;
+    default:
+      XPLogRaise2(@"%@ SVRThemeUserInterfaceStyle INVALID: %d ", self, (int)setting);
+      return -1;
+  }
+#else
+  XPUserInterfaceStyle setting = [self SVR_userInterfaceStyleSetting];
+  switch (setting) {
+    case XPUserInterfaceStyleDark:
+      return XPUserInterfaceStyleDark;
+    case XPUserInterfaceStyleUnspecified:
+    case XPUserInterfaceStyleLight:
+      return XPUserInterfaceStyleLight;
+    default:
+      XPLogRaise2(@"%@ SVRThemeUserInterfaceStyle INVALID: %d ", self, (int)setting);
+      return -1;
+  }
+#endif
+}
+
+-(XPUserInterfaceStyle)SVR_userInterfaceStyleSetting;
+{
   return (XPUserInterfaceStyle)[self integerForKey:SVRThemeUserInterfaceStyle];
 }
 
--(BOOL)SVR_setUserInterfaceStyle:(XPUserInterfaceStyle)style;
+-(BOOL)SVR_setUserInterfaceStyleSetting:(XPUserInterfaceStyle)style;
 {
   BOOL success = NO;
-  XPUserInterfaceStyle oldStyle = [self SVR_userInterfaceStyle];
+  XPUserInterfaceStyle oldStyle = [self SVR_userInterfaceStyleSetting];
   if (oldStyle == style) { return YES; }
   [self setInteger:style forKey:SVRThemeUserInterfaceStyle];
   success = [self synchronize];
@@ -237,7 +274,6 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
         case SVRThemeColorBackground:        return SVRThemeDarkBackgroundColor;
         case SVRThemeColorInsertionPoint:    return SVRThemeDarkInsertionPoint;
       }
-    case XPUserInterfaceStyleUnspecified:
     case XPUserInterfaceStyleLight:
     default:
       switch (theme) {
@@ -251,6 +287,8 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
         case SVRThemeColorBackground:        return SVRThemeLightBackgroundColor;
         case SVRThemeColorInsertionPoint:    return SVRThemeLightInsertionPoint;
       }
+    case XPUserInterfaceStyleUnspecified:
+      XPLogRaise1(@"%@ Tried to set color for XPUserInterfaceStyleUnspecified", self);
   }
   return nil;
 }
