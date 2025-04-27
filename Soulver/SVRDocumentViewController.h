@@ -47,11 +47,9 @@
 // MARK: Interface Builder
 -(NSTextView*)textView;
 -(SVRDocumentModelController*)modelController;
--(IBAction)append:(NSButton*)sender;
 -(IBAction)keypadAppend:(NSButton*)sender;
 
 // MARK: Private
--(void)__append:(id)sender;
 -(NSString*)__mapKeyWithTag:(XPInteger)tag;
 -(NSDictionary*)__typingAttributes;
 

@@ -98,19 +98,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   return [[_modelController retain] autorelease];
 }
 
--(IBAction)append:(NSButton*)sender
-{
-  XPLogRaise(@"// TODO: Is this method still in use?");
-  [self __append:sender];
-}
-
 -(IBAction)keypadAppend:(id)sender;
-{
-  [self __append:sender];
-}
-
-// MARK: Private
--(void)__append:(id)sender;
 {
   NSTextView *textView = [self textView];
   NSString   *toAppend = [self __mapKeyWithTag:[sender tag]];
