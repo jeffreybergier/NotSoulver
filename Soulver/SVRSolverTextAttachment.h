@@ -37,6 +37,8 @@
   mm_retain NSDictionary *_configuration;
 }
 
++(NSSize)textPadding;
+
 -(NSString*)string;
 -(NSFont*)font;
 -(NSFont*)neighborFont;

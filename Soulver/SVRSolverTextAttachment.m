@@ -31,6 +31,11 @@
 
 @implementation SVRSolverTextAttachment
 
++(NSSize)textPadding;
+{
+  return NSMakeSize(8, 4);
+}
+
 -(NSString*)string;
 {
   return [[_string retain] autorelease];
@@ -183,6 +188,7 @@
 {
   NSDictionary *attributes = [[self class] attributesWithFont:[[self SVR_attachment] font]
                                                         color:[[self SVR_attachment] foregroundColor]];
+  NSSize padding = [[[self SVR_attachment] class] textPadding];
   switch ([[self SVR_attachment] background]) {
     case SVRSolverTextAttachmentBackgroundCapsuleFill:
       [self __drawBackgroundCapsuleFillInRect:cellFrame];
@@ -199,6 +205,7 @@
                  self, (int)[[self SVR_attachment] background]);
       break;
   }
+  cellFrame.origin.y += padding.height / 2.0;
   [[[self SVR_attachment] string] drawInRect:cellFrame withAttributes:attributes];
   XPLogExtra2(@"drawString:`%@` withFrame:%@", [[self SVR_attachment] string], NSStringFromRect(cellFrame));
 }
@@ -260,7 +267,9 @@
   NSDictionary *attributes = [[self class] attributesWithFont:[[self SVR_attachment] font]
                                                         color:[[self SVR_attachment] foregroundColor]];
   NSSize size = [[[self SVR_attachment] string] sizeWithAttributes:attributes];
-  size.width += 8;
+  NSSize padding = [[[self SVR_attachment] class] textPadding];
+  size.width += padding.width;
+  size.height += padding.height;
   // TODO: consider adding height as well to make the Capsule shapes not hit the letters
   return size;
 }
