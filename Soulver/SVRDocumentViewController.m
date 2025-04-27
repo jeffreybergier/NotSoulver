@@ -227,15 +227,13 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 
 -(IBAction)cutUnsolved:(id)sender;
 {
-  NSRange range = [[self textView] selectedRange];
   [self copyUnsolved:sender];
-  [[self modelController] deleteCharactersInRange:range];
+  [[self textView] delete:sender];
 }
 -(IBAction)cutUniversal:(id)sender;
 {
-  NSRange range = [[self textView] selectedRange];
   [self copyUniversal:sender];
-  [[self modelController] deleteCharactersInRange:range];
+  [[self textView] delete:sender];
 }
 
 -(IBAction)copyUnsolved:(id)sender;
@@ -278,8 +276,8 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   {
     // Do Universal Paste
     XPLogDebug1(@"%@ pasteUniversal: Universal Paste", self);
-    [[self modelController] replaceCharactersInRange:[textView selectedRange]
-                                          withString:diskRepString];
+    [textView replaceCharactersInRange:[textView selectedRange]
+                            withString:diskRepString];
   } else {
     // Fail universal paste and forward the message to the textview
     XPLogDebug1(@"%@ pasteUniversal: NOT Universal Paste", self);

@@ -78,10 +78,6 @@ typedef NSString* SVRDocumentModelRep;
 /// This method ignores of type parameter and always assumes `SVRDocumentModelRepDisk`
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(SVRDocumentModelRep)type;
 
-// MARK: Usage
--(void)replaceCharactersInRange:(NSRange)range withString:(NSString*)string;
--(void)deleteCharactersInRange:(NSRange)range;
-
 // MARK: Private
 -(NSData*)__dataRepresentationOfDiskTypeWithRange:(NSRange)range;
 -(NSData*)__dataRepresentationOfDisplayTypeWithRange:(NSRange)range;

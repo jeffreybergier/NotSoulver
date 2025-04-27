@@ -112,26 +112,6 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
   }
 }
 
-// MARK: Usage
-
--(void)replaceCharactersInRange:(NSRange)range withString:(NSString*)string;
-{
-  NSTextStorage *model = [self model];
-  [model beginEditing];
-  [model replaceCharactersInRange:range withString:string];
-  [model endEditing];
-  [self textDidChange:nil];
-}
-
--(void)deleteCharactersInRange:(NSRange)range;
-{
-  NSTextStorage *model = [self model];
-  [model beginEditing];
-  [model deleteCharactersInRange:range];
-  [model endEditing];
-  [self textDidChange:nil];
-}
-
 // MARK: Private
 
 -(NSData*)__dataRepresentationOfDiskTypeWithRange:(NSRange)range;
