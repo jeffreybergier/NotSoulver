@@ -86,12 +86,6 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   [textView setNeedsDisplay:YES];
 }
 
-// MARK: IBActions
--(IBAction)keypadAppend:(id)sender;
-{
-  [self __append:[sender tag]];
-}
-
 // MARK: Interface Builder
 
 -(NSTextView*)textView;
@@ -106,29 +100,41 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 
 -(IBAction)append:(NSButton*)sender
 {
-  [self __append:[sender tag]];
+  XPLogRaise(@"// TODO: Is this method still in use?");
+  [self __append:sender];
+}
+
+-(IBAction)keypadAppend:(id)sender;
+{
+  [self __append:sender];
 }
 
 // MARK: Private
--(void)__append:(XPInteger)tag;
+-(void)__append:(id)sender;
 {
-  int control = 0;
-  NSString *toAppend = [self __mapKeyWithTag:tag control:&control];
+  NSTextView *textView = [self textView];
+  NSString   *toAppend = [self __mapKeyWithTag:[sender tag]];
+  NSRange range;
+  
   if (toAppend) {
-    [[self modelController] appendCharacter:toAppend];
+    [textView XP_insertText:toAppend];
   } else {
-    switch (control) {
-      case -1: [[self modelController] backspaceCharacter]; break;
-      case -2: [[self modelController] backspaceLine]; break;
-      case -3: [[self modelController] backspaceAll]; break;
-      default: XPLogRaise2(@"%@ Button with unknown tag: %ld", self, tag);
+    range = [textView selectedRange];
+    // The delete method on NSText does not do a backspace
+    // if nothing is selected. So this forces a single
+    // character selection if needed
+    if (range.location > 0 && range.length == 0) {
+      range.location -= 1;
+      range.length = 1;
+      [textView setSelectedRange:range];
     }
+    [[self textView] delete:sender];
   }
 }
 
 // Returns NIL if backspace
 // Exception if unknown tag
--(NSString*)__mapKeyWithTag:(XPInteger)tag control:(int*)control;
+-(NSString*)__mapKeyWithTag:(XPInteger)tag;
 {
   switch (tag) {
     case  1: return @"1";
@@ -153,10 +159,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
     case 21: return @"^";
     case 22: return [@"2" stringByAppendingString:[NSString SVR_rootRawString]];
     case 23: return [@"10" stringByAppendingString:[NSString SVR_logRawString]];
-    case 13:
-      // Backspace Button
-      *control = -1;
-      return nil;
+    case 13: return nil; // Backspace key
   }
   XPLogRaise2(@"<%@> Button with unknown tag: %ld", self, tag);
   return nil;
@@ -221,8 +224,6 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 
   return NO;
 }
-
-// TODO: Convert this copy code to use model controller
 
 -(IBAction)cutUnsolved:(id)sender;
 {

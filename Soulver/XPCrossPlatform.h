@@ -271,6 +271,10 @@ NSArray* XPRunOpenPanel(NSString *extension);
 @end
 #endif
 
+@interface NSTextView (CrossPlatform)
+-(void)XP_insertText:(id)string;
+@end
+
 // MARK: XPLogging
 
 // In C99 the ability was added for Macros to have Variadic arguments

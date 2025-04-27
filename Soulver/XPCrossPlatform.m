@@ -587,6 +587,17 @@ NSArray* XPRunOpenPanel(NSString *extension)
 @end
 #endif
 
+@implementation NSTextView (CrossPlatform)
+-(void)XP_insertText:(id)string;
+{
+#ifdef MAC_OS_X_VERSION_10_2
+  [self insertText:string replacementRange:[self selectedRange]];
+#else
+  [self insertText:string];
+#endif
+}
+@end
+
 @implementation XPLog
 
 +(void)pause {}

@@ -79,10 +79,6 @@ typedef NSString* SVRDocumentModelRep;
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(SVRDocumentModelRep)type;
 
 // MARK: Usage
--(void)appendCharacter:(NSString*)aString;
--(void)backspaceCharacter;
--(void)backspaceLine;
--(void)backspaceAll;
 -(void)replaceCharactersInRange:(NSRange)range withString:(NSString*)string;
 -(void)deleteCharactersInRange:(NSRange)range;
 

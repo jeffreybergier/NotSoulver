@@ -113,42 +113,6 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
 }
 
 // MARK: Usage
--(void)appendCharacter:(NSString*)aString;
-{
-  NSTextStorage *model = [self model];
-  [ model beginEditing];
-  [[model mutableString] appendString:aString];
-  [ model endEditing];
-  [self textDidChange:nil];
-}
-
--(void)backspaceCharacter;
-{
-  NSRange lastCharacter = XPNotFoundRange;
-  NSTextStorage *model = [self model];
-  XPUInteger length = [[model mutableString] length];
-  if (length == 0) { return; }
-  
-  lastCharacter = NSMakeRange(length-1, 1);
-  [ model beginEditing];
-  [[model mutableString] deleteCharactersInRange:lastCharacter];
-  [ model endEditing];
-  [self textDidChange:nil];
-}
-
--(void)backspaceLine;
-{
-  XPLogPause(@"Unimplemented");
-}
-
--(void)backspaceAll;
-{
-  NSTextStorage *model = [self model];
-  [ model beginEditing];
-  [[model mutableString] setString:@""];
-  [ model endEditing];
-  [self textDidChange:nil];
-}
 
 -(void)replaceCharactersInRange:(NSRange)range withString:(NSString*)string;
 {

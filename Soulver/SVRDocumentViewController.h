@@ -44,17 +44,15 @@
 -(void)awakeFromNib;
 -(void)themeDidChangeNotification:(NSNotification*)aNotification;
 
-// MARK: IBActions
--(IBAction)keypadAppend:(id)sender;
-
 // MARK: Interface Builder
 -(NSTextView*)textView;
 -(SVRDocumentModelController*)modelController;
 -(IBAction)append:(NSButton*)sender;
+-(IBAction)keypadAppend:(NSButton*)sender;
 
 // MARK: Private
--(void)__append:(XPInteger)tag;
--(NSString*)__mapKeyWithTag:(XPInteger)tag control:(int*)control;
+-(void)__append:(id)sender;
+-(NSString*)__mapKeyWithTag:(XPInteger)tag;
 -(NSDictionary*)__typingAttributes;
 
 @end
