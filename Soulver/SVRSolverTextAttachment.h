@@ -57,6 +57,9 @@
 @end
 
 @interface SVRSolverTextAttachmentCell: NSTextAttachmentCell
+{
+  NSSize _cellSize;
+}
 
 // MARK: Properties
 -(SVRSolverTextAttachment*)SVR_attachment;
@@ -74,6 +77,7 @@
 
 // MARK: Protocol (Used)
 -(NSSize)cellSize;
+-(NSSize)__calculateCellSize;
 -(NSPoint)cellBaselineOffset;
 
 // MARK: Protocol (Unused)

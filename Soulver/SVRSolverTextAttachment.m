@@ -148,7 +148,10 @@
 {
   self = [super init];
   NSCParameterAssert(self);
+  
   [self setAttachment:attachment];
+  _cellSize = [self __calculateCellSize];
+
   return self;
 }
 
@@ -261,6 +264,11 @@
 // MARK: Protocol (Used)
 
 -(NSSize)cellSize;
+{
+  return _cellSize;
+}
+
+-(NSSize)__calculateCellSize;
 {
   SVRSolverTextAttachment *attachment = [self SVR_attachment];
   NSDictionary *attributes = [[self class] attributesWithFont:[attachment font]
