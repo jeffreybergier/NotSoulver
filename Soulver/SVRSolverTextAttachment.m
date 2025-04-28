@@ -36,7 +36,7 @@
 #ifdef XPSupportsNSBezierPath
   return NSMakeSize(12, 4);
 #else
-  return NSMakeSize(8, 0);
+  return NSMakeSize(8, 2);
 #endif
 }
 
