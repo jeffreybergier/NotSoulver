@@ -33,8 +33,11 @@
 
 +(NSSize)textPadding;
 {
-  // TODO: Consider changing these values when NSBezierPath is available
+#ifdef XPSupportsNSBezierPath
   return NSMakeSize(12, 4);
+#else
+  return NSMakeSize(8, 0);
+#endif
 }
 
 -(NSString*)string;
