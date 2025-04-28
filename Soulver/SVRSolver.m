@@ -599,7 +599,6 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
 
 // MARK: SVRSolverTextAttachment Input
 
-NSString *const SVRSolverTextAttachmentNeighborFontKey = @"SVRSolverTextAttachmentNeighborFont";
 NSString *const SVRSolverTextAttachmentBackgroundKey   = @"SVRSolverTextAttachmentBackground";
 NSString *const SVRSolverTextAttachmentMixColorKey     = @"SVRSolverTextAttachmentMixColor";
 
@@ -625,7 +624,6 @@ NSString *const SVRSolverTextStylePreviousColor = @"SVRSolverTextStylePreviousCo
                       ? [NSColor whiteColor]
                       : [NSColor blackColor];
   return [NSDictionary __SVR_stylesWithFont:[self SVR_fontForTheme:SVRThemeFontMath]
-                               neighborFont:[self SVR_fontForTheme:SVRThemeFontMath]
                             foregroundColor:[self SVR_colorForTheme:SVRThemeColorOperandText]
                             backgroundColor:[self SVR_colorForTheme:SVRThemeColorSolution]
                                    mixColor:mixColor
@@ -643,7 +641,6 @@ NSString *const SVRSolverTextStylePreviousColor = @"SVRSolverTextStylePreviousCo
                       ? [NSColor whiteColor]
                       : [NSColor blackColor];
   return [NSDictionary __SVR_stylesWithFont:[self SVR_fontForTheme:SVRThemeFontMath]
-                               neighborFont:[self SVR_fontForTheme:SVRThemeFontMath]
                             foregroundColor:[self SVR_colorForTheme:SVRThemeColorOperandText]
                             backgroundColor:[self SVR_colorForTheme:SVRThemeColorSolutionSecondary]
                                    mixColor:mixColor
@@ -661,7 +658,6 @@ NSString *const SVRSolverTextStylePreviousColor = @"SVRSolverTextStylePreviousCo
                       ? [NSColor whiteColor]
                       : [NSColor blackColor];
   return [NSDictionary __SVR_stylesWithFont:[self SVR_fontForTheme:SVRThemeFontError]
-                               neighborFont:[self SVR_fontForTheme:SVRThemeFontMath]
                             foregroundColor:[self SVR_colorForTheme:SVRThemeColorOperandText]
                             backgroundColor:[self SVR_colorForTheme:SVRThemeColorErrorText]
                                    mixColor:mixColor
@@ -690,7 +686,6 @@ NSString *const SVRSolverTextStylePreviousColor = @"SVRSolverTextStylePreviousCo
 @implementation NSDictionary (SVRSolverTextAttachmentStyles)
 
 +(SVRSolverTextAttachmentStyles)__SVR_stylesWithFont:(NSFont*)font
-                                        neighborFont:(NSFont*)neighborFont
                                      foregroundColor:(NSColor*)foregroundColor
                                      backgroundColor:(NSColor*)backgroundColor
                                             mixColor:(NSColor*)mixColor
@@ -700,14 +695,12 @@ NSString *const SVRSolverTextStylePreviousColor = @"SVRSolverTextStylePreviousCo
   NSArray *keys;
   
   NSCParameterAssert(font);
-  NSCParameterAssert(neighborFont);
   NSCParameterAssert(foregroundColor);
   NSCParameterAssert(backgroundColor);
   NSCParameterAssert(mixColor);
   
   values = [NSArray arrayWithObjects:
             font,
-            neighborFont,
             foregroundColor,
             backgroundColor,
             mixColor,
@@ -716,7 +709,6 @@ NSString *const SVRSolverTextStylePreviousColor = @"SVRSolverTextStylePreviousCo
   
   keys = [NSArray arrayWithObjects:
           NSFontAttributeName,
-          SVRSolverTextAttachmentNeighborFontKey,
           NSForegroundColorAttributeName,
           NSBackgroundColorAttributeName,
           SVRSolverTextAttachmentMixColorKey,

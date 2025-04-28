@@ -180,12 +180,10 @@ void TestsIntegrationExecute(void)
 +(SVRSolverTextAttachmentStyles)stylesForSolution;
 {
   NSFont *font = [NSFont fontWithName:@"Courier" size:12];
-  NSFont *neighborFont = [NSFont fontWithName:@"Courier" size:12];
   NSColor *foregroundColor = [NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:1];
   NSColor *backgroundColor = [NSColor colorWithCalibratedRed:0 green:0 blue:0.7 alpha:1];
   SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
   return [NSDictionary __SVR_stylesWithFont:font
-                               neighborFont:neighborFont
                             foregroundColor:foregroundColor
                             backgroundColor:backgroundColor
                                    mixColor:[NSColor blackColor]
@@ -195,12 +193,10 @@ void TestsIntegrationExecute(void)
 +(SVRSolverTextAttachmentStyles)stylesForPreviousSolution;
 {
   NSFont *font = [NSFont fontWithName:@"Courier" size:14];
-  NSFont *neighborFont = [NSFont fontWithName:@"Helvetica" size:8];
   NSColor *foregroundColor = [NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:1];
   NSColor *backgroundColor = [NSColor colorWithCalibratedRed:0.7 green:0.7 blue:0 alpha:1];
   SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
   return [NSDictionary __SVR_stylesWithFont:font
-                               neighborFont:neighborFont
                             foregroundColor:foregroundColor
                             backgroundColor:backgroundColor
                                    mixColor:[NSColor blackColor]
@@ -209,12 +205,10 @@ void TestsIntegrationExecute(void)
 +(SVRSolverTextAttachmentStyles)stylesForError;
 {
   NSFont *font = [NSFont fontWithName:@"Helvetica" size:10];
-  NSFont *neighborFont = [NSFont fontWithName:@"Courier" size:12];
   NSColor *foregroundColor = [NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:1];
   NSColor *backgroundColor = [NSColor colorWithCalibratedRed:0.7 green:0 blue:0 alpha:1];
   SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
   return [NSDictionary __SVR_stylesWithFont:font
-                               neighborFont:neighborFont
                             foregroundColor:foregroundColor
                             backgroundColor:backgroundColor
                                    mixColor:[NSColor blackColor]

@@ -41,7 +41,6 @@
 
 -(NSString*)string;
 -(NSFont*)font;
--(NSFont*)neighborFont;
 -(NSColor*)foregroundColor;
 -(NSColor*)backgroundColor;
 -(NSColor*)mixColor;

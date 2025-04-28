@@ -65,11 +65,6 @@
   return [_configuration objectForKey:SVRSolverTextAttachmentMixColorKey];
 }
 
--(NSFont*)neighborFont;
-{
-  return [_configuration objectForKey:SVRSolverTextAttachmentNeighborFontKey];
-}
-
 -(SVRSolverTextAttachmentBackground)background;
 {
   return (SVRSolverTextAttachmentBackground)[[_configuration objectForKey:SVRSolverTextAttachmentBackgroundKey] XP_integerValue];
@@ -85,7 +80,6 @@
   NSCParameterAssert(self);
   NSCParameterAssert(string);
   NSCParameterAssert([styles objectForKey:NSFontAttributeName]);
-  NSCParameterAssert([styles objectForKey:SVRSolverTextAttachmentNeighborFontKey]);
   NSCParameterAssert([styles objectForKey:NSForegroundColorAttributeName]);
   NSCParameterAssert([styles objectForKey:NSBackgroundColorAttributeName]);
   NSCParameterAssert([styles objectForKey:SVRSolverTextAttachmentMixColorKey]);
@@ -280,7 +274,6 @@
 
 -(NSPoint)cellBaselineOffset;
 {
-  // TODO: Remove neighborfont? Its no longer used
   NSPoint output = [super cellBaselineOffset];
 
   XPFloat capHeight    = [[[self SVR_attachment] font] capHeight];
@@ -320,11 +313,12 @@
 -(BOOL)isEqual:(SVRSolverTextAttachment*)rhs;
 {
   if ([rhs class] != [SVRSolverTextAttachment class]) { return NO; }
-  return [[self string] isEqualToString:[rhs string]]
-      && [[self font]   isEqual:[rhs font]]
-      && [[self foregroundColor]  isEqual:[rhs foregroundColor]]
-      && [[self neighborFont] isEqual:[rhs neighborFont]]
-      && [self background] == [rhs background];
+  return [[self string]  isEqualToString:[rhs string]]
+      && [[self font           ] isEqual:[rhs font]]
+      && [[self mixColor       ] isEqual:[rhs mixColor]]
+      && [[self foregroundColor] isEqual:[rhs foregroundColor]]
+      && [[self backgroundColor] isEqual:[rhs backgroundColor]]
+      && [ self background     ] == [rhs background];
 }
 
 -(id)initWithCoder:(NSCoder *)coder;
