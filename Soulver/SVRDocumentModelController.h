@@ -72,6 +72,9 @@ typedef NSString* SVRDocumentModelRep;
 // MARK: Init
 -(id)init;
 
+// MARK: NSTextView Wrapping
+-(void)replaceCharactersInRange:(NSRange)range withString:(NSString *)string;
+
 // MARK: NSDocument Support
 -(NSData*)dataRepresentationOfType:(SVRDocumentModelRep)type;
 -(NSData*)dataRepresentationOfType:(SVRDocumentModelRep)type withRange:(NSRange)range;

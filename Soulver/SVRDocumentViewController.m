@@ -264,9 +264,8 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   {
     // Do Universal Paste
     XPLogDebug1(@"%@ pasteUniversal: Universal Paste", self);
-    // TODO: Put this back in the model controller
-    [textView replaceCharactersInRange:[textView selectedRange]
-                            withString:diskRepString];
+    [[self modelController] replaceCharactersInRange:[textView selectedRange]
+                                          withString:diskRepString];
   } else {
     // Fail universal paste and forward the message to the textview
     XPLogDebug1(@"%@ pasteUniversal: NOT Universal Paste", self);
@@ -297,9 +296,9 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
                     nil]
              owner:nil];
   
-  successRTF      = [pb setData:rtfData       forType:XPPasteboardTypeRTF];
-  successSpecial  = [pb setData:diskRepData   forType:specialType];
-  successPlain    = [pb setString:plainString forType:XPPasteboardTypeString];
+  successRTF     = [pb setData:rtfData       forType:XPPasteboardTypeRTF];
+  successSpecial = [pb setData:diskRepData   forType:specialType];
+  successPlain   = [pb setString:plainString forType:XPPasteboardTypeString];
   
   return successRTF && successPlain && successSpecial;
 }

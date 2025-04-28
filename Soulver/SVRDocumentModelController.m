@@ -79,6 +79,16 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
   return self;
 }
 
+// MARK: NSTextView Wrapping
+-(void)replaceCharactersInRange:(NSRange)range withString:(NSString *)string;
+{
+  NSTextStorage *model = [self model];
+  [model beginEditing];
+  [model replaceCharactersInRange:range withString:string];
+  [model endEditing];
+  [self textDidChange:nil];
+}
+
 // MARK: NSDocument Support
 -(NSData*)dataRepresentationOfType:(SVRDocumentModelRep)type withRange:(NSRange)range;
 {
