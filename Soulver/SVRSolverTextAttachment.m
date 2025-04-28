@@ -268,23 +268,25 @@
 
 -(NSSize)cellSize;
 {
-  NSDictionary *attributes = [[self class] attributesWithFont:[[self SVR_attachment] font]
-                                                        color:[[self SVR_attachment] foregroundColor]];
-  NSSize size = [[[self SVR_attachment] string] sizeWithAttributes:attributes];
-  NSSize padding = [[[self SVR_attachment] class] textPadding];
+  SVRSolverTextAttachment *attachment = [self SVR_attachment];
+  NSDictionary *attributes = [[self class] attributesWithFont:[attachment font]
+                                                        color:[attachment foregroundColor]];
+  NSSize size = [[attachment string] sizeWithAttributes:attributes];
+  NSSize padding = [[attachment class] textPadding];
   size.width += padding.width;
   size.height += padding.height;
-  // TODO: consider adding height as well to make the Capsule shapes not hit the letters
   return size;
 }
 
 -(NSPoint)cellBaselineOffset;
 {
-  NSFont *neighborFont = [[self SVR_attachment] neighborFont];
-  XPFloat neighborCapHeight = [neighborFont capHeight];
-  XPFloat attachmentHeight = [self cellSize].height;
-  XPFloat offset = (neighborCapHeight - attachmentHeight) / 2.0;
+  // TODO: Remove neighborfont? Its no longer used
   NSPoint output = [super cellBaselineOffset];
+
+  XPFloat capHeight    = [[[self SVR_attachment] font] capHeight];
+  XPFloat attachHeight = [self cellSize].height;
+  XPFloat offset       = (capHeight - attachHeight) / 2.0;
+  
   output.y += offset;
   return output;
 }
