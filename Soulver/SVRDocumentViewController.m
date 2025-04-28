@@ -264,6 +264,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   {
     // Do Universal Paste
     XPLogDebug1(@"%@ pasteUniversal: Universal Paste", self);
+    // TODO: Put this back in the model controller
     [textView replaceCharactersInRange:[textView selectedRange]
                             withString:diskRepString];
   } else {
