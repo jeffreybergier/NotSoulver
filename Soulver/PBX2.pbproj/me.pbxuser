@@ -10,9 +10,10 @@
 		);
 		executables = (
 			8C59B1152D938D9800A80066,
+			8C236A4C2DBF23B700A80066,
 		);
 		perUserDictionary = {
-			PBXPerProjectTemplateStateSaveDate = 764644806;
+			PBXPerProjectTemplateStateSaveDate = 767501239;
 			PBXWorkspaceContents = (
 				{
 					LeftSlideOut = {
@@ -20,7 +21,7 @@
 							Split0 = {
 								NavCount = 1;
 								NavGeometry0 = {
-									Frame = "{{0, 0}, {996, 593}}";
+									Frame = "{{0, 0}, {1076, 593}}";
 									NavBarVisible = YES;
 								};
 								NavSplitVertical = NO;
@@ -53,17 +54,17 @@
 			);
 			PBXWorkspaceGeometries = (
 				{
-					ContentSize = "{1280, 640}";
+					ContentSize = "{1360, 640}";
 					LeftSlideOut = {
 						ActiveTab = 0;
 						ActiveTabName = PBXGroupTreeModule;
 						Collapsed = NO;
-						Frame = "{{0, 23}, {1280, 617}}";
+						Frame = "{{0, 23}, {1360, 617}}";
 						Split0 = {
 							Collapsed = NO;
-							Frame = "{{284, 0}, {996, 617}}";
+							Frame = "{{284, 0}, {1076, 617}}";
 							Split0 = {
-								Frame = "{{0, 24}, {996, 593}}";
+								Frame = "{{0, 24}, {1076, 593}}";
 							};
 							SplitCount = 1;
 							Tab0 = {
@@ -181,7 +182,7 @@
 					WindowLocation = "{0, 44}";
 				},
 			);
-			PBXWorkspaceStateSaveDate = 764644806;
+			PBXWorkspaceStateSaveDate = 767501239;
 		};
 		projectwideBuildSettings = {
 		};
@@ -192,6 +193,25 @@
 		activeExec = 0;
 		executables = (
 			8C59B1152D938D9800A80066,
+		);
+	};
+	8C236A4C2DBF23B700A80066 = {
+		activeArgIndex = 2147483647;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		configStateDict = {
+		};
+		debuggerPlugin = GDBDebugging;
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		isa = PBXExecutable;
+		name = "Soulver (Release)";
+		shlibInfoDictList = (
+		);
+		sourceDirectories = (
 		);
 	};
 	8C59B1152D938D9800A80066 = {
@@ -222,5 +242,11 @@
 		isa = PBXSymbolicBreakpoint;
 		state = 1;
 		symbolName = "-[NSException raise]";
+	};
+	8CC318F52DBF1B3300A80066 = {
+		activeExec = 0;
+		executables = (
+			8C236A4C2DBF23B700A80066,
+		);
 	};
 }
