@@ -33,6 +33,8 @@
 		8CCAA3922D936DA30050DD4A /* TestsIntegration-SolvedRep.rtf in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CCAA36E2D936CC80050DD4A /* TestsIntegration-SolvedRep.rtf */; };
 		8CCAA3932D936DA30050DD4A /* TestsIntegration-UnsolvedRep.rtf in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CCAA36F2D936CC80050DD4A /* TestsIntegration-UnsolvedRep.rtf */; };
 		8CCAA3942D936DA30050DD4A /* about-image-512.tiff in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CCAA37A2D936D180050DD4A /* about-image-512.tiff */; };
+		8CF03E012DA26F71001D6A72 /* TestUnitBezierPath-MANUAL.tiff in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CF03DFE2DA26F61001D6A72 /* TestUnitBezierPath-MANUAL.tiff */; };
+		8CF03E022DA26F71001D6A72 /* TestUnitBezierPath-REAL.tiff in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CF03DFF2DA26F61001D6A72 /* TestUnitBezierPath-REAL.tiff */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -42,6 +44,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 6;
 			files = (
+				8CF03E012DA26F71001D6A72 /* TestUnitBezierPath-MANUAL.tiff in CopyFiles */,
+				8CF03E022DA26F71001D6A72 /* TestUnitBezierPath-REAL.tiff in CopyFiles */,
 				8C04BBBB2D94447600DCCDFA /* Localizable.strings in CopyFiles */,
 				8CCAA3902D936DA30050DD4A /* TestsIntegration-DiskRep.txt in CopyFiles */,
 				8CCAA3912D936DA30050DD4A /* TestsIntegration-DisplayRep.rtf in CopyFiles */,
@@ -116,6 +120,8 @@
 		8CCAA38E2D936D7E0050DD4A /* Soulver.iconheader */ = {isa = PBXFileReference; lastKnownFileType = text; name = Soulver.iconheader; path = ../Soulver/Soulver.iconheader; sourceTree = SOURCE_ROOT; };
 		8CCAA38F2D936D890050DD4A /* .gdbinit */ = {isa = PBXFileReference; lastKnownFileType = text; name = .gdbinit; path = ../Soulver/.gdbinit; sourceTree = SOURCE_ROOT; };
 		8CD402032D6AFCAF00024E10 /* Xcode14 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Xcode14; sourceTree = BUILT_PRODUCTS_DIR; };
+		8CF03DFE2DA26F61001D6A72 /* TestUnitBezierPath-MANUAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "TestUnitBezierPath-MANUAL.tiff"; path = "../Soulver/TestUnitBezierPath-MANUAL.tiff"; sourceTree = SOURCE_ROOT; };
+		8CF03DFF2DA26F61001D6A72 /* TestUnitBezierPath-REAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "TestUnitBezierPath-REAL.tiff"; path = "../Soulver/TestUnitBezierPath-REAL.tiff"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +146,8 @@
 				8CCAA36D2D936CC80050DD4A /* TestsIntegration-DisplayRep.rtf */,
 				8CCAA36E2D936CC80050DD4A /* TestsIntegration-SolvedRep.rtf */,
 				8CCAA36F2D936CC80050DD4A /* TestsIntegration-UnsolvedRep.rtf */,
+				8CF03DFE2DA26F61001D6A72 /* TestUnitBezierPath-MANUAL.tiff */,
+				8CF03DFF2DA26F61001D6A72 /* TestUnitBezierPath-REAL.tiff */,
 			);
 			name = Tests;
 			sourceTree = "<group>";

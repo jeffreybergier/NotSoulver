@@ -68,7 +68,7 @@ typedef NSDictionary* SVRSolverTextStyles;
 
 // MARK: Enumerations
 
-typedef enum {
+typedef XP_ENUM(XPInteger, SVRSolverTag) {
   // Stores NSDecimalNumber
   SVRSolverTagNumber,
   // Stores NSString of the range of the bracket
@@ -82,9 +82,9 @@ typedef enum {
   // Stores NSString with the original value
   // before it was replaced with NSTextAttachment
   SVRSolverTagOriginal
-} SVRSolverTag;
+};
 
-typedef enum {
+typedef XP_ENUM(XPInteger, SVRSolverOperator) {
   SVRSolverOperatorExponent,
   SVRSolverOperatorDivide,
   SVRSolverOperatorMultiply,
@@ -93,10 +93,9 @@ typedef enum {
   SVRSolverOperatorRoot,
   SVRSolverOperatorLog,
   SVRSolverOperatorUnknown
-  // TODO: Consider adding √ (option v) and log ∫ (option + [shift] + b)
-} SVRSolverOperator;
+};
 
-typedef enum {
+typedef XP_ENUM(XPInteger, SVRCalculationError) {
   SVRCalculationNoError            = NSCalculationNoError,
   SVRCalculationLossOfPrecision    = NSCalculationLossOfPrecision,
   SVRCalculationUnderflow          = NSCalculationUnderflow,
@@ -112,25 +111,20 @@ typedef enum {
   SVRCalculationArgumentNegative   = 112,
   SVRCalculationBaseNegative       = 113,
   SVRCalculationBaseOne            = 114,
-} SVRCalculationError;
+};
 
 typedef SVRCalculationError* SVRCalculationErrorPointer;
 
 // MARK: SVRSolverTextAttachment Input
 
-typedef enum {
-  SVRSolverTextAttachmentBorderStyleColored,
-  SVRSolverTextAttachmentBorderStyleRecessedGray,
-  SVRSolverTextAttachmentBorderStyleRecessedWhite,
-  SVRSolverTextAttachmentBorderStyleGroove,
-  SVRSolverTextAttachmentBorderStyleDotted,
-  SVRSolverTextAttachmentBorderStyleNone
-} SVRSolverTextAttachmentBorderStyle;
+typedef XP_ENUM(XPInteger, SVRSolverTextAttachmentBackground) {
+  SVRSolverTextAttachmentBackgroundCapsuleFill,
+  SVRSolverTextAttachmentBackgroundCapsuleStroke,
+  SVRSolverTextAttachmentBackgroundLegacyBoxStroke
+};
 
-extern NSString *const SVRSolverTextAttachmentStyleToDrawFont;
-extern NSString *const SVRSolverTextAttachmentStyleToDrawColor;
-extern NSString *const SVRSolverTextAttachmentStyleNeighborFont;
-extern NSString *const SVRSolverTextAttachmentStyleBorder;
+extern NSString *const SVRSolverTextAttachmentBackgroundKey;
+extern NSString *const SVRSolverTextAttachmentMixColorKey;
 
 extern NSString *const SVRSolverTextStyleMathFont;
 extern NSString *const SVRSolverTextStyleOtherFont;
@@ -193,16 +187,17 @@ NSString             *SVRSolverDebugDescriptionForError(SVRCalculationError erro
 
 @interface NSDictionary (SVRSolverTextAttachmentStyles)
 
-+(SVRSolverTextAttachmentStyles)__SVR_stylesWithToDrawFont:(NSFont*)toDrawFont
-                                              neighborFont:(NSFont*)neighborFont
-                                               toDrawColor:(NSColor*)toDrawColor
-                                               borderStyle:(SVRSolverTextAttachmentBorderStyle)borderStyle;
++(SVRSolverTextAttachmentStyles)__SVR_stylesWithFont:(NSFont*)font
+                                     foregroundColor:(NSColor*)foregroundColor
+                                     backgroundColor:(NSColor*)backgroundColor
+                                            mixColor:(NSColor*)mixColor
+                                          background:(SVRSolverTextAttachmentBackground)purpose;
 
 +(SVRSolverTextAttachmentStyles)__SVR_stylesWithMathFont:(NSFont*)mathFont
                                             neighborFont:(NSFont*)otherTextFont
                                           otherTextColor:(NSColor*)otherTextColor
                                             operandColor:(NSColor*)operandColor
                                            operatorColor:(NSColor*)operatorColor
-                                            bracketColor:(NSColor*)bracketColor;
+                                            previousColor:(NSColor*)previousColor;
 
 @end

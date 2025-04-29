@@ -41,9 +41,9 @@ NSString *SVRAccessoryWindowSettingsVisibility    = @"kSVRAccessoryWindowSetting
 NSString *SVRAccessoryWindowAboutVisibility       = @"kSVRAccessoryWindowAboutVisibilityKey";
 NSString *SVRAccessoryWindowKeypadVisibility      = @"kSVRAccessoryWindowKeypadVisibilityKey";
 
-NSString *SVRThemeLightOperandColor               = @"kSVRThemeLightOperandColorKey";
-NSString *SVRThemeLightOperatorColor              = @"kSVRThemeLightOperatorColorKey";
-NSString *SVRThemeLightBracketColor               = @"kSVRThemeLightBracketColorKey";
+NSString *SVRThemeLightOperandTextColor           = @"kSVRThemeLightOperandTextColor";
+NSString *SVRThemeLightOperatorTextColor          = @"kSVRThemeLightOperatorTextColor";
+NSString *SVRThemeLight_UNUSED_                   = @"kSVRThemeLight_UNUSED_";
 NSString *SVRThemeLightSolutionColor              = @"kSVRThemeLightSolutionColorKey";
 NSString *SVRThemeLightSolutionSecondaryColor     = @"kSVRThemeLightSolutionSecondaryColorKey";
 NSString *SVRThemeLightErrorTextColor             = @"kSVRThemeLightErrorTextColorKey";
@@ -51,9 +51,9 @@ NSString *SVRThemeLightOtherTextColor             = @"kSVRThemeLightOtherTextCol
 NSString *SVRThemeLightBackgroundColor            = @"kSVRThemeLightBackgroundColorKey";
 NSString *SVRThemeLightInsertionPoint             = @"kSVRThemeLightInsertionPointKey";
 
-NSString *SVRThemeDarkOperandColor                = @"kSVRThemeDarkOperandColorKey";
-NSString *SVRThemeDarkOperatorColor               = @"kSVRThemeDarkOperatorColorKey";
-NSString *SVRThemeDarkBracketColor                = @"kSVRThemeDarkBracketColorKey";
+NSString *SVRThemeDarkOperandTextColor            = @"kSVRThemeDarkOperandTextColor";
+NSString *SVRThemeDarkOperatorTextColor           = @"kSVRThemeDarkOperatorTextColor";
+NSString *SVRThemeDark_UNUSED_                    = @"kSVRThemeDark_UNUSED_";
 NSString *SVRThemeDarkSolutionColor               = @"kSVRThemeDarkSolutionColorKey";
 NSString *SVRThemeDarkSolutionSecondaryColor      = @"kSVRThemeDarkSolutionSecondaryColorKey";
 NSString *SVRThemeDarkErrorTextColor              = @"kSVRThemeDarkErrorTextColorKey";
@@ -150,13 +150,50 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 
 -(XPUserInterfaceStyle)SVR_userInterfaceStyle;
 {
+#ifdef XPSupportsDarkMode
+  NSAppearance *appearance = [[NSApplication sharedApplication] effectiveAppearance];
+  NSArray *names = [NSArray arrayWithObjects:NSAppearanceNameAqua, NSAppearanceNameDarkAqua, nil];
+  NSAppearanceName bestMatch = [appearance bestMatchFromAppearancesWithNames:names];
+  XPUserInterfaceStyle setting = [self SVR_userInterfaceStyleSetting];
+  switch (setting) {
+    case XPUserInterfaceStyleUnspecified:
+      if ([bestMatch isEqualToString:NSAppearanceNameDarkAqua]) {
+        return XPUserInterfaceStyleDark;
+      } else {
+        return XPUserInterfaceStyleLight;
+      }
+    case XPUserInterfaceStyleLight:
+      return XPUserInterfaceStyleLight;
+    case XPUserInterfaceStyleDark:
+      return XPUserInterfaceStyleDark;
+    default:
+      XPLogRaise2(@"%@ SVRThemeUserInterfaceStyle INVALID: %d ", self, (int)setting);
+      return -1;
+  }
+#else
+  XPUserInterfaceStyle setting = [self SVR_userInterfaceStyleSetting];
+  switch (setting) {
+    case XPUserInterfaceStyleDark:
+      return XPUserInterfaceStyleDark;
+    case XPUserInterfaceStyleUnspecified:
+    case XPUserInterfaceStyleLight:
+      return XPUserInterfaceStyleLight;
+    default:
+      XPLogRaise2(@"%@ SVRThemeUserInterfaceStyle INVALID: %d ", self, (int)setting);
+      return -1;
+  }
+#endif
+}
+
+-(XPUserInterfaceStyle)SVR_userInterfaceStyleSetting;
+{
   return (XPUserInterfaceStyle)[self integerForKey:SVRThemeUserInterfaceStyle];
 }
 
--(BOOL)SVR_setUserInterfaceStyle:(XPUserInterfaceStyle)style;
+-(BOOL)SVR_setUserInterfaceStyleSetting:(XPUserInterfaceStyle)style;
 {
   BOOL success = NO;
-  XPUserInterfaceStyle oldStyle = [self SVR_userInterfaceStyle];
+  XPUserInterfaceStyle oldStyle = [self SVR_userInterfaceStyleSetting];
   if (oldStyle == style) { return YES; }
   [self setInteger:style forKey:SVRThemeUserInterfaceStyle];
   success = [self synchronize];
@@ -227,9 +264,9 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
   switch (style) {
     case XPUserInterfaceStyleDark:
       switch (theme) {
-        case SVRThemeColorOperand:           return SVRThemeDarkOperandColor;
-        case SVRThemeColorOperator:          return SVRThemeDarkOperatorColor;
-        case SVRThemeColorBracket:           return SVRThemeDarkBracketColor;
+        case SVRThemeColorOperandText:       return SVRThemeDarkOperandTextColor;
+        case SVRThemeColorOperatorText:      return SVRThemeDarkOperatorTextColor;
+        case SVRThemeColor_UNUSED_:          return SVRThemeDark_UNUSED_;
         case SVRThemeColorSolution:          return SVRThemeDarkSolutionColor;
         case SVRThemeColorSolutionSecondary: return SVRThemeDarkSolutionSecondaryColor;
         case SVRThemeColorErrorText:         return SVRThemeDarkErrorTextColor;
@@ -237,13 +274,12 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
         case SVRThemeColorBackground:        return SVRThemeDarkBackgroundColor;
         case SVRThemeColorInsertionPoint:    return SVRThemeDarkInsertionPoint;
       }
-    case XPUserInterfaceStyleUnspecified:
     case XPUserInterfaceStyleLight:
     default:
       switch (theme) {
-        case SVRThemeColorOperand:           return SVRThemeLightOperandColor;
-        case SVRThemeColorOperator:          return SVRThemeLightOperatorColor;
-        case SVRThemeColorBracket:           return SVRThemeLightBracketColor;
+        case SVRThemeColorOperandText:       return SVRThemeLightOperandTextColor;
+        case SVRThemeColorOperatorText:      return SVRThemeLightOperatorTextColor;
+        case SVRThemeColor_UNUSED_:          return SVRThemeLight_UNUSED_;
         case SVRThemeColorSolution:          return SVRThemeLightSolutionColor;
         case SVRThemeColorSolutionSecondary: return SVRThemeLightSolutionSecondaryColor;
         case SVRThemeColorErrorText:         return SVRThemeLightErrorTextColor;
@@ -251,6 +287,8 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
         case SVRThemeColorBackground:        return SVRThemeLightBackgroundColor;
         case SVRThemeColorInsertionPoint:    return SVRThemeLightInsertionPoint;
       }
+    case XPUserInterfaceStyleUnspecified:
+      XPLogRaise1(@"%@ Tried to set color for XPUserInterfaceStyleUnspecified", self);
   }
   return nil;
 }
@@ -279,9 +317,9 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
   
   keys = [NSArray arrayWithObjects:
           // Light Theme
-          SVRThemeLightOperandColor,
-          SVRThemeLightOperatorColor,
-          SVRThemeLightBracketColor,
+          SVRThemeLightOperandTextColor,
+          SVRThemeLightOperatorTextColor,
+          SVRThemeLight_UNUSED_,
           SVRThemeLightSolutionColor,
           SVRThemeLightSolutionSecondaryColor,
           SVRThemeLightErrorTextColor,
@@ -289,9 +327,9 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
           SVRThemeLightBackgroundColor,
           SVRThemeLightInsertionPoint,
           // Dark Theme
-          SVRThemeDarkOperandColor,
-          SVRThemeDarkOperatorColor,
-          SVRThemeDarkBracketColor,
+          SVRThemeDarkOperandTextColor,
+          SVRThemeDarkOperatorTextColor,
+          SVRThemeDark_UNUSED_,
           SVRThemeDarkSolutionColor,
           SVRThemeDarkSolutionSecondaryColor,
           SVRThemeDarkErrorTextColor,
@@ -311,22 +349,22 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
   vals = [NSArray arrayWithObjects:
           // Light Theme
           [[NSColor colorWithCalibratedRed:  0/255.0 green:  0/255.0 blue:  0/255.0 alpha:1.0] XP_data], // SVRThemeLightOperandColor
-          [[NSColor colorWithCalibratedRed:255/255.0 green:147/255.0 blue:  0/255.0 alpha:1.0] XP_data], // SVRThemeLightOperatorColor
-          [[NSColor colorWithCalibratedRed:148/255.0 green: 82/255.0 blue:  0/255.0 alpha:1.0] XP_data], // SVRThemeLightBracketColor
-          [[NSColor colorWithCalibratedRed:  4/255.0 green: 51/255.0 blue:255/255.0 alpha:1.0] XP_data], // SVRThemeLightSolutionColor
-          [[NSColor colorWithCalibratedRed:184/255.0 green:197/255.0 blue:255/255.0 alpha:1.0] XP_data], // SVRThemeLightSolutionSecondaryColor
-          [[NSColor colorWithCalibratedRed:148/255.0 green: 17/255.0 blue:  0/255.0 alpha:1.0] XP_data], // SVRThemeLightErrorTextColor
-          [[NSColor colorWithCalibratedRed:145/255.0 green:145/255.0 blue:145/255.0 alpha:1.0] XP_data], // SVRThemeLightOtherTextColor
+          [[NSColor colorWithCalibratedRed:  0/255.0 green:  0/255.0 blue:255/255.0 alpha:1.0] XP_data], // SVRThemeLightOperatorColor
+          [[NSColor colorWithCalibratedRed:255/255.0 green:255/255.0 blue:102/255.0 alpha:1.0] XP_data], // SVRThemeLightBracketColor
+          [[NSColor colorWithCalibratedRed:166/255.0 green:218/255.0 blue:255/255.0 alpha:1.0] XP_data], // SVRThemeLightSolutionColor
+          [[NSColor colorWithCalibratedRed: 45/255.0 green:122/255.0 blue:186/255.0 alpha:1.0] XP_data], // SVRThemeLightSolutionSecondaryColor
+          [[NSColor colorWithCalibratedRed:128/255.0 green:  0/255.0 blue:  0/255.0 alpha:1.0] XP_data], // SVRThemeLightErrorTextColor
+          [[NSColor colorWithCalibratedRed: 51/255.0 green: 51/255.0 blue: 51/255.0 alpha:1.0] XP_data], // SVRThemeLightOtherTextColor
           [[NSColor colorWithCalibratedRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0] XP_data], // SVRThemeLightBackgroundColor
           [[NSColor colorWithCalibratedRed:  0/255.0 green:  0/255.0 blue:  0/255.0 alpha:1.0] XP_data], // SVRThemeLightInsertionPoint
           // Dark Theme
           [[NSColor colorWithCalibratedRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0] XP_data], // SVRThemeDarkOperandColor
-          [[NSColor colorWithCalibratedRed:255/255.0 green:147/255.0 blue:  0/255.0 alpha:1.0] XP_data], // SVRThemeDarkOperatorColor
-          [[NSColor colorWithCalibratedRed:255/255.0 green:142/255.0 blue:  0/255.0 alpha:1.0] XP_data], // SVRThemeDarkBracketColor
-          [[NSColor colorWithCalibratedRed:  4/255.0 green: 51/255.0 blue:255/255.0 alpha:1.0] XP_data], // SVRThemeDarkSolutionColor
-          [[NSColor colorWithCalibratedRed:192/255.0 green:236/255.0 blue:255/255.0 alpha:1.0] XP_data], // SVRThemeDarkSolutionSecondaryColor
-          [[NSColor colorWithCalibratedRed:148/255.0 green: 17/255.0 blue:  0/255.0 alpha:1.0] XP_data], // SVRThemeDarkErrorTextColor
-          [[NSColor colorWithCalibratedRed:235/255.0 green:235/255.0 blue:235/255.0 alpha:1.0] XP_data], // SVRThemeDarkOtherTextColor
+          [[NSColor colorWithCalibratedRed:255/255.0 green:  0/255.0 blue:255/255.0 alpha:1.0] XP_data], // SVRThemeDarkOperatorColor
+          [[NSColor colorWithCalibratedRed:255/255.0 green:255/255.0 blue:102/255.0 alpha:1.0] XP_data], // SVRThemeDarkBracketColor
+          [[NSColor colorWithCalibratedRed:161/255.0 green: 64/255.0 blue:161/255.0 alpha:1.0] XP_data], // SVRThemeDarkSolutionColor
+          [[NSColor colorWithCalibratedRed:219/255.0 green: 89/255.0 blue:161/255.0 alpha:1.0] XP_data], // SVRThemeDarkSolutionSecondaryColor
+          [[NSColor colorWithCalibratedRed:144/255.0 green:  0/255.0 blue:  2/255.0 alpha:1.0] XP_data], // SVRThemeDarkErrorTextColor
+          [[NSColor colorWithCalibratedRed:230/255.0 green:230/255.0 blue:230/255.0 alpha:1.0] XP_data], // SVRThemeDarkOtherTextColor
           [[NSColor colorWithCalibratedRed:  0/255.0 green:  0/255.0 blue:  0/255.0 alpha:1.0] XP_data], // SVRThemeDarkBackgroundColor
           [[NSColor colorWithCalibratedRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0] XP_data], // SVRThemeDarkInsertionPoint
           // Fonts

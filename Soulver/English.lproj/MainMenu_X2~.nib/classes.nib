@@ -1,0 +1,23 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {
+                copyUniversal = id; 
+                copyUnsolved = id; 
+                cutUniversal = id; 
+                cutUnsolved = id; 
+                pasteUniversal = id; 
+            }; 
+            CLASS = FirstResponder; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            ACTIONS = {showAboutWindow = id; showSettingsWindow = id; toggleKeypadPanel = id; }; 
+            CLASS = SVRAppDelegate; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSObject; 
+        }
+    ); 
+    IBVersion = 1; 
+}

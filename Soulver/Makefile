@@ -17,29 +17,30 @@ NEXTSTEP_DOCICONS =
 
 ICONSECTIONS =	-sectcreate __ICON app /NextLibrary/Frameworks/AppKit.framework/Resources/NSDefaultApplicationIcon.tiff
 
-LOCAL_RESOURCES = NEXTSTEP_AccessoryWindows.nib NEXTSTEP_Soulver.nib\
-                  NEXTSTEP_SVRDocument.nib Localizable.strings
+LOCAL_RESOURCES = AccessoryWindows_42.nib MainMenu_42.nib\
+                  SVRDocument_42.nib Localizable.strings
 
-GLOBAL_RESOURCES = about-image-512.tiff TestsIntegration-DiskRep.txt TestsIntegration-DisplayRep.rtf TestsIntegration-SolvedRep.rtf TestsIntegration-UnsolvedRep.rtf
+GLOBAL_RESOURCES = about-image-512.tiff TestsIntegration-DiskRep.txt\
+                   TestsIntegration-DisplayRep.rtf\
+                   TestsIntegration-SolvedRep.rtf\
+                   TestsIntegration-UnsolvedRep.rtf
 
-CLASSES = SVRAppDelegate.m SVRAccessoryWindowsOwner.m SVRDocument.m\
+CLASSES = NSUserDefaults+Soulver.m SVRAppDelegate.m\
+          SVRAccessoryWindowsOwner.m SVRDocument.m\
           SVRDocumentModelController.m SVRDocumentViewController.m\
           SVRSettingsViewController.m SVRSolver.m\
           SVRSolverExpressionTagger.m SVRSolverScanner.m\
           SVRSolverSolutionTagger.m SVRSolverStyler.m\
-          SVRSolverTextAttachment.m XPCrossPlatform.m XPDocument.m\
-          NSUserDefaults+Soulver.m\
-          TestsIntegration.m TestsUnit.m XPRegularExpression.m
-          
+          SVRSolverTextAttachment.m TestsIntegration.m TestsUnit.m\
+          XPCrossPlatform.m XPDocument.m XPRegularExpression.m
 
-HFILES = SVRAppDelegate.h SVRDocument.h SVRAccessoryWindowsOwner.h\
-         SVRDocumentModelController.h SVRDocumentViewController.h\
-         SVRSettingsViewController.h SVRSolver.h\
-         SVRSolverExpressionTagger.h SVRSolverScanner.h\
+HFILES = slre.h NSUserDefaults+Soulver.h SVRAppDelegate.h SVRDocument.h\
+         SVRAccessoryWindowsOwner.h SVRDocumentModelController.h\
+         SVRDocumentViewController.h SVRSettingsViewController.h\
+         SVRSolver.h SVRSolverExpressionTagger.h SVRSolverScanner.h\
          SVRSolverSolutionTagger.h SVRSolverStyler.h\
-         SVRSolverTextAttachment.h XPCrossPlatform.h XPDocument.h\
-         slre.h NSUserDefaults+Soulver.h\
-         TestsIntegration.h TestsUnit.h XPRegularExpression.h
+         SVRSolverTextAttachment.h TestsIntegration.h TestsUnit.h\
+         XPCrossPlatform.h XPDocument.h XPRegularExpression.h
 
 MFILES = Soulver_main.m
 

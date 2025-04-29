@@ -56,22 +56,22 @@
 {
   // Uses Bitwise Packing to store both enumerations within the tag.
   // I got the info for how to do this from ChatGPT so can't provide attributions :-/
-  short int dkBG = (SVRThemeColorBackground     & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
-  short int dkER = (SVRThemeColorErrorText      & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
-  short int dkIP = (SVRThemeColorInsertionPoint & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
-  short int dkOD = (SVRThemeColorOperand        & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
-  short int dkOR = (SVRThemeColorOperator       & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
-  short int dkOT = (SVRThemeColorOtherText      & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
-  short int dkPS = (SVRThemeColorBracket        & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
-  short int dkSL = (SVRThemeColorSolution       & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
-  short int ltBG = (SVRThemeColorBackground     & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
-  short int ltER = (SVRThemeColorErrorText      & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
-  short int ltIP = (SVRThemeColorInsertionPoint & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
-  short int ltOD = (SVRThemeColorOperand        & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
-  short int ltOR = (SVRThemeColorOperator       & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
-  short int ltOT = (SVRThemeColorOtherText      & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
-  short int ltPS = (SVRThemeColorBracket        & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
-  short int ltSL = (SVRThemeColorSolution       & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
+  short int dkBG = (SVRThemeColorBackground        & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
+  short int dkER = (SVRThemeColorErrorText         & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
+  short int dkIP = (SVRThemeColorInsertionPoint    & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
+  short int dkOD = (SVRThemeColorOperandText       & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
+  short int dkOR = (SVRThemeColorOperatorText      & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
+  short int dkOT = (SVRThemeColorOtherText         & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
+  short int dkPS = (SVRThemeColorSolutionSecondary & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
+  short int dkSL = (SVRThemeColorSolution          & 0xFF) | ((XPUserInterfaceStyleDark  & 0xFF) << 8);
+  short int ltBG = (SVRThemeColorBackground        & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
+  short int ltER = (SVRThemeColorErrorText         & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
+  short int ltIP = (SVRThemeColorInsertionPoint    & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
+  short int ltOD = (SVRThemeColorOperandText       & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
+  short int ltOR = (SVRThemeColorOperatorText      & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
+  short int ltOT = (SVRThemeColorOtherText         & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
+  short int ltPS = (SVRThemeColorSolutionSecondary & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
+  short int ltSL = (SVRThemeColorSolution          & 0xFF) | ((XPUserInterfaceStyleLight & 0xFF) << 8);
   
   [_wellDarkBackground      setTag:dkBG];
   [_wellDarkError           setTag:dkER];
@@ -79,7 +79,7 @@
   [_wellDarkOperand         setTag:dkOD];
   [_wellDarkOperator        setTag:dkOR];
   [_wellDarkOther           setTag:dkOT];
-  [_wellDarkParenthesis     setTag:dkPS];
+  [_wellDarkPrevious        setTag:dkPS];
   [_wellDarkSolution        setTag:dkSL];
   [_wellLightBackground     setTag:ltBG];
   [_wellLightError          setTag:ltER];
@@ -87,7 +87,7 @@
   [_wellLightOperand        setTag:ltOD];
   [_wellLightOperator       setTag:ltOR];
   [_wellLightOther          setTag:ltOT];
-  [_wellLightParenthesis    setTag:ltPS];
+  [_wellLightPrevious       setTag:ltPS];
   [_wellLightSolution       setTag:ltSL];
 }
 
@@ -98,43 +98,46 @@
   NSAttributedString *currentFontString = nil;
   NSMutableDictionary *currentFontAttribs = [[NSMutableDictionary new] autorelease];
   
+  // TODO: Add memory for panel selected in settings
+  // [_popUpPage selectItemAtIndex:[ud SVR_selectedSettingsPage]];
+  
   // Configure theme
-  [_popUpTheme selectItemAtIndex:[ud SVR_userInterfaceStyle]];
+  [_popUpTheme selectItemAtIndex:[ud SVR_userInterfaceStyleSetting]];
   
   // Dark Theme Colors
-  [_wellDarkBackground setColor:[ud SVR_colorForTheme:SVRThemeColorBackground
-                                            withStyle:XPUserInterfaceStyleDark]];
-  [_wellDarkError setColor:[ud SVR_colorForTheme:SVRThemeColorErrorText
-                                       withStyle:XPUserInterfaceStyleDark]];
+  [_wellDarkBackground     setColor:[ud SVR_colorForTheme:SVRThemeColorBackground
+                                                withStyle:XPUserInterfaceStyleDark]];
+  [_wellDarkError          setColor:[ud SVR_colorForTheme:SVRThemeColorErrorText
+                                                withStyle:XPUserInterfaceStyleDark]];
   [_wellDarkInsertionPoint setColor:[ud SVR_colorForTheme:SVRThemeColorInsertionPoint
                                                 withStyle:XPUserInterfaceStyleDark]];
-  [_wellDarkOperand setColor:[ud SVR_colorForTheme:SVRThemeColorOperand
-                                         withStyle:XPUserInterfaceStyleDark]];
-  [_wellDarkOperator setColor:[ud SVR_colorForTheme:SVRThemeColorOperator
-                                          withStyle:XPUserInterfaceStyleDark]];
-  [_wellDarkOther setColor:[ud SVR_colorForTheme:SVRThemeColorOtherText
-                                       withStyle:XPUserInterfaceStyleDark]];
-  [_wellDarkParenthesis setColor:[ud SVR_colorForTheme:SVRThemeColorBracket
-                                             withStyle:XPUserInterfaceStyleDark]];
-  [_wellDarkSolution setColor:[ud SVR_colorForTheme:SVRThemeColorSolution
-                                          withStyle:XPUserInterfaceStyleDark]];
+  [_wellDarkOperand        setColor:[ud SVR_colorForTheme:SVRThemeColorOperandText
+                                                withStyle:XPUserInterfaceStyleDark]];
+  [_wellDarkOperator       setColor:[ud SVR_colorForTheme:SVRThemeColorOperatorText
+                                                withStyle:XPUserInterfaceStyleDark]];
+  [_wellDarkOther          setColor:[ud SVR_colorForTheme:SVRThemeColorOtherText
+                                                withStyle:XPUserInterfaceStyleDark]];
+  [_wellDarkPrevious       setColor:[ud SVR_colorForTheme:SVRThemeColorSolutionSecondary
+                                                withStyle:XPUserInterfaceStyleDark]];
+  [_wellDarkSolution       setColor:[ud SVR_colorForTheme:SVRThemeColorSolution
+                                                withStyle:XPUserInterfaceStyleDark]];
   // Light Theme Colors
-  [_wellLightBackground setColor:[ud SVR_colorForTheme:SVRThemeColorBackground
-                                             withStyle:XPUserInterfaceStyleLight]];
-  [_wellLightError setColor:[ud SVR_colorForTheme:SVRThemeColorErrorText
-                                        withStyle:XPUserInterfaceStyleLight]];
+  [_wellLightBackground     setColor:[ud SVR_colorForTheme:SVRThemeColorBackground
+                                                 withStyle:XPUserInterfaceStyleLight]];
+  [_wellLightError          setColor:[ud SVR_colorForTheme:SVRThemeColorErrorText
+                                                 withStyle:XPUserInterfaceStyleLight]];
   [_wellLightInsertionPoint setColor:[ud SVR_colorForTheme:SVRThemeColorInsertionPoint
                                                  withStyle:XPUserInterfaceStyleLight]];
-  [_wellLightOperand setColor:[ud SVR_colorForTheme:SVRThemeColorOperand
-                                          withStyle:XPUserInterfaceStyleLight]];
-  [_wellLightOperator setColor:[ud SVR_colorForTheme:SVRThemeColorOperator
-                                           withStyle:XPUserInterfaceStyleLight]];
-  [_wellLightOther setColor:[ud SVR_colorForTheme:SVRThemeColorOtherText
-                                        withStyle:XPUserInterfaceStyleLight]];
-  [_wellLightParenthesis setColor:[ud SVR_colorForTheme:SVRThemeColorBracket
-                                              withStyle:XPUserInterfaceStyleLight]];
-  [_wellLightSolution setColor:[ud SVR_colorForTheme:SVRThemeColorSolution
-                                           withStyle:XPUserInterfaceStyleLight]];
+  [_wellLightOperand        setColor:[ud SVR_colorForTheme:SVRThemeColorOperandText
+                                                 withStyle:XPUserInterfaceStyleLight]];
+  [_wellLightOperator       setColor:[ud SVR_colorForTheme:SVRThemeColorOperatorText
+                                                 withStyle:XPUserInterfaceStyleLight]];
+  [_wellLightOther          setColor:[ud SVR_colorForTheme:SVRThemeColorOtherText
+                                                 withStyle:XPUserInterfaceStyleLight]];
+  [_wellLightPrevious       setColor:[ud SVR_colorForTheme:SVRThemeColorSolutionSecondary
+                                                 withStyle:XPUserInterfaceStyleLight]];
+  [_wellLightSolution       setColor:[ud SVR_colorForTheme:SVRThemeColorSolution
+                                                 withStyle:XPUserInterfaceStyleLight]];
   // Time Text Field
   [_fieldTime setStringValue:[NSString stringWithFormat:@"%.1f", [ud SVR_waitTimeForRendering]]];
   
@@ -197,10 +200,10 @@
     case XPUserInterfaceStyleUnspecified:
     case XPUserInterfaceStyleLight:
     case XPUserInterfaceStyleDark:
-      [ud SVR_setUserInterfaceStyle:newStyle];
+      [ud SVR_setUserInterfaceStyleSetting:newStyle];
       break;
     default:
-      NSBeep();
+      XPLogRaise2(@"%@ SVRThemeUserInterfaceStyleSetting INVALID: %d ", self, (int)newStyle);
       break;
   }
 }
@@ -239,7 +242,10 @@
   SVRThemeFont theme = -1;
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   SVRFontManager *fm = (SVRFontManager*)[NSFontManager sharedFontManager];
-  if (![fm isKindOfClass:[SVRFontManager class]]) { XPLogRaise(@""); return; }
+  if (![fm isKindOfClass:[SVRFontManager class]]) {
+    XPLogRaise1(@"NSFontManager not configured correctly: %@", NSStringFromClass([fm class]));
+    return;
+  }
   decoded = [self decodeThemeFont:&theme fromButton:sender];
   if (!decoded) { XPLogDebug1(@"fontChangeRequest:%@ Failed", sender); return; }
   [fm setSelectedFont:[ud SVR_fontForTheme:theme] isMultiple:NO];
@@ -295,7 +301,7 @@
 {
   // See configureWellTags for more info about this bitwise packing
   short int packed = (short int)[sender tag];
-  SVRThemeColor        color = packed & 0xFF;
+  SVRThemeColor color = packed & 0xFF;
   XPUserInterfaceStyle style = (packed >> 8) & 0xFF;
   
   // Set Defaults for Failure
@@ -304,9 +310,8 @@
   
   // Do basic validation of the received values
   switch (color) {
-    case SVRThemeColorOperand:
-    case SVRThemeColorOperator:
-    case SVRThemeColorBracket:
+    case SVRThemeColorOperandText:
+    case SVRThemeColorOperatorText:
     case SVRThemeColorSolution:
     case SVRThemeColorSolutionSecondary:
     case SVRThemeColorErrorText:
@@ -335,9 +340,8 @@
 {
   SVRThemeColor tag = [sender tag];
   switch (tag) {
-    case SVRThemeColorOperand:
-    case SVRThemeColorOperator:
-    case SVRThemeColorBracket:
+    case SVRThemeColorOperandText:
+    case SVRThemeColorOperatorText:
     case SVRThemeColorSolution:
     case SVRThemeColorSolutionSecondary:
     case SVRThemeColorErrorText:
@@ -384,7 +388,7 @@
   _wellDarkOperand = nil;
   _wellDarkOperator = nil;
   _wellDarkOther = nil;
-  _wellDarkParenthesis = nil;
+  _wellDarkPrevious = nil;
   _wellDarkSolution = nil;
   _wellLightBackground = nil;
   _wellLightError = nil;
@@ -392,7 +396,7 @@
   _wellLightOperand = nil;
   _wellLightOperator = nil;
   _wellLightOther = nil;
-  _wellLightParenthesis = nil;
+  _wellLightPrevious = nil;
   _wellLightSolution = nil;
   _fieldTime = nil;
   _fieldTextMath = nil;

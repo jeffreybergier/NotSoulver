@@ -36,6 +36,10 @@ void TestsUnitExecute(void)
   [XPLog executeTests];
   [XPRegularExpression executeTests];
   [SVRSolverScanner executeTests];
+#ifdef MAC_OS_X_VERSION_10_4
+//[NSBezierPath saveTestFiles];
+  [NSBezierPath executeTests];
+#endif
   [pool release];
 #endif
 }
@@ -158,7 +162,6 @@ void TestsUnitExecute(void)
   XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"+");
   
   // MARK: SVR_regexForOperators
-  // TODO: Make more robust to handle 6.3*-6.0
   string = @"___15+15 and 40-400 and 6.3*6.0 and 7/07 and 8^8 and 9R9 and 9r9 and 10l10 and 10L100_______";
   regex = [XPRegularExpression SVR_regexForOperators];
   matches = [regex matchesInString:string options:0 range:NSMakeRange(3, [string length]-6)];
@@ -300,7 +303,7 @@ void TestsUnitExecute(void)
   XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"-700");
   match = [matches objectAtIndex:4];
   XPTestInt([match numberOfRanges], 1);
-  // TODO: Known issue where negative number is detected
+  // Known issue where negative number is detected
   // even though its next to bracket (meaning its a minus operator)
   // this is corrected in -[SVRSolverScanner populateNumbers:]
   XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"-33.44");
@@ -309,7 +312,6 @@ void TestsUnitExecute(void)
   XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"-4.444");
   match = [matches objectAtIndex:6];
   XPTestInt([match numberOfRanges], 1);
-  // TODO: Known issue where multiple dots cannot be handled correctly
   XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"7");
   match = [matches objectAtIndex:7];
   XPTestInt([match numberOfRanges], 1);
@@ -371,7 +373,7 @@ void TestsUnitExecute(void)
   XPTestString([string substringWithRange:[[ranges objectAtIndex: 2] XP_rangeValue]], @"*");
   XPTestString([string substringWithRange:[[ranges objectAtIndex: 3] XP_rangeValue]], @"/");
   XPTestString([string substringWithRange:[[ranges objectAtIndex: 4] XP_rangeValue]], @"^");
-  XPTestString([string substringWithRange:[[ranges objectAtIndex: 5] XP_rangeValue]], @"-"); // TODO: These ranges mistakenly catch - symbols for negative numbers
+  XPTestString([string substringWithRange:[[ranges objectAtIndex: 5] XP_rangeValue]], @"-"); // These ranges mistakenly catch - symbols for negative numbers
   XPTestString([string substringWithRange:[[ranges objectAtIndex: 6] XP_rangeValue]], @"+"); // ?
   XPTestString([string substringWithRange:[[ranges objectAtIndex: 7] XP_rangeValue]], @"-"); // ?
   XPTestString([string substringWithRange:[[ranges objectAtIndex: 8] XP_rangeValue]], @"-");
@@ -411,6 +413,104 @@ void TestsUnitExecute(void)
 }
 
 @end
+
+#ifdef MAC_OS_X_VERSION_10_4
+
+@implementation NSBezierPath (TestsUnit)
++(void)executeTests;
+{
+  // Prepare variables
+  NSData  *dataRHS = nil;
+  NSData  *dataLHS = nil;
+
+  NSLog(@"%@ Unit Tests: STARTING", self);
+  
+  // Compare REAL BezierPath
+  dataRHS = [self createTIFFWithSelector:@selector(__REAL_bezierPathWithRoundedRect:xRadius:yRadius:)];
+  dataLHS = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestUnitBezierPath-REAL"
+                                                                           ofType:@"tiff"]];
+  XPTestNotNIL(dataRHS);
+  XPTestNotNIL(dataLHS);
+  XPTestObject(dataLHS, dataRHS);
+  
+  // Compare REAL BezierPath
+  dataRHS = [self createTIFFWithSelector:@selector(__MANUAL_bezierPathWithRoundedRect:xRadius:yRadius:)];
+  dataLHS = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestUnitBezierPath-MANUAL"
+                                                                           ofType:@"tiff"]];
+  XPTestNotNIL(dataRHS);
+  XPTestNotNIL(dataLHS);
+  XPTestObject(dataLHS, dataRHS);
+  
+  NSLog(@"%@ Unit Tests: PASSED", self);
+}
+
++(void)saveTestFiles;
+{
+  NSWorkspace *ws = [NSWorkspace sharedWorkspace];
+  NSString *destDir = NSTemporaryDirectory();
+  NSString *realPath = [destDir stringByAppendingPathComponent:@"TestUnitBezierPath-REAL.tiff"];
+  NSString *manualPath = [destDir stringByAppendingPathComponent:@"TestUnitBezierPath-MANUAL.tiff"];
+  [[self createTIFFWithSelector:@selector(__REAL_bezierPathWithRoundedRect:xRadius:yRadius:)] writeToFile:realPath atomically:YES];
+  [[self createTIFFWithSelector:@selector(__MANUAL_bezierPathWithRoundedRect:xRadius:yRadius:)] writeToFile:manualPath atomically:YES];
+  [ws selectFile:realPath inFileViewerRootedAtPath:destDir];
+}
+
++(NSData*)createTIFFWithSelector:(SEL)selector;
+{
+  NSGraphicsContext *context = nil;
+  NSBitmapImageRep *bitmap = nil;
+  NSData *tiffData = nil;
+  NSRect rect = NSMakeRect(0, 0, 300, 100);
+  XPFloat radius = 50;
+  NSColor *color = [NSColor colorWithCalibratedRed:40/255.0
+                                             green:92/255.0
+                                              blue:246/255.0
+                                             alpha:1.0];
+  // Prepare Path
+  NSBezierPath *path = nil;
+  if (selector == @selector(__REAL_bezierPathWithRoundedRect:xRadius:yRadius:)) {
+    path = [NSBezierPath __REAL_bezierPathWithRoundedRect:rect xRadius:radius yRadius:radius];
+  } else if (selector == @selector(__MANUAL_bezierPathWithRoundedRect:xRadius:yRadius:)) {
+    path = [NSBezierPath __MANUAL_bezierPathWithRoundedRect:rect xRadius:radius yRadius:radius];
+  }
+  XPTestNotNIL(path);
+  
+  // Prepare drawing context
+  bitmap = [[[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
+                                                   pixelsWide:(XPInteger)rect.size.width
+                                                   pixelsHigh:(XPInteger)rect.size.height
+                                                bitsPerSample:8
+                                              samplesPerPixel:4
+                                                     hasAlpha:YES
+                                                     isPlanar:NO
+                                               colorSpaceName:NSCalibratedRGBColorSpace
+                                                  bytesPerRow:0
+                                                 bitsPerPixel:0] autorelease];
+  
+  context = [NSGraphicsContext graphicsContextWithBitmapImageRep:bitmap];
+  XPTestNotNIL(bitmap);
+  XPTestNotNIL(context);
+  
+  // Draw
+  [NSGraphicsContext saveGraphicsState];
+  [NSGraphicsContext setCurrentContext:context];
+  [color setFill];
+  [path fill];
+  [NSGraphicsContext restoreGraphicsState];
+  
+  // Get TIFF Data
+  tiffData = [bitmap representationUsingType:XPBitmapImageFileTypeTIFF
+                                  properties:
+                [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[NSNumber XP_numberWithInteger:NSTIFFCompressionNone], [NSData data], nil]
+                                            forKeys:[NSArray arrayWithObjects:NSImageCompressionMethod, NSImageColorSyncProfileData, nil]]
+  ];
+  XPTestNotNIL(tiffData);
+  return tiffData;
+}
+
+@end
+
+#endif
 
 @implementation NSValue (TestUnitComparison)
 -(NSComparisonResult)TEST_compare:(NSValue*)other;

@@ -40,43 +40,29 @@
 
 -(NSString*)windowNibName;
 {
-  return @"NEXTSTEP_SVRDocument.nib";
-}
-
-// MARK: INIT
--(id)initWithContentsOfFile:(NSString*)fileName;
-{
-  XPLogAlwys1(@"-[SVRDocument initWithContentsOfFile:%@]", fileName);
-  self = [super initWithContentsOfFile:fileName
-                                ofType:SVRDocumentModelRepDisk];
-  NSCParameterAssert(self);
-  return self;
-}
-
-+(id)documentWithContentsOfFile:(NSString*)fileName;
-{
-  return [[[SVRDocument alloc] initWithContentsOfFile:fileName] autorelease];
+  return @"SVRDocument_42";
 }
 
 // MARK: NSDocument subclass
 
 -(void)awakeFromNib;
 {
-  id previousNextResponder = nil;
-  
-  [super awakeFromNib];
-  
-  // Add view controller into the responder chain
-  previousNextResponder = [[self window] nextResponder];
-  [[self window] setNextResponder:[self viewController]];
-  [[self viewController] setNextResponder:self];
-  [self setNextResponder:previousNextResponder];
+  NSString *fileName = [self fileName];
+
+  if ([XPDocument instancesRespondToSelector:@selector(awakeFromNib)]) {
+    [super awakeFromNib];
+  }
   
   // Subscribe to model updates
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(modelDidProcessEditingNotification:)
                                                name:NSTextStorageDidProcessEditingNotification
                                              object:[[[self viewController] modelController] model]];
+
+  // Load the file
+  if ([fileName isAbsolutePath]) {
+    [self readFromFile:fileName ofType:[self fileType]]; 
+  }
 }
 
 -(NSData*)dataRepresentationOfType:(NSString*)type;
@@ -86,18 +72,51 @@
 
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
 {
-  return [[[self viewController] modelController] loadDataRepresentation:data ofType:type];
+  SVRDocumentModelController *modelController = [[self viewController] modelController];
+  if (!modelController) {
+    // NSDocument loads the data before loading the NIB
+    return YES;
+  }
+  return [modelController loadDataRepresentation:data ofType:type];
+}
+
+-(void)windowControllerDidLoadNib:(id)windowController;
+{
+  // Add view controller into the responder chain
+  id previousNextResponder = [[self XP_windowForSheet] nextResponder];
+  [[self XP_windowForSheet] setNextResponder:[self viewController]];
+  if ([self isKindOfClass:[NSResponder class]]) {
+    [[self viewController] setNextResponder:(NSResponder*)self];
+    [(NSResponder*)self setNextResponder:previousNextResponder];
+  } else {
+    [[self viewController] setNextResponder:previousNextResponder];
+  }
 }
 
 // MARK: Model Changed Notifications
 -(void)modelDidProcessEditingNotification:(NSNotification*)aNotification;
 {
-  [self updateWindowChrome];
+  BOOL isEdited = YES;
+  NSData *diskData = nil;
+  NSData *documentData = [self dataRepresentationOfType:[self fileType]];
+  NSString *fileName = [self fileName];
+  if ([fileName isAbsolutePath]) {
+    diskData = [NSData dataWithContentsOfFile:fileName];
+    isEdited = ![diskData isEqualToData:documentData];
+  } else if (documentData == nil || [documentData length] == 0) {
+    isEdited = NO;
+  } else {
+    isEdited = YES;
+  }
+  [self updateChangeCount:isEdited ? 0 : 2];
 }
 
 -(void)dealloc;
 {
+  XPLogDebug1(@"DEALLOC: %@", self);
+#ifndef XPSupportsNSDocument
   [_viewController release];
+#endif
   _viewController = nil;
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];

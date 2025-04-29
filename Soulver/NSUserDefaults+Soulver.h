@@ -32,11 +32,11 @@
 
 extern NSString * const SVRThemeDidChangeNotificationName;
 
-#ifdef NS_ENUM
-typedef NS_ENUM(XPInteger, SVRThemeColor) {
-  SVRThemeColorOperand = 0,
-  SVRThemeColorOperator = 1,
-  SVRThemeColorBracket = 2,
+
+typedef XP_ENUM(XPInteger, SVRThemeColor) {
+  SVRThemeColorOperandText = 0,
+  SVRThemeColorOperatorText = 1,
+  SVRThemeColor_UNUSED_ = 2,
   SVRThemeColorSolution = 3,
   SVRThemeColorSolutionSecondary = 4,
   SVRThemeColorErrorText = 5,
@@ -44,49 +44,19 @@ typedef NS_ENUM(XPInteger, SVRThemeColor) {
   SVRThemeColorBackground = 7,
   SVRThemeColorInsertionPoint = 8
 };
-#else
-typedef enum {
-  SVRThemeColorOperand = 0,
-  SVRThemeColorOperator = 1,
-  SVRThemeColorBracket = 2,
-  SVRThemeColorSolution = 3,
-  SVRThemeColorSolutionSecondary = 4,
-  SVRThemeColorErrorText = 5,
-  SVRThemeColorOtherText = 6,
-  SVRThemeColorBackground = 7,
-  SVRThemeColorInsertionPoint = 8
-} SVRThemeColor;
-#endif
 
-#ifdef NS_ENUM
-typedef NS_ENUM(XPInteger, SVRThemeFont) {
+typedef XP_ENUM(XPInteger, SVRThemeFont) {
   SVRThemeFontOther = 0,
   SVRThemeFontMath = 1,
   SVRThemeFontError = 2
 };
-#else
-typedef enum {
-  SVRThemeFontOther = 0,
-  SVRThemeFontMath = 1,
-  SVRThemeFontError = 2
-} SVRThemeFont;
-#endif
 
-#ifdef NS_ENUM
-typedef NS_ENUM(XPInteger, SVRAccessoryWindow) {
+typedef XP_ENUM(XPInteger, SVRAccessoryWindow) {
   SVRAccessoryWindowSettings = 0,
   SVRAccessoryWindowAbout = 1,
   SVRAccessoryWindowKeypad = 2,
   SVRAccessoryWindowNone = 3
 };
-#else
-typedef enum {
-  SVRAccessoryWindowSettings = 0,
-  SVRAccessoryWindowAbout = 1,
-  SVRAccessoryWindowKeypad = 2,
-  SVRAccessoryWindowNone = 3
-} SVRAccessoryWindow;
-#endif
 
 @interface NSUserDefaults (Soulver)
 // MARK: Basics
@@ -102,8 +72,11 @@ typedef enum {
 
 // MARK: Theming
 -(void)__postChangeNotification;
+/// Returns the preference for user interface style (this should only be used by the settings window)
+-(XPUserInterfaceStyle)SVR_userInterfaceStyleSetting;
+-(BOOL)SVR_setUserInterfaceStyleSetting:(XPUserInterfaceStyle)style;
+/// Returns the apparant user interface style
 -(XPUserInterfaceStyle)SVR_userInterfaceStyle;
--(BOOL)SVR_setUserInterfaceStyle:(XPUserInterfaceStyle)style;
 -(NSColor*)SVR_colorForTheme:(SVRThemeColor)theme;
 -(NSColor*)SVR_colorForTheme:(SVRThemeColor)theme
                    withStyle:(XPUserInterfaceStyle)style;

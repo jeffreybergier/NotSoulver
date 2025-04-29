@@ -36,7 +36,7 @@
 +(void)step1_tagOperatorsAtRanges:(NSSet*)ranges
                inAttributedString:(NSMutableAttributedString*)string;
 {
-  SVRSolverOperator operator = (SVRSolverOperator)-1;
+  SVRSolverOperator operator = -1;
   NSValue *next = nil;
   NSRange range = XPNotFoundRange;
   NSEnumerator *e = [ranges objectEnumerator];

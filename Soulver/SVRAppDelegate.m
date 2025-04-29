@@ -33,7 +33,6 @@
 
 @implementation SVRAppDelegate
 
-// MARK: Init;
 -(id)init;
 {
   self = [super init];
@@ -43,53 +42,9 @@
   return self;
 }
 
-// MARK: Properties
--(NSMutableSet*)openDocuments;
-{
-  return [[_openDocuments retain] autorelease];
-}
-
 -(SVRAccessoryWindowsOwner*)accessoryWindowsOwner;
 {
   return [[_accessoryWindowsOwner retain] autorelease];
-}
-
-// MARK: IBActions
--(void)newDoc:(id)sender
-{
-  SVRDocument *document = [SVRDocument documentWithContentsOfFile:nil];
-  [document showWindows];
-  [[self openDocuments] addObject:document];
-}
-
--(IBAction)openDoc:(id)sender
-{
-  NSArray *filenames;
-  NSEnumerator *e;
-  NSString *nextF;
-  SVRDocument *nextC;
-  
-  filenames = XPRunOpenPanel(SVRDocumentModelRepDisk);
-  if ([filenames count] == 0) { XPLogDebug1(@"%@ Open Cancelled", self); return; }
-  e = [filenames objectEnumerator];
-  while ((nextF = [e nextObject])) {
-    nextC = [[self openDocuments] member:nextF];
-    if (!nextC) {
-      nextC = [SVRDocument documentWithContentsOfFile:nextF];
-      [[self openDocuments] addObject:nextC];
-    }
-    [nextC showWindows];
-  }
-}
-
--(IBAction)saveAll:(id)sender;
-{
-  NSEnumerator *e;
-  SVRDocument *nextC;
-  e = [[self openDocuments] objectEnumerator];
-  while ((nextC = [e nextObject])) {
-    [nextC saveDocument:self];
-  }
 }
 
 -(IBAction)toggleKeypadPanel:(id)sender;
@@ -105,15 +60,6 @@
 -(IBAction)showAboutWindow:(id)sender;
 {
   [[self accessoryWindowsOwner] showAboutWindow:sender];
-}
-
--(void)__windowWillCloseNotification:(NSNotification*)aNotification;
-{
-  NSWindow *window = [aNotification object];
-  id document = [window delegate];
-  if (document) {
-    [[self openDocuments] removeObject:document];
-  }
 }
 
 -(void)dealloc;
@@ -141,15 +87,57 @@
   [[NSUserDefaults standardUserDefaults] SVR_configure];
   // Prepare FontManager
   [NSFontManager setFontManagerFactory:[SVRFontManager class]];
-  // Register for Notifications
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(__windowWillCloseNotification:)
-                                               name:NSWindowWillCloseNotification
-                                             object:nil];
   // Configure Accessory Windows
   _accessoryWindowsOwner = [[SVRAccessoryWindowsOwner alloc] init];
+#ifndef XPSupportsNSDocument
+  // Register for Notifications
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(windowWillCloseNotification:)
+                                               name:NSWindowWillCloseNotification
+                                             object:nil];
+#endif
   // Announce
   XPLogDebug1(@"%@ applicationWillFinishLaunching:", self);
+}
+
+@end
+
+#ifndef XPSupportsNSDocument
+@implementation SVRAppDelegate (PreDocument)
+
+-(NSMutableSet*)openDocuments;
+{
+  return [[_openDocuments retain] autorelease];
+}
+
+-(IBAction)newDocument:(id)sender
+{
+  SVRDocument *document = [[[SVRDocument alloc] init] autorelease];
+  [document setFileType:SVRDocumentModelRepDisk];
+  [document setFileExtension:SVRDocumentModelExtension];
+  [document showWindows];
+  [[self openDocuments] addObject:document];
+}
+
+-(IBAction)openDocument:(id)sender;
+{
+  NSArray *filenames;
+  NSEnumerator *e;
+  NSString *nextF;
+  SVRDocument *nextC;
+
+  filenames = XPRunOpenPanel(SVRDocumentModelExtension);
+  if ([filenames count] == 0) { XPLogDebug1(@"%@ Open Cancelled", self); return; }
+  e = [filenames objectEnumerator];
+  while ((nextF = [e nextObject])) {
+    nextC = [[self openDocuments] member:nextF];
+    if (!nextC) {
+      nextC = [[[SVRDocument alloc] initWithContentsOfFile:nextF
+                                                    ofType:SVRDocumentModelRepDisk] autorelease];
+      [[self openDocuments] addObject:nextC];
+    }
+    [nextC showWindows];
+  }
 }
 
 -(BOOL)applicationShouldTerminate:(NSApplication *)sender;
@@ -158,14 +146,14 @@
   BOOL aDocumentNeedsSaving = NO;
   NSEnumerator *e = nil;
   XPDocument *next = nil;
-  
+
   // Check all documents
   e = [[self openDocuments] objectEnumerator];
   while ((next = [e nextObject])) {
     aDocumentNeedsSaving = [next isDocumentEdited];
     if (aDocumentNeedsSaving) { break; }
   }
-  
+
   // Ask the user if they want to quit
   if (!aDocumentNeedsSaving) { return YES; }
   alertResult = XPRunQuitAlert();
@@ -184,12 +172,12 @@
 {
   NSEnumerator *e = [[self openDocuments] objectEnumerator];
   XPDocument *next = nil;
-  
+
   // Try to close all documents (asking the user to save them)
   while ((next = [e nextObject])) {
-    [[next window] performClose:sender];
+    [[next XP_windowForSheet] performClose:sender];
   }
-  
+
   // Iterate again and check if are unsaved changes
   e = [[self openDocuments] objectEnumerator];
   while ((next = [e nextObject])) {
@@ -206,16 +194,28 @@
 {
   SVRDocument *document = [[self openDocuments] member:filename];
   if (!document) {
-    document = [SVRDocument documentWithContentsOfFile:filename];
+    document = [[[SVRDocument alloc] initWithContentsOfFile:filename
+                                                     ofType:SVRDocumentModelRepDisk] autorelease];
     [[self openDocuments] addObject:document];
   }
-  [[document window] makeKeyAndOrderFront:sender];
+  [[document XP_windowForSheet] makeKeyAndOrderFront:sender];
   return YES;
 }
 
 -(BOOL)applicationOpenUntitledFile:(NSApplication *)sender;
 {
-  [self newDoc:sender];
+  [self newDocument:sender];
   return YES;
 }
+
+-(void)windowWillCloseNotification:(NSNotification*)aNotification;
+{
+  NSWindow *window = [aNotification object];
+  id document = [window delegate];
+  if (document) {
+    [[self openDocuments] removeObject:document];
+  }
+}
+
 @end
+#endif

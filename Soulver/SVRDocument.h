@@ -34,21 +34,23 @@
 
 @interface SVRDocument: XPDocument
 {
+  // Nib Lifecycle differs when using NSDocument
+#ifdef XPSupportsNSDocument
+  mm_unretain IBOutlet SVRDocumentViewController *_viewController;
+#else
   mm_retain IBOutlet SVRDocumentViewController *_viewController;
+#endif
 }
 
 // MARK: Properties
 -(SVRDocumentViewController*)viewController;
 -(NSString*)windowNibName;
 
-// MARK: INIT
--(id)initWithContentsOfFile:(NSString*)fileName;
-+(id)documentWithContentsOfFile:(NSString*)fileName;
-
 // MARK: NSDocument subclass
 -(void)awakeFromNib;
 -(NSData*)dataRepresentationOfType:(NSString*)type;
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
+-(void)windowControllerDidLoadNib:(id)windowController;
 
 // MARK: Model Changed Notifications
 -(void)modelDidProcessEditingNotification:(NSNotification*)aNotification;

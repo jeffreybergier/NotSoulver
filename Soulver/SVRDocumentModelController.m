@@ -31,7 +31,8 @@
 #import "NSUserDefaults+Soulver.h"
 #import "SVRSolver.h"
 
-NSString *const SVRDocumentModelRepDisk     = @"nsv";
+NSString *const SVRDocumentModelExtension   = @"nsv";
+NSString *const SVRDocumentModelRepDisk     = @"SVRDocumentModelRepDisk";
 NSString *const SVRDocumentModelRepDisplay  = @"SVRDocumentModelRepDisplay";
 NSString *const SVRDocumentModelRepSolved   = @"SVRDocumentModelRepSolved";
 NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
@@ -78,9 +79,20 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
   return self;
 }
 
+// MARK: NSTextView Wrapping
+-(void)replaceCharactersInRange:(NSRange)range withString:(NSString *)string;
+{
+  NSTextStorage *model = [self model];
+  [model beginEditing];
+  [model replaceCharactersInRange:range withString:string];
+  [model endEditing];
+  [self textDidChange:nil];
+}
+
 // MARK: NSDocument Support
 -(NSData*)dataRepresentationOfType:(SVRDocumentModelRep)type withRange:(NSRange)range;
 {
+  NSCParameterAssert(type);
   if ([type isEqualToString:SVRDocumentModelRepDisk]) {
     return [self __dataRepresentationOfDiskTypeWithRange:range];
   } else if ([type isEqualToString:SVRDocumentModelRepDisplay]) {
@@ -108,62 +120,6 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
     XPLogRaise1(@"Unknown Type: %@", type);
     return NO;
   }
-}
-
-// MARK: Usage
--(void)appendCharacter:(NSString*)aString;
-{
-  NSTextStorage *model = [self model];
-  [ model beginEditing];
-  [[model mutableString] appendString:aString];
-  [ model endEditing];
-  [self textDidChange:nil];
-}
-
--(void)backspaceCharacter;
-{
-  NSRange lastCharacter = XPNotFoundRange;
-  NSTextStorage *model = [self model];
-  XPUInteger length = [[model mutableString] length];
-  if (length == 0) { return; }
-  
-  lastCharacter = NSMakeRange(length-1, 1);
-  [ model beginEditing];
-  [[model mutableString] deleteCharactersInRange:lastCharacter];
-  [ model endEditing];
-  [self textDidChange:nil];
-}
-
--(void)backspaceLine;
-{
-  XPLogPause(@"Unimplemented");
-}
-
--(void)backspaceAll;
-{
-  NSTextStorage *model = [self model];
-  [ model beginEditing];
-  [[model mutableString] setString:@""];
-  [ model endEditing];
-  [self textDidChange:nil];
-}
-
--(void)replaceCharactersInRange:(NSRange)range withString:(NSString*)string;
-{
-  NSTextStorage *model = [self model];
-  [model beginEditing];
-  [model replaceCharactersInRange:range withString:string];
-  [model endEditing];
-  [self textDidChange:nil];
-}
-
--(void)deleteCharactersInRange:(NSRange)range;
-{
-  NSTextStorage *model = [self model];
-  [model beginEditing];
-  [model deleteCharactersInRange:range];
-  [model endEditing];
-  [self textDidChange:nil];
 }
 
 // MARK: Private
@@ -228,7 +184,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
                 : _range;
   NSAttributedString *original = [[self model] attributedSubstringFromRange:range];
   NSAttributedString *unsolved = [SVRSolver replacingAttachmentsWithOriginalCharacters:original];
-  NSData *output = [unsolved RTFFromRange:range
+  NSData *output = [unsolved RTFFromRange:NSMakeRange(0, [unsolved length])
                        documentAttributes:XPRTFDocumentAttributes];
   NSAssert(output, @"__dataRepresentationOfUnsolvedTypeWithRange: NIL");
   return output;
@@ -261,7 +217,8 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
 
 -(void)dealloc;
 {
-  XPLogDebug1(@"DEALLOC: %@", self);
+  // TODO: Restore this log. It crashes on jaguar
+  //XPLogDebug1(@"DEALLOC: %@", self);
   [_waitTimer invalidate];
   [_waitTimer release];
   [_model release];
