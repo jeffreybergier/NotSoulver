@@ -425,6 +425,7 @@ void TestsUnitExecute(void)
 
   NSLog(@"%@ Unit Tests: STARTING", self);
   
+  #ifdef MAC_OS_X_VERSION_10_5
   // Compare REAL BezierPath
   dataRHS = [self createTIFFWithSelector:@selector(__REAL_bezierPathWithRoundedRect:xRadius:yRadius:)];
   dataLHS = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestUnitBezierPath-REAL"
@@ -432,8 +433,9 @@ void TestsUnitExecute(void)
   XPTestNotNIL(dataRHS);
   XPTestNotNIL(dataLHS);
   XPTestObject(dataLHS, dataRHS);
+  #endif
   
-  // Compare REAL BezierPath
+  // Compare Manual BezierPath
   dataRHS = [self createTIFFWithSelector:@selector(__MANUAL_bezierPathWithRoundedRect:xRadius:yRadius:)];
   dataLHS = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestUnitBezierPath-MANUAL"
                                                                            ofType:@"tiff"]];

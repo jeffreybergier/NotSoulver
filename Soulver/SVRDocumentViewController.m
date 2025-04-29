@@ -98,7 +98,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   return [[_modelController retain] autorelease];
 }
 
--(IBAction)keypadAppend:(id)sender;
+-(IBAction)keypadAppend:(NSButton*)sender;
 {
   NSTextView *textView = [self textView];
   NSString   *toAppend = [self __mapKeyWithTag:[sender tag]];
