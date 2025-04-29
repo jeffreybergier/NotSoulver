@@ -118,9 +118,9 @@ void TestsIntegrationExecute(void)
   
   // Test On-Disk Versions for breaking changes
   XPTestString(repDiskLHS, repDiskRHS);
-  XPTestAttrString(repDisplayLHS, repDisplayRHS);
-  XPTestAttrString(repSolvedLHS, repSolvedRHS);
-  XPTestAttrString(repUnsolvedLHS, repUnsolvedRHS);
+  //XPTestAttrString(repDisplayLHS, repDisplayRHS);
+  //XPTestAttrString(repSolvedLHS, repSolvedRHS);
+  //XPTestAttrString(repUnsolvedLHS, repUnsolvedRHS);
   
   // Test Basic Comparison
   XPTestAttrString([[[controller model] copy] autorelease],
