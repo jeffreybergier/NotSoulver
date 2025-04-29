@@ -30,6 +30,7 @@
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
 
+extern NSString *const SVRDocumentModelExtension;
 /// A version of the data for saving to the disk
 /// This version is plain text and unsolved
 /// Data format is UTF8 String
@@ -71,19 +72,14 @@ typedef NSString* SVRDocumentModelRep;
 // MARK: Init
 -(id)init;
 
+// MARK: NSTextView Wrapping
+-(void)replaceCharactersInRange:(NSRange)range withString:(NSString *)string;
+
 // MARK: NSDocument Support
 -(NSData*)dataRepresentationOfType:(SVRDocumentModelRep)type;
 -(NSData*)dataRepresentationOfType:(SVRDocumentModelRep)type withRange:(NSRange)range;
 /// This method ignores of type parameter and always assumes `SVRDocumentModelRepDisk`
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(SVRDocumentModelRep)type;
-
-// MARK: Usage
--(void)appendCharacter:(NSString*)aString;
--(void)backspaceCharacter;
--(void)backspaceLine;
--(void)backspaceAll;
--(void)replaceCharactersInRange:(NSRange)range withString:(NSString*)string;
--(void)deleteCharactersInRange:(NSRange)range;
 
 // MARK: Private
 -(NSData*)__dataRepresentationOfDiskTypeWithRange:(NSRange)range;

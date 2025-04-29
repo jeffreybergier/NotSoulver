@@ -30,18 +30,26 @@
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
 
+#ifdef XPSupportsNSDocument
+
+#define XPDocument NSDocument
+@interface NSDocument (CrossPlatform)
+-(NSWindow*)XP_windowForSheet;
+@end
+
+#else
+
 // This is a best effort implementation of NSDocument only for use in OpenStep.
 // Its insanely minimal because it won't be used once Mac OS X Ships
-#ifdef MAC_OS_X_VERSION_10_6
-@interface XPDocument: NSResponder <NSWindowDelegate>
-#else
 @interface XPDocument: NSResponder
-#endif
 {
-  mm_retain IBOutlet NSWindow *_window;
+  /// Named without underscore for NSDocument compatibility
+  mm_retain IBOutlet NSWindow *window;
   mm_copy   NSString *_fileName;
   mm_copy   NSString *_fileType;
+  mm_copy   NSString *_fileExtension;
   BOOL _isNibLoaded;
+  BOOL _isEdited;
 }
 
 // MARK: Window Placement
@@ -64,11 +72,11 @@
 /// Return YES to allow the document to close
 -(BOOL)windowShouldClose:(id)sender;
 /// _window should be set as IBOutlet
--(NSWindow*)window;
-/// Default implementation populates rawData property if fileName is set
-/// and sets self as window delegate
+-(NSWindow*)XP_windowForSheet;
+// Nib Loading
 -(void)awakeFromNib;
--(void)updateWindowChrome;
+-(void)windowControllerWillLoadNib:(id)windowController;
+-(void)windowControllerDidLoadNib:(id)windowController;
 
 // MARK: Document Status
 
@@ -76,11 +84,15 @@
 -(NSString*)displayName;
 /// Default implementation reads file on disk and compares with _rawData property
 -(BOOL)isDocumentEdited;
-/// Filename on disk is NIL if the document is not saved
+/// supported values are NSChangeDone (0) and NSChangeCleared (2)
+-(void)updateChangeCount:(int)change;
+/// Filename on disk is @"" if the document is not saved
 -(NSString*)fileName;
 -(void)setFileName:(NSString*)fileName;
 -(NSString*)fileType;
 -(void)setFileType:(NSString*)type;
+-(NSString*)fileExtension;
+-(void)setFileExtension:(NSString*)type;
 
 // MARK: NSObject basics
 /// Returns hash of the filename or calls super
@@ -121,3 +133,6 @@
 -(XPAlertReturn)runRevertToSavedAlert;
 
 @end
+
+#endif
+

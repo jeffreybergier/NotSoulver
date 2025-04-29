@@ -116,8 +116,8 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
                   NSStringFromRange(range));
       return nil;
     }
-    dictValues = [NSArray arrayWithObjects:[attachment toDrawColor], [attachment toDrawFont], nil];
-    toReplace  = [[[NSAttributedString alloc] initWithString:[attachment toDrawString]
+    dictValues = [NSArray arrayWithObjects:[attachment backgroundColor], [attachment font], nil];
+    toReplace  = [[[NSAttributedString alloc] initWithString:[attachment string]
                                                   attributes:[NSDictionary dictionaryWithObjects:dictValues forKeys:dictKeys]] autorelease];
     [output replaceCharactersInRange:range withAttributedString:toReplace];
     dictValues = nil;
@@ -151,7 +151,7 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
                   NSStringFromRange(range));
       return;
     }
-    dictValues = [NSArray arrayWithObjects:[attachment toDrawColor], [attachment toDrawFont], nil];
+    dictValues = [NSArray arrayWithObjects:[attachment foregroundColor], [attachment font], nil];
     toReplace  = [[[NSAttributedString alloc] initWithString:originalString
                                                   attributes:[NSDictionary dictionaryWithObjects:dictValues forKeys:dictKeys]] autorelease];
     [input replaceCharactersInRange:range withAttributedString:toReplace];
@@ -221,7 +221,7 @@ NSString *XPAttributedStringKeyForTag(SVRSolverTag tag)
     case SVRSolverTagExpression: return @"kSVRSoulverTagExpressionKey";
     case SVRSolverTagOriginal:   return @"kSVRSolverTagOriginalKey";
     default:
-      XPLogRaise1(@"SVR_stringForTagUnknown: %d", tag);
+      XPLogRaise1(@"SVR_stringForTagUnknown: %d", (int)tag);
       return nil;
   }
 }
@@ -240,7 +240,7 @@ SVRSolverTag SVRSolverTagForKey(XPAttributedStringKey string)
     return SVRSolverTagOriginal;
   } else {
     XPLogRaise1(@"SVR_tagForStringUnknown: %@", string);
-    return (SVRSolverTag)-1;
+    return -1;
   }
 }
 
@@ -288,7 +288,7 @@ NSString *RawStringForOperator(SVRSolverOperator operator)
     case SVRSolverOperatorLog:      return [NSString SVR_logRawString];
     case SVRSolverOperatorUnknown:
     default:
-      XPLogRaise1(@"RawStringForOperatorUnknown: %d", operator);
+      XPLogRaise1(@"RawStringForOperatorUnknown: %d", (int)operator);
       return nil;
   }
 }
@@ -300,7 +300,7 @@ NSString *SVRSolverDescriptionForError(SVRCalculationError error)
     case SVRCalculationLossOfPrecision:
     case SVRCalculationUnderflow:
     case SVRCalculationOverflow:
-      XPLogRaise1(@"Should not show error: %d", error);
+      XPLogRaise1(@"Should not show error: %d", (int)error);
       return nil;
     case SVRCalculationNoError:
       return nil;
@@ -327,7 +327,7 @@ NSString *SVRSolverDescriptionForError(SVRCalculationError error)
     case SVRCalculationBaseOne:
       return [NSString stringWithFormat:[Localized phraseErrorBaseOne], error];
     default:
-      XPLogRaise1(@"SVRSolverDescriptionForErrorUnknown: %d", error);
+      XPLogRaise1(@"SVRSolverDescriptionForErrorUnknown: %d", (int)error);
       return nil;
   }
 }
@@ -365,7 +365,7 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
     case SVRCalculationBaseOne:
       return @"SVRCalculationBaseOne";
     default:
-      XPLogRaise1(@"SVRSolverDebugDescriptionForError: %d", error);
+      XPLogRaise1(@"SVRSolverDebugDescriptionForError: %d", (int)error);
       return nil;
   }
 }
@@ -483,7 +483,7 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
     }
   }
   
-  if (error == NSCalculationNoError) {
+  if ((NSCalculationError)error == NSCalculationNoError) {
     NSString *resultString = [NSString stringWithFormat:@"%f", resultRaw];
     NSDecimalNumber *result = [NSDecimalNumber decimalNumberWithString:resultString];
     return result;
@@ -494,7 +494,7 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
                              leftOperand:self
                             rightOperand:exponent];
     } else {
-      XPLogRaise1(@"NSCalculationError: %u", error);
+      XPLogRaise1(@"NSCalculationError: %d", (int)error);
     }
     return [NSDecimalNumber notANumber];
   }
@@ -531,7 +531,7 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
     }
   }
   
-  if (error == NSCalculationNoError) {
+  if ((NSCalculationError)error == NSCalculationNoError) {
     NSString *resultString = [NSString stringWithFormat:@"%f", resultRaw];
     NSDecimalNumber *result = [NSDecimalNumber decimalNumberWithString:resultString];
     return result;
@@ -542,7 +542,7 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
                              leftOperand:exponent
                             rightOperand:self];
     } else {
-      XPLogRaise1(@"NSCalculationError: %u", error);
+      XPLogRaise1(@"NSCalculationError: %d", (int)error);
     }
     return [NSDecimalNumber notANumber];
   }
@@ -589,7 +589,7 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
                              leftOperand:base
                             rightOperand:self];
     } else {
-      XPLogRaise1(@"NSCalculationError: %u", error);
+      XPLogRaise1(@"NSCalculationError: %d", (int)error);
     }
     return [NSDecimalNumber notANumber];
   }
@@ -599,17 +599,15 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
 
 // MARK: SVRSolverTextAttachment Input
 
-NSString *const SVRSolverTextAttachmentStyleToDrawFont    = @"SVRSolverTextAttachmentStyleToDrawFont";
-NSString *const SVRSolverTextAttachmentStyleToDrawColor   = @"SVRSolverTextAttachmentStyleToDrawColor";
-NSString *const SVRSolverTextAttachmentStyleNeighborFont  = @"SVRSolverTextAttachmentStyleNeighborFont";
-NSString *const SVRSolverTextAttachmentStyleBorder        = @"SVRSolverTextAttachmentStyleBorder";
+NSString *const SVRSolverTextAttachmentBackgroundKey   = @"SVRSolverTextAttachmentBackground";
+NSString *const SVRSolverTextAttachmentMixColorKey     = @"SVRSolverTextAttachmentMixColor";
 
 NSString *const SVRSolverTextStyleMathFont      = @"SVRSolverTextStyleMathFont";
 NSString *const SVRSolverTextStyleOtherFont     = @"SVRSolverTextStyleOtherFont";
 NSString *const SVRSolverTextStyleOtherColor    = @"SVRSolverTextStyleOtherColor";
 NSString *const SVRSolverTextStyleOperandColor  = @"SVRSolverTextStyleOperandColor";
 NSString *const SVRSolverTextStyleOperatorColor = @"SVRSolverTextStyleOperatorColor";
-NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketColor";
+NSString *const SVRSolverTextStylePreviousColor = @"SVRSolverTextStylePreviousColor";
 
 // MARK: NSUserDefaults Helper Methods
 
@@ -617,53 +615,53 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
 
 -(SVRSolverTextAttachmentStyles)SVR_stylesForSolution;
 {
-  NSFont  *toDrawFont   = [self SVR_fontForTheme:SVRThemeFontMath];
-  NSColor *toDrawColor  = [self SVR_colorForTheme:SVRThemeColorSolution];
-  NSFont  *neighborFont = toDrawFont;
-  XPUserInterfaceStyle userInterfaceStyle = [self SVR_userInterfaceStyle];
-  SVRSolverTextAttachmentBorderStyle borderStyle;
-  
-  switch (userInterfaceStyle) {
-    case XPUserInterfaceStyleDark:
-      borderStyle = SVRSolverTextAttachmentBorderStyleRecessedGray;
-      break;
-    case XPUserInterfaceStyleLight:
-    case XPUserInterfaceStyleUnspecified:
-    default:
-      borderStyle = SVRSolverTextAttachmentBorderStyleRecessedWhite;
-      break;
-  }
-  
-  return [NSDictionary __SVR_stylesWithToDrawFont:toDrawFont
-                                     neighborFont:neighborFont
-                                      toDrawColor:toDrawColor
-                                      borderStyle:borderStyle];
+#ifdef XPSupportsNSBezierPath
+  SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundCapsuleFill;
+#else
+  SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
+#endif
+  NSColor *mixColor = [self SVR_userInterfaceStyle] == XPUserInterfaceStyleDark
+                      ? [NSColor whiteColor]
+                      : [NSColor blackColor];
+  return [NSDictionary __SVR_stylesWithFont:[self SVR_fontForTheme:SVRThemeFontMath]
+                            foregroundColor:[self SVR_colorForTheme:SVRThemeColorOperandText]
+                            backgroundColor:[self SVR_colorForTheme:SVRThemeColorSolution]
+                                   mixColor:mixColor
+                                 background:background];
 }
 
 -(SVRSolverTextAttachmentStyles)SVR_stylesForPreviousSolution;
 {
-  NSFont  *toDrawFont   = [self SVR_fontForTheme:SVRThemeFontMath];
-  NSColor *toDrawColor  = [self SVR_colorForTheme:SVRThemeColorOperator];
-  NSFont  *neighborFont = toDrawFont;
-  SVRSolverTextAttachmentBorderStyle borderStyle = SVRSolverTextAttachmentBorderStyleColored;
-  
-  return [NSDictionary __SVR_stylesWithToDrawFont:toDrawFont
-                                     neighborFont:neighborFont
-                                      toDrawColor:toDrawColor
-                                      borderStyle:borderStyle];
+#ifdef XPSupportsNSBezierPath
+  SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundCapsuleStroke;
+#else
+  SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
+#endif
+  NSColor *mixColor = [self SVR_userInterfaceStyle] == XPUserInterfaceStyleDark
+                      ? [NSColor whiteColor]
+                      : [NSColor blackColor];
+  return [NSDictionary __SVR_stylesWithFont:[self SVR_fontForTheme:SVRThemeFontMath]
+                            foregroundColor:[self SVR_colorForTheme:SVRThemeColorOperandText]
+                            backgroundColor:[self SVR_colorForTheme:SVRThemeColorSolutionSecondary]
+                                   mixColor:mixColor
+                                 background:background];
 }
 
 -(SVRSolverTextAttachmentStyles)SVR_stylesForError;
 {
-  NSFont  *toDrawFont   = [self SVR_fontForTheme:SVRThemeFontError];
-  NSColor *toDrawColor  = [self SVR_colorForTheme:SVRThemeColorErrorText];
-  NSFont  *neighborFont = [self SVR_fontForTheme:SVRThemeFontMath];
-  SVRSolverTextAttachmentBorderStyle borderStyle = SVRSolverTextAttachmentBorderStyleRecessedGray;
-  
-  return [NSDictionary __SVR_stylesWithToDrawFont:toDrawFont
-                                     neighborFont:neighborFont
-                                      toDrawColor:toDrawColor
-                                      borderStyle:borderStyle];
+#ifdef XPSupportsNSBezierPath
+  SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundCapsuleStroke;
+#else
+  SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
+#endif
+  NSColor *mixColor = [self SVR_userInterfaceStyle] == XPUserInterfaceStyleDark
+                      ? [NSColor whiteColor]
+                      : [NSColor blackColor];
+  return [NSDictionary __SVR_stylesWithFont:[self SVR_fontForTheme:SVRThemeFontError]
+                            foregroundColor:[self SVR_colorForTheme:SVRThemeColorOperandText]
+                            backgroundColor:[self SVR_colorForTheme:SVRThemeColorErrorText]
+                                   mixColor:mixColor
+                                 background:background];
 }
 
 -(SVRSolverTextStyles)SVR_stylesForText;
@@ -671,46 +669,50 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
   NSFont  *mathFont       = [self SVR_fontForTheme:SVRThemeFontMath];
   NSFont  *otherTextFont  = [self SVR_fontForTheme:SVRThemeFontOther];
   NSColor *otherTextColor = [self SVR_colorForTheme:SVRThemeColorOtherText];
-  NSColor *operandColor   = [self SVR_colorForTheme:SVRThemeColorOperand];
-  NSColor *operatorColor  = [self SVR_colorForTheme:SVRThemeColorOperator];
-  NSColor *bracketColor   = [self SVR_colorForTheme:SVRThemeColorBracket];
+  NSColor *operandColor   = [self SVR_colorForTheme:SVRThemeColorOperandText];
+  NSColor *operatorColor  = [self SVR_colorForTheme:SVRThemeColorOperatorText];
+  NSColor *previousColor  = [self SVR_colorForTheme:SVRThemeColorSolutionSecondary];
   
   return [NSDictionary __SVR_stylesWithMathFont:mathFont
                                    neighborFont:otherTextFont
                                  otherTextColor:otherTextColor
                                    operandColor:operandColor
                                   operatorColor:operatorColor
-                                   bracketColor:bracketColor];
+                                   previousColor:previousColor];
 }
 
 @end
 
 @implementation NSDictionary (SVRSolverTextAttachmentStyles)
 
-+(SVRSolverTextAttachmentStyles)__SVR_stylesWithToDrawFont:(NSFont*)toDrawFont
-                                              neighborFont:(NSFont*)neighborFont
-                                               toDrawColor:(NSColor*)toDrawColor
-                                               borderStyle:(SVRSolverTextAttachmentBorderStyle)borderStyle;
++(SVRSolverTextAttachmentStyles)__SVR_stylesWithFont:(NSFont*)font
+                                     foregroundColor:(NSColor*)foregroundColor
+                                     backgroundColor:(NSColor*)backgroundColor
+                                            mixColor:(NSColor*)mixColor
+                                          background:(SVRSolverTextAttachmentBackground)purpose;
 {
   NSArray *values;
   NSArray *keys;
   
-  NSCParameterAssert(toDrawFont);
-  NSCParameterAssert(neighborFont);
-  NSCParameterAssert(toDrawColor);
+  NSCParameterAssert(font);
+  NSCParameterAssert(foregroundColor);
+  NSCParameterAssert(backgroundColor);
+  NSCParameterAssert(mixColor);
   
   values = [NSArray arrayWithObjects:
-            toDrawFont,
-            toDrawColor,
-            neighborFont,
-            [NSNumber XP_numberWithInteger:borderStyle],
+            font,
+            foregroundColor,
+            backgroundColor,
+            mixColor,
+            [NSNumber XP_numberWithInteger:purpose],
             nil];
   
   keys = [NSArray arrayWithObjects:
-          SVRSolverTextAttachmentStyleToDrawFont,
-          SVRSolverTextAttachmentStyleToDrawColor,
-          SVRSolverTextAttachmentStyleNeighborFont,
-          SVRSolverTextAttachmentStyleBorder,
+          NSFontAttributeName,
+          NSForegroundColorAttributeName,
+          NSBackgroundColorAttributeName,
+          SVRSolverTextAttachmentMixColorKey,
+          SVRSolverTextAttachmentBackgroundKey,
           nil];
   
   return [NSDictionary dictionaryWithObjects:values forKeys:keys];
@@ -721,7 +723,7 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
                                           otherTextColor:(NSColor*)otherTextColor
                                             operandColor:(NSColor*)operandColor
                                            operatorColor:(NSColor*)operatorColor
-                                            bracketColor:(NSColor*)bracketColor;
+                                           previousColor:(NSColor*)previousColor;
 {
   NSArray *keys;
   NSArray *values;
@@ -731,7 +733,7 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
   NSCParameterAssert(otherTextColor);
   NSCParameterAssert(operandColor);
   NSCParameterAssert(operatorColor);
-  NSCParameterAssert(bracketColor);
+  NSCParameterAssert(previousColor);
   
   values = [NSArray arrayWithObjects:
             mathFont,
@@ -739,7 +741,7 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
             otherTextColor,
             operandColor,
             operatorColor,
-            bracketColor,
+            previousColor,
             nil];
   
   keys = [NSArray arrayWithObjects:
@@ -748,7 +750,7 @@ NSString *const SVRSolverTextStyleBracketColor  = @"SVRSolverTextStyleBracketCol
           SVRSolverTextStyleOtherColor,
           SVRSolverTextStyleOperandColor,
           SVRSolverTextStyleOperatorColor,
-          SVRSolverTextStyleBracketColor,
+          SVRSolverTextStylePreviousColor,
           nil];
   
   return [NSDictionary dictionaryWithObjects:values forKeys:keys];

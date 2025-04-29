@@ -43,7 +43,7 @@
   mm_unretain IBOutlet NSColorWell *_wellDarkOperand;
   mm_unretain IBOutlet NSColorWell *_wellDarkOperator;
   mm_unretain IBOutlet NSColorWell *_wellDarkOther;
-  mm_unretain IBOutlet NSColorWell *_wellDarkParenthesis;
+  mm_unretain IBOutlet NSColorWell *_wellDarkPrevious;
   mm_unretain IBOutlet NSColorWell *_wellDarkSolution;
   mm_unretain IBOutlet NSColorWell *_wellLightBackground;
   mm_unretain IBOutlet NSColorWell *_wellLightError;
@@ -51,7 +51,7 @@
   mm_unretain IBOutlet NSColorWell *_wellLightOperand;
   mm_unretain IBOutlet NSColorWell *_wellLightOperator;
   mm_unretain IBOutlet NSColorWell *_wellLightOther;
-  mm_unretain IBOutlet NSColorWell *_wellLightParenthesis;
+  mm_unretain IBOutlet NSColorWell *_wellLightPrevious;
   mm_unretain IBOutlet NSColorWell *_wellLightSolution;
   mm_unretain IBOutlet NSTextField *_fieldTime;
   mm_unretain IBOutlet NSTextField *_fieldTextMath;

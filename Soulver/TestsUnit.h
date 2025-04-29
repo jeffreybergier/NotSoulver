@@ -47,6 +47,18 @@ void TestsUnitExecute(void);
 +(void)executeTests;
 @end
 
+#ifdef MAC_OS_X_VERSION_10_4
+// TODO: For fundamental Core Graphics reasons, 10.2 and OpenStep
+// cannot draw into a context without a window. It would be possible
+// to rewrite this test to run after NSApplicationMain
+// and create and clean up a window. But it would be a ton of work.
+@interface NSBezierPath (TestsUnit)
++(void)executeTests;
++(void)saveTestFiles;
++(NSData*)createTIFFWithSelector:(SEL)selector;
+@end
+#endif
+
 @interface NSValue (TestUnitComparison)
 -(NSComparisonResult)TEST_compare:(NSValue*)other;
 @end

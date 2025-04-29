@@ -424,7 +424,9 @@ NSArray* XPRunOpenPanel(NSString *extension)
 +(id)XP_unarchivedObjectOfClass:(Class)cls fromData:(NSData*)someData;
 {
   // TODO: Fix this to use NSSecureCoding
-#ifdef MAC_OS_X_VERSION_10_13__
+  // NSCoding of my custom attributed strings seems not work completely
+  // NSSecureCoding does not seem to work even though it should
+#ifdef MAC_OS_X_VERSION_10_13
   NSError *error = nil;
   NSAttributedString *output = [self unarchivedObjectOfClass:cls
                                                     fromData:someData
@@ -460,10 +462,138 @@ NSArray* XPRunOpenPanel(NSString *extension)
 @implementation NSWorkspace (CrossPlatform)
 -(BOOL)XP_openFile:(NSString*)file;
 {
-#ifdef MAC_OS_X_VERSION_10_0
-  return [self openURL:[NSURL fileURLWithPath:file]];
-#else
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
   return [self openFile:file];
+#pragma clang diagnostic pop
+}
+@end
+
+#ifdef XPSupportsNSBezierPath
+@implementation NSBezierPath (CrossPlatform)
+
++(id)XP_bezierPathWithRoundedRect:(NSRect)rect
+                          xRadius:(XPFloat)xRadius
+                          yRadius:(XPFloat)yRadius;
+{
+#ifdef MAC_OS_X_VERSION_10_5
+  return [NSBezierPath __REAL_bezierPathWithRoundedRect:rect
+                                                xRadius:xRadius
+                                                yRadius:yRadius];
+#else
+  return [NSBezierPath __MANUAL_bezierPathWithRoundedRect:rect
+                                                  xRadius:xRadius
+                                                  yRadius:yRadius];
+#endif
+}
+
++(id)__REAL_bezierPathWithRoundedRect:(NSRect)rect
+                              xRadius:(XPFloat)xRadius
+                              yRadius:(XPFloat)yRadius;
+{
+#ifdef MAC_OS_X_VERSION_10_5
+  return [NSBezierPath bezierPathWithRoundedRect:rect
+                                         xRadius:xRadius
+                                         yRadius:yRadius];
+#else
+  NSCAssert(NO, @"Mac OS X 10.5 Required to use NSBezierPath convenience initializer");
+  return nil;
+#endif
+}
+
++(id)__MANUAL_bezierPathWithRoundedRect:(NSRect)rect
+                                xRadius:(XPFloat)rx
+                                yRadius:(XPFloat)ry;
+{
+  // Prepare variables
+  XPFloat kappa;
+  XPFloat ox;
+  XPFloat oy;
+  XPFloat x0;
+  XPFloat x1;
+  XPFloat x2;
+  XPFloat x3;
+  XPFloat y0;
+  XPFloat y1;
+  XPFloat y2;
+  XPFloat y3;
+  NSBezierPath *path = nil;
+  
+  // Sorry, this method was developed through a long conversation with ChatGPT
+  // I don't have a good source for this, and my BezierPath skills are not so
+  // strong. But it works, and thats all the matters.
+  
+  // Prepare path
+  path = [NSBezierPath bezierPath];
+
+  // Bail if the radius specified is invalid
+  if (rx <= 0 || ry <= 0) {
+      [path appendBezierPathWithRect:rect];
+      return path;
+  }
+
+  // Clamp radii to half width/height
+  rx = MIN(rx, NSWidth(rect) / 2.0);
+  ry = MIN(ry, NSHeight(rect) / 2.0);
+
+  // Magic number for approximating a quarter-circle with a Bézier curve
+  kappa = 0.45;
+  ox = rx * kappa; // control point offset horizontal
+  oy = ry * kappa; // control point offset vertical
+
+  // Calculate the points
+  x0 = NSMinX(rect);
+  x1 = x0 + rx;
+  x2 = NSMaxX(rect) - rx;
+  x3 = NSMaxX(rect);
+
+  y0 = NSMinY(rect);
+  y1 = y0 + ry;
+  y2 = NSMaxY(rect) - ry;
+  y3 = NSMaxY(rect);
+
+  // Draw the path
+  [path moveToPoint:NSMakePoint(x1, y3)];
+
+  // Top edge + top-right corner
+  [path lineToPoint:NSMakePoint(x2, y3)];
+  [path curveToPoint:NSMakePoint(x3, y2)
+       controlPoint1:NSMakePoint(x3 - ox, y3)
+       controlPoint2:NSMakePoint(x3, y3 - oy)];
+
+  // Right edge + bottom-right corner
+  [path lineToPoint:NSMakePoint(x3, y1)];
+  [path curveToPoint:NSMakePoint(x2, y0)
+       controlPoint1:NSMakePoint(x3, y0 + oy)
+       controlPoint2:NSMakePoint(x3 - ox, y0)];
+
+  // Bottom edge + bottom-left corner
+  [path lineToPoint:NSMakePoint(x1, y0)];
+  [path curveToPoint:NSMakePoint(x0, y1)
+       controlPoint1:NSMakePoint(x0 + ox, y0)
+       controlPoint2:NSMakePoint(x0, y0 + oy)];
+
+  // Left edge + top-left corner
+  [path lineToPoint:NSMakePoint(x0, y2)];
+  [path curveToPoint:NSMakePoint(x1, y3)
+       controlPoint1:NSMakePoint(x0, y3 - oy)
+       controlPoint2:NSMakePoint(x0 + ox, y3)];
+
+  // Close the path and return
+  [path closePath];
+  return path;
+}
+
+@end
+#endif
+
+@implementation NSTextView (CrossPlatform)
+-(void)XP_insertText:(id)string;
+{
+#ifdef MAC_OS_X_VERSION_10_4
+  [self insertText:string replacementRange:[self selectedRange]];
+#else
+  [self insertText:string];
 #endif
 }
 @end

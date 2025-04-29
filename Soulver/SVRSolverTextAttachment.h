@@ -33,18 +33,18 @@
 
 @interface SVRSolverTextAttachment: NSTextAttachment
 {
-  mm_retain NSString  *_toDrawString;
-  mm_retain NSFont    *_toDrawFont;
-  mm_retain NSColor   *_toDrawColor;
-  mm_retain NSFont    *_neighborFont;
-  SVRSolverTextAttachmentBorderStyle _borderStyle;
+  mm_retain NSString *_string;
+  mm_retain NSDictionary *_configuration;
 }
 
--(NSString*)toDrawString;
--(NSFont*)toDrawFont;
--(NSColor*)toDrawColor;
--(NSFont*)neighborFont;
--(SVRSolverTextAttachmentBorderStyle)borderStyle;
++(NSSize)textPadding;
+
+-(NSString*)string;
+-(NSFont*)font;
+-(NSColor*)foregroundColor;
+-(NSColor*)backgroundColor;
+-(NSColor*)mixColor;
+-(SVRSolverTextAttachmentBackground)background;
 
 -(id)initWithString:(NSString*)stringToDraw styles:(SVRSolverTextAttachmentStyles)styles;
 +(id)attachmentWithSolution:(NSDecimalNumber*)solution styles:(SVRSolverTextAttachmentStyles)styles;
@@ -58,11 +58,10 @@
 
 @interface SVRSolverTextAttachmentCell: NSTextAttachmentCell
 {
-  mm_new NSDictionary *_toDrawAttributes;
+  NSSize _cellSize;
 }
 
 // MARK: Properties
--(NSDictionary*)toDrawAttributes;
 -(SVRSolverTextAttachment*)SVR_attachment;
 
 // MARK: Init
@@ -70,13 +69,15 @@
 +(id)cellWithAttachment:(SVRSolverTextAttachment*)attachment;
 
 // MARK: Custom Drawing
-+(NSDictionary*)toDrawAttributesWithFont:(NSFont*)font
-                                   color:(NSColor*)color;
--(void)drawWithFrame:(NSRect)cellFrame
-              inView:(NSView*)controlView;
++(NSDictionary*)attributesWithFont:(NSFont*)font
+                             color:(NSColor*)color;
+-(void)drawWithFrame:(NSRect)cellFrame inView:(NSView*)controlView;
+-(void)__drawBackgroundCapsuleFillInRect:(NSRect)_rect;
+-(void)__drawBackgroundCapsuleStrokeInRect:(NSRect)_rect;
 
 // MARK: Protocol (Used)
 -(NSSize)cellSize;
+-(NSSize)__calculateCellSize;
 -(NSPoint)cellBaselineOffset;
 
 // MARK: Protocol (Unused)

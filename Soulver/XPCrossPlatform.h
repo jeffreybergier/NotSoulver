@@ -57,20 +57,28 @@ typedef CGFloat XPFloat;
 typedef float XPFloat;
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_0
-#define XPRTFDocumentAttributes [NSDictionary dictionaryWithObject:NSRTFTextDocumentType forKey:NSDocumentTypeDocumentAttribute]
-typedef NSRangePointer XPRangePointer;
+#ifdef NS_ENUM
+  #define XP_ENUM(_type, _name) NS_ENUM(_type, _name)
 #else
-#define XPRTFDocumentAttributes nil
-typedef NSRange* XPRangePointer;
+  #define XP_ENUM(_type, _name) _type _name; enum
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_2
 #define XPKeyedArchiver NSKeyedArchiver
 #define XPKeyedUnarchiver NSKeyedUnarchiver
+#define XPSupportsNSDocument
+#define XPSupportsNSBezierPath
 #else
 #define XPKeyedArchiver NSArchiver
 #define XPKeyedUnarchiver NSUnarchiver
+#endif
+
+#ifdef MAC_OS_X_VERSION_10_3
+#define XPRTFDocumentAttributes [NSDictionary dictionaryWithObject:NSRTFTextDocumentType forKey:NSDocumentTypeDocumentAttribute]
+typedef NSRangePointer XPRangePointer;
+#else
+#define XPRTFDocumentAttributes nil
+typedef NSRange* XPRangePointer;
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_4
@@ -79,8 +87,10 @@ typedef NSRange* XPRangePointer;
 // It could be 10.3 or 10.4 or later. No way to know
 // until I get to that version of OSX
 #define XPTextAlignmentCenter NSTextAlignmentCenter
+#define XPBitmapImageFileTypeTIFF NSBitmapImageFileTypeTIFF
 #else
 #define XPTextAlignmentCenter NSCenterTextAlignment
+#define XPBitmapImageFileTypeTIFF NSTIFFFileType
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_5
@@ -117,6 +127,10 @@ typedef NSAttributedStringKey XPAttributedStringKey;
 typedef NSString* XPAttributedStringKey;
 #endif
 
+#ifdef MAC_OS_X_VERSION_10_14
+#define XPSupportsDarkMode
+#endif
+
 extern const NSRange XPNotFoundRange;
 BOOL XPIsNotFoundRange(NSRange range);
 BOOL XPContainsRange(NSRange lhs, NSRange rhs);
@@ -131,37 +145,20 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs);
 -(XPInteger)XP_integerValue;
 @end
 
-#ifdef NS_ENUM
 /// These match XPAlertButtonDefault
 /// NSAlertDefaultReturn
-typedef NS_ENUM(XPInteger, XPAlertReturn) {
+typedef XP_ENUM(XPInteger, XPAlertReturn) {
 XPAlertReturnDefault   =  1,
 XPAlertReturnAlternate =  0,
 XPAlertReturnOther     = -1,
 XPAlertReturnError     = -2
 };
-#else
-typedef enum {
-  XPAlertReturnDefault   = (XPInteger)1,
-  XPAlertReturnAlternate = (XPInteger)0,
-  XPAlertReturnOther     = (XPInteger)-1,
-  XPAlertReturnError     = (XPInteger)-2
-} XPAlertReturn;
-#endif
 
-#ifdef NS_ENUM
-typedef NS_ENUM(XPInteger, XPUserInterfaceStyle) {
+typedef XP_ENUM(XPInteger, XPUserInterfaceStyle) {
   XPUserInterfaceStyleUnspecified = 0,
   XPUserInterfaceStyleLight = 1,
   XPUserInterfaceStyleDark = 2
 };
-#else
-typedef enum {
-  XPUserInterfaceStyleUnspecified = 0,
-  XPUserInterfaceStyleLight = 1,
-  XPUserInterfaceStyleDark = 2
-} XPUserInterfaceStyle;
-#endif
 
 XPAlertReturn XPRunQuitAlert(void);
 XPAlertReturn XPRunCopyWebURLToPasteboardAlert(NSString* webURL);
@@ -255,6 +252,27 @@ NSArray* XPRunOpenPanel(NSString *extension);
 
 @interface NSWorkspace (CrossPlatform)
 -(BOOL)XP_openFile:(NSString*)file;
+@end
+
+#ifdef XPSupportsNSBezierPath
+@interface NSBezierPath (CrossPlatform)
+
++(id)XP_bezierPathWithRoundedRect:(NSRect)rect
+                          xRadius:(XPFloat)xRadius
+                          yRadius:(XPFloat)yRadius;
+
++(id)__REAL_bezierPathWithRoundedRect:(NSRect)rect
+                              xRadius:(XPFloat)xRadius
+                              yRadius:(XPFloat)yRadius;
+
++(id)__MANUAL_bezierPathWithRoundedRect:(NSRect)rect
+                                xRadius:(XPFloat)xRadius
+                                yRadius:(XPFloat)yRadius;
+@end
+#endif
+
+@interface NSTextView (CrossPlatform)
+-(void)XP_insertText:(id)string;
 @end
 
 // MARK: XPLogging
