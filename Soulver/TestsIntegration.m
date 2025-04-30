@@ -118,9 +118,13 @@ void TestsIntegrationExecute(void)
   
   // Test On-Disk Versions for breaking changes
   XPTestString(repDiskLHS, repDiskRHS);
-  //XPTestAttrString(repDisplayLHS, repDisplayRHS);
-  //XPTestAttrString(repSolvedLHS, repSolvedRHS);
-  //XPTestAttrString(repUnsolvedLHS, repUnsolvedRHS);
+  
+  // TODO: These tests pass in macOS 15, 10.2, and OpenStep but fail in 10.4, very strange
+  #if !defined(MAC_OS_X_VERSION_10_4) || defined(MAC_OS_X_VERSION_10_6)
+  XPTestAttrString(repDisplayLHS, repDisplayRHS);
+  XPTestAttrString(repSolvedLHS, repSolvedRHS);
+  XPTestAttrString(repUnsolvedLHS, repUnsolvedRHS);
+  #endif
   
   // Test Basic Comparison
   XPTestAttrString([[[controller model] copy] autorelease],
