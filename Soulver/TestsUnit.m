@@ -419,13 +419,13 @@ void TestsUnitExecute(void)
 @implementation NSBezierPath (TestsUnit)
 +(void)executeTests;
 {
+  #ifdef MAC_OS_X_VERSION_10_6
   // Prepare variables
   NSData  *dataRHS = nil;
   NSData  *dataLHS = nil;
 
   NSLog(@"%@ Unit Tests: STARTING", self);
   
-  #ifdef MAC_OS_X_VERSION_10_5
   // Compare REAL BezierPath
   dataRHS = [self createTIFFWithSelector:@selector(__REAL_bezierPathWithRoundedRect:xRadius:yRadius:)];
   dataLHS = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestUnitBezierPath-REAL"
@@ -433,7 +433,6 @@ void TestsUnitExecute(void)
   XPTestNotNIL(dataRHS);
   XPTestNotNIL(dataLHS);
   XPTestObject(dataLHS, dataRHS);
-  #endif
   
   // Compare Manual BezierPath
   dataRHS = [self createTIFFWithSelector:@selector(__MANUAL_bezierPathWithRoundedRect:xRadius:yRadius:)];
@@ -441,20 +440,31 @@ void TestsUnitExecute(void)
                                                                            ofType:@"tiff"]];
   XPTestNotNIL(dataRHS);
   XPTestNotNIL(dataLHS);
-  //XPTestObject(dataLHS, dataRHS);
+  XPTestObject(dataLHS, dataRHS);
   
   NSLog(@"%@ Unit Tests: PASSED", self);
+  #else
+	NSLog(@"%@ Unit Tests: Skipped due to unsupported system", self);
+  #endif
 }
 
 +(void)saveTestFiles;
 {
+  #ifdef MAC_OS_X_VERSION_10_6
   NSWorkspace *ws = [NSWorkspace sharedWorkspace];
   NSString *destDir = NSTemporaryDirectory();
+	NSString *manualPath = nil;
+	
   NSString *realPath = [destDir stringByAppendingPathComponent:@"TestUnitBezierPath-REAL.tiff"];
-  NSString *manualPath = [destDir stringByAppendingPathComponent:@"TestUnitBezierPath-MANUAL.tiff"];
   [[self createTIFFWithSelector:@selector(__REAL_bezierPathWithRoundedRect:xRadius:yRadius:)] writeToFile:realPath atomically:YES];
+	
+	manualPath = [destDir stringByAppendingPathComponent:@"TestUnitBezierPath-MANUAL.tiff"];
   [[self createTIFFWithSelector:@selector(__MANUAL_bezierPathWithRoundedRect:xRadius:yRadius:)] writeToFile:manualPath atomically:YES];
-  [ws selectFile:realPath inFileViewerRootedAtPath:destDir];
+	
+  [ws selectFile:manualPath inFileViewerRootedAtPath:destDir];
+  #else
+	XPTestBool(NO);
+  #endif
 }
 
 +(NSData*)createTIFFWithSelector:(SEL)selector;
