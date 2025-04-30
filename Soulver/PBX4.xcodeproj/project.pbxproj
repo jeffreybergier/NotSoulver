@@ -90,8 +90,8 @@
 		089C1661FE840EACC02AAC07 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165FFE840EACC02AAC07 /* InfoPlist.strings */; };
 		1058C7A9FEA54F5311CA2CBB /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		32DBCF760370BD2300C91783 /* Soulver_Prefix.h in Headers */ = {isa = PBXBuildFile; fileRef = 32DBCF750370BD2300C91783 /* Soulver_Prefix.h */; };
-		8C5B4ECC2DC10C7B002C87B3 /* TestUnitBezierPath-MANUAL.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C5B4ECA2DC10C7B002C87B3 /* TestUnitBezierPath-MANUAL.tiff */; };
-		8C5B4ECD2DC10C7B002C87B3 /* TestUnitBezierPath-REAL.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C5B4ECB2DC10C7B002C87B3 /* TestUnitBezierPath-REAL.tiff */; };
+		8C5B4F522DC11545002C87B3 /* TestUnitBezierPath-MANUAL.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C5B4ECA2DC10C7B002C87B3 /* TestUnitBezierPath-MANUAL.tiff */; };
+		8C5B4F532DC11545002C87B3 /* TestUnitBezierPath-REAL.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C5B4ECB2DC10C7B002C87B3 /* TestUnitBezierPath-REAL.tiff */; };
 		8C9A4EE02D93CD2700A80066 /* AccessoryWindows_X2.nib in Resources */ = {isa = PBXBuildFile; fileRef = 8C9A4EDE2D93CD2700A80066 /* AccessoryWindows_X2.nib */; };
 		8CD62E512D91DB730000020F /* Soulver_main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E502D91DB730000020F /* Soulver_main.m */; };
 		8CD62E812D91DCE00000020F /* about-image-512.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8CD62E542D91DCDF0000020F /* about-image-512.tiff */; };
@@ -441,8 +441,8 @@
 				8CD62EBF2D91DF290000020F /* SVRDocument_42.nib in Resources */,
 				8CD62EC22D91DF730000020F /* Localizable.strings in Resources */,
 				8C9A4EE02D93CD2700A80066 /* AccessoryWindows_X2.nib in Resources */,
-				8C5B4ECC2DC10C7B002C87B3 /* TestUnitBezierPath-MANUAL.tiff in Resources */,
-				8C5B4ECD2DC10C7B002C87B3 /* TestUnitBezierPath-REAL.tiff in Resources */,
+				8C5B4F522DC11545002C87B3 /* TestUnitBezierPath-MANUAL.tiff in Resources */,
+				8C5B4F532DC11545002C87B3 /* TestUnitBezierPath-REAL.tiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -562,7 +562,7 @@
 				SECTORDER_FLAGS = "";
 				USE_GCC3_PFE_SUPPORT = NO;
 				WARNING_CFLAGS = (
-					"-Wmost",
+					"-Wall",
 					"-Wno-four-char-constants",
 					"-Wno-unknown-pragmas",
 				);
@@ -575,6 +575,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
+				DEBUGGING_SYMBOLS = NO;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				HEADER_SEARCH_PATHS = "";
@@ -586,7 +587,7 @@
 				PRODUCT_NAME = Soulver;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
-					"-Wmost",
+					"-Wall",
 					"-Wno-four-char-constants",
 					"-Wno-unknown-pragmas",
 				);
@@ -625,18 +626,36 @@
 		8C0A75882DC107FF0064EDCA /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					ppc,
+					"$(NATIVE_ARCH)",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
 			name = Development;
 		};
 		8C0A75892DC107FF0064EDCA /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					ppc,
+					"$(NATIVE_ARCH)",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
 			name = Deployment;
 		};
 		8C0A758A2DC107FF0064EDCA /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					ppc,
+					"$(NATIVE_ARCH)",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
 			name = Default;
 		};
