@@ -60,6 +60,7 @@
 		8C5E58422DC346F200A1648E /* slre.c in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62EB32D91DDEB0000020F /* slre.c */; };
 		8C5E58442DC346F200A1648E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		8CA8D03A2DC48A43007B1663 /* SVRDocument_X2.nib in Resources */ = {isa = PBXBuildFile; fileRef = 8CA8D0382DC48A43007B1663 /* SVRDocument_X2.nib */; };
+		8CC68BA12DC48DCD002AAADD /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 8CC68BA02DC48DCD002AAADD /* AppIcon.icns */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,6 +76,7 @@
 		8C5E584A2DC346F200A1648E /* Soulver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Soulver.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C9A4EDF2D93CD2700A80066 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/AccessoryWindows_X2.nib; sourceTree = "<group>"; };
 		8CA8D0392DC48A43007B1663 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/SVRDocument_X2.nib; sourceTree = "<group>"; };
+		8CC68BA02DC48DCD002AAADD /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AppIcon.icns; sourceTree = "<group>"; };
 		8CD62E502D91DB730000020F /* Soulver_main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = Soulver_main.m; sourceTree = "<group>"; };
 		8CD62E542D91DCDF0000020F /* about-image-512.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "about-image-512.tiff"; sourceTree = "<group>"; };
 		8CD62E552D91DCDF0000020F /* Import Log.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "Import Log.rtf"; sourceTree = "<group>"; };
@@ -264,6 +266,7 @@
 		8CD62EAE2D91DCFD0000020F /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				8CC68BA02DC48DCD002AAADD /* AppIcon.icns */,
 				8CD62E542D91DCDF0000020F /* about-image-512.tiff */,
 			);
 			name = Images;
@@ -393,6 +396,7 @@
 				8C5E582C2DC346F200A1648E /* TestUnitBezierPath-MANUAL.tiff in Resources */,
 				8C5E582D2DC346F200A1648E /* TestUnitBezierPath-REAL.tiff in Resources */,
 				8CA8D03A2DC48A43007B1663 /* SVRDocument_X2.nib in Resources */,
+				8CC68BA12DC48DCD002AAADD /* AppIcon.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
