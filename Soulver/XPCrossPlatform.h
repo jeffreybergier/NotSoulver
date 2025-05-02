@@ -82,26 +82,26 @@ typedef NSRange* XPRangePointer;
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_6
-// Docs says NSTextAlignmentCenter is available in 10.0.
-// But its not even available in 10.2, so I put it here.
-// It could be 10.3 or 10.4 or later. No way to know
-// until I get to that version of OSX
-#define XPTextAlignmentCenter NSTextAlignmentCenter
-#define XPBitmapImageFileTypeTIFF NSBitmapImageFileTypeTIFF
 #define XPStringCompareOptions NSStringCompareOptions
 #define XPPasteboardTypeRTF NSPasteboardTypeRTF
 #define XPPasteboardTypeString NSPasteboardTypeString
 #else
-#define XPTextAlignmentCenter NSCenterTextAlignment
-#define XPBitmapImageFileTypeTIFF NSTIFFFileType
 #define XPStringCompareOptions unsigned int
 #define XPPasteboardTypeRTF NSRTFPboardType
 #define XPPasteboardTypeString NSStringPboardType
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_8
+// Docs says NSTextAlignmentCenter is available in 10.0.
+// But its not even available in 10.2, so I put it here.
+// It could be 10.3 or 10.4 or later. No way to know
+// until I get to that version of OSX
+#define XPTextAlignmentCenter NSTextAlignmentCenter
+#define XPBitmapImageFileTypeTIFF NSBitmapImageFileTypeTIFF
 #define XPSecureCoding NSSecureCoding
 #else
+#define XPTextAlignmentCenter NSCenterTextAlignment
+#define XPBitmapImageFileTypeTIFF NSTIFFFileType
 #define XPSecureCoding NSCoding
 #endif
 

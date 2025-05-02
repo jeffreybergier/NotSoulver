@@ -54,7 +54,7 @@ int main(int argc, const char *argv[]) {
   TestsIntegrationExecute();
   
   // 4. Load NSApplication
-#ifdef MAC_OS_X_VERSION_10_6
+#ifdef MAC_OS_X_VERSION_10_8
   XPLogAlwys(@"<Main> Exiting due to unsupported system");
   return 0;
 #else
