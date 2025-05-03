@@ -27,7 +27,6 @@
 		8C5E581C2DC346F200A1648E /* XPDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E7D2D91DCE00000020F /* XPDocument.h */; };
 		8C5E581D2DC346F200A1648E /* XPRegularExpression.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E7F2D91DCE00000020F /* XPRegularExpression.h */; };
 		8C5E581E2DC346F200A1648E /* slre.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62EB42D91DDEB0000020F /* slre.h */; };
-		8C5E58202DC346F200A1648E /* MainMenu_X2.nib in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B6FDCFA73011CA2CEA /* MainMenu_X2.nib */; };
 		8C5E58212DC346F200A1648E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165FFE840EACC02AAC07 /* InfoPlist.strings */; };
 		8C5E58222DC346F200A1648E /* about-image-512.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8CD62E542D91DCDF0000020F /* about-image-512.tiff */; };
 		8C5E58232DC346F200A1648E /* TestsIntegration-DiskRep.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8CD62E732D91DCE00000020F /* TestsIntegration-DiskRep.txt */; };
@@ -35,7 +34,6 @@
 		8C5E58252DC346F200A1648E /* TestsIntegration-SolvedRep.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 8CD62E752D91DCE00000020F /* TestsIntegration-SolvedRep.rtf */; };
 		8C5E58262DC346F200A1648E /* TestsIntegration-UnsolvedRep.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 8CD62E762D91DCE00000020F /* TestsIntegration-UnsolvedRep.rtf */; };
 		8C5E582A2DC346F200A1648E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8CD62EC02D91DF730000020F /* Localizable.strings */; };
-		8C5E582B2DC346F200A1648E /* AccessoryWindows_X2.nib in Resources */ = {isa = PBXBuildFile; fileRef = 8C9A4EDE2D93CD2700A80066 /* AccessoryWindows_X2.nib */; };
 		8C5E582C2DC346F200A1648E /* TestUnitBezierPath-MANUAL.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C5B4ECA2DC10C7B002C87B3 /* TestUnitBezierPath-MANUAL.tiff */; };
 		8C5E582D2DC346F200A1648E /* TestUnitBezierPath-REAL.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C5B4ECB2DC10C7B002C87B3 /* TestUnitBezierPath-REAL.tiff */; };
 		8C5E582F2DC346F200A1648E /* Soulver_main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E502D91DB730000020F /* Soulver_main.m */; };
@@ -59,7 +57,9 @@
 		8C5E58412DC346F200A1648E /* XPRegularExpression.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E802D91DCE00000020F /* XPRegularExpression.m */; };
 		8C5E58422DC346F200A1648E /* slre.c in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62EB32D91DDEB0000020F /* slre.c */; };
 		8C5E58442DC346F200A1648E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
-		8CA8D03A2DC48A43007B1663 /* SVRDocument_X2.nib in Resources */ = {isa = PBXBuildFile; fileRef = 8CA8D0382DC48A43007B1663 /* SVRDocument_X2.nib */; };
+		8C7D8F372DC63681003F084F /* SVRDocument_X6.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C7D8F352DC63681003F084F /* SVRDocument_X6.xib */; };
+		8C7D8F3A2DC636BC003F084F /* MainMenu_X6.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C7D8F382DC636BC003F084F /* MainMenu_X6.xib */; };
+		8C7D8F3D2DC636CF003F084F /* AccessoryWindows_X6.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C7D8F3B2DC636CF003F084F /* AccessoryWindows_X6.xib */; };
 		8CC68BA12DC48DCD002AAADD /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 8CC68BA02DC48DCD002AAADD /* AppIcon.icns */; };
 /* End PBXBuildFile section */
 
@@ -74,6 +74,9 @@
 		8C5B4ECB2DC10C7B002C87B3 /* TestUnitBezierPath-REAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "TestUnitBezierPath-REAL.tiff"; sourceTree = SOURCE_ROOT; };
 		8C5E58492DC346F200A1648E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8C5E584A2DC346F200A1648E /* Soulver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Soulver.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C7D8F362DC63681003F084F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/SVRDocument_X6.xib; sourceTree = "<group>"; };
+		8C7D8F392DC636BC003F084F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu_X6.xib; sourceTree = "<group>"; };
+		8C7D8F3C2DC636CF003F084F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/AccessoryWindows_X6.xib; sourceTree = "<group>"; };
 		8C9A4EDF2D93CD2700A80066 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/AccessoryWindows_X2.nib; sourceTree = "<group>"; };
 		8CA8D0392DC48A43007B1663 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/SVRDocument_X2.nib; sourceTree = "<group>"; };
 		8CC68BA02DC48DCD002AAADD /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AppIcon.icns; sourceTree = "<group>"; };
@@ -245,10 +248,13 @@
 				8CD62EC02D91DF730000020F /* Localizable.strings */,
 				8CD62EB92D91DF290000020F /* MainMenu_42.nib */,
 				2A37F4B6FDCFA73011CA2CEA /* MainMenu_X2.nib */,
+				8C7D8F382DC636BC003F084F /* MainMenu_X6.xib */,
 				8CD62EB72D91DF290000020F /* AccessoryWindows_42.nib */,
 				8C9A4EDE2D93CD2700A80066 /* AccessoryWindows_X2.nib */,
+				8C7D8F3B2DC636CF003F084F /* AccessoryWindows_X6.xib */,
 				8CD62EBB2D91DF290000020F /* SVRDocument_42.nib */,
 				8CA8D0382DC48A43007B1663 /* SVRDocument_X2.nib */,
+				8C7D8F352DC63681003F084F /* SVRDocument_X6.xib */,
 				089C165FFE840EACC02AAC07 /* InfoPlist.strings */,
 			);
 			name = Resources;
@@ -387,7 +393,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C5E58202DC346F200A1648E /* MainMenu_X2.nib in Resources */,
 				8C5E58212DC346F200A1648E /* InfoPlist.strings in Resources */,
 				8C5E58222DC346F200A1648E /* about-image-512.tiff in Resources */,
 				8C5E58232DC346F200A1648E /* TestsIntegration-DiskRep.txt in Resources */,
@@ -395,11 +400,12 @@
 				8C5E58252DC346F200A1648E /* TestsIntegration-SolvedRep.rtf in Resources */,
 				8C5E58262DC346F200A1648E /* TestsIntegration-UnsolvedRep.rtf in Resources */,
 				8C5E582A2DC346F200A1648E /* Localizable.strings in Resources */,
-				8C5E582B2DC346F200A1648E /* AccessoryWindows_X2.nib in Resources */,
 				8C5E582C2DC346F200A1648E /* TestUnitBezierPath-MANUAL.tiff in Resources */,
 				8C5E582D2DC346F200A1648E /* TestUnitBezierPath-REAL.tiff in Resources */,
-				8CA8D03A2DC48A43007B1663 /* SVRDocument_X2.nib in Resources */,
 				8CC68BA12DC48DCD002AAADD /* AppIcon.icns in Resources */,
+				8C7D8F372DC63681003F084F /* SVRDocument_X6.xib in Resources */,
+				8C7D8F3A2DC636BC003F084F /* MainMenu_X6.xib in Resources */,
+				8C7D8F3D2DC636CF003F084F /* AccessoryWindows_X6.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -450,6 +456,30 @@
 				2A37F4B7FDCFA73011CA2CEA /* MainMenu_X2.nib */,
 			);
 			name = MainMenu_X2.nib;
+			sourceTree = "<group>";
+		};
+		8C7D8F352DC63681003F084F /* SVRDocument_X6.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8C7D8F362DC63681003F084F /* English */,
+			);
+			name = SVRDocument_X6.xib;
+			sourceTree = "<group>";
+		};
+		8C7D8F382DC636BC003F084F /* MainMenu_X6.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8C7D8F392DC636BC003F084F /* English */,
+			);
+			name = MainMenu_X6.xib;
+			sourceTree = "<group>";
+		};
+		8C7D8F3B2DC636CF003F084F /* AccessoryWindows_X6.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8C7D8F3C2DC636CF003F084F /* English */,
+			);
+			name = AccessoryWindows_X6.xib;
 			sourceTree = "<group>";
 		};
 		8C9A4EDE2D93CD2700A80066 /* AccessoryWindows_X2.nib */ = {

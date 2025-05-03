@@ -69,7 +69,9 @@
 // MARK: Init
 -(id)init;
 {
-#ifdef MAC_OS_X_VERSION_10_2
+#ifdef MAC_OS_X_VERSION_10_6
+  NSString *nibName = @"AccessoryWindows_X6";
+#elif defined(MAC_OS_X_VERSION_10_2)
   NSString *nibName = @"AccessoryWindows_X2";
 #else
   NSString *nibName = @"AccessoryWindows_42";

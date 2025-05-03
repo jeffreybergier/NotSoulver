@@ -40,11 +40,13 @@
 
 -(NSString*)windowNibName;
 {
-  #ifdef MAC_OS_X_VERSION_10_2
+#ifdef MAC_OS_X_VERSION_10_6
+  return @"SVRDocument_X6";
+#elif defined(MAC_OS_X_VERSION_10_2)
   return @"SVRDocument_X2";
-  #else
+#else
   return @"SVRDocument_42";
-  #endif
+#endif
 }
 
 // MARK: NSDocument subclass
