@@ -367,7 +367,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				089C1661FE840EACC02AAC07,
-				8CD62E812D91DCE00000020F,
 				8CD62EA02D91DCE00000020F,
 				8CD62EA12D91DCE00000020F,
 				8CD62EA22D91DCE00000020F,
@@ -376,6 +375,11 @@
 				080E96DAFE201CDB7F000001,
 				8C9A4EE02D93CD2700A80066,
 				8C5138172DC38CA700A80066,
+				8C9C62902DC7C9F600A80066,
+				8C9C62912DC7C9F600A80066,
+				8C9C62922DC7C9F600A80066,
+				8C9C62932DC7C9F600A80066,
+				8C9C62942DC7C9F600A80066,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -520,6 +524,96 @@
 		};
 		8C9A4EE02D93CD2700A80066 = {
 			fileRef = 8C9A4EDE2D93CD2700A80066;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C9C628B2DC7C9F600A80066 = {
+			isa = PBXFileReference;
+			name = "about-image-512.tiff";
+			path = "Images/about-image-512.tiff";
+			refType = 2;
+		};
+		8C9C628C2DC7C9F600A80066 = {
+			isa = PBXFileReference;
+			name = BlocksFullSizeSMlght.tiff;
+			path = Images/BlocksFullSizeSMlght.tiff;
+			refType = 2;
+		};
+		8C9C628D2DC7C9F600A80066 = {
+			isa = PBXFileReference;
+			name = NeXTLogoMed.tiff;
+			path = Images/NeXTLogoMed.tiff;
+			refType = 2;
+		};
+		8C9C628E2DC7C9F600A80066 = {
+			isa = PBXFileReference;
+			name = TagLine.tiff;
+			path = Images/TagLine.tiff;
+			refType = 2;
+		};
+		8C9C628F2DC7C9F600A80066 = {
+			isa = PBXFileReference;
+			name = TM.tiff;
+			path = Images/TM.tiff;
+			refType = 2;
+		};
+		8C9C62902DC7C9F600A80066 = {
+			fileRef = 8C9C628B2DC7C9F600A80066;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C9C62912DC7C9F600A80066 = {
+			fileRef = 8C9C628C2DC7C9F600A80066;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C9C62922DC7C9F600A80066 = {
+			fileRef = 8C9C628D2DC7C9F600A80066;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C9C62932DC7C9F600A80066 = {
+			fileRef = 8C9C628E2DC7C9F600A80066;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C9C62942DC7C9F600A80066 = {
+			fileRef = 8C9C628F2DC7C9F600A80066;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C9C62952DC7C9F600A80066 = {
+			fileRef = 8C9C628B2DC7C9F600A80066;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C9C62962DC7C9F600A80066 = {
+			fileRef = 8C9C628C2DC7C9F600A80066;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C9C62972DC7C9F600A80066 = {
+			fileRef = 8C9C628D2DC7C9F600A80066;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C9C62982DC7C9F600A80066 = {
+			fileRef = 8C9C628E2DC7C9F600A80066;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C9C62992DC7C9F600A80066 = {
+			fileRef = 8C9C628F2DC7C9F600A80066;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -760,7 +854,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8CC3190D2DBF1B3300A80066,
-				8CC3190E2DBF1B3300A80066,
 				8CC3190F2DBF1B3300A80066,
 				8CC319102DBF1B3300A80066,
 				8CC319112DBF1B3300A80066,
@@ -769,6 +862,11 @@
 				8CC3190C2DBF1B3300A80066,
 				8C5138182DC38D5700A80066,
 				8CC319172DBF1B3300A80066,
+				8C9C62952DC7C9F600A80066,
+				8C9C62962DC7C9F600A80066,
+				8C9C62972DC7C9F600A80066,
+				8C9C62982DC7C9F600A80066,
+				8C9C62992DC7C9F600A80066,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -781,12 +879,6 @@
 		};
 		8CC3190D2DBF1B3300A80066 = {
 			fileRef = 089C165FFE840EACC02AAC07;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		8CC3190E2DBF1B3300A80066 = {
-			fileRef = 8CD62E542D91DCDF0000020F;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -1004,11 +1096,6 @@
 			isa = PBXBuildFile;
 			settings = {
 			};
-		};
-		8CD62E542D91DCDF0000020F = {
-			isa = PBXFileReference;
-			path = "about-image-512.tiff";
-			refType = 4;
 		};
 		8CD62E552D91DCDF0000020F = {
 			isa = PBXFileReference;
@@ -1270,12 +1357,6 @@
 			path = XPRegularExpression.m;
 			refType = 4;
 		};
-		8CD62E812D91DCE00000020F = {
-			fileRef = 8CD62E542D91DCDF0000020F;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
 		8CD62E862D91DCE00000020F = {
 			fileRef = 8CD62E592D91DCDF0000020F;
 			isa = PBXBuildFile;
@@ -1518,7 +1599,11 @@
 		};
 		8CD62EAE2D91DCFD0000020F = {
 			children = (
-				8CD62E542D91DCDF0000020F,
+				8C9C628B2DC7C9F600A80066,
+				8C9C628C2DC7C9F600A80066,
+				8C9C628D2DC7C9F600A80066,
+				8C9C628E2DC7C9F600A80066,
+				8C9C628F2DC7C9F600A80066,
 			);
 			isa = PBXGroup;
 			name = Images;

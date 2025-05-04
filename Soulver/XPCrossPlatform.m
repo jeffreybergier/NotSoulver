@@ -463,6 +463,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 -(BOOL)XP_openFile:(NSString*)file;
 {
+  // TODO: Change this touse openURL or the appropriate method for files
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
   return [self openFile:file];
