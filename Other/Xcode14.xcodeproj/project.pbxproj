@@ -69,6 +69,10 @@
 		8CAB9E672DC773B8003E5990 /* NeXTLogoMed.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = NeXTLogoMed.tiff; path = ../Soulver/Images/NeXTLogoMed.tiff; sourceTree = SOURCE_ROOT; };
 		8CAB9E682DC773B8003E5990 /* TagLine.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = TagLine.tiff; path = ../Soulver/Images/TagLine.tiff; sourceTree = SOURCE_ROOT; };
 		8CAB9E692DC773B8003E5990 /* TM.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = TM.tiff; path = ../Soulver/Images/TM.tiff; sourceTree = SOURCE_ROOT; };
+		8CAB9E6D2DC775C4003E5990 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = ../Soulver/English.lproj/MainMenu_X6.xib; sourceTree = "<group>"; };
+		8CAB9E6E2DC775C4003E5990 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = ../Soulver/English.lproj/AccessoryWindows_X6.xib; sourceTree = "<group>"; };
+		8CAB9E6F2DC775C4003E5990 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = ../Soulver/English.lproj/SVRDocument_X6.xib; sourceTree = "<group>"; };
+		8CAB9E712DC775DC003E5990 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = ../Soulver/English.lproj/SVRDocument_X2.nib; sourceTree = "<group>"; };
 		8CCAA33A2D936C920050DD4A /* NSUserDefaults+Soulver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "NSUserDefaults+Soulver.h"; path = "../Soulver/NSUserDefaults+Soulver.h"; sourceTree = SOURCE_ROOT; };
 		8CCAA33B2D936C920050DD4A /* NSUserDefaults+Soulver.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "NSUserDefaults+Soulver.m"; path = "../Soulver/NSUserDefaults+Soulver.m"; sourceTree = SOURCE_ROOT; };
 		8CCAA33D2D936CA20050DD4A /* SVRAccessoryWindowsOwner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SVRAccessoryWindowsOwner.h; path = ../Soulver/SVRAccessoryWindowsOwner.h; sourceTree = SOURCE_ROOT; };
@@ -182,11 +186,15 @@
 			children = (
 				8C04BBAD2D94443F00DCCDFA /* AccessoryWindows_42.nib */,
 				8C04BBAE2D94443F00DCCDFA /* AccessoryWindows_X2.nib */,
-				8C04BBAF2D94443F00DCCDFA /* InfoPlist.strings */,
-				8C04BBB02D94443F00DCCDFA /* Localizable.strings */,
+				8CAB9E6A2DC775C4003E5990 /* AccessoryWindows_X6.xib */,
 				8C04BBB12D94443F00DCCDFA /* MainMenu_42.nib */,
 				8C04BBB22D94443F00DCCDFA /* MainMenu_X2.nib */,
+				8CAB9E6B2DC775C4003E5990 /* MainMenu_X6.xib */,
 				8C04BBB32D94443F00DCCDFA /* SVRDocument_42.nib */,
+				8CAB9E702DC775DC003E5990 /* SVRDocument_X2.nib */,
+				8CAB9E6C2DC775C4003E5990 /* SVRDocument_X6.xib */,
+				8C04BBAF2D94443F00DCCDFA /* InfoPlist.strings */,
+				8C04BBB02D94443F00DCCDFA /* Localizable.strings */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -407,6 +415,38 @@
 				8C04BBB92D94443F00DCCDFA /* English */,
 			);
 			name = SVRDocument_42.nib;
+			sourceTree = "<group>";
+		};
+		8CAB9E6A2DC775C4003E5990 /* AccessoryWindows_X6.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8CAB9E6E2DC775C4003E5990 /* English */,
+			);
+			name = AccessoryWindows_X6.xib;
+			sourceTree = "<group>";
+		};
+		8CAB9E6B2DC775C4003E5990 /* MainMenu_X6.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8CAB9E6D2DC775C4003E5990 /* English */,
+			);
+			name = MainMenu_X6.xib;
+			sourceTree = "<group>";
+		};
+		8CAB9E6C2DC775C4003E5990 /* SVRDocument_X6.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8CAB9E6F2DC775C4003E5990 /* English */,
+			);
+			name = SVRDocument_X6.xib;
+			sourceTree = "<group>";
+		};
+		8CAB9E702DC775DC003E5990 /* SVRDocument_X2.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8CAB9E712DC775DC003E5990 /* English */,
+			);
+			name = SVRDocument_X2.nib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
