@@ -460,12 +460,23 @@ NSArray* XPRunOpenPanel(NSString *extension)
 @end
 
 @implementation NSWorkspace (CrossPlatform)
+
 -(BOOL)XP_openFile:(NSString*)file;
 {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
   return [self openFile:file];
 #pragma clang diagnostic pop
+}
+
+-(BOOL)XP_openWeb:(NSString*)webURL;
+{
+#ifdef MAC_OS_X_VERSION_10_0
+  NSCParameterAssert(webURL);
+  return [self openURL:[NSURL URLWithString:webURL]];
+#else
+  return NO;
+#endif
 }
 @end
 

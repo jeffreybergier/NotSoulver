@@ -244,6 +244,7 @@ NSArray* XPRunOpenPanel(NSString *extension);
 
 @interface NSWorkspace (CrossPlatform)
 -(BOOL)XP_openFile:(NSString*)file;
+-(BOOL)XP_openWeb:(NSString*)webURL;
 @end
 
 #ifdef XPSupportsNSBezierPath

@@ -147,7 +147,7 @@
   NSPasteboard *pb = [NSPasteboard generalPasteboard];
   NSWorkspace *ws = [NSWorkspace sharedWorkspace];
   NSString *webURLToOpen = [Localized phraseSourceRepositoryURL];
-  success = [ws XP_openFile:webURLToOpen];
+  success = [ws XP_openWeb:webURLToOpen];
   if (success) { return; }
   NSBeep();
   XPLogDebug1(@"[Failed] [NSWorkspace openURL:%@]", webURLToOpen);
