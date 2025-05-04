@@ -32,7 +32,6 @@
 		8CCAA3912D936DA30050DD4A /* TestsIntegration-DisplayRep.rtf in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CCAA36D2D936CC80050DD4A /* TestsIntegration-DisplayRep.rtf */; };
 		8CCAA3922D936DA30050DD4A /* TestsIntegration-SolvedRep.rtf in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CCAA36E2D936CC80050DD4A /* TestsIntegration-SolvedRep.rtf */; };
 		8CCAA3932D936DA30050DD4A /* TestsIntegration-UnsolvedRep.rtf in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CCAA36F2D936CC80050DD4A /* TestsIntegration-UnsolvedRep.rtf */; };
-		8CCAA3942D936DA30050DD4A /* about-image-512.tiff in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CCAA37A2D936D180050DD4A /* about-image-512.tiff */; };
 		8CF03E012DA26F71001D6A72 /* TestUnitBezierPath-MANUAL.tiff in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CF03DFE2DA26F61001D6A72 /* TestUnitBezierPath-MANUAL.tiff */; };
 		8CF03E022DA26F71001D6A72 /* TestUnitBezierPath-REAL.tiff in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CF03DFF2DA26F61001D6A72 /* TestUnitBezierPath-REAL.tiff */; };
 /* End PBXBuildFile section */
@@ -51,7 +50,6 @@
 				8CCAA3912D936DA30050DD4A /* TestsIntegration-DisplayRep.rtf in CopyFiles */,
 				8CCAA3922D936DA30050DD4A /* TestsIntegration-SolvedRep.rtf in CopyFiles */,
 				8CCAA3932D936DA30050DD4A /* TestsIntegration-UnsolvedRep.rtf in CopyFiles */,
-				8CCAA3942D936DA30050DD4A /* about-image-512.tiff in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +63,12 @@
 		8C04BBB82D94443F00DCCDFA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = ../Soulver/English.lproj/MainMenu_X2.nib; sourceTree = "<group>"; };
 		8C04BBB92D94443F00DCCDFA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = ../Soulver/English.lproj/SVRDocument_42.nib; sourceTree = "<group>"; };
 		8C04BBBA2D94443F00DCCDFA /* English */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = English; path = ../Soulver/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		8CAB9E642DC773B8003E5990 /* about-image-512.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "about-image-512.tiff"; path = "../Soulver/Images/about-image-512.tiff"; sourceTree = SOURCE_ROOT; };
+		8CAB9E652DC773B8003E5990 /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = AppIcon.icns; path = ../Soulver/Images/AppIcon.icns; sourceTree = SOURCE_ROOT; };
+		8CAB9E662DC773B8003E5990 /* BlocksFullSizeSMlght.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = BlocksFullSizeSMlght.tiff; path = ../Soulver/Images/BlocksFullSizeSMlght.tiff; sourceTree = SOURCE_ROOT; };
+		8CAB9E672DC773B8003E5990 /* NeXTLogoMed.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = NeXTLogoMed.tiff; path = ../Soulver/Images/NeXTLogoMed.tiff; sourceTree = SOURCE_ROOT; };
+		8CAB9E682DC773B8003E5990 /* TagLine.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = TagLine.tiff; path = ../Soulver/Images/TagLine.tiff; sourceTree = SOURCE_ROOT; };
+		8CAB9E692DC773B8003E5990 /* TM.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = TM.tiff; path = ../Soulver/Images/TM.tiff; sourceTree = SOURCE_ROOT; };
 		8CCAA33A2D936C920050DD4A /* NSUserDefaults+Soulver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "NSUserDefaults+Soulver.h"; path = "../Soulver/NSUserDefaults+Soulver.h"; sourceTree = SOURCE_ROOT; };
 		8CCAA33B2D936C920050DD4A /* NSUserDefaults+Soulver.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "NSUserDefaults+Soulver.m"; path = "../Soulver/NSUserDefaults+Soulver.m"; sourceTree = SOURCE_ROOT; };
 		8CCAA33D2D936CA20050DD4A /* SVRAccessoryWindowsOwner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SVRAccessoryWindowsOwner.h; path = ../Soulver/SVRAccessoryWindowsOwner.h; sourceTree = SOURCE_ROOT; };
@@ -109,7 +113,6 @@
 		8CCAA3752D936CE60050DD4A /* Soulver_Prefix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Soulver_Prefix.h; path = ../Soulver/Soulver_Prefix.h; sourceTree = SOURCE_ROOT; };
 		8CCAA3772D936CF10050DD4A /* slre.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = slre.h; path = ../Soulver/slre.h; sourceTree = SOURCE_ROOT; };
 		8CCAA3782D936CF10050DD4A /* slre.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = slre.c; path = ../Soulver/slre.c; sourceTree = SOURCE_ROOT; };
-		8CCAA37A2D936D180050DD4A /* about-image-512.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "about-image-512.tiff"; path = "../Soulver/about-image-512.tiff"; sourceTree = SOURCE_ROOT; };
 		8CCAA3872D936D600050DD4A /* h.template */ = {isa = PBXFileReference; lastKnownFileType = text; name = h.template; path = ../Soulver/h.template; sourceTree = SOURCE_ROOT; };
 		8CCAA3882D936D600050DD4A /* Import Log.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = "Import Log.rtf"; path = "../Soulver/Import Log.rtf"; sourceTree = SOURCE_ROOT; };
 		8CCAA3892D936D600050DD4A /* m.template */ = {isa = PBXFileReference; lastKnownFileType = text; name = m.template; path = ../Soulver/m.template; sourceTree = SOURCE_ROOT; };
@@ -164,7 +167,12 @@
 		8CCAA3372D936C2F0050DD4A /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				8CCAA37A2D936D180050DD4A /* about-image-512.tiff */,
+				8CAB9E642DC773B8003E5990 /* about-image-512.tiff */,
+				8CAB9E652DC773B8003E5990 /* AppIcon.icns */,
+				8CAB9E662DC773B8003E5990 /* BlocksFullSizeSMlght.tiff */,
+				8CAB9E672DC773B8003E5990 /* NeXTLogoMed.tiff */,
+				8CAB9E682DC773B8003E5990 /* TagLine.tiff */,
+				8CAB9E692DC773B8003E5990 /* TM.tiff */,
 			);
 			name = Images;
 			sourceTree = "<group>";
