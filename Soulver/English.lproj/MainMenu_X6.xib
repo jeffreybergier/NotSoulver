@@ -162,7 +162,7 @@
 								</object>
 								<object class="NSMenuItem" id="861005275">
 									<reference key="NSMenu" ref="224431970"/>
-									<string key="NSTitle">Quit NewApplication</string>
+									<string key="NSTitle">Quit [Not]Soulver</string>
 									<string key="NSKeyEquiv">q</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
