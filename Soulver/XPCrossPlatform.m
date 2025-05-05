@@ -134,7 +134,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
       output = [NSArray new];
       break;
     default:
-      XPLogRaise1(@"Impossible NSOpenPanel result: %lu", result);
+      XPLogRaise1(@"Impossible NSOpenPanel result: %d", (int)result);
       output = nil;
       break;
   }
@@ -460,12 +460,24 @@ NSArray* XPRunOpenPanel(NSString *extension)
 @end
 
 @implementation NSWorkspace (CrossPlatform)
+
 -(BOOL)XP_openFile:(NSString*)file;
 {
+  // TODO: Change this touse openURL or the appropriate method for files
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
   return [self openFile:file];
 #pragma clang diagnostic pop
+}
+
+-(BOOL)XP_openWeb:(NSString*)webURL;
+{
+#ifdef MAC_OS_X_VERSION_10_0
+  NSCParameterAssert(webURL);
+  return [self openURL:[NSURL URLWithString:webURL]];
+#else
+  return NO;
+#endif
 }
 @end
 

@@ -20,7 +20,12 @@ ICONSECTIONS =	-sectcreate __ICON app /NextLibrary/Frameworks/AppKit.framework/R
 LOCAL_RESOURCES = AccessoryWindows_42.nib MainMenu_42.nib\
                   SVRDocument_42.nib Localizable.strings
 
-GLOBAL_RESOURCES = about-image-512.tiff TestsIntegration-DiskRep.txt\
+GLOBAL_RESOURCES = Images/about-image-512.tiff\
+                   Images/BlocksFullSizeSMlght.tiff\
+                   Images/NeXTLogoMed.tiff\
+                   Images/TagLine.tiff\
+                   Images/TM.tiff\
+                   TestsIntegration-DiskRep.txt\
                    TestsIntegration-DisplayRep.rtf\
                    TestsIntegration-SolvedRep.rtf\
                    TestsIntegration-UnsolvedRep.rtf

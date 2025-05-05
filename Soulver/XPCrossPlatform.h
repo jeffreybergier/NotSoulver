@@ -82,18 +82,10 @@ typedef NSRange* XPRangePointer;
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_6
-// Docs says NSTextAlignmentCenter is available in 10.0.
-// But its not even available in 10.2, so I put it here.
-// It could be 10.3 or 10.4 or later. No way to know
-// until I get to that version of OSX
-#define XPTextAlignmentCenter NSTextAlignmentCenter
-#define XPBitmapImageFileTypeTIFF NSBitmapImageFileTypeTIFF
 #define XPStringCompareOptions NSStringCompareOptions
 #define XPPasteboardTypeRTF NSPasteboardTypeRTF
 #define XPPasteboardTypeString NSPasteboardTypeString
 #else
-#define XPTextAlignmentCenter NSCenterTextAlignment
-#define XPBitmapImageFileTypeTIFF NSTIFFFileType
 #define XPStringCompareOptions unsigned int
 #define XPPasteboardTypeRTF NSRTFPboardType
 #define XPPasteboardTypeString NSStringPboardType
@@ -105,10 +97,14 @@ typedef NSRange* XPRangePointer;
 #define XPSecureCoding NSCoding
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_9
+#ifdef MAC_OS_X_VERSION_10_10
+#define XPTextAlignmentCenter NSTextAlignmentCenter
+#define XPBitmapImageFileTypeTIFF NSBitmapImageFileTypeTIFF
 #define XPModalResponseOK NSModalResponseOK
 #define XPModalResponseCancel NSModalResponseCancel
 #else
+#define XPTextAlignmentCenter NSCenterTextAlignment
+#define XPBitmapImageFileTypeTIFF NSTIFFFileType
 #define XPModalResponseOK NSOKButton
 #define XPModalResponseCancel NSCancelButton
 #endif
@@ -244,6 +240,7 @@ NSArray* XPRunOpenPanel(NSString *extension);
 
 @interface NSWorkspace (CrossPlatform)
 -(BOOL)XP_openFile:(NSString*)file;
+-(BOOL)XP_openWeb:(NSString*)webURL;
 @end
 
 #ifdef XPSupportsNSBezierPath
