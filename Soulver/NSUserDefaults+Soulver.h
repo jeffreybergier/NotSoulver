@@ -32,7 +32,6 @@
 
 extern NSString * const SVRThemeDidChangeNotificationName;
 
-
 typedef XP_ENUM(XPInteger, SVRThemeColor) {
   SVRThemeColorOperandText = 0,
   SVRThemeColorOperatorText = 1,
@@ -51,13 +50,6 @@ typedef XP_ENUM(XPInteger, SVRThemeFont) {
   SVRThemeFontError = 2
 };
 
-typedef XP_ENUM(XPInteger, SVRAccessoryWindow) {
-  SVRAccessoryWindowSettings = 0,
-  SVRAccessoryWindowAbout = 1,
-  SVRAccessoryWindowKeypad = 2,
-  SVRAccessoryWindowNone = 3
-};
-
 @interface NSUserDefaults (Soulver)
 // MARK: Basics
 -(NSString*)SVR_savePanelLastDirectory;
@@ -66,9 +58,8 @@ typedef XP_ENUM(XPInteger, SVRAccessoryWindow) {
 -(BOOL)SVR_setWaitTimeForRendering:(NSTimeInterval)newValue;
 
 // MARK: Accessory Window Visibility
-+(NSString*)SVR_frameKeyForWindow:(SVRAccessoryWindow)window;
--(BOOL)SVR_visibilityForWindow:(SVRAccessoryWindow)window;
--(BOOL)SVR_setVisibility:(BOOL)isVisible forWindow:(SVRAccessoryWindow)window;
+-(BOOL)SVR_visibilityForWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
+-(BOOL)SVR_setVisibility:(BOOL)isVisible forWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
 
 // MARK: Theming
 -(void)__postChangeNotification;
