@@ -134,7 +134,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
       output = [NSArray new];
       break;
     default:
-      XPLogRaise1(@"Impossible NSOpenPanel result: %lu", result);
+      XPLogRaise1(@"Impossible NSOpenPanel result: %d", (int)result);
       output = nil;
       break;
   }
