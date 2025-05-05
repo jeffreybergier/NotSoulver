@@ -440,7 +440,7 @@ void TestsUnitExecute(void)
                                                                            ofType:@"tiff"]];
   XPTestNotNIL(dataRHS);
   XPTestNotNIL(dataLHS);
-  //XPTestObject(dataLHS, dataRHS);
+  XPTestObject(dataLHS, dataRHS);
   
   NSLog(@"%@ Unit Tests: PASSED", self);
   #else
