@@ -327,11 +327,9 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
   }
   
   lhsRange = NSMakeRange(operatorRange.location - 1, 1);
-  if (lhsRange.location >= 0) {
-    lhs = [expression attribute:XPAttributedStringKeyForTag(SVRSolverTagNumber)
-                        atIndex:lhsRange.location
-                 effectiveRange:&lhsRange];
-  }
+  lhs = [expression attribute:XPAttributedStringKeyForTag(SVRSolverTagNumber)
+                      atIndex:lhsRange.location
+               effectiveRange:&lhsRange];
   if (lhs == nil) {
     if (errorPtr != NULL) { *errorPtr = SVRCalculationMissingOperand; }
     return nil;

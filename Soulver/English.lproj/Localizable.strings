@@ -31,7 +31,7 @@
 "NEXT_P_EditedWindows" = "There are edited windows.";
 "NEXT_P_SaveChangesTo%@" = "Save changes to %@?";
 "NEXT_P_RevertChangesTo%@" = "Revert changes to %@?";
-"NEXT_P_SourceRepositoryURL" = "https://github.com/jeffreybergier/NotSoulver";
+"NEXT_P_SourceRepositoryURL" = "http://github.com/jeffreybergier/NotSoulver";
 "NEXT_P_CopyWebURLToClipboard%@" = "Copy `%@` to the clipboard?";
 "NEXT_P_AboutParagraph" = "I wrote [Not]Soulver as a learning exercise. It was supposed to be an experiment in learning how to develop for OpenStep, i.e. without Swift, without ARC, without Blocks, without Properties, etc. But I ended up learning a whole lot more. I can honestly say that learning how to develop for OpenStep will bring you much closer to how Cocoa and Cocoa Touch actually work. The OpenStep documentation is wonderful and you get the sense that every object in Foundation and AppKit was delightfully crafted with its own personality and quirks. It has been a joy to bring a single codebase through 30 years of Apple Operating System history.";
 

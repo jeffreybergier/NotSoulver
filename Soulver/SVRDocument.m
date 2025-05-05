@@ -40,7 +40,13 @@
 
 -(NSString*)windowNibName;
 {
+#ifdef MAC_OS_X_VERSION_10_6
+  return @"SVRDocument_X6";
+#elif defined(MAC_OS_X_VERSION_10_2)
+  return @"SVRDocument_X2";
+#else
   return @"SVRDocument_42";
+#endif
 }
 
 // MARK: NSDocument subclass
@@ -61,7 +67,7 @@
 
   // Load the file
   if ([fileName isAbsolutePath]) {
-    [self readFromFile:fileName ofType:[self fileType]]; 
+    [self readFromFile:fileName ofType:[self fileType]];
   }
 }
 
@@ -82,14 +88,23 @@
 
 -(void)windowControllerDidLoadNib:(id)windowController;
 {
+  NSWindow *window = [self XP_windowForSheet];
+  NSString *fileName = [self fileName];
+  
   // Add view controller into the responder chain
-  id previousNextResponder = [[self XP_windowForSheet] nextResponder];
-  [[self XP_windowForSheet] setNextResponder:[self viewController]];
+  id previousNextResponder = [window nextResponder];
+  [window setNextResponder:[self viewController]];
   if ([self isKindOfClass:[NSResponder class]]) {
     [[self viewController] setNextResponder:(NSResponder*)self];
     [(NSResponder*)self setNextResponder:previousNextResponder];
   } else {
     [[self viewController] setNextResponder:previousNextResponder];
+  }
+  
+  // Set the autosave name.
+  // This will probably need to be wrapped in a XPSupportsNSDocument check
+  if (fileName) {
+    [[self XP_windowForSheet] setFrameAutosaveName:fileName];
   }
 }
 

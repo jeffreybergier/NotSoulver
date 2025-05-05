@@ -69,17 +69,24 @@
 // MARK: Init
 -(id)init;
 {
-#ifdef MAC_OS_X_VERSION_10_2
+#ifdef MAC_OS_X_VERSION_10_6
+  NSString *nibName = @"AccessoryWindows_X6";
+#elif defined(MAC_OS_X_VERSION_10_2)
   NSString *nibName = @"AccessoryWindows_X2";
 #else
   NSString *nibName = @"AccessoryWindows_42";
 #endif
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+  
   self = [super init];
   NSCParameterAssert(self);
+  
+  _topLevelObjects = nil;
   [[NSBundle mainBundle] XP_loadNibNamed:nibName
                                    owner:self
                          topLevelObjects:&_topLevelObjects];
+  [_topLevelObjects retain];
+  
   [self __restoreWindowState];
   [nc addObserver:self
          selector:@selector(__windowDidBecomeKey:)
@@ -101,6 +108,7 @@
          selector:@selector(__applicationWillTerminate:)
              name:NSApplicationWillTerminateNotification
            object:nil];
+  
   return self;
 }
 
@@ -145,7 +153,7 @@
   NSPasteboard *pb = [NSPasteboard generalPasteboard];
   NSWorkspace *ws = [NSWorkspace sharedWorkspace];
   NSString *webURLToOpen = [Localized phraseSourceRepositoryURL];
-  success = [ws XP_openFile:webURLToOpen];
+  success = [ws XP_openWeb:webURLToOpen];
   if (success) { return; }
   NSBeep();
   XPLogDebug1(@"[Failed] [NSWorkspace openURL:%@]", webURLToOpen);
@@ -239,14 +247,14 @@
 {
   XPLogDebug1(@"DEALLOC: %@", self);
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-  [_keypadPanel autorelease];
-  [_aboutWindow autorelease];
-  [_settingsWindow autorelease];
+  [_keypadPanel     autorelease];
+  [_aboutWindow     autorelease];
+  [_settingsWindow  autorelease];
   [_topLevelObjects release];
-  _keypadPanel = nil;
-  _aboutWindow = nil;
-  _settingsWindow = nil;
-  _aboutTextView = nil;
+  _keypadPanel     = nil;
+  _aboutWindow     = nil;
+  _settingsWindow  = nil;
+  _aboutTextView   = nil;
   _topLevelObjects = nil;
   [super dealloc];
 }

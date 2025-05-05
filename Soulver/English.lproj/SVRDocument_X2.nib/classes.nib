@@ -1,0 +1,19 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {toggleKeypad = id; }; 
+            CLASS = SVRDocument; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {"_viewController" = id; window = id; }; 
+            SUPERCLASS = NSResponder; 
+        }, 
+        {
+            CLASS = SVRDocumentViewController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {"_textView" = id; }; 
+            SUPERCLASS = NSObject; 
+        }
+    ); 
+    IBVersion = 1; 
+}
