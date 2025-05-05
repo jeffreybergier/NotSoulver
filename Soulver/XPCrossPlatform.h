@@ -92,23 +92,19 @@ typedef NSRange* XPRangePointer;
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_8
-// Docs says NSTextAlignmentCenter is available in 10.0.
-// But its not even available in 10.2, so I put it here.
-// It could be 10.3 or 10.4 or later. No way to know
-// until I get to that version of OSX
-#define XPTextAlignmentCenter NSTextAlignmentCenter
-#define XPBitmapImageFileTypeTIFF NSBitmapImageFileTypeTIFF
 #define XPSecureCoding NSSecureCoding
 #else
-#define XPTextAlignmentCenter NSCenterTextAlignment
-#define XPBitmapImageFileTypeTIFF NSTIFFFileType
 #define XPSecureCoding NSCoding
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_9
+#ifdef MAC_OS_X_VERSION_10_10
+#define XPTextAlignmentCenter NSTextAlignmentCenter
+#define XPBitmapImageFileTypeTIFF NSBitmapImageFileTypeTIFF
 #define XPModalResponseOK NSModalResponseOK
 #define XPModalResponseCancel NSModalResponseCancel
 #else
+#define XPTextAlignmentCenter NSCenterTextAlignment
+#define XPBitmapImageFileTypeTIFF NSTIFFFileType
 #define XPModalResponseOK NSOKButton
 #define XPModalResponseCancel NSCancelButton
 #endif

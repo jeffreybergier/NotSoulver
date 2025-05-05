@@ -77,11 +77,16 @@
   NSString *nibName = @"AccessoryWindows_42";
 #endif
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+  
   self = [super init];
   NSCParameterAssert(self);
+  
+  _topLevelObjects = nil;
   [[NSBundle mainBundle] XP_loadNibNamed:nibName
                                    owner:self
                          topLevelObjects:&_topLevelObjects];
+  [_topLevelObjects retain];
+  
   [self __restoreWindowState];
   [nc addObserver:self
          selector:@selector(__windowDidBecomeKey:)
@@ -103,6 +108,7 @@
          selector:@selector(__applicationWillTerminate:)
              name:NSApplicationWillTerminateNotification
            object:nil];
+  
   return self;
 }
 
@@ -241,14 +247,14 @@
 {
   XPLogDebug1(@"DEALLOC: %@", self);
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-  [_keypadPanel autorelease];
-  [_aboutWindow autorelease];
-  [_settingsWindow autorelease];
+  [_keypadPanel     autorelease];
+  [_aboutWindow     autorelease];
+  [_settingsWindow  autorelease];
   [_topLevelObjects release];
-  _keypadPanel = nil;
-  _aboutWindow = nil;
-  _settingsWindow = nil;
-  _aboutTextView = nil;
+  _keypadPanel     = nil;
+  _aboutWindow     = nil;
+  _settingsWindow  = nil;
+  _aboutTextView   = nil;
   _topLevelObjects = nil;
   [super dealloc];
 }
