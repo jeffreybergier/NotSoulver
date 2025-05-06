@@ -62,7 +62,7 @@
 
 /// Designated Initializer.  Inits an "empty" document.
 -(id)init;
--(id)initWithContentsOfFile:(NSString*)fileName ofType:(NSString*)fileType;
+-(id)initWithContentsOfURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
 
 // MARK: Window Management
 
@@ -94,8 +94,8 @@
 -(void)XP_setFileURL:(XPURL*)fileURL;
 -(NSString*)fileType;
 -(void)setFileType:(NSString*)type;
--(NSString*)fileExtension;
--(void)setFileExtension:(NSString*)type;
+-(NSString*)XP_fileExtension;
+-(void)XP_setFileExtension:(NSString*)type;
 
 // MARK: NSObject basics
 /// Returns hash of the filename or calls super
@@ -110,8 +110,8 @@
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
 
 // No need to override, uses above 2 methods to read and write data
--(BOOL)writeToFile:(NSString*)fileName ofType:(NSString*)type;
--(BOOL)readFromFile:(NSString *)fileName ofType:(NSString *)type;
+-(BOOL)writeToURL:( XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
+-(BOOL)readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
 
 // MARK: Menu Handling
 

@@ -82,17 +82,17 @@ NSPoint XPDocumentPointForCascading;
   return self;
 }
 
--(id)initWithContentsOfFile:(NSString*)fileName ofType:(NSString*)fileType;
+-(id)initWithContentsOfURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
 {
   self = [self init];
   
   NSCParameterAssert(self);
-  NSCParameterAssert(fileName);
+  NSCParameterAssert(fileURL);
   NSCParameterAssert(fileType);
   
-  _fileURL = [fileName copy];
+  _fileURL  = [fileURL copy];
   _fileType = [fileType copy];
-  [self readFromFile:fileName ofType:fileType];
+  [self readFromURL:fileURL ofType:fileType error:NULL];
   
   return self;
 }
@@ -167,7 +167,7 @@ NSPoint XPDocumentPointForCascading;
   
   // Read the data
   if ([fileURL isAbsolutePath]) {
-    [self readFromFile:fileURL ofType:fileType];
+    [self readFromURL:fileURL ofType:fileType error:NULL];
   }
   
   if (![self XP_nameForFrameAutosave]) {
@@ -176,6 +176,9 @@ NSPoint XPDocumentPointForCascading;
   
   // Update window chrome
   [self updateChangeCount:2];
+  
+  // Set the delegate for -windowShouldClose:
+  [myWindow setDelegate:self];
 
   // Declare that we are loaded
   [self windowControllerDidLoadNib:nil];
@@ -242,13 +245,13 @@ NSPoint XPDocumentPointForCascading;
   _fileType = [type copy];
 }
 
--(NSString*)fileExtension;
+-(NSString*)XP_fileExtension;
 {
   NSCParameterAssert(_fileExtension);
   return [[_fileExtension retain] autorelease];
 }
 
--(void)setFileExtension:(NSString*)type;
+-(void)XP_setFileExtension:(NSString*)type;
 {
   NSCParameterAssert(type);
   if ([type isEqualToString:_fileExtension]) { return; }
@@ -293,25 +296,25 @@ NSPoint XPDocumentPointForCascading;
   return NO;
 }
 
--(BOOL)writeToFile:(NSString*)__fileName ofType:(NSString*)__type;
+-(BOOL)writeToURL:( XPURL*)__fileURL ofType:(NSString*)__fileType error:(id*)outError;
 {
-  NSString *fileName = (__fileName) ? __fileName : [self XP_fileURL];
-  NSString *fileType = (__type)     ? __type     : [self fileType];
+  XPURL    *fileURL  = (__fileURL ) ? __fileURL  : [self XP_fileURL];
+  NSString *fileType = (__fileType) ? __fileType : [self fileType];
   NSData *forWriting = [self dataRepresentationOfType:fileType];
-  if (fileName && fileType && forWriting) {
-    return [forWriting writeToFile:fileName atomically:YES];
+  if (fileURL && fileType && forWriting) {
+    return [forWriting XP_writeToURL:fileURL atomically:YES];
   }
   return NO;
 }
 
--(BOOL)readFromFile:(NSString *)__fileName ofType:(NSString *)__type;
+-(BOOL)readFromURL:(XPURL*)__fileURL ofType:(NSString*)__fileType error:(id*)outError;
 {
-  NSData *data = nil;
-  NSString *fileName = (__fileName) ? __fileName : [self XP_fileURL];
-  NSString *fileType = (__type)     ? __type     : [self fileType];
-  if (!fileName) { return NO; }
+  NSData   *data = nil;
+  XPURL    *fileURL  = (__fileURL ) ? __fileURL  : [self XP_fileURL];
+  NSString *fileType = (__fileType) ? __fileType : [self fileType];
+  if (!fileURL) { return NO; }
   
-  data = [NSData XP_dataWithContentsOfURL:fileName];
+  data = [NSData XP_dataWithContentsOfURL:fileURL];
   if (!data) { return NO; }
 
   return [self loadDataRepresentation:data ofType:fileType];
@@ -339,7 +342,7 @@ NSPoint XPDocumentPointForCascading;
 {
   XPURL *fileURL = [self XP_fileURL];
   if (fileURL) {
-    [self writeToFile:nil ofType:nil];
+    [self writeToURL:nil ofType:nil error:NULL];
   } else {
     [self __runModalSavePanelAndSetFileURL];
   }
@@ -362,7 +365,7 @@ NSPoint XPDocumentPointForCascading;
   XPAlertReturn result = [self runRevertToSavedAlert];
   switch (result) {
     case XPAlertReturnDefault:
-      [self readFromFile:nil ofType:nil];
+      [self readFromURL:nil ofType:nil error:NULL];
       break;
     case XPAlertReturnAlternate:
       XPLogDebug(@"User cancelled revert");
@@ -378,7 +381,7 @@ NSPoint XPDocumentPointForCascading;
 // MARK: Panels and Alerts
 -(BOOL)prepareSavePanel:(NSSavePanel*)savePanel;
 {
-  [savePanel setRequiredFileType:[self fileExtension]];
+  [savePanel setRequiredFileType:[self XP_fileExtension]];
   [savePanel setDirectory:[[NSUserDefaults standardUserDefaults] SVR_savePanelLastDirectory]];
   return YES;
 }
@@ -392,7 +395,7 @@ NSPoint XPDocumentPointForCascading;
   okCancel = [savePanel runModal];
   switch (okCancel) {
     case XPModalResponseOK:
-      [self writeToFile:[savePanel filename] ofType:nil];
+      [self writeToURL:[savePanel filename] ofType:nil error:NULL];
       break;
     case XPModalResponseCancel:
       XPLogDebug(@"User cancelled save");

@@ -114,7 +114,7 @@
 {
   SVRDocument *document = [[[SVRDocument alloc] init] autorelease];
   [document setFileType:SVRDocumentModelRepDisk];
-  [document setFileExtension:SVRDocumentModelExtension];
+  [document XP_setFileExtension:SVRDocumentModelExtension];
   [document showWindows];
   [[self openDocuments] addObject:document];
 }
@@ -123,7 +123,7 @@
 {
   NSArray *filenames;
   NSEnumerator *e;
-  NSString *nextF;
+  XPURL *nextF;
   SVRDocument *nextC;
 
   filenames = XPRunOpenPanel(SVRDocumentModelExtension);
@@ -132,8 +132,9 @@
   while ((nextF = [e nextObject])) {
     nextC = [[self openDocuments] member:nextF];
     if (!nextC) {
-      nextC = [[[SVRDocument alloc] initWithContentsOfFile:nextF
-                                                    ofType:SVRDocumentModelRepDisk] autorelease];
+      nextC = [[[SVRDocument alloc] initWithContentsOfURL:nextF
+                                                   ofType:SVRDocumentModelRepDisk
+                                                    error:NULL] autorelease];
       [[self openDocuments] addObject:nextC];
     }
     [nextC showWindows];
@@ -190,12 +191,13 @@
   return YES;
 }
 
--(BOOL)application:(NSApplication *)sender openFile:(NSString *)filename;
+-(BOOL)application:(NSApplication *)sender openFile:(NSString*)filename;
 {
   SVRDocument *document = [[self openDocuments] member:filename];
   if (!document) {
-    document = [[[SVRDocument alloc] initWithContentsOfFile:filename
-                                                     ofType:SVRDocumentModelRepDisk] autorelease];
+    document = [[[SVRDocument alloc] initWithContentsOfURL:filename
+                                                    ofType:SVRDocumentModelRepDisk
+                                                     error:NULL] autorelease];
     [[self openDocuments] addObject:document];
   }
   [[document XP_windowForSheet] makeKeyAndOrderFront:sender];

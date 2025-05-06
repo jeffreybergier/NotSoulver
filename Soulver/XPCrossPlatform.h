@@ -64,15 +64,19 @@ typedef float XPFloat;
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_2
-#define XPURL NSURL
 #define XPKeyedArchiver NSKeyedArchiver
 #define XPKeyedUnarchiver NSKeyedUnarchiver
 #define XPSupportsNSDocument
 #define XPSupportsNSBezierPath
 #else
-#define XPURL NSString
 #define XPKeyedArchiver NSArchiver
 #define XPKeyedUnarchiver NSUnarchiver
+#endif
+
+#ifdef XPSupportsNSDocument
+#define XPURL NSURL
+#else
+#define XPURL NSString
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_3
@@ -274,6 +278,7 @@ NSArray* XPRunOpenPanel(NSString *extension);
 
 @interface NSData (CrossPlatform)
 +(NSData*)XP_dataWithContentsOfURL:(XPURL*)url;
+-(BOOL)XP_writeToURL:(XPURL*)url atomically:(BOOL)atomically;
 @end
 
 // MARK: XPLogging

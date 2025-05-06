@@ -67,7 +67,7 @@
 
   // Load the file
   if ([fileURL XP_isFileURL]) {
-    [self readFromFile:[fileURL XP_path] ofType:[self fileType]];
+    [self readFromURL:fileURL ofType:[self fileType] error:NULL];
   }
 }
 
