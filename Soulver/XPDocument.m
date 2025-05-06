@@ -105,6 +105,7 @@ NSPoint XPDocumentPointForCascading;
 {
   if (!_isNibLoaded) {
     _isNibLoaded = YES;
+    [self windowControllerWillLoadNib:nil];
     [NSBundle loadNibNamed:[self windowNibName] owner:self];
   }
   [[self windowForSheet] makeKeyAndOrderFront:self];
@@ -144,6 +145,7 @@ NSPoint XPDocumentPointForCascading;
   XPLogDebug1(@"awakeFromNib: %@", self);
 }
 
+-(void)windowControllerWillLoadNib:(id)windowController; {}
 -(void)windowControllerDidLoadNib:(id)windowController; {}
 
 // MARK: Document Properties

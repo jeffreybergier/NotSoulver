@@ -86,10 +86,21 @@
   return [modelController loadDataRepresentation:data ofType:type];
 }
 
+-(void)windowControllerWillLoadNib:(id)windowController;
+{
+  // Setting this name before the NIB loads has better results
+  NSString *autosaveName = [self XP_nameForFrameAutosave];
+  if (windowController && autosaveName) {
+    [windowController setWindowFrameAutosaveName:autosaveName];
+  }
+}
+
 -(void)windowControllerDidLoadNib:(id)windowController;
 {
   NSWindow *myWindow = [self windowForSheet];
   NSString *autosaveName = [self XP_nameForFrameAutosave];
+  // If using real NSDocument, this is already set, so we can check here
+  BOOL needsSetAutosaveName = autosaveName && ![[myWindow frameAutosaveName] isEqualToString:autosaveName];
   id previousNextResponder = [myWindow nextResponder];
 
   NSCParameterAssert(myWindow);
@@ -103,7 +114,7 @@
     [[self viewController] setNextResponder:previousNextResponder];
   }
   
-  if (autosaveName) {
+  if (needsSetAutosaveName) {
     [myWindow setFrameAutosaveName:autosaveName];
   }
 }

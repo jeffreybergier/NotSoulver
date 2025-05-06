@@ -76,6 +76,7 @@
 // MARK: One-Time Setup
 
 -(void)awakeFromNib;
+-(void)windowControllerWillLoadNib:(id)windowController;
 -(void)windowControllerDidLoadNib:(id)windowController;
 
 // MARK: Document Properties
