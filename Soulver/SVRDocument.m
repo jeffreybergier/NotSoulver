@@ -88,11 +88,14 @@
 
 -(void)windowControllerWillLoadNib:(id)windowController;
 {
+#ifdef XPSupportsNSDocument
   // Setting this name before the NIB loads has better results
   NSString *autosaveName = [self XP_nameForFrameAutosave];
-  if (windowController && autosaveName) {
+  NSCParameterAssert(windowController);
+  if (autosaveName) {
     [windowController setWindowFrameAutosaveName:autosaveName];
   }
+#endif
 }
 
 -(void)windowControllerDidLoadNib:(id)windowController;
