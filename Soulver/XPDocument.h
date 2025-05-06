@@ -34,7 +34,6 @@
 
 #define XPDocument NSDocument
 @interface NSDocument (CrossPlatform)
--(NSWindow*)XP_windowForSheet;
 -(NSString*)XP_nameForFrameAutosave;
 -(XPURL*)XP_fileURL;
 @end
@@ -71,17 +70,15 @@
 -(NSString*)windowNibName;
 /// Loads the NIB if needed and shows the window
 -(void)showWindows;
-/// Return YES to allow the document to close
--(BOOL)windowShouldClose:(id)sender;
 /// _window should be set as IBOutlet
--(NSWindow*)XP_windowForSheet;
--(NSString*)XP_nameForFrameAutosave;
-// Nib Loading
+-(NSWindow*)windowForSheet;
+
+// MARK: One-Time Setup
+
 -(void)awakeFromNib;
--(void)windowControllerWillLoadNib:(id)windowController;
 -(void)windowControllerDidLoadNib:(id)windowController;
 
-// MARK: Document Status
+// MARK: Document Properties
 
 /// For display in the window title. If NIL, "Untitled" shown
 -(NSString*)displayName;
@@ -89,18 +86,21 @@
 -(BOOL)isDocumentEdited;
 /// supported values are NSChangeDone (0) and NSChangeCleared (2)
 -(void)updateChangeCount:(int)change;
-/// Filename on disk is @"" if the document is not saved
--(XPURL*)XP_fileURL;
--(void)XP_setFileURL:(XPURL*)fileURL;
 -(NSString*)fileType;
 -(void)setFileType:(NSString*)type;
+
+// MARK: Customizations
+
+-(XPURL*)XP_fileURL;
+-(void)XP_setFileURL:(XPURL*)fileURL;
 -(NSString*)XP_fileExtension;
 -(void)XP_setFileExtension:(NSString*)type;
+-(NSString*)XP_nameForFrameAutosave;
+-(BOOL)windowShouldClose:(id)sender;
 
 // MARK: NSObject basics
-/// Returns hash of the filename or calls super
+
 -(XPUInteger)hash;
-/// Compares fileName or calls super
 -(BOOL)isEqual:(id)object;
 
 // MARK: Data reading and writing

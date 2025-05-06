@@ -88,7 +88,7 @@
 
 -(void)windowControllerDidLoadNib:(id)windowController;
 {
-  NSWindow *myWindow = [self XP_windowForSheet];
+  NSWindow *myWindow = [self windowForSheet];
   NSString *autosaveName = [self XP_nameForFrameAutosave];
   id previousNextResponder = [myWindow nextResponder];
 

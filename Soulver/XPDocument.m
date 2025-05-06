@@ -34,13 +34,6 @@
 
 @implementation NSDocument (CrossPlatform)
 
--(NSWindow*)XP_windowForSheet;
-{
-  NSWindow *window = [[[self windowControllers] lastObject] window];
-  NSCParameterAssert(window);
-  return window;
-}
-
 -(NSString*)XP_nameForFrameAutosave;
 {
   XPURL *fileURL = [self XP_fileURL];
@@ -112,13 +105,124 @@ NSPoint XPDocumentPointForCascading;
 {
   if (!_isNibLoaded) {
     _isNibLoaded = YES;
-    [self windowControllerWillLoadNib:nil];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [NSBundle loadNibNamed:[self windowNibName] owner:self];
-#pragma clang diagnostic pop
   }
-  [[self XP_windowForSheet] makeKeyAndOrderFront:self];
+  [[self windowForSheet] makeKeyAndOrderFront:self];
+}
+
+-(NSWindow*)windowForSheet;
+{
+  return [[window retain] autorelease];
+}
+
+// MARK: One Time Setup
+
+-(void)awakeFromNib;
+{
+  XPURL    *fileURL  = [self XP_fileURL];
+  NSString *fileType = [self fileType];
+  NSWindow *myWindow = [self windowForSheet];
+  
+  // Read the data
+  if ([fileURL isAbsolutePath]) {
+    [self readFromURL:fileURL ofType:fileType error:NULL];
+  }
+  
+  if (![self XP_nameForFrameAutosave]) {
+    XPDocumentPointForCascading = [myWindow cascadeTopLeftFromPoint:XPDocumentPointForCascading];
+  }
+  
+  // Update window chrome
+  [self updateChangeCount:2];
+  
+  // Set the delegate for -windowShouldClose:
+  [myWindow setDelegate:self];
+
+  // Declare that we are loaded
+  [self windowControllerDidLoadNib:nil];
+  
+  XPLogDebug1(@"awakeFromNib: %@", self);
+}
+
+-(void)windowControllerDidLoadNib:(id)windowController; {}
+
+// MARK: Document Properties
+
+/// For display in the window title. If NIL, "Untitled" shown
+-(NSString*)displayName;
+{
+  NSString *lastPathComponent = [[self XP_fileURL] lastPathComponent];
+  return (lastPathComponent) ? lastPathComponent : [Localized titleUntitled];
+}
+
+/// Override to update window status
+-(BOOL)isDocumentEdited;
+{
+  return _isEdited;
+}
+
+-(void)updateChangeCount:(int)change;
+{
+  NSWindow *myWindow = [self windowForSheet];
+  XPURL *fileURL = [self XP_fileURL];
+
+  _isEdited = (change == 2) ? NO : YES;
+
+  if ([fileURL isAbsolutePath]) {
+    [myWindow setRepresentedFilename:[fileURL XP_path]];
+  } else {
+    [myWindow setRepresentedFilename:@""];
+  }
+  [myWindow setTitle:[self displayName]];
+  [myWindow setDocumentEdited:[self isDocumentEdited]];
+}
+
+-(NSString*)fileType;
+{
+  return [[_fileType retain] autorelease];
+}
+
+-(void)setFileType:(NSString*)type;
+{
+  if ([type isEqualToString:_fileType]) { return; }
+  [_fileType release];
+  _fileType = [type copy];
+}
+
+// MARK: Customizations
+
+-(XPURL*)XP_fileURL;
+{
+  return [[_fileURL retain] autorelease];
+}
+
+-(void)XP_setFileURL:(XPURL*)fileURL;
+{
+  NSCParameterAssert(fileURL);
+  if ([fileURL isEqualToString:_fileURL]) { return; }
+  [_fileURL release];
+  _fileURL = [fileURL copy];
+}
+
+-(NSString*)XP_fileExtension;
+{
+  NSCParameterAssert(_fileExtension);
+  return [[_fileExtension retain] autorelease];
+}
+
+-(void)XP_setFileExtension:(NSString*)type;
+{
+  NSCParameterAssert(type);
+  if ([type isEqualToString:_fileExtension]) { return; }
+  [_fileExtension release];
+  _fileExtension = [type copy];
+}
+
+-(NSString*)XP_nameForFrameAutosave;
+{
+  XPURL *fileURL = [self XP_fileURL];
+  if (![fileURL isAbsolutePath]) { return nil; }
+  return [fileURL XP_path];
 }
 
 /// Return YES to allow the document to close
@@ -146,120 +250,8 @@ NSPoint XPDocumentPointForCascading;
   }
 }
 
--(NSWindow*)XP_windowForSheet;
-{
-  return [[window retain] autorelease];
-}
+// MARK: NSObject basics
 
--(NSString*)XP_nameForFrameAutosave;
-{
-  XPURL *fileURL = [self XP_fileURL];
-  if (![fileURL isAbsolutePath]) { return nil; }
-  return [fileURL XP_path];
-}
-
-/// Override to read your file and prepare
--(void)awakeFromNib;
-{
-  XPURL    *fileURL  = [self XP_fileURL];
-  NSString *fileType = [self fileType];
-  NSWindow *myWindow = [self XP_windowForSheet];
-  
-  // Read the data
-  if ([fileURL isAbsolutePath]) {
-    [self readFromURL:fileURL ofType:fileType error:NULL];
-  }
-  
-  if (![self XP_nameForFrameAutosave]) {
-    XPDocumentPointForCascading = [myWindow cascadeTopLeftFromPoint:XPDocumentPointForCascading];
-  }
-  
-  // Update window chrome
-  [self updateChangeCount:2];
-  
-  // Set the delegate for -windowShouldClose:
-  [myWindow setDelegate:self];
-
-  // Declare that we are loaded
-  [self windowControllerDidLoadNib:nil];
-  
-  XPLogDebug1(@"awakeFromNib: %@", self);
-}
-
--(void)windowControllerWillLoadNib:(id)windowController; {}
--(void)windowControllerDidLoadNib:(id)windowController; {}
-
-// MARK: Document Status
-
-/// For display in the window title. If NIL, "Untitled" shown
--(NSString*)displayName;
-{
-  NSString *lastPathComponent = [[self XP_fileURL] lastPathComponent];
-  return (lastPathComponent) ? lastPathComponent : [Localized titleUntitled];
-}
-
-/// Override to update window status
--(BOOL)isDocumentEdited;
-{
-  return _isEdited;
-}
-
--(void)updateChangeCount:(int)change;
-{
-  NSWindow *myWindow = [self XP_windowForSheet];
-  XPURL *fileURL = [self XP_fileURL];
-
-  _isEdited = (change == 2) ? NO : YES;
-
-  if ([fileURL isAbsolutePath]) {
-    [myWindow setRepresentedFilename:[fileURL XP_path]];
-  } else {
-    [myWindow setRepresentedFilename:@""];
-  }
-  [myWindow setTitle:[self displayName]];
-  [myWindow setDocumentEdited:[self isDocumentEdited]];
-}
-
--(XPURL*)XP_fileURL;
-{
-  return [[_fileURL retain] autorelease];
-}
-
--(void)XP_setFileURL:(XPURL*)fileURL;
-{
-  NSCParameterAssert(fileURL);
-  if ([fileURL isEqualToString:_fileURL]) { return; }
-  [_fileURL release];
-  _fileURL = [fileURL copy];
-}
-
--(NSString*)fileType;
-{
-  return [[_fileType retain] autorelease];
-}
-
--(void)setFileType:(NSString*)type;
-{
-  if ([type isEqualToString:_fileType]) { return; }
-  [_fileType release];
-  _fileType = [type copy];
-}
-
--(NSString*)XP_fileExtension;
-{
-  NSCParameterAssert(_fileExtension);
-  return [[_fileExtension retain] autorelease];
-}
-
--(void)XP_setFileExtension:(NSString*)type;
-{
-  NSCParameterAssert(type);
-  if ([type isEqualToString:_fileExtension]) { return; }
-  [_fileExtension release];
-  _fileExtension = [type copy];
-}
-
-/// Returns hash of the filename or calls super
 -(XPUInteger)hash;
 {
   XPURL *fileURL = [self XP_fileURL];
@@ -296,7 +288,7 @@ NSPoint XPDocumentPointForCascading;
   return NO;
 }
 
--(BOOL)writeToURL:( XPURL*)__fileURL ofType:(NSString*)__fileType error:(id*)outError;
+-(BOOL)writeToURL:(XPURL*)__fileURL ofType:(NSString*)__fileType error:(id*)outError;
 {
   XPURL    *fileURL  = (__fileURL ) ? __fileURL  : [self XP_fileURL];
   NSString *fileType = (__fileType) ? __fileType : [self fileType];

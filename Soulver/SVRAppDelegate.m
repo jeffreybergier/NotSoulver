@@ -176,7 +176,7 @@
 
   // Try to close all documents (asking the user to save them)
   while ((next = [e nextObject])) {
-    [[next XP_windowForSheet] performClose:sender];
+    [[next windowForSheet] performClose:sender];
   }
 
   // Iterate again and check if are unsaved changes
@@ -200,7 +200,7 @@
                                                      error:NULL] autorelease];
     [[self openDocuments] addObject:document];
   }
-  [[document XP_windowForSheet] makeKeyAndOrderFront:sender];
+  [[document windowForSheet] makeKeyAndOrderFront:sender];
   return YES;
 }
 
