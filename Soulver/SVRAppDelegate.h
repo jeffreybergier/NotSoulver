@@ -54,7 +54,7 @@
 -(void)applicationWillFinishLaunching:(NSNotification*)aNotification;
 @end
 
-#ifndef XPSupportsNSDocument
+#if XPSupportsNSDocument == 0
 @interface SVRAppDelegate (PreDocument)
 
 // MARK: Properties

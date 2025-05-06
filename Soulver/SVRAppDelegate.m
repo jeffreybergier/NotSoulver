@@ -89,7 +89,7 @@
   [NSFontManager setFontManagerFactory:[SVRFontManager class]];
   // Configure Accessory Windows
   _accessoryWindowsOwner = [[SVRAccessoryWindowsOwner alloc] init];
-#ifndef XPSupportsNSDocument
+#if XPSupportsNSDocument == 0
   // Register for Notifications
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(windowWillCloseNotification:)
@@ -102,7 +102,7 @@
 
 @end
 
-#ifndef XPSupportsNSDocument
+#if XPSupportsNSDocument == 0
 @implementation SVRAppDelegate (PreDocument)
 
 -(NSMutableSet*)openDocuments;
@@ -176,7 +176,7 @@
 
   // Try to close all documents (asking the user to save them)
   while ((next = [e nextObject])) {
-    [[next windowForSheet] performClose:sender];
+    [[next XP_windowForSheet] performClose:sender];
   }
 
   // Iterate again and check if are unsaved changes
@@ -200,7 +200,7 @@
                                                      error:NULL] autorelease];
     [[self openDocuments] addObject:document];
   }
-  [[document windowForSheet] makeKeyAndOrderFront:sender];
+  [[document XP_windowForSheet] makeKeyAndOrderFront:sender];
   return YES;
 }
 

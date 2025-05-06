@@ -30,7 +30,7 @@
 #import "XPDocument.h"
 #import "NSUserDefaults+Soulver.h"
 
-#ifdef XPSupportsNSDocument
+#if XPSupportsNSDocument > 0
 
 @implementation NSDocument (CrossPlatform)
 
@@ -38,12 +38,44 @@
 {
   XPURL *fileURL = [self XP_fileURL];
   if (![fileURL XP_isFileURL]) { return nil; }
+#if XPSupportsNSDocument >= 2
   return [fileURL path];
+#else
+  return fileURL;
+#endif
 }
 
 -(XPURL*)XP_fileURL;
 {
+#if XPSupportsNSDocument >= 2
   return [self fileURL];
+#else
+  return [self fileName];
+#endif
+}
+
+-(NSWindow*)XP_windowForSheet;
+{
+#if XPSupportsNSDocument >= 2
+  return [self windowForSheet];
+#elif XPSupportsNSDocument == 1
+  NSWindow *window = [[[self windowControllers] lastObject] window];
+  NSCParameterAssert(window);
+  return window;
+#else
+  XPLogRaise1(@"%@ System is not NSDocument compatible", self);
+#endif
+}
+
+-(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
+{
+#if XPSupportsNSDocument >= 2
+  return [self readFromURL:fileURL ofType:fileType error:outError];
+#elif XPSupportsNSDocument == 1
+  return [self readFromFile:fileURL ofType:fileType];
+#else
+  XPLogRaise1(@"%@ System is not NSDocument compatible", self);
+#endif
 }
 
 @end
@@ -108,7 +140,7 @@ NSPoint XPDocumentPointForCascading;
     [self windowControllerWillLoadNib:nil];
     [NSBundle loadNibNamed:[self windowNibName] owner:self];
   }
-  [[self windowForSheet] makeKeyAndOrderFront:self];
+  [[self XP_windowForSheet] makeKeyAndOrderFront:self];
 }
 
 -(NSWindow*)windowForSheet;
@@ -122,11 +154,11 @@ NSPoint XPDocumentPointForCascading;
 {
   XPURL    *fileURL  = [self XP_fileURL];
   NSString *fileType = [self fileType];
-  NSWindow *myWindow = [self windowForSheet];
+  NSWindow *myWindow = [self XP_windowForSheet];
   
   // Read the data
   if ([fileURL isAbsolutePath]) {
-    [self readFromURL:fileURL ofType:fileType error:NULL];
+    [self XP_readFromURL:fileURL ofType:fileType error:NULL];
   }
   
   if (![self XP_nameForFrameAutosave]) {
@@ -165,7 +197,7 @@ NSPoint XPDocumentPointForCascading;
 
 -(void)updateChangeCount:(int)change;
 {
-  NSWindow *myWindow = [self windowForSheet];
+  NSWindow *myWindow = [self XP_windowForSheet];
   XPURL *fileURL = [self XP_fileURL];
 
   _isEdited = (change == 2) ? NO : YES;
@@ -225,6 +257,16 @@ NSPoint XPDocumentPointForCascading;
   XPURL *fileURL = [self XP_fileURL];
   if (![fileURL isAbsolutePath]) { return nil; }
   return [fileURL XP_path];
+}
+
+-(NSWindow*)XP_windowForSheet;
+{
+  return [self windowForSheet];
+}
+
+-(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
+{
+  return [self readFromURL:fileURL ofType:fileType error:outError];
 }
 
 /// Return YES to allow the document to close

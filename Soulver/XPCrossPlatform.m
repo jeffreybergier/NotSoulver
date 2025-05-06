@@ -604,7 +604,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 @implementation XPURL (CrossPlatformURL)
 -(BOOL)XP_isFileURL;
 {
-#ifdef XPSupportsNSDocument
+#if XPSupportsNSDocument >= 2
   return [self isFileURL];
 #else
   return [self isAbsolutePath];
@@ -613,7 +613,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 -(NSString*)XP_path;
 {
-#ifdef XPSupportsNSDocument
+#if XPSupportsNSDocument >= 2
   return [self path];
 #else
   return self;
@@ -625,7 +625,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 +(NSData*)XP_dataWithContentsOfURL:(XPURL*)url;
 {
-#ifdef XPSupportsNSDocument
+#if XPSupportsNSDocument >= 2
   return [self dataWithContentsOfURL:url];
 #else
   return [self dataWithContentsOfFile:url];
@@ -634,7 +634,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 -(BOOL)XP_writeToURL:(XPURL*)url atomically:(BOOL)atomically;
 {
-#ifdef XPSupportsNSDocument
+#if XPSupportsNSDocument >= 2
   return [self writeToURL:url atomically:atomically];
 #else
   return [self writeToFile:url atomically:atomically];

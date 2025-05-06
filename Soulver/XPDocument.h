@@ -30,12 +30,13 @@
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
 
-#ifdef XPSupportsNSDocument
+#if XPSupportsNSDocument > 0
 
-#define XPDocument NSDocument
 @interface NSDocument (CrossPlatform)
 -(NSString*)XP_nameForFrameAutosave;
 -(XPURL*)XP_fileURL;
+-(NSWindow*)XP_windowForSheet;
+-(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
 @end
 
 #else
@@ -97,6 +98,8 @@
 -(NSString*)XP_fileExtension;
 -(void)XP_setFileExtension:(NSString*)type;
 -(NSString*)XP_nameForFrameAutosave;
+-(NSWindow*)XP_windowForSheet;
+-(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
 -(BOOL)windowShouldClose:(id)sender;
 
 // MARK: NSObject basics

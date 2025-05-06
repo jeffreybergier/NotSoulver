@@ -67,7 +67,7 @@
 
   // Load the file
   if ([fileURL XP_isFileURL]) {
-    [self readFromURL:fileURL ofType:[self fileType] error:NULL];
+    [self XP_readFromURL:fileURL ofType:[self fileType] error:NULL];
   }
 }
 
@@ -88,7 +88,7 @@
 
 -(void)windowControllerWillLoadNib:(id)windowController;
 {
-#ifdef XPSupportsNSDocument
+#if XPSupportsNSDocument >= 1
   // Setting this name before the NIB loads has better results
   NSString *autosaveName = [self XP_nameForFrameAutosave];
   NSCParameterAssert(windowController);
@@ -100,7 +100,7 @@
 
 -(void)windowControllerDidLoadNib:(id)windowController;
 {
-  NSWindow *myWindow = [self windowForSheet];
+  NSWindow *myWindow = [self XP_windowForSheet];
   NSString *autosaveName = [self XP_nameForFrameAutosave];
   // If using real NSDocument, this is already set, so we can check here
   BOOL needsSetAutosaveName = autosaveName && ![[myWindow frameAutosaveName] isEqualToString:autosaveName];
@@ -143,7 +143,7 @@
 -(void)dealloc;
 {
   XPLogDebug1(@"DEALLOC: %@", self);
-#ifndef XPSupportsNSDocument
+#if XPSupportsNSDocument == 0
   [_viewController release];
 #endif
   _viewController = nil;
