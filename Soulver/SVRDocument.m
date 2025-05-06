@@ -88,12 +88,14 @@
 
 -(void)windowControllerDidLoadNib:(id)windowController;
 {
-  NSWindow *window = [self XP_windowForSheet];
-  NSString *fileName = [self fileName];
+  NSWindow *myWindow = [self XP_windowForSheet];
+  NSString *autosaveName = [self XP_nameForFrameAutosave];
+  id previousNextResponder = [myWindow nextResponder];
+
+  NSCParameterAssert(myWindow);
   
   // Add view controller into the responder chain
-  id previousNextResponder = [window nextResponder];
-  [window setNextResponder:[self viewController]];
+  [myWindow setNextResponder:[self viewController]];
   if ([self isKindOfClass:[NSResponder class]]) {
     [[self viewController] setNextResponder:(NSResponder*)self];
     [(NSResponder*)self setNextResponder:previousNextResponder];
@@ -101,10 +103,8 @@
     [[self viewController] setNextResponder:previousNextResponder];
   }
   
-  // Set the autosave name.
-  // This will probably need to be wrapped in a XPSupportsNSDocument check
-  if (fileName) {
-    [[self XP_windowForSheet] setFrameAutosaveName:fileName];
+  if (autosaveName) {
+    [myWindow setFrameAutosaveName:autosaveName];
   }
 }
 

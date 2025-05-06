@@ -35,6 +35,7 @@
 #define XPDocument NSDocument
 @interface NSDocument (CrossPlatform)
 -(NSWindow*)XP_windowForSheet;
+-(NSString*)XP_nameForFrameAutosave;
 @end
 
 #else
@@ -73,6 +74,7 @@
 -(BOOL)windowShouldClose:(id)sender;
 /// _window should be set as IBOutlet
 -(NSWindow*)XP_windowForSheet;
+-(NSString*)XP_nameForFrameAutosave;
 // Nib Loading
 -(void)awakeFromNib;
 -(void)windowControllerWillLoadNib:(id)windowController;
@@ -118,11 +120,6 @@
 -(IBAction)saveDocumentAs:(id)sender;
 -(IBAction)saveDocumentTo:(id)sender;
 -(IBAction)revertDocumentToSaved:(id)sender;
-
-// MARK: NSWindowDelegate
-
--(void)windowDidResize:(NSNotification*)aNotification;
--(void)windowDidMove:(NSNotification*)aNotification;
 
 // MARK: Panels and Alerts
 

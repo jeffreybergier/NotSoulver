@@ -41,6 +41,13 @@
   return window;
 }
 
+-(NSString*)XP_nameForFrameAutosave;
+{
+  NSString *fileName = [self fileName];
+  if (![fileName isAbsolutePath]) { return nil; }
+  return fileName;
+}
+
 @end
 
 #else
@@ -139,6 +146,13 @@ NSPoint XPDocumentPointForCascading;
   return [[window retain] autorelease];
 }
 
+-(NSString*)XP_nameForFrameAutosave;
+{
+  NSString *fileName = [self fileName];
+  if (![fileName isAbsolutePath]) { return nil; }
+  return fileName;
+}
+
 /// Override to read your file and prepare
 -(void)awakeFromNib;
 {
@@ -151,18 +165,12 @@ NSPoint XPDocumentPointForCascading;
     [self readFromFile:fileName ofType:fileType];
   }
   
-  // Update window frame
-  if ([fileName isAbsolutePath]) {
-    [myWindow setFrameUsingName:fileName];
-  } else {
-    XPDocumentPointForCascading = [window cascadeTopLeftFromPoint:XPDocumentPointForCascading];
+  if (![self XP_nameForFrameAutosave]) {
+    XPDocumentPointForCascading = [myWindow cascadeTopLeftFromPoint:XPDocumentPointForCascading];
   }
   
   // Update window chrome
   [self updateChangeCount:2];
-
-  // Set the delegate
-  [myWindow setDelegate:self];
 
   // Declare that we are loaded
   [self windowControllerDidLoadNib:nil];
@@ -359,24 +367,6 @@ NSPoint XPDocumentPointForCascading;
       XPLogRaise1(@"Unexpected alert panel result: %ld", result);
   }
   [self updateChangeCount:2];
-}
-
-// MARK: NSWindowDelegate
-
--(void)windowDidResize:(NSNotification*)aNotification;
-{
-  NSString *fileName = [self fileName];
-  if (fileName) {
-    [[self XP_windowForSheet] saveFrameUsingName:fileName];
-  }
-}
-
--(void)windowDidMove:(NSNotification*)aNotification;
-{
-  NSString *fileName = [self fileName];
-  if (fileName) {
-    [[self XP_windowForSheet] saveFrameUsingName:fileName];
-  }
 }
 
 // MARK: Panels and Alerts
