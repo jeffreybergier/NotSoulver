@@ -64,11 +64,13 @@ typedef float XPFloat;
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_2
+#define XPURL NSURL
 #define XPKeyedArchiver NSKeyedArchiver
 #define XPKeyedUnarchiver NSKeyedUnarchiver
 #define XPSupportsNSDocument
 #define XPSupportsNSBezierPath
 #else
+#define XPURL NSString
 #define XPKeyedArchiver NSArchiver
 #define XPKeyedUnarchiver NSUnarchiver
 #endif
@@ -239,8 +241,9 @@ NSArray* XPRunOpenPanel(NSString *extension);
 @end
 
 @interface NSWorkspace (CrossPlatform)
--(BOOL)XP_openFile:(NSString*)file;
--(BOOL)XP_openWeb:(NSString*)webURL;
+/// OpenStep basically was pre-internet and did not expect
+/// websites to be opened with this method.
+-(BOOL)XP_openWebURL:(NSString*)webURL;
 @end
 
 #ifdef XPSupportsNSBezierPath
@@ -262,6 +265,15 @@ NSArray* XPRunOpenPanel(NSString *extension);
 
 @interface NSTextView (CrossPlatform)
 -(void)XP_insertText:(id)string;
+@end
+
+@interface XPURL (CrossPlatformURL)
+-(BOOL)XP_isFileURL;
+-(NSString*)XP_path;
+@end
+
+@interface NSData (CrossPlatform)
++(NSData*)XP_dataWithContentsOfURL:(XPURL*)url;
 @end
 
 // MARK: XPLogging

@@ -154,7 +154,7 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
   NSPasteboard *pb = [NSPasteboard generalPasteboard];
   NSWorkspace *ws = [NSWorkspace sharedWorkspace];
   NSString *webURLToOpen = [Localized phraseSourceRepositoryURL];
-  success = [ws XP_openWeb:webURLToOpen];
+  success = [ws XP_openWebURL:webURLToOpen];
   if (success) { return; }
   NSBeep();
   XPLogDebug1(@"[Failed] [NSWorkspace openURL:%@]", webURLToOpen);

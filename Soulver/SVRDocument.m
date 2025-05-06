@@ -53,7 +53,7 @@
 
 -(void)awakeFromNib;
 {
-  NSString *fileName = [self fileName];
+  XPURL *fileURL = [self XP_fileURL];
 
   if ([XPDocument instancesRespondToSelector:@selector(awakeFromNib)]) {
     [super awakeFromNib];
@@ -66,8 +66,8 @@
                                              object:[[[self viewController] modelController] model]];
 
   // Load the file
-  if ([fileName isAbsolutePath]) {
-    [self readFromFile:fileName ofType:[self fileType]];
+  if ([fileURL XP_isFileURL]) {
+    [self readFromFile:[fileURL XP_path] ofType:[self fileType]];
   }
 }
 
@@ -114,9 +114,9 @@
   BOOL isEdited = YES;
   NSData *diskData = nil;
   NSData *documentData = [self dataRepresentationOfType:[self fileType]];
-  NSString *fileName = [self fileName];
-  if ([fileName isAbsolutePath]) {
-    diskData = [NSData dataWithContentsOfFile:fileName];
+  XPURL *fileURL = [self XP_fileURL];
+  if ([fileURL XP_isFileURL]) {
+    diskData = [NSData XP_dataWithContentsOfURL:fileURL];
     isEdited = ![diskData isEqualToData:documentData];
   } else if (documentData == nil || [documentData length] == 0) {
     isEdited = NO;

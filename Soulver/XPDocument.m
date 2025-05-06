@@ -43,9 +43,14 @@
 
 -(NSString*)XP_nameForFrameAutosave;
 {
-  NSString *fileName = [self fileName];
-  if (![fileName isAbsolutePath]) { return nil; }
-  return fileName;
+  XPURL *fileURL = [self XP_fileURL];
+  if (![fileURL XP_isFileURL]) { return nil; }
+  return [fileURL path];
+}
+
+-(XPURL*)XP_fileURL;
+{
+  return [self fileURL];
 }
 
 @end
@@ -70,7 +75,7 @@ NSPoint XPDocumentPointForCascading;
 {
   self = [super init];
   NSCParameterAssert(self);
-  _fileName = nil;
+  _fileURL = nil;
   _fileType = nil;
   _isNibLoaded = NO;
   _isEdited = NO;
@@ -85,7 +90,7 @@ NSPoint XPDocumentPointForCascading;
   NSCParameterAssert(fileName);
   NSCParameterAssert(fileType);
   
-  _fileName = [fileName copy];
+  _fileURL = [fileName copy];
   _fileType = [fileType copy];
   [self readFromFile:fileName ofType:fileType];
   
@@ -124,11 +129,11 @@ NSPoint XPDocumentPointForCascading;
   alertResult = [self runUnsavedChangesAlert];
   switch (alertResult) {
     case XPAlertReturnDefault:
-      if ([[self fileName] isAbsolutePath]) {
+      if ([[self XP_fileURL] isAbsolutePath]) {
         [self saveDocument:sender];
         return YES;
       } else {
-        return [self __runModalSavePanelAndSetFileName] == XPModalResponseOK;
+        return [self __runModalSavePanelAndSetFileURL] == XPModalResponseOK;
       }
     case XPAlertReturnAlternate:
       return YES;
@@ -148,21 +153,21 @@ NSPoint XPDocumentPointForCascading;
 
 -(NSString*)XP_nameForFrameAutosave;
 {
-  NSString *fileName = [self fileName];
-  if (![fileName isAbsolutePath]) { return nil; }
-  return fileName;
+  XPURL *fileURL = [self XP_fileURL];
+  if (![fileURL isAbsolutePath]) { return nil; }
+  return [fileURL XP_path];
 }
 
 /// Override to read your file and prepare
 -(void)awakeFromNib;
 {
-  NSString *fileName = [self fileName];
+  XPURL    *fileURL  = [self XP_fileURL];
   NSString *fileType = [self fileType];
   NSWindow *myWindow = [self XP_windowForSheet];
   
   // Read the data
-  if ([fileName isAbsolutePath]) {
-    [self readFromFile:fileName ofType:fileType];
+  if ([fileURL isAbsolutePath]) {
+    [self readFromFile:fileURL ofType:fileType];
   }
   
   if (![self XP_nameForFrameAutosave]) {
@@ -186,7 +191,7 @@ NSPoint XPDocumentPointForCascading;
 /// For display in the window title. If NIL, "Untitled" shown
 -(NSString*)displayName;
 {
-  NSString *lastPathComponent = [[self fileName] lastPathComponent];
+  NSString *lastPathComponent = [[self XP_fileURL] lastPathComponent];
   return (lastPathComponent) ? lastPathComponent : [Localized titleUntitled];
 }
 
@@ -199,12 +204,12 @@ NSPoint XPDocumentPointForCascading;
 -(void)updateChangeCount:(int)change;
 {
   NSWindow *myWindow = [self XP_windowForSheet];
-  NSString *fileName = [self fileName];
+  XPURL *fileURL = [self XP_fileURL];
 
   _isEdited = (change == 2) ? NO : YES;
 
-  if ([fileName isAbsolutePath]) {
-    [myWindow setRepresentedFilename:fileName];
+  if ([fileURL isAbsolutePath]) {
+    [myWindow setRepresentedFilename:[fileURL XP_path]];
   } else {
     [myWindow setRepresentedFilename:@""];
   }
@@ -212,17 +217,17 @@ NSPoint XPDocumentPointForCascading;
   [myWindow setDocumentEdited:[self isDocumentEdited]];
 }
 
--(NSString*)fileName;
+-(XPURL*)XP_fileURL;
 {
-  return [[_fileName retain] autorelease];
+  return [[_fileURL retain] autorelease];
 }
 
--(void)setFileName:(NSString*)fileName;
+-(void)XP_setFileURL:(XPURL*)fileURL;
 {
-  NSCParameterAssert(fileName);
-  if ([fileName isEqualToString:_fileName]) { return; }
-  [_fileName release];
-  _fileName = [fileName copy];
+  NSCParameterAssert(fileURL);
+  if ([fileURL isEqualToString:_fileURL]) { return; }
+  [_fileURL release];
+  _fileURL = [fileURL copy];
 }
 
 -(NSString*)fileType;
@@ -254,9 +259,9 @@ NSPoint XPDocumentPointForCascading;
 /// Returns hash of the filename or calls super
 -(XPUInteger)hash;
 {
-  NSString *fileName = [self fileName];
-  if (fileName) {
-    return [fileName hash];
+  XPURL *fileURL = [self XP_fileURL];
+  if (fileURL) {
+    return [fileURL hash];
   } else {
     return [super hash];
   }
@@ -265,9 +270,9 @@ NSPoint XPDocumentPointForCascading;
 /// Compares fileName or calls super
 -(BOOL)isEqual:(id)object;
 {
-  NSString *fileName = [self fileName];
-  if (fileName && [object isKindOfClass:[NSString class]]) {
-    return [fileName isEqualToString:object];
+  XPURL *fileURL = [self XP_fileURL];
+  if (fileURL && [object isKindOfClass:[NSString class]]) {
+    return [fileURL isEqualToString:object];
   } else {
     return [super isEqual:object];
   }
@@ -290,7 +295,7 @@ NSPoint XPDocumentPointForCascading;
 
 -(BOOL)writeToFile:(NSString*)__fileName ofType:(NSString*)__type;
 {
-  NSString *fileName = (__fileName) ? __fileName : [self fileName];
+  NSString *fileName = (__fileName) ? __fileName : [self XP_fileURL];
   NSString *fileType = (__type)     ? __type     : [self fileType];
   NSData *forWriting = [self dataRepresentationOfType:fileType];
   if (fileName && fileType && forWriting) {
@@ -302,11 +307,11 @@ NSPoint XPDocumentPointForCascading;
 -(BOOL)readFromFile:(NSString *)__fileName ofType:(NSString *)__type;
 {
   NSData *data = nil;
-  NSString *fileName = (__fileName) ? __fileName : [self fileName];
+  NSString *fileName = (__fileName) ? __fileName : [self XP_fileURL];
   NSString *fileType = (__type)     ? __type     : [self fileType];
   if (!fileName) { return NO; }
   
-  data = [NSData dataWithContentsOfFile:fileName];
+  data = [NSData XP_dataWithContentsOfURL:fileName];
   if (!data) { return NO; }
 
   return [self loadDataRepresentation:data ofType:fileType];
@@ -317,32 +322,33 @@ NSPoint XPDocumentPointForCascading;
 -(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
 {
   SEL menuAction = [menuItem action];
+  XPURL *fileURL = [self XP_fileURL];
   if        (menuAction == @selector(saveDocument:)) {
-    return [self fileName] == nil || [self isDocumentEdited];
+    return fileURL == nil || [self isDocumentEdited];
   } else if (menuAction == @selector(saveDocumentAs:)) {
-    return [self fileName] != nil;
+    return fileURL != nil;
   } else if (menuAction == @selector(saveDocumentTo:)) {
-    return [self fileName] != nil;
+    return fileURL != nil;
   } else if (menuAction == @selector(revertDocumentToSaved:)) {
-    return [self fileName] != nil && [self isDocumentEdited];
+    return fileURL != nil && [self isDocumentEdited];
   }
   return NO;
 }
 
 -(IBAction)saveDocument:(id)sender;
 {
-  NSString *fileName = [self fileName];
-  if (fileName) {
+  XPURL *fileURL = [self XP_fileURL];
+  if (fileURL) {
     [self writeToFile:nil ofType:nil];
   } else {
-    [self __runModalSavePanelAndSetFileName];
+    [self __runModalSavePanelAndSetFileURL];
   }
   [self updateChangeCount:2];
 }
 
 -(IBAction)saveDocumentAs:(id)sender;
 {
-  [self __runModalSavePanelAndSetFileName];
+  [self __runModalSavePanelAndSetFileURL];
   [self updateChangeCount:2];
 }
 
@@ -399,13 +405,13 @@ NSPoint XPDocumentPointForCascading;
   return okCancel;
 }
 
--(XPInteger)__runModalSavePanelAndSetFileName;
+-(XPInteger)__runModalSavePanelAndSetFileURL;
 {
   XPInteger result;
   NSSavePanel *savePanel = [NSSavePanel savePanel];
   result = [self runModalSavePanel:savePanel];
   if (result == XPModalResponseOK) {
-    [self setFileName:[savePanel filename]];
+    [self XP_setFileURL:[savePanel filename]];
   }
   return result;
 }
@@ -438,11 +444,11 @@ NSPoint XPDocumentPointForCascading;
   // this autorelease (instead of release) is necessary
   // to prevent crashes when the window is closing
   [window autorelease];
-  [_fileName release];
+  [_fileURL release];
   [_fileType release];
   [_fileExtension release];
   window = nil;
-  _fileName = nil;
+  _fileURL = nil;
   _fileType = nil;
   _fileExtension = nil;
   [super dealloc];

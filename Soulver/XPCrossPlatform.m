@@ -461,16 +461,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 @implementation NSWorkspace (CrossPlatform)
 
--(BOOL)XP_openFile:(NSString*)file;
-{
-  // TODO: Change this touse openURL or the appropriate method for files
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-  return [self openFile:file];
-#pragma clang diagnostic pop
-}
-
--(BOOL)XP_openWeb:(NSString*)webURL;
+-(BOOL)XP_openWebURL:(NSString*)webURL;
 {
 #ifdef MAC_OS_X_VERSION_10_0
   NSCParameterAssert(webURL);
@@ -606,6 +597,37 @@ NSArray* XPRunOpenPanel(NSString *extension)
   [self insertText:string replacementRange:[self selectedRange]];
 #else
   [self insertText:string];
+#endif
+}
+@end
+
+@implementation XPURL (CrossPlatformURL)
+-(BOOL)XP_isFileURL;
+{
+#ifdef MAC_OS_X_VERSION_10_2
+  return [self isFileURL];
+#else
+  return [self isAbsolutePath];
+#endif
+}
+
+-(NSString*)XP_path;
+{
+#ifdef MAC_OS_X_VERSION_10_2
+  return [self path];
+#else
+  return self;
+#endif
+}
+@end
+
+@implementation NSData (CrossPlatform)
++(NSData*)XP_dataWithContentsOfURL:(XPURL*)url;
+{
+#ifdef MAC_OS_X_VERSION_10_2
+  return [self dataWithContentsOfURL:url];
+#else
+  return [self dataWithContentsOfFile:url];
 #endif
 }
 @end

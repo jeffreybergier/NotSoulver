@@ -36,6 +36,7 @@
 @interface NSDocument (CrossPlatform)
 -(NSWindow*)XP_windowForSheet;
 -(NSString*)XP_nameForFrameAutosave;
+-(XPURL*)XP_fileURL;
 @end
 
 #else
@@ -46,7 +47,7 @@
 {
   /// Named without underscore for NSDocument compatibility
   mm_retain IBOutlet NSWindow *window;
-  mm_copy   NSString *_fileName;
+  mm_copy   XPURL    *_fileURL;
   mm_copy   NSString *_fileType;
   mm_copy   NSString *_fileExtension;
   BOOL _isNibLoaded;
@@ -89,8 +90,8 @@
 /// supported values are NSChangeDone (0) and NSChangeCleared (2)
 -(void)updateChangeCount:(int)change;
 /// Filename on disk is @"" if the document is not saved
--(NSString*)fileName;
--(void)setFileName:(NSString*)fileName;
+-(XPURL*)XP_fileURL;
+-(void)XP_setFileURL:(XPURL*)fileURL;
 -(NSString*)fileType;
 -(void)setFileType:(NSString*)type;
 -(NSString*)fileExtension;
@@ -125,7 +126,7 @@
 
 -(BOOL)prepareSavePanel:(NSSavePanel*)savePanel;
 -(XPInteger)runModalSavePanel:(NSSavePanel*)savePanel;
--(XPInteger)__runModalSavePanelAndSetFileName;
+-(XPInteger)__runModalSavePanelAndSetFileURL;
 -(XPAlertReturn)runUnsavedChangesAlert;
 -(XPAlertReturn)runRevertToSavedAlert;
 
