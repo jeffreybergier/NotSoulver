@@ -30,6 +30,7 @@
 #import "XPDocument.h"
 #import "NSUserDefaults+Soulver.h"
 
+/*
 @implementation XPDocument (CrossPlatform)
 
 -(XPURL*)XP_fileURL;
@@ -69,13 +70,24 @@
 }
 
 @end
+ */
 
 NSPoint XPDocumentPointForCascading;
 
-@implementation XPDocumentLegacyImplementation
-@end
+@implementation NSDocumentLegacyImplementation
 
-@implementation XPDocumentLegacyImplementation (MainImplementation)
+// MARK: Custom
+
+-(XPURL*)XP_fileURL;
+{
+  return [self fileURL];
+}
+
+
+-(void)XP_setFileExtension:(NSString*)type;
+{
+  [self __setFileExtension:type];
+}
 
 // MARK: Window Placement
 
@@ -115,15 +127,12 @@ NSPoint XPDocumentPointForCascading;
 
 // MARK: Window Management
 
-/// Default implementation throws exception.
-/// File's Owner Should be this Object
 -(NSString*)windowNibName;
 {
   XPLogRaise(@"Unimplemented");
   return nil;
 }
 
-/// Loads the NIB if needed and shows the window
 -(void)showWindows;
 {
   if (!_isNibLoaded) {
@@ -152,7 +161,7 @@ NSPoint XPDocumentPointForCascading;
     [self readFromURL:fileURL ofType:fileType error:NULL];
   }
   
-  if (![self XP_nameForFrameAutosave]) {
+  if (![self nameForFrameAutosave]) {
     XPDocumentPointForCascading = [myWindow cascadeTopLeftFromPoint:XPDocumentPointForCascading];
   }
   
@@ -226,46 +235,6 @@ NSPoint XPDocumentPointForCascading;
   _fileType = [type copy];
 }
 
-// MARK: Customizations
-
--(NSString*)__fileExtension;
-{
-  NSCParameterAssert(_fileExtension);
-  return [[_fileExtension retain] autorelease];
-}
-
--(void)__setFileExtension:(NSString*)type;
-{
-  NSCParameterAssert(type);
-  if ([type isEqualToString:_fileExtension]) { return; }
-  [_fileExtension release];
-  _fileExtension = [type copy];
-}
-
--(BOOL)windowShouldClose:(id)sender;
-{
-  XPAlertReturn alertResult;
-  if (![self isDocumentEdited]) { return YES; }
-  alertResult = [self runUnsavedChangesAlert];
-  switch (alertResult) {
-    case XPAlertReturnDefault:
-      if ([[self fileURL] XP_isFileURL]) {
-        [self saveDocument:sender];
-        return YES;
-      } else {
-        return [self __runModalSavePanelAndSetFileURL] == XPModalResponseOK;
-      }
-    case XPAlertReturnAlternate:
-      return YES;
-    case XPAlertReturnOther:
-      return NO;
-    case XPAlertReturnError:
-    default:
-      XPLogRaise1(@"Unexpected alert panel result: %ld", alertResult);
-      return NO;
-  }
-}
-
 // MARK: NSObject basics
 
 -(XPUInteger)hash;
@@ -278,7 +247,6 @@ NSPoint XPDocumentPointForCascading;
   }
 }
 
-/// Compares fileName or calls super
 -(BOOL)isEqual:(id)object;
 {
   XPURL *fileURL = [self fileURL];
@@ -290,14 +258,12 @@ NSPoint XPDocumentPointForCascading;
 }
 
 // MARK: Data reading and writing
-// Override to provide data for saving
 -(NSData*)dataRepresentationOfType:(NSString*)type;
 {
   XPLogRaise(@"Unimplemented");
   return nil;
 }
 
-// Override to convert your model when reading from disk
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
 {
   XPLogRaise(@"Unimplemented");
@@ -330,22 +296,6 @@ NSPoint XPDocumentPointForCascading;
 
 // MARK: Menu Handling
 
--(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
-{
-  SEL menuAction = [menuItem action];
-  XPURL *fileURL = [self fileURL];
-  if        (menuAction == @selector(saveDocument:)) {
-    return fileURL == nil || [self isDocumentEdited];
-  } else if (menuAction == @selector(saveDocumentAs:)) {
-    return fileURL != nil;
-  } else if (menuAction == @selector(saveDocumentTo:)) {
-    return fileURL != nil;
-  } else if (menuAction == @selector(revertDocumentToSaved:)) {
-    return fileURL != nil && [self isDocumentEdited];
-  }
-  return NO;
-}
-
 -(IBAction)saveDocument:(id)sender;
 {
   XPURL *fileURL = [self fileURL];
@@ -365,12 +315,12 @@ NSPoint XPDocumentPointForCascading;
 
 -(IBAction)saveDocumentTo:(id)sender;
 {
-  [self runModalSavePanel:nil];
+  [self __runModalSavePanel:nil];
 }
 
 -(IBAction)revertDocumentToSaved:(id)sender;
 {
-  XPAlertReturn result = [self runRevertToSavedAlert];
+  XPAlertReturn result = [self __runRevertToSavedAlert];
   switch (result) {
     case XPAlertReturnDefault:
       [self readFromURL:nil ofType:nil error:NULL];
@@ -386,19 +336,76 @@ NSPoint XPDocumentPointForCascading;
   [self updateChangeCount:2];
 }
 
+// MARK: Customizations
+
+-(NSString*)__fileExtension;
+{
+  NSCParameterAssert(_fileExtension);
+  return [[_fileExtension retain] autorelease];
+}
+
+-(void)__setFileExtension:(NSString*)type;
+{
+  NSCParameterAssert(type);
+  if ([type isEqualToString:_fileExtension]) { return; }
+  [_fileExtension release];
+  _fileExtension = [type copy];
+}
+
+-(BOOL)windowShouldClose:(id)sender;
+{
+  XPAlertReturn alertResult;
+  if (![self isDocumentEdited]) { return YES; }
+  alertResult = [self __runUnsavedChangesAlert];
+  switch (alertResult) {
+    case XPAlertReturnDefault:
+      if ([[self fileURL] XP_isFileURL]) {
+        [self saveDocument:sender];
+        return YES;
+      } else {
+        return [self __runModalSavePanelAndSetFileURL] == XPModalResponseOK;
+      }
+    case XPAlertReturnAlternate:
+      return YES;
+    case XPAlertReturnOther:
+      return NO;
+    case XPAlertReturnError:
+    default:
+      XPLogRaise1(@"Unexpected alert panel result: %ld", alertResult);
+      return NO;
+  }
+}
+
+-(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
+{
+  SEL menuAction = [menuItem action];
+  XPURL *fileURL = [self fileURL];
+  if        (menuAction == @selector(saveDocument:)) {
+    return fileURL == nil || [self isDocumentEdited];
+  } else if (menuAction == @selector(saveDocumentAs:)) {
+    return fileURL != nil;
+  } else if (menuAction == @selector(saveDocumentTo:)) {
+    return fileURL != nil;
+  } else if (menuAction == @selector(revertDocumentToSaved:)) {
+    return fileURL != nil && [self isDocumentEdited];
+  }
+  return NO;
+}
+
 // MARK: Panels and Alerts
--(BOOL)prepareSavePanel:(NSSavePanel*)savePanel;
+
+-(BOOL)__prepareSavePanel:(NSSavePanel*)savePanel;
 {
   [savePanel setRequiredFileType:[self __fileExtension]];
   [savePanel setDirectory:[[NSUserDefaults standardUserDefaults] SVR_savePanelLastDirectory]];
   return YES;
 }
 
--(XPInteger)runModalSavePanel:(NSSavePanel*)_savePanel;
+-(XPInteger)__runModalSavePanel:(NSSavePanel*)_savePanel;
 {
   XPInteger okCancel;
   NSSavePanel *savePanel = (_savePanel) ? _savePanel : [NSSavePanel savePanel];
-  [self prepareSavePanel:savePanel];
+  [self __prepareSavePanel:savePanel];
   
   okCancel = [savePanel runModal];
   switch (okCancel) {
@@ -420,7 +427,7 @@ NSPoint XPDocumentPointForCascading;
 {
   XPInteger result;
   NSSavePanel *savePanel = [NSSavePanel savePanel];
-  result = [self runModalSavePanel:savePanel];
+  result = [self __runModalSavePanel:savePanel];
   if (result == XPModalResponseOK) {
     [self setFileURL:(XPURL*)[savePanel filename]];
   }
@@ -428,7 +435,7 @@ NSPoint XPDocumentPointForCascading;
 }
 
 
--(XPAlertReturn)runUnsavedChangesAlert;
+-(XPAlertReturn)__runUnsavedChangesAlert;
 {
   return NSRunAlertPanel([Localized titleClose],
                          [Localized phraseSaveChangesTo],
@@ -438,7 +445,7 @@ NSPoint XPDocumentPointForCascading;
                          [self displayName]);
 }
 
--(XPAlertReturn)runRevertToSavedAlert;
+-(XPAlertReturn)__runRevertToSavedAlert;
 {
   return NSRunAlertPanel([Localized titleAlert],
                          [Localized phraseRevertChangesTo],

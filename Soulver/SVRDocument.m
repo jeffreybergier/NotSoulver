@@ -55,7 +55,7 @@
 {
   XPURL *fileURL = [self XP_fileURL];
 
-  if ([XPDocument instancesRespondToSelector:@selector(awakeFromNib)]) {
+  if ([[self superclass] instancesRespondToSelector:@selector(awakeFromNib)]) {
     [super awakeFromNib];
   }
   
@@ -144,6 +144,7 @@
 {
   XPLogDebug1(@"DEALLOC: %@", self);
 #if XPSupportsNSDocument == 0
+  // Nib Lifecycle differs when using NSDocument
   [_viewController release];
 #endif
   _viewController = nil;

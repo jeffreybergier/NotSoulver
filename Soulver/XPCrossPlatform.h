@@ -63,15 +63,12 @@ typedef float XPFloat;
   #define XP_ENUM(_type, _name) _type _name; enum
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_4
+#ifdef MAC_OS_X_VERSION_10_4__
 #define XPSupportsNSDocument 2 // Supports NSURL APIs
-#define XPDocument NSDocument
-#elif defined(MAC_OS_X_VERSION_10_2)
+#elif defined(MAC_OS_X_VERSION_10_2__)
 #define XPSupportsNSDocument 1 // Exists but URL API's appear not to work properly
-#define XPDocument NSDocument
 #else
 #define XPSupportsNSDocument 0 // Does not exist
-#define XPDocument XPDocumentLegacyImplementation
 #endif
 
 #if XPSupportsNSDocument >= 2

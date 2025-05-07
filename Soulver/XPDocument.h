@@ -30,7 +30,44 @@
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
 
-@interface XPDocumentLegacyImplementation: NSResponder
+#define XPDocument id<XPDocumentProtocol>
+
+@protocol XPDocumentProtocol <NSObject>
+
+// MARK: Customization
+-(XPURL*)XP_fileURL;
+-(void)XP_setFileExtension:(NSString*)type;
+
+// MARK: Typical NSDocument
+
+-(id)init;
+-(id)initWithContentsOfURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
+-(NSString*)windowNibName;
+-(void)showWindows;
+-(NSWindow*)windowForSheet;
+-(void)windowControllerWillLoadNib:(id)windowController;
+-(void)windowControllerDidLoadNib:(id)windowController;
+-(NSString*)displayName;
+-(BOOL)isDocumentEdited;
+-(void)updateChangeCount:(int)change;
+-(XPURL*)fileURL;
+-(void)setFileURL:(XPURL*)fileURL;
+-(NSString*)fileType;
+-(void)setFileType:(NSString*)type;
+-(NSData*)dataRepresentationOfType:(NSString*)type;
+-(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
+-(BOOL)writeToURL:( XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
+-(BOOL)readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
+-(IBAction)saveDocument:(id)sender;
+-(IBAction)saveDocumentAs:(id)sender;
+-(IBAction)saveDocumentTo:(id)sender;
+-(IBAction)revertDocumentToSaved:(id)sender;
+
+@end
+
+// This is a best effort implementation of NSDocument only for use in OpenStep.
+// Its insanely minimal because it won't be used once Mac OS X Ships
+@interface NSDocumentLegacyImplementation: NSResponder <XPDocumentProtocol>
 {
   /// Named without underscore for NSDocument compatibility
   mm_retain IBOutlet NSWindow *window;
@@ -40,18 +77,6 @@
   BOOL _isNibLoaded;
   BOOL _isEdited;
 }
-@end
-
-@interface XPDocument (CrossPlatform)
--(XPURL*)XP_fileURL;
--(NSString*)XP_nameForFrameAutosave;
--(NSWindow*)XP_windowForSheet;
--(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
-@end
-
-// This is a best effort implementation of NSDocument only for use in OpenStep.
-// Its insanely minimal because it won't be used once Mac OS X Ships
-@interface XPDocumentLegacyImplementation (MainImplementation)
 
 // MARK: Window Placement
 
@@ -92,12 +117,6 @@
 -(NSString*)fileType;
 -(void)setFileType:(NSString*)type;
 
-// MARK: Customizations
-
--(NSString*)__fileExtension;
--(void)__setFileExtension:(NSString*)type;
--(BOOL)windowShouldClose:(id)sender;
-
 // MARK: NSObject basics
 
 -(XPUInteger)hash;
@@ -116,18 +135,24 @@
 // MARK: Menu Handling
 
 /// Override to enable and disable menu items, default returns YES
--(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
 -(IBAction)saveDocument:(id)sender;
 -(IBAction)saveDocumentAs:(id)sender;
 -(IBAction)saveDocumentTo:(id)sender;
 -(IBAction)revertDocumentToSaved:(id)sender;
 
+// MARK: Customizations
+
+-(NSString*)__fileExtension;
+-(void)__setFileExtension:(NSString*)type;
+-(BOOL)windowShouldClose:(id)sender;
+-(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
+
 // MARK: Panels and Alerts
 
--(BOOL)prepareSavePanel:(NSSavePanel*)savePanel;
--(XPInteger)runModalSavePanel:(NSSavePanel*)savePanel;
+-(BOOL)__prepareSavePanel:(NSSavePanel*)savePanel;
+-(XPInteger)__runModalSavePanel:(NSSavePanel*)savePanel;
 -(XPInteger)__runModalSavePanelAndSetFileURL;
--(XPAlertReturn)runUnsavedChangesAlert;
--(XPAlertReturn)runRevertToSavedAlert;
+-(XPAlertReturn)__runUnsavedChangesAlert;
+-(XPAlertReturn)__runRevertToSavedAlert;
 
 @end

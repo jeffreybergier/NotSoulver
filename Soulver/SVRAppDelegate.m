@@ -146,7 +146,7 @@
   XPAlertReturn alertResult = NSNotFound;
   BOOL aDocumentNeedsSaving = NO;
   NSEnumerator *e = nil;
-  XPDocument *next = nil;
+  XPDocument next = nil;
 
   // Check all documents
   e = [[self openDocuments] objectEnumerator];
@@ -172,7 +172,7 @@
 -(BOOL)__applicationShouldTerminateAfterReviewingAllDocuments:(NSApplication*)sender;
 {
   NSEnumerator *e = [[self openDocuments] objectEnumerator];
-  XPDocument *next = nil;
+  XPDocument next = nil;
 
   // Try to close all documents (asking the user to save them)
   while ((next = [e nextObject])) {
