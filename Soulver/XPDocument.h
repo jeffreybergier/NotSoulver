@@ -30,20 +30,7 @@
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
 
-#if XPSupportsNSDocument > 0
-
-@interface NSDocument (CrossPlatform)
--(NSString*)XP_nameForFrameAutosave;
--(XPURL*)XP_fileURL;
--(NSWindow*)XP_windowForSheet;
--(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
-@end
-
-#else
-
-// This is a best effort implementation of NSDocument only for use in OpenStep.
-// Its insanely minimal because it won't be used once Mac OS X Ships
-@interface XPDocument: NSResponder
+@interface XPDocumentLegacyImplementation: NSResponder
 {
   /// Named without underscore for NSDocument compatibility
   mm_retain IBOutlet NSWindow *window;
@@ -53,6 +40,18 @@
   BOOL _isNibLoaded;
   BOOL _isEdited;
 }
+@end
+
+@interface XPDocument (CrossPlatform)
+-(XPURL*)XP_fileURL;
+-(NSString*)XP_nameForFrameAutosave;
+-(NSWindow*)XP_windowForSheet;
+-(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
+@end
+
+// This is a best effort implementation of NSDocument only for use in OpenStep.
+// Its insanely minimal because it won't be used once Mac OS X Ships
+@interface XPDocumentLegacyImplementation (MainImplementation)
 
 // MARK: Window Placement
 
@@ -88,18 +87,15 @@
 -(BOOL)isDocumentEdited;
 /// supported values are NSChangeDone (0) and NSChangeCleared (2)
 -(void)updateChangeCount:(int)change;
+-(XPURL*)fileURL;
+-(void)setFileURL:(XPURL*)fileURL;
 -(NSString*)fileType;
 -(void)setFileType:(NSString*)type;
 
 // MARK: Customizations
 
--(XPURL*)XP_fileURL;
--(void)XP_setFileURL:(XPURL*)fileURL;
--(NSString*)XP_fileExtension;
--(void)XP_setFileExtension:(NSString*)type;
--(NSString*)XP_nameForFrameAutosave;
--(NSWindow*)XP_windowForSheet;
--(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
+-(NSString*)__fileExtension;
+-(void)__setFileExtension:(NSString*)type;
 -(BOOL)windowShouldClose:(id)sender;
 
 // MARK: NSObject basics
@@ -135,6 +131,3 @@
 -(XPAlertReturn)runRevertToSavedAlert;
 
 @end
-
-#endif
-

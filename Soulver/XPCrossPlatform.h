@@ -71,6 +71,7 @@ typedef float XPFloat;
 #define XPDocument NSDocument
 #else
 #define XPSupportsNSDocument 0 // Does not exist
+#define XPDocument XPDocumentLegacyImplementation
 #endif
 
 #if XPSupportsNSDocument >= 2
