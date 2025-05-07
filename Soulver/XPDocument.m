@@ -182,7 +182,7 @@ NSPoint XPDocumentPointForCascading;
     [self readFromURL:fileURL ofType:fileType error:NULL];
   }
   
-  if (![self nameForFrameAutosave]) {
+  if (![self XP_nameForFrameAutosave]) {
     XPDocumentPointForCascading = [myWindow cascadeTopLeftFromPoint:XPDocumentPointForCascading];
   }
   

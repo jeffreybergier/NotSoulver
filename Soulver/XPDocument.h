@@ -34,36 +34,11 @@
 
 @protocol XPDocumentProtocol <NSObject>
 
-// MARK: Customization
 -(XPURL*)XP_fileURL;
 -(NSString*)XP_nameForFrameAutosave;
 -(NSWindow*)XP_windowForSheet;
 -(void)XP_setFileExtension:(NSString*)type;
 -(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
-
-// MARK: Typical NSDocument
-
--(id)init;
--(id)initWithContentsOfURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
--(NSString*)windowNibName;
--(void)showWindows;
--(void)windowControllerWillLoadNib:(id)windowController;
--(void)windowControllerDidLoadNib:(id)windowController;
--(NSString*)displayName;
--(BOOL)isDocumentEdited;
--(void)updateChangeCount:(int)change;
--(XPURL*)fileURL;
--(void)setFileURL:(XPURL*)fileURL;
--(NSString*)fileType;
--(void)setFileType:(NSString*)type;
--(NSData*)dataRepresentationOfType:(NSString*)type;
--(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
--(BOOL)writeToURL:( XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
--(BOOL)readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
--(IBAction)saveDocument:(id)sender;
--(IBAction)saveDocumentAs:(id)sender;
--(IBAction)saveDocumentTo:(id)sender;
--(IBAction)revertDocumentToSaved:(id)sender;
 
 @end
 
@@ -73,8 +48,6 @@
 -(XPURL*)XP_fileURL;
 -(void)XP_setFileExtension:(NSString*)type;
 -(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
-
-
 
 @end
 #endif
