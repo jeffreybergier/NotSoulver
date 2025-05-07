@@ -30,8 +30,8 @@
 #import "XPDocument.h"
 #import "NSUserDefaults+Soulver.h"
 
-/*
-@implementation XPDocument (CrossPlatform)
+#if XPSupportsNSDocument >= 1
+@implementation NSDocument (CrossPlatform)
 
 -(XPURL*)XP_fileURL;
 {
@@ -44,7 +44,7 @@
 
 -(NSString*)XP_nameForFrameAutosave;
 {
-  XPURL *fileURL = [self fileURL];
+  XPURL *fileURL = [self XP_fileURL];
   if (![fileURL XP_isFileURL]) { return nil; }
   return [fileURL XP_path];
 }
@@ -60,6 +60,11 @@
 #endif
 }
 
+-(void)XP_setFileExtension:(NSString*)type;
+{
+  XPLogDebug2(@"%@ ignoring call to XP_setFileExtension:%@", self, type);
+}
+
 -(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
 {
 #if XPSupportsNSDocument == 1
@@ -70,7 +75,7 @@
 }
 
 @end
- */
+#endif
 
 NSPoint XPDocumentPointForCascading;
 
@@ -83,10 +88,26 @@ NSPoint XPDocumentPointForCascading;
   return [self fileURL];
 }
 
+-(NSString*)XP_nameForFrameAutosave;
+{
+  XPURL *fileURL = [self XP_fileURL];
+  if (![fileURL XP_isFileURL]) { return nil; }
+  return [fileURL XP_path];
+}
+
+-(NSWindow*)XP_windowForSheet;
+{
+  return [self windowForSheet];
+}
 
 -(void)XP_setFileExtension:(NSString*)type;
 {
   [self __setFileExtension:type];
+}
+
+-(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
+{
+  return [self readFromURL:fileURL ofType:fileType error:outError];
 }
 
 // MARK: Window Placement

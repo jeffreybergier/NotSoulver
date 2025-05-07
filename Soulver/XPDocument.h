@@ -36,7 +36,10 @@
 
 // MARK: Customization
 -(XPURL*)XP_fileURL;
+-(NSString*)XP_nameForFrameAutosave;
+-(NSWindow*)XP_windowForSheet;
 -(void)XP_setFileExtension:(NSString*)type;
+-(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
 
 // MARK: Typical NSDocument
 
@@ -44,7 +47,6 @@
 -(id)initWithContentsOfURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
 -(NSString*)windowNibName;
 -(void)showWindows;
--(NSWindow*)windowForSheet;
 -(void)windowControllerWillLoadNib:(id)windowController;
 -(void)windowControllerDidLoadNib:(id)windowController;
 -(NSString*)displayName;
@@ -64,6 +66,18 @@
 -(IBAction)revertDocumentToSaved:(id)sender;
 
 @end
+
+#if XPSupportsNSDocument >= 1
+@interface NSDocument (CrossPlatform) <XPDocumentProtocol>
+
+-(XPURL*)XP_fileURL;
+-(void)XP_setFileExtension:(NSString*)type;
+-(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
+
+
+
+@end
+#endif
 
 // This is a best effort implementation of NSDocument only for use in OpenStep.
 // Its insanely minimal because it won't be used once Mac OS X Ships
