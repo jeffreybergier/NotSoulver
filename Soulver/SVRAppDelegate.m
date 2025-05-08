@@ -89,20 +89,19 @@
   [NSFontManager setFontManagerFactory:[SVRFontManager class]];
   // Configure Accessory Windows
   _accessoryWindowsOwner = [[SVRAccessoryWindowsOwner alloc] init];
-#if XPSupportsNSDocument == 0
-  // Register for Notifications
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(windowWillCloseNotification:)
-                                               name:NSWindowWillCloseNotification
-                                             object:nil];
-#endif
+  if (!NSClassFromString(@"NSDocument")) {
+    // Register for Notifications
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(__windowWillCloseNotification:)
+                                                 name:NSWindowWillCloseNotification
+                                               object:nil];
+  }
   // Announce
   XPLogDebug1(@"%@ applicationWillFinishLaunching:", self);
 }
 
 @end
 
-#if XPSupportsNSDocument == 0
 @implementation SVRAppDelegate (PreDocument)
 
 -(NSMutableSet*)openDocuments;
@@ -110,7 +109,7 @@
   return [[_openDocuments retain] autorelease];
 }
 
--(IBAction)newDocument:(id)sender
+-(IBAction)__newDocument:(id)sender
 {
   SVRDocument *document = [[[SVRDocument alloc] init] autorelease];
   [document setFileType:SVRDocumentModelRepDisk];
@@ -119,12 +118,12 @@
   [[self openDocuments] addObject:document];
 }
 
--(IBAction)openDocument:(id)sender;
+-(IBAction)__openDocument:(id)sender;
 {
-  NSArray *filenames;
-  NSEnumerator *e;
-  XPURL *nextF;
-  SVRDocument *nextC;
+  NSArray *filenames = nil;
+  NSEnumerator *e = nil;
+  XPURL *nextF = nil;
+  XPDocument nextC = nil;
 
   filenames = XPRunOpenPanel(SVRDocumentModelExtension);
   if ([filenames count] == 0) { XPLogDebug1(@"%@ Open Cancelled", self); return; }
@@ -137,11 +136,11 @@
                                                     error:NULL] autorelease];
       [[self openDocuments] addObject:nextC];
     }
-    [nextC showWindows];
+    [nextC XP_showWindows];
   }
 }
 
--(BOOL)applicationShouldTerminate:(NSApplication *)sender;
+-(BOOL)__applicationShouldTerminate:(NSApplication *)sender;
 {
   XPAlertReturn alertResult = NSNotFound;
   BOOL aDocumentNeedsSaving = NO;
@@ -191,11 +190,11 @@
   return YES;
 }
 
--(BOOL)application:(NSApplication *)sender openFile:(NSString*)filename;
+-(BOOL)__application:(NSApplication *)sender openFile:(NSString*)filename;
 {
   SVRDocument *document = [[self openDocuments] member:filename];
   if (!document) {
-    document = [[[SVRDocument alloc] initWithContentsOfURL:filename
+    document = [[[SVRDocument alloc] initWithContentsOfURL:(XPURL*)filename
                                                     ofType:SVRDocumentModelRepDisk
                                                      error:NULL] autorelease];
     [[self openDocuments] addObject:document];
@@ -204,13 +203,13 @@
   return YES;
 }
 
--(BOOL)applicationOpenUntitledFile:(NSApplication *)sender;
+-(BOOL)__applicationOpenUntitledFile:(NSApplication *)sender;
 {
-  [self newDocument:sender];
+  [self __newDocument:sender];
   return YES;
 }
 
--(void)windowWillCloseNotification:(NSNotification*)aNotification;
+-(void)__windowWillCloseNotification:(NSNotification*)aNotification;
 {
   NSWindow *window = [aNotification object];
   id document = [window delegate];
@@ -219,5 +218,28 @@
   }
 }
 
-@end
+// MARK: Pre-NSDocument Stubs
+#if XPSupportsNSDocument == 0
+-(IBAction)newDocument:(id)sender;
+{
+  [self __newDocument:sender];
+}
+-(IBAction)openDocument:(id)sender;
+{
+  [self __openDocument:sender];
+}
+-(BOOL)applicationShouldTerminate:(NSApplication *)sender;
+{
+  return [self __applicationShouldTerminate:sender];
+}
+-(BOOL)application:(NSApplication *)sender openFile:(NSString *)filename;
+{
+  return [self __application:sender openFile:filename];
+}
+-(BOOL)applicationOpenUntitledFile:(NSApplication *)sender;
+{
+  return [self __applicationOpenUntitledFile:sender];
+}
 #endif
+
+@end

@@ -65,6 +65,11 @@
 #endif
 }
 
+-(void)XP_showWindows;
+{
+  [self showWindows];
+}
+
 -(void)XP_setFileExtension:(NSString*)type;
 {
   XPLogDebug2(@"%@ ignoring call to XP_setFileExtension:%@", self, type);
@@ -113,6 +118,11 @@ NSPoint XPDocumentPointForCascading;
 -(NSWindow*)XP_windowForSheet;
 {
   return [self windowForSheet];
+}
+
+-(void)XP_showWindows;
+{
+  [self showWindows];
 }
 
 -(void)XP_setFileExtension:(NSString*)type;

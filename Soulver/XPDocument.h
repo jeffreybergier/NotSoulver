@@ -38,6 +38,7 @@
 -(XPURL*)XP_fileURL;
 -(NSString*)XP_nameForFrameAutosave;
 -(NSWindow*)XP_windowForSheet;
+-(void)XP_showWindows;
 -(void)XP_setFileExtension:(NSString*)type;
 -(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
 
