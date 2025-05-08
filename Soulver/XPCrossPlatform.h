@@ -98,6 +98,7 @@ typedef NSRange* XPRangePointer;
 #define XPStringCompareOptions NSStringCompareOptions
 #define XPPasteboardTypeRTF NSPasteboardTypeRTF
 #define XPPasteboardTypeString NSPasteboardTypeString
+#define XPSupportsFormalProtocols // Protocols like NSWindowDelegate were formally added
 #else
 #define XPStringCompareOptions unsigned int
 #define XPPasteboardTypeRTF NSRTFPboardType

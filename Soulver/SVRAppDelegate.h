@@ -31,7 +31,11 @@
 #import "SVRDocument.h"
 #import "SVRAccessoryWindowsOwner.h"
 
+#ifdef XPSupportsFormalProtocols
+@interface SVRAppDelegate: NSObject <NSApplicationDelegate>
+#else
 @interface SVRAppDelegate: NSObject
+#endif
 {
   mm_new NSMutableSet *_openDocuments;
   mm_new SVRAccessoryWindowsOwner *_accessoryWindowsOwner;

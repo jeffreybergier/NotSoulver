@@ -79,9 +79,14 @@
 
 NSPoint XPDocumentPointForCascading;
 
+// Because this class is only used in OpenStep
+// I will add insturctions for LLVM to ignore
+// deprecation warnings
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 @implementation NSDocumentLegacyImplementation
 
-// MARK: Custom
+// MARK: XPDocumentProtocol Implementation
 
 -(XPURL*)XP_fileURL;
 {
@@ -494,3 +499,4 @@ NSPoint XPDocumentPointForCascading;
 }
 
 @end
+#pragma clang diagnostic pop
