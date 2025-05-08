@@ -282,6 +282,7 @@ NSArray* XPRunOpenPanel(NSString *extension);
 @interface XPURL (CrossPlatformURL)
 -(BOOL)XP_isFileURL;
 -(NSString*)XP_path;
+-(NSString*)XP_lastPathComponent;
 @end
 
 @interface NSData (CrossPlatform)

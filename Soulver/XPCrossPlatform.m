@@ -602,23 +602,42 @@ NSArray* XPRunOpenPanel(NSString *extension)
 @end
 
 @implementation XPURL (CrossPlatformURL)
+
 -(BOOL)XP_isFileURL;
 {
 #if XPSupportsNSDocument >= 2
+  NSCAssert1([self isKindOfClass:NSClassFromString(@"NSURL")],
+            @"%@ is not NSString or NSURL", self);
   return [self isFileURL];
 #else
+  NSCAssert1([self isKindOfClass:[NSString class]],
+            @"%@ is not NSString or NSURL", self);
   return [self isAbsolutePath];
 #endif
 }
 
 -(NSString*)XP_path;
 {
-#if XPSupportsNSDocument >= 2
-  return [self path];
-#else
-  return self;
-#endif
+  SEL selector = @selector(path);
+  if ([self respondsToSelector:selector]) {
+    return [self performSelector:selector];
+  } else {
+    NSCAssert1([self isKindOfClass:[NSString class]],
+              @"%@ is not NSString or NSURL", self);
+    return (NSString*)self;
+  }
 }
+
+-(NSString*)XP_lastPathComponent;
+{
+  SEL selector = @selector(lastPathComponent);
+  if ([self respondsToSelector:selector]) {
+    return [self performSelector:selector];
+  } else {
+    return [[self XP_path] lastPathComponent];
+  }
+}
+
 @end
 
 @implementation NSData (CrossPlatform)

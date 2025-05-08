@@ -231,7 +231,7 @@ NSPoint XPDocumentPointForCascading;
 /// For display in the window title. If NIL, "Untitled" shown
 -(NSString*)displayName;
 {
-  NSString *lastPathComponent = [[self fileURL] lastPathComponent];
+  NSString *lastPathComponent = [[self fileURL] XP_lastPathComponent];
   return (lastPathComponent) ? lastPathComponent : [Localized titleUntitled];
 }
 
