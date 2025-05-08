@@ -33,6 +33,11 @@
 #if XPSupportsNSDocument >= 1
 @implementation NSDocument (CrossPlatform)
 
+-(BOOL)XP_isDocumentEdited;
+{
+  return [self isDocumentEdited];
+}
+
 -(XPURL*)XP_fileURL;
 {
 #if XPSupportsNSDocument == 1
@@ -87,6 +92,11 @@ NSPoint XPDocumentPointForCascading;
 @implementation NSDocumentLegacyImplementation
 
 // MARK: XPDocumentProtocol Implementation
+
+-(BOOL)XP_isDocumentEdited;
+{
+  return [self isDocumentEdited];
+}
 
 -(XPURL*)XP_fileURL;
 {

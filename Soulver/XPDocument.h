@@ -34,7 +34,7 @@
 
 @protocol XPDocumentProtocol <NSObject>
 
--(BOOL)isDocumentEdited;
+-(BOOL)XP_isDocumentEdited;
 -(XPURL*)XP_fileURL;
 -(NSString*)XP_nameForFrameAutosave;
 -(NSWindow*)XP_windowForSheet;

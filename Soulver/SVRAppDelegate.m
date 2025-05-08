@@ -151,7 +151,7 @@
   // Check all documents
   e = [[self openDocuments] objectEnumerator];
   while ((next = [e nextObject])) {
-    aDocumentNeedsSaving = [next isDocumentEdited];
+    aDocumentNeedsSaving = [next XP_isDocumentEdited];
     if (aDocumentNeedsSaving) { break; }
   }
 
@@ -182,7 +182,7 @@
   // Iterate again and check if are unsaved changes
   e = [[self openDocuments] objectEnumerator];
   while ((next = [e nextObject])) {
-    if ([next isDocumentEdited]) {
+    if ([next XP_isDocumentEdited]) {
       return NO;
     }
   }
