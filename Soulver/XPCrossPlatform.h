@@ -113,14 +113,18 @@ typedef NSRange* XPRangePointer;
 
 #ifdef MAC_OS_X_VERSION_10_10
 #define XPTextAlignmentCenter NSTextAlignmentCenter
-#define XPBitmapImageFileTypeTIFF NSBitmapImageFileTypeTIFF
 #define XPModalResponseOK NSModalResponseOK
 #define XPModalResponseCancel NSModalResponseCancel
 #else
 #define XPTextAlignmentCenter NSCenterTextAlignment
-#define XPBitmapImageFileTypeTIFF NSTIFFFileType
 #define XPModalResponseOK NSOKButton
 #define XPModalResponseCancel NSCancelButton
+#endif
+
+#ifdef MAC_OS_X_VERSION_10_12
+#define XPBitmapImageFileTypeTIFF NSBitmapImageFileTypeTIFF
+#else
+#define XPBitmapImageFileTypeTIFF NSTIFFFileType
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_13
