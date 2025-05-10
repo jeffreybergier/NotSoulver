@@ -405,7 +405,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 +(NSData*)XP_archivedDataWithRootObject:(id)object;
 {
   // TODO: Fix this to use NSSecureCoding
-#ifdef MAC_OS_X_VERSION_10_13
+#ifdef XPSupportsNSSecureCoding
   NSError *error = nil;
   NSData *output = [self archivedDataWithRootObject:object
                               requiringSecureCoding:NO
@@ -426,7 +426,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
   // TODO: Fix this to use NSSecureCoding
   // NSCoding of my custom attributed strings seems not work completely
   // NSSecureCoding does not seem to work even though it should
-#ifdef MAC_OS_X_VERSION_10_13
+#ifdef XPSupportsNSSecureCoding
   NSError *error = nil;
   NSAttributedString *output = [self unarchivedObjectOfClass:cls
                                                     fromData:someData

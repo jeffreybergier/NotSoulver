@@ -419,7 +419,7 @@ void TestsUnitExecute(void)
 @implementation NSBezierPath (TestsUnit)
 +(void)executeTests;
 {
-  #ifdef MAC_OS_X_VERSION_10_12
+  #ifdef MAC_OS_X_VERSION_10_14
   // Prepare variables
   NSData  *dataRHS = nil;
   NSData  *dataLHS = nil;
