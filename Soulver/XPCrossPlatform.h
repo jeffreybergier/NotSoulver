@@ -279,6 +279,9 @@ NSArray* XPRunOpenPanel(NSString *extension);
 -(void)XP_insertText:(id)string;
 @end
 
+// NSURL does not exist on OpenStep
+// so this category attempts to unify the API
+// between NSString and NSURL
 @interface XPURL (CrossPlatformURL)
 -(BOOL)XP_isFileURL;
 -(NSString*)XP_path;

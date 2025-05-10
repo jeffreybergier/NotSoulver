@@ -605,6 +605,8 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 -(BOOL)XP_isFileURL;
 {
+  // Because this returns a BOOL, it is not safe to use performSelector
+  // so have to use ifdefs to prevent all warnings
 #if XPSupportsNSDocument >= 2
   NSCAssert1([self isKindOfClass:NSClassFromString(@"NSURL")],
             @"%@ is not NSString or NSURL", self);
@@ -630,6 +632,10 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 -(NSString*)XP_lastPathComponent;
 {
+  // This is an interesting one where both NSURL and NSString
+  // have the 'lastPathComponent' method... but it turns out
+  // there was a brief period of time in early Mac OS X history
+  // where NSURL did not have the 'lastPathComponent' method
   SEL selector = @selector(lastPathComponent);
   if ([self respondsToSelector:selector]) {
     return [self performSelector:selector];
