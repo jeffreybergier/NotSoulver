@@ -29,17 +29,13 @@
 
 #import "NSUserDefaults+Soulver.h"
 
+// Implementation in AccessoryWindowsOwner.m
+extern NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad;
+
 NSString * const SVRThemeDidChangeNotificationName = @"kSVRThemeDidChangeNotificationNameKey";
 
 NSString *XPUserDefaultsSavePanelLastDirectory    = @"kSavePanelLastDirectory";
 NSString *XPUserDefaultsWaitTimeForRendering      = @"kWaitTimeForRendering";
-
-NSString *SVRAccessoryWindowSettingsFrame         = @"kSVRAccessoryWindowSettingsFrameKey";
-NSString *SVRAccessoryWindowAboutFrame            = @"kSVRAccessoryWindowAboutFrameKey";
-NSString *SVRAccessoryWindowKeypadFrame           = @"kSVRAccessoryWindowKeypadFrameKey";
-NSString *SVRAccessoryWindowSettingsVisibility    = @"kSVRAccessoryWindowSettingsVisibilityKey";
-NSString *SVRAccessoryWindowAboutVisibility       = @"kSVRAccessoryWindowAboutVisibilityKey";
-NSString *SVRAccessoryWindowKeypadVisibility      = @"kSVRAccessoryWindowKeypadVisibilityKey";
 
 NSString *SVRThemeLightOperandTextColor           = @"kSVRThemeLightOperandTextColor";
 NSString *SVRThemeLightOperatorTextColor          = @"kSVRThemeLightOperatorTextColor";
@@ -99,43 +95,14 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 
 // MARK: Accessory Window Visibility
 
-+(NSString*)SVR_frameKeyForWindow:(SVRAccessoryWindow)window;
+-(BOOL)SVR_visibilityForWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
 {
-  switch (window) {
-    case SVRAccessoryWindowSettings: return SVRAccessoryWindowSettingsFrame;
-    case SVRAccessoryWindowAbout:    return SVRAccessoryWindowAboutFrame;
-    case SVRAccessoryWindowKeypad:   return SVRAccessoryWindowKeypadFrame;
-    case SVRAccessoryWindowNone:     return nil;
-  }
-  return nil;
+  return [self boolForKey:frameAutosaveName];
 }
 
--(BOOL)SVR_visibilityForWindow:(SVRAccessoryWindow)window;
+-(BOOL)SVR_setVisibility:(BOOL)isVisible forWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
 {
-  switch (window) {
-    case SVRAccessoryWindowSettings: return [self boolForKey:SVRAccessoryWindowSettingsVisibility];
-    case SVRAccessoryWindowAbout:    return [self boolForKey:SVRAccessoryWindowAboutVisibility];
-    case SVRAccessoryWindowKeypad:   return [self boolForKey:SVRAccessoryWindowKeypadVisibility];
-    case SVRAccessoryWindowNone:     return NO;
-  }
-  return NO;
-}
-
--(BOOL)SVR_setVisibility:(BOOL)isVisible forWindow:(SVRAccessoryWindow)window;
-{
-  switch (window) {
-    case SVRAccessoryWindowSettings:
-      [self setBool:isVisible forKey:SVRAccessoryWindowSettingsVisibility];
-      break;
-    case SVRAccessoryWindowAbout:
-      [self setBool:isVisible forKey:SVRAccessoryWindowAboutVisibility];
-      break;
-    case SVRAccessoryWindowKeypad:
-      [self setBool:isVisible forKey:SVRAccessoryWindowKeypadVisibility];
-      break;
-    case SVRAccessoryWindowNone:
-      break;
-  }
+  [self setBool:isVisible forKey:frameAutosaveName];
   return [self synchronize];
 }
 
@@ -343,7 +310,7 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
           // Other
           XPUserDefaultsSavePanelLastDirectory,
           SVRThemeUserInterfaceStyle,
-          SVRAccessoryWindowKeypadVisibility,
+          SVRAccessoryWindowFrameAutosaveNameKeypad,
           XPUserDefaultsWaitTimeForRendering,
           nil];
   vals = [NSArray arrayWithObjects:

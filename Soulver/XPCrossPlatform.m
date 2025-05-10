@@ -134,7 +134,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
       output = [NSArray new];
       break;
     default:
-      XPLogRaise1(@"Impossible NSOpenPanel result: %lu", result);
+      XPLogRaise1(@"Impossible NSOpenPanel result: %d", (int)result);
       output = nil;
       break;
   }
@@ -460,12 +460,15 @@ NSArray* XPRunOpenPanel(NSString *extension)
 @end
 
 @implementation NSWorkspace (CrossPlatform)
--(BOOL)XP_openFile:(NSString*)file;
+
+-(BOOL)XP_openWebURL:(NSString*)webURL;
 {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-  return [self openFile:file];
-#pragma clang diagnostic pop
+#ifdef MAC_OS_X_VERSION_10_0
+  NSCParameterAssert(webURL);
+  return [self openURL:[NSURL URLWithString:webURL]];
+#else
+  return NO;
+#endif
 }
 @end
 
@@ -590,12 +593,79 @@ NSArray* XPRunOpenPanel(NSString *extension)
 @implementation NSTextView (CrossPlatform)
 -(void)XP_insertText:(id)string;
 {
-#ifdef MAC_OS_X_VERSION_10_4
+#ifdef MAC_OS_X_VERSION_10_6
   [self insertText:string replacementRange:[self selectedRange]];
 #else
   [self insertText:string];
 #endif
 }
+@end
+
+@implementation XPURL (CrossPlatformURL)
+
+-(BOOL)XP_isFileURL;
+{
+  // Because this returns a BOOL, it is not safe to use performSelector
+  // so have to use ifdefs to prevent all warnings
+#if XPSupportsNSDocument >= 2
+  NSCAssert1([self isKindOfClass:NSClassFromString(@"NSURL")],
+            @"%@ is not NSString or NSURL", self);
+  return [self isFileURL];
+#else
+  NSCAssert1([self isKindOfClass:[NSString class]],
+            @"%@ is not NSString or NSURL", self);
+  return [self isAbsolutePath];
+#endif
+}
+
+-(NSString*)XP_path;
+{
+  SEL selector = @selector(path);
+  if ([self respondsToSelector:selector]) {
+    return [self performSelector:selector];
+  } else {
+    NSCAssert1([self isKindOfClass:[NSString class]],
+              @"%@ is not NSString or NSURL", self);
+    return (NSString*)self;
+  }
+}
+
+-(NSString*)XP_lastPathComponent;
+{
+  // This is an interesting one where both NSURL and NSString
+  // have the 'lastPathComponent' method... but it turns out
+  // there was a brief period of time in early Mac OS X history
+  // where NSURL did not have the 'lastPathComponent' method
+  SEL selector = @selector(lastPathComponent);
+  if ([self respondsToSelector:selector]) {
+    return [self performSelector:selector];
+  } else {
+    return [[self XP_path] lastPathComponent];
+  }
+}
+
+@end
+
+@implementation NSData (CrossPlatform)
+
++(NSData*)XP_dataWithContentsOfURL:(XPURL*)url;
+{
+#if XPSupportsNSDocument >= 2
+  return [self dataWithContentsOfURL:url];
+#else
+  return [self dataWithContentsOfFile:url];
+#endif
+}
+
+-(BOOL)XP_writeToURL:(XPURL*)url atomically:(BOOL)atomically;
+{
+#if XPSupportsNSDocument >= 2
+  return [self writeToURL:url atomically:atomically];
+#else
+  return [self writeToFile:url atomically:atomically];
+#endif
+}
+
 @end
 
 @implementation XPLog

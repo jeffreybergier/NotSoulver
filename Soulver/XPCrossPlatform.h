@@ -63,10 +63,23 @@ typedef float XPFloat;
   #define XP_ENUM(_type, _name) _type _name; enum
 #endif
 
+#ifdef MAC_OS_X_VERSION_10_4
+#define XPSupportsNSDocument 2 // Supports NSURL APIs
+#elif defined(MAC_OS_X_VERSION_10_2)
+#define XPSupportsNSDocument 1 // Exists but URL API's appear not to work properly
+#else
+#define XPSupportsNSDocument 0 // Does not exist
+#endif
+
+#if XPSupportsNSDocument >= 2
+#define XPURL NSURL
+#else
+#define XPURL NSString
+#endif
+
 #ifdef MAC_OS_X_VERSION_10_2
 #define XPKeyedArchiver NSKeyedArchiver
 #define XPKeyedUnarchiver NSKeyedUnarchiver
-#define XPSupportsNSDocument
 #define XPSupportsNSBezierPath
 #else
 #define XPKeyedArchiver NSArchiver
@@ -81,28 +94,13 @@ typedef NSRangePointer XPRangePointer;
 typedef NSRange* XPRangePointer;
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_4
-// Docs says NSTextAlignmentCenter is available in 10.0.
-// But its not even available in 10.2, so I put it here.
-// It could be 10.3 or 10.4 or later. No way to know
-// until I get to that version of OSX
-#define XPTextAlignmentCenter NSTextAlignmentCenter
-#define XPBitmapImageFileTypeTIFF NSBitmapImageFileTypeTIFF
-#else
-#define XPTextAlignmentCenter NSCenterTextAlignment
-#define XPBitmapImageFileTypeTIFF NSTIFFFileType
-#endif
-
-#ifdef MAC_OS_X_VERSION_10_5
-#define XPStringCompareOptions NSStringCompareOptions
-#else
-#define XPStringCompareOptions unsigned int
-#endif
-
 #ifdef MAC_OS_X_VERSION_10_6
+#define XPStringCompareOptions NSStringCompareOptions
 #define XPPasteboardTypeRTF NSPasteboardTypeRTF
 #define XPPasteboardTypeString NSPasteboardTypeString
+#define XPSupportsFormalProtocols // Protocols like NSWindowDelegate were formally added
 #else
+#define XPStringCompareOptions unsigned int
 #define XPPasteboardTypeRTF NSRTFPboardType
 #define XPPasteboardTypeString NSStringPboardType
 #endif
@@ -113,10 +111,14 @@ typedef NSRange* XPRangePointer;
 #define XPSecureCoding NSCoding
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_9
+#ifdef MAC_OS_X_VERSION_10_10
+#define XPTextAlignmentCenter NSTextAlignmentCenter
+#define XPBitmapImageFileTypeTIFF NSBitmapImageFileTypeTIFF
 #define XPModalResponseOK NSModalResponseOK
 #define XPModalResponseCancel NSModalResponseCancel
 #else
+#define XPTextAlignmentCenter NSCenterTextAlignment
+#define XPBitmapImageFileTypeTIFF NSTIFFFileType
 #define XPModalResponseOK NSOKButton
 #define XPModalResponseCancel NSCancelButton
 #endif
@@ -251,7 +253,9 @@ NSArray* XPRunOpenPanel(NSString *extension);
 @end
 
 @interface NSWorkspace (CrossPlatform)
--(BOOL)XP_openFile:(NSString*)file;
+/// OpenStep basically was pre-internet and did not expect
+/// websites to be opened with this method.
+-(BOOL)XP_openWebURL:(NSString*)webURL;
 @end
 
 #ifdef XPSupportsNSBezierPath
@@ -273,6 +277,20 @@ NSArray* XPRunOpenPanel(NSString *extension);
 
 @interface NSTextView (CrossPlatform)
 -(void)XP_insertText:(id)string;
+@end
+
+// NSURL does not exist on OpenStep
+// so this category attempts to unify the API
+// between NSString and NSURL
+@interface XPURL (CrossPlatformURL)
+-(BOOL)XP_isFileURL;
+-(NSString*)XP_path;
+-(NSString*)XP_lastPathComponent;
+@end
+
+@interface NSData (CrossPlatform)
++(NSData*)XP_dataWithContentsOfURL:(XPURL*)url;
+-(BOOL)XP_writeToURL:(XPURL*)url atomically:(BOOL)atomically;
 @end
 
 // MARK: XPLogging

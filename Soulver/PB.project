@@ -44,8 +44,14 @@
             XPDocument.h, 
             XPRegularExpression.h
         ); 
-        IMAGES = ("about-image-512.tiff"); 
-        INTERFACES = (AccessoryWindows_42.nib, MainMenu_42.nib, SVRDocument_42.nib); 
+        IMAGES = (
+            "Images/about-image-512.tiff",
+            "Images/BlocksFullSizeSMlght.tiff",
+            "Images/NeXTLogoMed.tiff",
+            "Images/TagLine.tiff",
+            "Images/TM.tiff"
+        );
+        INTERFACES = (AccessoryWindows_42.nib, MainMenu_42.nib, SVRDocument_42.nib);
         OTHER_LINKED = (slre.c, Soulver_main.m); 
         OTHER_RESOURCES = (
             Localizable.strings, 
