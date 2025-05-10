@@ -53,9 +53,9 @@
 
 -(void)awakeFromNib;
 {
-  NSString *fileName = [self fileName];
+  XPURL *fileURL = [self XP_fileURL];
 
-  if ([XPDocument instancesRespondToSelector:@selector(awakeFromNib)]) {
+  if ([[self superclass] instancesRespondToSelector:@selector(awakeFromNib)]) {
     [super awakeFromNib];
   }
   
@@ -66,8 +66,8 @@
                                              object:[[[self viewController] modelController] model]];
 
   // Load the file
-  if ([fileName isAbsolutePath]) {
-    [self readFromFile:fileName ofType:[self fileType]];
+  if ([fileURL XP_isFileURL]) {
+    [self XP_readFromURL:fileURL ofType:[self fileType] error:NULL];
   }
 }
 
@@ -86,14 +86,30 @@
   return [modelController loadDataRepresentation:data ofType:type];
 }
 
+-(void)windowControllerWillLoadNib:(id)windowController;
+{
+#if XPSupportsNSDocument >= 1
+  // Setting this name before the NIB loads has better results
+  NSString *autosaveName = [self XP_nameForFrameAutosave];
+  NSCParameterAssert(windowController);
+  if (autosaveName) {
+    [windowController setWindowFrameAutosaveName:autosaveName];
+  }
+#endif
+}
+
 -(void)windowControllerDidLoadNib:(id)windowController;
 {
-  NSWindow *window = [self XP_windowForSheet];
-  NSString *fileName = [self fileName];
+  NSWindow *myWindow = [self XP_windowForSheet];
+  NSString *autosaveName = [self XP_nameForFrameAutosave];
+  // If using real NSDocument, this is already set, so we can check here
+  BOOL needsSetAutosaveName = autosaveName && ![[myWindow frameAutosaveName] isEqualToString:autosaveName];
+  id previousNextResponder = [myWindow nextResponder];
+
+  NSCParameterAssert(myWindow);
   
   // Add view controller into the responder chain
-  id previousNextResponder = [window nextResponder];
-  [window setNextResponder:[self viewController]];
+  [myWindow setNextResponder:[self viewController]];
   if ([self isKindOfClass:[NSResponder class]]) {
     [[self viewController] setNextResponder:(NSResponder*)self];
     [(NSResponder*)self setNextResponder:previousNextResponder];
@@ -101,10 +117,8 @@
     [[self viewController] setNextResponder:previousNextResponder];
   }
   
-  // Set the autosave name.
-  // This will probably need to be wrapped in a XPSupportsNSDocument check
-  if (fileName) {
-    [[self XP_windowForSheet] setFrameAutosaveName:fileName];
+  if (needsSetAutosaveName) {
+    [myWindow setFrameAutosaveName:autosaveName];
   }
 }
 
@@ -114,9 +128,9 @@
   BOOL isEdited = YES;
   NSData *diskData = nil;
   NSData *documentData = [self dataRepresentationOfType:[self fileType]];
-  NSString *fileName = [self fileName];
-  if ([fileName isAbsolutePath]) {
-    diskData = [NSData dataWithContentsOfFile:fileName];
+  XPURL *fileURL = [self XP_fileURL];
+  if ([fileURL XP_isFileURL]) {
+    diskData = [NSData XP_dataWithContentsOfURL:fileURL];
     isEdited = ![diskData isEqualToData:documentData];
   } else if (documentData == nil || [documentData length] == 0) {
     isEdited = NO;
@@ -129,7 +143,8 @@
 -(void)dealloc;
 {
   XPLogDebug1(@"DEALLOC: %@", self);
-#ifndef XPSupportsNSDocument
+#if XPSupportsNSDocument == 0
+  // Nib Lifecycle differs when using NSDocument
   [_viewController release];
 #endif
   _viewController = nil;

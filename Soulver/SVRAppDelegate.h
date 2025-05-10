@@ -31,7 +31,11 @@
 #import "SVRDocument.h"
 #import "SVRAccessoryWindowsOwner.h"
 
+#ifdef XPSupportsFormalProtocols
+@interface SVRAppDelegate: NSObject <NSApplicationDelegate>
+#else
 @interface SVRAppDelegate: NSObject
+#endif
 {
   mm_new NSMutableSet *_openDocuments;
   mm_new SVRAccessoryWindowsOwner *_accessoryWindowsOwner;
@@ -54,22 +58,29 @@
 -(void)applicationWillFinishLaunching:(NSNotification*)aNotification;
 @end
 
-#ifndef XPSupportsNSDocument
 @interface SVRAppDelegate (PreDocument)
 
 // MARK: Properties
 -(NSMutableSet*)openDocuments;
 
 // MARK: IBActions
--(IBAction)newDocument:(id)sender;
--(IBAction)openDocument:(id)sender;
+-(IBAction)__newDocument:(id)sender;
+-(IBAction)__openDocument:(id)sender;
 
 // MARK: Handle Application Events
--(BOOL)applicationShouldTerminate:(NSApplication *)sender;
+-(BOOL)__applicationShouldTerminate:(NSApplication *)sender;
 -(BOOL)__applicationShouldTerminateAfterReviewingAllDocuments:(NSApplication*)sender;
+-(BOOL)__application:(NSApplication *)sender openFile:(NSString *)filename;
+-(BOOL)__applicationOpenUntitledFile:(NSApplication *)sender;
+-(void)__windowWillCloseNotification:(NSNotification*)aNotification;
+
+// MARK: Pre-NSDocument Stubs
+#if XPSupportsNSDocument == 0
+-(IBAction)newDocument:(id)sender;
+-(IBAction)openDocument:(id)sender;
+-(BOOL)applicationShouldTerminate:(NSApplication *)sender;
 -(BOOL)application:(NSApplication *)sender openFile:(NSString *)filename;
 -(BOOL)applicationOpenUntitledFile:(NSApplication *)sender;
--(void)windowWillCloseNotification:(NSNotification*)aNotification;
+#endif
 
 @end
-#endif

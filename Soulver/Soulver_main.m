@@ -32,11 +32,8 @@
 #import "TestsIntegration.h"
 #import "TestsUnit.h"
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-parameter"
 int main(int argc, const char *argv[]) {
-#pragma clang diagnostic pop
-    
+  
   // MARK: Boot Sequence
   // 1. Warn when build includes features that should not be in release build
 #if TESTING==1

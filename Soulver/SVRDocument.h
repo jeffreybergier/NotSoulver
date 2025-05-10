@@ -32,10 +32,14 @@
 #import "XPDocument.h"
 #import "SVRDocumentViewController.h"
 
-@interface SVRDocument: XPDocument
+#if XPSupportsNSDocument >= 1
+@interface SVRDocument: NSDocument
+#else
+@interface SVRDocument: NSDocumentLegacyImplementation
+#endif
 {
   // Nib Lifecycle differs when using NSDocument
-#ifdef XPSupportsNSDocument
+#if XPSupportsNSDocument >= 1
   mm_unretain IBOutlet SVRDocumentViewController *_viewController;
 #else
   mm_retain IBOutlet SVRDocumentViewController *_viewController;

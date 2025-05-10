@@ -30,22 +30,35 @@
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
 
-#ifdef XPSupportsNSDocument
+#define XPDocument id<XPDocumentProtocol>
 
-#define XPDocument NSDocument
-@interface NSDocument (CrossPlatform)
+@protocol XPDocumentProtocol <NSObject>
+
+-(BOOL)XP_isDocumentEdited;
+-(XPURL*)XP_fileURL;
+-(NSString*)XP_nameForFrameAutosave;
 -(NSWindow*)XP_windowForSheet;
+-(void)XP_showWindows;
+-(void)XP_setFileExtension:(NSString*)type;
+-(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
+
 @end
 
-#else
+#if XPSupportsNSDocument >= 1
+@interface NSDocument (CrossPlatform) <XPDocumentProtocol>
+@end
+#endif
 
 // This is a best effort implementation of NSDocument only for use in OpenStep.
 // Its insanely minimal because it won't be used once Mac OS X Ships
-@interface XPDocument: NSResponder
+#ifdef XPSupportsFormalProtocols
+@interface NSDocumentLegacyImplementation: NSResponder <XPDocumentProtocol, NSWindowDelegate>
+#else
+@interface NSDocumentLegacyImplementation: NSResponder <XPDocumentProtocol>
+#endif
 {
-  /// Named without underscore for NSDocument compatibility
-  mm_retain IBOutlet NSWindow *window;
-  mm_copy   NSString *_fileName;
+  mm_retain IBOutlet NSWindow *window; // Named without underscore for NSDocument compatibility
+  mm_copy   XPURL    *_fileURL;
   mm_copy   NSString *_fileType;
   mm_copy   NSString *_fileExtension;
   BOOL _isNibLoaded;
@@ -60,7 +73,7 @@
 
 /// Designated Initializer.  Inits an "empty" document.
 -(id)init;
--(id)initWithContentsOfFile:(NSString*)fileName ofType:(NSString*)fileType;
+-(id)initWithContentsOfURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
 
 // MARK: Window Management
 
@@ -69,16 +82,16 @@
 -(NSString*)windowNibName;
 /// Loads the NIB if needed and shows the window
 -(void)showWindows;
-/// Return YES to allow the document to close
--(BOOL)windowShouldClose:(id)sender;
 /// _window should be set as IBOutlet
--(NSWindow*)XP_windowForSheet;
-// Nib Loading
+-(NSWindow*)windowForSheet;
+
+// MARK: One-Time Setup
+
 -(void)awakeFromNib;
 -(void)windowControllerWillLoadNib:(id)windowController;
 -(void)windowControllerDidLoadNib:(id)windowController;
 
-// MARK: Document Status
+// MARK: Document Properties
 
 /// For display in the window title. If NIL, "Untitled" shown
 -(NSString*)displayName;
@@ -86,18 +99,14 @@
 -(BOOL)isDocumentEdited;
 /// supported values are NSChangeDone (0) and NSChangeCleared (2)
 -(void)updateChangeCount:(int)change;
-/// Filename on disk is @"" if the document is not saved
--(NSString*)fileName;
--(void)setFileName:(NSString*)fileName;
+-(XPURL*)fileURL;
+-(void)setFileURL:(XPURL*)fileURL;
 -(NSString*)fileType;
 -(void)setFileType:(NSString*)type;
--(NSString*)fileExtension;
--(void)setFileExtension:(NSString*)type;
 
 // MARK: NSObject basics
-/// Returns hash of the filename or calls super
+
 -(XPUInteger)hash;
-/// Compares fileName or calls super
 -(BOOL)isEqual:(id)object;
 
 // MARK: Data reading and writing
@@ -107,32 +116,30 @@
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
 
 // No need to override, uses above 2 methods to read and write data
--(BOOL)writeToFile:(NSString*)fileName ofType:(NSString*)type;
--(BOOL)readFromFile:(NSString *)fileName ofType:(NSString *)type;
+-(BOOL)writeToURL:( XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
+-(BOOL)readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
 
 // MARK: Menu Handling
 
 /// Override to enable and disable menu items, default returns YES
--(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
 -(IBAction)saveDocument:(id)sender;
 -(IBAction)saveDocumentAs:(id)sender;
 -(IBAction)saveDocumentTo:(id)sender;
 -(IBAction)revertDocumentToSaved:(id)sender;
 
-// MARK: NSWindowDelegate
+// MARK: Customizations
 
--(void)windowDidResize:(NSNotification*)aNotification;
--(void)windowDidMove:(NSNotification*)aNotification;
+-(NSString*)__fileExtension;
+-(void)__setFileExtension:(NSString*)type;
+-(BOOL)windowShouldClose:(id)sender;
+-(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
 
 // MARK: Panels and Alerts
 
--(BOOL)prepareSavePanel:(NSSavePanel*)savePanel;
--(XPInteger)runModalSavePanel:(NSSavePanel*)savePanel;
--(XPInteger)__runModalSavePanelAndSetFileName;
--(XPAlertReturn)runUnsavedChangesAlert;
--(XPAlertReturn)runRevertToSavedAlert;
+-(BOOL)__prepareSavePanel:(NSSavePanel*)savePanel;
+-(XPInteger)__runModalSavePanel:(NSSavePanel*)savePanel;
+-(XPInteger)__runModalSavePanelAndSetFileURL;
+-(XPAlertReturn)__runUnsavedChangesAlert;
+-(XPAlertReturn)__runRevertToSavedAlert;
 
 @end
-
-#endif
-
