@@ -65,6 +65,29 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 
 @implementation NSUserDefaults (Soulver)
 
+#ifdef XPSupportsDarkMode
+// MARK: Subscribe to Dark Mode change notifications
++(void)initialize;
+{
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(appearanceDidChangeNotification:)
+                                                    // TODO: This is SPI and could break in the future
+                                               name:@"HIMenuBarAppearanceDidChangeNotification"
+                                             object:nil];
+}
+
++(void)appearanceDidChangeNotification:(NSNotification*)aNotification;
+{
+  // TODO: This hack allows NSApplication effectiveAppearance
+  // to get updated after the notification arrives
+  dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC));
+  dispatch_after(delay, dispatch_get_main_queue(), ^{
+    [[NSNotificationCenter defaultCenter] postNotificationName:SVRThemeDidChangeNotificationName
+                                                        object:[self standardUserDefaults]];
+  });
+}
+#endif
+
 // MARK: Basics
 
 -(NSString*)SVR_savePanelLastDirectory;

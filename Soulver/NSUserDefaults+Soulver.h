@@ -51,6 +51,13 @@ typedef XP_ENUM(XPInteger, SVRThemeFont) {
 };
 
 @interface NSUserDefaults (Soulver)
+
+#ifdef XPSupportsDarkMode
+// MARK: Subscribe to Dark Mode change notifications
++(void)initialize;
++(void)appearanceDidChangeNotification:(NSNotification*)aNotification;
+#endif
+
 // MARK: Basics
 -(NSString*)SVR_savePanelLastDirectory;
 -(BOOL)SVR_setSavePanelLastDirectory:(NSString*)newValue;
