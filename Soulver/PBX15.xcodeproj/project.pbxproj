@@ -62,9 +62,9 @@
 		8C5E58412DC346F200A1648E /* XPRegularExpression.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E802D91DCE00000020F /* XPRegularExpression.m */; };
 		8C5E58422DC346F200A1648E /* slre.c in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62EB32D91DDEB0000020F /* slre.c */; };
 		8C5E58442DC346F200A1648E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
-		8C7D8F372DC63681003F084F /* SVRDocument_X6.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C7D8F352DC63681003F084F /* SVRDocument_X6.xib */; };
-		8C7D8F3A2DC636BC003F084F /* MainMenu_X6.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C7D8F382DC636BC003F084F /* MainMenu_X6.xib */; };
-		8C7D8F3D2DC636CF003F084F /* AccessoryWindows_X6.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C7D8F3B2DC636CF003F084F /* AccessoryWindows_X6.xib */; };
+		8C7D8F372DC63681003F084F /* SVRDocument_X15.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C7D8F352DC63681003F084F /* SVRDocument_X15.xib */; };
+		8C7D8F3A2DC636BC003F084F /* MainMenu_X15.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C7D8F382DC636BC003F084F /* MainMenu_X15.xib */; };
+		8C7D8F3D2DC636CF003F084F /* AccessoryWindows_X15.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C7D8F3B2DC636CF003F084F /* AccessoryWindows_X15.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,11 +82,11 @@
 		8C4D1DFF2DC7D1F80060CFBA /* TM.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = TM.tiff; path = Images/TM.tiff; sourceTree = "<group>"; };
 		8C5B4ECA2DC10C7B002C87B3 /* TestUnitBezierPath-MANUAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "TestUnitBezierPath-MANUAL.tiff"; sourceTree = SOURCE_ROOT; };
 		8C5B4ECB2DC10C7B002C87B3 /* TestUnitBezierPath-REAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "TestUnitBezierPath-REAL.tiff"; sourceTree = SOURCE_ROOT; };
-		8C5E58492DC346F200A1648E /* Info_X6.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info_X6.plist; sourceTree = "<group>"; };
+		8C5E58492DC346F200A1648E /* Info_X15.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info_X15.plist; sourceTree = "<group>"; };
 		8C5E584A2DC346F200A1648E /* Soulver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Soulver.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		8C7D8F362DC63681003F084F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/SVRDocument_X6.xib; sourceTree = "<group>"; };
-		8C7D8F392DC636BC003F084F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu_X6.xib; sourceTree = "<group>"; };
-		8C7D8F3C2DC636CF003F084F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/AccessoryWindows_X6.xib; sourceTree = "<group>"; };
+		8C7D8F362DC63681003F084F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/SVRDocument_X15.xib; sourceTree = "<group>"; };
+		8C7D8F392DC636BC003F084F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu_X15.xib; sourceTree = "<group>"; };
+		8C7D8F3C2DC636CF003F084F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/AccessoryWindows_X15.xib; sourceTree = "<group>"; };
 		8C9A4EDF2D93CD2700A80066 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/AccessoryWindows_X2.nib; sourceTree = "<group>"; };
 		8CA8D0392DC48A43007B1663 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/SVRDocument_X2.nib; sourceTree = "<group>"; };
 		8CD62E502D91DB730000020F /* Soulver_main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = Soulver_main.m; sourceTree = "<group>"; };
@@ -145,6 +145,11 @@
 		8CD62ED92D91ECB40000020F /* h.template */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = h.template; sourceTree = "<group>"; };
 		8CD62EDA2D91ECB40000020F /* m.template */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = m.template; sourceTree = "<group>"; };
 		8CD632692D91FF0F0000020F /* .gdbinit */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = .gdbinit; sourceTree = "<group>"; };
+		8CEE14972DD04AFE00DB6BD6 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/SVRDocument_X6.xib; sourceTree = "<group>"; };
+		8CEE14992DD04B0900DB6BD6 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu_X6.xib; sourceTree = "<group>"; };
+		8CEE149B2DD04B1500DB6BD6 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/AccessoryWindows_X6.xib; sourceTree = "<group>"; };
+		8CEE14A12DD0735D00DB6BD6 /* Info_X6.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info_X6.plist; sourceTree = "<group>"; };
+		8CEE14A22DD0735D00DB6BD6 /* Info_X4.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info_X4.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,7 +200,9 @@
 				8CD62EB02D91DD420000020F /* Legacy */,
 				2A37F4C3FDCFA73011CA2CEA /* Frameworks */,
 				19C28FB0FE9D524F11CA2CBB /* Products */,
-				8C5E58492DC346F200A1648E /* Info_X6.plist */,
+				8CEE14A22DD0735D00DB6BD6 /* Info_X4.plist */,
+				8CEE14A12DD0735D00DB6BD6 /* Info_X6.plist */,
+				8C5E58492DC346F200A1648E /* Info_X15.plist */,
 			);
 			name = Soulver;
 			sourceTree = "<group>";
@@ -257,13 +264,16 @@
 				089C165FFE840EACC02AAC07 /* InfoPlist.strings */,
 				8CD62EB92D91DF290000020F /* MainMenu_42.nib */,
 				2A37F4B6FDCFA73011CA2CEA /* MainMenu_X2.nib */,
-				8C7D8F382DC636BC003F084F /* MainMenu_X6.xib */,
+				8CEE14982DD04B0900DB6BD6 /* MainMenu_X6.xib */,
+				8C7D8F382DC636BC003F084F /* MainMenu_X15.xib */,
 				8CD62EB72D91DF290000020F /* AccessoryWindows_42.nib */,
 				8C9A4EDE2D93CD2700A80066 /* AccessoryWindows_X2.nib */,
-				8C7D8F3B2DC636CF003F084F /* AccessoryWindows_X6.xib */,
+				8CEE149A2DD04B1500DB6BD6 /* AccessoryWindows_X6.xib */,
+				8C7D8F3B2DC636CF003F084F /* AccessoryWindows_X15.xib */,
 				8CD62EBB2D91DF290000020F /* SVRDocument_42.nib */,
 				8CA8D0382DC48A43007B1663 /* SVRDocument_X2.nib */,
-				8C7D8F352DC63681003F084F /* SVRDocument_X6.xib */,
+				8CEE14962DD04AFE00DB6BD6 /* SVRDocument_X6.xib */,
+				8C7D8F352DC63681003F084F /* SVRDocument_X15.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -413,9 +423,9 @@
 				8C5E582A2DC346F200A1648E /* Localizable.strings in Resources */,
 				8C5E582C2DC346F200A1648E /* TestUnitBezierPath-MANUAL.tiff in Resources */,
 				8C5E582D2DC346F200A1648E /* TestUnitBezierPath-REAL.tiff in Resources */,
-				8C7D8F372DC63681003F084F /* SVRDocument_X6.xib in Resources */,
-				8C7D8F3A2DC636BC003F084F /* MainMenu_X6.xib in Resources */,
-				8C7D8F3D2DC636CF003F084F /* AccessoryWindows_X6.xib in Resources */,
+				8C7D8F372DC63681003F084F /* SVRDocument_X15.xib in Resources */,
+				8C7D8F3A2DC636BC003F084F /* MainMenu_X15.xib in Resources */,
+				8C7D8F3D2DC636CF003F084F /* AccessoryWindows_X15.xib in Resources */,
 				8C4D1E002DC7D1F80060CFBA /* about-image-512.tiff in Resources */,
 				8C4D1E012DC7D1F80060CFBA /* AppIcon.icns in Resources */,
 				8C4D1E022DC7D1F80060CFBA /* BlocksFullSizeSMlght.tiff in Resources */,
@@ -474,28 +484,28 @@
 			name = MainMenu_X2.nib;
 			sourceTree = "<group>";
 		};
-		8C7D8F352DC63681003F084F /* SVRDocument_X6.xib */ = {
+		8C7D8F352DC63681003F084F /* SVRDocument_X15.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				8C7D8F362DC63681003F084F /* English */,
 			);
-			name = SVRDocument_X6.xib;
+			name = SVRDocument_X15.xib;
 			sourceTree = "<group>";
 		};
-		8C7D8F382DC636BC003F084F /* MainMenu_X6.xib */ = {
+		8C7D8F382DC636BC003F084F /* MainMenu_X15.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				8C7D8F392DC636BC003F084F /* English */,
 			);
-			name = MainMenu_X6.xib;
+			name = MainMenu_X15.xib;
 			sourceTree = "<group>";
 		};
-		8C7D8F3B2DC636CF003F084F /* AccessoryWindows_X6.xib */ = {
+		8C7D8F3B2DC636CF003F084F /* AccessoryWindows_X15.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				8C7D8F3C2DC636CF003F084F /* English */,
 			);
-			name = AccessoryWindows_X6.xib;
+			name = AccessoryWindows_X15.xib;
 			sourceTree = "<group>";
 		};
 		8C9A4EDE2D93CD2700A80066 /* AccessoryWindows_X2.nib */ = {
@@ -544,6 +554,30 @@
 				8CD62EC12D91DF730000020F /* English */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		8CEE14962DD04AFE00DB6BD6 /* SVRDocument_X6.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8CEE14972DD04AFE00DB6BD6 /* English */,
+			);
+			name = SVRDocument_X6.xib;
+			sourceTree = "<group>";
+		};
+		8CEE14982DD04B0900DB6BD6 /* MainMenu_X6.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8CEE14992DD04B0900DB6BD6 /* English */,
+			);
+			name = MainMenu_X6.xib;
+			sourceTree = "<group>";
+		};
+		8CEE149A2DD04B1500DB6BD6 /* AccessoryWindows_X6.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8CEE149B2DD04B1500DB6BD6 /* English */,
+			);
+			name = AccessoryWindows_X6.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -700,7 +734,7 @@
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = Info_X6.plist;
+				INFOPLIST_FILE = Info_X15.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = Soulver;
@@ -750,7 +784,7 @@
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = Info_X6.plist;
+				INFOPLIST_FILE = Info_X15.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = Soulver;
@@ -803,7 +837,7 @@
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = Info_X6.plist;
+				INFOPLIST_FILE = Info_X15.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = Soulver;
