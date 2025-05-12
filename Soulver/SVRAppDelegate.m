@@ -89,6 +89,9 @@
   [NSFontManager setFontManagerFactory:[SVRFontManager class]];
   // Configure Accessory Windows
   _accessoryWindowsOwner = [[SVRAccessoryWindowsOwner alloc] init];
+  // Observe Dark Mode
+  [self beginObservingEffectiveAppearance:app];
+  
   if (!NSClassFromString(@"NSDocument")) {
     // Register for Notifications
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -98,6 +101,11 @@
   }
   // Announce
   XPLogDebug1(@"%@ applicationWillFinishLaunching:", self);
+}
+
+-(void)applicationWillTerminate:(NSNotification*)aNotification;
+{
+  [self endObservingEffectiveAppearance:[aNotification object]];
 }
 
 @end
@@ -241,5 +249,50 @@
   return [self __applicationOpenUntitledFile:sender];
 }
 #endif
+
+@end
+
+NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearance";
+
+@implementation SVRAppDelegate (DarkModeObserving)
+
+-(void)beginObservingEffectiveAppearance:(NSApplication*)app;
+{
+#ifdef XPSupportsDarkMode
+  [app addObserver:self 
+        forKeyPath:SVRApplicationEffectiveAppearanceKeyPath
+           options:NSKeyValueObservingOptionNew
+           context:NULL];
+#else
+  XPLogDebug1(@"%@: effectiveAppearance: System does not support dark mode", app);
+#endif
+}
+
+-(void)endObservingEffectiveAppearance:(NSApplication*)app;
+{
+#ifdef XPSupportsDarkMode
+  [app removeObserver:self
+           forKeyPath:SVRApplicationEffectiveAppearanceKeyPath];
+#endif
+}
+
+-(void)observeValueForKeyPath:(NSString*)keyPath
+                     ofObject:(id)object
+                       change:(NSDictionary<NSKeyValueChangeKey,id>*)change
+                      context:(void*)context;
+{
+  if ([keyPath isEqualToString:SVRApplicationEffectiveAppearanceKeyPath]) {
+    XPLogAlwys1(@"%@: effectiveAppearance: Changed", object);
+    [[NSNotificationCenter defaultCenter] postNotificationName:SVRThemeDidChangeNotificationName
+                                                        object:[NSUserDefaults standardUserDefaults]];
+  } else {
+#ifdef XPSupportsDarkMode
+    [super observeValueForKeyPath:keyPath
+                         ofObject:object
+                           change:change
+                          context:context];
+#endif
+  }
+}
 
 @end

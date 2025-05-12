@@ -56,6 +56,7 @@
 
 @interface SVRAppDelegate (NSApplicationDelegate)
 -(void)applicationWillFinishLaunching:(NSNotification*)aNotification;
+-(void)applicationWillTerminate:(NSNotification *)aNotification;
 @end
 
 @interface SVRAppDelegate (PreDocument)
@@ -82,5 +83,16 @@
 -(BOOL)application:(NSApplication *)sender openFile:(NSString *)filename;
 -(BOOL)applicationOpenUntitledFile:(NSApplication *)sender;
 #endif
+
+@end
+
+@interface SVRAppDelegate (DarkModeObserving)
+
+-(void)beginObservingEffectiveAppearance:(NSApplication*)app;
+-(void)endObservingEffectiveAppearance:(NSApplication*)app;
+-(void)observeValueForKeyPath:(NSString*)keyPath
+                     ofObject:(id)object
+                       change:(NSDictionary<NSKeyValueChangeKey,id>*)change
+                      context:(void*)context;
 
 @end
