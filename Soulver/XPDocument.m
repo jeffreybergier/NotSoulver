@@ -198,14 +198,7 @@ NSPoint XPDocumentPointForCascading;
 
 -(void)awakeFromNib;
 {
-  XPURL    *fileURL  = [self fileURL];
-  NSString *fileType = [self fileType];
   NSWindow *myWindow = [self windowForSheet];
-  
-  // Read the data
-  if ([fileURL XP_isFileURL]) {
-    [self readFromURL:fileURL ofType:fileType error:NULL];
-  }
   
   if (![self XP_nameForFrameAutosave]) {
     XPDocumentPointForCascading = [myWindow cascadeTopLeftFromPoint:XPDocumentPointForCascading];

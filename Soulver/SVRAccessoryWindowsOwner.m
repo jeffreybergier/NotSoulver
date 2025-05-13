@@ -73,7 +73,9 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
 // MARK: Init
 -(id)init;
 {
-#ifdef MAC_OS_X_VERSION_10_6
+#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 110000
+  NSString *nibName = @"AccessoryWindows_X15";
+#elif defined(MAC_OS_X_VERSION_10_6)
   NSString *nibName = @"AccessoryWindows_X6";
 #elif defined(MAC_OS_X_VERSION_10_2)
   NSString *nibName = @"AccessoryWindows_X2";

@@ -51,6 +51,7 @@ typedef XP_ENUM(XPInteger, SVRThemeFont) {
 };
 
 @interface NSUserDefaults (Soulver)
+
 // MARK: Basics
 -(NSString*)SVR_savePanelLastDirectory;
 -(BOOL)SVR_setSavePanelLastDirectory:(NSString*)newValue;
