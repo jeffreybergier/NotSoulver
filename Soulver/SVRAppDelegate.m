@@ -278,7 +278,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 
 -(void)observeValueForKeyPath:(NSString*)keyPath
                      ofObject:(id)object
-                       change:(NSDictionary<NSKeyValueChangeKey,id>*)change
+                       change:(NSDictionary*)change
                       context:(void*)context;
 {
   if ([keyPath isEqualToString:SVRApplicationEffectiveAppearanceKeyPath]) {

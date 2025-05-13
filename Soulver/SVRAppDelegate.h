@@ -92,7 +92,7 @@
 -(void)endObservingEffectiveAppearance:(NSApplication*)app;
 -(void)observeValueForKeyPath:(NSString*)keyPath
                      ofObject:(id)object
-                       change:(NSDictionary<NSKeyValueChangeKey,id>*)change
+                       change:(NSDictionary*)change
                       context:(void*)context;
 
 @end
