@@ -1,0 +1,1043 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="NO">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="SVRAccessoryWindowsOwner">
+            <connections>
+                <outlet property="_aboutTextView" destination="459" id="460"/>
+                <outlet property="_aboutWindow" destination="197" id="201"/>
+                <outlet property="_keypadPanel" destination="156" id="196"/>
+                <outlet property="_settingsWindow" destination="199" id="202"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" deferred="NO" hidesOnDeactivate="YES" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="156" userLabel="KeypadPanel" customClass="NSPanel">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" utility="YES" texturedBackground="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="765" y="432" width="142" height="298"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+            <value key="minSize" type="size" width="84.433999999999997" height="8"/>
+            <view key="contentView" id="158">
+                <rect key="frame" x="0.0" y="0.0" width="142" height="298"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button fixedFrame="YES" tag="1" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="155">
+                        <rect key="frame" x="6" y="84" width="40" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="bevel" title="1" bezelStyle="regularSquare" alignment="center" borderStyle="border" tag="1" inset="2" id="477">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="14" name="Monaco"/>
+                            <string key="keyEquivalent">1</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="keypadAppend:" target="-1" id="175"/>
+                        </connections>
+                    </button>
+                    <button fixedFrame="YES" tag="14" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="153">
+                        <rect key="frame" x="50" y="8" width="84" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="bevel" title="=" bezelStyle="regularSquare" alignment="center" borderStyle="border" tag="14" inset="2" id="475">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="14" name="Courier"/>
+                            <string key="keyEquivalent">=</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="keypadAppend:" target="-1" id="170"/>
+                        </connections>
+                    </button>
+                    <button fixedFrame="YES" tag="19" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="141">
+                        <rect key="frame" x="50" y="228" width="40" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="bevel" title="/" bezelStyle="regularSquare" alignment="center" borderStyle="border" tag="19" inset="2" id="463">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="14" name="Monaco"/>
+                            <string key="keyEquivalent">/</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="keypadAppend:" target="-1" id="188"/>
+                        </connections>
+                    </button>
+                    <button fixedFrame="YES" tag="22" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="144">
+                        <rect key="frame" x="50" y="262" width="40" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="bevel" title="√" bezelStyle="regularSquare" alignment="center" borderStyle="border" tag="22" inset="2" id="466">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="keypadAppend:" target="-1" id="191"/>
+                        </connections>
+                    </button>
+                    <button fixedFrame="YES" tag="3" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="148">
+                        <rect key="frame" x="94" y="84" width="40" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="bevel" title="3" bezelStyle="regularSquare" alignment="center" borderStyle="border" tag="3" inset="2" id="470">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="14" name="Monaco"/>
+                            <string key="keyEquivalent">3</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="keypadAppend:" target="-1" id="177"/>
+                        </connections>
+                    </button>
+                    <button fixedFrame="YES" tag="17" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="149">
+                        <rect key="frame" x="94" y="194" width="40" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="bevel" title=")" bezelStyle="regularSquare" alignment="center" borderStyle="border" tag="17" inset="2" id="471">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="14" name="Monaco"/>
+                            <string key="keyEquivalent">)</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="keypadAppend:" target="-1" id="186"/>
+                        </connections>
+                    </button>
+                    <button fixedFrame="YES" tag="21" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="157">
+                        <rect key="frame" x="6" y="262" width="40" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="bevel" title="^" bezelStyle="regularSquare" alignment="center" borderStyle="border" tag="21" inset="2" id="478">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="14" name="Monaco"/>
+                            <string key="keyEquivalent">^</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="keypadAppend:" target="-1" id="190"/>
+                        </connections>
+                    </button>
+                    <button fixedFrame="YES" tag="10" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="152">
+                        <rect key="frame" x="50" y="50" width="40" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="bevel" title="0" bezelStyle="regularSquare" alignment="center" borderStyle="border" tag="10" inset="2" id="474">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="14" name="Monaco"/>
+                            <string key="keyEquivalent">0</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="keypadAppend:" target="-1" id="173"/>
+                        </connections>
+                    </button>
+                    <button fixedFrame="YES" tag="18" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="142">
+                        <rect key="frame" x="6" y="228" width="40" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="bevel" title="*" bezelStyle="regularSquare" alignment="center" borderStyle="border" tag="18" inset="2" id="464">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="14" name="Monaco"/>
+                            <string key="keyEquivalent">*</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="keypadAppend:" target="-1" id="187"/>
+                        </connections>
+                    </button>
+                    <button fixedFrame="YES" tag="12" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="150">
+                        <rect key="frame" x="94" y="50" width="40" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="bevel" title="." bezelStyle="regularSquare" alignment="center" borderStyle="border" tag="12" inset="2" id="472">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="14" name="Monaco"/>
+                            <string key="keyEquivalent">.</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="keypadAppend:" target="-1" id="174"/>
+                        </connections>
+                    </button>
+                    <button fixedFrame="YES" tag="11" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="159">
+                        <rect key="frame" x="6" y="50" width="40" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="bevel" title="-" bezelStyle="regularSquare" alignment="center" borderStyle="border" tag="11" inset="2" id="479">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="14" name="Monaco"/>
+                            <string key="keyEquivalent">_</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="keypadAppend:" target="-1" id="172"/>
+                        </connections>
+                    </button>
+                    <button fixedFrame="YES" tag="8" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="143">
+                        <rect key="frame" x="50" y="152" width="40" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="bevel" title="8" bezelStyle="regularSquare" alignment="center" borderStyle="border" tag="8" inset="2" id="465">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="14" name="Monaco"/>
+                            <string key="keyEquivalent">8</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="keypadAppend:" target="-1" id="182"/>
+                        </connections>
+                    </button>
+                    <button fixedFrame="YES" tag="6" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="140">
+                        <rect key="frame" x="94" y="118" width="40" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="bevel" title="6" bezelStyle="regularSquare" alignment="center" borderStyle="border" tag="6" inset="2" id="462">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="14" name="Monaco"/>
+                            <string key="keyEquivalent">6</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="keypadAppend:" target="-1" id="180"/>
+                        </connections>
+                    </button>
+                    <button fixedFrame="YES" tag="4" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="162">
+                        <rect key="frame" x="6" y="118" width="40" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="bevel" title="4" bezelStyle="regularSquare" alignment="center" borderStyle="border" tag="4" inset="2" id="482">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="14" name="Monaco"/>
+                            <string key="keyEquivalent">4</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="keypadAppend:" target="-1" id="178"/>
+                        </connections>
+                    </button>
+                    <button fixedFrame="YES" tag="23" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="146">
+                        <rect key="frame" x="94" y="262" width="40" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="bevel" title="log" bezelStyle="regularSquare" alignment="center" borderStyle="border" tag="23" inset="2" id="468">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="smallSystem"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="keypadAppend:" target="-1" id="192"/>
+                        </connections>
+                    </button>
+                    <button fixedFrame="YES" tag="20" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="151">
+                        <rect key="frame" x="94" y="228" width="40" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="bevel" title="(" bezelStyle="regularSquare" alignment="center" borderStyle="border" tag="20" inset="2" id="473">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="14" name="Monaco"/>
+                            <string key="keyEquivalent">(</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="keypadAppend:" target="-1" id="189"/>
+                        </connections>
+                    </button>
+                    <button fixedFrame="YES" tag="13" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="160">
+                        <rect key="frame" x="6" y="8" width="40" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="bevel" title="←" bezelStyle="regularSquare" alignment="center" borderStyle="border" tag="13" inset="2" id="480">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="14" name="Monaco"/>
+                            <string key="keyEquivalent"></string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="keypadAppend:" target="-1" id="171"/>
+                        </connections>
+                    </button>
+                    <button fixedFrame="YES" tag="2" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="145">
+                        <rect key="frame" x="50" y="84" width="40" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="bevel" title="2" bezelStyle="regularSquare" alignment="center" borderStyle="border" tag="2" inset="2" id="467">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="14" name="Monaco"/>
+                            <string key="keyEquivalent">2</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="keypadAppend:" target="-1" id="176"/>
+                        </connections>
+                    </button>
+                    <button fixedFrame="YES" tag="7" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="163">
+                        <rect key="frame" x="6" y="152" width="40" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="bevel" title="7" bezelStyle="regularSquare" alignment="center" borderStyle="border" tag="7" inset="2" id="483">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="14" name="Monaco"/>
+                            <string key="keyEquivalent">7</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="keypadAppend:" target="-1" id="181"/>
+                        </connections>
+                    </button>
+                    <button fixedFrame="YES" tag="9" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="161">
+                        <rect key="frame" x="94" y="152" width="40" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="bevel" title="9" bezelStyle="regularSquare" alignment="center" borderStyle="border" tag="9" inset="2" id="481">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="14" name="Courier"/>
+                            <string key="keyEquivalent">9</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="keypadAppend:" target="-1" id="183"/>
+                        </connections>
+                    </button>
+                    <button fixedFrame="YES" tag="5" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="147">
+                        <rect key="frame" x="50" y="118" width="40" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="bevel" title="5" bezelStyle="regularSquare" alignment="center" borderStyle="border" tag="5" inset="2" id="469">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="14" name="Monaco"/>
+                            <string key="keyEquivalent">5</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="keypadAppend:" target="-1" id="179"/>
+                        </connections>
+                    </button>
+                    <button fixedFrame="YES" tag="16" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="164">
+                        <rect key="frame" x="50" y="194" width="40" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="bevel" title="-" bezelStyle="regularSquare" alignment="center" borderStyle="border" tag="16" inset="2" id="484">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="14" name="Monaco"/>
+                            <string key="keyEquivalent">-</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="keypadAppend:" target="-1" id="185"/>
+                        </connections>
+                    </button>
+                    <button fixedFrame="YES" tag="15" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="154">
+                        <rect key="frame" x="6" y="194" width="40" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="bevel" title="+" bezelStyle="regularSquare" alignment="center" borderStyle="border" tag="15" inset="2" id="476">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="14" name="Monaco"/>
+                            <string key="keyEquivalent">+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="keypadAppend:" target="-1" id="184"/>
+                        </connections>
+                    </button>
+                </subviews>
+            </view>
+            <connections>
+                <outlet property="initialFirstResponder" destination="153" id="165"/>
+            </connections>
+            <point key="canvasLocation" x="140" y="146"/>
+        </window>
+        <window title="About" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="197" userLabel="AboutWindow">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="47" y="404" width="480" height="320"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+            <value key="minSize" type="size" width="40" height="2"/>
+            <view key="contentView" id="198">
+                <rect key="frame" x="0.0" y="0.0" width="480" height="320"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" preferredMaxLayoutWidth="309" translatesAutoresizingMaskIntoConstraints="NO" id="415">
+                        <rect key="frame" x="8" y="30" width="313" height="13"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <textFieldCell key="cell" alignment="left" title="This application is dedicated to my grandmother | 1932-2024" id="486">
+                            <font key="font" size="10" name="Helvetica"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" preferredMaxLayoutWidth="220" translatesAutoresizingMaskIntoConstraints="NO" id="441">
+                        <rect key="frame" x="45" y="251" width="224" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <textFieldCell key="cell" alignment="center" title="[Not]Soulver" id="490">
+                            <font key="font" size="36" name="Helvetica-Bold"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" preferredMaxLayoutWidth="220" translatesAutoresizingMaskIntoConstraints="NO" id="442">
+                        <rect key="frame" x="45" y="184" width="224" height="57"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <textFieldCell key="cell" alignment="center" id="491">
+                            <font key="font" size="16" name="Helvetica"/>
+                            <string key="title">for OPENSTEP
+by Jeffrey Bergier
+2024</string>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <imageView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="404">
+                        <rect key="frame" x="328" y="168" width="144" height="144"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="about-image-512" id="485"/>
+                    </imageView>
+                    <box fixedFrame="YES" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="452">
+                        <rect key="frame" x="8" y="50" width="312" height="6"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <view key="contentView" id="eGw-vK-iqv">
+                            <rect key="frame" x="3" y="3" width="306" height="0.0"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        </view>
+                        <font key="titleFont" size="12" name="Helvetica"/>
+                    </box>
+                    <imageView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="417">
+                        <rect key="frame" x="7" y="8" width="225" height="18"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" image="TagLine" id="487"/>
+                    </imageView>
+                    <imageView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="418">
+                        <rect key="frame" x="144" y="13" width="22" height="17"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="TM" id="488"/>
+                    </imageView>
+                    <button fixedFrame="YES" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="443">
+                        <rect key="frame" x="328" y="8" width="144" height="46"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <buttonCell key="cell" type="square" title="View Source" bezelStyle="shadowlessSquare" image="NeXTLogoMed" imagePosition="leading" alignment="left" borderStyle="border" inset="2" id="492">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system" size="14"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="openSourceRepository:" target="-2" id="454"/>
+                        </connections>
+                    </button>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" preferredMaxLayoutWidth="309" translatesAutoresizingMaskIntoConstraints="NO" id="429">
+                        <rect key="frame" x="7" y="31" width="313" height="13"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <textFieldCell key="cell" alignment="left" title="This application is dedicated to my grandmother | 1932-2024" id="489">
+                            <font key="font" size="10" name="Helvetica"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </textFieldCell>
+                    </textField>
+                    <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="458">
+                        <rect key="frame" x="8" y="60" width="464" height="100"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <clipView key="contentView" id="Huy-pE-OfB">
+                            <rect key="frame" x="1" y="1" width="447" height="98"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                            <subviews>
+                                <textView editable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" usesFontPanel="YES" usesRuler="YES" spellingCorrection="YES" smartInsertDelete="YES" id="459">
+                                    <rect key="frame" x="0.0" y="0.0" width="446" height="98"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    <size key="minSize" width="464" height="98"/>
+                                    <size key="maxSize" width="464" height="10000000"/>
+                                    <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                </textView>
+                            </subviews>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </clipView>
+                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="529">
+                            <rect key="frame" x="-100" y="-100" width="87" height="18"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="530">
+                            <rect key="frame" x="448" y="1" width="15" height="98"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                    </scrollView>
+                </subviews>
+            </view>
+        </window>
+        <window title="Settings" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="199" userLabel="SettingsWindow">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="102" y="384" width="320" height="340"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+            <value key="minSize" type="size" width="121.527" height="5"/>
+            <view key="contentView" id="200">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="340"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <box fixedFrame="YES" boxType="secondary" borderType="bezel" title="Theme Colors" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="219">
+                        <rect key="frame" x="8" y="8" width="304" height="297"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <view key="contentView" id="GZo-Sh-8fp">
+                            <rect key="frame" x="3" y="3" width="298" height="291"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="207">
+                                    <rect key="frame" x="132" y="168" width="50" height="30"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <connections>
+                                        <action selector="colorChanged:" target="310" id="331"/>
+                                        <outlet property="nextKeyView" destination="254" id="379"/>
+                                    </connections>
+                                </colorWell>
+                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" preferredMaxLayoutWidth="116" translatesAutoresizingMaskIntoConstraints="NO" id="208">
+                                    <rect key="frame" x="5" y="142" width="120" height="17"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <textFieldCell key="cell" alignment="right" title="Carryover" id="493">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="209">
+                                    <rect key="frame" x="132" y="136" width="50" height="30"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <connections>
+                                        <action selector="colorChanged:" target="310" id="333"/>
+                                        <outlet property="nextKeyView" destination="247" id="382"/>
+                                    </connections>
+                                </colorWell>
+                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" preferredMaxLayoutWidth="116" translatesAutoresizingMaskIntoConstraints="NO" id="210">
+                                    <rect key="frame" x="5" y="110" width="120" height="17"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <textFieldCell key="cell" alignment="right" title="Normal Text" id="494">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="211">
+                                    <rect key="frame" x="132" y="104" width="50" height="30"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <connections>
+                                        <action selector="colorChanged:" target="310" id="335"/>
+                                        <outlet property="nextKeyView" destination="248" id="385"/>
+                                    </connections>
+                                </colorWell>
+                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" preferredMaxLayoutWidth="116" translatesAutoresizingMaskIntoConstraints="NO" id="212">
+                                    <rect key="frame" x="5" y="174" width="120" height="17"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <textFieldCell key="cell" alignment="right" title="Solution" id="495">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="213">
+                                    <rect key="frame" x="132" y="72" width="50" height="30"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <connections>
+                                        <action selector="colorChanged:" target="310" id="337"/>
+                                        <outlet property="nextKeyView" destination="253" id="388"/>
+                                    </connections>
+                                </colorWell>
+                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" preferredMaxLayoutWidth="116" translatesAutoresizingMaskIntoConstraints="NO" id="214">
+                                    <rect key="frame" x="5" y="78" width="120" height="17"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <textFieldCell key="cell" alignment="right" title="Error" id="496">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="215">
+                                    <rect key="frame" x="132" y="200" width="50" height="30"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <connections>
+                                        <action selector="colorChanged:" target="310" id="329"/>
+                                        <outlet property="nextKeyView" destination="250" id="376"/>
+                                    </connections>
+                                </colorWell>
+                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" preferredMaxLayoutWidth="116" translatesAutoresizingMaskIntoConstraints="NO" id="216">
+                                    <rect key="frame" x="5" y="206" width="120" height="17"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <textFieldCell key="cell" alignment="right" title="Operator" id="497">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="217">
+                                    <rect key="frame" x="132" y="232" width="50" height="30"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <connections>
+                                        <action selector="colorChanged:" target="310" id="327"/>
+                                        <outlet property="nextKeyView" destination="252" id="373"/>
+                                    </connections>
+                                </colorWell>
+                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" preferredMaxLayoutWidth="116" translatesAutoresizingMaskIntoConstraints="NO" id="218">
+                                    <rect key="frame" x="5" y="238" width="120" height="17"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <textFieldCell key="cell" alignment="right" title="Operand" id="498">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="230">
+                                    <rect key="frame" x="132" y="40" width="50" height="30"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <connections>
+                                        <action selector="colorChanged:" target="310" id="339"/>
+                                        <outlet property="nextKeyView" destination="249" id="391"/>
+                                    </connections>
+                                </colorWell>
+                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" preferredMaxLayoutWidth="116" translatesAutoresizingMaskIntoConstraints="NO" id="231">
+                                    <rect key="frame" x="5" y="46" width="120" height="17"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <textFieldCell key="cell" alignment="right" title="Insertion Point" id="499">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="233">
+                                    <rect key="frame" x="132" y="8" width="50" height="30"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <connections>
+                                        <action selector="colorChanged:" target="310" id="341"/>
+                                        <outlet property="nextKeyView" destination="251" id="394"/>
+                                    </connections>
+                                </colorWell>
+                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" preferredMaxLayoutWidth="116" translatesAutoresizingMaskIntoConstraints="NO" id="234">
+                                    <rect key="frame" x="5" y="14" width="120" height="17"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <textFieldCell key="cell" alignment="right" title="Background" id="500">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" preferredMaxLayoutWidth="52" translatesAutoresizingMaskIntoConstraints="NO" id="243">
+                                    <rect key="frame" x="129" y="265" width="56" height="14"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <textFieldCell key="cell" alignment="center" title="Light" id="501">
+                                        <font key="font" metaFont="smallSystem"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" preferredMaxLayoutWidth="52" translatesAutoresizingMaskIntoConstraints="NO" id="244">
+                                    <rect key="frame" x="184" y="265" width="56" height="14"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <textFieldCell key="cell" alignment="center" title="Dark" id="502">
+                                        <font key="font" metaFont="smallSystem"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <button fixedFrame="YES" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="246">
+                                    <rect key="frame" x="242" y="232" width="48" height="30"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <buttonCell key="cell" type="square" title="Reset" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" inset="2" id="503">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="smallSystem"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="colorReset:" target="310" id="319"/>
+                                        <outlet property="nextKeyView" destination="215" id="375"/>
+                                    </connections>
+                                </button>
+                                <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="247">
+                                    <rect key="frame" x="187" y="136" width="50" height="30"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <connections>
+                                        <action selector="colorChanged:" target="310" id="334"/>
+                                        <outlet property="nextKeyView" destination="257" id="383"/>
+                                    </connections>
+                                </colorWell>
+                                <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="248">
+                                    <rect key="frame" x="187" y="104" width="50" height="30"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <connections>
+                                        <action selector="colorChanged:" target="310" id="336"/>
+                                        <outlet property="nextKeyView" destination="258" id="386"/>
+                                    </connections>
+                                </colorWell>
+                                <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="249">
+                                    <rect key="frame" x="187" y="40" width="50" height="30"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <connections>
+                                        <action selector="colorChanged:" target="310" id="340"/>
+                                        <outlet property="nextKeyView" destination="260" id="392"/>
+                                    </connections>
+                                </colorWell>
+                                <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="250">
+                                    <rect key="frame" x="187" y="200" width="50" height="30"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <connections>
+                                        <action selector="colorChanged:" target="310" id="330"/>
+                                        <outlet property="nextKeyView" destination="255" id="377"/>
+                                    </connections>
+                                </colorWell>
+                                <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="251">
+                                    <rect key="frame" x="187" y="8" width="50" height="30"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <connections>
+                                        <action selector="colorChanged:" target="310" id="342"/>
+                                        <outlet property="nextKeyView" destination="261" id="395"/>
+                                    </connections>
+                                </colorWell>
+                                <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="252">
+                                    <rect key="frame" x="187" y="232" width="50" height="30"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <connections>
+                                        <action selector="colorChanged:" target="310" id="328"/>
+                                        <outlet property="nextKeyView" destination="246" id="374"/>
+                                    </connections>
+                                </colorWell>
+                                <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="253">
+                                    <rect key="frame" x="187" y="72" width="50" height="30"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <connections>
+                                        <action selector="colorChanged:" target="310" id="338"/>
+                                        <outlet property="nextKeyView" destination="259" id="389"/>
+                                    </connections>
+                                </colorWell>
+                                <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="254">
+                                    <rect key="frame" x="187" y="168" width="50" height="30"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <connections>
+                                        <action selector="colorChanged:" target="310" id="332"/>
+                                        <outlet property="nextKeyView" destination="256" id="380"/>
+                                    </connections>
+                                </colorWell>
+                                <button fixedFrame="YES" tag="1" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="255">
+                                    <rect key="frame" x="242" y="200" width="48" height="30"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <buttonCell key="cell" type="square" title="Reset" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" tag="1" inset="2" id="504">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="smallSystem"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="colorReset:" target="310" id="320"/>
+                                        <outlet property="nextKeyView" destination="207" id="378"/>
+                                    </connections>
+                                </button>
+                                <button fixedFrame="YES" tag="3" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="256">
+                                    <rect key="frame" x="242" y="168" width="48" height="30"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <buttonCell key="cell" type="square" title="Reset" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" tag="3" inset="2" id="505">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="smallSystem"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="colorReset:" target="310" id="321"/>
+                                        <outlet property="nextKeyView" destination="209" id="381"/>
+                                    </connections>
+                                </button>
+                                <button fixedFrame="YES" tag="4" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="257">
+                                    <rect key="frame" x="242" y="136" width="48" height="30"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <buttonCell key="cell" type="square" title="Reset" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" tag="4" inset="2" id="506">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="smallSystem"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="colorReset:" target="310" id="322"/>
+                                        <outlet property="nextKeyView" destination="211" id="384"/>
+                                    </connections>
+                                </button>
+                                <button fixedFrame="YES" tag="6" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="258">
+                                    <rect key="frame" x="242" y="104" width="48" height="30"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <buttonCell key="cell" type="square" title="Reset" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" tag="6" inset="2" id="507">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="smallSystem"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="colorReset:" target="310" id="323"/>
+                                        <outlet property="nextKeyView" destination="213" id="387"/>
+                                    </connections>
+                                </button>
+                                <button fixedFrame="YES" tag="5" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="259">
+                                    <rect key="frame" x="242" y="72" width="48" height="30"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <buttonCell key="cell" type="square" title="Reset" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" tag="5" inset="2" id="508">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="smallSystem"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="colorReset:" target="310" id="324"/>
+                                        <outlet property="nextKeyView" destination="230" id="390"/>
+                                    </connections>
+                                </button>
+                                <button fixedFrame="YES" tag="8" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="260">
+                                    <rect key="frame" x="242" y="40" width="48" height="30"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <buttonCell key="cell" type="square" title="Reset" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" tag="8" inset="2" id="509">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="smallSystem"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="colorReset:" target="310" id="325"/>
+                                        <outlet property="nextKeyView" destination="233" id="393"/>
+                                    </connections>
+                                </button>
+                                <button fixedFrame="YES" tag="7" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="261">
+                                    <rect key="frame" x="242" y="8" width="48" height="30"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <buttonCell key="cell" type="square" title="Reset" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" tag="7" inset="2" id="510">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="smallSystem"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="colorReset:" target="310" id="326"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                        </view>
+                        <font key="titleFont" size="12" name="Helvetica"/>
+                    </box>
+                    <box fixedFrame="YES" boxType="secondary" borderType="bezel" title="Theme Fonts" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="262">
+                        <rect key="frame" x="8" y="8" width="304" height="297"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <view key="contentView" id="NYa-Fs-1Sm">
+                            <rect key="frame" x="3" y="3" width="298" height="291"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="224">
+                                    <rect key="frame" x="8" y="120" width="174" height="28"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" state="on" borderStyle="bezel" alignment="left" title="Hevetica 12" drawsBackground="YES" id="511">
+                                        <font key="font" size="16" name="Courier"/>
+                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <button fixedFrame="YES" tag="2" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="225">
+                                    <rect key="frame" x="242" y="120" width="48" height="28"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <buttonCell key="cell" type="square" title="Reset" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" tag="2" inset="2" id="512">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="smallSystem"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="fontReset:" target="310" id="347"/>
+                                    </connections>
+                                </button>
+                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" preferredMaxLayoutWidth="116" translatesAutoresizingMaskIntoConstraints="NO" id="265">
+                                    <rect key="frame" x="8" y="150" width="120" height="17"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <textFieldCell key="cell" alignment="left" title="Error Text" id="513">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <button fixedFrame="YES" tag="2" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="269">
+                                    <rect key="frame" x="188" y="120" width="48" height="28"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <buttonCell key="cell" type="square" title="Set..." bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" tag="2" inset="2" id="514">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="smallSystem"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="fontChangeRequest:" target="310" id="345"/>
+                                        <outlet property="nextKeyView" destination="225" id="400"/>
+                                    </connections>
+                                </button>
+                                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="270">
+                                    <rect key="frame" x="8" y="174" width="174" height="28"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" state="on" borderStyle="bezel" alignment="left" title="Hevetica 12" drawsBackground="YES" id="515">
+                                        <font key="font" size="16" name="Courier"/>
+                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <button fixedFrame="YES" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="271">
+                                    <rect key="frame" x="242" y="174" width="48" height="28"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <buttonCell key="cell" type="square" title="Reset" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" inset="2" id="516">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="smallSystem"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="fontReset:" target="310" id="348"/>
+                                        <outlet property="nextKeyView" destination="269" id="399"/>
+                                    </connections>
+                                </button>
+                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" preferredMaxLayoutWidth="116" translatesAutoresizingMaskIntoConstraints="NO" id="272">
+                                    <rect key="frame" x="8" y="204" width="120" height="17"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <textFieldCell key="cell" alignment="left" title="Normal Text" id="517">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <button fixedFrame="YES" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="273">
+                                    <rect key="frame" x="188" y="174" width="48" height="28"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <buttonCell key="cell" type="square" title="Set..." bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" inset="2" id="518">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="smallSystem"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="fontChangeRequest:" target="310" id="344"/>
+                                        <outlet property="nextKeyView" destination="271" id="398"/>
+                                    </connections>
+                                </button>
+                                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="274">
+                                    <rect key="frame" x="8" y="230" width="174" height="28"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" state="on" borderStyle="bezel" alignment="left" title="Hevetica 12" drawsBackground="YES" id="519">
+                                        <font key="font" size="16" name="Courier"/>
+                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <button fixedFrame="YES" tag="1" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="275">
+                                    <rect key="frame" x="242" y="230" width="48" height="28"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <buttonCell key="cell" type="square" title="Reset" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" tag="1" inset="2" id="520">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="smallSystem"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="fontReset:" target="310" id="346"/>
+                                        <outlet property="nextKeyView" destination="273" id="397"/>
+                                    </connections>
+                                </button>
+                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" preferredMaxLayoutWidth="116" translatesAutoresizingMaskIntoConstraints="NO" id="276">
+                                    <rect key="frame" x="8" y="260" width="120" height="17"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <textFieldCell key="cell" alignment="left" title="Math Text" id="521">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <button fixedFrame="YES" tag="1" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="277">
+                                    <rect key="frame" x="188" y="230" width="48" height="28"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <buttonCell key="cell" type="square" title="Set..." bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" tag="1" inset="2" id="522">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="smallSystem"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="fontChangeRequest:" target="310" id="343"/>
+                                        <outlet property="nextKeyView" destination="275" id="396"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                        </view>
+                        <font key="titleFont" size="12" name="Helvetica"/>
+                    </box>
+                    <box fixedFrame="YES" boxType="secondary" borderType="bezel" title="General" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="283">
+                        <rect key="frame" x="8" y="8" width="304" height="297"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <view key="contentView" id="8xL-fo-tFc">
+                            <rect key="frame" x="3" y="3" width="298" height="291"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <popUpButton verticalHuggingPriority="750" fixedFrame="YES" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="294">
+                                    <rect key="frame" x="129" y="254" width="164" height="26"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="clipping" borderStyle="border" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" id="523">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="menu"/>
+                                        <menu key="menu" title="OtherViews" id="296">
+                                            <items>
+                                                <menuItem title="Automatic" id="295"/>
+                                                <menuItem title="Light" id="298"/>
+                                                <menuItem title="Dark" id="299"/>
+                                            </items>
+                                        </menu>
+                                    </popUpButtonCell>
+                                    <connections>
+                                        <action selector="themeChanged:" target="310" id="351"/>
+                                        <outlet property="nextKeyView" destination="302" id="401"/>
+                                    </connections>
+                                </popUpButton>
+                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" preferredMaxLayoutWidth="116" translatesAutoresizingMaskIntoConstraints="NO" id="300">
+                                    <rect key="frame" x="5" y="258" width="120" height="17"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <textFieldCell key="cell" alignment="right" title="Theme" id="524">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" preferredMaxLayoutWidth="116" translatesAutoresizingMaskIntoConstraints="NO" id="301">
+                                    <rect key="frame" x="5" y="226" width="120" height="17"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <textFieldCell key="cell" alignment="right" title="Solving Wait Time" id="525">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="302">
+                                    <rect key="frame" x="132" y="223" width="106" height="22"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" title="2.0" drawsBackground="YES" id="526">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                    <connections>
+                                        <action selector="timeChanged:" target="310" id="350"/>
+                                        <outlet property="nextKeyView" destination="303" id="402"/>
+                                    </connections>
+                                </textField>
+                                <button fixedFrame="YES" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="303">
+                                    <rect key="frame" x="242" y="224" width="48" height="22"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <buttonCell key="cell" type="square" title="Reset" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" inset="2" id="527">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="label"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="timeReset:" target="310" id="349"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                        </view>
+                        <font key="titleFont" size="12" name="Helvetica"/>
+                    </box>
+                    <popUpButton verticalHuggingPriority="750" fixedFrame="YES" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="304">
+                        <rect key="frame" x="5" y="309" width="310" height="26"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="clipping" borderStyle="border" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" id="528">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="menu"/>
+                            <menu key="menu" title="OtherViews" id="309">
+                                <items>
+                                    <menuItem title="General" id="306"/>
+                                    <menuItem title="Theme Colors" id="307"/>
+                                    <menuItem title="Theme Fonts" id="308"/>
+                                </items>
+                            </menu>
+                        </popUpButtonCell>
+                        <connections>
+                            <action selector="choiceChanged:" target="310" id="313"/>
+                        </connections>
+                    </popUpButton>
+                </subviews>
+            </view>
+            <connections>
+                <outlet property="initialFirstResponder" destination="304" id="403"/>
+            </connections>
+        </window>
+        <customObject id="310" userLabel="SVRSettingsViewController" customClass="SVRSettingsViewController">
+            <connections>
+                <outlet property="_fieldTextError" destination="224" id="355"/>
+                <outlet property="_fieldTextMath" destination="274" id="353"/>
+                <outlet property="_fieldTextOther" destination="270" id="354"/>
+                <outlet property="_fieldTime" destination="302" id="352"/>
+                <outlet property="_groupColorView" destination="219" id="315"/>
+                <outlet property="_groupFontView" destination="262" id="316"/>
+                <outlet property="_groupGeneralView" destination="283" id="314"/>
+                <outlet property="_popUpTheme" destination="294" id="356"/>
+                <outlet property="_wellDarkBackground" destination="251" id="371"/>
+                <outlet property="_wellDarkError" destination="253" id="372"/>
+                <outlet property="_wellDarkInsertionPoint" destination="248" id="370"/>
+                <outlet property="_wellDarkOperand" destination="252" id="365"/>
+                <outlet property="_wellDarkOperator" destination="250" id="366"/>
+                <outlet property="_wellDarkOther" destination="248" id="369"/>
+                <outlet property="_wellDarkPrevious" destination="247" id="368"/>
+                <outlet property="_wellDarkSolution" destination="254" id="367"/>
+                <outlet property="_wellLightBackground" destination="233" id="364"/>
+                <outlet property="_wellLightError" destination="213" id="362"/>
+                <outlet property="_wellLightInsertionPoint" destination="230" id="363"/>
+                <outlet property="_wellLightOperand" destination="217" id="357"/>
+                <outlet property="_wellLightOperator" destination="215" id="358"/>
+                <outlet property="_wellLightOther" destination="211" id="361"/>
+                <outlet property="_wellLightPrevious" destination="209" id="360"/>
+                <outlet property="_wellLightSolution" destination="207" id="359"/>
+                <outlet property="_window" destination="199" id="318"/>
+            </connections>
+        </customObject>
+    </objects>
+    <resources>
+        <image name="NeXTLogoMed" width="43" height="43"/>
+        <image name="TM" width="17" height="17"/>
+        <image name="TagLine" width="225" height="18"/>
+        <image name="about-image-512" width="512" height="512"/>
+    </resources>
+</document>

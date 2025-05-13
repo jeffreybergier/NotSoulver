@@ -127,14 +127,12 @@ typedef NSRange* XPRangePointer;
 #define XPBitmapImageFileTypeTIFF NSTIFFFileType
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_13
+#ifdef MAC_OS_X_VERSION_10_14
+#define XPSupportsDarkMode
+#define XPSupportsNSSecureCoding
 typedef NSAttributedStringKey XPAttributedStringKey;
 #else
 typedef NSString* XPAttributedStringKey;
-#endif
-
-#ifdef MAC_OS_X_VERSION_10_14
-#define XPSupportsDarkMode
 #endif
 
 extern const NSRange XPNotFoundRange;
