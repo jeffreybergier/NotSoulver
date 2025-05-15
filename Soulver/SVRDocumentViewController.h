@@ -31,7 +31,7 @@
 #import "SVRDocumentModelController.h"
 #import "XPCrossPlatform.h"
 
-@interface SVRDocumentViewController: NSResponder
+@interface SVRDocumentViewController: NSViewController
 {
   mm_unretain IBOutlet NSTextView *_textView;
   mm_new SVRDocumentModelController *_modelController;
@@ -42,6 +42,7 @@
 
 // MARK: awakeFromNib
 -(void)awakeFromNib;
+-(void)loadView;
 -(void)themeDidChangeNotification:(NSNotification*)aNotification;
 
 // MARK: Interface Builder

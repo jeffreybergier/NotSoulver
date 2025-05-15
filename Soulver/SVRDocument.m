@@ -38,40 +38,55 @@
   return [[_viewController retain] autorelease];
 }
 
--(NSString*)windowNibName;
-{
-#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 110000
-  return @"SVRDocument_X15";
-#elif defined(MAC_OS_X_VERSION_10_6)
-  return @"SVRDocument_X6";
-#elif defined(MAC_OS_X_VERSION_10_2)
-  return @"SVRDocument_X2";
-#else
-  return @"SVRDocument_42";
-#endif
-}
+// Create everything without Nibs
 
-// MARK: NSDocument subclass
-
--(void)awakeFromNib;
+-(void)makeWindowControllers;
 {
+  NSWindow *aWindow = [[[NSWindow alloc] initWithContentRect:NSMakeRect(100, 100, 600, 400)
+                                                   styleMask:(NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask)
+                                                     backing:NSBackingStoreBuffered
+                                                       defer:NO] autorelease];
+  NSWindowController      *windowController = [[[NSWindowController        alloc] initWithWindow:aWindow] autorelease];
+  SVRDocumentViewController *viewController = [[[SVRDocumentViewController alloc] init]                  autorelease];
   XPURL *fileURL = [self XP_fileURL];
-
-  if ([[self superclass] instancesRespondToSelector:@selector(awakeFromNib)]) {
-    [super awakeFromNib];
-  }
+  NSString *autosaveName = [self XP_nameForFrameAutosave];
+  
+  // Configure IVARS
+  _viewController = [viewController retain];
   
   // Subscribe to model updates
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(modelDidProcessEditingNotification:)
                                                name:NSTextStorageDidProcessEditingNotification
-                                             object:[[[self viewController] modelController] model]];
-
-  // Load the file
+                                             object:[[viewController modelController] model]];
+  
+  // Make Window Controllers
+  [aWindow setContentView:[viewController view]];
+  
+  // Set frameAutosaveName
+  if (autosaveName) {
+    [aWindow setFrameAutosaveName:autosaveName];
+  }
+  
+  // Load Data
   if ([fileURL XP_isFileURL]) {
     [self XP_readFromURL:fileURL ofType:[self fileType] error:NULL];
   }
+  
+  // Configure responder chain
+  [aWindow setNextResponder:[self viewController]];
+  if ([self isKindOfClass:[NSResponder class]]) {
+    [viewController setNextResponder:(NSResponder*)self];
+    [(NSResponder*)self setNextResponder:windowController];
+  } else {
+    [viewController setNextResponder:windowController];
+  }
+  
+  // Configure self
+  [self addWindowController:windowController];
 }
+
+// MARK: NSDocument subclass
 
 -(NSData*)dataRepresentationOfType:(NSString*)type;
 {
@@ -86,42 +101,6 @@
     return YES;
   }
   return [modelController loadDataRepresentation:data ofType:type];
-}
-
--(void)windowControllerWillLoadNib:(id)windowController;
-{
-#if XPSupportsNSDocument >= 1
-  // Setting this name before the NIB loads has better results
-  NSString *autosaveName = [self XP_nameForFrameAutosave];
-  NSCParameterAssert(windowController);
-  if (autosaveName) {
-    [windowController setWindowFrameAutosaveName:autosaveName];
-  }
-#endif
-}
-
--(void)windowControllerDidLoadNib:(id)windowController;
-{
-  NSWindow *myWindow = [self XP_windowForSheet];
-  NSString *autosaveName = [self XP_nameForFrameAutosave];
-  // If using real NSDocument, this is already set, so we can check here
-  BOOL needsSetAutosaveName = autosaveName && ![[myWindow frameAutosaveName] isEqualToString:autosaveName];
-  id previousNextResponder = [myWindow nextResponder];
-
-  NSCParameterAssert(myWindow);
-  
-  // Add view controller into the responder chain
-  [myWindow setNextResponder:[self viewController]];
-  if ([self isKindOfClass:[NSResponder class]]) {
-    [[self viewController] setNextResponder:(NSResponder*)self];
-    [(NSResponder*)self setNextResponder:previousNextResponder];
-  } else {
-    [[self viewController] setNextResponder:previousNextResponder];
-  }
-  
-  if (needsSetAutosaveName) {
-    [myWindow setFrameAutosaveName:autosaveName];
-  }
 }
 
 // MARK: Model Changed Notifications
@@ -152,6 +131,21 @@
   _viewController = nil;
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
+}
+
+@end
+
+@implementation SVRDocument (StateRestoration)
+
+-(BOOL)autosavesInPlace;
+{
+  return YES;
+}
+-(BOOL)canAsynchronouslyWriteToURL:(NSURL*)url
+                            ofType:(NSString*)typeName
+                  forSaveOperation:(NSSaveOperationType)saveOperation;
+{
+  return YES;
 }
 
 @end

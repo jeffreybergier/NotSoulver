@@ -73,6 +73,47 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   XPLogDebug1(@"awakeFromNib: %@", self);
 }
 
+-(void)loadView;
+{
+  NSLayoutManager *layoutManager = [[[NSLayoutManager alloc] init]                                                                 autorelease];
+  NSTextContainer *textContainer = [[[NSTextContainer alloc] initWithContainerSize:NSMakeSize(FLT_MAX, FLT_MAX)]                   autorelease];
+  NSTextView *textView           = [[[NSTextView      alloc] initWithFrame:NSMakeRect(0, 0, 400, 300) textContainer:textContainer] autorelease];
+  NSScrollView *scrollView       = [[[NSScrollView    alloc] initWithFrame:NSMakeRect(0, 0, 400, 300)]                             autorelease];
+  SVRDocumentModelController *modelController = [[[SVRDocumentModelController alloc] init]                                         autorelease];
+  
+  NSCParameterAssert(layoutManager);
+  NSCParameterAssert(textContainer);
+  NSCParameterAssert(textView);
+  NSCParameterAssert(scrollView);
+  NSCParameterAssert(modelController);
+  
+  // Configure scroll view
+  [scrollView setHasVerticalScroller:YES];
+  [scrollView setHasHorizontalScroller:YES];
+  [scrollView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+  
+  // Create text container and text view
+  [[modelController model] addLayoutManager:layoutManager];
+  [layoutManager addTextContainer:textContainer];
+  [modelController setTextView:textView];
+  
+  [textView setMinSize:NSMakeSize(0.0, 0.0)];
+  [textView setMaxSize:NSMakeSize(FLT_MAX, FLT_MAX)];
+  [textView setVerticallyResizable:YES];
+  [textView setHorizontallyResizable:YES];
+  [textView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+  [textView setAllowsUndo:YES];
+  
+  // Wrap it in the scroll view
+  [scrollView setDocumentView:textView];
+  
+  // Configure self
+  [self setView: scrollView];
+  _textView = [textView retain];
+  _modelController = [modelController retain];
+  [self awakeFromNib];
+}
+
 -(void)themeDidChangeNotification:(NSNotification*)aNotification;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];

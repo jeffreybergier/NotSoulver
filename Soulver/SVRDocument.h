@@ -48,15 +48,22 @@
 
 // MARK: Properties
 -(SVRDocumentViewController*)viewController;
--(NSString*)windowNibName;
+
+// Create everything without Nibs
+-(void)makeWindowControllers;
 
 // MARK: NSDocument subclass
--(void)awakeFromNib;
 -(NSData*)dataRepresentationOfType:(NSString*)type;
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
--(void)windowControllerDidLoadNib:(id)windowController;
 
 // MARK: Model Changed Notifications
 -(void)modelDidProcessEditingNotification:(NSNotification*)aNotification;
 
+@end
+
+@interface SVRDocument (StateRestoration)
+-(BOOL)autosavesInPlace;
+-(BOOL)canAsynchronouslyWriteToURL:(NSURL*)url
+                            ofType:(NSString*)typeName
+                  forSaveOperation:(NSSaveOperationType)saveOperation;
 @end
