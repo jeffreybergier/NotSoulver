@@ -31,6 +31,16 @@
 
 @implementation SVRDocument
 
+
+// MARK: Init
+-(id)init;
+{
+  self = [super init];
+  NSCParameterAssert(self);
+  _modelController = [[SVRDocumentModelController alloc] init];
+  return self;
+}
+
 // MARK: Properties
 
 -(SVRDocumentViewController*)viewController;
@@ -38,40 +48,34 @@
   return [[_viewController retain] autorelease];
 }
 
+-(SVRDocumentModelController*)modelController;
+{
+  return [[_modelController retain] autorelease];
+}
+
 // Create everything without Nibs
 
 -(void)makeWindowControllers;
 {
-  NSWindow *aWindow = [[[NSWindow alloc] initWithContentRect:NSMakeRect(100, 100, 600, 400)
+  NSString *autosaveName = [self XP_nameForFrameAutosave];
+  SVRDocumentModelController *modelController = [self modelController];
+  SVRDocumentViewController *viewController = [[[SVRDocumentViewController alloc] initWithModelController:modelController] autorelease];
+  NSWindow *aWindow = [[[NSWindow alloc] initWithContentRect:[self __newDocumentWindowRect]
                                                    styleMask:(NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask)
                                                      backing:NSBackingStoreBuffered
                                                        defer:NO] autorelease];
-  NSWindowController      *windowController = [[[NSWindowController        alloc] initWithWindow:aWindow] autorelease];
-  SVRDocumentViewController *viewController = [[[SVRDocumentViewController alloc] init]                  autorelease];
-  XPURL *fileURL = [self XP_fileURL];
-  NSString *autosaveName = [self XP_nameForFrameAutosave];
-  
-  // Configure IVARS
-  _viewController = [viewController retain];
-  
-  // Subscribe to model updates
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(modelDidProcessEditingNotification:)
-                                               name:NSTextStorageDidProcessEditingNotification
-                                             object:[[viewController modelController] model]];
-  
-  // Make Window Controllers
-  [aWindow setContentView:[viewController view]];
+  NSWindowController *windowController = nil;
   
   // Set frameAutosaveName
   if (autosaveName) {
     [aWindow setFrameAutosaveName:autosaveName];
+  } else {
+    [aWindow setFrameAutosaveName:@"NewSVRDocument"];
   }
   
-  // Load Data
-  if ([fileURL XP_isFileURL]) {
-    [self XP_readFromURL:fileURL ofType:[self fileType] error:NULL];
-  }
+  // Make Window Controllers
+  windowController = [[[NSWindowController alloc] initWithWindow:aWindow] autorelease];
+  [aWindow setContentView:[viewController view]];
   
   // Configure responder chain
   [aWindow setNextResponder:[self viewController]];
@@ -83,23 +87,27 @@
   }
   
   // Configure self
+  _viewController = [viewController retain];
   [self addWindowController:windowController];
+  
+  // Subscribe to model updates
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(modelDidProcessEditingNotification:)
+                                               name:NSTextStorageDidProcessEditingNotification
+                                             object:[modelController model]];
 }
 
 // MARK: NSDocument subclass
 
 -(NSData*)dataRepresentationOfType:(NSString*)type;
 {
-  return [[[self viewController] modelController] dataRepresentationOfType:type];
+  return [[self modelController] dataRepresentationOfType:type];
 }
 
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
 {
-  SVRDocumentModelController *modelController = [[self viewController] modelController];
-  if (!modelController) {
-    // NSDocument loads the data before loading the NIB
-    return YES;
-  }
+  SVRDocumentModelController *modelController = [self modelController];
+  NSCParameterAssert(modelController);
   return [modelController loadDataRepresentation:data ofType:type];
 }
 
@@ -121,14 +129,24 @@
   [self updateChangeCount:isEdited ? 0 : 2];
 }
 
+-(NSRect)__newDocumentWindowRect;
+{
+  NSRect output = NSZeroRect;
+  NSSize screenSize = [[NSScreen mainScreen] frame].size;
+  NSSize targetSize = NSMakeSize(500, 500);
+  output.origin.y = round(screenSize.height / 2) - round(targetSize.height / 2);
+  output.origin.x = round(screenSize.width  / 2) - round(targetSize.width  / 2);
+  output.size = targetSize;
+  return output;
+}
+
 -(void)dealloc;
 {
   XPLogDebug1(@"DEALLOC: %@", self);
-#if XPSupportsNSDocument == 0
-  // Nib Lifecycle differs when using NSDocument
-  [_viewController release];
-#endif
-  _viewController = nil;
+  [_viewController  release];
+  [_modelController release];
+  _viewController  = nil;
+  _modelController = nil;
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
 }
@@ -137,7 +155,7 @@
 
 @implementation SVRDocument (StateRestoration)
 
--(BOOL)autosavesInPlace;
++(BOOL)autosavesInPlace;
 {
   return YES;
 }
