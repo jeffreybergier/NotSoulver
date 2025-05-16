@@ -76,7 +76,6 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   // ModelController
   [[modelController model] addLayoutManager:layoutManager];
   [layoutManager addTextContainer:textContainer];
-  [modelController setTextView:textView];
   [textView setDelegate:modelController];
   
   // Wrap it in the scroll view
@@ -102,7 +101,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   [textView setBackgroundColor:[ud SVR_colorForTheme:SVRThemeColorBackground]];
   [textView setInsertionPointColor:[ud SVR_colorForTheme:SVRThemeColorInsertionPoint]];
   if (aNotification){
-    [[self modelController] waitTimerFired:nil];
+    [[self modelController] renderPreservingSelectionInTextView:textView];
   }
   [textView setNeedsDisplay:YES];
 }
