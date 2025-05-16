@@ -41,6 +41,7 @@
 -(void)XP_showWindows;
 -(void)XP_setFileExtension:(NSString*)type;
 -(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
+-(void)XP_addWindowController:(id)windowController;
 
 @end
 
@@ -61,7 +62,6 @@
   mm_copy   XPURL    *_fileURL;
   mm_copy   NSString *_fileType;
   mm_copy   NSString *_fileExtension;
-  BOOL _isNibLoaded;
   BOOL _isEdited;
 }
 
@@ -86,10 +86,7 @@
 -(NSWindow*)windowForSheet;
 
 // MARK: One-Time Setup
-
--(void)awakeFromNib;
--(void)windowControllerWillLoadNib:(id)windowController;
--(void)windowControllerDidLoadNib:(id)windowController;
+-(void)makeWindowControllers;
 
 // MARK: Document Properties
 
