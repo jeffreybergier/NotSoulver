@@ -64,7 +64,7 @@
                                                    styleMask:(NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask)
                                                      backing:NSBackingStoreBuffered
                                                        defer:NO] autorelease];
-  NSWindowController *windowController = nil;
+  id windowController = nil;
   
   // Set frameAutosaveName
   if (autosaveName) {
@@ -74,27 +74,31 @@
   }
   
   // Make Window Controllers
+#if XPSupportsNSDocument >= 1
   windowController = [[[NSWindowController alloc] initWithWindow:aWindow] autorelease];
+#endif
   [aWindow setContentView:[viewController view]];
-  
-  // Configure responder chain
-  [aWindow setNextResponder:[self viewController]];
-  if ([self isKindOfClass:[NSResponder class]]) {
-    [viewController setNextResponder:(NSResponder*)self];
-    [(NSResponder*)self setNextResponder:windowController];
-  } else {
-    [viewController setNextResponder:windowController];
-  }
   
   // Configure self
   _viewController = [viewController retain];
-  [self addWindowController:windowController];
+  [self XP_addWindowController:windowController];
   
   // Subscribe to model updates
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(modelDidProcessEditingNotification:)
                                                name:NSTextStorageDidProcessEditingNotification
                                              object:[modelController model]];
+  
+  // Configure responder chain
+  [aWindow setNextResponder:viewController];
+  [viewController setNextResponder:windowController];
+  
+  // Configure legacy XPDocument support
+  if ([self isKindOfClass:[NSResponder class]]) {
+    [viewController setNextResponder:(NSResponder*)self];
+    [super makeWindowControllers];
+    [self XP_readFromURL:[self XP_fileURL] ofType:[self fileType] error:NULL];
+  }
 }
 
 // MARK: NSDocument subclass

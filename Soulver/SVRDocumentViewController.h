@@ -31,7 +31,11 @@
 #import "SVRDocumentModelController.h"
 #import "XPCrossPlatform.h"
 
+#if XPSupportsNSDocument >= 1
 @interface SVRDocumentViewController: NSViewController
+#else
+@interface SVRDocumentViewController: NSResponder
+#endif
 {
   mm_new NSTextView *_textView;
   mm_retain SVRDocumentModelController *_modelController;

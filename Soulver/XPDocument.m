@@ -84,6 +84,12 @@
 #endif
 }
 
+-(void)XP_addWindowController:(id)windowController;
+{
+  NSCParameterAssert(windowController);
+  [self addWindowController:windowController];
+}
+
 @end
 #endif
 
@@ -135,6 +141,11 @@ NSPoint XPDocumentPointForCascading;
   return [self readFromURL:fileURL ofType:fileType error:outError];
 }
 
+-(void)XP_addWindowController:(id)windowController;
+{
+  XPLogDebug(@"%@ XP_addWindowController: Ignoring");
+}
+
 // MARK: Window Placement
 
 +(void)initialize;
@@ -151,8 +162,8 @@ NSPoint XPDocumentPointForCascading;
   NSCParameterAssert(self);
   _fileURL = nil;
   _fileType = nil;
-  _isNibLoaded = NO;
   _isEdited = NO;
+  [self makeWindowControllers];
   return self;
 }
 
@@ -166,7 +177,7 @@ NSPoint XPDocumentPointForCascading;
   
   _fileURL  = [fileURL copy];
   _fileType = [fileType copy];
-  [self readFromURL:fileURL ofType:fileType error:NULL];
+  [self makeWindowControllers];
   
   return self;
 }
@@ -181,11 +192,6 @@ NSPoint XPDocumentPointForCascading;
 
 -(void)showWindows;
 {
-  if (!_isNibLoaded) {
-    _isNibLoaded = YES;
-    [self windowControllerWillLoadNib:nil];
-    [NSBundle loadNibNamed:[self windowNibName] owner:self];
-  }
   [[self windowForSheet] makeKeyAndOrderFront:self];
 }
 
@@ -196,7 +202,7 @@ NSPoint XPDocumentPointForCascading;
 
 // MARK: One Time Setup
 
--(void)awakeFromNib;
+-(void)makeWindowControllers;
 {
   NSWindow *myWindow = [self windowForSheet];
   
@@ -209,15 +215,9 @@ NSPoint XPDocumentPointForCascading;
   
   // Set the delegate for -windowShouldClose:
   [myWindow setDelegate:self];
-
-  // Declare that we are loaded
-  [self windowControllerDidLoadNib:nil];
   
-  XPLogDebug1(@"awakeFromNib: %@", self);
+  XPLogDebug1(@"makeWindowControllers: %@", self);
 }
-
--(void)windowControllerWillLoadNib:(id)windowController; {}
--(void)windowControllerDidLoadNib:(id)windowController; {}
 
 // MARK: Document Properties
 
