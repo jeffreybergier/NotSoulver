@@ -141,6 +141,7 @@
 		8CD62ED92D91ECB40000020F /* h.template */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = h.template; sourceTree = "<group>"; };
 		8CD62EDA2D91ECB40000020F /* m.template */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = m.template; sourceTree = "<group>"; };
 		8CD632692D91FF0F0000020F /* .gdbinit */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = .gdbinit; sourceTree = "<group>"; };
+		8CF1CCE52DD8792A0097573E /* Soulver.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Soulver.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +184,7 @@
 		2A37F4AAFDCFA73011CA2CEA /* Soulver */ = {
 			isa = PBXGroup;
 			children = (
+				8CF1CCE52DD8792A0097573E /* Soulver.entitlements */,
 				2A37F4ABFDCFA73011CA2CEA /* Classes */,
 				8CD62EAF2D91DD0F0000020F /* Tests */,
 				2A37F4AFFDCFA73011CA2CEA /* Other Sources */,
@@ -375,6 +377,15 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0510;
+				TargetAttributes = {
+					8C5E58092DC346F200A1648E = {
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
+					};
+				};
 			};
 			buildConfigurationList = 8C0A75872DC107FF0064EDCA /* Build configuration list for PBXProject "PBX8" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -545,6 +556,8 @@
 		8C5E58462DC346F200A1648E /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Soulver.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "";
@@ -599,6 +612,8 @@
 		8C5E58472DC346F200A1648E /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Soulver.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
@@ -647,6 +662,8 @@
 		8C5E58482DC346F200A1648E /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Soulver.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PREFIX_HEADER = Soulver_Prefix.h;
