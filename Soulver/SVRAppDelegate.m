@@ -87,6 +87,13 @@
   [[NSUserDefaults standardUserDefaults] SVR_configure];
   // Prepare FontManager
   [NSFontManager setFontManagerFactory:[SVRFontManager class]];
+  // Announce
+  XPLogDebug1(@"%@ applicationWillFinishLaunching:", self);
+}
+
+-(void)applicationDidFinishLaunching:(NSNotification*)aNotification;
+{
+  NSApplication *app = [aNotification object];
   // Configure Accessory Windows
   _accessoryWindowsOwner = [[SVRAccessoryWindowsOwner alloc] init];
   // Observe Dark Mode
@@ -100,7 +107,7 @@
                                                object:nil];
   }
   // Announce
-  XPLogDebug1(@"%@ applicationWillFinishLaunching:", self);
+  XPLogDebug1(@"%@ applicationDidFinishLaunching:", self);
 }
 
 -(void)applicationWillTerminate:(NSNotification*)aNotification;
