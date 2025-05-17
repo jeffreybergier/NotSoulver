@@ -37,22 +37,21 @@
 @interface SVRDocumentViewController: NSResponder
 #endif
 {
+  mm_new NSView *_view_42; // Used only in OpenStep
   mm_new NSTextView *_textView;
   mm_retain SVRDocumentModelController *_modelController;
 }
 
 // MARK: Init
 -(id)initWithModelController:(SVRDocumentModelController*)modelController;
-
-// MARK: awakeFromNib
 -(void)loadView;
--(void)themeDidChangeNotification:(NSNotification*)aNotification;
 
-// MARK: Interface Builder
+// MARK: Properties
 -(NSTextView*)textView;
--(IBAction)keypadAppend:(NSButton*)sender;
+-(SVRDocumentModelController*)modelController;
 
 // MARK: Private
+-(void)__themeDidChangeNotification:(NSNotification*)aNotification;
 -(NSString*)__mapKeyWithTag:(XPInteger)tag;
 -(NSDictionary*)__typingAttributes;
 
@@ -60,6 +59,7 @@
 
 @interface SVRDocumentViewController (IBActions)
 
+-(IBAction)keypadAppend:(NSButton*)sender;
 -(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
 -(IBAction)cutUnsolved:(id)sender;
 -(IBAction)cutUniversal:(id)sender;
@@ -70,3 +70,12 @@
                   diskRepData:(NSData*)diskRepData;
 
 @end
+
+#if XPSupportsNSDocument == 0
+
+@interface SVRDocumentViewController (CrossPlatform)
+-(NSView*)view;
+-(void)setView:(NSView*)view;
+@end
+
+#endif

@@ -599,6 +599,13 @@ NSArray* XPRunOpenPanel(NSString *extension)
   [self insertText:string];
 #endif
 }
+
+-(void)XP_setAllowsUndo:(BOOL)isAllowed;
+{
+#if XPSupportsNSDocument >= 1
+  [self setAllowsUndo:isAllowed];
+#endif
+}
 @end
 
 @implementation XPURL (CrossPlatformURL)

@@ -31,25 +31,21 @@
 
 @implementation SVRDocument
 
-
-// MARK: Init
--(id)init;
-{
-  self = [super init];
-  NSCParameterAssert(self);
-  _modelController = [[SVRDocumentModelController alloc] init];
-  return self;
-}
-
 // MARK: Properties
 
 -(SVRDocumentViewController*)viewController;
 {
+  if (!_viewController) {
+    _viewController = [[SVRDocumentViewController alloc] initWithModelController:[self modelController]];
+  }
   return [[_viewController retain] autorelease];
 }
 
 -(SVRDocumentModelController*)modelController;
 {
+  if (!_modelController) {
+    _modelController = [[SVRDocumentModelController alloc] init];
+  }
   return [[_modelController retain] autorelease];
 }
 
@@ -59,7 +55,7 @@
 {
   NSString *autosaveName = [self XP_nameForFrameAutosave];
   SVRDocumentModelController *modelController = [self modelController];
-  SVRDocumentViewController *viewController = [[[SVRDocumentViewController alloc] initWithModelController:modelController] autorelease];
+  SVRDocumentViewController  *viewController  = [self viewController];
   NSWindow *aWindow = [[[NSWindow alloc] initWithContentRect:[self __newDocumentWindowRect]
                                                    styleMask:(NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask)
                                                      backing:NSBackingStoreBuffered
@@ -80,7 +76,7 @@
   [aWindow setContentView:[viewController view]];
   
   // Configure self
-  _viewController = [viewController retain];
+  [self XP_setWindow:aWindow];
   [self XP_addWindowController:windowController];
   
   // Subscribe to model updates
@@ -138,8 +134,8 @@
   NSRect output = NSZeroRect;
   NSSize screenSize = [[NSScreen mainScreen] frame].size;
   NSSize targetSize = NSMakeSize(500, 500);
-  output.origin.y = round(screenSize.height / 2) - round(targetSize.height / 2);
-  output.origin.x = round(screenSize.width  / 2) - round(targetSize.width  / 2);
+  output.origin.y = ceil(screenSize.height / 2) - ceil(targetSize.height / 2);
+  output.origin.x = ceil(screenSize.width  / 2) - ceil(targetSize.width  / 2);
   output.size = targetSize;
   return output;
 }
@@ -157,6 +153,7 @@
 
 @end
 
+#if XPSupportsNSDocument >= 2
 @implementation SVRDocument (StateRestoration)
 
 +(BOOL)autosavesInPlace;
@@ -171,3 +168,4 @@
 }
 
 @end
+#endif

@@ -39,6 +39,7 @@
 -(NSString*)XP_nameForFrameAutosave;
 -(NSWindow*)XP_windowForSheet;
 -(void)XP_showWindows;
+-(void)XP_setWindow:(NSWindow*)aWindow;
 -(void)XP_setFileExtension:(NSString*)type;
 -(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
 -(void)XP_addWindowController:(id)windowController;
@@ -58,7 +59,7 @@
 @interface NSDocumentLegacyImplementation: NSResponder <XPDocumentProtocol>
 #endif
 {
-  mm_retain IBOutlet NSWindow *window; // Named without underscore for NSDocument compatibility
+  mm_retain NSWindow *_window_42; // Only used in OpenStep
   mm_copy   XPURL    *_fileURL;
   mm_copy   NSString *_fileType;
   mm_copy   NSString *_fileExtension;

@@ -70,6 +70,11 @@
   [self showWindows];
 }
 
+-(void)XP_setWindow:(NSWindow*)aWindow;
+{
+  XPLogDebug2(@"%@ ignoring call to XP_setWindow:%@", self, aWindow);
+}
+
 -(void)XP_setFileExtension:(NSString*)type;
 {
   XPLogDebug2(@"%@ ignoring call to XP_setFileExtension:%@", self, type);
@@ -129,6 +134,13 @@ NSPoint XPDocumentPointForCascading;
 -(void)XP_showWindows;
 {
   [self showWindows];
+}
+
+-(void)XP_setWindow:(NSWindow*)aWindow;
+{
+  NSCParameterAssert(aWindow);
+  [_window_42 release];
+  _window_42 = [aWindow retain];
 }
 
 -(void)XP_setFileExtension:(NSString*)type;
@@ -197,7 +209,15 @@ NSPoint XPDocumentPointForCascading;
 
 -(NSWindow*)windowForSheet;
 {
-  return [[window retain] autorelease];
+  NSCParameterAssert(_window_42);
+  return [[_window_42 retain] autorelease];
+}
+
+-(void)__setWindow_42:(NSWindow*)aWindow;
+{
+  NSCParameterAssert(aWindow);
+  [_window_42 release];
+  _window_42 = [aWindow retain];
 }
 
 // MARK: One Time Setup
@@ -497,16 +517,16 @@ NSPoint XPDocumentPointForCascading;
 - (void)dealloc
 {
   XPLogDebug1(@"DEALLOC: %@", self);
-  [window setDelegate:nil];
+  [_window_42 setDelegate:nil];
   // this autorelease (instead of release) is necessary
   // to prevent crashes when the window is closing
-  [window autorelease];
-  [_fileURL release];
-  [_fileType release];
+  [_window_42 autorelease];
+  [_fileURL   release];
+  [_fileType  release];
   [_fileExtension release];
-  window = nil;
-  _fileURL = nil;
-  _fileType = nil;
+  _window_42 = nil;
+  _fileURL   = nil;
+  _fileType  = nil;
   _fileExtension = nil;
   [super dealloc];
 }

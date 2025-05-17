@@ -42,9 +42,6 @@
   mm_retain SVRDocumentViewController *_viewController;
 }
 
-// MARK: Init
--(id)init;
-
 // MARK: Properties
 -(SVRDocumentViewController*)viewController;
 -(SVRDocumentModelController*)modelController;
@@ -63,9 +60,11 @@
 
 @end
 
+#if XPSupportsNSDocument >= 2
 @interface SVRDocument (StateRestoration)
 +(BOOL)autosavesInPlace;
 -(BOOL)canAsynchronouslyWriteToURL:(NSURL*)url
                             ofType:(NSString*)typeName
                   forSaveOperation:(NSSaveOperationType)saveOperation;
 @end
+#endif

@@ -279,6 +279,7 @@ NSArray* XPRunOpenPanel(NSString *extension);
 
 @interface NSTextView (CrossPlatform)
 -(void)XP_insertText:(id)string;
+-(void)XP_setAllowsUndo:(BOOL)isAllowed;
 @end
 
 // NSURL does not exist on OpenStep
