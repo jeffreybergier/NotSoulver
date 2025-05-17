@@ -11,7 +11,7 @@
             SVRDocumentViewController.m, 
             SVRSettingsViewController.m, 
             SVRSolver.m, 
-            SVRSolverExpressionTagger.m,
+            SVRSolverExpressionTagger.m, 
             SVRSolverScanner.m, 
             SVRSolverSolutionTagger.m, 
             SVRSolverStyler.m, 
@@ -45,13 +45,13 @@
             XPRegularExpression.h
         ); 
         IMAGES = (
-            "Images/about-image-512.tiff",
-            "Images/BlocksFullSizeSMlght.tiff",
-            "Images/NeXTLogoMed.tiff",
-            "Images/TagLine.tiff",
-            "Images/TM.tiff"
-        );
-        INTERFACES = (AccessoryWindows_42.nib, MainMenu_42.nib, SVRDocument_42.nib);
+            "Images/about-image-512.tiff", 
+            Images/BlocksFullSizeSMlght.tiff, 
+            Images/NeXTLogoMed.tiff, 
+            Images/TagLine.tiff, 
+            Images/TM.tiff
+        ); 
+        INTERFACES = (AccessoryWindows_42.nib, MainMenu_42.nib); 
         OTHER_LINKED = (slre.c, Soulver_main.m); 
         OTHER_RESOURCES = (
             Localizable.strings, 
@@ -77,7 +77,6 @@
         AccessoryWindows_42.nib = AccessoryWindows_42.nib; 
         Localizable.strings = Localizable.strings; 
         MainMenu_42.nib = MainMenu_42.nib; 
-        SVRDocument_42.nib = SVRDocument_42.nib; 
     }; 
     MAKEFILEDIR = "$(NEXT_ROOT)/NextDeveloper/Makefiles/pb_makefiles"; 
     NEXTSTEP_BUILDDIR = "$(HOME)/Library/DerivedData/Soulver"; 
