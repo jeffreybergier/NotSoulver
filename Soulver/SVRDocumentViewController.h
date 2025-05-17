@@ -31,22 +31,25 @@
 #import "SVRDocumentModelController.h"
 #import "XPCrossPlatform.h"
 
+#if XPSupportsNSDocument >= 1
+@interface SVRDocumentViewController: NSViewController
+#else
 @interface SVRDocumentViewController: NSResponder
+#endif
 {
-  mm_unretain IBOutlet NSTextView *_textView;
-  mm_new SVRDocumentModelController *_modelController;
+  mm_new NSTextView *_textView;
+  mm_retain SVRDocumentModelController *_modelController;
 }
 
 // MARK: Init
--(id)init;
+-(id)initWithModelController:(SVRDocumentModelController*)modelController;
 
 // MARK: awakeFromNib
--(void)awakeFromNib;
+-(void)loadView;
 -(void)themeDidChangeNotification:(NSNotification*)aNotification;
 
 // MARK: Interface Builder
 -(NSTextView*)textView;
--(SVRDocumentModelController*)modelController;
 -(IBAction)keypadAppend:(NSButton*)sender;
 
 // MARK: Private

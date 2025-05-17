@@ -36,41 +36,61 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 @implementation SVRDocumentViewController
 
 // MARK: Init
--(id)init;
+-(id)initWithModelController:(SVRDocumentModelController*)modelController;
 {
   self = [super init];
   NSCParameterAssert(self);
-  _modelController = [[SVRDocumentModelController alloc] init];
+  NSCParameterAssert(modelController);
+  _modelController = [modelController retain];
   _textView = nil;
   return self;
 }
 
-// MARK: awakeFromNib
--(void)awakeFromNib;
+-(void)loadView;
 {
-  NSLayoutManager *layoutManager = [[[NSLayoutManager alloc] init] autorelease];
+  NSLayoutManager *layoutManager = [[[NSLayoutManager alloc] init]                                                                 autorelease];
+  NSTextContainer *textContainer = [[[NSTextContainer alloc] initWithContainerSize:NSMakeSize(FLT_MAX, FLT_MAX)]                   autorelease];
+  NSTextView *textView           = [[[NSTextView      alloc] initWithFrame:NSMakeRect(0, 0, 400, 300) textContainer:textContainer] autorelease];
+  NSScrollView *scrollView       = [[[NSScrollView    alloc] initWithFrame:NSMakeRect(0, 0, 400, 300)]                             autorelease];
   SVRDocumentModelController *modelController = [self modelController];
-  NSTextStorage *model = [modelController model];
-  NSTextView *textView = [self textView];
   
-  // Configure delegates
-  [modelController setTextView:textView];
+  NSCParameterAssert(layoutManager);
+  NSCParameterAssert(textContainer);
+  NSCParameterAssert(textView);
+  NSCParameterAssert(scrollView);
+  NSCParameterAssert(modelController);
+  
+  // ScrollView
+  [scrollView setHasVerticalScroller:YES];
+  [scrollView setHasHorizontalScroller:YES];
+  [scrollView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+  
+  // TextView
+  [textView setMinSize:NSMakeSize(0.0, 0.0)];
+  [textView setMaxSize:NSMakeSize(FLT_MAX, FLT_MAX)];
+  [textView setVerticallyResizable:YES];
+  [textView setHorizontallyResizable:YES];
+  [textView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+  [textView setAllowsUndo:YES];
+  
+  // ModelController
+  [[modelController model] addLayoutManager:layoutManager];
+  [layoutManager addTextContainer:textContainer];
   [textView setDelegate:modelController];
   
-  // Configure layoutManager
-  // This ordering is incredibly fragile
-  [[textView textContainer] replaceLayoutManager:layoutManager];
-  [layoutManager replaceTextStorage:model];
+  // Wrap it in the scroll view
+  [scrollView setDocumentView:textView];
   
-  // Configure the text view
+  // Self
+  [self setView: scrollView];
+  _textView = [textView retain];
+  
+  // Theming
   [self themeDidChangeNotification:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(themeDidChangeNotification:)
                                                name:SVRThemeDidChangeNotificationName
                                              object:nil];
-  
-  // Announce
-  XPLogDebug1(@"awakeFromNib: %@", self);
 }
 
 -(void)themeDidChangeNotification:(NSNotification*)aNotification;
@@ -81,7 +101,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   [textView setBackgroundColor:[ud SVR_colorForTheme:SVRThemeColorBackground]];
   [textView setInsertionPointColor:[ud SVR_colorForTheme:SVRThemeColorInsertionPoint]];
   if (aNotification){
-    [[self modelController] waitTimerFired:nil];
+    [[self modelController] renderPreservingSelectionInTextView:textView];
   }
   [textView setNeedsDisplay:YES];
 }
