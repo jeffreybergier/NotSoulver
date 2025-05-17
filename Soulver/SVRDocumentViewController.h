@@ -31,11 +31,7 @@
 #import "SVRDocumentModelController.h"
 #import "XPCrossPlatform.h"
 
-#if XPSupportsNSDocument >= 1
-@interface SVRDocumentViewController: NSViewController
-#else
-@interface SVRDocumentViewController: NSResponder
-#endif
+@interface SVRDocumentViewController: XPViewController
 {
   mm_new NSView *_view_42; // Used only in OpenStep
   mm_new NSTextView *_textView;
@@ -71,11 +67,9 @@
 
 @end
 
-#if XPSupportsNSDocument == 0
-
+#ifndef XPSupportsNSViewController
 @interface SVRDocumentViewController (CrossPlatform)
 -(NSView*)view;
 -(void)setView:(NSView*)view;
 @end
-
 #endif

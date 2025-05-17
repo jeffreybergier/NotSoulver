@@ -95,11 +95,14 @@ typedef NSRange* XPRangePointer;
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_6
+#define XPSupportsNSViewController
+#define XPViewController NSViewController
 #define XPStringCompareOptions NSStringCompareOptions
 #define XPPasteboardTypeRTF NSPasteboardTypeRTF
 #define XPPasteboardTypeString NSPasteboardTypeString
 #define XPSupportsFormalProtocols // Protocols like NSWindowDelegate were formally added
 #else
+#define XPViewController NSResponder
 #define XPStringCompareOptions unsigned int
 #define XPPasteboardTypeRTF NSRTFPboardType
 #define XPPasteboardTypeString NSStringPboardType

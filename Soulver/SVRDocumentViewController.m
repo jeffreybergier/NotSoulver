@@ -332,8 +332,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 
 @end
 
-#if XPSupportsNSDocument == 0
-
+#ifndef XPSupportsNSViewController
 @implementation SVRDocumentViewController (CrossPlatform)
 -(NSView*)view;
 {
@@ -351,5 +350,4 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   _view_42 = [view retain];
 }
 @end
-
 #endif
