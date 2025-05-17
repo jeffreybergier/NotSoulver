@@ -161,6 +161,12 @@
 {
   return YES;
 }
+
++(BOOL)canConcurrentlyReadDocumentsOfType:(NSString*)typeName;
+{
+  return YES;
+}
+
 -(BOOL)canAsynchronouslyWriteToURL:(NSURL*)url
                             ofType:(NSString*)typeName
                   forSaveOperation:(NSSaveOperationType)saveOperation;

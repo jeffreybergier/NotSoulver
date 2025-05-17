@@ -96,3 +96,8 @@
                       context:(void*)context;
 
 @end
+
+@interface SVRAppDelegate (StateRestoration)
+-(BOOL)applicationSupportsSecureRestorableState:(NSApplication*)app;
+-(BOOL)applicationShouldHandleReopen:(NSApplication*)sender hasVisibleWindows:(BOOL)flag;
+@end

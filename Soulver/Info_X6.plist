@@ -55,5 +55,9 @@
 	<string>MainMenu_X6</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>NSSupportsAutomationTermination</key>
+	<true/>
+    <key>NSQuitAlwaysKeepsWindows</key>
+    <true/>
 </dict>
 </plist>

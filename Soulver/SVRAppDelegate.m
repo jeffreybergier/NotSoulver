@@ -296,3 +296,17 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 }
 
 @end
+
+@implementation SVRAppDelegate (StateRestoration)
+
+-(BOOL)applicationSupportsSecureRestorableState:(NSApplication*)app;
+{
+  return YES;
+}
+
+-(BOOL)applicationShouldHandleReopen:(NSApplication*)sender hasVisibleWindows:(BOOL)flag;
+{
+  return YES;
+}
+
+@end
