@@ -46,17 +46,12 @@
 
 @end
 
-#if XPSupportsNSDocument >= 1
-@interface NSDocument (CrossPlatform) <XPDocumentProtocol>
-@end
-#endif
-
 // This is a best effort implementation of NSDocument only for use in OpenStep.
 // Its insanely minimal because it won't be used once Mac OS X Ships
 #ifdef XPSupportsFormalProtocols
-@interface NSDocumentLegacyImplementation: NSResponder <XPDocumentProtocol, NSWindowDelegate>
+@interface NSDocumentLegacyImplementation: NSResponder <NSWindowDelegate>
 #else
-@interface NSDocumentLegacyImplementation: NSResponder <XPDocumentProtocol>
+@interface NSDocumentLegacyImplementation: NSResponder
 #endif
 {
   mm_copy XPURL    *_fileURL;
@@ -137,4 +132,30 @@
 -(XPAlertReturn)__runUnsavedChangesAlert;
 -(XPAlertReturn)__runRevertToSavedAlert;
 
+@end
+
+#if XPSupportsNSDocument >= 1
+@interface NSDocument (CrossPlatform) <XPDocumentProtocol>
+-(BOOL)XP_isDocumentEdited;
+-(XPURL*)XP_fileURL;
+-(NSString*)XP_nameForFrameAutosave;
+-(NSWindow*)XP_windowForSheet;
+-(void)XP_showWindows;
+-(void)XP_setWindow:(NSWindow*)aWindow;
+-(void)XP_setFileExtension:(NSString*)type;
+-(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
+-(void)XP_addWindowController:(id)windowController;
+@end
+#endif
+
+@interface NSDocumentLegacyImplementation (CrossPlatform) <XPDocumentProtocol>
+-(BOOL)XP_isDocumentEdited;
+-(XPURL*)XP_fileURL;
+-(NSString*)XP_nameForFrameAutosave;
+-(NSWindow*)XP_windowForSheet;
+-(void)XP_showWindows;
+-(void)XP_setWindow:(NSWindow*)aWindow;
+-(void)XP_setFileExtension:(NSString*)type;
+-(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
+-(void)XP_addWindowController:(id)windowController;
 @end
