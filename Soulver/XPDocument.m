@@ -196,12 +196,6 @@ NSPoint XPDocumentPointForCascading;
 
 // MARK: Window Management
 
--(NSString*)windowNibName;
-{
-  XPLogRaise(@"Unimplemented");
-  return nil;
-}
-
 -(void)showWindows;
 {
   [[self windowForSheet] makeKeyAndOrderFront:self];
@@ -211,13 +205,6 @@ NSPoint XPDocumentPointForCascading;
 {
   NSCParameterAssert(_window_42);
   return [[_window_42 retain] autorelease];
-}
-
--(void)__setWindow_42:(NSWindow*)aWindow;
-{
-  NSCParameterAssert(aWindow);
-  [_window_42 release];
-  _window_42 = [aWindow retain];
 }
 
 // MARK: One Time Setup
@@ -517,10 +504,8 @@ NSPoint XPDocumentPointForCascading;
 - (void)dealloc
 {
   XPLogDebug1(@"DEALLOC: %@", self);
+  // Skipping release for window because it releases itself when closed
   [_window_42 setDelegate:nil];
-  // this autorelease (instead of release) is necessary
-  // to prevent crashes when the window is closing
-  [_window_42 autorelease];
   [_fileURL   release];
   [_fileType  release];
   [_fileExtension release];

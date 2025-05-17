@@ -51,8 +51,8 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 {
   NSLayoutManager *layoutManager = [[[NSLayoutManager alloc] init]                                                                 autorelease];
   NSTextContainer *textContainer = [[[NSTextContainer alloc] initWithContainerSize:NSMakeSize(FLT_MAX, FLT_MAX)]                   autorelease];
-  NSTextView *textView           = [[[NSTextView      alloc] initWithFrame:NSMakeRect(0, 0, 400, 300) textContainer:textContainer] autorelease];
-  NSScrollView *scrollView       = [[[NSScrollView    alloc] initWithFrame:NSMakeRect(0, 0, 400, 300)]                             autorelease];
+  NSTextView *textView           = [[[NSTextView      alloc] initWithFrame:NSMakeRect(0, 0, 500, 500) textContainer:textContainer] autorelease];
+  NSScrollView *scrollView       = [[[NSScrollView    alloc] initWithFrame:NSMakeRect(0, 0, 500, 500)]                             autorelease];
   SVRDocumentModelController *modelController = [self modelController];
   
   NSCParameterAssert(layoutManager);
@@ -61,16 +61,20 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   NSCParameterAssert(scrollView);
   NSCParameterAssert(modelController);
   
+  // TextContainer
+  [textContainer setWidthTracksTextView:YES];
+  [textContainer setHeightTracksTextView:NO];
+  
   // ScrollView
   [scrollView setHasVerticalScroller:YES];
-  [scrollView setHasHorizontalScroller:YES];
+  [scrollView setHasHorizontalScroller:NO];
   [scrollView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
   
   // TextView
-  [textView setMinSize:NSMakeSize(0.0, 0.0)];
+  [textView setMinSize:NSMakeSize(0, 0)];
   [textView setMaxSize:NSMakeSize(FLT_MAX, FLT_MAX)];
   [textView setVerticallyResizable:YES];
-  [textView setHorizontallyResizable:YES];
+  [textView setHorizontallyResizable:NO];
   [textView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
   [textView XP_setAllowsUndo:YES];
   

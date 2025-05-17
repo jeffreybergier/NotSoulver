@@ -62,18 +62,19 @@
                                                        defer:NO] autorelease];
   id windowController = nil;
   
-  // Set frameAutosaveName
+  // Configure the Window
   if (autosaveName) {
     [aWindow setFrameAutosaveName:autosaveName];
   } else {
     [aWindow setFrameAutosaveName:@"NewSVRDocument"];
   }
+  [aWindow setMinSize:NSMakeSize(200, 200)];
+  [aWindow setContentView:[viewController view]];
   
-  // Make Window Controllers
 #if XPSupportsNSDocument >= 1
+  // Make the Window Controller to make NSDocument happy
   windowController = [[[NSWindowController alloc] initWithWindow:aWindow] autorelease];
 #endif
-  [aWindow setContentView:[viewController view]];
   
   // Configure self
   [self XP_setWindow:aWindow];

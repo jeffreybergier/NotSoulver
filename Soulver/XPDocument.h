@@ -59,10 +59,10 @@
 @interface NSDocumentLegacyImplementation: NSResponder <XPDocumentProtocol>
 #endif
 {
+  mm_copy XPURL    *_fileURL;
+  mm_copy NSString *_fileType;
+  mm_copy NSString *_fileExtension;
   mm_retain NSWindow *_window_42; // Only used in OpenStep
-  mm_copy   XPURL    *_fileURL;
-  mm_copy   NSString *_fileType;
-  mm_copy   NSString *_fileExtension;
   BOOL _isEdited;
 }
 
@@ -78,9 +78,6 @@
 
 // MARK: Window Management
 
-/// Default implementation throws exception.
-/// File's Owner Should be this Object
--(NSString*)windowNibName;
 /// Loads the NIB if needed and shows the window
 -(void)showWindows;
 /// _window should be set as IBOutlet
