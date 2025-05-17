@@ -59,7 +59,7 @@
   NSWindow *aWindow = [[[NSWindow alloc] initWithContentRect:[self __newDocumentWindowRect]
                                                    styleMask:(NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask)
                                                      backing:NSBackingStoreBuffered
-                                                       defer:NO] autorelease];
+                                                       defer:YES] autorelease];
   id windowController = nil;
   
   // Configure the Window
