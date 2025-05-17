@@ -597,6 +597,7 @@
 				INFOPLIST_FILE = Info_X6.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = Soulver;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
@@ -647,6 +648,7 @@
 				INFOPLIST_FILE = Info_X6.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = Soulver;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
@@ -700,6 +702,7 @@
 				INFOPLIST_FILE = Info_X6.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = Soulver;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
