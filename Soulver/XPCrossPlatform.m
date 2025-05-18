@@ -655,32 +655,21 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 @implementation NSData (CrossPlatform)
 
-+(NSData*)XP_dataWithContentsOfURL:(XPURL*)url;
++(NSData*)XP_dataWithContentsOfURL:(XPURL*)url error:(XPErrorPointer)errorPtr;
 {
 #if XPSupportsNSDocument >= 2
-  return [self dataWithContentsOfURL:url];
+  return [self dataWithContentsOfURL:url options:0 error:errorPtr];
 #else
   return [self dataWithContentsOfFile:url];
 #endif
 }
 
-+(NSData*)dataWithContentsOfURL:(XPURL*)url
-                        options:(NSDataReadingOptions)options
-                          error:(XPErrorPointer)errorPtr;
+-(BOOL)XP_writeToURL:(XPURL*)url error:(XPErrorPointer)errorPtr;
 {
 #if XPSupportsNSDocument >= 2
-  return [self dataWithContentsOfURL:url options:options error:errorPtr];
+  return [self writeToURL:url options:XPDataWritingAtomic error:errorPtr];
 #else
-  return [self dataWithContentsOfFile:url options:options error:errorPtr];
-#endif
-}
-
--(BOOL)XP_writeToURL:(XPURL*)url atomically:(BOOL)atomically;
-{
-#if XPSupportsNSDocument >= 2
-  return [self writeToURL:url atomically:atomically];
-#else
-  return [self writeToFile:url atomically:atomically];
+  return [self writeToFile:url atomically:YES];
 #endif
 }
 

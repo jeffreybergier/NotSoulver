@@ -120,7 +120,8 @@
   NSData *documentData = [self dataRepresentationOfType:[self fileType]];
   XPURL *fileURL = [self XP_fileURL];
   if ([fileURL XP_isFileURL]) {
-    diskData = [NSData XP_dataWithContentsOfURL:fileURL];
+    // TODO: Consider adding error handling here
+    diskData = [NSData XP_dataWithContentsOfURL:fileURL error:NULL];
     isEdited = ![diskData isEqualToData:documentData];
   } else if (documentData == nil || [documentData length] == 0) {
     isEdited = NO;

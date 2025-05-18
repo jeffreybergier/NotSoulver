@@ -203,7 +203,7 @@ NSPoint XPDocumentPointForCascading;
   NSString *fileType = (__fileType) ? __fileType : [self fileType];
   NSData *forWriting = [self dataRepresentationOfType:fileType];
   if (fileURL && fileType && forWriting) {
-    return [forWriting XP_writeToURL:fileURL atomically:YES];
+    return [forWriting XP_writeToURL:fileURL error:outError];
   }
   return NO;
 }
@@ -215,7 +215,7 @@ NSPoint XPDocumentPointForCascading;
   NSString *fileType = (__fileType) ? __fileType : [self fileType];
   if (!fileURL) { return NO; }
   
-  data = [NSData XP_dataWithContentsOfURL:fileURL];
+  data = [NSData XP_dataWithContentsOfURL:fileURL error:outError];
   if (!data) { return NO; }
 
   return [self loadDataRepresentation:data ofType:fileType];

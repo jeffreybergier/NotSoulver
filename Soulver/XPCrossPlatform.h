@@ -113,9 +113,11 @@ typedef NSNumber** XPErrorPointer;
 #ifdef MAC_OS_X_VERSION_10_8
 #define XPSecureCoding NSSecureCoding
 #define XPSaveOperationType NSSaveOperationType
+#define XPDataWritingAtomic NSDataWritingAtomic
 #else
 #define XPSecureCoding NSCoding
 #define XPSaveOperationType XPUInteger
+#define XPDataWritingAtomic NSAtomicWrite
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_10
@@ -309,11 +311,8 @@ NSArray* XPRunOpenPanel(NSString *extension);
 @end
 
 @interface NSData (CrossPlatform)
-+(NSData*)XP_dataWithContentsOfURL:(XPURL*)url;
-+(NSData*)dataWithContentsOfURL:(XPURL*)url
-                        options:(NSDataReadingOptions)options
-                          error:(XPErrorPointer)errorPtr;
--(BOOL)XP_writeToURL:(XPURL*)url atomically:(BOOL)atomically;
++(NSData*)XP_dataWithContentsOfURL:(XPURL*)url error:(XPErrorPointer)errorPtr;
+-(BOOL)XP_writeToURL:(XPURL*)url error:(XPErrorPointer)errorPtr;
 @end
 
 // MARK: XPLogging
