@@ -240,9 +240,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
   NSCParameterAssert(textView);
   
   // Get current selection
-  if (textView) {
-    selection = [textView selectedRange];
-  }
+  selection = [textView selectedRange];
   
   // Solve the string
   [model beginEditing];
@@ -253,10 +251,8 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
                         textStyles:__TESTING_stylesForText             ? __TESTING_stylesForText             : [ud SVR_stylesForText]];
   [model endEditing];
   
-  // Restore the selection
-  if (!XPIsNotFoundRange(selection)) {
-    [textView setSelectedRange:selection];
-  }
+  // Restore selection
+  [textView setSelectedRange:selection];
 }
 
 -(void)__resetWaitTimer:(NSTextView*)sender;
