@@ -32,6 +32,20 @@
 
 #define XPDocument id<XPDocumentProtocol>
 
+#if XPSupportsNSDocument >= 1
+#define XPDocumentChangeType NSDocumentChangeType
+#define XPChangeDone NSChangeDone
+#define XPChangeCleared NSChangeCleared
+#define XPWindowController NSWindowController
+#define XPNewWindowController(_window) [[NSWindowController alloc] initWithWindow:_window]
+#else
+#define XPDocumentChangeType XPUInteger
+#define XPChangeDone 0
+#define XPChangeCleared 2
+#define XPWindowController NSObject
+#define XPNewWindowController(_window) nil
+#endif
+
 @protocol XPDocumentProtocol <NSObject>
 
 -(BOOL)XP_isDocumentEdited;
@@ -42,8 +56,8 @@
 -(void)XP_setWindow:(NSWindow*)aWindow;
 -(void)XP_setFileType:(NSString*)type;
 -(void)XP_setFileExtension:(NSString*)type;
--(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
--(void)XP_addWindowController:(id)windowController;
+-(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(XPErrorPointer)outError;
+-(void)XP_addWindowController:(XPWindowController*)windowController;
 
 @end
 
@@ -89,7 +103,7 @@
 /// Default implementation reads file on disk and compares with _rawData property
 -(BOOL)isDocumentEdited;
 /// supported values are NSChangeDone (0) and NSChangeCleared (2)
--(void)updateChangeCount:(int)change;
+-(void)updateChangeCount:(XPDocumentChangeType)change;
 -(XPURL*)fileURL;
 -(void)setFileURL:(XPURL*)fileURL;
 -(NSString*)fileType;
@@ -107,8 +121,8 @@
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
 
 // No need to override, uses above 2 methods to read and write data
--(BOOL)writeToURL:( XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
--(BOOL)readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
+-(BOOL)writeToURL:( XPURL*)fileURL ofType:(NSString*)fileType error:(XPErrorPointer)outError;
+-(BOOL)readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(XPErrorPointer)outError;
 
 // MARK: Menu Handling
 

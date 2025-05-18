@@ -59,13 +59,13 @@
                                  | XPWindowStyleMaskResizable);
   NSRect windowRect = [self __newDocumentWindowRect];
   NSString *autosaveName = [self XP_nameForFrameAutosave];
-  id windowController = nil;
   SVRDocumentModelController *modelController = [self modelController];
   SVRDocumentViewController  *viewController  = [self viewController];
   NSWindow *aWindow = [[[NSWindow alloc] initWithContentRect:windowRect
                                                    styleMask:windowStyle
                                                      backing:NSBackingStoreBuffered
                                                        defer:YES] autorelease];
+  XPWindowController *windowController = [XPNewWindowController(aWindow) autorelease];
   
   // Configure the Window
   if (autosaveName) {
@@ -75,11 +75,6 @@
   }
   [aWindow setMinSize:NSMakeSize(200, 200)];
   [aWindow setContentView:[viewController view]];
-  
-#if XPSupportsNSDocument >= 1
-  // Make the Window Controller to make NSDocument happy
-  windowController = [[[NSWindowController alloc] initWithWindow:aWindow] autorelease];
-#endif
   
   // Configure self
   [self XP_setWindow:aWindow];
@@ -132,7 +127,8 @@
   } else {
     isEdited = YES;
   }
-  [self updateChangeCount:isEdited ? 0 : 2];
+  [self updateChangeCount:isEdited ? XPChangeDone
+                                   : XPChangeCleared];
 }
 
 -(NSRect)__newDocumentWindowRect;

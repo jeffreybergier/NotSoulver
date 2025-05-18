@@ -99,7 +99,7 @@ NSPoint XPDocumentPointForCascading;
   }
   
   // Update window chrome
-  [self updateChangeCount:2];
+  [self updateChangeCount:XPChangeCleared];
   
   // Set the delegate for -windowShouldClose:
   [myWindow setDelegate:self];
@@ -122,12 +122,12 @@ NSPoint XPDocumentPointForCascading;
   return _isEdited;
 }
 
--(void)updateChangeCount:(int)change;
+-(void)updateChangeCount:(XPDocumentChangeType)change;
 {
   NSWindow *myWindow = [self windowForSheet];
   XPURL    *fileURL  = [self fileURL];
 
-  _isEdited = (change == 2) ? NO : YES;
+  _isEdited = (change == XPChangeCleared) ? NO : YES;
 
   if ([fileURL XP_isFileURL]) {
     [myWindow setRepresentedFilename:[fileURL XP_path]];
@@ -197,7 +197,7 @@ NSPoint XPDocumentPointForCascading;
   return NO;
 }
 
--(BOOL)writeToURL:(XPURL*)__fileURL ofType:(NSString*)__fileType error:(id*)outError;
+-(BOOL)writeToURL:(XPURL*)__fileURL ofType:(NSString*)__fileType error:(XPErrorPointer)outError;
 {
   XPURL    *fileURL  = (__fileURL ) ? __fileURL  : [self fileURL ];
   NSString *fileType = (__fileType) ? __fileType : [self fileType];
@@ -208,7 +208,7 @@ NSPoint XPDocumentPointForCascading;
   return NO;
 }
 
--(BOOL)readFromURL:(XPURL*)__fileURL ofType:(NSString*)__fileType error:(id*)outError;
+-(BOOL)readFromURL:(XPURL*)__fileURL ofType:(NSString*)__fileType error:(XPErrorPointer)outError;
 {
   NSData   *data = nil;
   XPURL    *fileURL  = (__fileURL ) ? __fileURL  : [self fileURL ];
@@ -231,13 +231,13 @@ NSPoint XPDocumentPointForCascading;
   } else {
     [self __runModalSavePanelAndSetFileURL];
   }
-  [self updateChangeCount:2];
+  [self updateChangeCount:XPChangeCleared];
 }
 
 -(IBAction)saveDocumentAs:(id)sender;
 {
   [self __runModalSavePanelAndSetFileURL];
-  [self updateChangeCount:2];
+  [self updateChangeCount:XPChangeCleared];
 }
 
 -(IBAction)saveDocumentTo:(id)sender;
@@ -260,7 +260,7 @@ NSPoint XPDocumentPointForCascading;
     default:
       XPLogRaise1(@"Unexpected alert panel result: %ld", result);
   }
-  [self updateChangeCount:2];
+  [self updateChangeCount:XPChangeCleared];
 }
 
 // MARK: Customizations

@@ -86,12 +86,14 @@ typedef float XPFloat;
 #define XPKeyedUnarchiver NSUnarchiver
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_3
+#ifdef MAC_OS_X_VERSION_10_4
 #define XPRTFDocumentAttributes [NSDictionary dictionaryWithObject:NSRTFTextDocumentType forKey:NSDocumentTypeDocumentAttribute]
 typedef NSRangePointer XPRangePointer;
+typedef NSError** XPErrorPointer;
 #else
 #define XPRTFDocumentAttributes nil
 typedef NSRange* XPRangePointer;
+typedef NSNumber** XPErrorPointer;
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_6
@@ -308,6 +310,9 @@ NSArray* XPRunOpenPanel(NSString *extension);
 
 @interface NSData (CrossPlatform)
 +(NSData*)XP_dataWithContentsOfURL:(XPURL*)url;
++(NSData*)dataWithContentsOfURL:(XPURL*)url
+                        options:(NSDataReadingOptions)options
+                          error:(XPErrorPointer)errorPtr;
 -(BOOL)XP_writeToURL:(XPURL*)url atomically:(BOOL)atomically;
 @end
 

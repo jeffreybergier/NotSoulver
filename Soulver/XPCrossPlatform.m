@@ -664,6 +664,17 @@ NSArray* XPRunOpenPanel(NSString *extension)
 #endif
 }
 
++(NSData*)dataWithContentsOfURL:(XPURL*)url
+                        options:(NSDataReadingOptions)options
+                          error:(XPErrorPointer)errorPtr;
+{
+#if XPSupportsNSDocument >= 2
+  return [self dataWithContentsOfURL:url options:options error:errorPtr];
+#else
+  return [self dataWithContentsOfFile:url options:options error:errorPtr];
+#endif
+}
+
 -(BOOL)XP_writeToURL:(XPURL*)url atomically:(BOOL)atomically;
 {
 #if XPSupportsNSDocument >= 2
