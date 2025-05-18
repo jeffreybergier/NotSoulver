@@ -42,7 +42,7 @@
 #define XPDocumentChangeType XPUInteger
 #define XPChangeDone 0
 #define XPChangeCleared 2
-#define XPWindowController NSObject
+#define XPWindowController NSResponder
 #define XPNewWindowController(_window) nil
 #endif
 
