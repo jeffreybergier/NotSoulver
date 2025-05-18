@@ -159,7 +159,6 @@
 
 @end
 
-#if XPSupportsNSDocument >= 2
 @implementation SVRDocument (StateRestoration)
 
 +(BOOL)autosavesInPlace;
@@ -177,9 +176,9 @@
   return NO;
 }
 
--(BOOL)canAsynchronouslyWriteToURL:(NSURL*)url
+-(BOOL)canAsynchronouslyWriteToURL:(XPURL*)url
                             ofType:(NSString*)typeName
-                  forSaveOperation:(NSSaveOperationType)saveOperation;
+                  forSaveOperation:(XPSaveOperationType)saveOperation;
 {
   // Writing to disk uses just pure NSAttributedString API.
   // Nothing in the document is modified, just copied and then discarded
@@ -188,4 +187,3 @@
 }
 
 @end
-#endif

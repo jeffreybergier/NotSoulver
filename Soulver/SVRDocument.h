@@ -60,12 +60,10 @@
 
 @end
 
-#if XPSupportsNSDocument >= 2
 @interface SVRDocument (StateRestoration)
 +(BOOL)autosavesInPlace;
 +(BOOL)canConcurrentlyReadDocumentsOfType:(NSString*)typeName;
--(BOOL)canAsynchronouslyWriteToURL:(NSURL*)url
+-(BOOL)canAsynchronouslyWriteToURL:(XPURL*)url
                             ofType:(NSString*)typeName
-                  forSaveOperation:(NSSaveOperationType)saveOperation;
+                  forSaveOperation:(XPSaveOperationType)saveOperation;
 @end
-#endif

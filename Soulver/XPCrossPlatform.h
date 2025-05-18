@@ -110,8 +110,10 @@ typedef NSRange* XPRangePointer;
 
 #ifdef MAC_OS_X_VERSION_10_8
 #define XPSecureCoding NSSecureCoding
+#define XPSaveOperationType NSSaveOperationType
 #else
 #define XPSecureCoding NSCoding
+#define XPSaveOperationType XPUInteger
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_10
