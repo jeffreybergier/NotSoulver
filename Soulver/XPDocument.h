@@ -40,6 +40,7 @@
 -(NSWindow*)XP_windowForSheet;
 -(void)XP_showWindows;
 -(void)XP_setWindow:(NSWindow*)aWindow;
+-(void)XP_setFileType:(NSString*)type;
 -(void)XP_setFileExtension:(NSString*)type;
 -(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
 -(void)XP_addWindowController:(id)windowController;
@@ -142,6 +143,7 @@
 -(NSWindow*)XP_windowForSheet;
 -(void)XP_showWindows;
 -(void)XP_setWindow:(NSWindow*)aWindow;
+-(void)XP_setFileType:(NSString*)type;
 -(void)XP_setFileExtension:(NSString*)type;
 -(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
 -(void)XP_addWindowController:(id)windowController;
@@ -155,6 +157,7 @@
 -(NSWindow*)XP_windowForSheet;
 -(void)XP_showWindows;
 -(void)XP_setWindow:(NSWindow*)aWindow;
+-(void)XP_setFileType:(NSString*)type;
 -(void)XP_setFileExtension:(NSString*)type;
 -(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
 -(void)XP_addWindowController:(id)windowController;

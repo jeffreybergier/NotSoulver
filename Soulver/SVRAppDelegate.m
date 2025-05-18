@@ -126,10 +126,10 @@
 
 -(IBAction)__newDocument:(id)sender
 {
-  SVRDocument *document = [[[SVRDocument alloc] init] autorelease];
-  [document setFileType:SVRDocumentModelRepDisk];
+  XPDocument document = [[[SVRDocument alloc] init] autorelease];
+  [document XP_setFileType:SVRDocumentModelRepDisk];
   [document XP_setFileExtension:SVRDocumentModelExtension];
-  [document showWindows];
+  [document XP_showWindows];
   [[self openDocuments] addObject:document];
 }
 
@@ -307,11 +307,6 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 @implementation SVRAppDelegate (StateRestoration)
 
 -(BOOL)applicationSupportsSecureRestorableState:(NSApplication*)app;
-{
-  return YES;
-}
-
--(BOOL)applicationShouldHandleReopen:(NSApplication*)sender hasVisibleWindows:(BOOL)flag;
 {
   return YES;
 }

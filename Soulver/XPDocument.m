@@ -453,6 +453,11 @@ NSPoint XPDocumentPointForCascading;
 #endif
 }
 
+-(void)XP_setFileType:(NSString*)type;
+{
+  [self setFileType:type];
+}
+
 -(void)XP_setFileExtension:(NSString*)type;
 {
 #if XPSupportsNSDocument == 0
