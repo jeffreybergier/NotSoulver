@@ -53,14 +53,19 @@
 
 -(void)makeWindowControllers;
 {
+  XPWindowStyleMask windowStyle = (XPWindowStyleMaskTitled
+                                 | XPWindowStyleMaskClosable
+                                 | XPWindowStyleMaskMiniaturizable
+                                 | XPWindowStyleMaskResizable);
+  NSRect windowRect = [self __newDocumentWindowRect];
   NSString *autosaveName = [self XP_nameForFrameAutosave];
+  id windowController = nil;
   SVRDocumentModelController *modelController = [self modelController];
   SVRDocumentViewController  *viewController  = [self viewController];
-  NSWindow *aWindow = [[[NSWindow alloc] initWithContentRect:[self __newDocumentWindowRect]
-                                                   styleMask:(NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask)
+  NSWindow *aWindow = [[[NSWindow alloc] initWithContentRect:windowRect
+                                                   styleMask:windowStyle
                                                      backing:NSBackingStoreBuffered
                                                        defer:YES] autorelease];
-  id windowController = nil;
   
   // Configure the Window
   if (autosaveName) {

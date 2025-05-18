@@ -66,9 +66,9 @@ typedef float XPFloat;
 #ifdef MAC_OS_X_VERSION_10_4
 #define XPSupportsNSDocument 2 // Supports NSURL APIs
 #elif defined(MAC_OS_X_VERSION_10_2)
-#define XPSupportsNSDocument 1 // Exists but URL API's appear not to work properly
+#define XPSupportsNSDocument 1 // NSDocument exists but URL API's appear not to work properly
 #else
-#define XPSupportsNSDocument 0 // Does not exist
+#define XPSupportsNSDocument 0 // NSDocument does not exist
 #endif
 
 #if XPSupportsNSDocument >= 2
@@ -125,9 +125,19 @@ typedef NSRange* XPRangePointer;
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_12
+#define XPWindowStyleMask NSWindowStyleMask
 #define XPBitmapImageFileTypeTIFF NSBitmapImageFileTypeTIFF
+#define XPWindowStyleMaskTitled NSWindowStyleMaskTitled
+#define XPWindowStyleMaskClosable NSWindowStyleMaskClosable
+#define XPWindowStyleMaskMiniaturizable NSWindowStyleMaskMiniaturizable
+#define XPWindowStyleMaskResizable NSWindowStyleMaskResizable
 #else
+#define XPWindowStyleMask unsigned int
 #define XPBitmapImageFileTypeTIFF NSTIFFFileType
+#define XPWindowStyleMaskTitled NSTitledWindowMask
+#define XPWindowStyleMaskClosable NSClosableWindowMask
+#define XPWindowStyleMaskMiniaturizable NSMiniaturizableWindowMask
+#define XPWindowStyleMaskResizable NSResizableWindowMask
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_14
