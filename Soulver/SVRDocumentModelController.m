@@ -184,10 +184,8 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   BOOL success = NO;
   NSTextStorage *model = [self model];
-  NSString *string = [
-    [[NSString alloc] initWithData:data
-                          encoding:NSUTF8StringEncoding]
-    autorelease];
+  NSString *string = [[[NSString alloc] initWithData:data
+                                            encoding:NSUTF8StringEncoding] autorelease];
   if (string) {
     // TODO: Figure out how I can combine this with waitTimerFired:
     XPLogDebug1(@"%@ loadDataRepresentation: Rendering", self);

@@ -169,13 +169,21 @@
 
 +(BOOL)canConcurrentlyReadDocumentsOfType:(NSString*)typeName;
 {
-  return YES;
+  // The hard part of opening a file is rendering the NSAttributedString.
+  // This involves reading whether we are in dark mode.
+  // It also involves creating NSTextAttachmentCells.
+  // Both are main thread only and it shows warnings.
+  // Best to just leave this set to NO
+  return NO;
 }
 
 -(BOOL)canAsynchronouslyWriteToURL:(NSURL*)url
                             ofType:(NSString*)typeName
                   forSaveOperation:(NSSaveOperationType)saveOperation;
 {
+  // Writing to disk uses just pure NSAttributedString API.
+  // Nothing in the document is modified, just copied and then discarded
+  // at the end. So returning YES here should be fine.
   return YES;
 }
 
