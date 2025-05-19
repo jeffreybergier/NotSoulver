@@ -18,10 +18,11 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" deferred="NO" hidesOnDeactivate="YES" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="156" userLabel="KeypadPanel" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" utility="YES" texturedBackground="YES"/>
-            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="765" y="432" width="142" height="298"/>
+            <windowPositionMask key="initialPositionMask" rightStrut="YES" topStrut="YES"/>
+            <rect key="contentRect" x="900" y="400" width="142" height="298"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
-            <value key="minSize" type="size" width="84.433999999999997" height="8"/>
+            <value key="minSize" type="size" width="142" height="298"/>
+            <value key="maxSize" type="size" width="142" height="298"/>
             <view key="contentView" id="158">
                 <rect key="frame" x="0.0" y="0.0" width="142" height="298"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -309,10 +310,11 @@
         </window>
         <window title="About" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="197" userLabel="AboutWindow">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
-            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="47" y="404" width="480" height="320"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" topStrut="YES"/>
+            <rect key="contentRect" x="64" y="400" width="480" height="320"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
-            <value key="minSize" type="size" width="40" height="2"/>
+            <value key="minSize" type="size" width="480" height="320"/>
+            <value key="maxSize" type="size" width="480" height="320"/>
             <view key="contentView" id="198">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="320"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -395,7 +397,7 @@ by Jeffrey Bergier
                         <rect key="frame" x="8" y="60" width="464" height="100"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <clipView key="contentView" id="Huy-pE-OfB">
-                            <rect key="frame" x="1" y="1" width="447" height="98"/>
+                            <rect key="frame" x="1" y="1" width="462" height="98"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
                                 <textView editable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" usesFontPanel="YES" usesRuler="YES" spellingCorrection="YES" smartInsertDelete="YES" id="459">
@@ -403,7 +405,7 @@ by Jeffrey Bergier
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                    <size key="minSize" width="464" height="98"/>
+                                    <size key="minSize" width="446" height="98"/>
                                     <size key="maxSize" width="464" height="10000000"/>
                                     <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                 </textView>
@@ -421,13 +423,15 @@ by Jeffrey Bergier
                     </scrollView>
                 </subviews>
             </view>
+            <point key="canvasLocation" x="-423" y="257"/>
         </window>
         <window title="Settings" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="199" userLabel="SettingsWindow">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
-            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="102" y="384" width="320" height="340"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" topStrut="YES"/>
+            <rect key="contentRect" x="64" y="400" width="320" height="340"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
-            <value key="minSize" type="size" width="121.527" height="5"/>
+            <value key="minSize" type="size" width="320" height="340"/>
+            <value key="maxSize" type="size" width="320" height="340"/>
             <view key="contentView" id="200">
                 <rect key="frame" x="0.0" y="0.0" width="320" height="340"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -981,7 +985,7 @@ by Jeffrey Bergier
                         <font key="titleFont" size="12" name="Helvetica"/>
                     </box>
                     <popUpButton verticalHuggingPriority="750" fixedFrame="YES" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="304">
-                        <rect key="frame" x="5" y="309" width="310" height="26"/>
+                        <rect key="frame" x="8" y="308" width="304" height="26"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="clipping" borderStyle="border" inset="2" arrowPosition="arrowAtCenter" preferredEdge="maxY" id="528">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1003,6 +1007,7 @@ by Jeffrey Bergier
             <connections>
                 <outlet property="initialFirstResponder" destination="304" id="403"/>
             </connections>
+            <point key="canvasLocation" x="58" y="563"/>
         </window>
         <customObject id="310" userLabel="SVRSettingsViewController" customClass="SVRSettingsViewController">
             <connections>

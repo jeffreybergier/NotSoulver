@@ -86,7 +86,6 @@
 		8C7D8F392DC636BC003F084F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu_X6.xib; sourceTree = "<group>"; };
 		8C7D8F3C2DC636CF003F084F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/AccessoryWindows_X6.xib; sourceTree = "<group>"; };
 		8C9A4EDF2D93CD2700A80066 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/AccessoryWindows_X2.nib; sourceTree = "<group>"; };
-		8CA8D0392DC48A43007B1663 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/SVRDocument_X2.nib; sourceTree = "<group>"; };
 		8CD62E502D91DB730000020F /* Soulver_main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = Soulver_main.m; sourceTree = "<group>"; };
 		8CD62E552D91DCDF0000020F /* Import Log.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "Import Log.rtf"; sourceTree = "<group>"; };
 		8CD62E562D91DCDF0000020F /* Makefile */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -258,7 +257,6 @@
 				8CD62EB72D91DF290000020F /* AccessoryWindows_42.nib */,
 				8C9A4EDE2D93CD2700A80066 /* AccessoryWindows_X2.nib */,
 				8C7D8F3B2DC636CF003F084F /* AccessoryWindows_X6.xib */,
-				8CA8D0382DC48A43007B1663 /* SVRDocument_X2.nib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -490,14 +488,6 @@
 				8C9A4EDF2D93CD2700A80066 /* English */,
 			);
 			name = AccessoryWindows_X2.nib;
-			sourceTree = "<group>";
-		};
-		8CA8D0382DC48A43007B1663 /* SVRDocument_X2.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				8CA8D0392DC48A43007B1663 /* English */,
-			);
-			name = SVRDocument_X2.nib;
 			sourceTree = "<group>";
 		};
 		8CD62EB72D91DF290000020F /* AccessoryWindows_42.nib */ = {
