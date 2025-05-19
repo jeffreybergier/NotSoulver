@@ -735,11 +735,6 @@ NSArray* XPRunOpenPanel(NSString *extension)
 #else
   XPLogAlwys (@"MAC_OS_X_VER_MAX_ALLOW.(ND)");
 #endif
-#ifdef __STDC_VERSION__
-  XPLogAlwys1(@"__STDC_VERSION__.......(%ld)", __STDC_VERSION__);
-#else
-  XPLogAlwys (@"__STDC_VERSION__.......(ND)");
-#endif
   XPLogAlwys (@"<XPLog> End: logCheckedPoundDefines");
 }
 
