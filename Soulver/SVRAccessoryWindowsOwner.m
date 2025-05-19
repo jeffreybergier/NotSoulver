@@ -224,7 +224,7 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
 
 - (void)dealloc
 {
-  XPLogDebug1(@"DEALLOC: %@", self);
+  XPLogExtra1(@"%p", self);
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [_keypadPanel     autorelease];
   [_aboutWindow     autorelease];

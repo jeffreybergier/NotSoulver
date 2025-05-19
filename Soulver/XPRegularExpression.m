@@ -141,7 +141,7 @@
 
 - (void)dealloc
 {
-  XPLogExtra1(@"DEALLOC: %@", self);
+  XPLogExtra1(@"%p", self);
   [_pattern release];
   _pattern = nil;
   [super dealloc];
@@ -220,7 +220,7 @@
 
 -(void)dealloc
 {
-  XPLogExtra1(@"DEALLOC: %@", self);
+  XPLogExtra1(@"%p", self);
   [_expression release];
   [_ranges release];
   _expression = nil;

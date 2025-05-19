@@ -383,37 +383,37 @@ NSArray* XPRunOpenPanel(NSString *extension);
 
 // TODO: Move these into XPLog macros above
 #ifdef MAC_OS_X_VERSION_10_4
-#define XPTestFunc [NSString stringWithCString:__PRETTY_FUNCTION__ encoding:NSUTF8StringEncoding]
-#define XPTestFile [[[NSString stringWithCString:__FILE__ encoding:NSUTF8StringEncoding] componentsSeparatedByString:@"/"] lastObject]
+#define XPLogFunc [NSString stringWithCString:__PRETTY_FUNCTION__ encoding:NSUTF8StringEncoding]
+#define XPLogFile [[[NSString stringWithCString:__FILE__ encoding:NSUTF8StringEncoding] componentsSeparatedByString:@"/"] lastObject]
 #else
-#define XPTestFunc [NSString stringWithCString:__PRETTY_FUNCTION__]
-#define XPTestFile [[[NSString stringWithCString:__FILE__] componentsSeparatedByString:@"/"] lastObject]
+#define XPLogFunc [NSString stringWithCString:__PRETTY_FUNCTION__]
+#define XPLogFile [[[NSString stringWithCString:__FILE__] componentsSeparatedByString:@"/"] lastObject]
 #endif
 
 // Define Always Macros
-#define XPLogAlwys(_formatString) NSLog(@"%@", _formatString)
-#define XPLogAlwys1(_formatString, _one) NSLog(_formatString, _one)
-#define XPLogAlwys2(_formatString, _one, _two) NSLog(_formatString, _one, _two)
-#define XPLogAlwys3(_formatString, _one, _two, _three) NSLog(_formatString, _one, _two, _three)
-#define XPLogAlwys4(_formatString, _one, _two, _three, _four) NSLog(_formatString, _one, _two, _three, _four)
-#define XPLogRaise(_formatString) [NSException raise:@"SVRException" format:_formatString]
-#define XPLogRaise1(_formatString, _one) [NSException raise:@"SVRException" format:_formatString, _one]
-#define XPLogRaise2(_formatString, _one, _two) [NSException raise:@"SVRException" format:_formatString, _one, _two]
-#define XPLogRaise3(_formatString, _one, _two, _three) [NSException raise:@"SVRException" format:_formatString, _one, _two, _three]
-#define XPLogRaise4(_formatString, _one, _two, _three, _four) [NSException raise:@"SVRException" format:_formatString, _one, _two, _three, _four]
+#define XPLogAlwys(_formatString)                             NSLog(@"{%@:%d} %@ %@", XPLogFile, __LINE__, XPLogFunc, _formatString)
+#define XPLogAlwys1(_formatString, _one)                      NSLog(@"{%@:%d} %@ %@", XPLogFile, __LINE__, XPLogFunc, [NSString stringWithFormat:_formatString, _one])
+#define XPLogAlwys2(_formatString, _one, _two)                NSLog(@"{%@:%d} %@ %@", XPLogFile, __LINE__, XPLogFunc, [NSString stringWithFormat:_formatString, _one, _two])
+#define XPLogAlwys3(_formatString, _one, _two, _three)        NSLog(@"{%@:%d} %@ %@", XPLogFile, __LINE__, XPLogFunc, [NSString stringWithFormat:_formatString, _one, _two, _three])
+#define XPLogAlwys4(_formatString, _one, _two, _three, _four) NSLog(@"{%@:%d} %@ %@", XPLogFile, __LINE__, XPLogFunc, [NSString stringWithFormat:_formatString, _one, _two, _three, _four])
+#define XPLogRaise(_formatString)                             [NSException raise:@"SVRException" format:_formatString]
+#define XPLogRaise1(_formatString, _one)                      [NSException raise:@"SVRException" format:@"{%@:%d} %@ %@", XPLogFile, __LINE__, XPLogFunc, [NSString stringWithFormat:_formatString, _one]]
+#define XPLogRaise2(_formatString, _one, _two)                [NSException raise:@"SVRException" format:@"{%@:%d} %@ %@", XPLogFile, __LINE__, XPLogFunc, [NSString stringWithFormat:_formatString, _one, _two]]
+#define XPLogRaise3(_formatString, _one, _two, _three)        [NSException raise:@"SVRException" format:@"{%@:%d} %@ %@", XPLogFile, __LINE__, XPLogFunc, [NSString stringWithFormat:_formatString, _one, _two, _three]]
+#define XPLogRaise4(_formatString, _one, _two, _three, _four) [NSException raise:@"SVRException" format:@"{%@:%d} %@ %@", XPLogFile, __LINE__, XPLogFunc, [NSString stringWithFormat:_formatString, _one, _two, _three, _four]]
 
 // Define Debug Macros
 #if LOGLEVEL >= LOGLEVELDEBUG
-#define XPLogDebug(_formatString) NSLog(@"%@", _formatString)
-#define XPLogDebug1(_formatString, _one) NSLog(_formatString, _one)
-#define XPLogDebug2(_formatString, _one, _two) NSLog(_formatString, _one, _two)
-#define XPLogDebug3(_formatString, _one, _two, _three) NSLog(_formatString, _one, _two, _three)
-#define XPLogDebug4(_formatString, _one, _two, _three, _four) NSLog(_formatString, _one, _two, _three, _four)
-#define XPLogPause(_formatString) NSLog(@"LOG-PAUSE: %@", _formatString); [XPLog pause]
-#define XPLogPause1(_formatString, _one) NSLog([@"LOG-PAUSE: " stringByAppendingString:_formatString], _one); [XPLog pause]
-#define XPLogPause2(_formatString, _one, _two) NSLog([@"LOG-PAUSE: " stringByAppendingString:_formatString], _one, _two); [XPLog pause]
-#define XPLogPause3(_formatString, _one, _two, _three) NSLog([@"LOG-PAUSE: " stringByAppendingString:_formatString], _one, _two, _three); [XPLog pause]
-#define XPLogPause4(_formatString, _one, _two, _three, _four) NSLog([@"LOG-PAUSE: " stringByAppendingString:_formatString], _one, _two, _three, _four); [XPLog pause]
+#define XPLogDebug(_formatString)                             XPLogAlwys(_formatString)
+#define XPLogDebug1(_formatString, _one)                      XPLogAlwys1(_formatString, _one)
+#define XPLogDebug2(_formatString, _one, _two)                XPLogAlwys2(_formatString, _one, _two)
+#define XPLogDebug3(_formatString, _one, _two, _three)        XPLogAlwys3(_formatString, _one, _two, _three)
+#define XPLogDebug4(_formatString, _one, _two, _three, _four) XPLogAlwys4(_formatString, _one, _two, _three, _four)
+#define XPLogPause(_formatString)                             XPLogDebug(_formatString); [XPLog pause]
+#define XPLogPause1(_formatString, _one)                      XPLogDebug1(_formatString, _one); [XPLog pause]
+#define XPLogPause2(_formatString, _one, _two)                XPLogDebug2(_formatString, _one, _two); [XPLog pause]
+#define XPLogPause3(_formatString, _one, _two, _three)        XPLogDebug3(_formatString, _one, _two, _three); [XPLog pause]
+#define XPLogPause4(_formatString, _one, _two, _three, _four) XPLogDebug4(_formatString, _one, _two, _three, _four); [XPLog pause]
 #else
 #define XPLogDebug(_formatString)
 #define XPLogDebug1(_formatString, _one)
@@ -428,11 +428,11 @@ NSArray* XPRunOpenPanel(NSString *extension);
 #endif
 
 #if LOGLEVEL >= LOGLEVELEXTRA
-#define XPLogExtra(_formatString) NSLog(@"%@", _formatString)
-#define XPLogExtra1(_formatString, _one) NSLog(_formatString, _one)
-#define XPLogExtra2(_formatString, _one, _two) NSLog(_formatString, _one, _two)
-#define XPLogExtra3(_formatString, _one, _two, _three) NSLog(_formatString, _one, _two, _three)
-#define XPLogExtra4(_formatString, _one, _two, _three, _four) NSLog(_formatString, _one, _two, _three, _four)
+#define XPLogExtra(_formatString)                             XPLogAlwys(_formatString)
+#define XPLogExtra1(_formatString, _one)                      XPLogAlwys1(_formatString, _one)
+#define XPLogExtra2(_formatString, _one, _two)                XPLogAlwys2(_formatString, _one, _two)
+#define XPLogExtra3(_formatString, _one, _two, _three)        XPLogAlwys3(_formatString, _one, _two, _three)
+#define XPLogExtra4(_formatString, _one, _two, _three, _four) XPLogAlwys4(_formatString, _one, _two, _three, _four)
 #else
 #define XPLogExtra(_formatString)
 #define XPLogExtra1(_formatString, _one)
@@ -444,12 +444,12 @@ NSArray* XPRunOpenPanel(NSString *extension);
 // MARK: XPTest
 
 #if TESTING == 1
-#define XPTestInt(_lhs, _rhs)    NSAssert5(_lhs == _rhs, @"[FAIL] '%d'!='%d' {%@:%d} %@", (int)_lhs, (int)_rhs, XPTestFile, __LINE__, XPTestFunc)
-#define XPTestBool(_lhs)         NSAssert3(_lhs, @"[FAIL] Bool was NO {%@:%d} %@", XPTestFile, __LINE__, XPTestFunc)
-#define XPTestFloat(_lhs, _rhs)  NSAssert5(_lhs == _rhs, @"[FAIL] '%g'!='%g' {%@:%d} %@", _lhs, _rhs, XPTestFile, __LINE__, XPTestFunc)
-#define XPTestObject(_lhs, _rhs) NSAssert5([_lhs isEqual:_rhs], @"[FAIL] '%@'!='%@' {%@:%d} %@", _lhs, _rhs, XPTestFile, __LINE__, XPTestFunc)
-#define XPTestNotNIL(_lhs)       NSAssert3(_lhs, @"[FAIL] Object was NIL {%@:%d} %@", XPTestFile, __LINE__, XPTestFunc)
-#define XPTestString(_lhs, _rhs) NSAssert5([_lhs isEqualToString:_rhs], @"[FAIL] '%@'!='%@' {%@:%d} %@", _lhs, _rhs, XPTestFile, __LINE__, XPTestFunc)
-#define XPTestRange(_lhs, _loc, _len) NSAssert5(NSEqualRanges(_lhs, NSMakeRange(_loc, _len)), @"[FAIL] %@!=%@ {%@:%d} %@", NSStringFromRange(_lhs), NSStringFromRange(NSMakeRange(_loc, _len)), XPTestFile, __LINE__, XPTestFunc)
-#define XPTestAttrString(_lhs, _rhs)  NSAssert5([_lhs isEqualToAttributedString:_rhs], @"[FAIL] '%@'!='%@' {%@:%d} %@", _lhs, _rhs, XPTestFile, __LINE__, XPTestFunc)
+#define XPTestInt(_lhs, _rhs)         NSAssert5(_lhs == _rhs, @"[FAIL] '%d'!='%d' {%@:%d} %@", (int)_lhs, (int)_rhs, XPLogFile, __LINE__, XPLogFunc)
+#define XPTestBool(_lhs)              NSAssert3(_lhs, @"[FAIL] Bool was NO {%@:%d} %@", XPLogFile, __LINE__, XPLogFunc)
+#define XPTestFloat(_lhs, _rhs)       NSAssert5(_lhs == _rhs, @"[FAIL] '%g'!='%g' {%@:%d} %@", _lhs, _rhs, XPLogFile, __LINE__, XPLogFunc)
+#define XPTestObject(_lhs, _rhs)      NSAssert5([_lhs isEqual:_rhs], @"[FAIL] '%@'!='%@' {%@:%d} %@", _lhs, _rhs, XPLogFile, __LINE__, XPLogFunc)
+#define XPTestNotNIL(_lhs)            NSAssert3(_lhs, @"[FAIL] Object was NIL {%@:%d} %@", XPLogFile, __LINE__, XPLogFunc)
+#define XPTestString(_lhs, _rhs)      NSAssert5([_lhs isEqualToString:_rhs], @"[FAIL] '%@'!='%@' {%@:%d} %@", _lhs, _rhs, XPLogFile, __LINE__, XPLogFunc)
+#define XPTestRange(_lhs, _loc, _len) NSAssert5(NSEqualRanges(_lhs, NSMakeRange(_loc, _len)), @"[FAIL] %@!=%@ {%@:%d} %@", NSStringFromRange(_lhs), NSStringFromRange(NSMakeRange(_loc, _len)), XPLogFile, __LINE__, XPLogFunc)
+#define XPTestAttrString(_lhs, _rhs)  NSAssert5([_lhs isEqualToAttributedString:_rhs], @"[FAIL] '%@'!='%@' {%@:%d} %@", _lhs, _rhs, XPLogFile, __LINE__, XPLogFunc)
 #endif

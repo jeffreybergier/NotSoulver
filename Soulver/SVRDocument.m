@@ -145,7 +145,7 @@
 
 -(void)dealloc;
 {
-  XPLogDebug1(@"DEALLOC: %@", self);
+  XPLogExtra1(@"%p", self);
   [_viewController  release];
   [_modelController release];
   _viewController  = nil;

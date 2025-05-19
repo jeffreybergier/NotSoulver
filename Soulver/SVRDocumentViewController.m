@@ -179,7 +179,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 // MARK: Dealloc
 -(void)dealloc;
 {
-  XPLogDebug1(@"DEALLOC: %@", self);
+  XPLogExtra1(@"%p", self);
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [_modelController release];
   _modelController = nil;

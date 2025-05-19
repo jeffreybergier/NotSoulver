@@ -434,7 +434,7 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
 
 -(void)dealloc;
 {
-  XPLogExtra1(@"DEALLOC: %@", self);
+  XPLogExtra1(@"%p", self);
   _errorPtr = NULL;
   [super dealloc];
 }

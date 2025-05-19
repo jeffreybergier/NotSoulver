@@ -204,7 +204,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 - (void)dealloc
 {
-  XPLogExtra1(@"DEALLOC: %@", self);
+  XPLogExtra1(@"%p", self);
   [_key release];
   [_string release];
   _key = nil;
@@ -264,7 +264,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 - (void)dealloc
 {
-  XPLogExtra1(@"DEALLOC:%@", self);
+  XPLogExtra1(@"%p", self);
   [_string release];
   [_set release];
   [super dealloc];
@@ -681,61 +681,63 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 +(void)logCheckedPoundDefines;
 {
-  XPLogAlwys (@"<XPLog> Start: logCheckedPoundDefines");
-  XPLogAlwys1(@"LOGLEVEL...............(%d)", LOGLEVEL);
-  XPLogAlwys1(@"DEBUG..................(%d)", DEBUG);
-  XPLogAlwys1(@"TESTING................(%d)", TESTING);
+  NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
+  NSLog(@"<XPLog> Start: logCheckedPoundDefines");
+  NSLog(@"LOGLEVEL...............(%d)", LOGLEVEL);
+  NSLog(@"DEBUG..................(%d)", DEBUG);
+  NSLog(@"TESTING................(%d)", TESTING);
 #ifdef NS_ENUM
-  XPLogAlwys (@"NS_ENUM................(Defined)");
+  NSLog(@"NS_ENUM................(Defined)");
 #else
-  XPLogAlwys (@"NS_ENUM................(ND)");
+  NSLog(@"NS_ENUM................(ND)");
 #endif
 #ifdef CGFLOAT_MAX
-  XPLogAlwys1(@"CGFLOAT_MAX............(%g)", CGFLOAT_MAX);
+  NSLog(@"CGFLOAT_MAX............(%g)", CGFLOAT_MAX);
 #else
-  XPLogAlwys (@"CGFLOAT_MAX............(ND)");
+  NSLog(@"CGFLOAT_MAX............(ND)");
 #endif
 #ifdef NSIntegerMax
-  XPLogAlwys1(@"NSIntegerMax...........(%ld)", NSIntegerMax);
+  NSLog(@"NSIntegerMax...........(%ld)", NSIntegerMax);
 #else
-  XPLogAlwys (@"NSIntegerMax...........(ND)");
+  NSLog(@"NSIntegerMax...........(ND)");
 #endif
 #ifdef MAC_OS_X_VERSION_10_2
-  XPLogAlwys1(@"MAC_OS_X_VERSION_10_2..(%d)", MAC_OS_X_VERSION_10_2);
+  NSLog(@"MAC_OS_X_VERSION_10_2..(%d)", MAC_OS_X_VERSION_10_2);
 #else
-  XPLogAlwys (@"MAC_OS_X_VERSION_10_2..(ND)");
+  NSLog(@"MAC_OS_X_VERSION_10_2..(ND)");
 #endif
 #ifdef MAC_OS_X_VERSION_10_4
-  XPLogAlwys1(@"MAC_OS_X_VERSION_10_4..(%d)", MAC_OS_X_VERSION_10_4);
+  NSLog(@"MAC_OS_X_VERSION_10_4..(%d)", MAC_OS_X_VERSION_10_4);
 #else
-  XPLogAlwys (@"MAC_OS_X_VERSION_10_4..(ND)");
+  NSLog(@"MAC_OS_X_VERSION_10_4..(ND)");
 #endif
 #ifdef MAC_OS_X_VERSION_10_6
-  XPLogAlwys1(@"MAC_OS_X_VERSION_10_6..(%d)", MAC_OS_X_VERSION_10_6);
+  NSLog(@"MAC_OS_X_VERSION_10_6..(%d)", MAC_OS_X_VERSION_10_6);
 #else
-  XPLogAlwys (@"MAC_OS_X_VERSION_10_6..(ND)");
+  NSLog(@"MAC_OS_X_VERSION_10_6..(ND)");
 #endif
 #ifdef MAC_OS_X_VERSION_10_8
-  XPLogAlwys1(@"MAC_OS_X_VERSION_10_8..(%d)", MAC_OS_X_VERSION_10_8);
+  NSLog(@"MAC_OS_X_VERSION_10_8..(%d)", MAC_OS_X_VERSION_10_8);
 #else
-  XPLogAlwys (@"MAC_OS_X_VERSION_10_8..(ND)");
+  NSLog(@"MAC_OS_X_VERSION_10_8..(ND)");
 #endif
 #ifdef MAC_OS_X_VERSION_10_13
-  XPLogAlwys1(@"MAC_OS_X_VERSION_10_13.(%d)", MAC_OS_X_VERSION_10_13);
+  NSLog(@"MAC_OS_X_VERSION_10_13.(%d)", MAC_OS_X_VERSION_10_13);
 #else
-  XPLogAlwys (@"MAC_OS_X_VERSION_10_13.(ND)");
+  NSLog(@"MAC_OS_X_VERSION_10_13.(ND)");
 #endif
 #ifdef MAC_OS_X_VERSION_10_15
-  XPLogAlwys1(@"MAC_OS_X_VERSION_10_15.(%d)", MAC_OS_X_VERSION_10_15);
+  NSLog(@"MAC_OS_X_VERSION_10_15.(%d)", MAC_OS_X_VERSION_10_15);
 #else
-  XPLogAlwys (@"MAC_OS_X_VERSION_10_15.(ND)");
+  NSLog(@"MAC_OS_X_VERSION_10_15.(ND)");
 #endif
 #ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
-  XPLogAlwys1(@"MAC_OS_X_VER_MAX_ALLOW.(%d)", __MAC_OS_X_VERSION_MAX_ALLOWED);
+  NSLog(@"MAC_OS_X_VER_MAX_ALLOW.(%d)", __MAC_OS_X_VERSION_MAX_ALLOWED);
 #else
-  XPLogAlwys (@"MAC_OS_X_VER_MAX_ALLOW.(ND)");
+  NSLog(@"MAC_OS_X_VER_MAX_ALLOW.(ND)");
 #endif
-  XPLogAlwys (@"<XPLog> End: logCheckedPoundDefines");
+  NSLog(@"<XPLog> End: logCheckedPoundDefines");
+  [pool release];
 }
 
 @end

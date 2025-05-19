@@ -384,7 +384,7 @@ NSPoint XPDocumentPointForCascading;
 
 - (void)dealloc
 {
-  XPLogDebug1(@"DEALLOC: %@", self);
+  XPLogExtra1(@"%p", self);
   // Skipping release for window because it releases itself when closed
   [_window_42 setDelegate:nil];
   [_fileURL   release];

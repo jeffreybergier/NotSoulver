@@ -374,7 +374,7 @@
 
 -(void)dealloc;
 {
-  XPLogDebug1(@"DEALLOC:%@", self);
+  XPLogExtra1(@"%p", self);
   [_groupGeneralView release];
   [_groupColorView release];
   [_groupFontView release];
