@@ -87,6 +87,13 @@
   [[NSUserDefaults standardUserDefaults] SVR_configure];
   // Prepare FontManager
   [NSFontManager setFontManagerFactory:[SVRFontManager class]];
+  // Announce
+  XPLogDebug1(@"%@ applicationWillFinishLaunching:", self);
+}
+
+-(void)applicationDidFinishLaunching:(NSNotification*)aNotification;
+{
+  NSApplication *app = [aNotification object];
   // Configure Accessory Windows
   _accessoryWindowsOwner = [[SVRAccessoryWindowsOwner alloc] init];
   // Observe Dark Mode
@@ -100,7 +107,7 @@
                                                object:nil];
   }
   // Announce
-  XPLogDebug1(@"%@ applicationWillFinishLaunching:", self);
+  XPLogDebug1(@"%@ applicationDidFinishLaunching:", self);
 }
 
 -(void)applicationWillTerminate:(NSNotification*)aNotification;
@@ -119,10 +126,10 @@
 
 -(IBAction)__newDocument:(id)sender
 {
-  SVRDocument *document = [[[SVRDocument alloc] init] autorelease];
-  [document setFileType:SVRDocumentModelRepDisk];
+  XPDocument document = [[[SVRDocument alloc] init] autorelease];
+  [document XP_setFileType:SVRDocumentModelRepDisk];
   [document XP_setFileExtension:SVRDocumentModelExtension];
-  [document showWindows];
+  [document XP_showWindows];
   [[self openDocuments] addObject:document];
 }
 
@@ -293,6 +300,15 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
                           context:context];
 #endif
   }
+}
+
+@end
+
+@implementation SVRAppDelegate (StateRestoration)
+
+-(BOOL)applicationSupportsSecureRestorableState:(NSApplication*)app;
+{
+  return YES;
 }
 
 @end

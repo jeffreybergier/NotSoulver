@@ -18,14 +18,12 @@ NEXTSTEP_DOCICONS =
 ICONSECTIONS =	-sectcreate __ICON app /NextLibrary/Frameworks/AppKit.framework/Resources/NSDefaultApplicationIcon.tiff
 
 LOCAL_RESOURCES = AccessoryWindows_42.nib MainMenu_42.nib\
-                  SVRDocument_42.nib Localizable.strings
+                  Localizable.strings
 
 GLOBAL_RESOURCES = Images/about-image-512.tiff\
                    Images/BlocksFullSizeSMlght.tiff\
-                   Images/NeXTLogoMed.tiff\
-                   Images/TagLine.tiff\
-                   Images/TM.tiff\
-                   TestsIntegration-DiskRep.txt\
+                   Images/NeXTLogoMed.tiff Images/TagLine.tiff\
+                   Images/TM.tiff TestsIntegration-DiskRep.txt\
                    TestsIntegration-DisplayRep.rtf\
                    TestsIntegration-SolvedRep.rtf\
                    TestsIntegration-UnsolvedRep.rtf

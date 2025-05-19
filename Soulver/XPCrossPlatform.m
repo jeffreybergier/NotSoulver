@@ -599,6 +599,13 @@ NSArray* XPRunOpenPanel(NSString *extension)
   [self insertText:string];
 #endif
 }
+
+-(void)XP_setAllowsUndo:(BOOL)isAllowed;
+{
+#if XPSupportsNSDocument >= 1
+  [self setAllowsUndo:isAllowed];
+#endif
+}
 @end
 
 @implementation XPURL (CrossPlatformURL)
@@ -648,21 +655,21 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 @implementation NSData (CrossPlatform)
 
-+(NSData*)XP_dataWithContentsOfURL:(XPURL*)url;
++(NSData*)XP_dataWithContentsOfURL:(XPURL*)url error:(XPErrorPointer)errorPtr;
 {
 #if XPSupportsNSDocument >= 2
-  return [self dataWithContentsOfURL:url];
+  return [self dataWithContentsOfURL:url options:0 error:errorPtr];
 #else
   return [self dataWithContentsOfFile:url];
 #endif
 }
 
--(BOOL)XP_writeToURL:(XPURL*)url atomically:(BOOL)atomically;
+-(BOOL)XP_writeToURL:(XPURL*)url error:(XPErrorPointer)errorPtr;
 {
 #if XPSupportsNSDocument >= 2
-  return [self writeToURL:url atomically:atomically];
+  return [self writeToURL:url options:XPDataWritingAtomic error:errorPtr];
 #else
-  return [self writeToFile:url atomically:atomically];
+  return [self writeToFile:url atomically:YES];
 #endif
 }
 

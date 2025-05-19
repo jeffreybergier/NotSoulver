@@ -50,16 +50,6 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
   return [[_dataCache retain] autorelease];
 }
 
--(NSTextView*)textView;
-{
-  return [[_textView retain] autorelease];
-}
-
--(void)setTextView:(NSTextView*)textView;
-{
-  _textView = textView;
-}
-
 // MARK: Init
 -(id)init;
 {
@@ -68,7 +58,6 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
   
   _model = [NSTextStorage new];
   _dataCache = [NSMutableDictionary new];
-  _textView = nil;
   _waitTimer = nil;
   
   __TESTING_stylesForSolution = nil;
@@ -195,10 +184,8 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   BOOL success = NO;
   NSTextStorage *model = [self model];
-  NSString *string = [
-    [[NSString alloc] initWithData:data
-                          encoding:NSUTF8StringEncoding]
-    autorelease];
+  NSString *string = [[[NSString alloc] initWithData:data
+                                            encoding:NSUTF8StringEncoding] autorelease];
   if (string) {
     // TODO: Figure out how I can combine this with waitTimerFired:
     XPLogDebug1(@"%@ loadDataRepresentation: Rendering", self);
@@ -217,13 +204,14 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
 
 -(void)dealloc;
 {
-  // TODO: Restore this log. It crashes on jaguar
-  //XPLogDebug1(@"DEALLOC: %@", self);
+  // TODO: For some reason this log crashes in Jaguar
+#if defined(MAC_OS_X_VERSION_10_4) || !defined(MAC_OS_X_VERSION_10_2)
+  XPLogDebug1(@"DEALLOC: %@", self);
+#endif
   [_waitTimer invalidate];
   [_waitTimer release];
   [_model release];
   [_dataCache release];
-  _textView = nil;
   _dataCache = nil;
   _waitTimer = nil;
   _model = nil;
@@ -235,27 +223,24 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
 
 @implementation SVRDocumentModelController (TextDelegate)
 
--(void)resetWaitTimer;
+-(void)textDidChange:(NSNotification*)aNotification;
 {
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  [_waitTimer invalidate];
-  [_waitTimer release];
-  _waitTimer = [NSTimer scheduledTimerWithTimeInterval:[ud SVR_waitTimeForRendering]
-                                                target:self
-                                              selector:@selector(waitTimerFired:)
-                                              userInfo:nil
-                                               repeats:NO];
-  [_waitTimer retain];
+  NSTextView *textView = [aNotification object];
+  NSCAssert1([textView isKindOfClass:[NSTextView class]],
+             @"textViewDidChangeSelection:%@ not NSTextView", textView);
+  [self __resetWaitTimer:textView];
 }
 
--(void)waitTimerFired:(NSTimer*)timer;
+-(void)renderPreservingSelectionInTextView:(NSTextView*)textView;
 {
   NSUserDefaults *ud   = [NSUserDefaults standardUserDefaults];
   NSTextStorage *model = [self model];
-  NSTextView *textView = [self textView];
+  NSRange selection = XPNotFoundRange;
+  
+  NSCParameterAssert(textView);
   
   // Get current selection
-  NSRange selection = [textView selectedRange];
+  selection = [textView selectedRange];
   
   // Solve the string
   [model beginEditing];
@@ -266,18 +251,31 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
                         textStyles:__TESTING_stylesForText             ? __TESTING_stylesForText             : [ud SVR_stylesForText]];
   [model endEditing];
   
-  // Restore the selection
+  // Restore selection
   [textView setSelectedRange:selection];
-
-  // Invalidating at the end is important.
-  // Otherwise, self could get deallocated mid-method 
-  [timer invalidate];
 }
 
--(void)textDidChange:(NSNotification*)notification;
+-(void)__resetWaitTimer:(NSTextView*)sender;
 {
-  XPLogExtra1(@"%@ textDidChange:", self);
-  [self resetWaitTimer];
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  [_waitTimer invalidate];
+  [_waitTimer release];
+  _waitTimer = [NSTimer scheduledTimerWithTimeInterval:[ud SVR_waitTimeForRendering]
+                                                target:self
+                                              selector:@selector(__waitTimerFired:)
+                                              userInfo:[NSDictionary dictionaryWithObject:sender forKey:@"TextView"]
+                                               repeats:NO];
+  [_waitTimer retain];
+}
+
+-(void)__waitTimerFired:(NSTimer*)timer;
+{
+
+  NSTextView *textView = [[timer userInfo] objectForKey:@"TextView"];
+  NSCAssert1([textView isKindOfClass:[NSTextView class]],
+             @"textViewDidChangeSelection:%@ not NSTextView", textView);
+  [self renderPreservingSelectionInTextView:textView];
+  [timer invalidate];
 }
 
 @end

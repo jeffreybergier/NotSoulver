@@ -96,3 +96,7 @@
                       context:(void*)context;
 
 @end
+
+@interface SVRAppDelegate (StateRestoration)
+-(BOOL)applicationSupportsSecureRestorableState:(NSApplication*)app;
+@end

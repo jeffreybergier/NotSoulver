@@ -66,9 +66,9 @@ typedef float XPFloat;
 #ifdef MAC_OS_X_VERSION_10_4
 #define XPSupportsNSDocument 2 // Supports NSURL APIs
 #elif defined(MAC_OS_X_VERSION_10_2)
-#define XPSupportsNSDocument 1 // Exists but URL API's appear not to work properly
+#define XPSupportsNSDocument 1 // NSDocument exists but URL API's appear not to work properly
 #else
-#define XPSupportsNSDocument 0 // Does not exist
+#define XPSupportsNSDocument 0 // NSDocument does not exist
 #endif
 
 #if XPSupportsNSDocument >= 2
@@ -86,20 +86,25 @@ typedef float XPFloat;
 #define XPKeyedUnarchiver NSUnarchiver
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_3
+#ifdef MAC_OS_X_VERSION_10_4
 #define XPRTFDocumentAttributes [NSDictionary dictionaryWithObject:NSRTFTextDocumentType forKey:NSDocumentTypeDocumentAttribute]
 typedef NSRangePointer XPRangePointer;
+typedef NSError** XPErrorPointer;
 #else
 #define XPRTFDocumentAttributes nil
 typedef NSRange* XPRangePointer;
+typedef NSNumber** XPErrorPointer;
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_6
+#define XPSupportsNSViewController
+#define XPViewController NSViewController
 #define XPStringCompareOptions NSStringCompareOptions
 #define XPPasteboardTypeRTF NSPasteboardTypeRTF
 #define XPPasteboardTypeString NSPasteboardTypeString
 #define XPSupportsFormalProtocols // Protocols like NSWindowDelegate were formally added
 #else
+#define XPViewController NSResponder
 #define XPStringCompareOptions unsigned int
 #define XPPasteboardTypeRTF NSRTFPboardType
 #define XPPasteboardTypeString NSStringPboardType
@@ -107,8 +112,12 @@ typedef NSRange* XPRangePointer;
 
 #ifdef MAC_OS_X_VERSION_10_8
 #define XPSecureCoding NSSecureCoding
+#define XPSaveOperationType NSSaveOperationType
+#define XPDataWritingAtomic NSDataWritingAtomic
 #else
 #define XPSecureCoding NSCoding
+#define XPSaveOperationType XPUInteger
+#define XPDataWritingAtomic NSAtomicWrite
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_10
@@ -122,9 +131,19 @@ typedef NSRange* XPRangePointer;
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_12
+#define XPWindowStyleMask NSWindowStyleMask
 #define XPBitmapImageFileTypeTIFF NSBitmapImageFileTypeTIFF
+#define XPWindowStyleMaskTitled NSWindowStyleMaskTitled
+#define XPWindowStyleMaskClosable NSWindowStyleMaskClosable
+#define XPWindowStyleMaskMiniaturizable NSWindowStyleMaskMiniaturizable
+#define XPWindowStyleMaskResizable NSWindowStyleMaskResizable
 #else
+#define XPWindowStyleMask unsigned int
 #define XPBitmapImageFileTypeTIFF NSTIFFFileType
+#define XPWindowStyleMaskTitled NSTitledWindowMask
+#define XPWindowStyleMaskClosable NSClosableWindowMask
+#define XPWindowStyleMaskMiniaturizable NSMiniaturizableWindowMask
+#define XPWindowStyleMaskResizable NSResizableWindowMask
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_14
@@ -279,6 +298,7 @@ NSArray* XPRunOpenPanel(NSString *extension);
 
 @interface NSTextView (CrossPlatform)
 -(void)XP_insertText:(id)string;
+-(void)XP_setAllowsUndo:(BOOL)isAllowed;
 @end
 
 // NSURL does not exist on OpenStep
@@ -291,8 +311,8 @@ NSArray* XPRunOpenPanel(NSString *extension);
 @end
 
 @interface NSData (CrossPlatform)
-+(NSData*)XP_dataWithContentsOfURL:(XPURL*)url;
--(BOOL)XP_writeToURL:(XPURL*)url atomically:(BOOL)atomically;
++(NSData*)XP_dataWithContentsOfURL:(XPURL*)url error:(XPErrorPointer)errorPtr;
+-(BOOL)XP_writeToURL:(XPURL*)url error:(XPErrorPointer)errorPtr;
 @end
 
 // MARK: XPLogging

@@ -36,57 +36,69 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 @implementation SVRDocumentViewController
 
 // MARK: Init
--(id)init;
+-(id)initWithModelController:(SVRDocumentModelController*)modelController;
 {
   self = [super init];
   NSCParameterAssert(self);
-  _modelController = [[SVRDocumentModelController alloc] init];
+  NSCParameterAssert(modelController);
+  _modelController = [modelController retain];
   _textView = nil;
+  _view_42 = nil;
   return self;
 }
 
-// MARK: awakeFromNib
--(void)awakeFromNib;
+-(void)loadView;
 {
-  NSLayoutManager *layoutManager = [[[NSLayoutManager alloc] init] autorelease];
+  NSLayoutManager *layoutManager = [[[NSLayoutManager alloc] init]                                                 autorelease];
+  NSTextContainer *textContainer = [[[NSTextContainer alloc] initWithContainerSize:NSMakeSize(FLT_MAX, FLT_MAX)]   autorelease];
+  NSTextView *textView           = [[[NSTextView      alloc] initWithFrame:NSZeroRect textContainer:textContainer] autorelease];
+  NSScrollView *scrollView       = [[[NSScrollView    alloc] initWithFrame:NSZeroRect]                             autorelease];
   SVRDocumentModelController *modelController = [self modelController];
-  NSTextStorage *model = [modelController model];
-  NSTextView *textView = [self textView];
   
-  // Configure delegates
-  [modelController setTextView:textView];
+  NSCParameterAssert(layoutManager);
+  NSCParameterAssert(textContainer);
+  NSCParameterAssert(textView);
+  NSCParameterAssert(scrollView);
+  NSCParameterAssert(modelController);
+  
+  // TextContainer
+  [textContainer setWidthTracksTextView:YES];
+  [textContainer setHeightTracksTextView:NO];
+  
+  // ScrollView
+  [scrollView setHasVerticalScroller:YES];
+  [scrollView setHasHorizontalScroller:NO];
+  [scrollView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+  
+  // TextView
+  [textView setMinSize:NSMakeSize(0, 0)];
+  [textView setMaxSize:NSMakeSize(FLT_MAX, FLT_MAX)];
+  [textView setVerticallyResizable:YES];
+  [textView setHorizontallyResizable:YES];
+  [textView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+  [textView XP_setAllowsUndo:YES];
+  
+  // ModelController
+  [[modelController model] addLayoutManager:layoutManager];
+  [layoutManager addTextContainer:textContainer];
   [textView setDelegate:modelController];
   
-  // Configure layoutManager
-  // This ordering is incredibly fragile
-  [[textView textContainer] replaceLayoutManager:layoutManager];
-  [layoutManager replaceTextStorage:model];
+  // Wrap it in the scroll view
+  [scrollView setDocumentView:textView];
   
-  // Configure the text view
-  [self themeDidChangeNotification:nil];
+  // Self
+  _textView = [textView retain];
+  [self setView: scrollView];
+  
+  // Theming
+  [self __themeDidChangeNotification:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(themeDidChangeNotification:)
+                                           selector:@selector(__themeDidChangeNotification:)
                                                name:SVRThemeDidChangeNotificationName
                                              object:nil];
-  
-  // Announce
-  XPLogDebug1(@"awakeFromNib: %@", self);
 }
 
--(void)themeDidChangeNotification:(NSNotification*)aNotification;
-{
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  NSTextView *textView = [self textView];
-  [textView setTypingAttributes:[self __typingAttributes]];
-  [textView setBackgroundColor:[ud SVR_colorForTheme:SVRThemeColorBackground]];
-  [textView setInsertionPointColor:[ud SVR_colorForTheme:SVRThemeColorInsertionPoint]];
-  if (aNotification){
-    [[self modelController] waitTimerFired:nil];
-  }
-  [textView setNeedsDisplay:YES];
-}
-
-// MARK: Interface Builder
+// MARK: Properties
 
 -(NSTextView*)textView;
 {
@@ -98,26 +110,19 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   return [[_modelController retain] autorelease];
 }
 
--(IBAction)keypadAppend:(NSButton*)sender;
+// MARK: Private
+
+-(void)__themeDidChangeNotification:(NSNotification*)aNotification;
 {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   NSTextView *textView = [self textView];
-  NSString   *toAppend = [self __mapKeyWithTag:[sender tag]];
-  NSRange range;
-  
-  if (toAppend) {
-    [textView XP_insertText:toAppend];
-  } else {
-    range = [textView selectedRange];
-    // The delete method on NSText does not do a backspace
-    // if nothing is selected. So this forces a single
-    // character selection if needed
-    if (range.location > 0 && range.length == 0) {
-      range.location -= 1;
-      range.length = 1;
-      [textView setSelectedRange:range];
-    }
-    [[self textView] delete:sender];
+  [textView setTypingAttributes:[self __typingAttributes]];
+  [textView setBackgroundColor:[ud SVR_colorForTheme:SVRThemeColorBackground]];
+  [textView setInsertionPointColor:[ud SVR_colorForTheme:SVRThemeColorInsertionPoint]];
+  if (aNotification){
+    [[self modelController] renderPreservingSelectionInTextView:textView];
   }
+  [textView setNeedsDisplay:YES];
 }
 
 // Returns NIL if backspace
@@ -185,6 +190,28 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 @end
 
 @implementation SVRDocumentViewController (IBActions)
+
+-(IBAction)keypadAppend:(NSButton*)sender;
+{
+  NSTextView *textView = [self textView];
+  NSString   *toAppend = [self __mapKeyWithTag:[sender tag]];
+  NSRange range;
+  
+  if (toAppend) {
+    [textView XP_insertText:toAppend];
+  } else {
+    range = [textView selectedRange];
+    // The delete method on NSText does not do a backspace
+    // if nothing is selected. So this forces a single
+    // character selection if needed
+    if (range.location > 0 && range.length == 0) {
+      range.location -= 1;
+      range.length = 1;
+      [textView setSelectedRange:range];
+    }
+    [textView delete:sender];
+  }
+}
 
 -(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
 {
@@ -304,3 +331,23 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 }
 
 @end
+
+#ifndef XPSupportsNSViewController
+@implementation SVRDocumentViewController (CrossPlatform)
+-(NSView*)view;
+{
+  if (!_view_42) {
+    [self loadView];
+    NSCParameterAssert(_view_42);
+  }
+  return [[_view_42 retain] autorelease];
+}
+
+-(void)setView:(NSView*)view;
+{
+  NSCParameterAssert(view);
+  [_view_42 release];
+  _view_42 = [view retain];
+}
+@end
+#endif

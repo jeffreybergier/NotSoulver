@@ -35,93 +35,81 @@
 
 -(SVRDocumentViewController*)viewController;
 {
+  if (!_viewController) {
+    _viewController = [[SVRDocumentViewController alloc] initWithModelController:[self modelController]];
+  }
   return [[_viewController retain] autorelease];
 }
 
--(NSString*)windowNibName;
+-(SVRDocumentModelController*)modelController;
 {
-#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 110000
-  return @"SVRDocument_X15";
-#elif defined(MAC_OS_X_VERSION_10_6)
-  return @"SVRDocument_X6";
-#elif defined(MAC_OS_X_VERSION_10_2)
-  return @"SVRDocument_X2";
-#else
-  return @"SVRDocument_42";
-#endif
+  if (!_modelController) {
+    _modelController = [[SVRDocumentModelController alloc] init];
+  }
+  return [[_modelController retain] autorelease];
 }
 
-// MARK: NSDocument subclass
+// Create everything without Nibs
 
--(void)awakeFromNib;
+-(void)makeWindowControllers;
 {
-  XPURL *fileURL = [self XP_fileURL];
-
-  if ([[self superclass] instancesRespondToSelector:@selector(awakeFromNib)]) {
-    [super awakeFromNib];
+  XPWindowStyleMask windowStyle = (XPWindowStyleMaskTitled
+                                 | XPWindowStyleMaskClosable
+                                 | XPWindowStyleMaskMiniaturizable
+                                 | XPWindowStyleMaskResizable);
+  NSRect windowRect = [self __newDocumentWindowRect];
+  NSString *autosaveName = [self XP_nameForFrameAutosave];
+  SVRDocumentModelController *modelController = [self modelController];
+  SVRDocumentViewController  *viewController  = [self viewController];
+  NSWindow *aWindow = [[[NSWindow alloc] initWithContentRect:windowRect
+                                                   styleMask:windowStyle
+                                                     backing:NSBackingStoreBuffered
+                                                       defer:YES] autorelease];
+  XPWindowController *windowController = [XPNewWindowController(aWindow) autorelease];
+  
+  // Configure the Window
+  if (autosaveName) {
+    [aWindow setFrameAutosaveName:autosaveName];
+  } else {
+    [aWindow setFrameAutosaveName:@"NewSVRDocument"];
   }
+  [aWindow setMinSize:NSMakeSize(200, 200)];
+  [aWindow setContentView:[viewController view]];
+  
+  // Configure self
+  [self XP_setWindow:aWindow];
+  [self XP_addWindowController:windowController];
   
   // Subscribe to model updates
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(modelDidProcessEditingNotification:)
                                                name:NSTextStorageDidProcessEditingNotification
-                                             object:[[[self viewController] modelController] model]];
-
-  // Load the file
-  if ([fileURL XP_isFileURL]) {
-    [self XP_readFromURL:fileURL ofType:[self fileType] error:NULL];
+                                             object:[modelController model]];
+  
+  // Configure responder chain
+  [aWindow setNextResponder:viewController];
+  [viewController setNextResponder:windowController];
+  
+  // Configure legacy XPDocument support
+  if ([self isKindOfClass:[NSResponder class]]) {
+    [viewController setNextResponder:(NSResponder*)self];
+    [super makeWindowControllers];
+    [self XP_readFromURL:[self XP_fileURL] ofType:[self fileType] error:NULL];
   }
 }
 
+// MARK: NSDocument subclass
+
 -(NSData*)dataRepresentationOfType:(NSString*)type;
 {
-  return [[[self viewController] modelController] dataRepresentationOfType:type];
+  return [[self modelController] dataRepresentationOfType:type];
 }
 
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
 {
-  SVRDocumentModelController *modelController = [[self viewController] modelController];
-  if (!modelController) {
-    // NSDocument loads the data before loading the NIB
-    return YES;
-  }
+  SVRDocumentModelController *modelController = [self modelController];
+  NSCParameterAssert(modelController);
   return [modelController loadDataRepresentation:data ofType:type];
-}
-
--(void)windowControllerWillLoadNib:(id)windowController;
-{
-#if XPSupportsNSDocument >= 1
-  // Setting this name before the NIB loads has better results
-  NSString *autosaveName = [self XP_nameForFrameAutosave];
-  NSCParameterAssert(windowController);
-  if (autosaveName) {
-    [windowController setWindowFrameAutosaveName:autosaveName];
-  }
-#endif
-}
-
--(void)windowControllerDidLoadNib:(id)windowController;
-{
-  NSWindow *myWindow = [self XP_windowForSheet];
-  NSString *autosaveName = [self XP_nameForFrameAutosave];
-  // If using real NSDocument, this is already set, so we can check here
-  BOOL needsSetAutosaveName = autosaveName && ![[myWindow frameAutosaveName] isEqualToString:autosaveName];
-  id previousNextResponder = [myWindow nextResponder];
-
-  NSCParameterAssert(myWindow);
-  
-  // Add view controller into the responder chain
-  [myWindow setNextResponder:[self viewController]];
-  if ([self isKindOfClass:[NSResponder class]]) {
-    [[self viewController] setNextResponder:(NSResponder*)self];
-    [(NSResponder*)self setNextResponder:previousNextResponder];
-  } else {
-    [[self viewController] setNextResponder:previousNextResponder];
-  }
-  
-  if (needsSetAutosaveName) {
-    [myWindow setFrameAutosaveName:autosaveName];
-  }
 }
 
 // MARK: Model Changed Notifications
@@ -132,26 +120,67 @@
   NSData *documentData = [self dataRepresentationOfType:[self fileType]];
   XPURL *fileURL = [self XP_fileURL];
   if ([fileURL XP_isFileURL]) {
-    diskData = [NSData XP_dataWithContentsOfURL:fileURL];
+    // TODO: Consider adding error handling here
+    diskData = [NSData XP_dataWithContentsOfURL:fileURL error:NULL];
     isEdited = ![diskData isEqualToData:documentData];
   } else if (documentData == nil || [documentData length] == 0) {
     isEdited = NO;
   } else {
     isEdited = YES;
   }
-  [self updateChangeCount:isEdited ? 0 : 2];
+  [self updateChangeCount:isEdited ? XPChangeDone
+                                   : XPChangeCleared];
+}
+
+-(NSRect)__newDocumentWindowRect;
+{
+  NSRect output = NSZeroRect;
+  NSSize screenSize = [[NSScreen mainScreen] frame].size;
+  NSSize targetSize = NSMakeSize(500, 500);
+  output.origin.y = ceil(screenSize.height / 2) - ceil(targetSize.height / 2);
+  output.origin.x = ceil(screenSize.width  / 2) - ceil(targetSize.width  / 2);
+  output.size = targetSize;
+  return output;
 }
 
 -(void)dealloc;
 {
   XPLogDebug1(@"DEALLOC: %@", self);
-#if XPSupportsNSDocument == 0
-  // Nib Lifecycle differs when using NSDocument
-  [_viewController release];
-#endif
-  _viewController = nil;
+  [_viewController  release];
+  [_modelController release];
+  _viewController  = nil;
+  _modelController = nil;
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
+}
+
+@end
+
+@implementation SVRDocument (StateRestoration)
+
++(BOOL)autosavesInPlace;
+{
+  return YES;
+}
+
++(BOOL)canConcurrentlyReadDocumentsOfType:(NSString*)typeName;
+{
+  // The hard part of opening a file is rendering the NSAttributedString.
+  // This involves reading whether we are in dark mode.
+  // It also involves creating NSTextAttachmentCells.
+  // Both are main thread only and it shows warnings.
+  // Best to just leave this set to NO
+  return NO;
+}
+
+-(BOOL)canAsynchronouslyWriteToURL:(XPURL*)url
+                            ofType:(NSString*)typeName
+                  forSaveOperation:(XPSaveOperationType)saveOperation;
+{
+  // Writing to disk uses just pure NSAttributedString API.
+  // Nothing in the document is modified, just copied and then discarded
+  // at the end. So returning YES here should be fine.
+  return YES;
 }
 
 @end
