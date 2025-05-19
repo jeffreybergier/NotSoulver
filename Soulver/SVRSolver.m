@@ -36,7 +36,7 @@
 #import "SVRSolverExpressionTagger.h"
 #import "SVRSolverTextAttachment.h"
 
-#ifndef MAC_OS_X_VERSION_10_0
+#ifndef MAC_OS_X_VERSION_10_2
 // Silences warning for these functions on OpenStep
 extern int isnan(double x);
 extern int isinf(double x);

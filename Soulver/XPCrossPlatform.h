@@ -43,6 +43,8 @@
 /// The object keeps an unsafe unretained reference to the original
 #define mm_unretain
 
+// MARK: Basic Types
+
 #ifdef NSIntegerMax
 typedef NSInteger XPInteger;
 typedef NSUInteger XPUInteger;
@@ -63,6 +65,10 @@ typedef float XPFloat;
   #define XP_ENUM(_type, _name) _type _name; enum
 #endif
 
+// MARK: NSDocument
+
+#define XPDocument id<XPDocumentProtocol>
+
 #ifdef MAC_OS_X_VERSION_10_4
 #define XPSupportsNSDocument 2 // Supports NSURL APIs
 #elif defined(MAC_OS_X_VERSION_10_2)
@@ -77,7 +83,24 @@ typedef float XPFloat;
 #define XPURL NSString
 #endif
 
+#if XPSupportsNSDocument >= 1
+typedef NSDocumentChangeType XPDocumentChangeType;
+typedef NSWindowController XPWindowController;
+#define XPChangeDone NSChangeDone
+#define XPChangeCleared NSChangeCleared
+#define XPNewWindowController(_window) [[NSWindowController alloc] initWithWindow:_window]
+#else
+typedef XPUInteger XPDocumentChangeType;
+typedef NSResponder XPWindowController;
+#define XPChangeDone 0
+#define XPChangeCleared 2
+#define XPNewWindowController(_window) nil
+#endif
+
+// MARK: Deprecated Constants and Types
+
 #ifdef MAC_OS_X_VERSION_10_2
+// Cannot declare a category on a typedef so these need to be macros
 #define XPKeyedArchiver NSKeyedArchiver
 #define XPKeyedUnarchiver NSKeyedUnarchiver
 #define XPSupportsNSBezierPath
@@ -97,15 +120,15 @@ typedef NSNumber** XPErrorPointer;
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_6
+typedef NSViewController XPViewController;
 #define XPSupportsNSViewController
-#define XPViewController NSViewController
 #define XPStringCompareOptions NSStringCompareOptions
 #define XPPasteboardTypeRTF NSPasteboardTypeRTF
 #define XPPasteboardTypeString NSPasteboardTypeString
 #define XPSupportsFormalProtocols // Protocols like NSWindowDelegate were formally added
 #else
+typedef XPUInteger XPStringCompareOptions;
 #define XPViewController NSResponder
-#define XPStringCompareOptions unsigned int
 #define XPPasteboardTypeRTF NSRTFPboardType
 #define XPPasteboardTypeString NSStringPboardType
 #endif
@@ -138,7 +161,7 @@ typedef NSNumber** XPErrorPointer;
 #define XPWindowStyleMaskMiniaturizable NSWindowStyleMaskMiniaturizable
 #define XPWindowStyleMaskResizable NSWindowStyleMaskResizable
 #else
-#define XPWindowStyleMask unsigned int
+#define XPWindowStyleMask XPUInteger
 #define XPBitmapImageFileTypeTIFF NSTIFFFileType
 #define XPWindowStyleMaskTitled NSTitledWindowMask
 #define XPWindowStyleMaskClosable NSClosableWindowMask

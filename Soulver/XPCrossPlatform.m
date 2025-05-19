@@ -44,7 +44,7 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
 +(id)XP_valueWithRange:(NSRange)range;
 {
   if (XPIsNotFoundRange(range)) { return nil; }
-#ifdef MAC_OS_X_VERSION_10_0
+#ifdef MAC_OS_X_VERSION_10_2
   return [self valueWithRange:range];
 #else
   return [self valueWithBytes:&range objCType:@encode(NSRange)];
@@ -52,7 +52,7 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
 }
 -(NSRange)XP_rangeValue;
 {
-#ifdef MAC_OS_X_VERSION_10_0
+#ifdef MAC_OS_X_VERSION_10_2
   return [self rangeValue];
 #else
   NSRange range;
@@ -308,7 +308,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 -(const char*)XP_UTF8String;
 {
-#ifdef MAC_OS_X_VERSION_10_0
+#ifdef MAC_OS_X_VERSION_10_2
   return [self UTF8String];
 #else
   return [self cString];
@@ -336,7 +336,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 -(NSData*)XP_data;
 {
   id forArchiving = nil;
-#ifdef MAC_OS_X_VERSION_10_3
+#ifdef MAC_OS_X_VERSION_10_4
   forArchiving = [self fontDescriptor];
 #else
   forArchiving = self;
@@ -346,7 +346,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 +(id)XP_fontWithData:(NSData*)data;
 {
-#ifdef MAC_OS_X_VERSION_10_3
+#ifdef MAC_OS_X_VERSION_10_4
   id descriptor = [XPKeyedUnarchiver XP_unarchivedObjectOfClass:[NSFontDescriptor class]
                                                        fromData:data];
   return [self fontWithDescriptor:descriptor size:0];
@@ -463,7 +463,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 -(BOOL)XP_openWebURL:(NSString*)webURL;
 {
-#ifdef MAC_OS_X_VERSION_10_0
+#ifdef MAC_OS_X_VERSION_10_2
   NSCParameterAssert(webURL);
   return [self openURL:[NSURL URLWithString:webURL]];
 #else
@@ -479,7 +479,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
                           xRadius:(XPFloat)xRadius
                           yRadius:(XPFloat)yRadius;
 {
-#ifdef MAC_OS_X_VERSION_10_5
+#ifdef MAC_OS_X_VERSION_10_6
   return [NSBezierPath __REAL_bezierPathWithRoundedRect:rect
                                                 xRadius:xRadius
                                                 yRadius:yRadius];
@@ -494,7 +494,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
                               xRadius:(XPFloat)xRadius
                               yRadius:(XPFloat)yRadius;
 {
-#ifdef MAC_OS_X_VERSION_10_5
+#ifdef MAC_OS_X_VERSION_10_6
   return [NSBezierPath bezierPathWithRoundedRect:rect
                                          xRadius:xRadius
                                          yRadius:yRadius];
@@ -700,30 +700,15 @@ NSArray* XPRunOpenPanel(NSString *extension)
 #else
   XPLogAlwys (@"NSIntegerMax...........(ND)");
 #endif
-#ifdef MAC_OS_X_VERSION_10_0
-  XPLogAlwys1(@"MAC_OS_X_VERSION_10_0..(%d)", MAC_OS_X_VERSION_10_0);
-#else
-  XPLogAlwys (@"MAC_OS_X_VERSION_10_0..(ND)");
-#endif
 #ifdef MAC_OS_X_VERSION_10_2
   XPLogAlwys1(@"MAC_OS_X_VERSION_10_2..(%d)", MAC_OS_X_VERSION_10_2);
 #else
   XPLogAlwys (@"MAC_OS_X_VERSION_10_2..(ND)");
 #endif
-#ifdef MAC_OS_X_VERSION_10_3
-  XPLogAlwys1(@"MAC_OS_X_VERSION_10_3..(%d)", MAC_OS_X_VERSION_10_3);
-#else
-  XPLogAlwys (@"MAC_OS_X_VERSION_10_3..(ND)");
-#endif
 #ifdef MAC_OS_X_VERSION_10_4
   XPLogAlwys1(@"MAC_OS_X_VERSION_10_4..(%d)", MAC_OS_X_VERSION_10_4);
 #else
   XPLogAlwys (@"MAC_OS_X_VERSION_10_4..(ND)");
-#endif
-#ifdef MAC_OS_X_VERSION_10_5
-  XPLogAlwys1(@"MAC_OS_X_VERSION_10_5..(%d)", MAC_OS_X_VERSION_10_5);
-#else
-  XPLogAlwys (@"MAC_OS_X_VERSION_10_5..(ND)");
 #endif
 #ifdef MAC_OS_X_VERSION_10_6
   XPLogAlwys1(@"MAC_OS_X_VERSION_10_6..(%d)", MAC_OS_X_VERSION_10_6);
@@ -735,15 +720,20 @@ NSArray* XPRunOpenPanel(NSString *extension)
 #else
   XPLogAlwys (@"MAC_OS_X_VERSION_10_8..(ND)");
 #endif
-#ifdef MAC_OS_X_VERSION_10_9
-  XPLogAlwys1(@"MAC_OS_X_VERSION_10_9..(%d)", MAC_OS_X_VERSION_10_9);
-#else
-  XPLogAlwys (@"MAC_OS_X_VERSION_10_9..(ND)");
-#endif
 #ifdef MAC_OS_X_VERSION_10_13
   XPLogAlwys1(@"MAC_OS_X_VERSION_10_13.(%d)", MAC_OS_X_VERSION_10_13);
 #else
   XPLogAlwys (@"MAC_OS_X_VERSION_10_13.(ND)");
+#endif
+#ifdef MAC_OS_X_VERSION_10_15
+  XPLogAlwys1(@"MAC_OS_X_VERSION_10_15.(%d)", MAC_OS_X_VERSION_10_15);
+#else
+  XPLogAlwys (@"MAC_OS_X_VERSION_10_15.(ND)");
+#endif
+#ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
+  XPLogAlwys1(@"MAC_OS_X_VER_MAX_ALLOW.(%d)", __MAC_OS_X_VERSION_MAX_ALLOWED);
+#else
+  XPLogAlwys (@"MAC_OS_X_VER_MAX_ALLOW.(ND)");
 #endif
 #ifdef __STDC_VERSION__
   XPLogAlwys1(@"__STDC_VERSION__.......(%ld)", __STDC_VERSION__);

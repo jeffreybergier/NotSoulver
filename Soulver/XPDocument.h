@@ -30,22 +30,6 @@
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
 
-#define XPDocument id<XPDocumentProtocol>
-
-#if XPSupportsNSDocument >= 1
-#define XPDocumentChangeType NSDocumentChangeType
-#define XPChangeDone NSChangeDone
-#define XPChangeCleared NSChangeCleared
-#define XPWindowController NSWindowController
-#define XPNewWindowController(_window) [[NSWindowController alloc] initWithWindow:_window]
-#else
-#define XPDocumentChangeType XPUInteger
-#define XPChangeDone 0
-#define XPChangeCleared 2
-#define XPWindowController NSResponder
-#define XPNewWindowController(_window) nil
-#endif
-
 @protocol XPDocumentProtocol <NSObject>
 
 -(BOOL)XP_isDocumentEdited;

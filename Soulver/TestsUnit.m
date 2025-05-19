@@ -419,6 +419,7 @@ void TestsUnitExecute(void)
 @implementation NSBezierPath (TestsUnit)
 +(void)executeTests;
 {
+  // TODO: Revalidate tests
   #if __MAC_OS_X_VERSION_MAX_ALLOWED >= 120000
   // Prepare variables
   NSData  *dataRHS = nil;
