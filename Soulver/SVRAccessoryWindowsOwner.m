@@ -124,7 +124,7 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
   [[self settingsWindow] setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameSettings];
   
   // Announce
-  XPLogDebug1(@"%@ awakeFromNib", self);
+  XPLogDebug(@"");
 }
 
 // MARK: IBActions
@@ -200,7 +200,7 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
   NSWindow *window = [aNotification object];
   NSCAssert2([window isKindOfClass:[NSWindow class]], @"%@ __windowDidBecomeKey: %@ not NSWindow", self, window);
   if (window != [self keypadPanel] && window != [self aboutWindow] && window != [self settingsWindow]) {
-    XPLogDebug2(@"%@ __windowDidBecomeKey: %@ not an AccessoryWindow", self, window);
+    XPLogDebug1(@"%@ not an AccessoryWindow", window);
     return;
   }
   [[NSUserDefaults standardUserDefaults] SVR_setVisibility:YES forWindowWithFrameAutosaveName:[window frameAutosaveName]];
@@ -211,7 +211,7 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
   NSWindow *window = [aNotification object];
   NSCAssert2([window isKindOfClass:[NSWindow class]], @"%@ __windowWillCloseNotification: %@ not NSWindow", self, window);
   if (window != [self keypadPanel] && window != [self aboutWindow] && window != [self settingsWindow]) {
-    XPLogDebug2(@"%@ __windowWillCloseNotification: %@ not an AccessoryWindow", self, window);
+    XPLogDebug1(@"%@ not an AccessoryWindow", window);
     return;
   }
   [[NSUserDefaults standardUserDefaults] SVR_setVisibility:NO forWindowWithFrameAutosaveName:[window frameAutosaveName]];

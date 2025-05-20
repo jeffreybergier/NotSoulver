@@ -134,7 +134,7 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
     case XPUserInterfaceStyleDark:
       return XPUserInterfaceStyleDark;
     default:
-      XPLogRaise2(@"%@ SVRThemeUserInterfaceStyle INVALID: %d ", self, (int)setting);
+      XPLogRaise1(@"INVALID: %d", (int)setting);
       return -1;
   }
 #else
@@ -146,7 +146,7 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
     case XPUserInterfaceStyleLight:
       return XPUserInterfaceStyleLight;
     default:
-      XPLogRaise2(@"%@ SVRThemeUserInterfaceStyle INVALID: %d ", self, (int)setting);
+      XPLogRaise1(@"INVALID: %d", (int)setting);
       return -1;
   }
 #endif
@@ -255,7 +255,7 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
         case SVRThemeColorInsertionPoint:    return SVRThemeLightInsertionPoint;
       }
     case XPUserInterfaceStyleUnspecified:
-      XPLogRaise1(@"%@ Tried to set color for XPUserInterfaceStyleUnspecified", self);
+      XPLogRaise(@"Tried to set color for XPUserInterfaceStyleUnspecified");
   }
   return nil;
 }
