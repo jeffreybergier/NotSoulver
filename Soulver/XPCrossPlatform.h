@@ -376,12 +376,9 @@ NSArray* XPRunOpenPanel(NSString *extension);
 // MARK: XPLogging
 
 @interface XPLog: NSObject
-/// Requires `fb +[XPLog pause]` in GDB to Pause Debugger
-+(void)pause;
 +(void)logCheckedPoundDefines;
 @end
 
-// TODO: Move these into XPLog macros above
 #ifdef MAC_OS_X_VERSION_10_4
 #define XPLogFunc [NSString stringWithCString:__PRETTY_FUNCTION__ encoding:NSUTF8StringEncoding]
 #define XPLogFile [[[NSString stringWithCString:__FILE__ encoding:NSUTF8StringEncoding] componentsSeparatedByString:@"/"] lastObject]
@@ -390,49 +387,59 @@ NSArray* XPRunOpenPanel(NSString *extension);
 #define XPLogFile [[[NSString stringWithCString:__FILE__] componentsSeparatedByString:@"/"] lastObject]
 #endif
 
+#define __XPLogBase(_prefix, _formatString)                             NSLog(@"[%@] {%@:%d} %@ %@", _prefix, XPLogFile, __LINE__, XPLogFunc, _formatString)
+#define __XPLogBase1(_prefix, _formatString, _one)                      NSLog(@"[%@] {%@:%d} %@ %@", _prefix, XPLogFile, __LINE__, XPLogFunc, [NSString stringWithFormat:_formatString, _one])
+#define __XPLogBase2(_prefix, _formatString, _one, _two)                NSLog(@"[%@] {%@:%d} %@ %@", _prefix, XPLogFile, __LINE__, XPLogFunc, [NSString stringWithFormat:_formatString, _one, _two])
+#define __XPLogBase3(_prefix, _formatString, _one, _two, _three)        NSLog(@"[%@] {%@:%d} %@ %@", _prefix, XPLogFile, __LINE__, XPLogFunc, [NSString stringWithFormat:_formatString, _one, _two, _three])
+#define __XPLogBase4(_prefix, _formatString, _one, _two, _three, _four) NSLog(@"[%@] {%@:%d} %@ %@", _prefix, XPLogFile, __LINE__, XPLogFunc, [NSString stringWithFormat:_formatString, _one, _two, _three, _four])
+
 // Define Always Macros
-#define XPLogAlwys(_formatString)                             NSLog(@"{%@:%d} %@ %@", XPLogFile, __LINE__, XPLogFunc, _formatString)
-#define XPLogAlwys1(_formatString, _one)                      NSLog(@"{%@:%d} %@ %@", XPLogFile, __LINE__, XPLogFunc, [NSString stringWithFormat:_formatString, _one])
-#define XPLogAlwys2(_formatString, _one, _two)                NSLog(@"{%@:%d} %@ %@", XPLogFile, __LINE__, XPLogFunc, [NSString stringWithFormat:_formatString, _one, _two])
-#define XPLogAlwys3(_formatString, _one, _two, _three)        NSLog(@"{%@:%d} %@ %@", XPLogFile, __LINE__, XPLogFunc, [NSString stringWithFormat:_formatString, _one, _two, _three])
-#define XPLogAlwys4(_formatString, _one, _two, _three, _four) NSLog(@"{%@:%d} %@ %@", XPLogFile, __LINE__, XPLogFunc, [NSString stringWithFormat:_formatString, _one, _two, _three, _four])
-#define XPLogRaise(_formatString)                             [NSException raise:@"SVRException" format:_formatString]
-#define XPLogRaise1(_formatString, _one)                      [NSException raise:@"SVRException" format:@"{%@:%d} %@ %@", XPLogFile, __LINE__, XPLogFunc, [NSString stringWithFormat:_formatString, _one]]
-#define XPLogRaise2(_formatString, _one, _two)                [NSException raise:@"SVRException" format:@"{%@:%d} %@ %@", XPLogFile, __LINE__, XPLogFunc, [NSString stringWithFormat:_formatString, _one, _two]]
-#define XPLogRaise3(_formatString, _one, _two, _three)        [NSException raise:@"SVRException" format:@"{%@:%d} %@ %@", XPLogFile, __LINE__, XPLogFunc, [NSString stringWithFormat:_formatString, _one, _two, _three]]
-#define XPLogRaise4(_formatString, _one, _two, _three, _four) [NSException raise:@"SVRException" format:@"{%@:%d} %@ %@", XPLogFile, __LINE__, XPLogFunc, [NSString stringWithFormat:_formatString, _one, _two, _three, _four]]
+#define XPLogAlwys(_formatString)                             __XPLogBase (@"ALWYS", _formatString)
+#define XPLogAlwys1(_formatString, _one)                      __XPLogBase1(@"ALWYS", _formatString, _one)
+#define XPLogAlwys2(_formatString, _one, _two)                __XPLogBase2(@"ALWYS", _formatString, _one, _two)
+#define XPLogAlwys3(_formatString, _one, _two, _three)        __XPLogBase3(@"ALWYS", _formatString, _one, _two, _three)
+#define XPLogAlwys4(_formatString, _one, _two, _three, _four) __XPLogBase4(@"ALWYS", _formatString, _one, _two, _three, _four)
+#define XPLogRaise(_formatString)                             __XPLogBase (@"RAISE", _formatString); [NSException raise:@"SVRException" format:_formatString]
+#define XPLogRaise1(_formatString, _one)                      __XPLogBase1(@"RAISE", _formatString, _one); [NSException raise:@"SVRException" format:_formatString, _one]
+#define XPLogRaise2(_formatString, _one, _two)                __XPLogBase2(@"RAISE", _formatString, _one, _two); [NSException raise:@"SVRException" format:_formatString, _one, _two]
+#define XPLogRaise3(_formatString, _one, _two, _three)        __XPLogBase3(@"RAISE", _formatString, _one, _two, _three); [NSException raise:@"SVRException" format:_formatString, _one, _two, _three]
+#define XPLogRaise4(_formatString, _one, _two, _three, _four) __XPLogBase4(@"RAISE", _formatString, _one, _two, _three, _four); [NSException raise:@"SVRException" format:_formatString, _one, _two, _three, _four]
+
+#ifdef DEBUG
+#define XPLogAssrt(_condition, _formatString)                             if (!(_condition)) { __XPLogBase (@"ASSRT", _formatString); } NSAssert(_condition, _formatString)
+#define XPLogAssrt1(_condition, _formatString, _one)                      if (!(_condition)) { __XPLogBase1(@"ASSRT", _formatString, _one); } NSAssert1(_condition, _formatString, _one)
+#define XPLogAssrt2(_condition, _formatString, _one, _two)                if (!(_condition)) { __XPLogBase2(@"ASSRT", _formatString, _one, _two); } NSAssert2(_condition, _formatString, _one, _two)
+#define XPLogAssrt3(_condition, _formatString, _one, _two, _three)        if (!(_condition)) { __XPLogBase3(@"ASSRT", _formatString, _one, _two, _three); } NSAssert3(_condition, _formatString, _one, _two, _three)
+#define XPLogAssrt4(_condition, _formatString, _one, _two, _three, _four) if (!(_condition)) { __XPLogBase4(@"ASSRT", _formatString, _one, _two, _three, _four); } NSAssert4(_condition, _formatString, _one, _two, _three, _four)
+#else
+#define XPLogAssrt(_condition, _formatString)
+#define XPLogAssrt1(_condition, _formatString, _one)
+#define XPLogAssrt2(_condition, _formatString, _one, _two)
+#define XPLogAssrt3(_condition, _formatString, _one, _two, _three)
+#define XPLogAssrt4(_condition, _formatString, _one, _two, _three, _four)
+#endif
 
 // Define Debug Macros
 #if LOGLEVEL >= LOGLEVELDEBUG
-#define XPLogDebug(_formatString)                             XPLogAlwys(_formatString)
-#define XPLogDebug1(_formatString, _one)                      XPLogAlwys1(_formatString, _one)
-#define XPLogDebug2(_formatString, _one, _two)                XPLogAlwys2(_formatString, _one, _two)
-#define XPLogDebug3(_formatString, _one, _two, _three)        XPLogAlwys3(_formatString, _one, _two, _three)
-#define XPLogDebug4(_formatString, _one, _two, _three, _four) XPLogAlwys4(_formatString, _one, _two, _three, _four)
-#define XPLogPause(_formatString)                             XPLogDebug(_formatString); [XPLog pause]
-#define XPLogPause1(_formatString, _one)                      XPLogDebug1(_formatString, _one); [XPLog pause]
-#define XPLogPause2(_formatString, _one, _two)                XPLogDebug2(_formatString, _one, _two); [XPLog pause]
-#define XPLogPause3(_formatString, _one, _two, _three)        XPLogDebug3(_formatString, _one, _two, _three); [XPLog pause]
-#define XPLogPause4(_formatString, _one, _two, _three, _four) XPLogDebug4(_formatString, _one, _two, _three, _four); [XPLog pause]
+#define XPLogDebug(_formatString)                             __XPLogBase (@"DEBUG", _formatString)
+#define XPLogDebug1(_formatString, _one)                      __XPLogBase1(@"DEBUG", _formatString, _one)
+#define XPLogDebug2(_formatString, _one, _two)                __XPLogBase2(@"DEBUG", _formatString, _one, _two)
+#define XPLogDebug3(_formatString, _one, _two, _three)        __XPLogBase3(@"DEBUG", _formatString, _one, _two, _three)
+#define XPLogDebug4(_formatString, _one, _two, _three, _four) __XPLogBase4(@"DEBUG", _formatString, _one, _two, _three, _four)
 #else
 #define XPLogDebug(_formatString)
 #define XPLogDebug1(_formatString, _one)
 #define XPLogDebug2(_formatString, _one, _two)
 #define XPLogDebug3(_formatString, _one, _two, _three)
 #define XPLogDebug4(_formatString, _one, _two, _three, _four)
-#define XPLogPause(_formatString)
-#define XPLogPause1(_formatString, _one)
-#define XPLogPause2(_formatString, _one, _two)
-#define XPLogPause3(_formatString, _one, _two, _three)
-#define XPLogPause4(_formatString, _one, _two, _three, _four)
 #endif
 
 #if LOGLEVEL >= LOGLEVELEXTRA
-#define XPLogExtra(_formatString)                             XPLogAlwys(_formatString)
-#define XPLogExtra1(_formatString, _one)                      XPLogAlwys1(_formatString, _one)
-#define XPLogExtra2(_formatString, _one, _two)                XPLogAlwys2(_formatString, _one, _two)
-#define XPLogExtra3(_formatString, _one, _two, _three)        XPLogAlwys3(_formatString, _one, _two, _three)
-#define XPLogExtra4(_formatString, _one, _two, _three, _four) XPLogAlwys4(_formatString, _one, _two, _three, _four)
+#define XPLogExtra(_formatString)                             __XPLogBase (@"DEBUG", _formatString)
+#define XPLogExtra1(_formatString, _one)                      __XPLogBase1(@"DEBUG", _formatString, _one)
+#define XPLogExtra2(_formatString, _one, _two)                __XPLogBase2(@"DEBUG", _formatString, _one, _two)
+#define XPLogExtra3(_formatString, _one, _two, _three)        __XPLogBase3(@"DEBUG", _formatString, _one, _two, _three)
+#define XPLogExtra4(_formatString, _one, _two, _three, _four) __XPLogBase4(@"DEBUG", _formatString, _one, _two, _three, _four)
 #else
 #define XPLogExtra(_formatString)
 #define XPLogExtra1(_formatString, _one)

@@ -82,9 +82,8 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
                 errorStyles:errorStyles];
   [self __step5_styleAndTag:input styles:textStyles];
   outputLength = [[input string] length];
-  if (inputLength != outputLength) {
-    XPLogPause2(@"SVRSolver solveAttributedString: String changed length: %d->%d", (int)inputLength, (int)outputLength);
-  }
+  XPLogAssrt2(inputLength == outputLength, @"String changed length: %d->%d",
+              (int)inputLength, (int)outputLength);
   [input autorelease];
 }
 

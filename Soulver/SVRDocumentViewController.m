@@ -260,8 +260,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   NSData *diskRepData = [[self modelController] dataRepresentationOfType:SVRDocumentModelRepDisk
                                                                withRange:range];
   success = [self __universalCopyRTFData:rtfData diskRepData:diskRepData];
-  if (success) { return; }
-  XPLogPause1(@"%@ copySolved: Failed", self);
+  XPLogAssrt(success, @"FAIL");
 }
 
 -(IBAction)copyUniversal:(id)sender;
@@ -273,8 +272,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   NSData *diskRepData = [[self modelController] dataRepresentationOfType:SVRDocumentModelRepDisk
                                                                withRange:range];
   success = [self __universalCopyRTFData:rtfData diskRepData:diskRepData];
-  if (success) { return; }
-  XPLogPause1(@"%@ copySolved: Failed", self);
+  XPLogAssrt(success, @"FAIL");
 }
 
 -(IBAction)pasteUniversal:(id)sender;

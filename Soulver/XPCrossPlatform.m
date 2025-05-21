@@ -677,8 +677,6 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 @implementation XPLog
 
-+(void)pause {}
-
 +(void)logCheckedPoundDefines;
 {
   NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];

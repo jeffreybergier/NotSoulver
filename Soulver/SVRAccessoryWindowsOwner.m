@@ -159,17 +159,13 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
   success = [ws XP_openWebURL:webURLToOpen];
   if (success) { return; }
   NSBeep();
-  XPLogDebug1(@"[Failed] [NSWorkspace openURL:%@]", webURLToOpen);
+  XPLogAssrt1(success, @"[NSWorkspace openURL:%@]", webURLToOpen);
   copyToClipboard = XPRunCopyWebURLToPasteboardAlert(webURLToOpen);
   switch (copyToClipboard) {
     case XPAlertReturnDefault:
       [pb declareTypes:[NSArray arrayWithObject:XPPasteboardTypeString] owner:self];
       success = [pb setString:webURLToOpen forType:XPPasteboardTypeString];
-      if (success) {
-        XPLogDebug1(@"[Success] [NSPasteboard setString:%@", webURLToOpen);
-      } else {
-        XPLogPause1(@"[Failed] [NSPasteboard setString:%@", webURLToOpen);
-      }
+      XPLogAssrt1(success, @"[NSPasteboard setString:%@", webURLToOpen);
       return;
     case XPAlertReturnAlternate:
     case XPAlertReturnOther:
