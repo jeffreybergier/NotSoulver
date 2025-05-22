@@ -88,7 +88,7 @@
   // Prepare FontManager
   [NSFontManager setFontManagerFactory:[SVRFontManager class]];
   // Announce
-  XPLogDebug1(@"%@ applicationWillFinishLaunching:", self);
+  XPLogDebug(@"");
 }
 
 -(void)applicationDidFinishLaunching:(NSNotification*)aNotification;
@@ -107,7 +107,7 @@
                                                object:nil];
   }
   // Announce
-  XPLogDebug1(@"%@ applicationDidFinishLaunching:", self);
+  XPLogDebug(@"");
 }
 
 -(void)applicationWillTerminate:(NSNotification*)aNotification;
@@ -141,7 +141,7 @@
   XPDocument nextC = nil;
 
   filenames = XPRunOpenPanel(SVRDocumentModelExtension);
-  if ([filenames count] == 0) { XPLogDebug1(@"%@ Open Cancelled", self); return; }
+  if ([filenames count] == 0) { XPLogDebug(@"Open Cancelled"); return; }
   e = [filenames objectEnumerator];
   while ((nextF = [e nextObject])) {
     nextC = [[self openDocuments] member:nextF];
@@ -271,7 +271,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
            options:NSKeyValueObservingOptionNew
            context:NULL];
 #else
-  XPLogDebug1(@"%@: effectiveAppearance: System does not support dark mode", app);
+  XPLogDebug(@"System does not support dark mode");
 #endif
 }
 
@@ -288,12 +288,12 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
                        change:(NSDictionary*)change
                       context:(void*)context;
 {
+#ifdef XPSupportsDarkMode
   if ([keyPath isEqualToString:SVRApplicationEffectiveAppearanceKeyPath]) {
-    XPLogAlwys1(@"%@: effectiveAppearance: Changed", object);
+    XPLogDebug(@"effectiveAppearance: Changed");
     [[NSNotificationCenter defaultCenter] postNotificationName:SVRThemeDidChangeNotificationName
                                                         object:[NSUserDefaults standardUserDefaults]];
   } else {
-#ifdef XPSupportsDarkMode
     [super observeValueForKeyPath:keyPath
                          ofObject:object
                            change:change

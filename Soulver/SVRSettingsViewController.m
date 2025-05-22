@@ -203,7 +203,7 @@
       [ud SVR_setUserInterfaceStyleSetting:newStyle];
       break;
     default:
-      XPLogRaise2(@"%@ SVRThemeUserInterfaceStyleSetting INVALID: %d ", self, (int)newStyle);
+      XPLogAssrt1(NO, @"XPUserInterfaceStyle(%d)", (int)newStyle);
       break;
   }
 }
@@ -217,7 +217,7 @@
   BOOL decoded = [self decodeThemeColor:&color
                          interfaceStyle:&style
                           fromColorWell:sender];
-  if (!decoded) { XPLogDebug1(@"colorChanged:%@ Failed", sender); return; }
+  XPLogAssrt(decoded, @"[FAIL] decodeThemeColor:interfaceStyle:fromColorWell:");
   [ud SVR_setColor:wellColor forTheme:color withStyle:style];
 }
 
@@ -242,12 +242,9 @@
   SVRThemeFont theme = -1;
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   SVRFontManager *fm = (SVRFontManager*)[NSFontManager sharedFontManager];
-  if (![fm isKindOfClass:[SVRFontManager class]]) {
-    XPLogRaise1(@"NSFontManager not configured correctly: %@", NSStringFromClass([fm class]));
-    return;
-  }
+  XPLogAssrt1([fm isKindOfClass:[SVRFontManager class]], @"%@ is not SVRFontManager", fm);
   decoded = [self decodeThemeFont:&theme fromButton:sender];
-  if (!decoded) { XPLogDebug1(@"fontChangeRequest:%@ Failed", sender); return; }
+  XPLogAssrt(decoded, @"[FAIL] decodeThemFont:fromButton:");
   [fm setSelectedFont:[ud SVR_fontForTheme:theme] isMultiple:NO];
   [fm setThemeFont:theme];
   [fm orderFrontFontPanel:sender];
@@ -264,7 +261,7 @@
   [ud SVR_setFont:font forTheme:theme];
   [[sender fontPanel:NO] performClose:sender];
   [self populateUI];
-  NSLog(@"fontChanged:%@", sender);
+  XPLogDebug(@"");
 }
 
 -(IBAction)fontReset:(NSButton*)sender;
@@ -275,6 +272,7 @@
   if (!decoded) { XPLogDebug1(@"fontReset:%@ Failed", sender); return; }
   [ud SVR_setFont:nil forTheme:font];
   [self populateUI];
+  XPLogDebug(@"");
 }
 
 -(IBAction)colorReset:(NSButton*)sender;
@@ -286,6 +284,7 @@
   [ud SVR_setColor:nil forTheme:color withStyle:XPUserInterfaceStyleLight];
   [ud SVR_setColor:nil forTheme:color withStyle:XPUserInterfaceStyleDark];
   [self populateUI];
+  XPLogDebug(@"");
 }
 
 -(IBAction)timeReset:(NSButton*)sender;
@@ -293,6 +292,7 @@
   [_fieldTime setTextColor:[NSColor controlTextColor]];
   [[NSUserDefaults standardUserDefaults] SVR_setWaitTimeForRendering:-1];
   [self populateUI];
+  XPLogDebug(@"");
 }
 
 -(BOOL)decodeThemeColor:(SVRThemeColor*)colorPointer

@@ -288,12 +288,12 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
       && (diskRepString = [[[NSString alloc] initWithData:diskRepData encoding:NSUTF8StringEncoding] autorelease]))
   {
     // Do Universal Paste
-    XPLogDebug1(@"%@ pasteUniversal: Universal Paste", self);
+    XPLogDebug1(@"<%p> Universal Paste", self);
     [[self modelController] replaceCharactersInRange:[textView selectedRange]
                                           withString:diskRepString];
   } else {
     // Fail universal paste and forward the message to the textview
-    XPLogDebug1(@"%@ pasteUniversal: NOT Universal Paste", self);
+    XPLogDebug1(@"<%p> NOT Universal Paste", self);
     [textView pasteAsPlainText:sender];
     return;
   }

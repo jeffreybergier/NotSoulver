@@ -144,7 +144,7 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
     while ((match = [matches nextObject])) {
       range = [match range];
       matchedNumber = [NSDecimalNumber decimalNumberWithString:[_string substringWithRange:range]];
-      if ([matchedNumber SVR_isNotANumber]) { XPLogRaise(@"SVRSolverScanner __populateNumbers: Matched NaN"); }
+      XPLogAssrt(![matchedNumber SVR_isNotANumber], @"matchedNumber: NaN");
       if (range.location > 0
           && [matchedNumber compare:[NSDecimalNumber zero]] == NSOrderedAscending
           && [negativeNumberPrefixSet member:[_string substringWithRange:NSMakeRange(range.location-1, 1)]] != nil)
@@ -153,10 +153,9 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
         // This check adjusts for this edge case
         range.location += 1;
         range.length -= 1;
-        XPLogExtra2(@"SVRSolverScanner __populateNumbers: `%@`->`%@`",
-                    matchedNumber, [_string substringWithRange:range]);
+        XPLogExtra2(@"`%@`->`%@`", matchedNumber, [_string substringWithRange:range]);
       }
-      XPLogExtra1(@"<#> %@", [_string SVR_descriptionHighlightingRange:range]);
+      XPLogExtra1(@"%@", [_string SVR_descriptionHighlightingRange:range]);
       [output addObject:[NSValue XP_valueWithRange:range]];
     }
   }
@@ -182,7 +181,7 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
                 objectEnumerator];
      while ((match = [matches nextObject])) {
        range = [match rangeAtIndex:0];
-       XPLogExtra1(@"<+*> %@", [_string SVR_descriptionHighlightingRange:range]);
+       XPLogExtra1(@"%@", [_string SVR_descriptionHighlightingRange:range]);
        [output addObject:[NSValue XP_valueWithRange:range]];
      }
    }
@@ -207,7 +206,7 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
                objectEnumerator];
     while ((match = [matches nextObject])) {
       range = [match range];
-      XPLogExtra1(@"<(> %@", [_string SVR_descriptionHighlightingRange:range]);
+      XPLogExtra1(@"%@", [_string SVR_descriptionHighlightingRange:range]);
       [output addObject:[NSValue XP_valueWithRange:range]];
     }
   }

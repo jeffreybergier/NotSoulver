@@ -104,7 +104,8 @@ NSPoint XPDocumentPointForCascading;
   // Set the delegate for -windowShouldClose:
   [myWindow setDelegate:self];
   
-  XPLogDebug1(@"makeWindowControllers: %@", self);
+  // Announce
+  XPLogDebug(@"");
 }
 
 // MARK: Document Properties
@@ -253,12 +254,12 @@ NSPoint XPDocumentPointForCascading;
       [self readFromURL:nil ofType:nil error:NULL];
       break;
     case XPAlertReturnAlternate:
-      XPLogDebug(@"User cancelled revert");
+      XPLogDebug(@"User Cancelled");
       break;
     case XPAlertReturnOther:
     case XPAlertReturnError:
     default:
-      XPLogRaise1(@"Unexpected alert panel result: %ld", result);
+      XPLogAssrt1(NO, @"XPAlertReturn(%d) INVALID", (int)result);
   }
   [self updateChangeCount:XPChangeCleared];
 }
@@ -298,7 +299,7 @@ NSPoint XPDocumentPointForCascading;
       return NO;
     case XPAlertReturnError:
     default:
-      XPLogRaise1(@"Unexpected alert panel result: %ld", alertResult);
+      XPLogAssrt1(NO, @"XPAlertReturn(%d) INVALID", (int)alertResult);
       return NO;
   }
 }
@@ -330,7 +331,7 @@ NSPoint XPDocumentPointForCascading;
 
 -(XPInteger)__runModalSavePanel:(NSSavePanel*)_savePanel;
 {
-  XPInteger okCancel;
+  NSModalResponse okCancel;
   NSSavePanel *savePanel = (_savePanel) ? _savePanel : [NSSavePanel savePanel];
   [self __prepareSavePanel:savePanel];
   
@@ -340,10 +341,10 @@ NSPoint XPDocumentPointForCascading;
       [self writeToURL:(XPURL*)[savePanel filename] ofType:nil error:NULL];
       break;
     case XPModalResponseCancel:
-      XPLogDebug(@"User cancelled save");
+      XPLogDebug(@"User Cancelled");
       break;
     default:
-      XPLogRaise1(@"Unexpected save panel result: %ld", okCancel);
+      XPLogAssrt1(NO, @"NSModalResponse(%d) INVALID", (int)okCancel);
       break;
   }
   [[NSUserDefaults standardUserDefaults] SVR_setSavePanelLastDirectory:[savePanel directory]];
@@ -449,7 +450,7 @@ NSPoint XPDocumentPointForCascading;
   [_window_42 release];
   _window_42 = [aWindow retain];
 #else
-  XPLogDebug2(@"%@ ignoring call to XP_setWindow:%@", self, aWindow);
+  XPLogDebug(@"[IGNORE]");
 #endif
 }
 
@@ -463,7 +464,7 @@ NSPoint XPDocumentPointForCascading;
 #if XPSupportsNSDocument == 0
   [self __setFileExtension:type];
 #else
-  XPLogDebug2(@"%@ ignoring call to XP_setFileExtension:%@", self, type);
+  XPLogDebug(@"[IGNORE]");
 #endif
 }
 
@@ -482,7 +483,7 @@ NSPoint XPDocumentPointForCascading;
   NSCParameterAssert(windowController);
   [self addWindowController:windowController];
 #else
-  XPLogDebug(@"%@ XP_addWindowController: Ignoring");
+  XPLogDebug(@"[IGNORE]");
 #endif
 }
 @end

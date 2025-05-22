@@ -111,7 +111,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
                                                 styles:errorStyles]
       ];
     }
-    XPLogExtra2(@"=: %@<-%@", [[output string] SVR_descriptionHighlightingRange:solutionRange], solution);
+    XPLogExtra2(@"%@<-%@", [[output string] SVR_descriptionHighlightingRange:solutionRange], solution);
     // Step 6: Insert the text attachment for the solution or error
     [output replaceCharactersInRange:solutionRange
                 withAttributedString:solutionString];
@@ -170,7 +170,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
                        range:NSMakeRange(0, 1)];
       return NO;
     default:
-      XPLogRaise2(@"__prepareExpression: unknownOperator:%@ foundInExpression:%@", operatorNumber, input);
+      XPLogAssrt2(NO, @"unknownOperator:%@ foundInExpression:%@", operatorNumber, input);
       return NO;
   }
 }
