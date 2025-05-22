@@ -47,7 +47,7 @@
   // Finally do the init stuff
   self = [super init];
   NSCParameterAssert(self);
-  NSCAssert(capCount >= 0, @"Error calculating capture groups");
+  XPLogAssrt(capCount >= 0, @"Error calculating capture groups");
   
   // Need to add a capture if there is none in the pattern
   // SLRE used to give the results if no capture present
@@ -115,7 +115,7 @@
   int capIdx = 0;
   int status = 0;
   
-  NSCAssert1(NSMaxRange(maxRange)>=NSMaxRange(range), @"Invalid Range:%@", NSStringFromRange(range));
+  XPLogAssrt1(NSMaxRange(maxRange)>=NSMaxRange(range), @"Invalid Range:%@", NSStringFromRange(range));
   
   while (status >= 0) {
     buffer += status;
@@ -135,7 +135,7 @@
     free(capRanges);
   }
   
-  NSCAssert1(status == -1, @"SLRE Error: %d", status);
+  XPLogAssrt1(status == -1, @"SLRE Error: %d", status);
   return output;
 }
 

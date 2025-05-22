@@ -190,7 +190,8 @@
   NSDictionary *attributes = [[self class] attributesWithFont:[[self SVR_attachment] font]
                                                         color:[[self SVR_attachment] foregroundColor]];
   NSSize padding = [[[self SVR_attachment] class] textPadding];
-  switch ([[self SVR_attachment] background]) {
+  SVRSolverTextAttachmentBackground background = [[self SVR_attachment] background];
+  switch (background) {
     case SVRSolverTextAttachmentBackgroundCapsuleFill:
       [self __drawBackgroundCapsuleFillInRect:cellFrame];
       break;
@@ -202,8 +203,7 @@
       NSFrameRect(cellFrame);
       break;
     default:
-      NSCAssert2(NO, @"%@ SVRSolverTextAttachmentBackground(%d) unknown case",
-                 self, (int)[[self SVR_attachment] background]);
+      XPLogAssrt1(NO, @"SVRSolverTextAttachmentBackground(%d) unknown case", (int)background);
       break;
   }
   cellFrame.origin.y += padding.height / 2.0;
@@ -235,7 +235,7 @@
   [strokeColor set];
   [path stroke];
 #else
-  NSCAssert1(NO, @"%@ System does not support NSBezierPath", self);
+  XPLogRaise(@"System does not support NSBezierPath");
 #endif
 }
 
@@ -257,7 +257,7 @@
   [path setLineWidth:stroke];
   [path stroke];
 #else
-  NSCAssert1(NO, @"%@ System does not support NSBezierPath", self);
+  XPLogRaise(@"System does not support NSBezierPath");
 #endif
 }
 

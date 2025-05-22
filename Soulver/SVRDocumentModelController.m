@@ -124,21 +124,21 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
     key = [[self model] string];
     output = [dataCache objectForKey:key];
     if (output) {
-      XPLogExtra1(@"%@ __dataRepresentationOfDiskTypeWithRange: Cache Hit", self);
+      XPLogExtra1(@"<%p> Cache Hit", self);
       return output;
     }
     if ([dataCache count] > 20) {
-      XPLogDebug1(@"%@ dataRepresentationOfType: Cache Clear", self);
+      XPLogDebug1(@"<%p> Cache Clear", self);
       [dataCache removeAllObjects];
     }
-    XPLogExtra1(@"%@ dataRepresentationOfType: Cache Miss", self);
+    XPLogExtra1(@"<%p> Cache Miss", self);
     output = [[[SVRSolver replacingAttachmentsWithOriginalCharacters:[self model]] string] dataUsingEncoding:NSUTF8StringEncoding];
     [dataCache setObject:output forKey:key];
     return output;
   } else {
     // If a range is provided, do the work slowly with no caching
     output = [[[SVRSolver replacingAttachmentsWithOriginalCharacters:[[self model] attributedSubstringFromRange:range]] string] dataUsingEncoding:NSUTF8StringEncoding];
-    NSAssert(output, @"__dataRepresentationOfDiskTypeWithRange: NIL");
+    XPLogAssrt(output, @"output was NIL");
     return output;
   }
 }
@@ -149,7 +149,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
                 ? NSMakeRange(0, [[self model] length])
                 : _range;
   NSData *output = [[self model] RTFFromRange:range documentAttributes:XPRTFDocumentAttributes];
-  NSAssert(output, @"__dataRepresentationOfDisplayTypeWithRange: NIL");
+  XPLogAssrt(output, @"output was NIL");
   return output;
 }
 
@@ -162,7 +162,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
   NSAttributedString *solved = [SVRSolver replacingAttachmentsWithStringValue:original];
   NSData *output = [solved RTFFromRange:NSMakeRange(0, [solved length])
                      documentAttributes:XPRTFDocumentAttributes];
-  NSAssert(output, @"__dataRepresentationOfSolvedTypeWithRange: NIL");
+  XPLogAssrt(output, @"output was NIL");
   return output;
 }
 
@@ -175,7 +175,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
   NSAttributedString *unsolved = [SVRSolver replacingAttachmentsWithOriginalCharacters:original];
   NSData *output = [unsolved RTFFromRange:NSMakeRange(0, [unsolved length])
                        documentAttributes:XPRTFDocumentAttributes];
-  NSAssert(output, @"__dataRepresentationOfUnsolvedTypeWithRange: NIL");
+  XPLogAssrt(output, @"output was NIL");
   return output;
 }
 
@@ -188,7 +188,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
                                             encoding:NSUTF8StringEncoding] autorelease];
   if (string) {
     // TODO: Figure out how I can combine this with waitTimerFired:
-    XPLogDebug1(@"%@ loadDataRepresentation: Rendering", self);
+    XPLogDebug(@"Rendering");
     [model beginEditing];
     [[model mutableString] setString:string];
     [SVRSolver solveAttributedString:model
@@ -226,8 +226,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
 -(void)textDidChange:(NSNotification*)aNotification;
 {
   NSTextView *textView = [aNotification object];
-  NSCAssert1([textView isKindOfClass:[NSTextView class]],
-             @"textViewDidChangeSelection:%@ not NSTextView", textView);
+  XPLogAssrt1([textView isKindOfClass:[NSTextView class]], @"%@ not a text view", textView);
   [self __resetWaitTimer:textView];
 }
 
@@ -272,8 +271,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
 {
 
   NSTextView *textView = [[timer userInfo] objectForKey:@"TextView"];
-  NSCAssert1([textView isKindOfClass:[NSTextView class]],
-             @"textViewDidChangeSelection:%@ not NSTextView", textView);
+  XPLogAssrt1([textView isKindOfClass:[NSTextView class]], @"%@ not a text view", textView);
   [self renderPreservingSelectionInTextView:textView];
   [timer invalidate];
 }

@@ -382,7 +382,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 {
 #ifdef MAC_OS_X_VERSION_10_8
   id output = [self decodeObjectOfClass:aClass forKey:key];
-  NSAssert2(output, @"XP_decodeObjectOfClass:%@ forKey:%@", NSStringFromClass(aClass), key);
+  XPLogAssrt2(output, @"class:%@ key:%@", NSStringFromClass(aClass), key);
   return output;
 #elif MAC_OS_X_VERSION_10_2
   return [self decodeObjectForKey:key];
@@ -410,7 +410,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
   NSData *output = [self archivedDataWithRootObject:object
                               requiringSecureCoding:NO
                                               error:&error];
-  NSAssert1(!error, @"%@", error);
+  XPLogAssrt1(!error, @"%@", error);
   return output;
 #else
   return [self archivedDataWithRootObject:object];
@@ -431,7 +431,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
   NSAttributedString *output = [self unarchivedObjectOfClass:cls
                                                     fromData:someData
                                                        error:&error];
-  NSAssert1(!error, @"%@", error);
+  XPLogAssrt1(!error, @"%@", error);
   return output;
 #else
   id output = [self unarchiveObjectWithData:someData];
@@ -499,7 +499,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
                                          xRadius:xRadius
                                          yRadius:yRadius];
 #else
-  NSCAssert(NO, @"Mac OS X 10.5 Required to use NSBezierPath convenience initializer");
+  XPLogRaise(@"System does not support NSBezierPath convenience initializer");
   return nil;
 #endif
 }
@@ -615,12 +615,10 @@ NSArray* XPRunOpenPanel(NSString *extension)
   // Because this returns a BOOL, it is not safe to use performSelector
   // so have to use ifdefs to prevent all warnings
 #if XPSupportsNSDocument >= 2
-  NSCAssert1([self isKindOfClass:NSClassFromString(@"NSURL")],
-            @"%@ is not NSString or NSURL", self);
+  XPLogAssrt1([self isKindOfClass:NSClassFromString(@"NSURL")], @"%@ is not NSURL", self);
   return [self isFileURL];
 #else
-  NSCAssert1([self isKindOfClass:[NSString class]],
-            @"%@ is not NSString or NSURL", self);
+  XPLogAssrt1([self isKindOfClass:[NSString class]], @"%@ is not NSString", self);
   return [self isAbsolutePath];
 #endif
 }
@@ -631,8 +629,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
   if ([self respondsToSelector:selector]) {
     return [self performSelector:selector];
   } else {
-    NSCAssert1([self isKindOfClass:[NSString class]],
-              @"%@ is not NSString or NSURL", self);
+    XPLogAssrt1([self isKindOfClass:[NSString class]], @"%@ is not NSString", self);
     return (NSString*)self;
   }
 }

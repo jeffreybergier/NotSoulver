@@ -111,12 +111,13 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
   XPTextCheckingResult *match = nil;
   NSMutableSet *output = [NSMutableSet new];
   NSRange range = XPNotFoundRange;
-  NSAssert(!_expressions, @"This is a lazy init method, it assumes _expressions is NIL");
+  XPLogAssrt(!_expressions, @"_expressions loaded twice");
+  
   while ((match = [matches nextObject])) {
     range = [match range];
     // Trim the = sign off
     range.length -= 1;
-    XPLogExtra1(@"<=> %@", [_string SVR_descriptionHighlightingRange:range]);
+    XPLogExtra1(@"= %@", [_string SVR_descriptionHighlightingRange:range]);
     [output addObject:[NSValue XP_valueWithRange:range]];
   }
   _expressions = output; // should make immutable copy but avoiding
@@ -133,8 +134,8 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
   NSValue *expression = nil;
   NSDecimalNumber *matchedNumber = nil;
   NSRange range = XPNotFoundRange;
-  NSAssert(!_numbers, @"This is a lazy init method, it assumes _numbers is NIL");
-  
+  XPLogAssrt(!_numbers, @"_numbers loaded twice");
+
   while ((expression = [expressions nextObject])) {
     matches = [[regex matchesInString:_string
                               options:0
@@ -172,8 +173,8 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
    NSEnumerator *expressions = [[self expressionRanges] objectEnumerator];
    NSValue *expression = nil;
    NSRange range = XPNotFoundRange;
-   NSAssert(!_operators, @"This is a lazy init method, it assumes _operators is NIL");
-   
+   XPLogAssrt(!_operators, @"_operators loaded twice");
+
    while ((expression = [expressions nextObject])) {
      matches = [[regex matchesInString:_string
                                options:0
@@ -197,8 +198,8 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
   NSEnumerator *expressions = [[self expressionRanges] objectEnumerator];
   NSValue *expression = nil;
   NSRange range = XPNotFoundRange;
-  NSAssert(!_brackets, @"This is a lazy init method, it assumes _brackets is NIL");
-  
+  XPLogAssrt(!_brackets, @"_brackets loaded twice");
+
   while ((expression = [expressions nextObject])) {
     matches = [[regex matchesInString:_string
                               options:0
