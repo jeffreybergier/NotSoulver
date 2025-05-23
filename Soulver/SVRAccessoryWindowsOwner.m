@@ -85,7 +85,7 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
   
   self = [super init];
-  NSCParameterAssert(self);
+  XPParameterRaise(self);
   
   _topLevelObjects = nil;
   [[NSBundle mainBundle] XP_loadNibNamed:nibName

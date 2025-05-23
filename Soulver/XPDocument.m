@@ -52,7 +52,7 @@ NSPoint XPDocumentPointForCascading;
 -(id)init;
 {
   self = [super init];
-  NSCParameterAssert(self);
+  XPParameterRaise(self);
   _fileURL = nil;
   _fileType = nil;
   _isEdited = NO;
@@ -64,9 +64,9 @@ NSPoint XPDocumentPointForCascading;
 {
   self = [self init];
   
-  NSCParameterAssert(self);
-  NSCParameterAssert(fileURL);
-  NSCParameterAssert(fileType);
+  XPParameterRaise(self);
+  XPParameterRaise(fileURL);
+  XPParameterRaise(fileType);
   
   _fileURL  = [fileURL copy];
   _fileType = [fileType copy];
@@ -84,7 +84,7 @@ NSPoint XPDocumentPointForCascading;
 
 -(NSWindow*)windowForSheet;
 {
-  NSCParameterAssert(_window_42);
+  XPParameterRaise(_window_42);
   return [[_window_42 retain] autorelease];
 }
 
@@ -268,13 +268,13 @@ NSPoint XPDocumentPointForCascading;
 
 -(NSString*)__fileExtension;
 {
-  NSCParameterAssert(_fileExtension);
+  XPParameterRaise(_fileExtension);
   return [[_fileExtension retain] autorelease];
 }
 
 -(void)__setFileExtension:(NSString*)type;
 {
-  NSCParameterAssert(type);
+  XPParameterRaise(type);
   if ([type isEqualToString:_fileExtension]) { return; }
   [_fileExtension release];
   _fileExtension = [type copy];
@@ -431,7 +431,7 @@ NSPoint XPDocumentPointForCascading;
 {
 #if XPSupportsNSDocument == 1
   NSWindow *window = [[[self windowControllers] lastObject] window];
-  NSCParameterAssert(window);
+  XPParameterRaise(window);
   return window;
 #else
   return [self windowForSheet];
@@ -446,7 +446,7 @@ NSPoint XPDocumentPointForCascading;
 -(void)XP_setWindow:(NSWindow*)aWindow;
 {
 #if XPSupportsNSDocument == 0
-  NSCParameterAssert(aWindow);
+  XPParameterRaise(aWindow);
   [_window_42 release];
   _window_42 = [aWindow retain];
 #else
@@ -480,7 +480,7 @@ NSPoint XPDocumentPointForCascading;
 -(void)XP_addWindowController:(id)windowController;
 {
 #if XPSupportsNSDocument >= 1
-  NSCParameterAssert(windowController);
+  XPParameterRaise(windowController);
   [self addWindowController:windowController];
 #else
   XPLogDebug(@"[IGNORE]");

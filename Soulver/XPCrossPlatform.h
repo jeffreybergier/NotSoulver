@@ -393,6 +393,16 @@ NSArray* XPRunOpenPanel(NSString *extension);
 #define __XPLogBase3(_prefix, _formatString, _one, _two, _three)        NSLog(@"[%@] {%@:%d} %@ %@", _prefix, XPLogFile, __LINE__, XPLogFunc, [NSString stringWithFormat:_formatString, _one, _two, _three])
 #define __XPLogBase4(_prefix, _formatString, _one, _two, _three, _four) NSLog(@"[%@] {%@:%d} %@ %@", _prefix, XPLogFile, __LINE__, XPLogFunc, [NSString stringWithFormat:_formatString, _one, _two, _three, _four])
 
+// Define ParameterAssert that crashes in release mode
+// These are used in init methods to skip the if (self) {} check
+#ifdef DEBUG
+#define XPParameterRaise(_parameter)  if (!_parameter) { __XPLogBase1(@"RAISE", @"%@", _parameter); } NSParameterAssert(_parameter)
+#define XPCParameterRaise(_parameter) if (!_parameter) { __XPLogBase1(@"RAISE", @"%@", _parameter); } NSCParameterAssert(_parameter)
+#else
+#define XPParameterRaise(_parameter)  if (!_parameter) { __XPLogBase1(@"RAISE", @"%@", _parameter); [NSException raise:@"XPParameterRaise" format:@"%@", _parameter]; }
+#define XPCParameterRaise(_parameter) if (!_parameter) { __XPLogBase1(@"RAISE", @"%@", _parameter); [NSException raise:@"XPParameterRaise" format:@"%@", _parameter]; }
+#endif
+
 // Define Always Macros
 #define XPLogAlwys(_formatString)                             __XPLogBase (@"ALWYS", _formatString)
 #define XPLogAlwys1(_formatString, _one)                      __XPLogBase1(@"ALWYS", _formatString, _one)

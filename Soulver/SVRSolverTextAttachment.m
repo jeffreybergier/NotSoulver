@@ -77,13 +77,13 @@
   
   self = [super initWithFileWrapper:wrapper];
   
-  NSCParameterAssert(self);
-  NSCParameterAssert(string);
-  NSCParameterAssert([styles objectForKey:NSFontAttributeName]);
-  NSCParameterAssert([styles objectForKey:NSForegroundColorAttributeName]);
-  NSCParameterAssert([styles objectForKey:NSBackgroundColorAttributeName]);
-  NSCParameterAssert([styles objectForKey:SVRSolverTextAttachmentMixColorKey]);
-  NSCParameterAssert([styles objectForKey:SVRSolverTextAttachmentBackgroundKey]);
+  XPParameterRaise(self);
+  XPParameterRaise(string);
+  XPParameterRaise([styles objectForKey:NSFontAttributeName]);
+  XPParameterRaise([styles objectForKey:NSForegroundColorAttributeName]);
+  XPParameterRaise([styles objectForKey:NSBackgroundColorAttributeName]);
+  XPParameterRaise([styles objectForKey:SVRSolverTextAttachmentMixColorKey]);
+  XPParameterRaise([styles objectForKey:SVRSolverTextAttachmentBackgroundKey]);
 
   _string = [string retain];
   _configuration = [styles retain];
@@ -147,7 +147,7 @@
 -(id)initWithAttachment:(SVRSolverTextAttachment*)attachment;
 {
   self = [super init];
-  NSCParameterAssert(self);
+  XPParameterRaise(self);
   
   [self setAttachment:attachment];
   _cellSize = [self __calculateCellSize];
@@ -224,10 +224,10 @@
                                                           xRadius:radius
                                                           yRadius:radius];
   
-  NSCParameterAssert(mixColor);
-  NSCParameterAssert(backgroundColor);
-  NSCParameterAssert(strokeColor);
-  NSCParameterAssert(path);
+  XPParameterRaise(mixColor);
+  XPParameterRaise(backgroundColor);
+  XPParameterRaise(strokeColor);
+  XPParameterRaise(path);
   
   [backgroundColor set];
   [path fill];
@@ -250,8 +250,8 @@
                                                             xRadius:radius
                                                             yRadius:radius];
   
-  NSCParameterAssert(strokeColor);
-  NSCParameterAssert(path);
+  XPParameterRaise(strokeColor);
+  XPParameterRaise(path);
   
   [strokeColor set];
   [path setLineWidth:stroke];
@@ -334,13 +334,13 @@
   NSFileWrapper *wrapper = [[[NSFileWrapper alloc] init] autorelease];
   
   self = [super initWithCoder:coder];
-  NSCParameterAssert(self);
+  XPParameterRaise(self);
   
   _string = [[coder XP_decodeObjectOfClass:[NSString class] forKey:@"string"] retain];
   _configuration = [[coder XP_decodeObjectOfClass:[NSDictionary class] forKey:@"configuration"] retain];
   
-  NSCParameterAssert(_string);
-  NSCParameterAssert(_configuration);
+  XPParameterRaise(_string);
+  XPParameterRaise(_configuration);
   
   [wrapper setPreferredFilename:_string];
   [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
@@ -372,7 +372,7 @@
 -(id)initWithCoder:(NSCoder *)coder;
 {
   self = [super initWithCoder:coder];
-  NSCParameterAssert(self);
+  XPParameterRaise(self);
   return self;
 }
 

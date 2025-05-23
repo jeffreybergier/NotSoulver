@@ -108,7 +108,7 @@
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
 {
   SVRDocumentModelController *modelController = [self modelController];
-  NSCParameterAssert(modelController);
+  XPParameterRaise(modelController);
   return [modelController loadDataRepresentation:data ofType:type];
 }
 

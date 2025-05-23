@@ -151,7 +151,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
    usingLongestEffectiveRange:(BOOL)usesLongest;
 {
   self = [super init];
-  NSCParameterAssert(self);
+  XPParameterRaise(self);
   _key = [key retain];
   _string = [attributedString copy];
   _index = 0;
@@ -234,7 +234,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 -(id)initWithString:(NSString*)string characterSet:(NSCharacterSet*)aSet options:(XPStringCompareOptions)mask;
 {
   self = [super init];
-  NSCParameterAssert(self);
+  XPParameterRaise(self);
   _string = [string retain];
   _set = [aSet retain];
   _options = mask;
@@ -463,7 +463,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 -(BOOL)XP_openWebURL:(NSString*)webURL;
 {
 #ifdef MAC_OS_X_VERSION_10_2
-  NSCParameterAssert(webURL);
+  XPParameterRaise(webURL);
   return [self openURL:[NSURL URLWithString:webURL]];
 #else
   return NO;

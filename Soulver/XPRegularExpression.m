@@ -46,7 +46,7 @@
 
   // Finally do the init stuff
   self = [super init];
-  NSCParameterAssert(self);
+  XPParameterRaise(self);
   XPLogAssrt(capCount >= 0, @"Error calculating capture groups");
   
   // Need to add a capture if there is none in the pattern
@@ -190,7 +190,7 @@
   NSRange range = XPNotFoundRange;
   
   self = [super init];
-  NSCParameterAssert(self);
+  XPParameterRaise(self);
   
   _expression = [regularExpression retain];
   _ranges = [[NSMutableArray alloc] initWithCapacity:count];

@@ -39,8 +39,8 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 -(id)initWithModelController:(SVRDocumentModelController*)modelController;
 {
   self = [super init];
-  NSCParameterAssert(self);
-  NSCParameterAssert(modelController);
+  XPParameterRaise(self);
+  XPParameterRaise(modelController);
   _modelController = [modelController retain];
   _textView = nil;
   _view_42 = nil;
@@ -55,11 +55,11 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   NSScrollView *scrollView       = [[[NSScrollView    alloc] initWithFrame:NSZeroRect]                             autorelease];
   SVRDocumentModelController *modelController = [self modelController];
   
-  NSCParameterAssert(layoutManager);
-  NSCParameterAssert(textContainer);
-  NSCParameterAssert(textView);
-  NSCParameterAssert(scrollView);
-  NSCParameterAssert(modelController);
+  XPParameterRaise(layoutManager);
+  XPParameterRaise(textContainer);
+  XPParameterRaise(textView);
+  XPParameterRaise(scrollView);
+  XPParameterRaise(modelController);
   
   // TextContainer
   [textContainer setWidthTracksTextView:YES];
@@ -310,9 +310,9 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   NSString *plainString = [[[[NSAttributedString alloc] initWithRTF:rtfData
                                                  documentAttributes:NULL] autorelease] string];
   
-  NSCParameterAssert(rtfData);
-  NSCParameterAssert(diskRepData);
-  NSCParameterAssert(plainString);
+  XPParameterRaise(rtfData);
+  XPParameterRaise(diskRepData);
+  XPParameterRaise(plainString);
   
   [pb declareTypes:[NSArray arrayWithObjects:
                     XPPasteboardTypeRTF,
@@ -336,14 +336,14 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 {
   if (!_view_42) {
     [self loadView];
-    NSCParameterAssert(_view_42);
+    XPParameterRaise(_view_42);
   }
   return [[_view_42 retain] autorelease];
 }
 
 -(void)setView:(NSView*)view;
 {
-  NSCParameterAssert(view);
+  XPParameterRaise(view);
   [_view_42 release];
   _view_42 = [view retain];
 }

@@ -226,7 +226,7 @@ NSString *XPAttributedStringKeyForTag(SVRSolverTag tag)
 
 SVRSolverTag SVRSolverTagForKey(XPAttributedStringKey string)
 {
-  NSCParameterAssert(string);
+  XPCParameterRaise(string);
   if        ([string isEqualToString:XPAttributedStringKeyForTag(SVRSolverTagNumber)])     {
     return SVRSolverTagNumber;
   } else if ([string isEqualToString:XPAttributedStringKeyForTag(SVRSolverTagBracket)])    {
@@ -376,7 +376,7 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
 -(id)initWithErrorPtr:(SVRCalculationErrorPointer)errorPtr;
 {
   self = [super init];
-  NSCParameterAssert(self);
+  XPParameterRaise(self);
   _errorPtr = errorPtr;
   return self;
 }
@@ -678,10 +678,10 @@ NSString *const SVRSolverTextStylePreviousColor = @"SVRSolverTextStylePreviousCo
   NSArray *values;
   NSArray *keys;
   
-  NSCParameterAssert(font);
-  NSCParameterAssert(foregroundColor);
-  NSCParameterAssert(backgroundColor);
-  NSCParameterAssert(mixColor);
+  XPParameterRaise(font);
+  XPParameterRaise(foregroundColor);
+  XPParameterRaise(backgroundColor);
+  XPParameterRaise(mixColor);
   
   values = [NSArray arrayWithObjects:
             font,
@@ -712,12 +712,12 @@ NSString *const SVRSolverTextStylePreviousColor = @"SVRSolverTextStylePreviousCo
   NSArray *keys;
   NSArray *values;
   
-  NSCParameterAssert(mathFont);
-  NSCParameterAssert(otherTextFont);
-  NSCParameterAssert(otherTextColor);
-  NSCParameterAssert(operandColor);
-  NSCParameterAssert(operatorColor);
-  NSCParameterAssert(previousColor);
+  XPParameterRaise(mathFont);
+  XPParameterRaise(otherTextFont);
+  XPParameterRaise(otherTextColor);
+  XPParameterRaise(operandColor);
+  XPParameterRaise(operatorColor);
+  XPParameterRaise(previousColor);
   
   values = [NSArray arrayWithObjects:
             mathFont,

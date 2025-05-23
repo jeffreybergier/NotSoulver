@@ -44,7 +44,7 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
 -(id)initWithString:(NSString*)string;
 {
   self = [super init];
-  NSCParameterAssert(self);
+  XPParameterRaise(self);
   _string = [string copy];
   _numbers = nil;
   _operators = nil;

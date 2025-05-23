@@ -54,7 +54,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
 -(id)init;
 {
   self = [super init];
-  NSCParameterAssert(self);
+  XPParameterRaise(self);
   
   _model = [NSTextStorage new];
   _dataCache = [NSMutableDictionary new];
@@ -81,7 +81,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
 // MARK: NSDocument Support
 -(NSData*)dataRepresentationOfType:(SVRDocumentModelRep)type withRange:(NSRange)range;
 {
-  NSCParameterAssert(type);
+  XPParameterRaise(type);
   if ([type isEqualToString:SVRDocumentModelRepDisk]) {
     return [self __dataRepresentationOfDiskTypeWithRange:range];
   } else if ([type isEqualToString:SVRDocumentModelRepDisplay]) {
@@ -236,7 +236,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
   NSTextStorage *model = [self model];
   NSRange selection = XPNotFoundRange;
   
-  NSCParameterAssert(textView);
+  XPParameterRaise(textView);
   
   // Get current selection
   selection = [textView selectedRange];
