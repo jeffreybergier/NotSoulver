@@ -78,3 +78,7 @@
 -(void)__applicationWillTerminate:(NSNotification*)aNotification;
 
 @end
+
+@interface SVRAccessoryWindowsOwner (DarkMode)
+-(void)__overrideAppearance:(NSNotification*)aNotification;
+@end

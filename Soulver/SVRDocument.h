@@ -65,3 +65,7 @@
                             ofType:(NSString*)typeName
                   forSaveOperation:(XPSaveOperationType)saveOperation;
 @end
+
+@interface SVRDocument (DarkMode)
+-(void)__overrideAppearance:(NSNotification*)aNotification;
+@end
