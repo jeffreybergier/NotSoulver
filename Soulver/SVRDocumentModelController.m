@@ -204,10 +204,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
 
 -(void)dealloc;
 {
-  // TODO: For some reason this log crashes in Jaguar
-//#if defined(MAC_OS_X_VERSION_10_4) || !defined(MAC_OS_X_VERSION_10_2)
   XPLogDebug1(@"<%@>", XPPointerString(self));
-//#endif
   [_waitTimer invalidate];
   [_waitTimer release];
   [_model release];
