@@ -56,8 +56,6 @@
 // MARK: Model Changed Notification
 -(void)modelDidProcessEditingNotification:(NSNotification*)aNotification;
 
--(NSRect)__newDocumentWindowRect;
-
 @end
 
 @interface SVRDocument (StateRestoration)
