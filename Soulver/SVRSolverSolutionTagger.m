@@ -385,7 +385,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     case SVRSolverOperatorLog:
       return [rhs SVR_decimalNumberByLogarithmWithBase:lhs withBehavior:ohBehave];
     default:
-      XPLogRaise1(@"__solveWithOperatorUnknown:%d", (int)operator);
+      XPLogAssrt1(NO, @"[UNKNOWN] SVRSolverOperator(%d)", (int)operator);
       return nil;
   }
 }

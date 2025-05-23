@@ -110,11 +110,10 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
     attachment = [output attribute:NSAttachmentAttributeName
                            atIndex:range.location
                     effectiveRange:NULL];
-    if (range.length > 1 || attachment == nil) {
-      XPLogRaise1(@"SVRSolver __step1_restoreOriginals: Invalid Range:%@",
-                  NSStringFromRange(range));
-      return nil;
-    }
+    
+    XPLogAssrt1(range.length == 1, @"[INVALID] range(%@)", NSStringFromRange(range));
+    XPLogAssrt(attachment, @"attachment was NIL");
+    
     dictValues = [NSArray arrayWithObjects:[attachment backgroundColor], [attachment font], nil];
     toReplace  = [[[NSAttributedString alloc] initWithString:[attachment string]
                                                   attributes:[NSDictionary dictionaryWithObjects:dictValues forKeys:dictKeys]] autorelease];
@@ -145,11 +144,11 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
     originalString = [input attribute:XPAttributedStringKeyForTag(SVRSolverTagOriginal)
                                atIndex:range.location
                         effectiveRange:NULL];
-    if (range.length > 1 || attachment == nil || originalString == nil) {
-      XPLogRaise1(@"SVRSolver __step1_restoreOriginals: Invalid Range:%@",
-                  NSStringFromRange(range));
-      return;
-    }
+    
+    XPLogAssrt1(range.length == 1, @"[INVALID] range(%@)", NSStringFromRange(range));
+    XPLogAssrt(originalString, @"[MISSING] originalString");
+    XPLogAssrt(attachment, @"[MISSING] attachment");
+    
     dictValues = [NSArray arrayWithObjects:[attachment foregroundColor], [attachment font], nil];
     toReplace  = [[[NSAttributedString alloc] initWithString:originalString
                                                   attributes:[NSDictionary dictionaryWithObjects:dictValues forKeys:dictKeys]] autorelease];
@@ -220,13 +219,14 @@ NSString *XPAttributedStringKeyForTag(SVRSolverTag tag)
     case SVRSolverTagExpression: return @"kSVRSoulverTagExpressionKey";
     case SVRSolverTagOriginal:   return @"kSVRSolverTagOriginalKey";
     default:
-      XPLogRaise1(@"SVR_stringForTagUnknown: %d", (int)tag);
+      XPLogCAssrt1(NO, @"[UNKNOWN] SVRSolverTag(%d)", (int)tag);
       return nil;
   }
 }
 
 SVRSolverTag SVRSolverTagForKey(XPAttributedStringKey string)
 {
+  NSCParameterAssert(string);
   if        ([string isEqualToString:XPAttributedStringKeyForTag(SVRSolverTagNumber)])     {
     return SVRSolverTagNumber;
   } else if ([string isEqualToString:XPAttributedStringKeyForTag(SVRSolverTagBracket)])    {
@@ -238,7 +238,7 @@ SVRSolverTag SVRSolverTagForKey(XPAttributedStringKey string)
   } else if ([string isEqualToString:XPAttributedStringKeyForTag(SVRSolverTagOriginal)])   {
     return SVRSolverTagOriginal;
   } else {
-    XPLogRaise1(@"SVR_tagForStringUnknown: %@", string);
+    XPLogCAssrt1(NO, @"[UNKNOWN] XPAttributedStringKey(%@)", string);
     return -1;
   }
 }
@@ -270,7 +270,7 @@ SVRSolverOperator SVRSolverOperatorForRawString(NSString *string)
   } else if ([string isEqualToString:[NSString SVR_logRawString]]) {
     return SVRSolverOperatorLog;
   } else {
-    XPLogRaise1(@"SVR_operatorForRawStringUnknown: %@", string);
+    XPLogCAssrt1(NO, @"[UNKNOWN] SVRSolverOperator(%@)", string);
     return SVRSolverOperatorUnknown;
   }
 }
@@ -287,7 +287,7 @@ NSString *RawStringForOperator(SVRSolverOperator operator)
     case SVRSolverOperatorLog:      return [NSString SVR_logRawString];
     case SVRSolverOperatorUnknown:
     default:
-      XPLogRaise1(@"RawStringForOperatorUnknown: %d", (int)operator);
+      XPLogCAssrt1(NO, @"[UNKNOWN] SVRSolverOperator(%d)", (int)operator);
       return nil;
   }
 }
@@ -299,7 +299,7 @@ NSString *SVRSolverDescriptionForError(SVRCalculationError error)
     case SVRCalculationLossOfPrecision:
     case SVRCalculationUnderflow:
     case SVRCalculationOverflow:
-      XPLogRaise1(@"Should not show error: %d", (int)error);
+      XPLogCAssrt1(NO, @"[ERROR] SVRCalculationOverflow(%d)", (int)error);
       return nil;
     case SVRCalculationNoError:
       return nil;
@@ -326,7 +326,7 @@ NSString *SVRSolverDescriptionForError(SVRCalculationError error)
     case SVRCalculationBaseOne:
       return [NSString stringWithFormat:[Localized phraseErrorBaseOne], error];
     default:
-      XPLogRaise1(@"SVRSolverDescriptionForErrorUnknown: %d", (int)error);
+      XPLogCAssrt1(NO, @"[UNKNOWN] SVRCalculationError(%d)", (int)error);
       return nil;
   }
 }
@@ -364,7 +364,7 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
     case SVRCalculationBaseOne:
       return @"SVRCalculationBaseOne";
     default:
-      XPLogRaise1(@"SVRSolverDebugDescriptionForError: %d", (int)error);
+      XPLogCAssrt1(NO, @"[UNKNOWN] SVRCalculationError(%d)", (int)error);
       return nil;
   }
 }
@@ -482,20 +482,15 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
     }
   }
   
-  if ((NSCalculationError)error == NSCalculationNoError) {
-    NSString *resultString = [NSString stringWithFormat:@"%f", resultRaw];
-    NSDecimalNumber *result = [NSDecimalNumber decimalNumberWithString:resultString];
-    return result;
-  } else {
-    if (behavior) {
-      [behavior exceptionDuringOperation:@selector(SVR_decimalNumberByRaisingWithExponent:withBehavior:)
-                                   error:error
-                             leftOperand:self
-                            rightOperand:exponent];
-    } else {
-      XPLogRaise1(@"NSCalculationError: %d", (int)error);
-    }
-    return [NSDecimalNumber notANumber];
+  switch (error) {
+    case SVRCalculationNoError:
+      return [NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%f", resultRaw]];
+    default:
+      NSParameterAssert(behavior);
+      return [behavior exceptionDuringOperation:@selector(SVR_decimalNumberByRaisingWithExponent:withBehavior:)
+                                          error:error
+                                    leftOperand:self
+                                   rightOperand:exponent];
   }
 }
 
@@ -530,20 +525,15 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
     }
   }
   
-  if ((NSCalculationError)error == NSCalculationNoError) {
-    NSString *resultString = [NSString stringWithFormat:@"%f", resultRaw];
-    NSDecimalNumber *result = [NSDecimalNumber decimalNumberWithString:resultString];
-    return result;
-  } else {
-    if (behavior) {
-      [behavior exceptionDuringOperation:@selector(SVR_decimalNumberByRootingWithExponent:withBehavior:)
-                                   error:error
-                             leftOperand:exponent
-                            rightOperand:self];
-    } else {
-      XPLogRaise1(@"NSCalculationError: %d", (int)error);
-    }
-    return [NSDecimalNumber notANumber];
+  switch (error) {
+    case SVRCalculationNoError:
+      return [NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%f", resultRaw]];
+    default:
+      NSParameterAssert(behavior);
+      return [behavior exceptionDuringOperation:@selector(SVR_decimalNumberByRaisingWithExponent:withBehavior:)
+                                          error:error
+                                    leftOperand:exponent
+                                   rightOperand:self];
   }
 }
 
@@ -577,20 +567,15 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
     }
   }
   
-  if (error == SVRCalculationNoError) {
-    NSString *resultString = [NSString stringWithFormat:@"%f", resultRaw];
-    NSDecimalNumber *result = [NSDecimalNumber decimalNumberWithString:resultString];
-    return result;
-  } else {
-    if (behavior) {
-      [behavior exceptionDuringOperation:@selector(SVR_decimalNumberByRootingWithExponent:withBehavior:)
-                                   error:error
-                             leftOperand:base
-                            rightOperand:self];
-    } else {
-      XPLogRaise1(@"NSCalculationError: %d", (int)error);
-    }
-    return [NSDecimalNumber notANumber];
+  switch (error) {
+    case SVRCalculationNoError:
+      return [NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%f", resultRaw]];
+    default:
+      NSParameterAssert(behavior);
+      return [behavior exceptionDuringOperation:@selector(SVR_decimalNumberByRaisingWithExponent:withBehavior:)
+                                          error:error
+                                    leftOperand:base
+                                   rightOperand:self];
   }
 }
 

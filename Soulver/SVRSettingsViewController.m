@@ -190,6 +190,7 @@
     default:
       return;
   }
+  XPLogDebug(@"[SUCCESS]");
 }
 
 -(IBAction)themeChanged:(NSPopUpButton*)sender;
@@ -206,6 +207,7 @@
       XPLogAssrt1(NO, @"XPUserInterfaceStyle(%d)", (int)newStyle);
       break;
   }
+  XPLogDebug(@"[SUCCESS]");
 }
 
 -(IBAction)colorChanged:(NSColorWell*)sender;
@@ -219,6 +221,7 @@
                           fromColorWell:sender];
   XPLogAssrt(decoded, @"[FAIL] decodeThemeColor:interfaceStyle:fromColorWell:");
   [ud SVR_setColor:wellColor forTheme:color withStyle:style];
+  XPLogDebug(@"[SUCCESS]");
 }
 
 -(IBAction)timeChanged:(NSTextField*)sender;
@@ -255,13 +258,13 @@
   NSFont *font = nil;
   SVRThemeFont theme = -1;
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  if (![sender isKindOfClass:[SVRFontManager class]]) { XPLogRaise(@""); return; }
+  XPLogAssrt1([sender isKindOfClass:[SVRFontManager class]], @"[UNKNOWN] %@", sender);
   font = [sender convertFont:[sender selectedFont]];
   theme = [(SVRFontManager*)sender themeFont];
   [ud SVR_setFont:font forTheme:theme];
   [[sender fontPanel:NO] performClose:sender];
   [self populateUI];
-  XPLogDebug(@"");
+  XPLogDebug(@"[SUCCESS]");
 }
 
 -(IBAction)fontReset:(NSButton*)sender;
@@ -269,10 +272,10 @@
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   SVRThemeFont font = -2;
   BOOL decoded = [self decodeThemeFont:&font fromButton:sender];
-  if (!decoded) { XPLogDebug1(@"fontReset:%@ Failed", sender); return; }
+  XPLogAssrt(decoded, @"[FAILED]");
   [ud SVR_setFont:nil forTheme:font];
   [self populateUI];
-  XPLogDebug(@"");
+  XPLogDebug(@"[SUCCESS]");
 }
 
 -(IBAction)colorReset:(NSButton*)sender;
@@ -280,11 +283,11 @@
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   SVRThemeColor color = -2;
   BOOL decoded = [self decodeThemeColor:&color fromResetButton:sender];
-  if (!decoded) { XPLogDebug1(@"colorReset:%@ Failed", sender); return; }
+  XPLogAssrt(decoded, @"[FAILED]");
   [ud SVR_setColor:nil forTheme:color withStyle:XPUserInterfaceStyleLight];
   [ud SVR_setColor:nil forTheme:color withStyle:XPUserInterfaceStyleDark];
   [self populateUI];
-  XPLogDebug(@"");
+  XPLogDebug(@"[SUCCESS]");
 }
 
 -(IBAction)timeReset:(NSButton*)sender;
@@ -292,7 +295,7 @@
   [_fieldTime setTextColor:[NSColor controlTextColor]];
   [[NSUserDefaults standardUserDefaults] SVR_setWaitTimeForRendering:-1];
   [self populateUI];
-  XPLogDebug(@"");
+  XPLogDebug(@"[SUCCESS]");
 }
 
 -(BOOL)decodeThemeColor:(SVRThemeColor*)colorPointer

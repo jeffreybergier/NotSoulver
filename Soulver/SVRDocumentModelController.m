@@ -91,7 +91,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
   } else if ([type isEqualToString:SVRDocumentModelRepUnsolved]) {
     return [self __dataRepresentationOfUnsolvedTypeWithRange:range];
   } else {
-    XPLogRaise1(@"Unknown Type: %@", type);
+    XPLogAssrt1(NO, @"[UNKNOWN] SVRDocumentModelRep(%@)", type);
     return nil;
   }
 }
@@ -106,7 +106,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
   if ([type isEqualToString:SVRDocumentModelRepDisk]) {
     return [self __loadDataRepresentationOfDiskType:data];
   } else {
-    XPLogRaise1(@"Unknown Type: %@", type);
+    XPLogAssrt1(NO, @"[UNKNOWN] SVRDocumentModelRep(%@)", type);
     return NO;
   }
 }

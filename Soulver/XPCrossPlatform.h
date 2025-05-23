@@ -406,17 +406,27 @@ NSArray* XPRunOpenPanel(NSString *extension);
 #define XPLogRaise4(_formatString, _one, _two, _three, _four) __XPLogBase4(@"RAISE", _formatString, _one, _two, _three, _four); [NSException raise:@"SVRException" format:_formatString, _one, _two, _three, _four]
 
 #ifdef DEBUG
-#define XPLogAssrt(_condition, _formatString)                             if (!(_condition)) { __XPLogBase (@"ASSRT", _formatString); } NSAssert(_condition, _formatString)
-#define XPLogAssrt1(_condition, _formatString, _one)                      if (!(_condition)) { __XPLogBase1(@"ASSRT", _formatString, _one); } NSAssert1(_condition, _formatString, _one)
-#define XPLogAssrt2(_condition, _formatString, _one, _two)                if (!(_condition)) { __XPLogBase2(@"ASSRT", _formatString, _one, _two); } NSAssert2(_condition, _formatString, _one, _two)
-#define XPLogAssrt3(_condition, _formatString, _one, _two, _three)        if (!(_condition)) { __XPLogBase3(@"ASSRT", _formatString, _one, _two, _three); } NSAssert3(_condition, _formatString, _one, _two, _three)
-#define XPLogAssrt4(_condition, _formatString, _one, _two, _three, _four) if (!(_condition)) { __XPLogBase4(@"ASSRT", _formatString, _one, _two, _three, _four); } NSAssert4(_condition, _formatString, _one, _two, _three, _four)
+#define XPLogAssrt(_condition, _formatString)                              if (!(_condition)) { __XPLogBase (@"ASSRT", _formatString); } NSAssert(_condition, _formatString)
+#define XPLogAssrt1(_condition, _formatString, _one)                       if (!(_condition)) { __XPLogBase1(@"ASSRT", _formatString, _one); } NSAssert1(_condition, _formatString, _one)
+#define XPLogAssrt2(_condition, _formatString, _one, _two)                 if (!(_condition)) { __XPLogBase2(@"ASSRT", _formatString, _one, _two); } NSAssert2(_condition, _formatString, _one, _two)
+#define XPLogAssrt3(_condition, _formatString, _one, _two, _three)         if (!(_condition)) { __XPLogBase3(@"ASSRT", _formatString, _one, _two, _three); } NSAssert3(_condition, _formatString, _one, _two, _three)
+#define XPLogAssrt4(_condition, _formatString, _one, _two, _three, _four)  if (!(_condition)) { __XPLogBase4(@"ASSRT", _formatString, _one, _two, _three, _four); } NSAssert4(_condition, _formatString, _one, _two, _three, _four)
+#define XPLogCAssrt(_condition, _formatString)                             if (!(_condition)) { __XPLogBase (@"ASSRT", _formatString); } NSCAssert(_condition, _formatString)
+#define XPLogCAssrt1(_condition, _formatString, _one)                      if (!(_condition)) { __XPLogBase1(@"ASSRT", _formatString, _one); } NSCAssert1(_condition, _formatString, _one)
+#define XPLogCAssrt2(_condition, _formatString, _one, _two)                if (!(_condition)) { __XPLogBase2(@"ASSRT", _formatString, _one, _two); } NSCAssert2(_condition, _formatString, _one, _two)
+#define XPLogCAssrt3(_condition, _formatString, _one, _two, _three)        if (!(_condition)) { __XPLogBase3(@"ASSRT", _formatString, _one, _two, _three); } NSCAssert3(_condition, _formatString, _one, _two, _three)
+#define XPLogCAssrt4(_condition, _formatString, _one, _two, _three, _four) if (!(_condition)) { __XPLogBase4(@"ASSRT", _formatString, _one, _two, _three, _four); } NSCAssert4(_condition, _formatString, _one, _two, _three, _four)
 #else
 #define XPLogAssrt(_condition, _formatString)
 #define XPLogAssrt1(_condition, _formatString, _one)
 #define XPLogAssrt2(_condition, _formatString, _one, _two)
 #define XPLogAssrt3(_condition, _formatString, _one, _two, _three)
 #define XPLogAssrt4(_condition, _formatString, _one, _two, _three, _four)
+#define XPLogCAssrt(_condition, _formatString)
+#define XPLogCAssrt1(_condition, _formatString, _one)
+#define XPLogCAssrt2(_condition, _formatString, _one, _two)
+#define XPLogCAssrt3(_condition, _formatString, _one, _two, _three)
+#define XPLogCAssrt4(_condition, _formatString, _one, _two, _three, _four)
 #endif
 
 // Define Debug Macros

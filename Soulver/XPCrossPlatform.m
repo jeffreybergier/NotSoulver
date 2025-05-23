@@ -113,7 +113,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
   // I think the reason was just passing [ud SVR_savePanelLastDirectory]
   // directly into the open panel. But I added memory
   // protection around everything just in case.
-  XPInteger result;
+  NSModalResponse result;
   NSArray *output;
   
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
@@ -127,14 +127,14 @@ NSArray* XPRunOpenPanel(NSString *extension)
   [ud SVR_setSavePanelLastDirectory:[panel directory]];
   
   switch (result) {
-    case NSOKButton:
+    case XPModalResponseOK:
       output = [[panel filenames] retain];
       break;
-    case NSCancelButton:
+    case XPModalResponseCancel:
       output = [NSArray new];
       break;
     default:
-      XPLogRaise1(@"Impossible NSOpenPanel result: %d", (int)result);
+      XPLogCAssrt1(NO, @"[UNKNOWN] NSModalResponse(%d)", (int)result);
       output = nil;
       break;
   }
@@ -371,7 +371,6 @@ NSArray* XPRunOpenPanel(NSString *extension)
   if (!data) { return nil; }
   output = [XPKeyedUnarchiver XP_unarchivedObjectOfClass:[NSColor class]
                                                 fromData:data];
-  if (![output isKindOfClass:[NSColor class]]) { XPLogRaise(@""); return nil; }
   return output;
 }
 
@@ -437,7 +436,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
   id output = [self unarchiveObjectWithData:someData];
   if (!output) { return nil; }
   if ([output isKindOfClass:cls]) { return output; }
-  XPLogRaise2(@"XP_unarchivedObject:%@ notKindOfClass %@", output, cls);
+  XPLogRaise2(@"[FAIL] [%@ isKindOfClass:%@]", output, cls);
   return nil;
 #endif
 }
