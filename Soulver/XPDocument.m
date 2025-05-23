@@ -331,7 +331,7 @@ NSPoint XPDocumentPointForCascading;
 
 -(XPInteger)__runModalSavePanel:(NSSavePanel*)_savePanel;
 {
-  NSModalResponse okCancel;
+  XPModalResponse okCancel;
   NSSavePanel *savePanel = (_savePanel) ? _savePanel : [NSSavePanel savePanel];
   [self __prepareSavePanel:savePanel];
   
@@ -353,7 +353,7 @@ NSPoint XPDocumentPointForCascading;
 
 -(XPInteger)__runModalSavePanelAndSetFileURL;
 {
-  XPInteger result;
+  XPModalResponse result;
   NSSavePanel *savePanel = [NSSavePanel savePanel];
   result = [self __runModalSavePanel:savePanel];
   if (result == XPModalResponseOK) {
@@ -385,7 +385,7 @@ NSPoint XPDocumentPointForCascading;
 
 - (void)dealloc
 {
-  XPLogExtra1(@"%p", self);
+  XPLogExtra1(@"<%@>", XPPointerString(self));
   // Skipping release for window because it releases itself when closed
   [_window_42 setDelegate:nil];
   [_fileURL   release];

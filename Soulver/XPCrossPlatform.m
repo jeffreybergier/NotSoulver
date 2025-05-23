@@ -113,7 +113,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
   // I think the reason was just passing [ud SVR_savePanelLastDirectory]
   // directly into the open panel. But I added memory
   // protection around everything just in case.
-  NSModalResponse result;
+  XPModalResponse result;
   NSArray *output;
   
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
@@ -204,7 +204,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 - (void)dealloc
 {
-  XPLogExtra1(@"%p", self);
+  XPLogExtra1(@"<%@>", XPPointerString(self));
   [_key release];
   [_string release];
   _key = nil;
@@ -264,7 +264,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 - (void)dealloc
 {
-  XPLogExtra1(@"%p", self);
+  XPLogExtra1(@"<%@>", XPPointerString(self));
   [_string release];
   [_set release];
   [super dealloc];

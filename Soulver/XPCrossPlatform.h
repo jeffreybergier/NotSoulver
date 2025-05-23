@@ -180,10 +180,12 @@ typedef XPUInteger XPStringCompareOptions;
 
 #ifdef MAC_OS_X_VERSION_10_10
 #define XPTextAlignmentCenter NSTextAlignmentCenter
+#define XPModalResponse NSModalResponse
 #define XPModalResponseOK NSModalResponseOK
 #define XPModalResponseCancel NSModalResponseCancel
 #else
 #define XPTextAlignmentCenter NSCenterTextAlignment
+#define XPModalResponse XPInteger
 #define XPModalResponseOK NSOKButton
 #define XPModalResponseCancel NSCancelButton
 #endif
@@ -379,6 +381,13 @@ NSArray* XPRunOpenPanel(NSString *extension);
 +(void)logCheckedPoundDefines;
 @end
 
+// OpenStep does not understand the %p format string so this works around that
+#ifdef MAC_OS_X_VERSION_10_2
+#define XPPointerString(_self) ([NSString stringWithFormat:@"%p", _self])
+#else
+#define XPPointerString(_self) ([NSString stringWithFormat:@"0x%08x", (unsigned int)(_self)])
+#endif
+
 #ifdef MAC_OS_X_VERSION_10_4
 #define XPLogFunc [NSString stringWithCString:__PRETTY_FUNCTION__ encoding:NSUTF8StringEncoding]
 #define XPLogFile [[[NSString stringWithCString:__FILE__ encoding:NSUTF8StringEncoding] componentsSeparatedByString:@"/"] lastObject]
@@ -455,11 +464,11 @@ NSArray* XPRunOpenPanel(NSString *extension);
 #endif
 
 #if LOGLEVEL >= LOGLEVELEXTRA
-#define XPLogExtra(_formatString)                             __XPLogBase (@"DEBUG", _formatString)
-#define XPLogExtra1(_formatString, _one)                      __XPLogBase1(@"DEBUG", _formatString, _one)
-#define XPLogExtra2(_formatString, _one, _two)                __XPLogBase2(@"DEBUG", _formatString, _one, _two)
-#define XPLogExtra3(_formatString, _one, _two, _three)        __XPLogBase3(@"DEBUG", _formatString, _one, _two, _three)
-#define XPLogExtra4(_formatString, _one, _two, _three, _four) __XPLogBase4(@"DEBUG", _formatString, _one, _two, _three, _four)
+#define XPLogExtra(_formatString)                             __XPLogBase (@"EXTRA", _formatString)
+#define XPLogExtra1(_formatString, _one)                      __XPLogBase1(@"EXTRA", _formatString, _one)
+#define XPLogExtra2(_formatString, _one, _two)                __XPLogBase2(@"EXTRA", _formatString, _one, _two)
+#define XPLogExtra3(_formatString, _one, _two, _three)        __XPLogBase3(@"EXTRA", _formatString, _one, _two, _three)
+#define XPLogExtra4(_formatString, _one, _two, _three, _four) __XPLogBase4(@"EXTRA", _formatString, _one, _two, _three, _four)
 #else
 #define XPLogExtra(_formatString)
 #define XPLogExtra1(_formatString, _one)

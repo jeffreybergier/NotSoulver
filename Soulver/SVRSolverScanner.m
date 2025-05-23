@@ -217,7 +217,7 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
 // MARK: Dealloc
 -(void)dealloc;
 {
-  XPLogExtra1(@"%p", self);
+  XPLogExtra1(@"<%@>", XPPointerString(self));
   [_string release];
   [_numbers release];
   [_operators release];

@@ -123,7 +123,7 @@
 
 -(void)dealloc;
 {
-  XPLogExtra1(@"%p", self);
+  XPLogExtra1(@"<%@>", XPPointerString(self));
   [_string release];
   [_configuration release];
   _string = nil;
@@ -305,7 +305,7 @@
 
 -(void)dealloc;
 {
-  XPLogExtra1(@"%p", self);
+  XPLogExtra1(@"<%@>", XPPointerString(self));
   [super dealloc];
 }
 

@@ -124,14 +124,14 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
     key = [[self model] string];
     output = [dataCache objectForKey:key];
     if (output) {
-      XPLogExtra1(@"<%p> Cache Hit", self);
+      XPLogExtra(@"Cache Hit");
       return output;
     }
     if ([dataCache count] > 20) {
-      XPLogDebug1(@"<%p> Cache Clear", self);
+      XPLogDebug(@"Cache Clear");
       [dataCache removeAllObjects];
     }
-    XPLogExtra1(@"<%p> Cache Miss", self);
+    XPLogExtra(@"Cache Miss");
     output = [[[SVRSolver replacingAttachmentsWithOriginalCharacters:[self model]] string] dataUsingEncoding:NSUTF8StringEncoding];
     [dataCache setObject:output forKey:key];
     return output;
@@ -206,7 +206,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
 {
   // TODO: For some reason this log crashes in Jaguar
 //#if defined(MAC_OS_X_VERSION_10_4) || !defined(MAC_OS_X_VERSION_10_2)
-  XPLogExtra1(@"%p", self);
+  XPLogDebug1(@"<%@>", XPPointerString(self));
 //#endif
   [_waitTimer invalidate];
   [_waitTimer release];

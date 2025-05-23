@@ -64,7 +64,7 @@
 
 -(void)dealloc;
 {
-  XPLogExtra1(@"%p", self);
+  XPLogDebug1(@"<%@>", XPPointerString(self));
   [_openDocuments release];
   [_accessoryWindowsOwner release];
   _openDocuments = nil;
@@ -298,8 +298,8 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
                          ofObject:object
                            change:change
                           context:context];
-#endif
   }
+#endif
 }
 
 @end

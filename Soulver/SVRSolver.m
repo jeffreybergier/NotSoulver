@@ -433,7 +433,7 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
 
 -(void)dealloc;
 {
-  XPLogExtra1(@"%p", self);
+  XPLogExtra1(@"<%@>", XPPointerString(self));
   _errorPtr = NULL;
   [super dealloc];
 }

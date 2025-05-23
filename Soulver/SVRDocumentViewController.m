@@ -179,7 +179,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 // MARK: Dealloc
 -(void)dealloc;
 {
-  XPLogExtra1(@"%p", self);
+  XPLogDebug1(@"<%@>", XPPointerString(self));
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [_modelController release];
   _modelController = nil;
@@ -288,12 +288,12 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
       && (diskRepString = [[[NSString alloc] initWithData:diskRepData encoding:NSUTF8StringEncoding] autorelease]))
   {
     // Do Universal Paste
-    XPLogDebug1(@"<%p> Universal Paste", self);
+    XPLogDebug(@"Universal Paste");
     [[self modelController] replaceCharactersInRange:[textView selectedRange]
                                           withString:diskRepString];
   } else {
     // Fail universal paste and forward the message to the textview
-    XPLogDebug1(@"<%p> NOT Universal Paste", self);
+    XPLogDebug(@"NOT Universal Paste");
     [textView pasteAsPlainText:sender];
     return;
   }

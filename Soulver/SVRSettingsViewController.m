@@ -377,7 +377,7 @@
 
 -(void)dealloc;
 {
-  XPLogExtra1(@"%p", self);
+  XPLogDebug1(@"<%@>", XPPointerString(self));
   [_groupGeneralView release];
   [_groupColorView release];
   [_groupFontView release];

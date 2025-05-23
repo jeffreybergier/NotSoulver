@@ -145,7 +145,7 @@
 
 -(void)dealloc;
 {
-  XPLogExtra1(@"%p", self);
+  XPLogDebug1(@"<%@>", XPPointerString(self));
   [_viewController  release];
   [_modelController release];
   _viewController  = nil;
