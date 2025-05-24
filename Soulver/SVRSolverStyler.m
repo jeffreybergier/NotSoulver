@@ -47,11 +47,11 @@
   NSColor *operandColor   = [styles objectForKey:SVRSolverTextStyleOperandColor];
   NSColor *operatorColor  = [styles objectForKey:SVRSolverTextStyleOperatorColor];
 
-  NSCParameterAssert(mathFont);
-  NSCParameterAssert(otherTextFont);
-  NSCParameterAssert(otherTextColor);
-  NSCParameterAssert(operandColor);
-  NSCParameterAssert(operatorColor);
+  XPParameterRaise(mathFont);
+  XPParameterRaise(otherTextFont);
+  XPParameterRaise(otherTextColor);
+  XPParameterRaise(operandColor);
+  XPParameterRaise(operatorColor);
   
   // Give everything default appearance
   [input addAttribute:NSFontAttributeName

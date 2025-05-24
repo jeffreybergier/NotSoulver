@@ -36,7 +36,7 @@
 -(id)init;
 {
   self = [super init];
-  NSCParameterAssert(self);
+  XPParameterRaise(self);
   _openDocuments = [NSMutableSet new];
   _accessoryWindowsOwner = nil; // Set in applicationDidFinishLaunching:
   return self;
@@ -64,7 +64,7 @@
 
 -(void)dealloc;
 {
-  XPLogDebug1(@"DEALLOC: %@", self);
+  XPLogDebug1(@"<%@>", XPPointerString(self));
   [_openDocuments release];
   [_accessoryWindowsOwner release];
   _openDocuments = nil;
@@ -87,8 +87,18 @@
   [[NSUserDefaults standardUserDefaults] SVR_configure];
   // Prepare FontManager
   [NSFontManager setFontManagerFactory:[SVRFontManager class]];
+  // Announce
+  XPLogDebug(@"");
+}
+
+-(void)applicationDidFinishLaunching:(NSNotification*)aNotification;
+{
+  NSApplication *app = [aNotification object];
   // Configure Accessory Windows
   _accessoryWindowsOwner = [[SVRAccessoryWindowsOwner alloc] init];
+  // Observe Dark Mode
+  [self beginObservingEffectiveAppearance:app];
+  
   if (!NSClassFromString(@"NSDocument")) {
     // Register for Notifications
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -97,7 +107,12 @@
                                                object:nil];
   }
   // Announce
-  XPLogDebug1(@"%@ applicationWillFinishLaunching:", self);
+  XPLogDebug(@"");
+}
+
+-(void)applicationWillTerminate:(NSNotification*)aNotification;
+{
+  [self endObservingEffectiveAppearance:[aNotification object]];
 }
 
 @end
@@ -111,10 +126,10 @@
 
 -(IBAction)__newDocument:(id)sender
 {
-  SVRDocument *document = [[[SVRDocument alloc] init] autorelease];
-  [document setFileType:SVRDocumentModelRepDisk];
+  XPDocument document = [[[SVRDocument alloc] init] autorelease];
+  [document XP_setFileType:SVRDocumentModelRepDisk];
   [document XP_setFileExtension:SVRDocumentModelExtension];
-  [document showWindows];
+  [document XP_showWindows];
   [[self openDocuments] addObject:document];
 }
 
@@ -126,7 +141,7 @@
   XPDocument nextC = nil;
 
   filenames = XPRunOpenPanel(SVRDocumentModelExtension);
-  if ([filenames count] == 0) { XPLogDebug1(@"%@ Open Cancelled", self); return; }
+  if ([filenames count] == 0) { XPLogDebug(@"Open Cancelled"); return; }
   e = [filenames objectEnumerator];
   while ((nextF = [e nextObject])) {
     nextC = [[self openDocuments] member:nextF];
@@ -163,7 +178,7 @@
     case XPAlertReturnAlternate: return YES;
     case XPAlertReturnOther:     return NO;
     default:
-      XPLogRaise2(@"%@ Unexpected alert result: %ld", self, alertResult);
+      XPLogAssrt1(NO, @"[FAIL] XPAlertReturn(%d)", (int)alertResult);
       return NO;
   }
 }
@@ -241,5 +256,59 @@
   return [self __applicationOpenUntitledFile:sender];
 }
 #endif
+
+@end
+
+NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearance";
+
+@implementation SVRAppDelegate (DarkModeObserving)
+
+-(void)beginObservingEffectiveAppearance:(NSApplication*)app;
+{
+#ifdef XPSupportsDarkMode
+  [app addObserver:self 
+        forKeyPath:SVRApplicationEffectiveAppearanceKeyPath
+           options:NSKeyValueObservingOptionNew
+           context:NULL];
+#else
+  XPLogDebug(@"System does not support dark mode");
+#endif
+}
+
+-(void)endObservingEffectiveAppearance:(NSApplication*)app;
+{
+#ifdef XPSupportsDarkMode
+  [app removeObserver:self
+           forKeyPath:SVRApplicationEffectiveAppearanceKeyPath];
+#endif
+}
+
+-(void)observeValueForKeyPath:(NSString*)keyPath
+                     ofObject:(id)object
+                       change:(NSDictionary*)change
+                      context:(void*)context;
+{
+#ifdef XPSupportsDarkMode
+  if ([keyPath isEqualToString:SVRApplicationEffectiveAppearanceKeyPath]) {
+    XPLogDebug(@"effectiveAppearance: Changed");
+    [[NSNotificationCenter defaultCenter] postNotificationName:SVRThemeDidChangeNotificationName
+                                                        object:[NSUserDefaults standardUserDefaults]];
+  } else {
+    [super observeValueForKeyPath:keyPath
+                         ofObject:object
+                           change:change
+                          context:context];
+  }
+#endif
+}
+
+@end
+
+@implementation SVRAppDelegate (StateRestoration)
+
+-(BOOL)applicationSupportsSecureRestorableState:(NSApplication*)app;
+{
+  return YES;
+}
 
 @end

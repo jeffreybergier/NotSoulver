@@ -38,25 +38,32 @@
 @interface SVRDocument: NSDocumentLegacyImplementation
 #endif
 {
-  // Nib Lifecycle differs when using NSDocument
-#if XPSupportsNSDocument >= 1
-  mm_unretain IBOutlet SVRDocumentViewController *_viewController;
-#else
-  mm_retain IBOutlet SVRDocumentViewController *_viewController;
-#endif
+  mm_new   SVRDocumentModelController *_modelController;
+  mm_retain SVRDocumentViewController *_viewController;
 }
 
 // MARK: Properties
 -(SVRDocumentViewController*)viewController;
--(NSString*)windowNibName;
+-(SVRDocumentModelController*)modelController;
+
+// Create everything without Nibs
+-(void)makeWindowControllers;
 
 // MARK: NSDocument subclass
--(void)awakeFromNib;
 -(NSData*)dataRepresentationOfType:(NSString*)type;
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
--(void)windowControllerDidLoadNib:(id)windowController;
 
-// MARK: Model Changed Notifications
+// MARK: Model Changed Notification
 -(void)modelDidProcessEditingNotification:(NSNotification*)aNotification;
 
+-(NSRect)__newDocumentWindowRect;
+
+@end
+
+@interface SVRDocument (StateRestoration)
++(BOOL)autosavesInPlace;
++(BOOL)canConcurrentlyReadDocumentsOfType:(NSString*)typeName;
+-(BOOL)canAsynchronouslyWriteToURL:(XPURL*)url
+                            ofType:(NSString*)typeName
+                  forSaveOperation:(XPSaveOperationType)saveOperation;
 @end

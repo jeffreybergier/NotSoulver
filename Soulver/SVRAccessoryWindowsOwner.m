@@ -73,7 +73,9 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
 // MARK: Init
 -(id)init;
 {
-#ifdef MAC_OS_X_VERSION_10_6
+#ifdef MAC_OS_X_VERSION_10_15
+  NSString *nibName = @"AccessoryWindows_X15";
+#elif defined(MAC_OS_X_VERSION_10_6)
   NSString *nibName = @"AccessoryWindows_X6";
 #elif defined(MAC_OS_X_VERSION_10_2)
   NSString *nibName = @"AccessoryWindows_X2";
@@ -83,7 +85,7 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
   
   self = [super init];
-  NSCParameterAssert(self);
+  XPParameterRaise(self);
   
   _topLevelObjects = nil;
   [[NSBundle mainBundle] XP_loadNibNamed:nibName
@@ -122,7 +124,7 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
   [[self settingsWindow] setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameSettings];
   
   // Announce
-  XPLogDebug1(@"%@ awakeFromNib", self);
+  XPLogDebug(@"");
 }
 
 // MARK: IBActions
@@ -157,17 +159,13 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
   success = [ws XP_openWebURL:webURLToOpen];
   if (success) { return; }
   NSBeep();
-  XPLogDebug1(@"[Failed] [NSWorkspace openURL:%@]", webURLToOpen);
+  XPLogAssrt1(success, @"[NSWorkspace openURL:%@]", webURLToOpen);
   copyToClipboard = XPRunCopyWebURLToPasteboardAlert(webURLToOpen);
   switch (copyToClipboard) {
     case XPAlertReturnDefault:
       [pb declareTypes:[NSArray arrayWithObject:XPPasteboardTypeString] owner:self];
       success = [pb setString:webURLToOpen forType:XPPasteboardTypeString];
-      if (success) {
-        XPLogDebug1(@"[Success] [NSPasteboard setString:%@", webURLToOpen);
-      } else {
-        XPLogPause1(@"[Failed] [NSPasteboard setString:%@", webURLToOpen);
-      }
+      XPLogAssrt1(success, @"[NSPasteboard setString:%@", webURLToOpen);
       return;
     case XPAlertReturnAlternate:
     case XPAlertReturnOther:
@@ -196,9 +194,9 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
 -(void)__windowDidBecomeKey:(NSNotification*)aNotification;
 {
   NSWindow *window = [aNotification object];
-  NSCAssert2([window isKindOfClass:[NSWindow class]], @"%@ __windowDidBecomeKey: %@ not NSWindow", self, window);
   if (window != [self keypadPanel] && window != [self aboutWindow] && window != [self settingsWindow]) {
-    XPLogDebug2(@"%@ __windowDidBecomeKey: %@ not an AccessoryWindow", self, window);
+    XPLogExtra1(@"%@ not an AccessoryWindow", window);
+    XPLogAssrt1([window isKindOfClass:[NSWindow class]], @"%@ not a window", window);
     return;
   }
   [[NSUserDefaults standardUserDefaults] SVR_setVisibility:YES forWindowWithFrameAutosaveName:[window frameAutosaveName]];
@@ -207,9 +205,9 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
 -(void)__windowWillCloseNotification:(NSNotification*)aNotification;
 {
   NSWindow *window = [aNotification object];
-  NSCAssert2([window isKindOfClass:[NSWindow class]], @"%@ __windowWillCloseNotification: %@ not NSWindow", self, window);
   if (window != [self keypadPanel] && window != [self aboutWindow] && window != [self settingsWindow]) {
-    XPLogDebug2(@"%@ __windowWillCloseNotification: %@ not an AccessoryWindow", self, window);
+    XPLogExtra1(@"%@ not an AccessoryWindow", window);
+    XPLogAssrt1([window isKindOfClass:[NSWindow class]], @"%@ not a window", window);
     return;
   }
   [[NSUserDefaults standardUserDefaults] SVR_setVisibility:NO forWindowWithFrameAutosaveName:[window frameAutosaveName]];
@@ -222,7 +220,7 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
 
 - (void)dealloc
 {
-  XPLogDebug1(@"DEALLOC: %@", self);
+  XPLogDebug1(@"<%@>", XPPointerString(self));
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [_keypadPanel     autorelease];
   [_aboutWindow     autorelease];
