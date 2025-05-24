@@ -118,10 +118,13 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
 
 -(void)awakeFromNib;
 {
+  NSTextStorage *textStorage = [[self aboutTextView] textStorage];
   NSWindow *keypadPanel    = [self keypadPanel];
   NSWindow *aboutWindow    = [self aboutWindow];
   NSWindow *settingsWindow = [self settingsWindow];
-  NSTextStorage *textStorage = [[self aboutTextView] textStorage];
+  NSRect keypadRect   = [keypadPanel    frame];
+  NSRect aboutRect    = [aboutWindow    frame];
+  NSRect settingsRect = [settingsWindow frame];
   
   // Set the about text from the strings file
   [ textStorage beginEditing];
@@ -135,6 +138,20 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
   [keypadPanel    setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameKeypad  ];
   [aboutWindow    setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameAbout   ];
   [settingsWindow setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameSettings];
+  
+  // Setting the frameAutosaveName immediate changes the frame
+  // of the window if its been moved already.
+  // This code checks if the windows have never been
+  // positioned by the user before. If so, it centers them.
+  if (NSEqualRects(keypadRect, [keypadPanel frame])) {
+    [keypadPanel center];
+  }
+  if (NSEqualRects(aboutRect, [aboutWindow frame])) {
+    [aboutWindow center];
+  }
+  if (NSEqualRects(settingsRect, [settingsWindow frame])) {
+    [settingsWindow center];
+  }
   
   // Set appearance
   [self __overrideAppearance:nil];
