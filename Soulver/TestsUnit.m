@@ -65,12 +65,12 @@ void TestsUnitExecute(void)
   XPLogExtra2(@"XPLogExtra2: %d, %d", 1, 2);
   XPLogExtra3(@"XPLogExtra3: %d, %d, %d", 1, 2, 3);
   XPLogExtra4(@"XPLogExtra4: %d, %d, %d, %d", 1, 2, 3, 4);
+  XPLogAssrt (YES, @"XPLogAssrt");
+  XPLogAssrt1(YES, @"XPLogAssrt1: %d", 1);
+  XPLogAssrt2(YES, @"XPLogAssrt2: %d, %d", 1, 2);
+  XPLogAssrt3(YES, @"XPLogAssrt3: %d, %d, %d", 1, 2, 3);
+  XPLogAssrt4(YES, @"XPLogAssrt4: %d, %d, %d, %d", 1, 2, 3, 4);
   /*
-  XPLogPause (@"XPLogPause");
-  XPLogPause1(@"XPLogPause1: %d", 1);
-  XPLogPause2(@"XPLogPause2: %d, %d", 1, 2);
-  XPLogPause3(@"XPLogPause3: %d, %d, %d", 1, 2, 3);
-  XPLogPause4(@"XPLogPause4: %d, %d, %d, %d", 1, 2, 3, 4);
   XPLogRaise(@"XPLogRaise");
   XPLogRaise1(@"XPLogRaise1: %d", 1);
   XPLogRaise2(@"XPLogRaise2: %d, %d", 1, 2);
@@ -419,6 +419,7 @@ void TestsUnitExecute(void)
 @implementation NSBezierPath (TestsUnit)
 +(void)executeTests;
 {
+  // TODO: Revalidate tests
   #if __MAC_OS_X_VERSION_MAX_ALLOWED >= 120000
   // Prepare variables
   NSData  *dataRHS = nil;

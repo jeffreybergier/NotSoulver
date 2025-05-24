@@ -38,6 +38,7 @@
   int _numCaps;
 }
 
+// TODO: Update this to use XPErrorPtr
 /// Options and Error are ignored
 -(id)initWithPattern:(NSString*)pattern options:(int)options error:(id*)error;
 /// Options and Error are ignored

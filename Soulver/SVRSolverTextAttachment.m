@@ -77,13 +77,13 @@
   
   self = [super initWithFileWrapper:wrapper];
   
-  NSCParameterAssert(self);
-  NSCParameterAssert(string);
-  NSCParameterAssert([styles objectForKey:NSFontAttributeName]);
-  NSCParameterAssert([styles objectForKey:NSForegroundColorAttributeName]);
-  NSCParameterAssert([styles objectForKey:NSBackgroundColorAttributeName]);
-  NSCParameterAssert([styles objectForKey:SVRSolverTextAttachmentMixColorKey]);
-  NSCParameterAssert([styles objectForKey:SVRSolverTextAttachmentBackgroundKey]);
+  XPParameterRaise(self);
+  XPParameterRaise(string);
+  XPParameterRaise([styles objectForKey:NSFontAttributeName]);
+  XPParameterRaise([styles objectForKey:NSForegroundColorAttributeName]);
+  XPParameterRaise([styles objectForKey:NSBackgroundColorAttributeName]);
+  XPParameterRaise([styles objectForKey:SVRSolverTextAttachmentMixColorKey]);
+  XPParameterRaise([styles objectForKey:SVRSolverTextAttachmentBackgroundKey]);
 
   _string = [string retain];
   _configuration = [styles retain];
@@ -123,7 +123,7 @@
 
 -(void)dealloc;
 {
-  XPLogExtra1(@"DEALLOC: %@", self);
+  XPLogExtra1(@"<%@>", XPPointerString(self));
   [_string release];
   [_configuration release];
   _string = nil;
@@ -147,7 +147,7 @@
 -(id)initWithAttachment:(SVRSolverTextAttachment*)attachment;
 {
   self = [super init];
-  NSCParameterAssert(self);
+  XPParameterRaise(self);
   
   [self setAttachment:attachment];
   _cellSize = [self __calculateCellSize];
@@ -190,7 +190,8 @@
   NSDictionary *attributes = [[self class] attributesWithFont:[[self SVR_attachment] font]
                                                         color:[[self SVR_attachment] foregroundColor]];
   NSSize padding = [[[self SVR_attachment] class] textPadding];
-  switch ([[self SVR_attachment] background]) {
+  SVRSolverTextAttachmentBackground background = [[self SVR_attachment] background];
+  switch (background) {
     case SVRSolverTextAttachmentBackgroundCapsuleFill:
       [self __drawBackgroundCapsuleFillInRect:cellFrame];
       break;
@@ -202,8 +203,7 @@
       NSFrameRect(cellFrame);
       break;
     default:
-      NSCAssert2(NO, @"%@ SVRSolverTextAttachmentBackground(%d) unknown case",
-                 self, (int)[[self SVR_attachment] background]);
+      XPLogAssrt1(NO, @"SVRSolverTextAttachmentBackground(%d) unknown case", (int)background);
       break;
   }
   cellFrame.origin.y += padding.height / 2.0;
@@ -224,10 +224,10 @@
                                                           xRadius:radius
                                                           yRadius:radius];
   
-  NSCParameterAssert(mixColor);
-  NSCParameterAssert(backgroundColor);
-  NSCParameterAssert(strokeColor);
-  NSCParameterAssert(path);
+  XPParameterRaise(mixColor);
+  XPParameterRaise(backgroundColor);
+  XPParameterRaise(strokeColor);
+  XPParameterRaise(path);
   
   [backgroundColor set];
   [path fill];
@@ -235,7 +235,7 @@
   [strokeColor set];
   [path stroke];
 #else
-  NSCAssert1(NO, @"%@ System does not support NSBezierPath", self);
+  XPLogRaise(@"System does not support NSBezierPath");
 #endif
 }
 
@@ -250,14 +250,14 @@
                                                             xRadius:radius
                                                             yRadius:radius];
   
-  NSCParameterAssert(strokeColor);
-  NSCParameterAssert(path);
+  XPParameterRaise(strokeColor);
+  XPParameterRaise(path);
   
   [strokeColor set];
   [path setLineWidth:stroke];
   [path stroke];
 #else
-  NSCAssert1(NO, @"%@ System does not support NSBezierPath", self);
+  XPLogRaise(@"System does not support NSBezierPath");
 #endif
 }
 
@@ -298,14 +298,14 @@
        withFrame:(NSRect)cellFrame
           inView:(NSView*)controlView;
 {
-  XPLogPause2(@"higlight:%@ withFrame:%@", (flag) ? @"YES" : @"NO", NSStringFromRect(cellFrame));
+  XPLogAssrt2(NO, @"higlight:%@ withFrame:%@", (flag) ? @"YES" : @"NO", NSStringFromRect(cellFrame));
 }
 
 // MARK: Dealloc
 
 -(void)dealloc;
 {
-  XPLogExtra1(@"DEALLOC: %@", self);
+  XPLogExtra1(@"<%@>", XPPointerString(self));
   [super dealloc];
 }
 
@@ -334,13 +334,13 @@
   NSFileWrapper *wrapper = [[[NSFileWrapper alloc] init] autorelease];
   
   self = [super initWithCoder:coder];
-  NSCParameterAssert(self);
+  XPParameterRaise(self);
   
   _string = [[coder XP_decodeObjectOfClass:[NSString class] forKey:@"string"] retain];
   _configuration = [[coder XP_decodeObjectOfClass:[NSDictionary class] forKey:@"configuration"] retain];
   
-  NSCParameterAssert(_string);
-  NSCParameterAssert(_configuration);
+  XPParameterRaise(_string);
+  XPParameterRaise(_configuration);
   
   [wrapper setPreferredFilename:_string];
   [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
@@ -372,7 +372,7 @@
 -(id)initWithCoder:(NSCoder *)coder;
 {
   self = [super initWithCoder:coder];
-  NSCParameterAssert(self);
+  XPParameterRaise(self);
   return self;
 }
 

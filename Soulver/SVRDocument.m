@@ -108,7 +108,7 @@
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
 {
   SVRDocumentModelController *modelController = [self modelController];
-  NSCParameterAssert(modelController);
+  XPParameterRaise(modelController);
   return [modelController loadDataRepresentation:data ofType:type];
 }
 
@@ -145,7 +145,7 @@
 
 -(void)dealloc;
 {
-  XPLogDebug1(@"DEALLOC: %@", self);
+  XPLogDebug1(@"<%@>", XPPointerString(self));
   [_viewController  release];
   [_modelController release];
   _viewController  = nil;

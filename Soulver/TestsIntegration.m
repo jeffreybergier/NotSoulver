@@ -120,6 +120,7 @@ void TestsIntegrationExecute(void)
   XPTestString(repDiskLHS, repDiskRHS);
   
   // TODO: These tests pass in macOS 15, 10.15, 10.12, 10.2, and OpenStep
+  // TODO: Revalidate tests
   // but fail in 10.4 & 10.6, 10.8, 10.10 very strange
   #if !defined(MAC_OS_X_VERSION_10_4) || defined(MAC_OS_X_VERSION_10_12)
   XPTestAttrString(repDisplayLHS, repDisplayRHS);

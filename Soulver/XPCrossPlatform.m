@@ -44,7 +44,7 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
 +(id)XP_valueWithRange:(NSRange)range;
 {
   if (XPIsNotFoundRange(range)) { return nil; }
-#ifdef MAC_OS_X_VERSION_10_0
+#ifdef MAC_OS_X_VERSION_10_2
   return [self valueWithRange:range];
 #else
   return [self valueWithBytes:&range objCType:@encode(NSRange)];
@@ -52,7 +52,7 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
 }
 -(NSRange)XP_rangeValue;
 {
-#ifdef MAC_OS_X_VERSION_10_0
+#ifdef MAC_OS_X_VERSION_10_2
   return [self rangeValue];
 #else
   NSRange range;
@@ -113,7 +113,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
   // I think the reason was just passing [ud SVR_savePanelLastDirectory]
   // directly into the open panel. But I added memory
   // protection around everything just in case.
-  XPInteger result;
+  XPModalResponse result;
   NSArray *output;
   
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
@@ -127,14 +127,14 @@ NSArray* XPRunOpenPanel(NSString *extension)
   [ud SVR_setSavePanelLastDirectory:[panel directory]];
   
   switch (result) {
-    case NSOKButton:
+    case XPModalResponseOK:
       output = [[panel filenames] retain];
       break;
-    case NSCancelButton:
+    case XPModalResponseCancel:
       output = [NSArray new];
       break;
     default:
-      XPLogRaise1(@"Impossible NSOpenPanel result: %d", (int)result);
+      XPLogCAssrt1(NO, @"[UNKNOWN] NSModalResponse(%d)", (int)result);
       output = nil;
       break;
   }
@@ -151,7 +151,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
    usingLongestEffectiveRange:(BOOL)usesLongest;
 {
   self = [super init];
-  NSCParameterAssert(self);
+  XPParameterRaise(self);
   _key = [key retain];
   _string = [attributedString copy];
   _index = 0;
@@ -204,7 +204,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 - (void)dealloc
 {
-  XPLogExtra1(@"DEALLOC: %@", self);
+  XPLogExtra1(@"<%@>", XPPointerString(self));
   [_key release];
   [_string release];
   _key = nil;
@@ -234,7 +234,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 -(id)initWithString:(NSString*)string characterSet:(NSCharacterSet*)aSet options:(XPStringCompareOptions)mask;
 {
   self = [super init];
-  NSCParameterAssert(self);
+  XPParameterRaise(self);
   _string = [string retain];
   _set = [aSet retain];
   _options = mask;
@@ -264,7 +264,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 - (void)dealloc
 {
-  XPLogExtra1(@"DEALLOC:%@", self);
+  XPLogExtra1(@"<%@>", XPPointerString(self));
   [_string release];
   [_set release];
   [super dealloc];
@@ -308,7 +308,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 -(const char*)XP_UTF8String;
 {
-#ifdef MAC_OS_X_VERSION_10_0
+#ifdef MAC_OS_X_VERSION_10_2
   return [self UTF8String];
 #else
   return [self cString];
@@ -336,7 +336,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 -(NSData*)XP_data;
 {
   id forArchiving = nil;
-#ifdef MAC_OS_X_VERSION_10_3
+#ifdef MAC_OS_X_VERSION_10_4
   forArchiving = [self fontDescriptor];
 #else
   forArchiving = self;
@@ -346,7 +346,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 +(id)XP_fontWithData:(NSData*)data;
 {
-#ifdef MAC_OS_X_VERSION_10_3
+#ifdef MAC_OS_X_VERSION_10_4
   id descriptor = [XPKeyedUnarchiver XP_unarchivedObjectOfClass:[NSFontDescriptor class]
                                                        fromData:data];
   return [self fontWithDescriptor:descriptor size:0];
@@ -371,7 +371,6 @@ NSArray* XPRunOpenPanel(NSString *extension)
   if (!data) { return nil; }
   output = [XPKeyedUnarchiver XP_unarchivedObjectOfClass:[NSColor class]
                                                 fromData:data];
-  if (![output isKindOfClass:[NSColor class]]) { XPLogRaise(@""); return nil; }
   return output;
 }
 
@@ -382,7 +381,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 {
 #ifdef MAC_OS_X_VERSION_10_8
   id output = [self decodeObjectOfClass:aClass forKey:key];
-  NSAssert2(output, @"XP_decodeObjectOfClass:%@ forKey:%@", NSStringFromClass(aClass), key);
+  XPLogAssrt2(output, @"class:%@ key:%@", NSStringFromClass(aClass), key);
   return output;
 #elif MAC_OS_X_VERSION_10_2
   return [self decodeObjectForKey:key];
@@ -410,7 +409,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
   NSData *output = [self archivedDataWithRootObject:object
                               requiringSecureCoding:NO
                                               error:&error];
-  NSAssert1(!error, @"%@", error);
+  XPLogAssrt1(!error, @"%@", error);
   return output;
 #else
   return [self archivedDataWithRootObject:object];
@@ -431,13 +430,13 @@ NSArray* XPRunOpenPanel(NSString *extension)
   NSAttributedString *output = [self unarchivedObjectOfClass:cls
                                                     fromData:someData
                                                        error:&error];
-  NSAssert1(!error, @"%@", error);
+  XPLogAssrt1(!error, @"%@", error);
   return output;
 #else
   id output = [self unarchiveObjectWithData:someData];
   if (!output) { return nil; }
   if ([output isKindOfClass:cls]) { return output; }
-  XPLogRaise2(@"XP_unarchivedObject:%@ notKindOfClass %@", output, cls);
+  XPLogRaise2(@"[FAIL] [%@ isKindOfClass:%@]", output, cls);
   return nil;
 #endif
 }
@@ -463,8 +462,8 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 -(BOOL)XP_openWebURL:(NSString*)webURL;
 {
-#ifdef MAC_OS_X_VERSION_10_0
-  NSCParameterAssert(webURL);
+#ifdef MAC_OS_X_VERSION_10_2
+  XPParameterRaise(webURL);
   return [self openURL:[NSURL URLWithString:webURL]];
 #else
   return NO;
@@ -479,7 +478,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
                           xRadius:(XPFloat)xRadius
                           yRadius:(XPFloat)yRadius;
 {
-#ifdef MAC_OS_X_VERSION_10_5
+#ifdef MAC_OS_X_VERSION_10_6
   return [NSBezierPath __REAL_bezierPathWithRoundedRect:rect
                                                 xRadius:xRadius
                                                 yRadius:yRadius];
@@ -494,12 +493,12 @@ NSArray* XPRunOpenPanel(NSString *extension)
                               xRadius:(XPFloat)xRadius
                               yRadius:(XPFloat)yRadius;
 {
-#ifdef MAC_OS_X_VERSION_10_5
+#ifdef MAC_OS_X_VERSION_10_6
   return [NSBezierPath bezierPathWithRoundedRect:rect
                                          xRadius:xRadius
                                          yRadius:yRadius];
 #else
-  NSCAssert(NO, @"Mac OS X 10.5 Required to use NSBezierPath convenience initializer");
+  XPLogRaise(@"System does not support NSBezierPath convenience initializer");
   return nil;
 #endif
 }
@@ -615,12 +614,10 @@ NSArray* XPRunOpenPanel(NSString *extension)
   // Because this returns a BOOL, it is not safe to use performSelector
   // so have to use ifdefs to prevent all warnings
 #if XPSupportsNSDocument >= 2
-  NSCAssert1([self isKindOfClass:NSClassFromString(@"NSURL")],
-            @"%@ is not NSString or NSURL", self);
+  XPLogAssrt1([self isKindOfClass:NSClassFromString(@"NSURL")], @"%@ is not NSURL", self);
   return [self isFileURL];
 #else
-  NSCAssert1([self isKindOfClass:[NSString class]],
-            @"%@ is not NSString or NSURL", self);
+  XPLogAssrt1([self isKindOfClass:[NSString class]], @"%@ is not NSString", self);
   return [self isAbsolutePath];
 #endif
 }
@@ -631,8 +628,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
   if ([self respondsToSelector:selector]) {
     return [self performSelector:selector];
   } else {
-    NSCAssert1([self isKindOfClass:[NSString class]],
-              @"%@ is not NSString or NSURL", self);
+    XPLogAssrt1([self isKindOfClass:[NSString class]], @"%@ is not NSString", self);
     return (NSString*)self;
   }
 }
@@ -677,80 +673,65 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 @implementation XPLog
 
-+(void)pause {}
-
 +(void)logCheckedPoundDefines;
 {
-  XPLogAlwys (@"<XPLog> Start: logCheckedPoundDefines");
-  XPLogAlwys1(@"LOGLEVEL...............(%d)", LOGLEVEL);
-  XPLogAlwys1(@"DEBUG..................(%d)", DEBUG);
-  XPLogAlwys1(@"TESTING................(%d)", TESTING);
+  NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
+  NSLog(@"<XPLog> Start: logCheckedPoundDefines");
+  NSLog(@"LOGLEVEL...............(%d)", LOGLEVEL);
+  NSLog(@"DEBUG..................(%d)", DEBUG);
+  NSLog(@"TESTING................(%d)", TESTING);
 #ifdef NS_ENUM
-  XPLogAlwys (@"NS_ENUM................(Defined)");
+  NSLog(@"NS_ENUM................(Defined)");
 #else
-  XPLogAlwys (@"NS_ENUM................(ND)");
+  NSLog(@"NS_ENUM................(ND)");
 #endif
 #ifdef CGFLOAT_MAX
-  XPLogAlwys1(@"CGFLOAT_MAX............(%g)", CGFLOAT_MAX);
+  NSLog(@"CGFLOAT_MAX............(%g)", CGFLOAT_MAX);
 #else
-  XPLogAlwys (@"CGFLOAT_MAX............(ND)");
+  NSLog(@"CGFLOAT_MAX............(ND)");
 #endif
 #ifdef NSIntegerMax
-  XPLogAlwys1(@"NSIntegerMax...........(%ld)", NSIntegerMax);
+  NSLog(@"NSIntegerMax...........(%ld)", NSIntegerMax);
 #else
-  XPLogAlwys (@"NSIntegerMax...........(ND)");
-#endif
-#ifdef MAC_OS_X_VERSION_10_0
-  XPLogAlwys1(@"MAC_OS_X_VERSION_10_0..(%d)", MAC_OS_X_VERSION_10_0);
-#else
-  XPLogAlwys (@"MAC_OS_X_VERSION_10_0..(ND)");
+  NSLog(@"NSIntegerMax...........(ND)");
 #endif
 #ifdef MAC_OS_X_VERSION_10_2
-  XPLogAlwys1(@"MAC_OS_X_VERSION_10_2..(%d)", MAC_OS_X_VERSION_10_2);
+  NSLog(@"MAC_OS_X_VERSION_10_2..(%d)", MAC_OS_X_VERSION_10_2);
 #else
-  XPLogAlwys (@"MAC_OS_X_VERSION_10_2..(ND)");
-#endif
-#ifdef MAC_OS_X_VERSION_10_3
-  XPLogAlwys1(@"MAC_OS_X_VERSION_10_3..(%d)", MAC_OS_X_VERSION_10_3);
-#else
-  XPLogAlwys (@"MAC_OS_X_VERSION_10_3..(ND)");
+  NSLog(@"MAC_OS_X_VERSION_10_2..(ND)");
 #endif
 #ifdef MAC_OS_X_VERSION_10_4
-  XPLogAlwys1(@"MAC_OS_X_VERSION_10_4..(%d)", MAC_OS_X_VERSION_10_4);
+  NSLog(@"MAC_OS_X_VERSION_10_4..(%d)", MAC_OS_X_VERSION_10_4);
 #else
-  XPLogAlwys (@"MAC_OS_X_VERSION_10_4..(ND)");
-#endif
-#ifdef MAC_OS_X_VERSION_10_5
-  XPLogAlwys1(@"MAC_OS_X_VERSION_10_5..(%d)", MAC_OS_X_VERSION_10_5);
-#else
-  XPLogAlwys (@"MAC_OS_X_VERSION_10_5..(ND)");
+  NSLog(@"MAC_OS_X_VERSION_10_4..(ND)");
 #endif
 #ifdef MAC_OS_X_VERSION_10_6
-  XPLogAlwys1(@"MAC_OS_X_VERSION_10_6..(%d)", MAC_OS_X_VERSION_10_6);
+  NSLog(@"MAC_OS_X_VERSION_10_6..(%d)", MAC_OS_X_VERSION_10_6);
 #else
-  XPLogAlwys (@"MAC_OS_X_VERSION_10_6..(ND)");
+  NSLog(@"MAC_OS_X_VERSION_10_6..(ND)");
 #endif
 #ifdef MAC_OS_X_VERSION_10_8
-  XPLogAlwys1(@"MAC_OS_X_VERSION_10_8..(%d)", MAC_OS_X_VERSION_10_8);
+  NSLog(@"MAC_OS_X_VERSION_10_8..(%d)", MAC_OS_X_VERSION_10_8);
 #else
-  XPLogAlwys (@"MAC_OS_X_VERSION_10_8..(ND)");
-#endif
-#ifdef MAC_OS_X_VERSION_10_9
-  XPLogAlwys1(@"MAC_OS_X_VERSION_10_9..(%d)", MAC_OS_X_VERSION_10_9);
-#else
-  XPLogAlwys (@"MAC_OS_X_VERSION_10_9..(ND)");
+  NSLog(@"MAC_OS_X_VERSION_10_8..(ND)");
 #endif
 #ifdef MAC_OS_X_VERSION_10_13
-  XPLogAlwys1(@"MAC_OS_X_VERSION_10_13.(%d)", MAC_OS_X_VERSION_10_13);
+  NSLog(@"MAC_OS_X_VERSION_10_13.(%d)", MAC_OS_X_VERSION_10_13);
 #else
-  XPLogAlwys (@"MAC_OS_X_VERSION_10_13.(ND)");
+  NSLog(@"MAC_OS_X_VERSION_10_13.(ND)");
 #endif
-#ifdef __STDC_VERSION__
-  XPLogAlwys1(@"__STDC_VERSION__.......(%ld)", __STDC_VERSION__);
+#ifdef MAC_OS_X_VERSION_10_15
+  NSLog(@"MAC_OS_X_VERSION_10_15.(%d)", MAC_OS_X_VERSION_10_15);
 #else
-  XPLogAlwys (@"__STDC_VERSION__.......(ND)");
+  NSLog(@"MAC_OS_X_VERSION_10_15.(ND)");
 #endif
-  XPLogAlwys (@"<XPLog> End: logCheckedPoundDefines");
+#ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
+  NSLog(@"MAC_OS_X_VER_MAX_ALLOW.(%d)", __MAC_OS_X_VERSION_MAX_ALLOWED);
+#else
+  NSLog(@"MAC_OS_X_VER_MAX_ALLOW.(ND)");
+#endif
+  NSLog(@"<XPLog> End: logCheckedPoundDefines");
+  [pool release];
 }
 
 @end

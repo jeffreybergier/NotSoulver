@@ -36,7 +36,7 @@
 -(id)init;
 {
   self = [super init];
-  NSCParameterAssert(self);
+  XPParameterRaise(self);
   _openDocuments = [NSMutableSet new];
   _accessoryWindowsOwner = nil; // Set in applicationDidFinishLaunching:
   return self;
@@ -64,7 +64,7 @@
 
 -(void)dealloc;
 {
-  XPLogDebug1(@"DEALLOC: %@", self);
+  XPLogDebug1(@"<%@>", XPPointerString(self));
   [_openDocuments release];
   [_accessoryWindowsOwner release];
   _openDocuments = nil;
@@ -88,7 +88,7 @@
   // Prepare FontManager
   [NSFontManager setFontManagerFactory:[SVRFontManager class]];
   // Announce
-  XPLogDebug1(@"%@ applicationWillFinishLaunching:", self);
+  XPLogDebug(@"");
 }
 
 -(void)applicationDidFinishLaunching:(NSNotification*)aNotification;
@@ -107,7 +107,7 @@
                                                object:nil];
   }
   // Announce
-  XPLogDebug1(@"%@ applicationDidFinishLaunching:", self);
+  XPLogDebug(@"");
 }
 
 -(void)applicationWillTerminate:(NSNotification*)aNotification;
@@ -141,7 +141,7 @@
   XPDocument nextC = nil;
 
   filenames = XPRunOpenPanel(SVRDocumentModelExtension);
-  if ([filenames count] == 0) { XPLogDebug1(@"%@ Open Cancelled", self); return; }
+  if ([filenames count] == 0) { XPLogDebug(@"Open Cancelled"); return; }
   e = [filenames objectEnumerator];
   while ((nextF = [e nextObject])) {
     nextC = [[self openDocuments] member:nextF];
@@ -178,7 +178,7 @@
     case XPAlertReturnAlternate: return YES;
     case XPAlertReturnOther:     return NO;
     default:
-      XPLogRaise2(@"%@ Unexpected alert result: %ld", self, alertResult);
+      XPLogAssrt1(NO, @"[FAIL] XPAlertReturn(%d)", (int)alertResult);
       return NO;
   }
 }
@@ -271,7 +271,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
            options:NSKeyValueObservingOptionNew
            context:NULL];
 #else
-  XPLogDebug1(@"%@: effectiveAppearance: System does not support dark mode", app);
+  XPLogDebug(@"System does not support dark mode");
 #endif
 }
 
@@ -288,18 +288,18 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
                        change:(NSDictionary*)change
                       context:(void*)context;
 {
+#ifdef XPSupportsDarkMode
   if ([keyPath isEqualToString:SVRApplicationEffectiveAppearanceKeyPath]) {
-    XPLogAlwys1(@"%@: effectiveAppearance: Changed", object);
+    XPLogDebug(@"effectiveAppearance: Changed");
     [[NSNotificationCenter defaultCenter] postNotificationName:SVRThemeDidChangeNotificationName
                                                         object:[NSUserDefaults standardUserDefaults]];
   } else {
-#ifdef XPSupportsDarkMode
     [super observeValueForKeyPath:keyPath
                          ofObject:object
                            change:change
                           context:context];
-#endif
   }
+#endif
 }
 
 @end

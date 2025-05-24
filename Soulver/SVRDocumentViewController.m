@@ -39,8 +39,8 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 -(id)initWithModelController:(SVRDocumentModelController*)modelController;
 {
   self = [super init];
-  NSCParameterAssert(self);
-  NSCParameterAssert(modelController);
+  XPParameterRaise(self);
+  XPParameterRaise(modelController);
   _modelController = [modelController retain];
   _textView = nil;
   _view_42 = nil;
@@ -55,11 +55,11 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   NSScrollView *scrollView       = [[[NSScrollView    alloc] initWithFrame:NSZeroRect]                             autorelease];
   SVRDocumentModelController *modelController = [self modelController];
   
-  NSCParameterAssert(layoutManager);
-  NSCParameterAssert(textContainer);
-  NSCParameterAssert(textView);
-  NSCParameterAssert(scrollView);
-  NSCParameterAssert(modelController);
+  XPParameterRaise(layoutManager);
+  XPParameterRaise(textContainer);
+  XPParameterRaise(textView);
+  XPParameterRaise(scrollView);
+  XPParameterRaise(modelController);
   
   // TextContainer
   [textContainer setWidthTracksTextView:YES];
@@ -74,7 +74,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   [textView setMinSize:NSMakeSize(0, 0)];
   [textView setMaxSize:NSMakeSize(FLT_MAX, FLT_MAX)];
   [textView setVerticallyResizable:YES];
-  [textView setHorizontallyResizable:YES];
+  [textView setHorizontallyResizable:NO];
   [textView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
   [textView XP_setAllowsUndo:YES];
   
@@ -154,7 +154,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
     case 23: return [@"10" stringByAppendingString:[NSString SVR_logRawString]];
     case 13: return nil; // Backspace key
   }
-  XPLogRaise2(@"<%@> Button with unknown tag: %d", self, (int)tag);
+  XPLogAssrt1(NO, @"[UNKNOWN] tag(%d)", (int)tag);
   return nil;
 }
 
@@ -179,7 +179,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 // MARK: Dealloc
 -(void)dealloc;
 {
-  XPLogDebug1(@"DEALLOC: %@", self);
+  XPLogDebug1(@"<%@>", XPPointerString(self));
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [_modelController release];
   _modelController = nil;
@@ -260,8 +260,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   NSData *diskRepData = [[self modelController] dataRepresentationOfType:SVRDocumentModelRepDisk
                                                                withRange:range];
   success = [self __universalCopyRTFData:rtfData diskRepData:diskRepData];
-  if (success) { return; }
-  XPLogPause1(@"%@ copySolved: Failed", self);
+  XPLogAssrt(success, @"FAIL");
 }
 
 -(IBAction)copyUniversal:(id)sender;
@@ -273,8 +272,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   NSData *diskRepData = [[self modelController] dataRepresentationOfType:SVRDocumentModelRepDisk
                                                                withRange:range];
   success = [self __universalCopyRTFData:rtfData diskRepData:diskRepData];
-  if (success) { return; }
-  XPLogPause1(@"%@ copySolved: Failed", self);
+  XPLogAssrt(success, @"FAIL");
 }
 
 -(IBAction)pasteUniversal:(id)sender;
@@ -290,12 +288,12 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
       && (diskRepString = [[[NSString alloc] initWithData:diskRepData encoding:NSUTF8StringEncoding] autorelease]))
   {
     // Do Universal Paste
-    XPLogDebug1(@"%@ pasteUniversal: Universal Paste", self);
+    XPLogDebug(@"Universal Paste");
     [[self modelController] replaceCharactersInRange:[textView selectedRange]
                                           withString:diskRepString];
   } else {
     // Fail universal paste and forward the message to the textview
-    XPLogDebug1(@"%@ pasteUniversal: NOT Universal Paste", self);
+    XPLogDebug(@"NOT Universal Paste");
     [textView pasteAsPlainText:sender];
     return;
   }
@@ -312,9 +310,9 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   NSString *plainString = [[[[NSAttributedString alloc] initWithRTF:rtfData
                                                  documentAttributes:NULL] autorelease] string];
   
-  NSCParameterAssert(rtfData);
-  NSCParameterAssert(diskRepData);
-  NSCParameterAssert(plainString);
+  XPParameterRaise(rtfData);
+  XPParameterRaise(diskRepData);
+  XPParameterRaise(plainString);
   
   [pb declareTypes:[NSArray arrayWithObjects:
                     XPPasteboardTypeRTF,
@@ -338,14 +336,14 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 {
   if (!_view_42) {
     [self loadView];
-    NSCParameterAssert(_view_42);
+    XPParameterRaise(_view_42);
   }
   return [[_view_42 retain] autorelease];
 }
 
 -(void)setView:(NSView*)view;
 {
-  NSCParameterAssert(view);
+  XPParameterRaise(view);
   [_view_42 release];
   _view_42 = [view retain];
 }
