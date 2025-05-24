@@ -135,7 +135,6 @@ typedef XPUInteger XPDocumentChangeType;
 // MARK: Deprecated Constants and Types
 
 #ifdef MAC_OS_X_VERSION_10_2
-// Cannot declare a category on a typedef so these need to be macros
 #define XPKeyedArchiver NSKeyedArchiver
 #define XPKeyedUnarchiver NSKeyedUnarchiver
 #define XPSupportsNSBezierPath
@@ -146,10 +145,12 @@ typedef XPUInteger XPDocumentChangeType;
 
 #ifdef MAC_OS_X_VERSION_10_4
 #define XPRTFDocumentAttributes [NSDictionary dictionaryWithObject:NSRTFTextDocumentType forKey:NSDocumentTypeDocumentAttribute]
-typedef NSRangePointer XPRangePointer;
+#define XPError NSError
 typedef NSError** XPErrorPointer;
+typedef NSRangePointer XPRangePointer;
 #else
 #define XPRTFDocumentAttributes nil
+#define XPError NSNumber
 typedef NSRange* XPRangePointer;
 typedef NSNumber** XPErrorPointer;
 #endif
@@ -169,10 +170,13 @@ typedef XPUInteger XPStringCompareOptions;
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_8
+#define XPSupportsStateRestoration
+typedef void (^XPWindowStationCompletionHandler)(NSWindow *window, XPError *error);
 #define XPSecureCoding NSSecureCoding
 #define XPSaveOperationType NSSaveOperationType
 #define XPDataWritingAtomic NSDataWritingAtomic
 #else
+typedef void (*XPWindowStationCompletionHandler)(NSWindow *window, XPError *error);
 #define XPSecureCoding NSCoding
 #define XPSaveOperationType XPUInteger
 #define XPDataWritingAtomic NSAtomicWrite

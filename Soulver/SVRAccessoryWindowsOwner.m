@@ -276,12 +276,13 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
 @implementation SVRAccessoryWindowsOwner (StateRestoration)
 -(void)__restoreWindowWithIdentifier:(NSString*)identifier
                                state:(NSCoder*)state
-                   completionHandler:(void (^)(NSWindow*, XPErrorPointer))completionHandler;
+                   completionHandler:(XPWindowStationCompletionHandler)completionHandler;
 {
+  XPLogAssrt1(completionHandler, @"Completion Handler missing for identifier(%@)", identifier);
   if (       [identifier isEqualToString:SVRAccessoryWindowFrameAutosaveNameAbout   ]) {
-    completionHandler([self aboutWindow], nil);
+    completionHandler([self aboutWindow],    nil);
   } else if ([identifier isEqualToString:SVRAccessoryWindowFrameAutosaveNameKeypad  ]) {
-    completionHandler([self keypadPanel], nil);
+    completionHandler([self keypadPanel],    nil);
   } else if ([identifier isEqualToString:SVRAccessoryWindowFrameAutosaveNameSettings]) {
     completionHandler([self settingsWindow], nil);
   } else {

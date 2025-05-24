@@ -319,7 +319,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 
 +(void)restoreWindowWithIdentifier:(NSString*)identifier
                              state:(NSCoder*)state
-                 completionHandler:(void (^)(NSWindow*, XPErrorPointer))completionHandler;
+                 completionHandler:(XPWindowStationCompletionHandler)completionHandler;
 {
   SVRAppDelegate *delegate = (SVRAppDelegate*)[[NSApplication sharedApplication] delegate];
   SVRAccessoryWindowsOwner *owner = [delegate accessoryWindowsOwner];
