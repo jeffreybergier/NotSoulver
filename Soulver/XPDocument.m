@@ -30,21 +30,12 @@
 #import "XPDocument.h"
 #import "NSUserDefaults+Soulver.h"
 
-NSPoint XPDocumentPointForCascading;
-
 // Because this class is only used in OpenStep
 // I will add insturctions for LLVM to ignore
 // deprecation warnings
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 @implementation NSDocumentLegacyImplementation
-
-// MARK: Window Placement
-
-+(void)initialize;
-{
-  XPDocumentPointForCascading = NSZeroPoint;
-}
 
 // MARK: Init
 
@@ -93,10 +84,6 @@ NSPoint XPDocumentPointForCascading;
 -(void)makeWindowControllers;
 {
   NSWindow *myWindow = [self windowForSheet];
-  
-  if (![self XP_nameForFrameAutosave]) {
-    XPDocumentPointForCascading = [myWindow cascadeTopLeftFromPoint:XPDocumentPointForCascading];
-  }
   
   // Update window chrome
   [self updateChangeCount:XPChangeCleared];

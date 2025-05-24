@@ -28,6 +28,7 @@
 //
 
 #import "SVRDocument.h"
+#import "NSUserDefaults+Soulver.h"
 
 @implementation SVRDocument
 
@@ -53,38 +54,56 @@
 
 -(void)makeWindowControllers;
 {
+  static NSPoint SVRDocumentPointForCascading = { 0.0, 0.0 };
+  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
   XPWindowStyleMask windowStyle = (XPWindowStyleMaskTitled
                                  | XPWindowStyleMaskClosable
                                  | XPWindowStyleMaskMiniaturizable
                                  | XPWindowStyleMaskResizable);
-  NSRect windowRect = [self __newDocumentWindowRect];
+  NSRect rect = NSMakeRect(0, 0, 500, 500);
   NSString *autosaveName = [self XP_nameForFrameAutosave];
   SVRDocumentModelController *modelController = [self modelController];
   SVRDocumentViewController  *viewController  = [self viewController];
-  NSWindow *aWindow = [[[NSWindow alloc] initWithContentRect:windowRect
+  NSWindow *aWindow = [[[NSWindow alloc] initWithContentRect:rect
                                                    styleMask:windowStyle
                                                      backing:NSBackingStoreBuffered
                                                        defer:YES] autorelease];
   XPWindowController *windowController = [XPNewWindowController(aWindow) autorelease];
   
-  // Configure the Window
+  // Configure Window Size and Location
+  [aWindow setMinSize:NSMakeSize(200, 200)];
+  
+  // This is a bit fiddly, so let me explain.
+  // If there is an autosavename we will use and not try to do any cascading.
+  // However, if this is the first time the document has been open,
+  // it will open in the bottom left of the screen as the autosave name has
+  // never saved anything. So here we check if the frame is different before
+  // and after setting the autosaveName. If its the same, then we ask the
+  // window to center itself. If its different then we just let it be.
+  rect = [aWindow frame];
   if (autosaveName) {
     [aWindow setFrameAutosaveName:autosaveName];
-  } else {
-    [aWindow setFrameAutosaveName:@"NewSVRDocument"];
   }
-  [aWindow setMinSize:NSMakeSize(200, 200)];
-  [aWindow setContentView:[viewController view]];
+  if (NSEqualRects(rect, [aWindow frame])) {
+    [aWindow center];
+    SVRDocumentPointForCascading = [aWindow cascadeTopLeftFromPoint:SVRDocumentPointForCascading];
+  }
   
-  // Configure self
+  // Configure Views
+  [aWindow setContentView:[viewController view]];
   [self XP_setWindow:aWindow];
   [self XP_addWindowController:windowController];
+  [self __overrideAppearance:nil];
   
   // Subscribe to model updates
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(modelDidProcessEditingNotification:)
-                                               name:NSTextStorageDidProcessEditingNotification
-                                             object:[modelController model]];
+  [nc addObserver:self
+         selector:@selector(modelDidProcessEditingNotification:)
+             name:NSTextStorageDidProcessEditingNotification
+           object:[modelController model]];
+  [nc addObserver:self
+         selector:@selector(__overrideAppearance:)
+             name:SVRThemeDidChangeNotificationName
+           object:nil];
   
   // Configure responder chain
   [aWindow setNextResponder:viewController];
@@ -132,17 +151,6 @@
                                    : XPChangeCleared];
 }
 
--(NSRect)__newDocumentWindowRect;
-{
-  NSRect output = NSZeroRect;
-  NSSize screenSize = [[NSScreen mainScreen] frame].size;
-  NSSize targetSize = NSMakeSize(500, 500);
-  output.origin.y = ceil(screenSize.height / 2) - ceil(targetSize.height / 2);
-  output.origin.x = ceil(screenSize.width  / 2) - ceil(targetSize.width  / 2);
-  output.size = targetSize;
-  return output;
-}
-
 -(void)dealloc;
 {
   XPLogDebug1(@"<%@>", XPPointerString(self));
@@ -183,4 +191,27 @@
   return YES;
 }
 
+@end
+
+@implementation SVRDocument (DarkMode)
+-(void)__overrideAppearance:(NSNotification*)aNotification;
+{
+#ifdef XPSupportsDarkMode
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  XPUserInterfaceStyle style = [ud SVR_userInterfaceStyle];
+  NSWindow *myWindow = [self XP_windowForSheet];
+  
+  XPParameterRaise(myWindow);
+  
+  switch (style) {
+    case XPUserInterfaceStyleUnspecified:
+    case XPUserInterfaceStyleLight:
+      [myWindow setAppearance:[NSAppearance appearanceNamed:NSAppearanceNameAqua]];
+      return;
+    case XPUserInterfaceStyleDark:
+      [myWindow setAppearance:[NSAppearance appearanceNamed:NSAppearanceNameDarkAqua]];
+      return;
+  }
+#endif
+}
 @end

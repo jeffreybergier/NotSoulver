@@ -106,6 +106,10 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
          selector:@selector(__applicationWillTerminate:)
              name:NSApplicationWillTerminateNotification
            object:nil];
+  [nc addObserver:self
+         selector:@selector(__overrideAppearance:)
+             name:SVRThemeDidChangeNotificationName
+           object:nil];
   
   return self;
 }
@@ -122,6 +126,9 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
   [[self keypadPanel   ] setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameKeypad  ];
   [[self aboutWindow   ] setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameAbout   ];
   [[self settingsWindow] setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameSettings];
+  
+  // Set appearance
+  [self __overrideAppearance:nil];
   
   // Announce
   XPLogDebug(@"");
@@ -234,4 +241,27 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
   [super dealloc];
 }
 
+@end
+
+@implementation SVRAccessoryWindowsOwner (DarkMode)
+-(void)__overrideAppearance:(NSNotification*)aNotification;
+{
+#ifdef XPSupportsDarkMode
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  XPUserInterfaceStyle style = [ud SVR_userInterfaceStyle];
+  NSAppearance *appearance = nil;
+  switch (style) {
+    case XPUserInterfaceStyleUnspecified:
+    case XPUserInterfaceStyleLight:
+      appearance = [NSAppearance appearanceNamed:NSAppearanceNameAqua];
+      break;
+    case XPUserInterfaceStyleDark:
+      appearance = [NSAppearance appearanceNamed:NSAppearanceNameDarkAqua];
+      break;
+  }
+  [_keypadPanel setAppearance:appearance];
+  [_aboutWindow setAppearance:appearance];
+  [_settingsWindow setAppearance:appearance];
+#endif
+}
 @end

@@ -60,10 +60,6 @@
   BOOL _isEdited;
 }
 
-// MARK: Window Placement
-
-+(void)initialize;
-
 // MARK: Init
 
 /// Designated Initializer.  Inits an "empty" document.
