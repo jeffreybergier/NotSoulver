@@ -38,7 +38,7 @@
   self = [super init];
   XPParameterRaise(self);
   _openDocuments = [NSMutableSet new];
-  _accessoryWindowsOwner = nil; // Set in applicationDidFinishLaunching:
+  _accessoryWindowsOwner = nil; // Set in applicationWillFinishLaunching:
   return self;
 }
 
@@ -81,12 +81,20 @@
 -(void)applicationWillFinishLaunching:(NSNotification*)aNotification;
 {
   NSApplication *app = [aNotification object];
+  Class myClass = [self class];
   // Configure the title of the app
   [[app mainMenu] setTitle:[Localized titleAppName]];
   // Prepare UserDefaults
   [[NSUserDefaults standardUserDefaults] SVR_configure];
   // Prepare FontManager
   [NSFontManager setFontManagerFactory:[SVRFontManager class]];
+  // Load Accessory Windows Nib
+  _accessoryWindowsOwner = [[SVRAccessoryWindowsOwner alloc] init];
+  XPParameterRaise(_accessoryWindowsOwner);
+  // Configure Accessory Windows for state restoration
+  [[_accessoryWindowsOwner aboutWindow   ] setRestorationClass:myClass];
+  [[_accessoryWindowsOwner keypadPanel   ] setRestorationClass:myClass];
+  [[_accessoryWindowsOwner settingsWindow] setRestorationClass:myClass];
   // Announce
   XPLogDebug(@"");
 }
@@ -94,8 +102,6 @@
 -(void)applicationDidFinishLaunching:(NSNotification*)aNotification;
 {
   NSApplication *app = [aNotification object];
-  // Configure Accessory Windows
-  _accessoryWindowsOwner = [[SVRAccessoryWindowsOwner alloc] init];
   // Observe Dark Mode
   [self beginObservingEffectiveAppearance:app];
   
@@ -309,6 +315,18 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 -(BOOL)applicationSupportsSecureRestorableState:(NSApplication*)app;
 {
   return YES;
+}
+
++(void)restoreWindowWithIdentifier:(NSString*)identifier
+                             state:(NSCoder*)state
+                 completionHandler:(void (^)(NSWindow*, XPErrorPointer))completionHandler;
+{
+  SVRAppDelegate *delegate = (SVRAppDelegate*)[[NSApplication sharedApplication] delegate];
+  SVRAccessoryWindowsOwner *owner = [delegate accessoryWindowsOwner];
+  XPParameterRaise(owner);
+  [owner __restoreWindowWithIdentifier:identifier
+                                 state:state
+                     completionHandler:completionHandler];
 }
 
 @end

@@ -28,7 +28,6 @@
 //
 
 #import "SVRAccessoryWindowsOwner.h"
-#import "NSUserDefaults+Soulver.h"
 
 NSString * const SVRAccessoryWindowFrameAutosaveNameSettings = @"kSVRAccessoryWindowFrameAutosaveNameSettings";
 NSString * const SVRAccessoryWindowFrameAutosaveNameAbout    = @"kSVRAccessoryWindowFrameAutosaveNameAbout";
@@ -93,7 +92,8 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
                          topLevelObjects:&_topLevelObjects];
   [_topLevelObjects retain];
   
-  [self __restoreWindowState];
+  // TODO: Consider restoring pre-10.7 systems
+  // [self __restoreWindowState];
   [nc addObserver:self
          selector:@selector(__windowDidBecomeKey:)
              name:NSWindowDidBecomeKeyNotification
@@ -116,16 +116,23 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
 
 -(void)awakeFromNib;
 {
-  // Set the about text from the strings file
+  NSWindow *keypadPanel    = [self keypadPanel];
+  NSWindow *aboutWindow    = [self aboutWindow];
+  NSWindow *settingsWindow = [self settingsWindow];
   NSTextStorage *textStorage = [[self aboutTextView] textStorage];
+  
+  // Set the about text from the strings file
   [ textStorage beginEditing];
   [[textStorage mutableString] setString:[Localized aboutParagraph]];
   [ textStorage endEditing];
 
   // Set autosave names
-  [[self keypadPanel   ] setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameKeypad  ];
-  [[self aboutWindow   ] setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameAbout   ];
-  [[self settingsWindow] setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameSettings];
+  [keypadPanel           setIdentifier:SVRAccessoryWindowFrameAutosaveNameKeypad  ];
+  [aboutWindow           setIdentifier:SVRAccessoryWindowFrameAutosaveNameAbout   ];
+  [settingsWindow        setIdentifier:SVRAccessoryWindowFrameAutosaveNameSettings];
+  [keypadPanel    setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameKeypad  ];
+  [aboutWindow    setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameAbout   ];
+  [settingsWindow setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameSettings];
   
   // Set appearance
   [self __overrideAppearance:nil];
@@ -263,5 +270,22 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
   [_aboutWindow setAppearance:appearance];
   [_settingsWindow setAppearance:appearance];
 #endif
+}
+@end
+
+@implementation SVRAccessoryWindowsOwner (StateRestoration)
+-(void)__restoreWindowWithIdentifier:(NSString*)identifier
+                               state:(NSCoder*)state
+                   completionHandler:(void (^)(NSWindow*, XPErrorPointer))completionHandler;
+{
+  if (       [identifier isEqualToString:SVRAccessoryWindowFrameAutosaveNameAbout   ]) {
+    completionHandler([self aboutWindow], nil);
+  } else if ([identifier isEqualToString:SVRAccessoryWindowFrameAutosaveNameKeypad  ]) {
+    completionHandler([self keypadPanel], nil);
+  } else if ([identifier isEqualToString:SVRAccessoryWindowFrameAutosaveNameSettings]) {
+    completionHandler([self settingsWindow], nil);
+  } else {
+    XPLogAssrt1(NO, @"[UNKNOWN] NSUserInterfaceItemIdentifier(%@)", identifier);
+  }
 }
 @end

@@ -97,6 +97,9 @@
 
 @end
 
-@interface SVRAppDelegate (StateRestoration)
+@interface SVRAppDelegate (StateRestoration) <NSWindowRestoration>
 -(BOOL)applicationSupportsSecureRestorableState:(NSApplication*)app;
++(void)restoreWindowWithIdentifier:(NSString*)identifier
+                             state:(NSCoder*)state
+                 completionHandler:(void (^)(NSWindow*, XPErrorPointer))completionHandler;
 @end
