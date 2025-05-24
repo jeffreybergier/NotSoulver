@@ -671,6 +671,26 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 @end
 
+@implementation NSWindow (CrossPlatform)
+
+-(void)XP_setRestorationClass:(Class)aClass;
+{
+#ifdef XPSupportsStateRestoration
+  return [self setRestorationClass:aClass];
+#else
+  XPLogDebug(@"[IGNORE]");
+#endif
+}
+-(void)XP_setIdentifier:(NSString*)anIdentifier;
+{
+#ifdef XPSupportsStateRestoration
+  return [self setIdentifier:anIdentifier];
+#else
+  XPLogDebug(@"[IGNORE]");
+#endif
+}
+@end
+
 @implementation XPLog
 
 +(void)logCheckedPoundDefines;

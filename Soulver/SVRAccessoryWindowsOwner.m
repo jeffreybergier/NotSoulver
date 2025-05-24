@@ -86,14 +86,16 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
   self = [super init];
   XPParameterRaise(self);
   
+  // Load NIB
   _topLevelObjects = nil;
   [[NSBundle mainBundle] XP_loadNibNamed:nibName
                                    owner:self
                          topLevelObjects:&_topLevelObjects];
   [_topLevelObjects retain];
   
-  // TODO: Consider restoring pre-10.7 systems
-  // [self __restoreWindowState];
+  // Restore state on older systems
+  [self __legacy_restoreWindowVisibility];
+  
   [nc addObserver:self
          selector:@selector(__windowDidBecomeKey:)
              name:NSWindowDidBecomeKeyNotification
@@ -127,9 +129,9 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
   [ textStorage endEditing];
 
   // Set autosave names
-  [keypadPanel           setIdentifier:SVRAccessoryWindowFrameAutosaveNameKeypad  ];
-  [aboutWindow           setIdentifier:SVRAccessoryWindowFrameAutosaveNameAbout   ];
-  [settingsWindow        setIdentifier:SVRAccessoryWindowFrameAutosaveNameSettings];
+  [keypadPanel        XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameKeypad  ];
+  [aboutWindow        XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameAbout   ];
+  [settingsWindow     XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameSettings];
   [keypadPanel    setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameKeypad  ];
   [aboutWindow    setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameAbout   ];
   [settingsWindow setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameSettings];
@@ -173,7 +175,6 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
   success = [ws XP_openWebURL:webURLToOpen];
   if (success) { return; }
   NSBeep();
-  XPLogAssrt1(success, @"[NSWorkspace openURL:%@]", webURLToOpen);
   copyToClipboard = XPRunCopyWebURLToPasteboardAlert(webURLToOpen);
   switch (copyToClipboard) {
     case XPAlertReturnDefault:
@@ -181,16 +182,14 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
       success = [pb setString:webURLToOpen forType:XPPasteboardTypeString];
       XPLogAssrt1(success, @"[NSPasteboard setString:%@", webURLToOpen);
       return;
-    case XPAlertReturnAlternate:
-    case XPAlertReturnOther:
-    case XPAlertReturnError:
+    default:
       XPLogDebug1(@"[Cancelled] [NSPasteboard setString:%@", webURLToOpen);
       return;
   }
 }
 
 // MARK: Restore Window State
--(void)__restoreWindowState;
+-(void)__legacy_restoreWindowVisibility;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   

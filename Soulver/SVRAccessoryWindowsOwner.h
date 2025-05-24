@@ -67,7 +67,8 @@
 -(IBAction)openSourceRepository:(id)sender;
 
 // MARK: Restore Window State
--(void)__restoreWindowState;
+/// Is only effective on systems that do not support state restoration
+-(void)__legacy_restoreWindowVisibility;
 
 // MARK: Notifications (Save window state)
 /// Set the User Defaults to YES for this Window

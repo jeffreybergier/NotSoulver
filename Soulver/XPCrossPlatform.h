@@ -379,6 +379,11 @@ NSArray* XPRunOpenPanel(NSString *extension);
 -(BOOL)XP_writeToURL:(XPURL*)url error:(XPErrorPointer)errorPtr;
 @end
 
+@interface NSWindow (CrossPlatform)
+-(void)XP_setRestorationClass:(Class)aClass;
+-(void)XP_setIdentifier:(NSString*)anIdentifier;
+@end
+
 // MARK: XPLogging
 
 @interface XPLog: NSObject

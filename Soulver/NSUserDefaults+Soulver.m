@@ -97,13 +97,23 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 
 -(BOOL)SVR_visibilityForWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
 {
+#ifdef XPSupportsStateRestoration
+  XPLogDebug(@"[IGNORE] System supports state restoration");
+  return NO;
+#else
   return [self boolForKey:frameAutosaveName];
+#endif
 }
 
 -(BOOL)SVR_setVisibility:(BOOL)isVisible forWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
 {
+#ifdef XPSupportsStateRestoration
+  XPLogDebug(@"[IGNORE] System supports state restoration");
+  return YES;
+#else
   [self setBool:isVisible forKey:frameAutosaveName];
   return [self synchronize];
+#endif
 }
 
 // MARK: Theming
