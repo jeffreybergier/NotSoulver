@@ -403,11 +403,10 @@ NSArray* XPRunOpenPanel(NSString *extension)
 @implementation XPKeyedArchiver (CrossPlatform)
 +(NSData*)XP_archivedDataWithRootObject:(id)object;
 {
-  // TODO: Fix this to use NSSecureCoding
 #ifdef XPSupportsNSSecureCoding
   NSError *error = nil;
   NSData *output = [self archivedDataWithRootObject:object
-                              requiringSecureCoding:NO
+                              requiringSecureCoding:YES
                                               error:&error];
   XPLogAssrt1(!error, @"%@", error);
   return output;
@@ -422,9 +421,6 @@ NSArray* XPRunOpenPanel(NSString *extension)
 // and causes warning in OpenStep
 +(id)XP_unarchivedObjectOfClass:(Class)cls fromData:(NSData*)someData;
 {
-  // TODO: Fix this to use NSSecureCoding
-  // NSCoding of my custom attributed strings seems not work completely
-  // NSSecureCoding does not seem to work even though it should
 #ifdef XPSupportsNSSecureCoding
   NSError *error = nil;
   NSAttributedString *output = [self unarchivedObjectOfClass:cls

@@ -294,7 +294,6 @@ NSString *RawStringForOperator(SVRSolverOperator operator)
 
 NSString *SVRSolverDescriptionForError(SVRCalculationError error)
 {
-  // TODO: Add missing localized strings
   switch (error) {
     case SVRCalculationLossOfPrecision:
     case SVRCalculationUnderflow:
