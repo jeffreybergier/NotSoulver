@@ -694,7 +694,11 @@ NSArray* XPRunOpenPanel(NSString *extension)
   NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
   NSLog(@"<XPLog> Start: logCheckedPoundDefines");
   NSLog(@"LOGLEVEL...............(%d)", LOGLEVEL);
+#ifdef DEBUG
   NSLog(@"DEBUG..................(%d)", DEBUG);
+#else
+  NSLog(@"DEBUG..................(ND)");
+#endif
   NSLog(@"TESTING................(%d)", TESTING);
 #ifdef NS_ENUM
   NSLog(@"NS_ENUM................(Defined)");
