@@ -93,9 +93,6 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
                          topLevelObjects:&_topLevelObjects];
   [_topLevelObjects retain];
   
-  // Restore state on older systems
-  [self __legacy_restoreWindowVisibility];
-  
   [nc addObserver:self
          selector:@selector(__windowDidBecomeKey:)
              name:NSWindowDidBecomeKeyNotification
@@ -206,7 +203,7 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
 }
 
 // MARK: Restore Window State
--(void)__legacy_restoreWindowVisibility;
+-(void)legacy_restoreWindowVisibility;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   

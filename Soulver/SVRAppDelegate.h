@@ -102,6 +102,7 @@
 #else
 @interface SVRAppDelegate (StateRestoration)
 #endif
+-(void)applicationDidFinishRestoringWindows:(NSNotification*)aNotification;
 -(BOOL)applicationSupportsSecureRestorableState:(NSApplication*)app;
 +(void)restoreWindowWithIdentifier:(NSString*)identifier
                              state:(NSCoder*)state

@@ -104,14 +104,22 @@
   NSApplication *app = [aNotification object];
   // Observe Dark Mode
   [self beginObservingEffectiveAppearance:app];
-  
-  if (!NSClassFromString(@"NSDocument")) {
+#ifndef XPSupportsNSDocument
     // Register for Notifications
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(__windowWillCloseNotification:)
                                                  name:NSWindowWillCloseNotification
                                                object:nil];
   }
+#endif
+#ifdef XPSupportsStateRestoration
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applicationDidFinishRestoringWindows:)
+                                                 name:NSApplicationDidFinishRestoringWindowsNotification
+                                               object:nil];
+#endif
+  // Restore state on older systems
+  [[self accessoryWindowsOwner] legacy_restoreWindowVisibility];
   // Announce
   XPLogDebug(@"");
 }
@@ -311,6 +319,28 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 @end
 
 @implementation SVRAppDelegate (StateRestoration)
+
+-(void)applicationDidFinishRestoringWindows:(NSNotification*)aNotification;
+{
+  // Overrides macOS behavior when restoring state where only
+  // 1 or even 0 windows appear in front of the previously active
+  // app window. I find this behavior very strange.
+  NSApplication *app = [aNotification object];
+  NSArray *windows = [app windows];
+  NSEnumerator *e = [windows objectEnumerator];
+  NSWindow *window = nil;
+  XPLogAssrt1([app isKindOfClass:[NSApplication class]], @"%@ was not NSApplication", app);
+  while (window = [e nextObject]) {
+    // This behavior is different... for some reason.
+    // In 10.8 orderFrontRegardless is needed.
+    // In 10.15 15, orderFront: is needed.
+#ifndef MAC_OS_X_VERSION_10_14
+    [window orderFrontRegardless];
+#else
+    [window orderFront:app];
+#endif
+  }
+}
 
 -(BOOL)applicationSupportsSecureRestorableState:(NSApplication*)app;
 {
