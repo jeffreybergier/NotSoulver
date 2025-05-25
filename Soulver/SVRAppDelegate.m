@@ -331,14 +331,16 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   NSWindow *window = nil;
   XPLogAssrt1([app isKindOfClass:[NSApplication class]], @"%@ was not NSApplication", app);
   while (window = [e nextObject]) {
-    // This behavior is different... for some reason.
-    // In 10.8 orderFrontRegardless is needed.
-    // In 10.15 15, orderFront: is needed.
+    if ([window isVisible]) {
+      // This behavior is different... for some reason.
+      // In 10.8 orderFrontRegardless is needed.
+      // In 10.15 15, orderFront: is needed.
 #ifndef MAC_OS_X_VERSION_10_14
-    [window orderFrontRegardless];
+      [window orderFrontRegardless];
 #else
-    [window orderFront:app];
+      [window orderFront:app];
 #endif
+    }
   }
 }
 
