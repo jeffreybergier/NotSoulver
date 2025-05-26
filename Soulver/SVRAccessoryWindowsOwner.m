@@ -106,7 +106,7 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
              name:NSApplicationWillTerminateNotification
            object:nil];
   [nc addObserver:self
-         selector:@selector(__overrideAppearance:)
+         selector:@selector(overrideWindowAppearance)
              name:SVRThemeDidChangeNotificationName
            object:nil];
   
@@ -124,6 +124,7 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
   NSRect settingsRect = [settingsWindow frame];
   
   // Set the about text from the strings file
+  // TODO: Figure out why the text color does not change in dark mode
   [ textStorage beginEditing];
   [[textStorage mutableString] setString:[Localized aboutParagraph]];
   [ textStorage endEditing];
@@ -151,7 +152,7 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
   }
   
   // Set appearance
-  [self __overrideAppearance:nil];
+  [self overrideWindowAppearance];
   
   // Announce
   XPLogDebug(@"");
@@ -264,25 +265,13 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
 @end
 
 @implementation SVRAccessoryWindowsOwner (DarkMode)
--(void)__overrideAppearance:(NSNotification*)aNotification;
+-(void)overrideWindowAppearance;
 {
-#ifdef XPSupportsDarkMode
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   XPUserInterfaceStyle style = [ud SVR_userInterfaceStyle];
-  NSAppearance *appearance = nil;
-  switch (style) {
-    case XPUserInterfaceStyleUnspecified:
-    case XPUserInterfaceStyleLight:
-      appearance = [NSAppearance appearanceNamed:NSAppearanceNameAqua];
-      break;
-    case XPUserInterfaceStyleDark:
-      appearance = [NSAppearance appearanceNamed:NSAppearanceNameDarkAqua];
-      break;
-  }
-  [_keypadPanel setAppearance:appearance];
-  [_aboutWindow setAppearance:appearance];
-  [_settingsWindow setAppearance:appearance];
-#endif
+  [_keypadPanel    XP_setAppearanceWithUserInterfaceStyle:style];
+  [_aboutWindow    XP_setAppearanceWithUserInterfaceStyle:style];
+  [_settingsWindow XP_setAppearanceWithUserInterfaceStyle:style];
 }
 @end
 

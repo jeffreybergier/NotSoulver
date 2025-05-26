@@ -67,5 +67,5 @@
 @end
 
 @interface SVRDocument (DarkMode)
--(void)__overrideAppearance:(NSNotification*)aNotification;
+-(void)overrideWindowAppearance;
 @end

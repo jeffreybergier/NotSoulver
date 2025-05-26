@@ -382,6 +382,7 @@ NSArray* XPRunOpenPanel(NSString *extension);
 @interface NSWindow (CrossPlatform)
 -(void)XP_setRestorationClass:(Class)aClass;
 -(void)XP_setIdentifier:(NSString*)anIdentifier;
+-(void)XP_setAppearanceWithUserInterfaceStyle:(XPUserInterfaceStyle)aStyle;
 @end
 
 // MARK: XPLogging

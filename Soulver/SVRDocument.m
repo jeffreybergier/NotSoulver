@@ -90,13 +90,16 @@
     SVRDocumentPointForCascading = [aWindow cascadeTopLeftFromPoint:SVRDocumentPointForCascading];
   }
   
+  // Set dark mode or light mode
+  [self overrideWindowAppearance];
+  
   // Subscribe to model updates
   [nc addObserver:self
          selector:@selector(modelDidProcessEditingNotification:)
              name:NSTextStorageDidProcessEditingNotification
            object:[modelController model]];
   [nc addObserver:self
-         selector:@selector(__overrideAppearance:)
+         selector:@selector(overrideWindowAppearance)
              name:SVRThemeDidChangeNotificationName
            object:nil];
   
@@ -120,8 +123,6 @@
     [super makeWindowControllers];
     [self XP_readFromURL:[self XP_fileURL] ofType:[self fileType] error:NULL];
   }
-  
-  [self __overrideAppearance:nil];
 }
 
 // MARK: NSDocument subclass
@@ -201,22 +202,12 @@
 @end
 
 @implementation SVRDocument (DarkMode)
--(void)__overrideAppearance:(NSNotification*)aNotification;
+-(void)overrideWindowAppearance;
 {
-#ifdef XPSupportsDarkMode
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   XPUserInterfaceStyle style = [ud SVR_userInterfaceStyle];
   NSWindow *myWindow = [self XP_windowForSheet];
   XPParameterRaise(myWindow);
-  switch (style) {
-    case XPUserInterfaceStyleUnspecified:
-    case XPUserInterfaceStyleLight:
-      [myWindow setAppearance:[NSAppearance appearanceNamed:NSAppearanceNameAqua]];
-      return;
-    case XPUserInterfaceStyleDark:
-      [myWindow setAppearance:[NSAppearance appearanceNamed:NSAppearanceNameDarkAqua]];
-      return;
-  }
-#endif
+  [myWindow XP_setAppearanceWithUserInterfaceStyle:style];
 }
 @end

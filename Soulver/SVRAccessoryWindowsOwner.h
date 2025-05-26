@@ -81,7 +81,7 @@
 @end
 
 @interface SVRAccessoryWindowsOwner (DarkMode)
--(void)__overrideAppearance:(NSNotification*)aNotification;
+-(void)overrideWindowAppearance;
 @end
 
 @interface SVRAccessoryWindowsOwner (StateRestoration)

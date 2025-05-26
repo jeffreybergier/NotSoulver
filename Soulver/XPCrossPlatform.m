@@ -677,10 +677,29 @@ NSArray* XPRunOpenPanel(NSString *extension)
   XPLogDebug(@"[IGNORE]");
 #endif
 }
+
 -(void)XP_setIdentifier:(NSString*)anIdentifier;
 {
 #ifdef XPSupportsStateRestoration
   return [self setIdentifier:anIdentifier];
+#else
+  XPLogDebug(@"[IGNORE]");
+#endif
+}
+
+-(void)XP_setAppearanceWithUserInterfaceStyle:(XPUserInterfaceStyle)aStyle;
+{
+#ifdef XPSupportsDarkMode
+  switch (aStyle) {
+    case XPUserInterfaceStyleLight:
+      [self setAppearance:[NSAppearance appearanceNamed:NSAppearanceNameAqua]];
+      break;
+    case XPUserInterfaceStyleDark:
+      [self setAppearance:[NSAppearance appearanceNamed:NSAppearanceNameDarkAqua]];
+      break;
+    default:
+      XPLogAssrt1(NO, @"[UNKNOWN] XPUserInterfaceStyle(%d)", (int)aStyle);
+  }
 #else
   XPLogDebug(@"[IGNORE]");
 #endif
