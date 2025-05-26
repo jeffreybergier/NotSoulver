@@ -55,6 +55,7 @@
 -(void)makeWindowControllers;
 {
   static NSPoint SVRDocumentPointForCascading = { 0.0, 0.0 };
+  SEL XP_setContentViewController = @selector(setContentViewController:);
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
   XPWindowStyleMask windowStyle = (XPWindowStyleMaskTitled
                                  | XPWindowStyleMaskClosable
@@ -89,12 +90,6 @@
     SVRDocumentPointForCascading = [aWindow cascadeTopLeftFromPoint:SVRDocumentPointForCascading];
   }
   
-  // Configure Views
-  [aWindow setContentView:[viewController view]];
-  [self XP_setWindow:aWindow];
-  [self XP_addWindowController:windowController];
-  [self __overrideAppearance:nil];
-  
   // Subscribe to model updates
   [nc addObserver:self
          selector:@selector(modelDidProcessEditingNotification:)
@@ -105,9 +100,19 @@
              name:SVRThemeDidChangeNotificationName
            object:nil];
   
-  // Configure responder chain
-  [aWindow setNextResponder:viewController];
-  [viewController setNextResponder:windowController];
+  // Configure Views/Responder Chains
+  [self XP_setWindow:aWindow];
+  [self XP_addWindowController:windowController];
+  if ([windowController respondsToSelector:XP_setContentViewController]) {
+    // Newer systems manage this for you
+    [windowController performSelector:XP_setContentViewController
+                           withObject:viewController];
+  } else {
+    // Older systems, this needs to be configured manually
+    [aWindow setContentView:[viewController view]];
+    [aWindow setNextResponder:viewController];
+    [viewController setNextResponder:windowController];
+  }
   
   // Configure legacy XPDocument support
   if ([self isKindOfClass:[NSResponder class]]) {
@@ -115,6 +120,8 @@
     [super makeWindowControllers];
     [self XP_readFromURL:[self XP_fileURL] ofType:[self fileType] error:NULL];
   }
+  
+  [self __overrideAppearance:nil];
 }
 
 // MARK: NSDocument subclass
@@ -200,9 +207,7 @@
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   XPUserInterfaceStyle style = [ud SVR_userInterfaceStyle];
   NSWindow *myWindow = [self XP_windowForSheet];
-  
   XPParameterRaise(myWindow);
-  
   switch (style) {
     case XPUserInterfaceStyleUnspecified:
     case XPUserInterfaceStyleLight:
