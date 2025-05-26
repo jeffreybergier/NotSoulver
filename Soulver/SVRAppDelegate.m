@@ -330,7 +330,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   NSEnumerator *e = [windows objectEnumerator];
   NSWindow *window = nil;
   XPLogAssrt1([app isKindOfClass:[NSApplication class]], @"%@ was not NSApplication", app);
-  while (window = [e nextObject]) {
+  while ((window = [e nextObject])) {
     if ([window isVisible]) {
       // This behavior is different... for some reason.
       // In 10.8 orderFrontRegardless is needed.
