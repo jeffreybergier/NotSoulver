@@ -55,7 +55,6 @@
 -(void)makeWindowControllers;
 {
   static NSPoint SVRDocumentPointForCascading = { 0.0, 0.0 };
-  SEL XP_setContentViewController = @selector(setContentViewController:);
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
   XPWindowStyleMask windowStyle = (XPWindowStyleMaskTitled
                                  | XPWindowStyleMaskClosable
@@ -71,8 +70,22 @@
                                                        defer:YES] autorelease];
   XPWindowController *windowController = [XPNewWindowController(aWindow) autorelease];
   
-  // Configure Window Size and Location
+  // Configure basic properties
+  [self XP_setWindow:aWindow];
+  [self XP_addWindowController:windowController];
+  [self overrideWindowAppearance];
   [aWindow setMinSize:NSMakeSize(200, 200)];
+  [aWindow setContentView:[viewController view]];
+  
+  // Subscribe to theme and model updates
+  [nc addObserver:self
+         selector:@selector(modelDidProcessEditingNotification:)
+             name:NSTextStorageDidProcessEditingNotification
+           object:[modelController model]];
+  [nc addObserver:self
+         selector:@selector(overrideWindowAppearance)
+             name:SVRThemeDidChangeNotificationName
+           object:nil];
   
   // This is a bit fiddly, so let me explain.
   // If there is an autosavename we will use and not try to do any cascading.
@@ -90,29 +103,10 @@
     SVRDocumentPointForCascading = [aWindow cascadeTopLeftFromPoint:SVRDocumentPointForCascading];
   }
   
-  // Set dark mode or light mode
-  [self overrideWindowAppearance];
-  
-  // Subscribe to model updates
-  [nc addObserver:self
-         selector:@selector(modelDidProcessEditingNotification:)
-             name:NSTextStorageDidProcessEditingNotification
-           object:[modelController model]];
-  [nc addObserver:self
-         selector:@selector(overrideWindowAppearance)
-             name:SVRThemeDidChangeNotificationName
-           object:nil];
-  
   // Configure Views/Responder Chains
-  [self XP_setWindow:aWindow];
-  [self XP_addWindowController:windowController];
-  if ([windowController respondsToSelector:XP_setContentViewController]) {
-    // Newer systems manage this for you
-    [windowController performSelector:XP_setContentViewController
-                           withObject:viewController];
-  } else {
-    // Older systems, this needs to be configured manually
-    [aWindow setContentView:[viewController view]];
+  // In older systems the view controller is not automatically
+  // added to the responder chain. This checks for that and adds it
+  if (![windowController respondsToSelector:@selector(setContentViewController:)]) {
     [aWindow setNextResponder:viewController];
     [viewController setNextResponder:windowController];
   }
