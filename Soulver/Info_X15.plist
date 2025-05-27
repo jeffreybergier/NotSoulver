@@ -31,6 +31,8 @@
 				<string>NSRTFDPboardType</string>
 				<string>NSStringPboardType</string>
 			</array>
+			<key>NSUbiquitousDocumentUserActivityType</key>
+			<string>com.saturdayapps.notsoulver.document</string>
 		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
