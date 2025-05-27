@@ -87,5 +87,5 @@
 @interface SVRAccessoryWindowsOwner (StateRestoration)
 -(void)__restoreWindowWithIdentifier:(NSString*)identifier
                                state:(NSCoder*)state
-                   completionHandler:(XPWindowStationCompletionHandler)completionHandler;
+                   completionHandler:(XPWindowRestoreCompletionHandler)completionHandler;
 @end

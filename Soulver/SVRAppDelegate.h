@@ -106,5 +106,5 @@
 -(BOOL)applicationSupportsSecureRestorableState:(NSApplication*)app;
 +(void)restoreWindowWithIdentifier:(NSString*)identifier
                              state:(NSCoder*)state
-                 completionHandler:(XPWindowStationCompletionHandler)completionHandler;
+                 completionHandler:(XPWindowRestoreCompletionHandler)completionHandler;
 @end

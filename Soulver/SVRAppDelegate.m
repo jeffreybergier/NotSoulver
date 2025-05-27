@@ -365,7 +365,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 
 +(void)restoreWindowWithIdentifier:(NSString*)identifier
                              state:(NSCoder*)state
-                 completionHandler:(XPWindowStationCompletionHandler)completionHandler;
+                 completionHandler:(XPWindowRestoreCompletionHandler)completionHandler;
 {
   SVRAppDelegate *delegate = (SVRAppDelegate*)[[NSApplication sharedApplication] delegate];
   SVRAccessoryWindowsOwner *owner = [delegate accessoryWindowsOwner];

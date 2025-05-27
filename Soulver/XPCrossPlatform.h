@@ -171,12 +171,12 @@ typedef XPUInteger XPStringCompareOptions;
 
 #ifdef MAC_OS_X_VERSION_10_8
 #define XPSupportsStateRestoration
-typedef void (^XPWindowStationCompletionHandler)(NSWindow *window, XPError *error);
+typedef void (^XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *error);
 #define XPSecureCoding NSSecureCoding
 #define XPSaveOperationType NSSaveOperationType
 #define XPDataWritingAtomic NSDataWritingAtomic
 #else
-typedef void (*XPWindowStationCompletionHandler)(NSWindow *window, XPError *error);
+typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *error);
 #define XPSecureCoding NSCoding
 #define XPSaveOperationType XPUInteger
 #define XPDataWritingAtomic NSAtomicWrite
