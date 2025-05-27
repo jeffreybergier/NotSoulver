@@ -28,6 +28,7 @@
 //
 
 #import "SVRDocument.h"
+#import "NSUserDefaults+Soulver.h"
 
 @implementation SVRDocument
 
@@ -53,42 +54,62 @@
 
 -(void)makeWindowControllers;
 {
+  static NSPoint SVRDocumentPointForCascading = { 0.0, 0.0 };
+  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
   XPWindowStyleMask windowStyle = (XPWindowStyleMaskTitled
                                  | XPWindowStyleMaskClosable
                                  | XPWindowStyleMaskMiniaturizable
                                  | XPWindowStyleMaskResizable);
-  NSRect windowRect = [self __newDocumentWindowRect];
+  NSRect rect = NSMakeRect(0, 0, 500, 500);
   NSString *autosaveName = [self XP_nameForFrameAutosave];
   SVRDocumentModelController *modelController = [self modelController];
   SVRDocumentViewController  *viewController  = [self viewController];
-  NSWindow *aWindow = [[[NSWindow alloc] initWithContentRect:windowRect
+  NSWindow *aWindow = [[[NSWindow alloc] initWithContentRect:rect
                                                    styleMask:windowStyle
                                                      backing:NSBackingStoreBuffered
                                                        defer:YES] autorelease];
   XPWindowController *windowController = [XPNewWindowController(aWindow) autorelease];
   
-  // Configure the Window
-  if (autosaveName) {
-    [aWindow setFrameAutosaveName:autosaveName];
-  } else {
-    [aWindow setFrameAutosaveName:@"NewSVRDocument"];
-  }
+  // Configure basic properties
+  [self XP_setWindow:aWindow];
+  [self XP_addWindowController:windowController];
+  [self overrideWindowAppearance];
   [aWindow setMinSize:NSMakeSize(200, 200)];
   [aWindow setContentView:[viewController view]];
   
-  // Configure self
-  [self XP_setWindow:aWindow];
-  [self XP_addWindowController:windowController];
+  // Subscribe to theme and model updates
+  [nc addObserver:self
+         selector:@selector(modelDidProcessEditingNotification:)
+             name:NSTextStorageDidProcessEditingNotification
+           object:[modelController model]];
+  [nc addObserver:self
+         selector:@selector(overrideWindowAppearance)
+             name:SVRThemeDidChangeNotificationName
+           object:nil];
   
-  // Subscribe to model updates
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(modelDidProcessEditingNotification:)
-                                               name:NSTextStorageDidProcessEditingNotification
-                                             object:[modelController model]];
+  // This is a bit fiddly, so let me explain.
+  // If there is an autosavename we will use and not try to do any cascading.
+  // However, if this is the first time the document has been open,
+  // it will open in the bottom left of the screen as the autosave name has
+  // never saved anything. So here we check if the frame is different before
+  // and after setting the autosaveName. If its the same, then we ask the
+  // window to center itself. If its different then we just let it be.
+  rect = [aWindow frame];
+  if (autosaveName) {
+    [aWindow setFrameAutosaveName:autosaveName];
+  }
+  if (NSEqualRects(rect, [aWindow frame])) {
+    [aWindow center];
+    SVRDocumentPointForCascading = [aWindow cascadeTopLeftFromPoint:SVRDocumentPointForCascading];
+  }
   
-  // Configure responder chain
-  [aWindow setNextResponder:viewController];
-  [viewController setNextResponder:windowController];
+  // Configure Views/Responder Chains
+  // In older systems the view controller is not automatically
+  // added to the responder chain. This checks for that and adds it
+  if (![windowController respondsToSelector:@selector(setContentViewController:)]) {
+    [aWindow setNextResponder:viewController];
+    [viewController setNextResponder:windowController];
+  }
   
   // Configure legacy XPDocument support
   if ([self isKindOfClass:[NSResponder class]]) {
@@ -132,17 +153,6 @@
                                    : XPChangeCleared];
 }
 
--(NSRect)__newDocumentWindowRect;
-{
-  NSRect output = NSZeroRect;
-  NSSize screenSize = [[NSScreen mainScreen] frame].size;
-  NSSize targetSize = NSMakeSize(500, 500);
-  output.origin.y = ceil(screenSize.height / 2) - ceil(targetSize.height / 2);
-  output.origin.x = ceil(screenSize.width  / 2) - ceil(targetSize.width  / 2);
-  output.size = targetSize;
-  return output;
-}
-
 -(void)dealloc;
 {
   XPLogDebug1(@"<%@>", XPPointerString(self));
@@ -183,4 +193,15 @@
   return YES;
 }
 
+@end
+
+@implementation SVRDocument (DarkMode)
+-(void)overrideWindowAppearance;
+{
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  XPUserInterfaceStyle style = [ud SVR_userInterfaceStyle];
+  NSWindow *myWindow = [self XP_windowForSheet];
+  XPParameterRaise(myWindow);
+  [myWindow XP_setAppearanceWithUserInterfaceStyle:style];
+}
 @end

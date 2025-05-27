@@ -56,8 +56,6 @@
 // MARK: Model Changed Notification
 -(void)modelDidProcessEditingNotification:(NSNotification*)aNotification;
 
--(NSRect)__newDocumentWindowRect;
-
 @end
 
 @interface SVRDocument (StateRestoration)
@@ -66,4 +64,8 @@
 -(BOOL)canAsynchronouslyWriteToURL:(XPURL*)url
                             ofType:(NSString*)typeName
                   forSaveOperation:(XPSaveOperationType)saveOperation;
+@end
+
+@interface SVRDocument (DarkMode)
+-(void)overrideWindowAppearance;
 @end

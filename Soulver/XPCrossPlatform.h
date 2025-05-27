@@ -135,7 +135,6 @@ typedef XPUInteger XPDocumentChangeType;
 // MARK: Deprecated Constants and Types
 
 #ifdef MAC_OS_X_VERSION_10_2
-// Cannot declare a category on a typedef so these need to be macros
 #define XPKeyedArchiver NSKeyedArchiver
 #define XPKeyedUnarchiver NSKeyedUnarchiver
 #define XPSupportsNSBezierPath
@@ -146,10 +145,12 @@ typedef XPUInteger XPDocumentChangeType;
 
 #ifdef MAC_OS_X_VERSION_10_4
 #define XPRTFDocumentAttributes [NSDictionary dictionaryWithObject:NSRTFTextDocumentType forKey:NSDocumentTypeDocumentAttribute]
-typedef NSRangePointer XPRangePointer;
+#define XPError NSError
 typedef NSError** XPErrorPointer;
+typedef NSRangePointer XPRangePointer;
 #else
 #define XPRTFDocumentAttributes nil
+#define XPError NSNumber
 typedef NSRange* XPRangePointer;
 typedef NSNumber** XPErrorPointer;
 #endif
@@ -169,10 +170,13 @@ typedef XPUInteger XPStringCompareOptions;
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_8
+#define XPSupportsStateRestoration
+typedef void (^XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *error);
 #define XPSecureCoding NSSecureCoding
 #define XPSaveOperationType NSSaveOperationType
 #define XPDataWritingAtomic NSDataWritingAtomic
 #else
+typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *error);
 #define XPSecureCoding NSCoding
 #define XPSaveOperationType XPUInteger
 #define XPDataWritingAtomic NSAtomicWrite
@@ -373,6 +377,12 @@ NSArray* XPRunOpenPanel(NSString *extension);
 @interface NSData (CrossPlatform)
 +(NSData*)XP_dataWithContentsOfURL:(XPURL*)url error:(XPErrorPointer)errorPtr;
 -(BOOL)XP_writeToURL:(XPURL*)url error:(XPErrorPointer)errorPtr;
+@end
+
+@interface NSWindow (CrossPlatform)
+-(void)XP_setRestorationClass:(Class)aClass;
+-(void)XP_setIdentifier:(NSString*)anIdentifier;
+-(void)XP_setAppearanceWithUserInterfaceStyle:(XPUserInterfaceStyle)aStyle;
 @end
 
 // MARK: XPLogging

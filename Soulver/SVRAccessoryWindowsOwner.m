@@ -28,7 +28,6 @@
 //
 
 #import "SVRAccessoryWindowsOwner.h"
-#import "NSUserDefaults+Soulver.h"
 
 NSString * const SVRAccessoryWindowFrameAutosaveNameSettings = @"kSVRAccessoryWindowFrameAutosaveNameSettings";
 NSString * const SVRAccessoryWindowFrameAutosaveNameAbout    = @"kSVRAccessoryWindowFrameAutosaveNameAbout";
@@ -87,13 +86,13 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
   self = [super init];
   XPParameterRaise(self);
   
+  // Load NIB
   _topLevelObjects = nil;
   [[NSBundle mainBundle] XP_loadNibNamed:nibName
                                    owner:self
                          topLevelObjects:&_topLevelObjects];
   [_topLevelObjects retain];
   
-  [self __restoreWindowState];
   [nc addObserver:self
          selector:@selector(__windowDidBecomeKey:)
              name:NSWindowDidBecomeKeyNotification
@@ -106,22 +105,54 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
          selector:@selector(__applicationWillTerminate:)
              name:NSApplicationWillTerminateNotification
            object:nil];
+  [nc addObserver:self
+         selector:@selector(overrideWindowAppearance)
+             name:SVRThemeDidChangeNotificationName
+           object:nil];
   
   return self;
 }
 
 -(void)awakeFromNib;
 {
-  // Set the about text from the strings file
   NSTextStorage *textStorage = [[self aboutTextView] textStorage];
+  NSWindow *keypadPanel    = [self keypadPanel];
+  NSWindow *aboutWindow    = [self aboutWindow];
+  NSWindow *settingsWindow = [self settingsWindow];
+  NSRect keypadRect   = [keypadPanel    frame];
+  NSRect aboutRect    = [aboutWindow    frame];
+  NSRect settingsRect = [settingsWindow frame];
+  
+  // Set the about text from the strings file
+  // TODO: Figure out why the text color does not change in dark mode
   [ textStorage beginEditing];
   [[textStorage mutableString] setString:[Localized aboutParagraph]];
   [ textStorage endEditing];
 
   // Set autosave names
-  [[self keypadPanel   ] setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameKeypad  ];
-  [[self aboutWindow   ] setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameAbout   ];
-  [[self settingsWindow] setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameSettings];
+  [keypadPanel        XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameKeypad  ];
+  [aboutWindow        XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameAbout   ];
+  [settingsWindow     XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameSettings];
+  [keypadPanel    setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameKeypad  ];
+  [aboutWindow    setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameAbout   ];
+  [settingsWindow setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameSettings];
+  
+  // Setting the frameAutosaveName immediate changes the frame
+  // of the window if its been moved already.
+  // This code checks if the windows have never been
+  // positioned by the user before. If so, it centers them.
+  if (NSEqualRects(keypadRect, [keypadPanel frame])) {
+    [keypadPanel center];
+  }
+  if (NSEqualRects(aboutRect, [aboutWindow frame])) {
+    [aboutWindow center];
+  }
+  if (NSEqualRects(settingsRect, [settingsWindow frame])) {
+    [settingsWindow center];
+  }
+  
+  // Set appearance
+  [self overrideWindowAppearance];
   
   // Announce
   XPLogDebug(@"");
@@ -159,7 +190,6 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
   success = [ws XP_openWebURL:webURLToOpen];
   if (success) { return; }
   NSBeep();
-  XPLogAssrt1(success, @"[NSWorkspace openURL:%@]", webURLToOpen);
   copyToClipboard = XPRunCopyWebURLToPasteboardAlert(webURLToOpen);
   switch (copyToClipboard) {
     case XPAlertReturnDefault:
@@ -167,16 +197,14 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
       success = [pb setString:webURLToOpen forType:XPPasteboardTypeString];
       XPLogAssrt1(success, @"[NSPasteboard setString:%@", webURLToOpen);
       return;
-    case XPAlertReturnAlternate:
-    case XPAlertReturnOther:
-    case XPAlertReturnError:
+    default:
       XPLogDebug1(@"[Cancelled] [NSPasteboard setString:%@", webURLToOpen);
       return;
   }
 }
 
 // MARK: Restore Window State
--(void)__restoreWindowState;
+-(void)legacy_restoreWindowVisibility;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   
@@ -234,4 +262,33 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
   [super dealloc];
 }
 
+@end
+
+@implementation SVRAccessoryWindowsOwner (DarkMode)
+-(void)overrideWindowAppearance;
+{
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  XPUserInterfaceStyle style = [ud SVR_userInterfaceStyle];
+  [_keypadPanel    XP_setAppearanceWithUserInterfaceStyle:style];
+  [_aboutWindow    XP_setAppearanceWithUserInterfaceStyle:style];
+  [_settingsWindow XP_setAppearanceWithUserInterfaceStyle:style];
+}
+@end
+
+@implementation SVRAccessoryWindowsOwner (StateRestoration)
+-(void)__restoreWindowWithIdentifier:(NSString*)identifier
+                               state:(NSCoder*)state
+                   completionHandler:(XPWindowRestoreCompletionHandler)completionHandler;
+{
+  XPLogAssrt1(completionHandler, @"Completion Handler missing for identifier(%@)", identifier);
+  if (       [identifier isEqualToString:SVRAccessoryWindowFrameAutosaveNameAbout   ]) {
+    completionHandler([self aboutWindow],    nil);
+  } else if ([identifier isEqualToString:SVRAccessoryWindowFrameAutosaveNameKeypad  ]) {
+    completionHandler([self keypadPanel],    nil);
+  } else if ([identifier isEqualToString:SVRAccessoryWindowFrameAutosaveNameSettings]) {
+    completionHandler([self settingsWindow], nil);
+  } else {
+    XPLogAssrt1(NO, @"[UNKNOWN] NSUserInterfaceItemIdentifier(%@)", identifier);
+  }
+}
 @end

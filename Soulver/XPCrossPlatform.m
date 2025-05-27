@@ -403,11 +403,10 @@ NSArray* XPRunOpenPanel(NSString *extension)
 @implementation XPKeyedArchiver (CrossPlatform)
 +(NSData*)XP_archivedDataWithRootObject:(id)object;
 {
-  // TODO: Fix this to use NSSecureCoding
 #ifdef XPSupportsNSSecureCoding
   NSError *error = nil;
   NSData *output = [self archivedDataWithRootObject:object
-                              requiringSecureCoding:NO
+                              requiringSecureCoding:YES
                                               error:&error];
   XPLogAssrt1(!error, @"%@", error);
   return output;
@@ -422,9 +421,6 @@ NSArray* XPRunOpenPanel(NSString *extension)
 // and causes warning in OpenStep
 +(id)XP_unarchivedObjectOfClass:(Class)cls fromData:(NSData*)someData;
 {
-  // TODO: Fix this to use NSSecureCoding
-  // NSCoding of my custom attributed strings seems not work completely
-  // NSSecureCoding does not seem to work even though it should
 #ifdef XPSupportsNSSecureCoding
   NSError *error = nil;
   NSAttributedString *output = [self unarchivedObjectOfClass:cls
@@ -671,6 +667,45 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 @end
 
+@implementation NSWindow (CrossPlatform)
+
+-(void)XP_setRestorationClass:(Class)aClass;
+{
+#ifdef XPSupportsStateRestoration
+  return [self setRestorationClass:aClass];
+#else
+  XPLogDebug(@"[IGNORE]");
+#endif
+}
+
+-(void)XP_setIdentifier:(NSString*)anIdentifier;
+{
+#ifdef XPSupportsStateRestoration
+  return [self setIdentifier:anIdentifier];
+#else
+  XPLogDebug(@"[IGNORE]");
+#endif
+}
+
+-(void)XP_setAppearanceWithUserInterfaceStyle:(XPUserInterfaceStyle)aStyle;
+{
+#ifdef XPSupportsDarkMode
+  switch (aStyle) {
+    case XPUserInterfaceStyleLight:
+      [self setAppearance:[NSAppearance appearanceNamed:NSAppearanceNameAqua]];
+      break;
+    case XPUserInterfaceStyleDark:
+      [self setAppearance:[NSAppearance appearanceNamed:NSAppearanceNameDarkAqua]];
+      break;
+    default:
+      XPLogAssrt1(NO, @"[UNKNOWN] XPUserInterfaceStyle(%d)", (int)aStyle);
+  }
+#else
+  XPLogDebug(@"[IGNORE]");
+#endif
+}
+@end
+
 @implementation XPLog
 
 +(void)logCheckedPoundDefines;
@@ -678,7 +713,11 @@ NSArray* XPRunOpenPanel(NSString *extension)
   NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
   NSLog(@"<XPLog> Start: logCheckedPoundDefines");
   NSLog(@"LOGLEVEL...............(%d)", LOGLEVEL);
+#ifdef DEBUG
   NSLog(@"DEBUG..................(%d)", DEBUG);
+#else
+  NSLog(@"DEBUG..................(ND)");
+#endif
   NSLog(@"TESTING................(%d)", TESTING);
 #ifdef NS_ENUM
   NSLog(@"NS_ENUM................(Defined)");
