@@ -18,7 +18,7 @@ the "Math Notes" feature Apple added to Notes in macOS 15 Sequoia but this app h
 trick up its sleeve... it runs on every version of Mac OS X, including Mac OS X's 
 predecessor OpenStep.
 
-## What is Soulver?
+### What is Soulver?
 [Not]Soulver was inspired by [Soulver](https://github.com/soulverteam) by Zac Cohan but 
 is not related in any way. If you want a high quality calculator app for your Mac you 
 should purchase and use [Soulver](https://github.com/soulverteam) by Zac Cohan instead 
@@ -51,6 +51,8 @@ date in the newest operating system possible.
 - [42 - OpenStep](Builds/42%20-%20OpenStep/) Universal Intel 32 bit and Motorola 68K 32 bit builds that run on OpenStep 4.2
 
 ## For Developers
+### Watch My Try! Swift Tokyo 2025 Talk
+[![Youtube: I Built an App for NeXTSTEP or:](https://img.youtube.com/vi/dwpsVqsQG5s/0.jpg)](https://www.youtube.com/watch?v=dwpsVqsQG5s)
 ### Features
 Because [Not]Soulver for OpenStep uses Cocoa and Objective-C API's from 1996 it doesn't 
 use any modern features at all:
@@ -154,6 +156,21 @@ is totally ignored by the compiler on the unsupported system. So I try not to pu
 much code in these kinds of blocks. For example, 
 [`XPDocument`](Soulver/XPDocument.h#L53-L130) for OpenStep fully compiles
 in every version of OSX even though it is not used.
+
+#### Lets Talk About Apple Documentation
+When doing this cross-platform work its so important to know which version of OSX an API
+was introduced. And the Apple documentation, helpfully tells you this… but for some
+reason, its often wrong. Its no just wrong for certain methods or APIs, but its wrong
+for entire classes! I really found ChatGPT to be more reliable than Apple's docs for this.
+But really the only way to know is to try on each OS. Its quite annoying.
+
+I'll give you some examples:
+- [`NSError`](https://developer.apple.com/documentation/foundation/nserror?language=objc) was introduced in 10.3, but Apple docs show 10.0 (on their website) and 10.2 (in Xcode)
+- [`NSModalResponseOK`](https://developer.apple.com/documentation/appkit/nsapplication/modalresponse/ok?language=objc) was introduced in in 10.9, but the docs just say macOS with no version.
+- [`NSWindowStyleMaskTitled`](https://developer.apple.com/documentation/appkit/nswindow/stylemask-swift.struct/titled?language=objc)) was a particularly annoying example because the API Docs and Header files have no version info (indicating 10.0) but this API was not introduced until 10.12 Sierra!
+
+So yeah, be careful out there and make sure you compile on every OS… or just use
+deprecated API because they still work with no issues.
 
 ## Known Problems
 - Nested parenthesis not supported
