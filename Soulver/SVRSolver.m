@@ -51,15 +51,12 @@ NSCharacterSet *SVRSolverTextAttachmentCharacterSet = nil;
 // MARK: Configure Constants
 +(void)initialize;
 {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wnonnull"
   SVRSolverTextAttachmentCharacterSet = [
     [NSCharacterSet characterSetWithCharactersInString:
      [[NSAttributedString attributedStringWithAttachment:
        [[NSTextAttachment new] autorelease]]
       string]]
     retain];
-#pragma clang diagnostic pop
 }
 
 // MARK: Business Logic
