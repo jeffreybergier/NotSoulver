@@ -36,9 +36,9 @@
 -(id)init;
 {
   self = [super init];
-  NSCParameterAssert(self);
+  XPParameterRaise(self);
   _openDocuments = [NSMutableSet new];
-  _accessoryWindowsOwner = nil; // Set in applicationDidFinishLaunching:
+  _accessoryWindowsOwner = nil; // Set in applicationWillFinishLaunching:
   return self;
 }
 
@@ -64,7 +64,7 @@
 
 -(void)dealloc;
 {
-  XPLogDebug1(@"DEALLOC: %@", self);
+  XPLogDebug1(@"<%@>", XPPointerString(self));
   [_openDocuments release];
   [_accessoryWindowsOwner release];
   _openDocuments = nil;
@@ -81,23 +81,70 @@
 -(void)applicationWillFinishLaunching:(NSNotification*)aNotification;
 {
   NSApplication *app = [aNotification object];
+  Class myClass = [self class];
   // Configure the title of the app
   [[app mainMenu] setTitle:[Localized titleAppName]];
   // Prepare UserDefaults
   [[NSUserDefaults standardUserDefaults] SVR_configure];
   // Prepare FontManager
   [NSFontManager setFontManagerFactory:[SVRFontManager class]];
-  // Configure Accessory Windows
+  // Load Accessory Windows Nib
   _accessoryWindowsOwner = [[SVRAccessoryWindowsOwner alloc] init];
-  if (!NSClassFromString(@"NSDocument")) {
+  XPParameterRaise(_accessoryWindowsOwner);
+  // Configure Accessory Windows for state restoration
+  [[_accessoryWindowsOwner aboutWindow   ] XP_setRestorationClass:myClass];
+  [[_accessoryWindowsOwner keypadPanel   ] XP_setRestorationClass:myClass];
+  [[_accessoryWindowsOwner settingsWindow] XP_setRestorationClass:myClass];
+  // Announce
+  XPLogDebug(@"");
+}
+
+-(void)applicationDidFinishLaunching:(NSNotification*)aNotification;
+{
+  NSApplication *app = [aNotification object];
+  // Observe Dark Mode
+  [self beginObservingEffectiveAppearance:app];
+#ifndef XPSupportsNSDocument
     // Register for Notifications
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(__windowWillCloseNotification:)
                                                  name:NSWindowWillCloseNotification
                                                object:nil];
   }
+#endif
+#ifdef XPSupportsStateRestoration
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applicationDidFinishRestoringWindows:)
+                                                 name:NSApplicationDidFinishRestoringWindowsNotification
+                                               object:nil];
+#endif
+  // Restore state on older systems
+  [[self accessoryWindowsOwner] legacy_restoreWindowVisibility];
   // Announce
-  XPLogDebug1(@"%@ applicationWillFinishLaunching:", self);
+  XPLogDebug(@"");
+}
+
+-(void)applicationWillTerminate:(NSNotification*)aNotification;
+{
+  [self endObservingEffectiveAppearance:[aNotification object]];
+}
+
+-(BOOL)applicationOpenUntitledFile:(NSApplication*)sender;
+{
+#ifdef XPSupportsStateRestoration
+  // After 10.7 an open panel is expected to open
+  [[NSDocumentController sharedDocumentController] openDocument:sender];
+  return YES;
+#elif XPSupportsNSDocument >= 1
+  // Between 10.0 and 10.7, a new blank document is expected to open,
+  // and this is handled automatically by NSDocument
+  return NO;
+#else
+  // In OpenStep a new document is expected,
+  // but this has to be done manually
+  [self __newDocument:sender];
+  return YES;
+#endif
 }
 
 @end
@@ -111,10 +158,10 @@
 
 -(IBAction)__newDocument:(id)sender
 {
-  SVRDocument *document = [[[SVRDocument alloc] init] autorelease];
-  [document setFileType:SVRDocumentModelRepDisk];
+  XPDocument document = [[[SVRDocument alloc] init] autorelease];
+  [document XP_setFileType:SVRDocumentModelRepDisk];
   [document XP_setFileExtension:SVRDocumentModelExtension];
-  [document showWindows];
+  [document XP_showWindows];
   [[self openDocuments] addObject:document];
 }
 
@@ -126,7 +173,7 @@
   XPDocument nextC = nil;
 
   filenames = XPRunOpenPanel(SVRDocumentModelExtension);
-  if ([filenames count] == 0) { XPLogDebug1(@"%@ Open Cancelled", self); return; }
+  if ([filenames count] == 0) { XPLogDebug(@"Open Cancelled"); return; }
   e = [filenames objectEnumerator];
   while ((nextF = [e nextObject])) {
     nextC = [[self openDocuments] member:nextF];
@@ -163,7 +210,7 @@
     case XPAlertReturnAlternate: return YES;
     case XPAlertReturnOther:     return NO;
     default:
-      XPLogRaise2(@"%@ Unexpected alert result: %ld", self, alertResult);
+      XPLogAssrt1(NO, @"[FAIL] XPAlertReturn(%d)", (int)alertResult);
       return NO;
   }
 }
@@ -203,12 +250,6 @@
   return YES;
 }
 
--(BOOL)__applicationOpenUntitledFile:(NSApplication *)sender;
-{
-  [self __newDocument:sender];
-  return YES;
-}
-
 -(void)__windowWillCloseNotification:(NSNotification*)aNotification;
 {
   NSWindow *window = [aNotification object];
@@ -240,6 +281,98 @@
 {
   return [self __applicationOpenUntitledFile:sender];
 }
+#else
+
 #endif
+
+@end
+
+NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearance";
+
+@implementation SVRAppDelegate (DarkModeObserving)
+
+-(void)beginObservingEffectiveAppearance:(NSApplication*)app;
+{
+#ifdef XPSupportsDarkMode
+  [app addObserver:self 
+        forKeyPath:SVRApplicationEffectiveAppearanceKeyPath
+           options:NSKeyValueObservingOptionNew
+           context:NULL];
+#else
+  XPLogDebug(@"System does not support dark mode");
+#endif
+}
+
+-(void)endObservingEffectiveAppearance:(NSApplication*)app;
+{
+#ifdef XPSupportsDarkMode
+  [app removeObserver:self
+           forKeyPath:SVRApplicationEffectiveAppearanceKeyPath];
+#endif
+}
+
+-(void)observeValueForKeyPath:(NSString*)keyPath
+                     ofObject:(id)object
+                       change:(NSDictionary*)change
+                      context:(void*)context;
+{
+#ifdef XPSupportsDarkMode
+  if ([keyPath isEqualToString:SVRApplicationEffectiveAppearanceKeyPath]) {
+    XPLogDebug(@"effectiveAppearance: Changed");
+    [[NSNotificationCenter defaultCenter] postNotificationName:SVRThemeDidChangeNotificationName
+                                                        object:[NSUserDefaults standardUserDefaults]];
+  } else {
+    [super observeValueForKeyPath:keyPath
+                         ofObject:object
+                           change:change
+                          context:context];
+  }
+#endif
+}
+
+@end
+
+@implementation SVRAppDelegate (StateRestoration)
+
+-(void)applicationDidFinishRestoringWindows:(NSNotification*)aNotification;
+{
+  // Overrides macOS behavior when restoring state where only
+  // 1 or even 0 windows appear in front of the previously active
+  // app window. I find this behavior very strange.
+  NSApplication *app = [aNotification object];
+  NSArray *windows = [app windows];
+  NSEnumerator *e = [windows objectEnumerator];
+  NSWindow *window = nil;
+  XPLogAssrt1([app isKindOfClass:[NSApplication class]], @"%@ was not NSApplication", app);
+  while ((window = [e nextObject])) {
+    if ([window isVisible]) {
+      // This behavior is different... for some reason.
+      // In 10.8 orderFrontRegardless is needed.
+      // In 10.15 15, orderFront: is needed.
+#ifndef MAC_OS_X_VERSION_10_14
+      [window orderFrontRegardless];
+#else
+      [window orderFront:app];
+#endif
+    }
+  }
+}
+
+-(BOOL)applicationSupportsSecureRestorableState:(NSApplication*)app;
+{
+  return YES;
+}
+
++(void)restoreWindowWithIdentifier:(NSString*)identifier
+                             state:(NSCoder*)state
+                 completionHandler:(XPWindowRestoreCompletionHandler)completionHandler;
+{
+  SVRAppDelegate *delegate = (SVRAppDelegate*)[[NSApplication sharedApplication] delegate];
+  SVRAccessoryWindowsOwner *owner = [delegate accessoryWindowsOwner];
+  XPParameterRaise(owner);
+  [owner __restoreWindowWithIdentifier:identifier
+                                 state:state
+                     completionHandler:completionHandler];
+}
 
 @end

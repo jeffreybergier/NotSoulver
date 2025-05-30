@@ -31,25 +31,23 @@
 #import "SVRDocumentModelController.h"
 #import "XPCrossPlatform.h"
 
-@interface SVRDocumentViewController: NSResponder
+@interface SVRDocumentViewController: XPViewController
 {
-  mm_unretain IBOutlet NSTextView *_textView;
-  mm_new SVRDocumentModelController *_modelController;
+  mm_new NSView *_view_42; // Used only in OpenStep
+  mm_new NSTextView *_textView;
+  mm_retain SVRDocumentModelController *_modelController;
 }
 
 // MARK: Init
--(id)init;
+-(id)initWithModelController:(SVRDocumentModelController*)modelController;
+-(void)loadView;
 
-// MARK: awakeFromNib
--(void)awakeFromNib;
--(void)themeDidChangeNotification:(NSNotification*)aNotification;
-
-// MARK: Interface Builder
+// MARK: Properties
 -(NSTextView*)textView;
 -(SVRDocumentModelController*)modelController;
--(IBAction)keypadAppend:(NSButton*)sender;
 
 // MARK: Private
+-(void)__themeDidChangeNotification:(NSNotification*)aNotification;
 -(NSString*)__mapKeyWithTag:(XPInteger)tag;
 -(NSDictionary*)__typingAttributes;
 
@@ -57,6 +55,7 @@
 
 @interface SVRDocumentViewController (IBActions)
 
+-(IBAction)keypadAppend:(NSButton*)sender;
 -(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
 -(IBAction)cutUnsolved:(id)sender;
 -(IBAction)cutUniversal:(id)sender;
@@ -67,3 +66,10 @@
                   diskRepData:(NSData*)diskRepData;
 
 @end
+
+#ifndef XPSupportsNSViewController
+@interface SVRDocumentViewController (CrossPlatform)
+-(NSView*)view;
+-(void)setView:(NSView*)view;
+@end
+#endif

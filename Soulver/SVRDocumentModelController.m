@@ -50,25 +50,14 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
   return [[_dataCache retain] autorelease];
 }
 
--(NSTextView*)textView;
-{
-  return [[_textView retain] autorelease];
-}
-
--(void)setTextView:(NSTextView*)textView;
-{
-  _textView = textView;
-}
-
 // MARK: Init
 -(id)init;
 {
   self = [super init];
-  NSCParameterAssert(self);
+  XPParameterRaise(self);
   
   _model = [NSTextStorage new];
   _dataCache = [NSMutableDictionary new];
-  _textView = nil;
   _waitTimer = nil;
   
   __TESTING_stylesForSolution = nil;
@@ -92,7 +81,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
 // MARK: NSDocument Support
 -(NSData*)dataRepresentationOfType:(SVRDocumentModelRep)type withRange:(NSRange)range;
 {
-  NSCParameterAssert(type);
+  XPParameterRaise(type);
   if ([type isEqualToString:SVRDocumentModelRepDisk]) {
     return [self __dataRepresentationOfDiskTypeWithRange:range];
   } else if ([type isEqualToString:SVRDocumentModelRepDisplay]) {
@@ -102,7 +91,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
   } else if ([type isEqualToString:SVRDocumentModelRepUnsolved]) {
     return [self __dataRepresentationOfUnsolvedTypeWithRange:range];
   } else {
-    XPLogRaise1(@"Unknown Type: %@", type);
+    XPLogAssrt1(NO, @"[UNKNOWN] SVRDocumentModelRep(%@)", type);
     return nil;
   }
 }
@@ -117,7 +106,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
   if ([type isEqualToString:SVRDocumentModelRepDisk]) {
     return [self __loadDataRepresentationOfDiskType:data];
   } else {
-    XPLogRaise1(@"Unknown Type: %@", type);
+    XPLogAssrt1(NO, @"[UNKNOWN] SVRDocumentModelRep(%@)", type);
     return NO;
   }
 }
@@ -135,21 +124,21 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
     key = [[self model] string];
     output = [dataCache objectForKey:key];
     if (output) {
-      XPLogExtra1(@"%@ __dataRepresentationOfDiskTypeWithRange: Cache Hit", self);
+      XPLogExtra(@"Cache Hit");
       return output;
     }
     if ([dataCache count] > 20) {
-      XPLogDebug1(@"%@ dataRepresentationOfType: Cache Clear", self);
+      XPLogDebug(@"Cache Clear");
       [dataCache removeAllObjects];
     }
-    XPLogExtra1(@"%@ dataRepresentationOfType: Cache Miss", self);
+    XPLogExtra(@"Cache Miss");
     output = [[[SVRSolver replacingAttachmentsWithOriginalCharacters:[self model]] string] dataUsingEncoding:NSUTF8StringEncoding];
     [dataCache setObject:output forKey:key];
     return output;
   } else {
     // If a range is provided, do the work slowly with no caching
     output = [[[SVRSolver replacingAttachmentsWithOriginalCharacters:[[self model] attributedSubstringFromRange:range]] string] dataUsingEncoding:NSUTF8StringEncoding];
-    NSAssert(output, @"__dataRepresentationOfDiskTypeWithRange: NIL");
+    XPLogAssrt(output, @"output was NIL");
     return output;
   }
 }
@@ -160,7 +149,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
                 ? NSMakeRange(0, [[self model] length])
                 : _range;
   NSData *output = [[self model] RTFFromRange:range documentAttributes:XPRTFDocumentAttributes];
-  NSAssert(output, @"__dataRepresentationOfDisplayTypeWithRange: NIL");
+  XPLogAssrt(output, @"output was NIL");
   return output;
 }
 
@@ -173,7 +162,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
   NSAttributedString *solved = [SVRSolver replacingAttachmentsWithStringValue:original];
   NSData *output = [solved RTFFromRange:NSMakeRange(0, [solved length])
                      documentAttributes:XPRTFDocumentAttributes];
-  NSAssert(output, @"__dataRepresentationOfSolvedTypeWithRange: NIL");
+  XPLogAssrt(output, @"output was NIL");
   return output;
 }
 
@@ -186,7 +175,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
   NSAttributedString *unsolved = [SVRSolver replacingAttachmentsWithOriginalCharacters:original];
   NSData *output = [unsolved RTFFromRange:NSMakeRange(0, [unsolved length])
                        documentAttributes:XPRTFDocumentAttributes];
-  NSAssert(output, @"__dataRepresentationOfUnsolvedTypeWithRange: NIL");
+  XPLogAssrt(output, @"output was NIL");
   return output;
 }
 
@@ -195,13 +184,11 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   BOOL success = NO;
   NSTextStorage *model = [self model];
-  NSString *string = [
-    [[NSString alloc] initWithData:data
-                          encoding:NSUTF8StringEncoding]
-    autorelease];
+  NSString *string = [[[NSString alloc] initWithData:data
+                                            encoding:NSUTF8StringEncoding] autorelease];
   if (string) {
     // TODO: Figure out how I can combine this with waitTimerFired:
-    XPLogDebug1(@"%@ loadDataRepresentation: Rendering", self);
+    XPLogDebug(@"Rendering");
     [model beginEditing];
     [[model mutableString] setString:string];
     [SVRSolver solveAttributedString:model
@@ -217,13 +204,11 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
 
 -(void)dealloc;
 {
-  // TODO: Restore this log. It crashes on jaguar
-  //XPLogDebug1(@"DEALLOC: %@", self);
+  XPLogDebug1(@"<%@>", XPPointerString(self));
   [_waitTimer invalidate];
   [_waitTimer release];
   [_model release];
   [_dataCache release];
-  _textView = nil;
   _dataCache = nil;
   _waitTimer = nil;
   _model = nil;
@@ -235,27 +220,23 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
 
 @implementation SVRDocumentModelController (TextDelegate)
 
--(void)resetWaitTimer;
+-(void)textDidChange:(NSNotification*)aNotification;
 {
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  [_waitTimer invalidate];
-  [_waitTimer release];
-  _waitTimer = [NSTimer scheduledTimerWithTimeInterval:[ud SVR_waitTimeForRendering]
-                                                target:self
-                                              selector:@selector(waitTimerFired:)
-                                              userInfo:nil
-                                               repeats:NO];
-  [_waitTimer retain];
+  NSTextView *textView = [aNotification object];
+  XPLogAssrt1([textView isKindOfClass:[NSTextView class]], @"%@ not a text view", textView);
+  [self __resetWaitTimer:textView];
 }
 
--(void)waitTimerFired:(NSTimer*)timer;
+-(void)renderPreservingSelectionInTextView:(NSTextView*)textView;
 {
   NSUserDefaults *ud   = [NSUserDefaults standardUserDefaults];
   NSTextStorage *model = [self model];
-  NSTextView *textView = [self textView];
+  NSRange selection = XPNotFoundRange;
+  
+  XPParameterRaise(textView);
   
   // Get current selection
-  NSRange selection = [textView selectedRange];
+  selection = [textView selectedRange];
   
   // Solve the string
   [model beginEditing];
@@ -266,18 +247,30 @@ NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
                         textStyles:__TESTING_stylesForText             ? __TESTING_stylesForText             : [ud SVR_stylesForText]];
   [model endEditing];
   
-  // Restore the selection
+  // Restore selection
   [textView setSelectedRange:selection];
-
-  // Invalidating at the end is important.
-  // Otherwise, self could get deallocated mid-method 
-  [timer invalidate];
 }
 
--(void)textDidChange:(NSNotification*)notification;
+-(void)__resetWaitTimer:(NSTextView*)sender;
 {
-  XPLogExtra1(@"%@ textDidChange:", self);
-  [self resetWaitTimer];
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  [_waitTimer invalidate];
+  [_waitTimer release];
+  _waitTimer = [NSTimer scheduledTimerWithTimeInterval:[ud SVR_waitTimeForRendering]
+                                                target:self
+                                              selector:@selector(__waitTimerFired:)
+                                              userInfo:[NSDictionary dictionaryWithObject:sender forKey:@"TextView"]
+                                               repeats:NO];
+  [_waitTimer retain];
+}
+
+-(void)__waitTimerFired:(NSTimer*)timer;
+{
+
+  NSTextView *textView = [[timer userInfo] objectForKey:@"TextView"];
+  XPLogAssrt1([textView isKindOfClass:[NSTextView class]], @"%@ not a text view", textView);
+  [self renderPreservingSelectionInTextView:textView];
+  [timer invalidate];
 }
 
 @end

@@ -30,65 +30,6 @@
 #import "XPDocument.h"
 #import "NSUserDefaults+Soulver.h"
 
-#if XPSupportsNSDocument >= 1
-@implementation NSDocument (CrossPlatform)
-
--(BOOL)XP_isDocumentEdited;
-{
-  return [self isDocumentEdited];
-}
-
--(XPURL*)XP_fileURL;
-{
-#if XPSupportsNSDocument == 1
-  return [self fileName];
-#else
-  return [self fileURL];
-#endif
-}
-
--(NSString*)XP_nameForFrameAutosave;
-{
-  XPURL *fileURL = [self XP_fileURL];
-  if (![fileURL XP_isFileURL]) { return nil; }
-  return [fileURL XP_path];
-}
-
--(NSWindow*)XP_windowForSheet;
-{
-#if XPSupportsNSDocument == 1
-  NSWindow *window = [[[self windowControllers] lastObject] window];
-  NSCParameterAssert(window);
-  return window;
-#else
-  return [self windowForSheet];
-#endif
-}
-
--(void)XP_showWindows;
-{
-  [self showWindows];
-}
-
--(void)XP_setFileExtension:(NSString*)type;
-{
-  XPLogDebug2(@"%@ ignoring call to XP_setFileExtension:%@", self, type);
-}
-
--(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
-{
-#if XPSupportsNSDocument == 1
-  return [self readFromFile:fileURL ofType:fileType];
-#else
-  return [self readFromURL:fileURL ofType:fileType error:outError];
-#endif
-}
-
-@end
-#endif
-
-NSPoint XPDocumentPointForCascading;
-
 // Because this class is only used in OpenStep
 // I will add insturctions for LLVM to ignore
 // deprecation warnings
@@ -96,63 +37,17 @@ NSPoint XPDocumentPointForCascading;
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 @implementation NSDocumentLegacyImplementation
 
-// MARK: XPDocumentProtocol Implementation
-
--(BOOL)XP_isDocumentEdited;
-{
-  return [self isDocumentEdited];
-}
-
--(XPURL*)XP_fileURL;
-{
-  return [self fileURL];
-}
-
--(NSString*)XP_nameForFrameAutosave;
-{
-  XPURL *fileURL = [self XP_fileURL];
-  if (![fileURL XP_isFileURL]) { return nil; }
-  return [fileURL XP_path];
-}
-
--(NSWindow*)XP_windowForSheet;
-{
-  return [self windowForSheet];
-}
-
--(void)XP_showWindows;
-{
-  [self showWindows];
-}
-
--(void)XP_setFileExtension:(NSString*)type;
-{
-  [self __setFileExtension:type];
-}
-
--(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
-{
-  return [self readFromURL:fileURL ofType:fileType error:outError];
-}
-
-// MARK: Window Placement
-
-+(void)initialize;
-{
-  XPDocumentPointForCascading = NSZeroPoint;
-}
-
 // MARK: Init
 
 /// Designated Initializer.  Inits an "empty" document.
 -(id)init;
 {
   self = [super init];
-  NSCParameterAssert(self);
+  XPParameterRaise(self);
   _fileURL = nil;
   _fileType = nil;
-  _isNibLoaded = NO;
   _isEdited = NO;
+  [self makeWindowControllers];
   return self;
 }
 
@@ -160,71 +55,45 @@ NSPoint XPDocumentPointForCascading;
 {
   self = [self init];
   
-  NSCParameterAssert(self);
-  NSCParameterAssert(fileURL);
-  NSCParameterAssert(fileType);
+  XPParameterRaise(self);
+  XPParameterRaise(fileURL);
+  XPParameterRaise(fileType);
   
   _fileURL  = [fileURL copy];
   _fileType = [fileType copy];
-  [self readFromURL:fileURL ofType:fileType error:NULL];
+  [self makeWindowControllers];
   
   return self;
 }
 
 // MARK: Window Management
 
--(NSString*)windowNibName;
-{
-  XPLogRaise(@"Unimplemented");
-  return nil;
-}
-
 -(void)showWindows;
 {
-  if (!_isNibLoaded) {
-    _isNibLoaded = YES;
-    [self windowControllerWillLoadNib:nil];
-    [NSBundle loadNibNamed:[self windowNibName] owner:self];
-  }
   [[self windowForSheet] makeKeyAndOrderFront:self];
 }
 
 -(NSWindow*)windowForSheet;
 {
-  return [[window retain] autorelease];
+  XPParameterRaise(_window_42);
+  return [[_window_42 retain] autorelease];
 }
 
 // MARK: One Time Setup
 
--(void)awakeFromNib;
+-(void)makeWindowControllers;
 {
-  XPURL    *fileURL  = [self fileURL];
-  NSString *fileType = [self fileType];
   NSWindow *myWindow = [self windowForSheet];
   
-  // Read the data
-  if ([fileURL XP_isFileURL]) {
-    [self readFromURL:fileURL ofType:fileType error:NULL];
-  }
-  
-  if (![self XP_nameForFrameAutosave]) {
-    XPDocumentPointForCascading = [myWindow cascadeTopLeftFromPoint:XPDocumentPointForCascading];
-  }
-  
   // Update window chrome
-  [self updateChangeCount:2];
+  [self updateChangeCount:XPChangeCleared];
   
   // Set the delegate for -windowShouldClose:
   [myWindow setDelegate:self];
-
-  // Declare that we are loaded
-  [self windowControllerDidLoadNib:nil];
   
-  XPLogDebug1(@"awakeFromNib: %@", self);
+  // Announce
+  XPLogDebug(@"");
 }
-
--(void)windowControllerWillLoadNib:(id)windowController; {}
--(void)windowControllerDidLoadNib:(id)windowController; {}
 
 // MARK: Document Properties
 
@@ -241,12 +110,12 @@ NSPoint XPDocumentPointForCascading;
   return _isEdited;
 }
 
--(void)updateChangeCount:(int)change;
+-(void)updateChangeCount:(XPDocumentChangeType)change;
 {
   NSWindow *myWindow = [self windowForSheet];
   XPURL    *fileURL  = [self fileURL];
 
-  _isEdited = (change == 2) ? NO : YES;
+  _isEdited = (change == XPChangeCleared) ? NO : YES;
 
   if ([fileURL XP_isFileURL]) {
     [myWindow setRepresentedFilename:[fileURL XP_path]];
@@ -316,25 +185,25 @@ NSPoint XPDocumentPointForCascading;
   return NO;
 }
 
--(BOOL)writeToURL:(XPURL*)__fileURL ofType:(NSString*)__fileType error:(id*)outError;
+-(BOOL)writeToURL:(XPURL*)__fileURL ofType:(NSString*)__fileType error:(XPErrorPointer)outError;
 {
   XPURL    *fileURL  = (__fileURL ) ? __fileURL  : [self fileURL ];
   NSString *fileType = (__fileType) ? __fileType : [self fileType];
   NSData *forWriting = [self dataRepresentationOfType:fileType];
   if (fileURL && fileType && forWriting) {
-    return [forWriting XP_writeToURL:fileURL atomically:YES];
+    return [forWriting XP_writeToURL:fileURL error:outError];
   }
   return NO;
 }
 
--(BOOL)readFromURL:(XPURL*)__fileURL ofType:(NSString*)__fileType error:(id*)outError;
+-(BOOL)readFromURL:(XPURL*)__fileURL ofType:(NSString*)__fileType error:(XPErrorPointer)outError;
 {
   NSData   *data = nil;
   XPURL    *fileURL  = (__fileURL ) ? __fileURL  : [self fileURL ];
   NSString *fileType = (__fileType) ? __fileType : [self fileType];
   if (!fileURL) { return NO; }
   
-  data = [NSData XP_dataWithContentsOfURL:fileURL];
+  data = [NSData XP_dataWithContentsOfURL:fileURL error:outError];
   if (!data) { return NO; }
 
   return [self loadDataRepresentation:data ofType:fileType];
@@ -350,13 +219,13 @@ NSPoint XPDocumentPointForCascading;
   } else {
     [self __runModalSavePanelAndSetFileURL];
   }
-  [self updateChangeCount:2];
+  [self updateChangeCount:XPChangeCleared];
 }
 
 -(IBAction)saveDocumentAs:(id)sender;
 {
   [self __runModalSavePanelAndSetFileURL];
-  [self updateChangeCount:2];
+  [self updateChangeCount:XPChangeCleared];
 }
 
 -(IBAction)saveDocumentTo:(id)sender;
@@ -372,27 +241,27 @@ NSPoint XPDocumentPointForCascading;
       [self readFromURL:nil ofType:nil error:NULL];
       break;
     case XPAlertReturnAlternate:
-      XPLogDebug(@"User cancelled revert");
+      XPLogDebug(@"User Cancelled");
       break;
     case XPAlertReturnOther:
     case XPAlertReturnError:
     default:
-      XPLogRaise1(@"Unexpected alert panel result: %ld", result);
+      XPLogAssrt1(NO, @"XPAlertReturn(%d) INVALID", (int)result);
   }
-  [self updateChangeCount:2];
+  [self updateChangeCount:XPChangeCleared];
 }
 
 // MARK: Customizations
 
 -(NSString*)__fileExtension;
 {
-  NSCParameterAssert(_fileExtension);
+  XPParameterRaise(_fileExtension);
   return [[_fileExtension retain] autorelease];
 }
 
 -(void)__setFileExtension:(NSString*)type;
 {
-  NSCParameterAssert(type);
+  XPParameterRaise(type);
   if ([type isEqualToString:_fileExtension]) { return; }
   [_fileExtension release];
   _fileExtension = [type copy];
@@ -417,7 +286,7 @@ NSPoint XPDocumentPointForCascading;
       return NO;
     case XPAlertReturnError:
     default:
-      XPLogRaise1(@"Unexpected alert panel result: %ld", alertResult);
+      XPLogAssrt1(NO, @"XPAlertReturn(%d) INVALID", (int)alertResult);
       return NO;
   }
 }
@@ -449,7 +318,7 @@ NSPoint XPDocumentPointForCascading;
 
 -(XPInteger)__runModalSavePanel:(NSSavePanel*)_savePanel;
 {
-  XPInteger okCancel;
+  XPModalResponse okCancel;
   NSSavePanel *savePanel = (_savePanel) ? _savePanel : [NSSavePanel savePanel];
   [self __prepareSavePanel:savePanel];
   
@@ -459,10 +328,10 @@ NSPoint XPDocumentPointForCascading;
       [self writeToURL:(XPURL*)[savePanel filename] ofType:nil error:NULL];
       break;
     case XPModalResponseCancel:
-      XPLogDebug(@"User cancelled save");
+      XPLogDebug(@"User Cancelled");
       break;
     default:
-      XPLogRaise1(@"Unexpected save panel result: %ld", okCancel);
+      XPLogAssrt1(NO, @"NSModalResponse(%d) INVALID", (int)okCancel);
       break;
   }
   [[NSUserDefaults standardUserDefaults] SVR_setSavePanelLastDirectory:[savePanel directory]];
@@ -471,7 +340,7 @@ NSPoint XPDocumentPointForCascading;
 
 -(XPInteger)__runModalSavePanelAndSetFileURL;
 {
-  XPInteger result;
+  XPModalResponse result;
   NSSavePanel *savePanel = [NSSavePanel savePanel];
   result = [self __runModalSavePanel:savePanel];
   if (result == XPModalResponseOK) {
@@ -503,20 +372,106 @@ NSPoint XPDocumentPointForCascading;
 
 - (void)dealloc
 {
-  XPLogDebug1(@"DEALLOC: %@", self);
-  [window setDelegate:nil];
-  // this autorelease (instead of release) is necessary
-  // to prevent crashes when the window is closing
-  [window autorelease];
-  [_fileURL release];
-  [_fileType release];
+  XPLogExtra1(@"<%@>", XPPointerString(self));
+  // Skipping release for window because it releases itself when closed
+  [_window_42 setDelegate:nil];
+  [_fileURL   release];
+  [_fileType  release];
   [_fileExtension release];
-  window = nil;
-  _fileURL = nil;
-  _fileType = nil;
+  _window_42 = nil;
+  _fileURL   = nil;
+  _fileType  = nil;
   _fileExtension = nil;
   [super dealloc];
 }
 
 @end
 #pragma clang diagnostic pop
+
+#if XPSupportsNSDocument >= 1
+@implementation NSDocument (CrossPlatform)
+#else
+@implementation NSDocumentLegacyImplementation (CrossPlatform)
+#endif
+-(BOOL)XP_isDocumentEdited;
+{
+  return [self isDocumentEdited];
+}
+
+-(XPURL*)XP_fileURL;
+{
+#if XPSupportsNSDocument == 1
+  return [self fileName];
+#else
+  return [self fileURL];
+#endif
+}
+
+-(NSString*)XP_nameForFrameAutosave;
+{
+  XPURL *fileURL = [self XP_fileURL];
+  if (![fileURL XP_isFileURL]) { return nil; }
+  return [fileURL XP_path];
+}
+
+-(NSWindow*)XP_windowForSheet;
+{
+#if XPSupportsNSDocument == 1
+  NSWindow *window = [[[self windowControllers] lastObject] window];
+  XPParameterRaise(window);
+  return window;
+#else
+  return [self windowForSheet];
+#endif
+}
+
+-(void)XP_showWindows;
+{
+  [self showWindows];
+}
+
+-(void)XP_setWindow:(NSWindow*)aWindow;
+{
+#if XPSupportsNSDocument == 0
+  XPParameterRaise(aWindow);
+  [_window_42 release];
+  _window_42 = [aWindow retain];
+#else
+  XPLogDebug(@"[IGNORE]");
+#endif
+}
+
+-(void)XP_setFileType:(NSString*)type;
+{
+  [self setFileType:type];
+}
+
+-(void)XP_setFileExtension:(NSString*)type;
+{
+#if XPSupportsNSDocument == 0
+  [self __setFileExtension:type];
+#else
+  XPLogDebug(@"[IGNORE]");
+#endif
+}
+
+-(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
+{
+#if XPSupportsNSDocument == 1
+  return [self readFromFile:fileURL ofType:fileType];
+#else
+  return [self readFromURL:fileURL ofType:fileType error:outError];
+#endif
+}
+
+-(void)XP_addWindowController:(id)windowController;
+{
+#if XPSupportsNSDocument >= 1
+  XPParameterRaise(windowController);
+  [self addWindowController:windowController];
+#else
+  XPLogDebug(@"[IGNORE]");
+#endif
+}
+@end
+

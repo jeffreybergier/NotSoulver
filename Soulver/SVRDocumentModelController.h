@@ -52,10 +52,9 @@ typedef NSString* SVRDocumentModelRep;
 
 @interface SVRDocumentModelController: NSObject
 {
-  mm_new      NSTextStorage       *_model;
-  mm_new      NSTimer             *_waitTimer;
-  mm_new      NSMutableDictionary *_dataCache;
-  mm_unretain NSTextView          *_textView;
+  mm_new NSTextStorage       *_model;
+  mm_new NSTimer             *_waitTimer;
+  mm_new NSMutableDictionary *_dataCache;
   
   mm_unretain NSDictionary *__TESTING_stylesForSolution;
   mm_unretain NSDictionary *__TESTING_stylesForPreviousSolution;
@@ -66,8 +65,6 @@ typedef NSString* SVRDocumentModelRep;
 // MARK: Properties
 -(NSTextStorage*)model;
 -(NSMutableDictionary*)dataCache;
--(NSTextView*)textView;
--(void)setTextView:(NSTextView*)textView;
 
 // MARK: Init
 -(id)init;
@@ -96,8 +93,9 @@ typedef NSString* SVRDocumentModelRep;
 @interface SVRDocumentModelController (TextDelegate)
 #endif
 
--(void)resetWaitTimer;
--(void)waitTimerFired:(NSTimer*)timer;
--(void)textDidChange:(NSNotification*)notification;
+-(void)textDidChange:(NSNotification*)aNotification;
+-(void)renderPreservingSelectionInTextView:(NSTextView*)textView;
+-(void)__resetWaitTimer:(NSTextView*)sender;
+-(void)__waitTimerFired:(NSTimer*)timer;
 
 @end

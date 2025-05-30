@@ -97,13 +97,23 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 
 -(BOOL)SVR_visibilityForWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
 {
+#ifdef XPSupportsStateRestoration
+  XPLogDebug(@"[IGNORE] System supports state restoration");
+  return NO;
+#else
   return [self boolForKey:frameAutosaveName];
+#endif
 }
 
 -(BOOL)SVR_setVisibility:(BOOL)isVisible forWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
 {
+#ifdef XPSupportsStateRestoration
+  XPLogDebug(@"[IGNORE] System supports state restoration");
+  return YES;
+#else
   [self setBool:isVisible forKey:frameAutosaveName];
   return [self synchronize];
+#endif
 }
 
 // MARK: Theming
@@ -134,7 +144,7 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
     case XPUserInterfaceStyleDark:
       return XPUserInterfaceStyleDark;
     default:
-      XPLogRaise2(@"%@ SVRThemeUserInterfaceStyle INVALID: %d ", self, (int)setting);
+      XPLogAssrt1(NO, @"INVALID XPUserInterfaceStyle(%d)", (int)setting);
       return -1;
   }
 #else
@@ -146,7 +156,7 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
     case XPUserInterfaceStyleLight:
       return XPUserInterfaceStyleLight;
     default:
-      XPLogRaise2(@"%@ SVRThemeUserInterfaceStyle INVALID: %d ", self, (int)setting);
+      XPLogAssrt1(NO, @"INVALID XPUserInterfaceStyle(%d)", (int)setting);
       return -1;
   }
 #endif
@@ -164,7 +174,8 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
   if (oldStyle == style) { return YES; }
   [self setInteger:style forKey:SVRThemeUserInterfaceStyle];
   success = [self synchronize];
-  if (success) { [self __postChangeNotification]; }
+  XPLogAssrt(success, @"[FAIL]");
+  [self __postChangeNotification];
   return success;
 }
 
@@ -178,7 +189,7 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 {
   NSData *data = [self objectForKey:[self __SVR_keyForThemeColor:theme withStyle:style]];
   NSColor *output = [NSColor XP_colorWithData:data];
-  if (!output) { XPLogRaise(@"Color Not Found"); return nil; }
+  XPLogAssrt(output, @"Color was NIL");
   return output;
 }
 
@@ -204,7 +215,7 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 {
   NSData *data = [self dataForKey:[self __SVR_keyForThemeFont:theme]];
   NSFont *font = [NSFont XP_fontWithData:data];
-  if (!font) { XPLogRaise(@"Font Not Found"); return nil; }
+  XPLogAssrt(font, @"Font was NIL");
   return font;
 }
 
@@ -221,7 +232,8 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
     [self removeObjectForKey:key];
   }
   success = [self synchronize];
-  if (success) { [self __postChangeNotification]; }
+  XPLogAssrt(success, @"[FAIL]");
+  [self __postChangeNotification];
   return success;
 }
 
@@ -255,7 +267,7 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
         case SVRThemeColorInsertionPoint:    return SVRThemeLightInsertionPoint;
       }
     case XPUserInterfaceStyleUnspecified:
-      XPLogRaise1(@"%@ Tried to set color for XPUserInterfaceStyleUnspecified", self);
+      XPLogAssrt1(NO, @"[FAIL] XPUserInterfaceStyleUnspecified(%d)", (int)style);
   }
   return nil;
 }

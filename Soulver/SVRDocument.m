@@ -28,6 +28,7 @@
 //
 
 #import "SVRDocument.h"
+#import "NSUserDefaults+Soulver.h"
 
 @implementation SVRDocument
 
@@ -35,91 +36,101 @@
 
 -(SVRDocumentViewController*)viewController;
 {
+  if (!_viewController) {
+    _viewController = [[SVRDocumentViewController alloc] initWithModelController:[self modelController]];
+  }
   return [[_viewController retain] autorelease];
 }
 
--(NSString*)windowNibName;
+-(SVRDocumentModelController*)modelController;
 {
-#ifdef MAC_OS_X_VERSION_10_6
-  return @"SVRDocument_X6";
-#elif defined(MAC_OS_X_VERSION_10_2)
-  return @"SVRDocument_X2";
-#else
-  return @"SVRDocument_42";
-#endif
+  if (!_modelController) {
+    _modelController = [[SVRDocumentModelController alloc] init];
+  }
+  return [[_modelController retain] autorelease];
+}
+
+// Create everything without Nibs
+
+-(void)makeWindowControllers;
+{
+  static NSPoint SVRDocumentPointForCascading = { 0.0, 0.0 };
+  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+  XPWindowStyleMask windowStyle = (XPWindowStyleMaskTitled
+                                 | XPWindowStyleMaskClosable
+                                 | XPWindowStyleMaskMiniaturizable
+                                 | XPWindowStyleMaskResizable);
+  NSRect rect = NSMakeRect(0, 0, 500, 500);
+  NSString *autosaveName = [self XP_nameForFrameAutosave];
+  SVRDocumentModelController *modelController = [self modelController];
+  SVRDocumentViewController  *viewController  = [self viewController];
+  NSWindow *aWindow = [[[NSWindow alloc] initWithContentRect:rect
+                                                   styleMask:windowStyle
+                                                     backing:NSBackingStoreBuffered
+                                                       defer:YES] autorelease];
+  XPWindowController *windowController = [XPNewWindowController(aWindow) autorelease];
+  
+  // Configure basic properties
+  [self XP_setWindow:aWindow];
+  [self XP_addWindowController:windowController];
+  [self overrideWindowAppearance];
+  [aWindow setMinSize:NSMakeSize(200, 200)];
+  [aWindow setContentView:[viewController view]];
+  
+  // Subscribe to theme and model updates
+  [nc addObserver:self
+         selector:@selector(modelDidProcessEditingNotification:)
+             name:NSTextStorageDidProcessEditingNotification
+           object:[modelController model]];
+  [nc addObserver:self
+         selector:@selector(overrideWindowAppearance)
+             name:SVRThemeDidChangeNotificationName
+           object:nil];
+  
+  // This is a bit fiddly, so let me explain.
+  // If there is an autosavename we will use and not try to do any cascading.
+  // However, if this is the first time the document has been open,
+  // it will open in the bottom left of the screen as the autosave name has
+  // never saved anything. So here we check if the frame is different before
+  // and after setting the autosaveName. If its the same, then we ask the
+  // window to center itself. If its different then we just let it be.
+  rect = [aWindow frame];
+  if (autosaveName) {
+    [aWindow setFrameAutosaveName:autosaveName];
+  }
+  if (NSEqualRects(rect, [aWindow frame])) {
+    [aWindow center];
+    SVRDocumentPointForCascading = [aWindow cascadeTopLeftFromPoint:SVRDocumentPointForCascading];
+  }
+  
+  // Configure Views/Responder Chains
+  // In older systems the view controller is not automatically
+  // added to the responder chain. This checks for that and adds it
+  if (![windowController respondsToSelector:@selector(setContentViewController:)]) {
+    [aWindow setNextResponder:viewController];
+    [viewController setNextResponder:windowController];
+  }
+  
+  // Configure legacy XPDocument support
+  if ([self isKindOfClass:[NSResponder class]]) {
+    [viewController setNextResponder:(NSResponder*)self];
+    [super makeWindowControllers];
+    [self XP_readFromURL:[self XP_fileURL] ofType:[self fileType] error:NULL];
+  }
 }
 
 // MARK: NSDocument subclass
 
--(void)awakeFromNib;
-{
-  XPURL *fileURL = [self XP_fileURL];
-
-  if ([[self superclass] instancesRespondToSelector:@selector(awakeFromNib)]) {
-    [super awakeFromNib];
-  }
-  
-  // Subscribe to model updates
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(modelDidProcessEditingNotification:)
-                                               name:NSTextStorageDidProcessEditingNotification
-                                             object:[[[self viewController] modelController] model]];
-
-  // Load the file
-  if ([fileURL XP_isFileURL]) {
-    [self XP_readFromURL:fileURL ofType:[self fileType] error:NULL];
-  }
-}
-
 -(NSData*)dataRepresentationOfType:(NSString*)type;
 {
-  return [[[self viewController] modelController] dataRepresentationOfType:type];
+  return [[self modelController] dataRepresentationOfType:type];
 }
 
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
 {
-  SVRDocumentModelController *modelController = [[self viewController] modelController];
-  if (!modelController) {
-    // NSDocument loads the data before loading the NIB
-    return YES;
-  }
+  SVRDocumentModelController *modelController = [self modelController];
+  XPParameterRaise(modelController);
   return [modelController loadDataRepresentation:data ofType:type];
-}
-
--(void)windowControllerWillLoadNib:(id)windowController;
-{
-#if XPSupportsNSDocument >= 1
-  // Setting this name before the NIB loads has better results
-  NSString *autosaveName = [self XP_nameForFrameAutosave];
-  NSCParameterAssert(windowController);
-  if (autosaveName) {
-    [windowController setWindowFrameAutosaveName:autosaveName];
-  }
-#endif
-}
-
--(void)windowControllerDidLoadNib:(id)windowController;
-{
-  NSWindow *myWindow = [self XP_windowForSheet];
-  NSString *autosaveName = [self XP_nameForFrameAutosave];
-  // If using real NSDocument, this is already set, so we can check here
-  BOOL needsSetAutosaveName = autosaveName && ![[myWindow frameAutosaveName] isEqualToString:autosaveName];
-  id previousNextResponder = [myWindow nextResponder];
-
-  NSCParameterAssert(myWindow);
-  
-  // Add view controller into the responder chain
-  [myWindow setNextResponder:[self viewController]];
-  if ([self isKindOfClass:[NSResponder class]]) {
-    [[self viewController] setNextResponder:(NSResponder*)self];
-    [(NSResponder*)self setNextResponder:previousNextResponder];
-  } else {
-    [[self viewController] setNextResponder:previousNextResponder];
-  }
-  
-  if (needsSetAutosaveName) {
-    [myWindow setFrameAutosaveName:autosaveName];
-  }
 }
 
 // MARK: Model Changed Notifications
@@ -130,26 +141,67 @@
   NSData *documentData = [self dataRepresentationOfType:[self fileType]];
   XPURL *fileURL = [self XP_fileURL];
   if ([fileURL XP_isFileURL]) {
-    diskData = [NSData XP_dataWithContentsOfURL:fileURL];
+    // TODO: Consider adding error handling here
+    diskData = [NSData XP_dataWithContentsOfURL:fileURL error:NULL];
     isEdited = ![diskData isEqualToData:documentData];
   } else if (documentData == nil || [documentData length] == 0) {
     isEdited = NO;
   } else {
     isEdited = YES;
   }
-  [self updateChangeCount:isEdited ? 0 : 2];
+  [self updateChangeCount:isEdited ? XPChangeDone
+                                   : XPChangeCleared];
 }
 
 -(void)dealloc;
 {
-  XPLogDebug1(@"DEALLOC: %@", self);
-#if XPSupportsNSDocument == 0
-  // Nib Lifecycle differs when using NSDocument
-  [_viewController release];
-#endif
-  _viewController = nil;
+  XPLogDebug1(@"<%@>", XPPointerString(self));
+  [_viewController  release];
+  [_modelController release];
+  _viewController  = nil;
+  _modelController = nil;
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
 }
 
+@end
+
+@implementation SVRDocument (StateRestoration)
+
++(BOOL)autosavesInPlace;
+{
+  return YES;
+}
+
++(BOOL)canConcurrentlyReadDocumentsOfType:(NSString*)typeName;
+{
+  // The hard part of opening a file is rendering the NSAttributedString.
+  // This involves reading whether we are in dark mode.
+  // It also involves creating NSTextAttachmentCells.
+  // Both are main thread only and it shows warnings.
+  // Best to just leave this set to NO
+  return NO;
+}
+
+-(BOOL)canAsynchronouslyWriteToURL:(XPURL*)url
+                            ofType:(NSString*)typeName
+                  forSaveOperation:(XPSaveOperationType)saveOperation;
+{
+  // Writing to disk uses just pure NSAttributedString API.
+  // Nothing in the document is modified, just copied and then discarded
+  // at the end. So returning YES here should be fine.
+  return YES;
+}
+
+@end
+
+@implementation SVRDocument (DarkMode)
+-(void)overrideWindowAppearance;
+{
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  XPUserInterfaceStyle style = [ud SVR_userInterfaceStyle];
+  NSWindow *myWindow = [self XP_windowForSheet];
+  XPParameterRaise(myWindow);
+  [myWindow XP_setAppearanceWithUserInterfaceStyle:style];
+}
 @end

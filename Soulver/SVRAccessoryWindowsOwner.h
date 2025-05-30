@@ -67,7 +67,8 @@
 -(IBAction)openSourceRepository:(id)sender;
 
 // MARK: Restore Window State
--(void)__restoreWindowState;
+/// Is only effective on systems that do not support state restoration
+-(void)legacy_restoreWindowVisibility;
 
 // MARK: Notifications (Save window state)
 /// Set the User Defaults to YES for this Window
@@ -77,4 +78,14 @@
 /// Unsubscribe from Notifications so that windowWillCloseNotification is not called
 -(void)__applicationWillTerminate:(NSNotification*)aNotification;
 
+@end
+
+@interface SVRAccessoryWindowsOwner (DarkMode)
+-(void)overrideWindowAppearance;
+@end
+
+@interface SVRAccessoryWindowsOwner (StateRestoration)
+-(void)__restoreWindowWithIdentifier:(NSString*)identifier
+                               state:(NSCoder*)state
+                   completionHandler:(XPWindowRestoreCompletionHandler)completionHandler;
 @end
