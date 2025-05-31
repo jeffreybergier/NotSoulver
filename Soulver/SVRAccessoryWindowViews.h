@@ -57,7 +57,8 @@ typedef XP_ENUM(XPInteger, SVRKeypadButtonKind) {
   SVRKeypadButtonKindLog
 };
 
-NSRect SVR_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind);
+NSRect    SVR_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind);
+NSString *SVR_titleForKeypadButtonOfKind(SVRKeypadButtonKind kind);
 
 @interface SVRAccessoryWindowKeypadView: NSView
 -(id)init;

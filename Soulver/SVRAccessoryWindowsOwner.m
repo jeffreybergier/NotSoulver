@@ -114,12 +114,11 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
 -(void)loadWindows;
 {
   Class appDelegateClass = [[[NSApplication sharedApplication] delegate] class];
-  NSRect keypadRect = NSMakeRect(200, 200, 136, 290);
+  NSRect keypadRect = NSMakeRect(200, 200, 128, 272);
   NSPanel *keypadPanel = [[NSPanel alloc] initWithContentRect:keypadRect
                                                      styleMask:(NSWindowStyleMaskTitled |
                                                                 NSWindowStyleMaskClosable |
-                                                                NSWindowStyleMaskUtilityWindow |
-                                                                NSWindowStyleMaskHUDWindow)
+                                                                NSWindowStyleMaskUtilityWindow)
                                                        backing:NSBackingStoreBuffered
                                                          defer:YES];
   

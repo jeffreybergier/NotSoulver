@@ -55,7 +55,7 @@
   NSRect buttonRect = SVR_rectForKeypadButtonOfKind(kind);
   NSButton *button = nil;
   button = [[[NSButton alloc] initWithFrame:buttonRect] autorelease];
-  [button setTitle:[NSString stringWithFormat:@"%d", (int)kind]];
+  [button setTitle:SVR_titleForKeypadButtonOfKind(kind)];
   [button setTag:kind];
   [button setBezelStyle:NSBezelStyleRegularSquare];
   [button setAction:buttonAction];
@@ -66,11 +66,10 @@
 NSRect SVR_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 {
   static const XPFloat windowPad  = 4;
-  static const XPFloat buttonVPad = 2;
-  static const XPFloat buttonHPad = 4;
-  static const XPFloat groupPad   = 6;
-  static const NSSize  buttonSize    = {40, 32};
-  static const NSSize  equalSize     = {84, 32};
+  static const XPFloat buttonVPad = 0;
+  static const XPFloat buttonHPad = 0;
+  static const XPFloat groupPad   = 4;
+  static const NSSize  buttonSize = {40, 32};
   XPInteger column     = -1;
   XPInteger row        = -1;
   XPFloat   rowPadding = 0;
@@ -167,7 +166,54 @@ NSRect SVR_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   output.origin = NSMakePoint(((buttonHPad + buttonSize.width ) * column) + windowPad,
                               ((buttonVPad + buttonSize.height) * row   ) + windowPad + rowPadding);
   output.size = kind == SVRKeypadButtonKindEqual
-                      ? equalSize
+                      ? NSMakeSize((buttonSize.width * 2) + buttonHPad, buttonSize.height)
                       : buttonSize;
   return output;
+}
+
+NSString *SVR_titleForKeypadButtonOfKind(SVRKeypadButtonKind kind)
+{
+  switch (kind) {
+    case SVRKeypadButtonKind1:
+    case SVRKeypadButtonKind2:
+    case SVRKeypadButtonKind3:
+    case SVRKeypadButtonKind4:
+    case SVRKeypadButtonKind5:
+    case SVRKeypadButtonKind6:
+    case SVRKeypadButtonKind7:
+    case SVRKeypadButtonKind8:
+    case SVRKeypadButtonKind9:
+      return [NSString stringWithFormat:@"%d", (int)kind];
+    case SVRKeypadButtonKind0:
+      return @"0";
+    case SVRKeypadButtonKindNegative:
+      return @"-";
+    case SVRKeypadButtonKindDecimal:
+      return @".";
+    case SVRKeypadButtonKindDelete:
+      return @"←";
+    case SVRKeypadButtonKindEqual:
+      return @"=";
+    case SVRKeypadButtonKindAdd:
+      return @"+";
+    case SVRKeypadButtonKindSubtract:
+      return @"-";
+    case SVRKeypadButtonKindBRight:
+      return @")";
+    case SVRKeypadButtonKindMultiply:
+      return @"*";
+    case SVRKeypadButtonKindDivide:
+      return @"/";
+    case SVRKeypadButtonKindBLeft:
+      return @"(";
+    case SVRKeypadButtonKindPower:
+      return @"^";
+    case SVRKeypadButtonKindRoot:
+      return @"√";
+    case SVRKeypadButtonKindLog:
+      return @"log";
+    default:
+      XPCLogAssrt1(NO, @"[UNKNOWN] SVRAccessoryWindowKeypadViewKind(%d)", (int)kind);
+      return [NSString stringWithFormat:@"%d", (int)kind];
+  }
 }
