@@ -42,7 +42,9 @@ of using this software.
 The app is a normal Mac app saved in ZIP format. The [builds](Builds/) folder contains 
 builds for each version of Mac OS X sorted by date the build was made. Use the newest 
 date in the newest operating system possible.
-- [X15 - Catalina](Builds/X15%20-%20Catalina/): Universal Apple Silicon and Intel 64 bit builds that run on macOS 14 and up
+- [Z15 - Sequoia](Builds/Z15%20-%20Sequoia/): **Notarized Universal Apple Silicon and Intel builds** that run on macOS 11 and up
+   - **This is the recommended build to run on any modern Mac**
+- [X15 - Catalina](Builds/X15%20-%20Catalina/): Universal Apple Silicon and Intel 64 bit builds that run on macOS 10.14 and up
 - [X8 - Mountain Lion](Builds/X8%20-%20Mountain%20Lion/): Intel 64 bit builds that run on Mac OS X 10.7 and up
 - [X6 - Snow Leopard](Builds/X6%20-%20Snow%20Leopard/): Intel 64 and 32 bit builds that run on Mac OS X 10.6 and up
 - [X4 - Tiger](Builds/X4%20-%20Tiger/): Universal Intel 32 bit and PowerPC 32 bit builds that run on Mac OS X 10.4 and 10.5
@@ -70,14 +72,15 @@ use any modern features at all:
 The app is a normal Mac app saved in ZIP format. The [builds](Builds/) folder contains 
 builds for each version of Mac OS X sorted by date the build was made. Use the newest 
 date in the newest operating system possible.
-| Folder                                                | Build OS        | Build IDE             | Build SDK      | Minimum OS   | Maximum OS  | Architecture |
-|-------------------------------------------------------|-----------------|-----------------------|----------------|--------------|------------ |--------------|
-| [X15 - Catalina](Builds/X15%20-%20Catalina/)          | macOS 10.15.7   | Xcode 12.4            | MacOSX11.1.sdk | macOS 10.14  |macOS 15     |`x86_64 arm64`|
-| [X8 - Mountain Lion](Builds/X8%20-%20Mountain%20Lion/)| OS X 10.8.5     | Xcode 5.1.1           | MacOSX10.9.sdk | Mac OS X 10.7|macOS 15     |`x86_64`      |
-| [X6 - Snow Leopard](Builds/X6%20-%20Snow%20Leopard/)  | Mac OS X 10.6.8 | Xcode 4.2             | MacOSX10.6.sdk | Mac OS X 10.6|macOS 15     |`x86_64 i386` |
-| [X4 - Tiger](Builds/X4%20-%20Tiger/)                  | Mac OS X 10.4.11| Xcode 2.5             | MacOSX10.4u.sdk| Mac OS X 10.4|macOS 10.14  |`ppc    i386` |
-| [X2 - Jaguar](Builds/X2%20-%20Jaguar/)                | Mac OS X 10.2.8 | Project Builder 2.1   | n/a            | Mac OS X 10.0|Mac OS X 10.6|`ppc`         |
-| [42 - OpenStep](Builds/42%20-%20OpenStep/)            | OpenStep 4.2    | Project Builder v300.2| n/a            | OpenStep 4.2 |OpenStep 4.2 |`m68k   i386` |
+| Folder                                                | Build OS        | Build IDE             | Build SDK      | Minimum OS   | Maximum OS  | Architecture   |
+|-------------------------------------------------------|-----------------|-----------------------|----------------|--------------|------------ |----------------|
+| [Z15 - Sequoia](Builds/15%20-%20Sequoia/)            | macOS 15.5      | Xcode 16.4            | MacOSX15.5.sdk | macOS 11     |macOS 15     |`x86_64` `arm64`|
+| [X15 - Catalina](Builds/X15%20-%20Catalina/)          | macOS 10.15.7   | Xcode 12.4            | MacOSX11.1.sdk | macOS 10.14  |macOS 15     |`x86_64` `arm64`|
+| [X8 - Mountain Lion](Builds/X8%20-%20Mountain%20Lion/)| OS X 10.8.5     | Xcode 5.1.1           | MacOSX10.9.sdk | Mac OS X 10.7|macOS 15     |`x86_64`        |
+| [X6 - Snow Leopard](Builds/X6%20-%20Snow%20Leopard/)  | Mac OS X 10.6.8 | Xcode 4.2             | MacOSX10.6.sdk | Mac OS X 10.6|macOS 15     |`x86_64` `i386` |
+| [X4 - Tiger](Builds/X4%20-%20Tiger/)                  | Mac OS X 10.4.11| Xcode 2.5             | MacOSX10.4u.sdk| Mac OS X 10.4|macOS 10.14  |`ppc` `i386`    |
+| [X2 - Jaguar](Builds/X2%20-%20Jaguar/)                | Mac OS X 10.2.8 | Project Builder 2.1   | n/a            | Mac OS X 10.0|Mac OS X 10.6|`ppc`           |
+| [42 - OpenStep](Builds/42%20-%20OpenStep/)            | OpenStep 4.2    | Project Builder v300.2| n/a            | OpenStep 4.2 |OpenStep 4.2 |`m68k` `i386`   |
 
 ### How to Build from Source
 In OpenStep, the Project Builder file is always called [`PB.project`](Soulver/PB.project) and, as far as I can 
@@ -87,6 +90,13 @@ created from. In general, you should open the PB file that is less than or equal
 OS you are running. In general, this means you will open 
 [PBX15.xcodeproj](Soulver/PBX15.xcodeproj) unless you are running a really old version of 
 OSX. From there it works exactly like any other Xcode project, just build and run.
+
+Why not open [PBZ15.xcodeproj](Soulver/PBZ15.xcodeproj)? This Xcode project was created
+in macOS 15 Sequoia which means it should be the recommended option given the instructions
+above. However, this Xcode project has signing enabled for notarization and this may
+make it hard to build on computers that do not have a signed in developer account and
+a macOS provisioning profile. So you can use this one, but expect for there to be errors
+on first build..
 
 ### Important Classes
 - [`SVRDocument`](Soulver/SVRDocument.h): Very minimal `NSDocument` subclass. It has almost no logic. 
@@ -106,7 +116,7 @@ OSX. From there it works exactly like any other Xcode project, just build and ru
 The real honest truth is that, the source compatibility in Objective C and AppKit is
 so good that the pure OpenStep version of this app works perfectly in OS X as is. Yes,
 there are ton of deprecated API warnings as well as implicit integer type conversions. 
-But it all works… *WHICH IS AMAZING!* But this was not enough, I also had a few goals:
+But it all works… **WHICH IS AMAZING!** But this was not enough, I also had a few goals:
 
 - Support the newest features
 - Use the newest API
