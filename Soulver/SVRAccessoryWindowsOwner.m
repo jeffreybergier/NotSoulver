@@ -128,6 +128,7 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
   
   [keypadPanel setTitle:@"Keypad"];
   [keypadPanel setContentView:[[[SVRAccessoryWindowKeypadView alloc] init] autorelease]];
+  [keypadPanel setInitialFirstResponder:[[keypadPanel contentView] equalButton]];
   [keypadPanel setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameKeypad];
   [keypadPanel XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameKeypad];
   [keypadPanel XP_setRestorationClass:appDelegateClass];

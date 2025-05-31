@@ -81,7 +81,6 @@
 -(void)applicationWillFinishLaunching:(NSNotification*)aNotification;
 {
   NSApplication *app = [aNotification object];
-  Class myClass = [self class];
   // Configure the title of the app
   [[app mainMenu] setTitle:[Localized titleAppName]];
   // Prepare UserDefaults

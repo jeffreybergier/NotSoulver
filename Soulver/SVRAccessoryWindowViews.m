@@ -34,16 +34,26 @@
 -(id)init;
 {
   SVRKeypadButtonKind kind = SVRKeypadButtonKindUnknown;
+  NSButton *button = nil;
   
   self = [super init];
   XPParameterRaise(self);
+  _equalButton = nil;
   
-  for (kind=SVRKeypadButtonKind1; kind<=SVRKeypadButtonKindLog; kind++)
-  {
-    [self addSubview:[NSButton SVR_keypadButtonOfKind:kind]];
+  for (kind=SVRKeypadButtonKind1; kind<=SVRKeypadButtonKindLog; kind++) {
+    button = [NSButton SVR_keypadButtonOfKind:kind];
+    [self addSubview:button];
+    if (kind == SVRKeypadButtonKindEqual) {
+      _equalButton = button;
+    }
   }
   
   return self;
+}
+
+-(NSButton*)equalButton;
+{
+  return [[_equalButton retain] autorelease];
 }
 
 @end
@@ -51,14 +61,15 @@
 @implementation NSControl (SVRAccessoryWindows)
 +(id)SVR_keypadButtonOfKind:(SVRKeypadButtonKind)kind;
 {
-  SEL buttonAction = @selector(keypadAppend:);
+  SEL buttonAction  = NSSelectorFromString(@"keypadAppend:");
   NSRect buttonRect = SVR_rectForKeypadButtonOfKind(kind);
-  NSButton *button = nil;
+  NSButton *button  = nil;
   button = [[[NSButton alloc] initWithFrame:buttonRect] autorelease];
   [button setTitle:SVR_titleForKeypadButtonOfKind(kind)];
+  [button setKeyEquivalent:SVR_keyForKeypadButtonOfKind(kind)];
   [button setTag:kind];
-  [button setBezelStyle:NSBezelStyleRegularSquare];
   [button setAction:buttonAction];
+  [button setBezelStyle:NSBezelStyleRegularSquare];
   return button;
 }
 @end
@@ -215,5 +226,19 @@ NSString *SVR_titleForKeypadButtonOfKind(SVRKeypadButtonKind kind)
     default:
       XPCLogAssrt1(NO, @"[UNKNOWN] SVRAccessoryWindowKeypadViewKind(%d)", (int)kind);
       return [NSString stringWithFormat:@"%d", (int)kind];
+  }
+}
+
+NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
+{
+  switch (kind) {
+    case SVRKeypadButtonKindDelete:
+      return @"\b";
+    case SVRKeypadButtonKindRoot:
+      return @"r";
+    case SVRKeypadButtonKindLog:
+      return @"l";
+    default:
+      return SVR_titleForKeypadButtonOfKind(kind);
   }
 }
