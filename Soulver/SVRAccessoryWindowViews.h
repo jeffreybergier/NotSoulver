@@ -28,3 +28,7 @@
 //
 
 #import <AppKit/AppKit.h>
+
+@interface SVRAccessoryWindowKeypadView: NSView
+-(id)init;
+@end

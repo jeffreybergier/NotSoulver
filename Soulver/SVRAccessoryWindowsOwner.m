@@ -28,6 +28,7 @@
 //
 
 #import "SVRAccessoryWindowsOwner.h"
+#import "SVRAccessoryWindowViews.h"
 
 NSString * const SVRAccessoryWindowFrameAutosaveNameSettings = @"kSVRAccessoryWindowFrameAutosaveNameSettings";
 NSString * const SVRAccessoryWindowFrameAutosaveNameAbout    = @"kSVRAccessoryWindowFrameAutosaveNameAbout";
@@ -112,10 +113,25 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
 
 -(void)loadWindows;
 {
-  
+  Class appDelegateClass = [[[NSApplication sharedApplication] delegate] class];
+  NSRect keypadRect = NSMakeRect(200, 200, 300, 300);
+  NSPanel *keypadPanel = [[NSPanel alloc] initWithContentRect:keypadRect
+                                                     styleMask:(NSWindowStyleMaskTitled |
+                                                                NSWindowStyleMaskClosable |
+                                                                NSWindowStyleMaskUtilityWindow |
+                                                                NSWindowStyleMaskHUDWindow)
+                                                       backing:NSBackingStoreBuffered
+                                                         defer:YES];
   
   XPLogAssrt(!_windowsLoaded, @"Windows Already Loaded");
+  _keypadPanel = keypadPanel;
   _windowsLoaded = YES;
+  
+  [keypadPanel setContentView:[[[SVRAccessoryWindowKeypadView alloc] init] autorelease]];
+  [keypadPanel setFrameAutosaveName:@"CCC"];
+  [keypadPanel XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameKeypad];
+  [keypadPanel XP_setRestorationClass:appDelegateClass];
+  [keypadPanel center];
   
   
   /*
@@ -134,20 +150,18 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
   [ textStorage endEditing];
 
   // Set autosave names
-  [keypadPanel        XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameKeypad  ];
   [aboutWindow        XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameAbout   ];
   [settingsWindow     XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameSettings];
-  [keypadPanel    setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameKeypad  ];
   [aboutWindow    setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameAbout   ];
   [settingsWindow setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameSettings];
+   // Configure Accessory Windows for state restoration
+   [[_accessoryWindowsOwner aboutWindow   ] XP_setRestorationClass:myClass];
+   [[_accessoryWindowsOwner settingsWindow] XP_setRestorationClass:myClass];
   
   // Setting the frameAutosaveName immediate changes the frame
   // of the window if its been moved already.
   // This code checks if the windows have never been
   // positioned by the user before. If so, it centers them.
-  if (NSEqualRects(keypadRect, [keypadPanel frame])) {
-    [keypadPanel center];
-  }
   if (NSEqualRects(aboutRect, [aboutWindow frame])) {
     [aboutWindow center];
   }

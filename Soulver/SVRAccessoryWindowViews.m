@@ -28,3 +28,18 @@
 //
 
 #import "SVRAccessoryWindowViews.h"
+#import "XPCrossPlatform.h"
+
+@implementation SVRAccessoryWindowKeypadView: NSView
+
+-(id)init;
+{
+  self = [super init];
+  XPParameterRaise(self);
+  
+  [self addSubview:[[[NSColorWell alloc] initWithFrame:NSMakeRect(0, 0, 100, 100)] autorelease]];
+  
+  return self;
+}
+
+@end

@@ -91,10 +91,6 @@
   // Load Accessory Windows Nib
   _accessoryWindowsOwner = [[SVRAccessoryWindowsOwner alloc] init];
   XPParameterRaise(_accessoryWindowsOwner);
-  // Configure Accessory Windows for state restoration
-  [[_accessoryWindowsOwner aboutWindow   ] XP_setRestorationClass:myClass];
-  [[_accessoryWindowsOwner keypadPanel   ] XP_setRestorationClass:myClass];
-  [[_accessoryWindowsOwner settingsWindow] XP_setRestorationClass:myClass];
   // Announce
   XPLogDebug(@"");
 }
