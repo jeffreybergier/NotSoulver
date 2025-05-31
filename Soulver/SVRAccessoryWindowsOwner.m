@@ -114,7 +114,7 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
 -(void)loadWindows;
 {
   Class appDelegateClass = [[[NSApplication sharedApplication] delegate] class];
-  NSRect keypadRect = NSMakeRect(200, 200, 300, 300);
+  NSRect keypadRect = NSMakeRect(200, 200, 136, 304);
   NSPanel *keypadPanel = [[NSPanel alloc] initWithContentRect:keypadRect
                                                      styleMask:(NSWindowStyleMaskTitled |
                                                                 NSWindowStyleMaskClosable |
@@ -127,8 +127,9 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
   _keypadPanel = keypadPanel;
   _windowsLoaded = YES;
   
+  [keypadPanel setTitle:@"Keypad"];
   [keypadPanel setContentView:[[[SVRAccessoryWindowKeypadView alloc] init] autorelease]];
-  [keypadPanel setFrameAutosaveName:@"CCC"];
+  [keypadPanel setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameKeypad];
   [keypadPanel XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameKeypad];
   [keypadPanel XP_setRestorationClass:appDelegateClass];
   [keypadPanel center];

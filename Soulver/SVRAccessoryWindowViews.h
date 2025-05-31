@@ -28,7 +28,37 @@
 //
 
 #import <AppKit/AppKit.h>
+#import "XPCrossPlatform.h"
+
+typedef XP_ENUM(XPInteger, SVRAccessoryWindowKeypadViewKind) {
+  SVRAccessoryWindowKeypadViewKindUnknown,
+  SVRAccessoryWindowKeypadViewKind1,
+  SVRAccessoryWindowKeypadViewKind2,
+  SVRAccessoryWindowKeypadViewKind3,
+  SVRAccessoryWindowKeypadViewKind4,
+  SVRAccessoryWindowKeypadViewKind5,
+  SVRAccessoryWindowKeypadViewKind6,
+  SVRAccessoryWindowKeypadViewKind7,
+  SVRAccessoryWindowKeypadViewKind8,
+  SVRAccessoryWindowKeypadViewKind9,
+  SVRAccessoryWindowKeypadViewKind0,
+  SVRAccessoryWindowKeypadViewKindNegative,
+  SVRAccessoryWindowKeypadViewKindDecimal,
+  SVRAccessoryWindowKeypadViewKindDelete,
+  SVRAccessoryWindowKeypadViewKindEqual,
+  SVRAccessoryWindowKeypadViewKindAdd,
+  SVRAccessoryWindowKeypadViewKindSubtract,
+  SVRAccessoryWindowKeypadViewKindBRight,
+  SVRAccessoryWindowKeypadViewKindMultiply,
+  SVRAccessoryWindowKeypadViewKindDivide,
+  SVRAccessoryWindowKeypadViewKindBLeft,
+  SVRAccessoryWindowKeypadViewKindPower,
+  SVRAccessoryWindowKeypadViewKindRoot,
+  SVRAccessoryWindowKeypadViewKindLog
+};
 
 @interface SVRAccessoryWindowKeypadView: NSView
 -(id)init;
++(NSButton*)newButtonOfKind:(SVRAccessoryWindowKeypadViewKind)kind;
++(NSRect)rectForButtonOfKind:(SVRAccessoryWindowKeypadViewKind)kind;
 @end
