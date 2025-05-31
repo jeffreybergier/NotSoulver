@@ -51,10 +51,5 @@ int main(int argc, const char *argv[]) {
   TestsIntegrationExecute();
   
   // 4. Load NSApplication
-#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 120000
-  XPLogAlwys(@"<Main> Exiting due to unsupported system");
-  return 0;
-#else
   return NSApplicationMain(argc, argv);
-#endif
 }
