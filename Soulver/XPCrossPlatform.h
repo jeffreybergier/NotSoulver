@@ -331,12 +331,6 @@ NSArray* XPRunOpenPanel(NSString *extension);
 +(id)XP_unarchivedObjectOfClass:(Class)cls fromData:(NSData*)someData;
 @end
 
-@interface NSBundle (CrossPlatform)
--(BOOL)XP_loadNibNamed:(NSString*)nibName
-                 owner:(id)owner
-       topLevelObjects:(NSArray**)topLevelObjects;
-@end
-
 @interface NSWorkspace (CrossPlatform)
 /// OpenStep basically was pre-internet and did not expect
 /// websites to be opened with this method.

@@ -43,14 +43,13 @@
 
 @interface SVRAccessoryWindowsOwner: NSObject
 {
-  mm_retain   IBOutlet NSPanel    *_keypadPanel;
-  mm_retain   IBOutlet NSWindow   *_aboutWindow;
-  mm_retain   IBOutlet NSWindow   *_settingsWindow;
-  mm_unretain IBOutlet NSTextView *_aboutTextView;
-  mm_new NSArray *_topLevelObjects;
+  mm_new IBOutlet NSPanel  *_keypadPanel;
+  mm_new IBOutlet NSWindow *_aboutWindow;
+  mm_new IBOutlet NSWindow *_settingsWindow;
+  BOOL _windowsLoaded;
 }
 
-// MARK: IBOutlets
+// MARK: Lazy-Loading Properties
 -(NSPanel *)keypadPanel;
 -(NSWindow*)aboutWindow;
 -(NSWindow*)settingsWindow;
@@ -58,7 +57,7 @@
 
 // MARK: Init
 -(id)init;
--(void)awakeFromNib;
+-(void)loadWindows;
 
 // MARK: IBActions
 -(IBAction)toggleKeypadPanel:(id)sender;

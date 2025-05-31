@@ -63,7 +63,6 @@
 		8C5E58422DC346F200A1648E /* slre.c in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62EB32D91DDEB0000020F /* slre.c */; };
 		8C5E58442DC346F200A1648E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		8C9CB0232DD8943300C672E3 /* MainMenu_X15.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C9CB0212DD8943300C672E3 /* MainMenu_X15.xib */; };
-		8C9CB0272DD8944700C672E3 /* AccessoryWindows_X15.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C9CB0252DD8944700C672E3 /* AccessoryWindows_X15.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -431,7 +430,6 @@
 				8C4D1E022DC7D1F80060CFBA /* BlocksFullSizeSMlght.tiff in Resources */,
 				8C4D1E032DC7D1F80060CFBA /* NeXTLogoMed.tiff in Resources */,
 				8C9CB0232DD8943300C672E3 /* MainMenu_X15.xib in Resources */,
-				8C9CB0272DD8944700C672E3 /* AccessoryWindows_X15.xib in Resources */,
 				8C4D1E042DC7D1F80060CFBA /* TagLine.tiff in Resources */,
 				8C4D1E052DC7D1F80060CFBA /* TM.tiff in Resources */,
 			);
