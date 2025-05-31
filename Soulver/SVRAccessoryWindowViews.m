@@ -33,23 +33,26 @@
 
 -(id)init;
 {
-  SVRAccessoryWindowKeypadViewKind kind = SVRAccessoryWindowKeypadViewKind1;
+  SVRKeypadButtonKind kind = SVRKeypadButtonKindUnknown;
   
   self = [super init];
   XPParameterRaise(self);
   
-  for (kind=SVRAccessoryWindowKeypadViewKind1; kind<=SVRAccessoryWindowKeypadViewKindLog; kind++)
+  for (kind=SVRKeypadButtonKind1; kind<=SVRKeypadButtonKindLog; kind++)
   {
-    [self addSubview:[[self class] newButtonOfKind:kind]];
+    [self addSubview:[NSButton SVR_keypadButtonOfKind:kind]];
   }
   
   return self;
 }
 
-+(NSButton*)newButtonOfKind:(SVRAccessoryWindowKeypadViewKind)kind;
+@end
+
+@implementation NSControl (SVRAccessoryWindows)
++(id)SVR_keypadButtonOfKind:(SVRKeypadButtonKind)kind;
 {
   SEL buttonAction = @selector(keypadAppend:);
-  NSRect buttonRect = [self rectForButtonOfKind:kind];
+  NSRect buttonRect = SVR_rectForKeypadButtonOfKind(kind);
   NSButton *button = nil;
   button = [[[NSButton alloc] initWithFrame:buttonRect] autorelease];
   [button setTitle:[NSString stringWithFormat:@"%d", (int)kind]];
@@ -58,12 +61,14 @@
   [button setAction:buttonAction];
   return button;
 }
+@end
 
-+(NSRect)rectForButtonOfKind:(SVRAccessoryWindowKeypadViewKind)kind;
+NSRect SVR_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 {
-  static const XPFloat paddingWindow = 4;
-  static const XPFloat paddingButton = 4;
-  static const XPFloat paddingExtra  = 6;
+  static const XPFloat windowPad  = 4;
+  static const XPFloat buttonVPad = 2;
+  static const XPFloat buttonHPad = 4;
+  static const XPFloat groupPad   = 6;
   static const NSSize  buttonSize    = {40, 32};
   static const NSSize  equalSize     = {84, 32};
   XPInteger column     = -1;
@@ -72,99 +77,97 @@
   NSRect    output     = NSZeroRect;
   
   switch (kind) {
-    case SVRAccessoryWindowKeypadViewKind1:
-    case SVRAccessoryWindowKeypadViewKindNegative:
-    case SVRAccessoryWindowKeypadViewKind4:
-    case SVRAccessoryWindowKeypadViewKind7:
-    case SVRAccessoryWindowKeypadViewKindAdd:
-    case SVRAccessoryWindowKeypadViewKindMultiply:
-    case SVRAccessoryWindowKeypadViewKindPower:
-    case SVRAccessoryWindowKeypadViewKindDelete:
+    case SVRKeypadButtonKind1:
+    case SVRKeypadButtonKindNegative:
+    case SVRKeypadButtonKind4:
+    case SVRKeypadButtonKind7:
+    case SVRKeypadButtonKindAdd:
+    case SVRKeypadButtonKindMultiply:
+    case SVRKeypadButtonKindPower:
+    case SVRKeypadButtonKindDelete:
       column = 0;
       break;
-    case SVRAccessoryWindowKeypadViewKindEqual:
-    case SVRAccessoryWindowKeypadViewKind0:
-    case SVRAccessoryWindowKeypadViewKind2:
-    case SVRAccessoryWindowKeypadViewKind5:
-    case SVRAccessoryWindowKeypadViewKind8:
-    case SVRAccessoryWindowKeypadViewKindSubtract:
-    case SVRAccessoryWindowKeypadViewKindDivide:
-    case SVRAccessoryWindowKeypadViewKindRoot:
+    case SVRKeypadButtonKindEqual:
+    case SVRKeypadButtonKind0:
+    case SVRKeypadButtonKind2:
+    case SVRKeypadButtonKind5:
+    case SVRKeypadButtonKind8:
+    case SVRKeypadButtonKindSubtract:
+    case SVRKeypadButtonKindDivide:
+    case SVRKeypadButtonKindRoot:
       column = 1;
       break;
-    case SVRAccessoryWindowKeypadViewKindDecimal:
-    case SVRAccessoryWindowKeypadViewKind3:
-    case SVRAccessoryWindowKeypadViewKind6:
-    case SVRAccessoryWindowKeypadViewKind9:
-    case SVRAccessoryWindowKeypadViewKindBRight:
-    case SVRAccessoryWindowKeypadViewKindBLeft:
-    case SVRAccessoryWindowKeypadViewKindLog:
+    case SVRKeypadButtonKindDecimal:
+    case SVRKeypadButtonKind3:
+    case SVRKeypadButtonKind6:
+    case SVRKeypadButtonKind9:
+    case SVRKeypadButtonKindBRight:
+    case SVRKeypadButtonKindBLeft:
+    case SVRKeypadButtonKindLog:
       column = 2;
       break;
     default:
-      XPLogAssrt1(NO, @"[UNKNOWN] SVRAccessoryWindowKeypadViewKind(%d)", (int)kind);
+      XPCLogAssrt1(NO, @"[UNKNOWN] SVRAccessoryWindowKeypadViewKind(%d)", (int)kind);
       break;
   }
   
   switch (kind) {
-    case SVRAccessoryWindowKeypadViewKindDelete:
-    case SVRAccessoryWindowKeypadViewKindEqual:
+    case SVRKeypadButtonKindDelete:
+    case SVRKeypadButtonKindEqual:
       row = 0;
       break;
-    case SVRAccessoryWindowKeypadViewKindNegative:
-    case SVRAccessoryWindowKeypadViewKind0:
-    case SVRAccessoryWindowKeypadViewKindDecimal:
+    case SVRKeypadButtonKindNegative:
+    case SVRKeypadButtonKind0:
+    case SVRKeypadButtonKindDecimal:
       row = 1;
       break;
-    case SVRAccessoryWindowKeypadViewKind1:
-    case SVRAccessoryWindowKeypadViewKind2:
-    case SVRAccessoryWindowKeypadViewKind3:
+    case SVRKeypadButtonKind1:
+    case SVRKeypadButtonKind2:
+    case SVRKeypadButtonKind3:
       row = 2;
       break;
-    case SVRAccessoryWindowKeypadViewKind4:
-    case SVRAccessoryWindowKeypadViewKind5:
-    case SVRAccessoryWindowKeypadViewKind6:
+    case SVRKeypadButtonKind4:
+    case SVRKeypadButtonKind5:
+    case SVRKeypadButtonKind6:
       row = 3;
       break;
-    case SVRAccessoryWindowKeypadViewKind7:
-    case SVRAccessoryWindowKeypadViewKind8:
-    case SVRAccessoryWindowKeypadViewKind9:
+    case SVRKeypadButtonKind7:
+    case SVRKeypadButtonKind8:
+    case SVRKeypadButtonKind9:
       row = 4;
       break;
-    case SVRAccessoryWindowKeypadViewKindAdd:
-    case SVRAccessoryWindowKeypadViewKindSubtract:
-    case SVRAccessoryWindowKeypadViewKindBRight:
+    case SVRKeypadButtonKindAdd:
+    case SVRKeypadButtonKindSubtract:
+    case SVRKeypadButtonKindBRight:
       row = 5;
       break;
-    case SVRAccessoryWindowKeypadViewKindMultiply:
-    case SVRAccessoryWindowKeypadViewKindDivide:
-    case SVRAccessoryWindowKeypadViewKindBLeft:
+    case SVRKeypadButtonKindMultiply:
+    case SVRKeypadButtonKindDivide:
+    case SVRKeypadButtonKindBLeft:
       row = 6;
       break;
-    case SVRAccessoryWindowKeypadViewKindPower:
-    case SVRAccessoryWindowKeypadViewKindRoot:
-    case SVRAccessoryWindowKeypadViewKindLog:
+    case SVRKeypadButtonKindPower:
+    case SVRKeypadButtonKindRoot:
+    case SVRKeypadButtonKindLog:
       row = 7;
       break;
     default:
-      XPLogAssrt1(NO, @"[UNKNOWN] SVRAccessoryWindowKeypadViewKind(%d)", (int)kind);
+      XPCLogAssrt1(NO, @"[UNKNOWN] SVRAccessoryWindowKeypadViewKind(%d)", (int)kind);
       break;
   }
   
   
   if (row > 0) {
-    rowPadding += paddingExtra;
+    rowPadding += groupPad;
   }
   if (row > 4) {
-    rowPadding += paddingExtra;
+    rowPadding += groupPad;
   }
   
-  output.origin = NSMakePoint(((paddingButton + buttonSize.width ) * column) + paddingWindow,
-                              ((paddingButton + buttonSize.height) * row   ) + paddingWindow + rowPadding);
-  output.size = kind == SVRAccessoryWindowKeypadViewKindEqual
+  output.origin = NSMakePoint(((buttonHPad + buttonSize.width ) * column) + windowPad,
+                              ((buttonVPad + buttonSize.height) * row   ) + windowPad + rowPadding);
+  output.size = kind == SVRKeypadButtonKindEqual
                       ? equalSize
                       : buttonSize;
   return output;
 }
-
-@end

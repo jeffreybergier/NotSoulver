@@ -134,7 +134,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
       output = [NSArray new];
       break;
     default:
-      XPLogCAssrt1(NO, @"[UNKNOWN] NSModalResponse(%d)", (int)result);
+      XPCLogAssrt1(NO, @"[UNKNOWN] NSModalResponse(%d)", (int)result);
       output = nil;
       break;
   }

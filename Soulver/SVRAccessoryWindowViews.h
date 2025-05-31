@@ -30,35 +30,39 @@
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
 
-typedef XP_ENUM(XPInteger, SVRAccessoryWindowKeypadViewKind) {
-  SVRAccessoryWindowKeypadViewKindUnknown,
-  SVRAccessoryWindowKeypadViewKind1,
-  SVRAccessoryWindowKeypadViewKind2,
-  SVRAccessoryWindowKeypadViewKind3,
-  SVRAccessoryWindowKeypadViewKind4,
-  SVRAccessoryWindowKeypadViewKind5,
-  SVRAccessoryWindowKeypadViewKind6,
-  SVRAccessoryWindowKeypadViewKind7,
-  SVRAccessoryWindowKeypadViewKind8,
-  SVRAccessoryWindowKeypadViewKind9,
-  SVRAccessoryWindowKeypadViewKind0,
-  SVRAccessoryWindowKeypadViewKindNegative,
-  SVRAccessoryWindowKeypadViewKindDecimal,
-  SVRAccessoryWindowKeypadViewKindDelete,
-  SVRAccessoryWindowKeypadViewKindEqual,
-  SVRAccessoryWindowKeypadViewKindAdd,
-  SVRAccessoryWindowKeypadViewKindSubtract,
-  SVRAccessoryWindowKeypadViewKindBRight,
-  SVRAccessoryWindowKeypadViewKindMultiply,
-  SVRAccessoryWindowKeypadViewKindDivide,
-  SVRAccessoryWindowKeypadViewKindBLeft,
-  SVRAccessoryWindowKeypadViewKindPower,
-  SVRAccessoryWindowKeypadViewKindRoot,
-  SVRAccessoryWindowKeypadViewKindLog
+typedef XP_ENUM(XPInteger, SVRKeypadButtonKind) {
+  SVRKeypadButtonKindUnknown,
+  SVRKeypadButtonKind1,
+  SVRKeypadButtonKind2,
+  SVRKeypadButtonKind3,
+  SVRKeypadButtonKind4,
+  SVRKeypadButtonKind5,
+  SVRKeypadButtonKind6,
+  SVRKeypadButtonKind7,
+  SVRKeypadButtonKind8,
+  SVRKeypadButtonKind9,
+  SVRKeypadButtonKind0,
+  SVRKeypadButtonKindNegative,
+  SVRKeypadButtonKindDecimal,
+  SVRKeypadButtonKindDelete,
+  SVRKeypadButtonKindEqual,
+  SVRKeypadButtonKindAdd,
+  SVRKeypadButtonKindSubtract,
+  SVRKeypadButtonKindBRight,
+  SVRKeypadButtonKindMultiply,
+  SVRKeypadButtonKindDivide,
+  SVRKeypadButtonKindBLeft,
+  SVRKeypadButtonKindPower,
+  SVRKeypadButtonKindRoot,
+  SVRKeypadButtonKindLog
 };
+
+NSRect SVR_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind);
 
 @interface SVRAccessoryWindowKeypadView: NSView
 -(id)init;
-+(NSButton*)newButtonOfKind:(SVRAccessoryWindowKeypadViewKind)kind;
-+(NSRect)rectForButtonOfKind:(SVRAccessoryWindowKeypadViewKind)kind;
+@end
+
+@interface NSControl (SVRAccessoryWindows)
++(id)SVR_keypadButtonOfKind:(SVRKeypadButtonKind)kind;
 @end
