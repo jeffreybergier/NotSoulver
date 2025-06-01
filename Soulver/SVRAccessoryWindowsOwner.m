@@ -33,6 +33,7 @@
 NSString * const SVRAccessoryWindowFrameAutosaveNameSettings = @"kSVRAccessoryWindowFrameAutosaveNameSettings";
 NSString * const SVRAccessoryWindowFrameAutosaveNameAbout    = @"kSVRAccessoryWindowFrameAutosaveNameAbout";
 NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWindowFrameAutosaveNameKeypad";
+static NSSize SVRAccessoryWindowKeypadWindowSize = {0, 0};
 
 @implementation SVRFontManager
 
@@ -123,16 +124,20 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
 -(void)loadWindows;
 {
   Class appDelegateClass = [[[NSApplication sharedApplication] delegate] class];
+  NSPanel *keypadPanel = nil;
   NSRect rect = NSZeroRect;
-  rect.size = SVRAccessoryWindowKeypadWindowSize;
-  XPWindowStyleMask mask = (XPWindowStyleMaskTitled | XPWindowStyleMaskClosable | XPWindowStyleMaskUtilityWindow);
+  XPWindowStyleMask mask = (XPWindowStyleMaskTitled | XPWindowStyleMaskClosable);
+#ifdef XPSupportsUtilityWindows
+  mask |= XPWindowStyleMaskUtilityWindow;
+#endif
 #ifdef XPSupportsTexturedWindows
   mask |= NSTexturedBackgroundWindowMask;
 #endif
-  NSPanel *keypadPanel = [[NSPanel alloc] initWithContentRect:rect
-                                                    styleMask:mask
-                                                      backing:NSBackingStoreBuffered
-                                                        defer:YES];
+  rect.size = SVRAccessoryWindowKeypadWindowSize;
+  keypadPanel = [[NSPanel alloc] initWithContentRect:rect
+                                                      styleMask:mask
+                                                        backing:NSBackingStoreBuffered
+                                                          defer:YES];
   
   XPLogAssrt(!_windowsLoaded, @"Windows Already Loaded");
   _keypadPanel = keypadPanel;

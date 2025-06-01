@@ -62,12 +62,16 @@ NSString *SVR_titleForKeypadButtonOfKind(SVRKeypadButtonKind kind);
 NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind);
 
 static const XPFloat SVRAccessoryWindowKeypadWindowPadding        = 4;
+static const NSSize  SVRAccessoryWindowKeypadWindowButtonSize     = {40, 32};
+#ifdef XPSupportsButtonStyles
 static const XPFloat SVRAccessoryWindowKeypadWindowButtonVPadding = 0;
 static const XPFloat SVRAccessoryWindowKeypadWindowButtonHPadding = 0;
 static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 4;
-static const NSSize  SVRAccessoryWindowKeypadWindowButtonSize     = {40, 32};
-// Set in +[SVRAccessoryWindowsOwner initialize]
-static NSSize SVRAccessoryWindowKeypadWindowSize = {0, 0};
+#else
+static const XPFloat SVRAccessoryWindowKeypadWindowButtonVPadding = 4;
+static const XPFloat SVRAccessoryWindowKeypadWindowButtonHPadding = 4;
+static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
+#endif
 
 @interface SVRAccessoryWindowKeypadView: NSView
 {

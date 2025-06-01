@@ -139,6 +139,8 @@ typedef XPUInteger XPDocumentChangeType;
 #define XPKeyedUnarchiver NSKeyedUnarchiver
 #define XPSupportsNSBezierPath
 #define XPSupportsTexturedWindows
+#define XPSupportsUtilityWindows
+#define XPSupportsButtonStyles
 #else
 #define XPKeyedArchiver NSArchiver
 #define XPKeyedUnarchiver NSUnarchiver
@@ -217,8 +219,10 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #ifdef MAC_OS_X_VERSION_10_14
 #define XPSupportsDarkMode
 #define XPSupportsNSSecureCoding
+#define XPBezelStyleFlexiblePush NSBezelStyleFlexiblePush
 typedef NSAttributedStringKey XPAttributedStringKey;
 #else
+#define XPBezelStyleFlexiblePush NSRegularSquareBezelStyle
 typedef NSString* XPAttributedStringKey;
 #endif
 

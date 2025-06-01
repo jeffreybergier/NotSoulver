@@ -272,10 +272,6 @@
 {
   return [self __application:sender openFile:filename];
 }
--(BOOL)applicationOpenUntitledFile:(NSApplication *)sender;
-{
-  return [self __applicationOpenUntitledFile:sender];
-}
 #else
 
 #endif

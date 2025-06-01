@@ -69,7 +69,9 @@
   [button setKeyEquivalent:SVR_keyForKeypadButtonOfKind(kind)];
   [button setTag:kind];
   [button setAction:buttonAction];
-  [button setBezelStyle:NSRegularSquareBezelStyle];
+#ifdef XPSupportsButtonStyles
+  [button setBezelStyle:XPBezelStyleFlexiblePush];
+#endif
   return button;
 }
 @end
