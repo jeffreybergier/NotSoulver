@@ -33,7 +33,7 @@
 NSString * const SVRAccessoryWindowFrameAutosaveNameSettings = @"kSVRAccessoryWindowFrameAutosaveNameSettings";
 NSString * const SVRAccessoryWindowFrameAutosaveNameAbout    = @"kSVRAccessoryWindowFrameAutosaveNameAbout";
 NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWindowFrameAutosaveNameKeypad";
-static NSSize SVRAccessoryWindowKeypadWindowSize = {0, 0};
+static NSRect SVRAccessoryWindowKeypadWindowRect = {{0, 0}, {0, 0}};
 
 @implementation SVRFontManager
 
@@ -88,10 +88,12 @@ static NSSize SVRAccessoryWindowKeypadWindowSize = {0, 0};
 
 +(void)initialize;
 {
-  SVRAccessoryWindowKeypadWindowSize = NSMakeSize(
+  SVRAccessoryWindowKeypadWindowRect = NSMakeRect
+  (0,
+   0,
    (SVRAccessoryWindowKeypadWindowPadding * 2) + (SVRAccessoryWindowKeypadWindowButtonSize.width  * 3) + (SVRAccessoryWindowKeypadWindowButtonHPadding * 2),
    (SVRAccessoryWindowKeypadWindowPadding * 2) + (SVRAccessoryWindowKeypadWindowButtonSize.height * 8) + (SVRAccessoryWindowKeypadWindowButtonVPadding * 7) + (SVRAccessoryWindowKeypadWindowGroupSpacing * 2)
-                                                  );
+   );
 }
 
 -(id)init;
@@ -124,8 +126,7 @@ static NSSize SVRAccessoryWindowKeypadWindowSize = {0, 0};
 -(void)loadWindows;
 {
   Class appDelegateClass = [[[NSApplication sharedApplication] delegate] class];
-  NSPanel *keypadPanel = nil;
-  NSRect rect = NSZeroRect;
+  NSWindow *window = nil;
   XPWindowStyleMask mask = (XPWindowStyleMaskTitled | XPWindowStyleMaskClosable);
 #ifdef XPSupportsUtilityWindows
   mask |= XPWindowStyleMaskUtilityWindow;
@@ -133,23 +134,22 @@ static NSSize SVRAccessoryWindowKeypadWindowSize = {0, 0};
 #ifdef XPSupportsTexturedWindows
   mask |= NSTexturedBackgroundWindowMask;
 #endif
-  rect.size = SVRAccessoryWindowKeypadWindowSize;
-  keypadPanel = [[NSPanel alloc] initWithContentRect:rect
-                                                      styleMask:mask
-                                                        backing:NSBackingStoreBuffered
-                                                          defer:YES];
+  window = [[NSPanel alloc] initWithContentRect:SVRAccessoryWindowKeypadWindowRect
+                                      styleMask:mask
+                                        backing:NSBackingStoreBuffered
+                                          defer:YES];
   
   XPLogAssrt(!_windowsLoaded, @"Windows Already Loaded");
-  _keypadPanel = keypadPanel;
+  _keypadPanel = (NSPanel*)window;
   _windowsLoaded = YES;
   
-  [keypadPanel center];
-  [keypadPanel setTitle:@"Keypad"];
-  [keypadPanel setContentView:[[[SVRAccessoryWindowKeypadView alloc] init] autorelease]];
-  [keypadPanel setInitialFirstResponder:[[keypadPanel contentView] equalButton]];
-  [keypadPanel setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameKeypad];
-  [keypadPanel XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameKeypad];
-  [keypadPanel XP_setRestorationClass:appDelegateClass];
+  [window center];
+  [window setTitle:@"Keypad"];
+  [window setContentView:[[[SVRAccessoryWindowKeypadView alloc] init] autorelease]];
+  [window setInitialFirstResponder:[[window contentView] equalButton]];
+  [window setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameKeypad];
+  [window XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameKeypad];
+  [window XP_setRestorationClass:appDelegateClass];
   
   
   /*

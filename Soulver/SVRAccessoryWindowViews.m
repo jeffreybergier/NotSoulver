@@ -204,7 +204,11 @@ NSString *SVR_titleForKeypadButtonOfKind(SVRKeypadButtonKind kind)
     case SVRKeypadButtonKindDecimal:
       return @".";
     case SVRKeypadButtonKindDelete:
+#ifdef XPSupportsUnicodeUI
       return [NSString stringWithFormat:@"%C", 0x2190];
+#else
+      return @"<-";
+#endif
     case SVRKeypadButtonKindEqual:
       return @"=";
     case SVRKeypadButtonKindAdd:
@@ -222,7 +226,11 @@ NSString *SVR_titleForKeypadButtonOfKind(SVRKeypadButtonKind kind)
     case SVRKeypadButtonKindPower:
       return @"^";
     case SVRKeypadButtonKindRoot:
+#ifdef XPSupportsUnicodeUI
       return [NSString stringWithFormat:@"%C", 0x221A];
+#else
+      return @"root";
+#endif
     case SVRKeypadButtonKindLog:
       return @"log";
     default:

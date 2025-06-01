@@ -141,6 +141,7 @@ typedef XPUInteger XPDocumentChangeType;
 #define XPSupportsTexturedWindows
 #define XPSupportsUtilityWindows
 #define XPSupportsButtonStyles
+#define XPSupportsUnicodeUI
 #else
 #define XPKeyedArchiver NSArchiver
 #define XPKeyedUnarchiver NSUnarchiver
@@ -179,6 +180,7 @@ typedef void (^XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPSaveOperationType NSSaveOperationType
 #define XPDataWritingAtomic NSDataWritingAtomic
 #undef  XPSupportsTexturedWindows
+#define XPSupportsUnicodeDocument // TODO: Update to NSRegularExpression
 #else
 typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *error);
 #define XPSecureCoding NSCoding
