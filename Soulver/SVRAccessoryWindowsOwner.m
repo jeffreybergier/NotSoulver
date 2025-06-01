@@ -84,6 +84,15 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
 }
 
 // MARK: Init
+
++(void)initialize;
+{
+  SVRAccessoryWindowKeypadWindowSize = NSMakeSize(
+   (SVRAccessoryWindowKeypadWindowPadding * 2) + (SVRAccessoryWindowKeypadWindowButtonSize.width  * 3) + (SVRAccessoryWindowKeypadWindowButtonHPadding * 2),
+   (SVRAccessoryWindowKeypadWindowPadding * 2) + (SVRAccessoryWindowKeypadWindowButtonSize.height * 8) + (SVRAccessoryWindowKeypadWindowButtonVPadding * 7) + (SVRAccessoryWindowKeypadWindowGroupSpacing * 2)
+                                                  );
+}
+
 -(id)init;
 {
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -129,13 +138,13 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
   _keypadPanel = keypadPanel;
   _windowsLoaded = YES;
   
+  [keypadPanel center];
   [keypadPanel setTitle:@"Keypad"];
   [keypadPanel setContentView:[[[SVRAccessoryWindowKeypadView alloc] init] autorelease]];
   [keypadPanel setInitialFirstResponder:[[keypadPanel contentView] equalButton]];
   [keypadPanel setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameKeypad];
   [keypadPanel XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameKeypad];
   [keypadPanel XP_setRestorationClass:appDelegateClass];
-  [keypadPanel center];
   
   
   /*

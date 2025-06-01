@@ -76,11 +76,11 @@
 
 NSRect SVR_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 {
-  static const XPFloat windowPad  = SVRAccessoryWindowKeypadWindowPadding;
-  static const XPFloat buttonVPad = SVRAccessoryWindowKeypadWindowButtonVPadding;
-  static const XPFloat buttonHPad = SVRAccessoryWindowKeypadWindowButtonHPadding;
-  static const XPFloat groupPad   = SVRAccessoryWindowKeypadWindowGroupSpacing;
-  static const NSSize  buttonSize = SVRAccessoryWindowKeypadWindowButtonSize;
+  XPFloat windowPad  = SVRAccessoryWindowKeypadWindowPadding;
+  XPFloat buttonVPad = SVRAccessoryWindowKeypadWindowButtonVPadding;
+  XPFloat buttonHPad = SVRAccessoryWindowKeypadWindowButtonHPadding;
+  XPFloat groupPad   = SVRAccessoryWindowKeypadWindowGroupSpacing;
+  NSSize  buttonSize = SVRAccessoryWindowKeypadWindowButtonSize;
   XPInteger column     = -1;
   XPInteger row        = -1;
   XPFloat   rowPadding = 0;

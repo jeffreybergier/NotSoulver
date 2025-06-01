@@ -66,10 +66,8 @@ static const XPFloat SVRAccessoryWindowKeypadWindowButtonVPadding = 0;
 static const XPFloat SVRAccessoryWindowKeypadWindowButtonHPadding = 0;
 static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 4;
 static const NSSize  SVRAccessoryWindowKeypadWindowButtonSize     = {40, 32};
-static const NSSize  SVRAccessoryWindowKeypadWindowSize = {
-  (SVRAccessoryWindowKeypadWindowPadding * 2) + (SVRAccessoryWindowKeypadWindowButtonSize.width  * 3) + (SVRAccessoryWindowKeypadWindowButtonHPadding * 2),
-  (SVRAccessoryWindowKeypadWindowPadding * 2) + (SVRAccessoryWindowKeypadWindowButtonSize.height * 8) + (SVRAccessoryWindowKeypadWindowButtonVPadding * 7) + (SVRAccessoryWindowKeypadWindowGroupSpacing * 2)
-};
+// Set in +[SVRAccessoryWindowsOwner initialize]
+static NSSize SVRAccessoryWindowKeypadWindowSize = {0, 0};
 
 @interface SVRAccessoryWindowKeypadView: NSView
 {

@@ -31,16 +31,6 @@
 #import "XPCrossPlatform.h"
 #import "NSUserDefaults+Soulver.h"
 
-@interface SVRFontManager: NSFontManager
-{
-  SVRThemeFont _themeFont;
-}
-
--(SVRThemeFont)themeFont;
--(void)setThemeFont:(SVRThemeFont)themeFont;
-
-@end
-
 @interface SVRAccessoryWindowsOwner: NSObject
 {
   mm_new IBOutlet NSPanel  *_keypadPanel;
@@ -56,6 +46,7 @@
 -(NSTextView*)aboutTextView;
 
 // MARK: Init
++(void)initialize;
 -(id)init;
 -(void)loadWindows;
 
@@ -87,4 +78,14 @@
 -(void)__restoreWindowWithIdentifier:(NSString*)identifier
                                state:(NSCoder*)state
                    completionHandler:(XPWindowRestoreCompletionHandler)completionHandler;
+@end
+
+@interface SVRFontManager: NSFontManager
+{
+  SVRThemeFont _themeFont;
+}
+
+-(SVRThemeFont)themeFont;
+-(void)setThemeFont:(SVRThemeFont)themeFont;
+
 @end
