@@ -151,6 +151,8 @@
 				8CD62E5A2D91DCDF0000020F,
 				8CD62E5B2D91DCDF0000020F,
 				8CD62E5C2D91DCDF0000020F,
+				8C98C9E72DEC210800A80066,
+				8C98C9E82DEC210800A80066,
 				8CD62E5D2D91DCDF0000020F,
 				8CD62E5E2D91DCDF0000020F,
 				8CD62E5F2D91DCDF0000020F,
@@ -217,8 +219,6 @@
 				8CD62EC02D91DF730000020F,
 				8CD62EB92D91DF290000020F,
 				2A37F4B6FDCFA73011CA2CEA,
-				8CD62EB72D91DF290000020F,
-				8C9A4EDE2D93CD2700A80066,
 				089C165FFE840EACC02AAC07,
 			);
 			isa = PBXGroup;
@@ -357,6 +357,7 @@
 				8CD62EAA2D91DCE00000020F,
 				8CD62EAC2D91DCE00000020F,
 				8CD62EB62D91DDEB0000020F,
+				8C98C9E92DEC210800A80066,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -371,7 +372,6 @@
 				8CD62EA32D91DCE00000020F,
 				8CD62EC22D91DF730000020F,
 				080E96DAFE201CDB7F000001,
-				8C9A4EE02D93CD2700A80066,
 				8C9C62902DC7C9F600A80066,
 				8C9C62912DC7C9F600A80066,
 				8C9C62922DC7C9F600A80066,
@@ -404,6 +404,7 @@
 				8CD62EAB2D91DCE00000020F,
 				8CD62EAD2D91DCE00000020F,
 				8CD62EB52D91DDEB0000020F,
+				8C98C9EA2DEC210800A80066,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -477,23 +478,38 @@
 //8C2
 //8C3
 //8C4
-		8C9A4EDE2D93CD2700A80066 = {
-			children = (
-				8C9A4EDF2D93CD2700A80066,
-			);
-			isa = PBXVariantGroup;
-			name = AccessoryWindows_X2.nib;
-			path = "";
-			refType = 4;
-		};
-		8C9A4EDF2D93CD2700A80066 = {
+		8C98C9E72DEC210800A80066 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
-			name = English;
-			path = English.lproj/AccessoryWindows_X2.nib;
+			path = SVRAccessoryWindowViews.h;
 			refType = 4;
 		};
-		8C9A4EE02D93CD2700A80066 = {
-			fileRef = 8C9A4EDE2D93CD2700A80066;
+		8C98C9E82DEC210800A80066 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			path = SVRAccessoryWindowViews.m;
+			refType = 4;
+		};
+		8C98C9E92DEC210800A80066 = {
+			fileRef = 8C98C9E72DEC210800A80066;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C98C9EA2DEC210800A80066 = {
+			fileRef = 8C98C9E82DEC210800A80066;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C98C9EB2DEC210800A80066 = {
+			fileRef = 8C98C9E72DEC210800A80066;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C98C9EC2DEC210800A80066 = {
+			fileRef = 8C98C9E82DEC210800A80066;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -696,6 +712,7 @@
 				8CC319082DBF1B3300A80066,
 				8CC319092DBF1B3300A80066,
 				8CC3190A2DBF1B3300A80066,
+				8C98C9EB2DEC210800A80066,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -830,7 +847,6 @@
 				8CC319122DBF1B3300A80066,
 				8CC319162DBF1B3300A80066,
 				8CC3190C2DBF1B3300A80066,
-				8CC319172DBF1B3300A80066,
 				8C9C62952DC7C9F600A80066,
 				8C9C62962DC7C9F600A80066,
 				8C9C62972DC7C9F600A80066,
@@ -882,12 +898,6 @@
 			settings = {
 			};
 		};
-		8CC319172DBF1B3300A80066 = {
-			fileRef = 8C9A4EDE2D93CD2700A80066;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
 		8CC319182DBF1B3300A80066 = {
 			buildActionMask = 2147483647;
 			files = (
@@ -911,6 +921,7 @@
 				8CC3192A2DBF1B3300A80066,
 				8CC3192B2DBF1B3300A80066,
 				8CC3192C2DBF1B3300A80066,
+				8C98C9EC2DEC210800A80066,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1638,21 +1649,6 @@
 			isa = PBXBuildFile;
 			settings = {
 			};
-		};
-		8CD62EB72D91DF290000020F = {
-			children = (
-				8CD62EB82D91DF290000020F,
-			);
-			isa = PBXVariantGroup;
-			name = AccessoryWindows_42.nib;
-			path = "";
-			refType = 4;
-		};
-		8CD62EB82D91DF290000020F = {
-			isa = PBXFileReference;
-			name = AccessoryWindows_42.nib;
-			path = English.lproj/AccessoryWindows_42.nib;
-			refType = 4;
 		};
 		8CD62EB92D91DF290000020F = {
 			children = (
