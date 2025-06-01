@@ -127,35 +127,37 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 
 // Returns NIL if backspace
 // Exception if unknown tag
--(NSString*)__mapKeyWithTag:(XPInteger)tag;
+-(NSString*)__stringValueForKeypadKeyKind:(SVRKeypadButtonKind)kind;
 {
-  switch (tag) {
-    case  1: return @"1";
-    case  2: return @"2";
-    case  3: return @"3";
-    case  4: return @"4";
-    case  5: return @"5";
-    case  6: return @"6";
-    case  7: return @"7";
-    case  8: return @"8";
-    case  9: return @"9";
-    case 10: return @"0";
-    case 11: return @"-";
-    case 12: return @".";
-    case 14: return @"=\n";
-    case 15: return @"+";
-    case 16: return @"-";
-    case 17: return @")";
-    case 18: return @"*";
-    case 19: return @"/";
-    case 20: return @"(";
-    case 21: return @"^";
-    case 22: return [@"2" stringByAppendingString:[NSString SVR_rootRawString]];
-    case 23: return [@"10" stringByAppendingString:[NSString SVR_logRawString]];
-    case 13: return nil; // Backspace key
+  switch (kind) {
+    case SVRKeypadButtonKind1:
+    case SVRKeypadButtonKind2:
+    case SVRKeypadButtonKind3:
+    case SVRKeypadButtonKind4:
+    case SVRKeypadButtonKind5:
+    case SVRKeypadButtonKind6:
+    case SVRKeypadButtonKind7:
+    case SVRKeypadButtonKind8:
+    case SVRKeypadButtonKind9:
+      return [NSString stringWithFormat:@"%d", (int)kind];
+    case SVRKeypadButtonKind0: return @"0";
+    case SVRKeypadButtonKindNegative: return @"-";
+    case SVRKeypadButtonKindDecimal: return @".";
+    case SVRKeypadButtonKindDelete: return nil;
+    case SVRKeypadButtonKindEqual: return @"=\n";
+    case SVRKeypadButtonKindAdd: return @"+";
+    case SVRKeypadButtonKindSubtract: return @"-";
+    case SVRKeypadButtonKindBRight: return @")";
+    case SVRKeypadButtonKindMultiply: return @"*";
+    case SVRKeypadButtonKindDivide: return @"/";
+    case SVRKeypadButtonKindBLeft: return @"(";
+    case SVRKeypadButtonKindPower: return @"^";
+    case SVRKeypadButtonKindRoot: return [@"2" stringByAppendingString:[NSString SVR_rootRawString]];
+    case SVRKeypadButtonKindLog: return [@"10" stringByAppendingString:[NSString SVR_logRawString]];
+    default:
+      XPLogAssrt1(NO, @"[UNKNOWN] SVRKeypadButtonKind(%d)", (int)kind);
+      return @"";
   }
-  XPLogAssrt1(NO, @"[UNKNOWN] tag(%d)", (int)tag);
-  return nil;
 }
 
 -(NSDictionary*)__typingAttributes;
@@ -194,7 +196,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 -(IBAction)keypadAppend:(NSButton*)sender;
 {
   NSTextView *textView = [self textView];
-  NSString   *toAppend = [self __mapKeyWithTag:[sender tag]];
+  NSString   *toAppend = [self __stringValueForKeypadKeyKind:[sender tag]];
   NSRange range;
   
   if (toAppend) {
