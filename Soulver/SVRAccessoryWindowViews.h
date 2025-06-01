@@ -30,6 +30,8 @@
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
 
+// MARK: SVRAccessoryWindowKeypadView
+
 typedef XP_ENUM(XPInteger, SVRKeypadButtonKind) {
   SVRKeypadButtonKindUnknown,
   SVRKeypadButtonKind1,
@@ -81,6 +83,18 @@ static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
 -(NSButton*)equalButton;
 @end
 
+// MARK: SVRAccessoryWindowAboutView
+
+@interface SVRAccessoryWindowAboutView: NSView
+{
+  mm_unretain NSTextField *_textField;
+  mm_unretain NSButton    *_viewSourceButton;
+}
+-(id)init;
+-(NSTextField*)textField;
+-(NSButton*)viewSourceButton;
+@end
+
 @interface NSControl (SVRAccessoryWindows)
-+(id)SVR_keypadButtonOfKind:(SVRKeypadButtonKind)kind;
++(NSButton*)SVR_keypadButtonOfKind:(SVRKeypadButtonKind)kind;
 @end

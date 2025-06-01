@@ -29,52 +29,7 @@
 
 #import "SVRAccessoryWindowViews.h"
 
-@implementation SVRAccessoryWindowKeypadView: NSView
-
--(id)init;
-{
-  SVRKeypadButtonKind kind = SVRKeypadButtonKindUnknown;
-  NSButton *button = nil;
-  
-  self = [super init];
-  XPParameterRaise(self);
-  _equalButton = nil;
-  
-  for (kind=SVRKeypadButtonKind1; kind<=SVRKeypadButtonKindLog; kind++) {
-    button = [NSButton SVR_keypadButtonOfKind:kind];
-    [self addSubview:button];
-    if (kind == SVRKeypadButtonKindEqual) {
-      _equalButton = button;
-    }
-  }
-  
-  return self;
-}
-
--(NSButton*)equalButton;
-{
-  return [[_equalButton retain] autorelease];
-}
-
-@end
-
-@implementation NSControl (SVRAccessoryWindows)
-+(id)SVR_keypadButtonOfKind:(SVRKeypadButtonKind)kind;
-{
-  SEL buttonAction  = NSSelectorFromString(@"keypadAppend:");
-  NSRect buttonRect = SVR_rectForKeypadButtonOfKind(kind);
-  NSButton *button  = nil;
-  button = [[[NSButton alloc] initWithFrame:buttonRect] autorelease];
-  [button setTitle:SVR_titleForKeypadButtonOfKind(kind)];
-  [button setKeyEquivalent:SVR_keyForKeypadButtonOfKind(kind)];
-  [button setTag:kind];
-  [button setAction:buttonAction];
-#ifdef XPSupportsButtonStyles
-  [button setBezelStyle:XPBezelStyleFlexiblePush];
-#endif
-  return button;
-}
-@end
+// MARK: SVRAccessoryWindowKeypadView
 
 NSRect SVR_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 {
@@ -252,3 +207,75 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
       return SVR_titleForKeypadButtonOfKind(kind);
   }
 }
+
+
+@implementation SVRAccessoryWindowKeypadView: NSView
+
+-(id)init;
+{
+  SVRKeypadButtonKind kind = SVRKeypadButtonKindUnknown;
+  NSButton *button = nil;
+  
+  self = [super init];
+  XPParameterRaise(self);
+  _equalButton = nil;
+  
+  for (kind=SVRKeypadButtonKind1; kind<=SVRKeypadButtonKindLog; kind++) {
+    button = [NSButton SVR_keypadButtonOfKind:kind];
+    [self addSubview:button];
+    if (kind == SVRKeypadButtonKindEqual) {
+      _equalButton = button;
+    }
+  }
+  
+  return self;
+}
+
+-(NSButton*)equalButton;
+{
+  return [[_equalButton retain] autorelease];
+}
+
+@end
+
+// MARK: SVRAccessoryWindowAboutView
+
+@implementation SVRAccessoryWindowAboutView
+
+-(id)init;
+{
+  self = [super init];
+  XPParameterRaise(self);
+  _textField = nil;
+  _viewSourceButton = nil;
+  return self;
+}
+
+-(NSTextField*)textField;
+{
+  return [[_textField retain] autorelease];
+}
+
+-(NSButton*)viewSourceButton;
+{
+  return [[_viewSourceButton retain] autorelease];
+}
+@end
+
+@implementation NSControl (SVRAccessoryWindows)
++(NSButton*)SVR_keypadButtonOfKind:(SVRKeypadButtonKind)kind;
+{
+  SEL buttonAction  = NSSelectorFromString(@"keypadAppend:");
+  NSRect buttonRect = SVR_rectForKeypadButtonOfKind(kind);
+  NSButton *button  = nil;
+  button = [[[NSButton alloc] initWithFrame:buttonRect] autorelease];
+  [button setTitle:SVR_titleForKeypadButtonOfKind(kind)];
+  [button setKeyEquivalent:SVR_keyForKeypadButtonOfKind(kind)];
+  [button setTag:kind];
+  [button setAction:buttonAction];
+#ifdef XPSupportsButtonStyles
+  [button setBezelStyle:XPBezelStyleFlexiblePush];
+#endif
+  return button;
+}
+@end
