@@ -244,10 +244,28 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 
 -(id)init;
 {
+  XPFloat originX = 8;
+  XPFloat originY = originX;
+  XPFloat padding = 4;
+  NSControl *view = nil;
+  
   self = [super init];
   XPParameterRaise(self);
   _textField = nil;
   _viewSourceButton = nil;
+  
+  view = [NSImageView SVR_imageViewWithOrigin:NSMakePoint(originX, originY)
+                                   imageNamed:@"TagLine"];
+  [self addSubview:view];
+  originY += [view frame].size.height + padding;
+  
+  view = [NSTextField  SVR_labelWithFrame:NSMakeRect(originX, originY, 0, 0)];
+  [view setStringValue:@"This application is dedicated to my grandmother | 1932-2024"];
+  [view setFont:[NSFont systemFontOfSize:10]];
+  [view sizeToFit];
+  [self addSubview:view];
+  originY += [view frame].size.height + padding;
+  
   return self;
 }
 
@@ -263,6 +281,7 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 @end
 
 @implementation NSControl (SVRAccessoryWindows)
+
 +(NSButton*)SVR_keypadButtonOfKind:(SVRKeypadButtonKind)kind;
 {
   SEL buttonAction  = NSSelectorFromString(@"keypadAppend:");
@@ -278,4 +297,25 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 #endif
   return button;
 }
+
++(NSTextField*)SVR_labelWithFrame:(NSRect)frame;
+{
+  NSTextField *label = [[[NSTextField alloc] initWithFrame:frame] autorelease];
+  [label setBezeled:NO];
+  [label setDrawsBackground:NO];
+  [label setEditable:NO];
+  [label setSelectable:NO];
+  return label;
+}
+
++(NSImageView*)SVR_imageViewWithOrigin:(NSPoint)origin imageNamed:(NSString*)imageName;
+{
+  NSImage     *image = [NSImage imageNamed:@"TagLine"];
+  NSRect       frame = NSMakeRect(origin.x, origin.y, image.size.width, image.size.height);
+  NSImageView *view  = [[[NSImageView alloc] initWithFrame:frame] autorelease];
+  XPParameterRaise(image);
+  [view setImage:image];
+  return view;
+}
+
 @end
