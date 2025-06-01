@@ -69,18 +69,18 @@
   [button setKeyEquivalent:SVR_keyForKeypadButtonOfKind(kind)];
   [button setTag:kind];
   [button setAction:buttonAction];
-  [button setBezelStyle:NSBezelStyleRegularSquare];
+  [button setBezelStyle:NSRegularSquareBezelStyle];
   return button;
 }
 @end
 
 NSRect SVR_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 {
-  static const XPFloat windowPad  = 4;
-  static const XPFloat buttonVPad = 0;
-  static const XPFloat buttonHPad = 0;
-  static const XPFloat groupPad   = 4;
-  static const NSSize  buttonSize = {40, 32};
+  static const XPFloat windowPad  = SVRAccessoryWindowKeypadWindowPadding;
+  static const XPFloat buttonVPad = SVRAccessoryWindowKeypadWindowButtonVPadding;
+  static const XPFloat buttonHPad = SVRAccessoryWindowKeypadWindowButtonHPadding;
+  static const XPFloat groupPad   = SVRAccessoryWindowKeypadWindowGroupSpacing;
+  static const NSSize  buttonSize = SVRAccessoryWindowKeypadWindowButtonSize;
   XPInteger column     = -1;
   XPInteger row        = -1;
   XPFloat   rowPadding = 0;
@@ -202,7 +202,7 @@ NSString *SVR_titleForKeypadButtonOfKind(SVRKeypadButtonKind kind)
     case SVRKeypadButtonKindDecimal:
       return @".";
     case SVRKeypadButtonKindDelete:
-      return @"←";
+      return [NSString stringWithFormat:@"%C", 0x2190];
     case SVRKeypadButtonKindEqual:
       return @"=";
     case SVRKeypadButtonKindAdd:
@@ -220,7 +220,7 @@ NSString *SVR_titleForKeypadButtonOfKind(SVRKeypadButtonKind kind)
     case SVRKeypadButtonKindPower:
       return @"^";
     case SVRKeypadButtonKindRoot:
-      return @"√";
+      return [NSString stringWithFormat:@"%C", 0x221A];
     case SVRKeypadButtonKindLog:
       return @"log";
     default:
