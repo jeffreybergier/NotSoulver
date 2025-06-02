@@ -99,15 +99,16 @@ static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
 
 @interface NSControl (SVRAccessoryWindows)
 +(NSButton*)SVR_keypadButtonOfKind:(SVRKeypadButtonKind)kind;
-+(NSTextField*)SVR_labelWithOrigin:(NSPoint)origin;
++(NSTextField*)SVR_labelWithFrame:(NSRect)frame;
 +(NSImageView*)SVR_imageViewWithOrigin:(NSPoint)origin imageNamed:(NSString*)imageName;
 +(NSControl*)SVR_configureControl:(NSControl*)control
                       stringValue:(NSString*)stringValue
                              font:(NSFont*)font
-                        alignment:(NSTextAlignment)alignment
-                            image:(NSImage*)image;
+                        alignment:(NSTextAlignment)alignment;
 @end
 
 @interface NSView (SVRAccessoryWindows)
 +(NSBox*)SVR_lineWithFrame:(NSRect)frame;
++(NSView*)SVR_configureView:(NSView*)view
+       withAutoresizingMask:(NSAutoresizingMaskOptions)mask;
 @end
