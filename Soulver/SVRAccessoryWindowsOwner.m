@@ -147,7 +147,6 @@ static NSRect SVRAccessoryWindowAboutWindowRect = {{0, 0}, {480, 320}};
                                         backing:NSBackingStoreBuffered
                                           defer:YES];
   _keypadPanel = (NSPanel*)window;
-  
   [window center];
   [window setTitle:@"Keypad"];
   [window setContentView:[[[SVRAccessoryWindowKeypadView alloc] init] autorelease]];
@@ -162,6 +161,7 @@ static NSRect SVRAccessoryWindowAboutWindowRect = {{0, 0}, {480, 320}};
         | XPWindowStyleMaskClosable
         | XPWindowStyleMaskResizable
         | XPWindowStyleMaskMiniaturizable);
+  // TODO: Figure out why the content view is smaller than the specified rect
   window = [[NSWindow alloc] initWithContentRect:SVRAccessoryWindowAboutWindowRect
                                        styleMask:mask
                                          backing:NSBackingStoreBuffered

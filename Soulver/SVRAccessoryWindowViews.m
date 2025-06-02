@@ -248,13 +248,16 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   XPFloat kLeftWidth = 312;
   XPFloat kRightX = 328;
   XPFloat kRightWidth = 144;
+  XPFloat kAboveTextViewY = 168;
   NSPoint kTagLineOrigin = NSMakePoint(kLeftX-1, kLeftX);
   NSRect  kDedicationTextFrame = NSMakeRect(kLeftX, 30, kLeftWidth, 14);
   NSRect  kViewSourceButtonFrame = NSMakeRect(kRightX, kLeftX, kRightWidth, 42);
   NSRect  kSeparatorRect = NSMakeRect(kLeftX, 49, kLeftWidth, 1);
   NSRect  kTextViewRect = NSMakeRect(kLeftX, 58, 464, 100);
-  NSRect  kSubtitleTextFrame = NSMakeRect(kLeftX, 168, kLeftWidth, 60);
+  NSRect  kSubtitleTextFrame = NSMakeRect(kLeftX, kAboveTextViewY, kLeftWidth, 60);
   NSRect  kTitleTextFrame = NSMakeRect(kLeftX, 236, kLeftWidth, 44);
+  NSRect  kPortraitImageView = NSMakeRect(kRightX, kAboveTextViewY, kRightWidth, kRightWidth);
+  NSImageView *TEMP_imageView = nil;
   
   self = [super init];
   XPParameterRaise(self);
@@ -303,6 +306,11 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
                                                 font:[NSFont boldSystemFontOfSize:36]
                                            alignment:NSTextAlignmentCenter]
                         withAutoresizingMask:NSViewMaxYMargin]];
+  
+  // Add Portrait Image View
+  TEMP_imageView = [[[NSImageView alloc] initWithFrame:kPortraitImageView] autorelease];
+  [TEMP_imageView setImage:[NSImage imageNamed:@"about-image-512"]];
+  [self addSubview:TEMP_imageView];
   
   return self;
 }
