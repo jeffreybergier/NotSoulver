@@ -245,12 +245,13 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 -(id)init;
 {
   XPFloat kLeftX = 8;
-  XPFloat kLeftWidth = 300;
-  XPFloat kRightX = 308;
-  XPFloat kRightWidth = 120;
-  NSPoint kTagLineOrigin = NSMakePoint(kLeftX, kLeftX);
+  XPFloat kLeftWidth = 312;
+  XPFloat kRightX = 328;
+  XPFloat kRightWidth = 144;
+  NSPoint kTagLineOrigin = NSMakePoint(kLeftX-1, kLeftX);
   NSPoint kDedicationTextOrigin = NSMakePoint(kLeftX, 30);
-  NSRect  kSeparatorRect = NSMakeRect(kLeftX, 50, kLeftWidth, 1);
+  NSRect  kViewSourceButtonFrame = NSMakeRect(kRightX, kLeftX, kRightWidth, 42);
+  NSRect  kSeparatorRect = NSMakeRect(kLeftX, 49, kLeftWidth, 1);
   
   self = [super init];
   XPParameterRaise(self);
@@ -267,6 +268,13 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
                                               font:[NSFont systemFontOfSize:10]
                                          alignment:NSTextAlignmentLeft
                                              image:nil]];
+  
+  _viewSourceButton = [[[NSButton alloc] initWithFrame:kViewSourceButtonFrame] autorelease];
+  [_viewSourceButton setTitle:@"View Source"];
+  [_viewSourceButton setImage:[NSImage imageNamed:@"NeXTLogoMed"]];
+  [_viewSourceButton setImagePosition:NSImageLeft];
+  [_viewSourceButton setBezelStyle:NSBezelStyleShadowlessSquare];
+  [self addSubview:_viewSourceButton];
   
   // Separator Line
   [self addSubview:[NSBox SVR_lineWithFrame:kSeparatorRect]];

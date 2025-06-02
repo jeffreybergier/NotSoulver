@@ -162,10 +162,10 @@ static NSRect SVRAccessoryWindowAboutWindowRect = {{0, 0}, {480, 320}};
         | XPWindowStyleMaskClosable
         | XPWindowStyleMaskResizable
         | XPWindowStyleMaskMiniaturizable);
-  window = [[NSPanel alloc] initWithContentRect:SVRAccessoryWindowAboutWindowRect
-                                      styleMask:mask
-                                        backing:NSBackingStoreBuffered
-                                          defer:YES];
+  window = [[NSWindow alloc] initWithContentRect:SVRAccessoryWindowAboutWindowRect
+                                       styleMask:mask
+                                         backing:NSBackingStoreBuffered
+                                           defer:YES];
   
   _aboutWindow = (NSPanel*)window;
 
