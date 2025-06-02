@@ -175,10 +175,11 @@ static NSRect SVRAccessoryWindowAboutWindowRect = {{0, 0}, {480, 320}};
   [window setMaxSize:NSMakeSize(SVRAccessoryWindowAboutWindowRect.size.width,
                                 SVRAccessoryWindowAboutWindowRect.size.height+200)];
   [window setContentView:[[[SVRAccessoryWindowAboutView alloc] init] autorelease]];
-  [window setInitialFirstResponder:[[window contentView] viewSourceButton]];
   [window setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameAbout];
   [window XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameAbout];
   [window XP_setRestorationClass:appDelegateClass];
+  [window setInitialFirstResponder:[[window contentView] viewSourceButton]];
+  [[[window contentView] textView] setString:[Localized aboutParagraph]];
   
   
   /*
@@ -189,12 +190,6 @@ static NSRect SVRAccessoryWindowAboutWindowRect = {{0, 0}, {480, 320}};
   NSRect keypadRect   = [keypadPanel    frame];
   NSRect aboutRect    = [aboutWindow    frame];
   NSRect settingsRect = [settingsWindow frame];
-  
-  // Set the about text from the strings file
-  // TODO: Figure out why the text color does not change in dark mode
-  [ textStorage beginEditing];
-  [[textStorage mutableString] setString:[Localized aboutParagraph]];
-  [ textStorage endEditing];
 
   // Set autosave names
   [aboutWindow        XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameAbout   ];

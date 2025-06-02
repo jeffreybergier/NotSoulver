@@ -87,12 +87,14 @@ static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
 
 @interface SVRAccessoryWindowAboutView: NSView
 {
-  mm_unretain NSTextField *_textField;
-  mm_unretain NSButton    *_viewSourceButton;
+  mm_unretain NSTextView *_textView;
+  mm_unretain NSButton   *_viewSourceButton;
 }
 -(id)init;
--(NSTextField*)textField;
+-(NSTextView*)textView;
 -(NSButton*)viewSourceButton;
++(NSScrollView*)__scrollViewWithFrame:(NSRect)frame
+                             textView:(NSTextView**)inoutTextView;
 @end
 
 @interface NSControl (SVRAccessoryWindows)

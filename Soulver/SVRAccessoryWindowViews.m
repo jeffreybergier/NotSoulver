@@ -252,10 +252,11 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   NSPoint kDedicationTextOrigin = NSMakePoint(kLeftX, 30);
   NSRect  kViewSourceButtonFrame = NSMakeRect(kRightX, kLeftX, kRightWidth, 42);
   NSRect  kSeparatorRect = NSMakeRect(kLeftX, 49, kLeftWidth, 1);
+  NSRect  kTextViewRect = NSMakeRect(kLeftX, 58, 464, 100);
   
   self = [super init];
   XPParameterRaise(self);
-  _textField = nil;
+  _textView = nil;
   _viewSourceButton = nil;
   
   // NeXT Tagline Image
@@ -269,27 +270,62 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
                                          alignment:NSTextAlignmentLeft
                                              image:nil]];
   
+  // View Source Button
   _viewSourceButton = [[[NSButton alloc] initWithFrame:kViewSourceButtonFrame] autorelease];
   [_viewSourceButton setTitle:@"View Source"];
   [_viewSourceButton setImage:[NSImage imageNamed:@"NeXTLogoMed"]];
   [_viewSourceButton setImagePosition:NSImageLeft];
   [_viewSourceButton setBezelStyle:NSBezelStyleShadowlessSquare];
+  [_viewSourceButton setEnabled:NO];
   [self addSubview:_viewSourceButton];
   
   // Separator Line
   [self addSubview:[NSBox SVR_lineWithFrame:kSeparatorRect]];
   
+  // Large TextField
+  [self addSubview:[[self class] __scrollViewWithFrame:kTextViewRect textView:&_textView]];
+  
   return self;
 }
 
--(NSTextField*)textField;
+-(NSTextView*)textView;
 {
-  return [[_textField retain] autorelease];
+  return [[_textView retain] autorelease];
 }
 
 -(NSButton*)viewSourceButton;
 {
   return [[_viewSourceButton retain] autorelease];
+}
+
++(NSScrollView*)__scrollViewWithFrame:(NSRect)frame textView:(NSTextView**)inoutTextView;
+{
+  NSTextView *textView = nil;
+  NSScrollView *scrollView = nil;
+  
+  // Create the scroll view
+  scrollView = [[[NSScrollView alloc] initWithFrame:frame] autorelease];
+  [scrollView setBorderType:NSBezelBorder];
+  [scrollView setHasVerticalScroller:YES];
+  [scrollView setHasHorizontalScroller:NO];
+  // TODO: Figure out how to add later
+  // [scrollView setAutoresizingMask:NSViewMinYMargin | NSViewMaxYMargin | NSViewHeightSizable];
+  
+  // Create the text view
+  textView = [[[NSTextView alloc] initWithFrame:frame] autorelease];
+  [textView setEditable:NO];
+  [textView setSelectable:YES];
+  [textView setDrawsBackground:NO];
+  [textView setVerticallyResizable:YES];
+  [textView setHorizontallyResizable:NO];
+  [[textView textContainer] setContainerSize:NSMakeSize(frame.size.width, FLT_MAX)];
+  [[textView textContainer] setWidthTracksTextView:YES];
+
+  // Put the text view inside the scroll view
+  [scrollView setDocumentView:textView];
+  
+  *inoutTextView = textView;
+  return scrollView;
 }
 @end
 
