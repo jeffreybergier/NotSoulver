@@ -175,7 +175,7 @@ static NSRect SVRAccessoryWindowAboutWindowRect = {{0, 0}, {480, 320}};
                                              styleMask:mask].size];
   [window setMaxSize:NSMakeSize(SVRAccessoryWindowAboutWindowRect.size.width,
                                 SVRAccessoryWindowAboutWindowRect.size.height+200)];
-  [window setContentView:[[[SVRAccessoryWindowAboutView alloc] init] autorelease]];
+  [window setContentView:[[[SVRAccessoryWindowAboutView alloc] initWithFrame:SVRAccessoryWindowAboutWindowRect] autorelease]];
   [window setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameAbout];
   [window XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameAbout];
   [window XP_setRestorationClass:appDelegateClass];

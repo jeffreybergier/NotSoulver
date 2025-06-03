@@ -242,7 +242,7 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 
 @implementation SVRAccessoryWindowAboutView
 
--(id)init;
+-(id)initWithFrame:(NSRect)frameRect;
 {
   XPFloat kLeftX = 8;
   XPFloat kLeftWidth = 312;
@@ -259,7 +259,7 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   NSRect  kPortraitImageView = NSMakeRect(kRightX, kAboveTextViewY, kRightWidth, kRightWidth);
   NSImageView *TEMP_imageView = nil;
   
-  self = [super init];
+  self = [super initWithFrame:frameRect];
   XPParameterRaise(self);
   _textView = nil;
   _viewSourceButton = nil;
@@ -272,14 +272,14 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   [self addSubview:[NSControl SVR_configureControl:[NSTextField SVR_labelWithFrame:kDedicationTextFrame]
                                        stringValue:@"This application is dedicated to my grandmother | 1932-2024"
                                               font:[NSFont systemFontOfSize:10]
-                                         alignment:NSTextAlignmentLeft]];
+                                         alignment:NSLeftTextAlignment]];
   
   // View Source Button
   _viewSourceButton = [[[NSButton alloc] initWithFrame:kViewSourceButtonFrame] autorelease];
   [_viewSourceButton setTitle:@"View Source"];
   [_viewSourceButton setImage:[NSImage imageNamed:@"NeXTLogoMed"]];
   [_viewSourceButton setImagePosition:NSImageLeft];
-  [_viewSourceButton setBezelStyle:NSBezelStyleShadowlessSquare];
+  [_viewSourceButton setBezelStyle:NSShadowlessSquareBezelStyle];
   [_viewSourceButton setEnabled:NO];
   [self addSubview:_viewSourceButton];
   
@@ -295,8 +295,8 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
                      [NSTextField SVR_labelWithFrame:kSubtitleTextFrame]
                                          stringValue:@"for OpenStep\nby Jeffrey Bergier\n2025"
                                                 font:[NSFont systemFontOfSize:16]
-                                           alignment:NSTextAlignmentCenter]
-                        withAutoresizingMask:NSViewMaxXMargin | NSViewMinYMargin]];
+                                           alignment:NSCenterTextAlignment]
+                        withAutoresizingMask:NSViewMinYMargin]];
   
   // Add Title Label
   [self addSubview:[NSView SVR_configureView:
@@ -304,14 +304,14 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
                      [NSTextField SVR_labelWithFrame:kTitleTextFrame]
                                          stringValue:@"[Not]Soulver"
                                                 font:[NSFont boldSystemFontOfSize:36]
-                                           alignment:NSTextAlignmentCenter]
-                        withAutoresizingMask:NSViewMaxXMargin | NSViewMinYMargin]];
+                                           alignment:NSCenterTextAlignment]
+                        withAutoresizingMask:NSViewMinYMargin]];
   
   // Add Portrait Image View
   TEMP_imageView = [[[NSImageView alloc] initWithFrame:kPortraitImageView] autorelease];
   [TEMP_imageView setImage:[NSImage imageNamed:@"about-image-512"]];
   [TEMP_imageView setImageFrameStyle:NSImageFrameGroove];
-  [TEMP_imageView setAutoresizingMask:NSViewMinXMargin | NSViewMaxYMargin];
+  [TEMP_imageView setAutoresizingMask:NSViewMinYMargin];
   [self addSubview:TEMP_imageView];
   
   return self;
@@ -325,6 +325,11 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 -(NSButton*)viewSourceButton;
 {
   return [[_viewSourceButton retain] autorelease];
+}
+
+-(void)viewDidMoveToSuperview;
+{
+  
 }
 
 +(NSScrollView*)__scrollViewWithFrame:(NSRect)frame textView:(NSTextView**)inoutTextView;
@@ -429,7 +434,7 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   return view;
 }
 +(NSView*)SVR_configureView:(NSView*)view
-       withAutoresizingMask:(NSAutoresizingMaskOptions)mask;
+       withAutoresizingMask:(XPUInteger)mask;
 {
   // TODO: Figure out why this is not working for me
   [view setAutoresizingMask:mask];

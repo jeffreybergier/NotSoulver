@@ -90,7 +90,7 @@ static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
   mm_unretain NSTextView *_textView;
   mm_unretain NSButton   *_viewSourceButton;
 }
--(id)init;
+-(id)initWithFrame:(NSRect)frameRect;
 -(NSTextView*)textView;
 -(NSButton*)viewSourceButton;
 +(NSScrollView*)__scrollViewWithFrame:(NSRect)frame
@@ -110,5 +110,5 @@ static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
 @interface NSView (SVRAccessoryWindows)
 +(NSBox*)SVR_lineWithFrame:(NSRect)frame;
 +(NSView*)SVR_configureView:(NSView*)view
-       withAutoresizingMask:(NSAutoresizingMaskOptions)mask;
+       withAutoresizingMask:(XPUInteger)mask;
 @end
