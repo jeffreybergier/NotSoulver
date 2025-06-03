@@ -171,7 +171,8 @@ static NSRect SVRAccessoryWindowAboutWindowRect = {{0, 0}, {480, 320}};
 
   [window center];
   [window setTitle:@"About"];
-  [window setMinSize:SVRAccessoryWindowAboutWindowRect.size];
+  [window setMinSize:[NSWindow frameRectForContentRect:SVRAccessoryWindowAboutWindowRect
+                                             styleMask:mask].size];
   [window setMaxSize:NSMakeSize(SVRAccessoryWindowAboutWindowRect.size.width,
                                 SVRAccessoryWindowAboutWindowRect.size.height+200)];
   [window setContentView:[[[SVRAccessoryWindowAboutView alloc] init] autorelease]];
