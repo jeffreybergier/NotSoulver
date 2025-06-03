@@ -149,7 +149,7 @@ static NSRect SVRAccessoryWindowAboutWindowRect = {{0, 0}, {480, 320}};
   _keypadPanel = (NSPanel*)window;
   [window center];
   [window setTitle:@"Keypad"];
-  [window setContentView:[[[SVRAccessoryWindowKeypadView alloc] init] autorelease]];
+  [window setContentView:[[[SVRAccessoryWindowKeypadView alloc] initWithFrame:SVRAccessoryWindowKeypadWindowRect] autorelease]];
   [window setInitialFirstResponder:[[window contentView] equalButton]];
   [window setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameKeypad];
   [window XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameKeypad];
