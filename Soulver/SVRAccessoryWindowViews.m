@@ -296,7 +296,7 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
                                          stringValue:@"for OpenStep\nby Jeffrey Bergier\n2025"
                                                 font:[NSFont systemFontOfSize:16]
                                            alignment:NSTextAlignmentCenter]
-                        withAutoresizingMask:NSViewMaxYMargin]];
+                        withAutoresizingMask:NSViewMaxXMargin | NSViewMinYMargin]];
   
   // Add Title Label
   [self addSubview:[NSView SVR_configureView:
@@ -305,11 +305,13 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
                                          stringValue:@"[Not]Soulver"
                                                 font:[NSFont boldSystemFontOfSize:36]
                                            alignment:NSTextAlignmentCenter]
-                        withAutoresizingMask:NSViewMaxYMargin]];
+                        withAutoresizingMask:NSViewMaxXMargin | NSViewMinYMargin]];
   
   // Add Portrait Image View
   TEMP_imageView = [[[NSImageView alloc] initWithFrame:kPortraitImageView] autorelease];
   [TEMP_imageView setImage:[NSImage imageNamed:@"about-image-512"]];
+  [TEMP_imageView setImageFrameStyle:NSImageFrameGroove];
+  [TEMP_imageView setAutoresizingMask:NSViewMinXMargin | NSViewMaxYMargin];
   [self addSubview:TEMP_imageView];
   
   return self;
@@ -332,7 +334,7 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   
   // Create the scroll view
   scrollView = [[[NSScrollView alloc] initWithFrame:frame] autorelease];
-  [scrollView setBorderType:NSBezelBorder];
+  [scrollView setBorderType:NSGrooveBorder];
   [scrollView setHasVerticalScroller:YES];
   [scrollView setHasHorizontalScroller:NO];
   // TODO: Figure out how to add later
