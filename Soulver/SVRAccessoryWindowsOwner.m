@@ -33,8 +33,9 @@
 NSString * const SVRAccessoryWindowFrameAutosaveNameSettings = @"kSVRAccessoryWindowFrameAutosaveNameSettings";
 NSString * const SVRAccessoryWindowFrameAutosaveNameAbout    = @"kSVRAccessoryWindowFrameAutosaveNameAbout";
 NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWindowFrameAutosaveNameKeypad";
-static NSRect SVRAccessoryWindowKeypadWindowRect = {{0, 0}, {0, 0}}; // Configured in Initialize
-static NSRect SVRAccessoryWindowAboutWindowRect = {{0, 0}, {480, 320}};
+static NSRect SVRAccessoryWindowKeypadWindowRect   = {{0, 0}, {0, 0}}; // Configured in Initialize
+static NSRect SVRAccessoryWindowAboutWindowRect    = {{0, 0}, {480, 320}};
+static NSSize SVRAccessoryWindowAboutWindowMaxSize = {480*1.5, 320*1.5};
 
 @implementation SVRFontManager
 
@@ -171,10 +172,11 @@ static NSRect SVRAccessoryWindowAboutWindowRect = {{0, 0}, {480, 320}};
 
   [window center];
   [window setTitle:@"About"];
+  [window setReleasedWhenClosed:NO];
   [window setMinSize:[NSWindow frameRectForContentRect:SVRAccessoryWindowAboutWindowRect
                                              styleMask:mask].size];
-  [window setMaxSize:NSMakeSize(SVRAccessoryWindowAboutWindowRect.size.width,
-                                SVRAccessoryWindowAboutWindowRect.size.height+200)];
+  [window setMaxSize:SVRAccessoryWindowAboutWindowMaxSize];
+  [window setCollectionBehavior:NSWindowCollectionBehaviorFullScreenNone];
   [window setContentView:[[[SVRAccessoryWindowAboutView alloc] initWithFrame:SVRAccessoryWindowAboutWindowRect] autorelease]];
   [window setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameAbout];
   [window XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameAbout];

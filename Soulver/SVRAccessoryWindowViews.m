@@ -265,7 +265,7 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   
   // NeXT Tagline Image
   [self addSubview:[NSImageView SVR_imageViewWithOrigin:kTagLineOrigin
-                                             imageNamed:@"TagLine"]];
+                                   sizedToFitImageNamed:@"TagLine"]];
   
   // Dedication Text
   [self addSubview:[[NSTextField SVR_labelWithFrame:kDedicationTextFrame]
@@ -281,37 +281,37 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 #ifdef XPSupportsButtonStyles
   [_viewSourceButton setBezelStyle:NSShadowlessSquareBezelStyle];
 #endif
+  [_viewSourceButton setAutoresizingMask:NSViewMinXMargin];
   [self addSubview:_viewSourceButton];
   
   // Separator Line
-  [self addSubview:[NSBox SVR_lineWithFrame:kSeparatorRect]];
+  [self addSubview:[[NSBox SVR_lineWithFrame:kSeparatorRect]
+                     SVR_setAutoresizingMask:NSViewWidthSizable]];
   
   // Large TextField
   [self addSubview:[[[self class] __scrollViewWithFrame:kTextViewRect
                                                textView:&_textView]
-                                SVR_setAutoresizingMask:NSViewHeightSizable]];
+                                SVR_setAutoresizingMask:NSViewHeightSizable | NSViewWidthSizable]];
   
   // Add Subtitle Label
   [self addSubview:[[[NSTextField SVR_labelWithFrame:kSubtitleTextFrame]
                                   SVR_setObjectValue:@"for OpenStep\nby Jeffrey Bergier\n2025"
                                                 font:[NSFont systemFontOfSize:16]
                                            alignment:NSCenterTextAlignment]
-                             SVR_setAutoresizingMask:NSViewMinYMargin]];
+                             SVR_setAutoresizingMask:NSViewMinYMargin | NSViewWidthSizable]];
   
   // Add Title Label
   [self addSubview:[[[NSTextField SVR_labelWithFrame:kTitleTextFrame]
                                   SVR_setObjectValue:@"[Not]Soulver"
                                                 font:[NSFont boldSystemFontOfSize:36]
                                            alignment:NSCenterTextAlignment]
-                             SVR_setAutoresizingMask:NSViewMinYMargin]];
+                             SVR_setAutoresizingMask:NSViewMinYMargin | NSViewWidthSizable]];
   
   // Add Portrait Image View
-  [self addSubview:[[[[[[NSImageView alloc] initWithFrame:kPortraitImageView]
-                                   SVR_setImageFrameStyle:NSImageFrameGroove]
-                                       SVR_setObjectValue:[NSImage imageNamed:@"about-image-512"]
-                                                     font:nil
-                                                alignment:-1]
-                                  SVR_setAutoresizingMask:NSViewMinYMargin] autorelease]];
+  [self addSubview:[[[NSImageView SVR_imageViewWithFrame:kPortraitImageView
+                                              imageNamed:@"about-image-512"]
+                                  SVR_setImageFrameStyle:NSImageFrameGroove]
+                                 SVR_setAutoresizingMask:NSViewMinYMargin | NSViewMinXMargin]];
   
   return self;
 }
@@ -348,7 +348,7 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   [textView setSelectable:YES];
   [textView setDrawsBackground:NO];
   [textView setVerticallyResizable:YES];
-  [textView setHorizontallyResizable:NO];
+  [textView setHorizontallyResizable:YES];
   [textView setFont:[NSFont systemFontOfSize:12]];
   [[textView textContainer] setContainerSize:NSMakeSize(frame.size.width, FLT_MAX)];
   [[textView textContainer] setWidthTracksTextView:YES];
@@ -389,16 +389,6 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   return label;
 }
 
-+(NSImageView*)SVR_imageViewWithOrigin:(NSPoint)origin imageNamed:(NSString*)imageName;
-{
-  NSImage     *image = [NSImage imageNamed:@"TagLine"];
-  NSRect       frame = NSMakeRect(origin.x, origin.y, [image size].width, [image size].height);
-  NSImageView *view  = [[[NSImageView alloc] initWithFrame:frame] autorelease];
-  XPParameterRaise(image);
-  [view setImage:image];
-  return view;
-}
-
 -(NSControl*)SVR_setObjectValue:(id)objectValue
                            font:(NSFont*)font
                       alignment:(NSTextAlignment)alignment;
@@ -423,10 +413,7 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 {
   NSBox *view = [[[NSBox alloc] initWithFrame:frame] autorelease];
 #ifdef XPSupportsButtonStyles
-  // TODO: See if these lines are needed
   [view setBoxType:NSBoxSeparator];
-  [view setBorderType:NSLineBorder];
-  [view setBorderWidth:1.0];
 #endif
   [view setTitlePosition:NSNoTitle];
   return view;
@@ -441,6 +428,27 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 @end
 
 @implementation NSImageView (SVRAccessoryWindows)
+
++(NSImageView*)SVR_imageViewWithOrigin:(NSPoint)origin
+                  sizedToFitImageNamed:(NSString*)imageName;
+{
+  NSImage     *image = [NSImage imageNamed:imageName];
+  NSRect       frame = NSMakeRect(origin.x, origin.y, [image size].width, [image size].height);
+  NSImageView *view  = [[[NSImageView alloc] initWithFrame:frame] autorelease];
+  XPParameterRaise(image);
+  [view setImage:image];
+  return view;
+}
+
++(NSImageView*)SVR_imageViewWithFrame:(NSRect)frame
+                           imageNamed:(NSString*)imageName;
+{
+  NSImage     *image = [NSImage imageNamed:imageName];
+  NSImageView *view  = [[[NSImageView alloc] initWithFrame:frame] autorelease];
+  XPParameterRaise(image);
+  [view setImage:image];
+  return view;
+}
 
 -(NSImageView*)SVR_setImageFrameStyle:(NSImageFrameStyle)imageFrameStyle;
 {
