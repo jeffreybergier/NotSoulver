@@ -187,7 +187,6 @@ typedef void (^XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPSecureCoding NSSecureCoding
 #define XPSaveOperationType NSSaveOperationType
 #define XPDataWritingAtomic NSDataWritingAtomic
-#define XPWindowCollectionBehaviorFullScreenNone NSWindowCollectionBehaviorFullScreenNone
 #undef  XPSupportsTexturedWindows
 #define XPSupportsUnicodeDocument // TODO: Update to NSRegularExpression
 #else
@@ -195,7 +194,6 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPSecureCoding NSCoding
 #define XPSaveOperationType XPUInteger
 #define XPDataWritingAtomic NSAtomicWrite
-#define XPWindowCollectionBehaviorFullScreenNone 0
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_10
@@ -204,12 +202,14 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPModalResponse NSModalResponse
 #define XPModalResponseOK NSModalResponseOK
 #define XPModalResponseCancel NSModalResponseCancel
+#define XPWindowCollectionBehaviorFullScreenNone NSWindowCollectionBehaviorFullScreenNone
 #else
 #define XPTextAlignmentCenter NSCenterTextAlignment
 #define XPTextAlignmentNatural NSLeftTextAlignment
 #define XPModalResponse XPInteger
 #define XPModalResponseOK NSOKButton
 #define XPModalResponseCancel NSCancelButton
+#define XPWindowCollectionBehaviorFullScreenNone 0
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_12
@@ -238,7 +238,7 @@ typedef NSAttributedStringKey XPAttributedStringKey;
 typedef NSString* XPAttributedStringKey;
 #endif
 
-#if defined(XPSupportsButtonStyles) && defined(MAC_OS_X_VERSION_10_8)
+#if defined(XPSupportsButtonStyles) && defined(MAC_OS_X_VERSION_10_10)
 #define XPBezelStyleShadowlessSquare NSBezelStyleShadowlessSquare
 #define XPBezelStyleFlexiblePush NSBezelStyleFlexiblePush
 #elif defined (XPSupportsButtonStyles)
