@@ -238,7 +238,7 @@ typedef NSAttributedStringKey XPAttributedStringKey;
 typedef NSString* XPAttributedStringKey;
 #endif
 
-#if defined(XPSupportsButtonStyles) && defined(MAC_OS_X_VERSION_10_6)
+#if defined(XPSupportsButtonStyles) && defined(MAC_OS_X_VERSION_10_8)
 #define XPBezelStyleShadowlessSquare NSBezelStyleShadowlessSquare
 #define XPBezelStyleFlexiblePush NSBezelStyleFlexiblePush
 #elif defined (XPSupportsButtonStyles)
