@@ -174,7 +174,7 @@ static NSSize SVRAccessoryWindowAboutWindowMaxSize = {480*1.5, 320*1.5};
   [window setReleasedWhenClosed:NO];
   [window setMinSize:[NSWindow frameRectForContentRect:SVRAccessoryWindowAboutWindowRect styleMask:mask].size];
   [window setMaxSize:SVRAccessoryWindowAboutWindowMaxSize];
-  [window setCollectionBehavior:NSWindowCollectionBehaviorFullScreenNone];
+  [window XP_setCollectionBehavior:XPWindowCollectionBehaviorFullScreenNone];
   [window setContentView:[[[SVRAccessoryWindowAboutView alloc] initWithFrame:SVRAccessoryWindowAboutWindowRect] autorelease]];
   [window   setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameAbout];
   [window       XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameAbout];

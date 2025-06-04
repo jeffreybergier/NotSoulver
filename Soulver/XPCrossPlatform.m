@@ -706,6 +706,13 @@ NSArray* XPRunOpenPanel(NSString *extension)
   XPLogDebug(@"[IGNORE]");
 #endif
 }
+
+-(void)XP_setCollectionBehavior:(XPWindowCollectionBehavior)collectionBehavior;
+{
+#ifdef MAC_OS_X_VERSION_10_6
+  [self setCollectionBehavior:collectionBehavior];
+#endif
+}
 @end
 
 @implementation XPLog

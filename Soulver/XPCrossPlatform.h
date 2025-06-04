@@ -165,12 +165,14 @@ typedef NSViewController XPViewController;
 #define XPStringCompareOptions NSStringCompareOptions
 #define XPPasteboardTypeRTF NSPasteboardTypeRTF
 #define XPPasteboardTypeString NSPasteboardTypeString
+#define XPWindowCollectionBehavior NSWindowCollectionBehavior
 #define XPSupportsFormalProtocols // Protocols like NSWindowDelegate were formally added
 #else
 typedef XPUInteger XPStringCompareOptions;
 #define XPViewController NSResponder
 #define XPPasteboardTypeRTF NSRTFPboardType
 #define XPPasteboardTypeString NSStringPboardType
+#define XPWindowCollectionBehavior XPUInteger
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_8
@@ -179,6 +181,7 @@ typedef void (^XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPSecureCoding NSSecureCoding
 #define XPSaveOperationType NSSaveOperationType
 #define XPDataWritingAtomic NSDataWritingAtomic
+#define XPWindowCollectionBehaviorFullScreenNone NSWindowCollectionBehaviorFullScreenNone
 #undef  XPSupportsTexturedWindows
 #define XPSupportsUnicodeDocument // TODO: Update to NSRegularExpression
 #else
@@ -186,15 +189,18 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPSecureCoding NSCoding
 #define XPSaveOperationType XPUInteger
 #define XPDataWritingAtomic NSAtomicWrite
+#define XPWindowCollectionBehaviorFullScreenNone 0
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_10
 #define XPTextAlignmentCenter NSTextAlignmentCenter
+#define XPTextAlignmentNatural NSTextAlignmentNatural
 #define XPModalResponse NSModalResponse
 #define XPModalResponseOK NSModalResponseOK
 #define XPModalResponseCancel NSModalResponseCancel
 #else
 #define XPTextAlignmentCenter NSCenterTextAlignment
+#define XPTextAlignmentNatural NSLeftTextAlignment
 #define XPModalResponse XPInteger
 #define XPModalResponseOK NSOKButton
 #define XPModalResponseCancel NSCancelButton
@@ -228,18 +234,12 @@ typedef NSAttributedStringKey XPAttributedStringKey;
 typedef NSString* XPAttributedStringKey;
 #endif
 
-#if defined(XPSupportsButtonStyles) && defined(MAC_OS_X_VERSION_10_4)
+#if defined(XPSupportsButtonStyles) && defined(MAC_OS_X_VERSION_10_6)
 #define XPBezelStyleShadowlessSquare NSBezelStyleShadowlessSquare
-#define XPTextAlignmentCenter NSTextAlignmentCenter
-#define XPTextAlignmentNatural NSTextAlignmentNatural
 #elif defined (XPSupportsButtonStyles)
 #define XPBezelStyleShadowlessSquare NSShadowlessSquareBezelStyle
-#define XPTextAlignmentCenter NSCenterTextAlignment
-#define XPTextAlignmentNatural NSTextAlignmentLeft
 #else
 #define XPBezelStyleShadowlessSquare 6
-#define XPTextAlignmentCenter NSCenterTextAlignment
-#define XPTextAlignmentNatural NSLeftTextAlignment
 #endif
 
 extern const NSRange XPNotFoundRange;
@@ -409,6 +409,7 @@ NSArray* XPRunOpenPanel(NSString *extension);
 -(void)XP_setRestorationClass:(Class)aClass;
 -(void)XP_setIdentifier:(NSString*)anIdentifier;
 -(void)XP_setAppearanceWithUserInterfaceStyle:(XPUserInterfaceStyle)aStyle;
+-(void)XP_setCollectionBehavior:(XPWindowCollectionBehavior)collectionBehavior;
 @end
 
 // MARK: XPLogging
