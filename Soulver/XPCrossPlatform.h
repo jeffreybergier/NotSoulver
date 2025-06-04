@@ -228,6 +228,20 @@ typedef NSAttributedStringKey XPAttributedStringKey;
 typedef NSString* XPAttributedStringKey;
 #endif
 
+#if defined(XPSupportsButtonStyles) && defined(MAC_OS_X_VERSION_10_4)
+#define XPBezelStyleShadowlessSquare NSBezelStyleShadowlessSquare
+#define XPTextAlignmentCenter NSTextAlignmentCenter
+#define XPTextAlignmentNatural NSTextAlignmentNatural
+#elif defined (XPSupportsButtonStyles)
+#define XPBezelStyleShadowlessSquare NSShadowlessSquareBezelStyle
+#define XPTextAlignmentCenter NSCenterTextAlignment
+#define XPTextAlignmentNatural NSTextAlignmentLeft
+#else
+#define XPBezelStyleShadowlessSquare 6
+#define XPTextAlignmentCenter NSCenterTextAlignment
+#define XPTextAlignmentNatural NSLeftTextAlignment
+#endif
+
 extern const NSRange XPNotFoundRange;
 BOOL XPIsNotFoundRange(NSRange range);
 BOOL XPContainsRange(NSRange lhs, NSRange rhs);
@@ -367,6 +381,14 @@ NSArray* XPRunOpenPanel(NSString *extension);
 @interface NSTextView (CrossPlatform)
 -(void)XP_insertText:(id)string;
 -(void)XP_setAllowsUndo:(BOOL)isAllowed;
+@end
+
+@interface NSButton (CrossPlatform)
+-(void)XP_setBezelStyle:(NSBezelStyle)style;
+@end
+
+@interface NSBox (CrossPlatform)
+-(void)XP_setBoxType:(NSBoxType)type;
 @end
 
 // NSURL does not exist on OpenStep

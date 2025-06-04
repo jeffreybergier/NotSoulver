@@ -162,7 +162,6 @@ static NSSize SVRAccessoryWindowAboutWindowMaxSize = {480*1.5, 320*1.5};
         | XPWindowStyleMaskClosable
         | XPWindowStyleMaskResizable
         | XPWindowStyleMaskMiniaturizable);
-  // TODO: Figure out why the content view is smaller than the specified rect
   window = [[NSWindow alloc] initWithContentRect:SVRAccessoryWindowAboutWindowRect
                                        styleMask:mask
                                          backing:NSBackingStoreBuffered
@@ -173,16 +172,17 @@ static NSSize SVRAccessoryWindowAboutWindowMaxSize = {480*1.5, 320*1.5};
   [window center];
   [window setTitle:@"About"];
   [window setReleasedWhenClosed:NO];
-  [window setMinSize:[NSWindow frameRectForContentRect:SVRAccessoryWindowAboutWindowRect
-                                             styleMask:mask].size];
+  [window setMinSize:[NSWindow frameRectForContentRect:SVRAccessoryWindowAboutWindowRect styleMask:mask].size];
   [window setMaxSize:SVRAccessoryWindowAboutWindowMaxSize];
   [window setCollectionBehavior:NSWindowCollectionBehaviorFullScreenNone];
   [window setContentView:[[[SVRAccessoryWindowAboutView alloc] initWithFrame:SVRAccessoryWindowAboutWindowRect] autorelease]];
-  [window setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameAbout];
-  [window XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameAbout];
+  [window   setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameAbout];
+  [window       XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameAbout];
   [window XP_setRestorationClass:appDelegateClass];
   [window setInitialFirstResponder:[[window contentView] viewSourceButton]];
   [[[window contentView] textView] setString:[Localized aboutParagraph]];
+  [[[window contentView] viewSourceButton] setTarget:self];
+  [[[window contentView] viewSourceButton] setAction:@selector(openSourceRepository:)];
   
   
   /*
