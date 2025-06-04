@@ -137,6 +137,9 @@ typedef XPUInteger XPDocumentChangeType;
 #ifdef MAC_OS_X_VERSION_10_2
 #define XPKeyedArchiver NSKeyedArchiver
 #define XPKeyedUnarchiver NSKeyedUnarchiver
+#define XPBezelStyle NSBezelStyle
+#define XPBoxType NSBoxType
+#define XPBoxSeparator NSBoxSeparator
 #define XPSupportsNSBezierPath
 #define XPSupportsTexturedWindows
 #define XPSupportsUtilityWindows
@@ -145,6 +148,9 @@ typedef XPUInteger XPDocumentChangeType;
 #else
 #define XPKeyedArchiver NSArchiver
 #define XPKeyedUnarchiver NSUnarchiver
+#define XPBezelStyle XPUInteger
+#define XPBoxType XPUInteger
+#define XPBoxSeparator 0
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_4
@@ -227,19 +233,20 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #ifdef MAC_OS_X_VERSION_10_14
 #define XPSupportsDarkMode
 #define XPSupportsNSSecureCoding
-#define XPBezelStyleFlexiblePush NSBezelStyleFlexiblePush
 typedef NSAttributedStringKey XPAttributedStringKey;
 #else
-#define XPBezelStyleFlexiblePush NSRegularSquareBezelStyle
 typedef NSString* XPAttributedStringKey;
 #endif
 
 #if defined(XPSupportsButtonStyles) && defined(MAC_OS_X_VERSION_10_6)
 #define XPBezelStyleShadowlessSquare NSBezelStyleShadowlessSquare
+#define XPBezelStyleFlexiblePush NSBezelStyleFlexiblePush
 #elif defined (XPSupportsButtonStyles)
 #define XPBezelStyleShadowlessSquare NSShadowlessSquareBezelStyle
+#define XPBezelStyleFlexiblePush NSRegularSquareBezelStyle
 #else
 #define XPBezelStyleShadowlessSquare 6
+#define XPBezelStyleFlexiblePush 0
 #endif
 
 extern const NSRange XPNotFoundRange;
@@ -384,11 +391,11 @@ NSArray* XPRunOpenPanel(NSString *extension);
 @end
 
 @interface NSButton (CrossPlatform)
--(void)XP_setBezelStyle:(NSBezelStyle)style;
+-(void)XP_setBezelStyle:(XPBezelStyle)style;
 @end
 
 @interface NSBox (CrossPlatform)
--(void)XP_setBoxType:(NSBoxType)type;
+-(void)XP_setBoxType:(XPBoxType)type;
 @end
 
 // NSURL does not exist on OpenStep

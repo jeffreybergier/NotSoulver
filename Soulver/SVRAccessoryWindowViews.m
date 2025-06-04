@@ -417,7 +417,7 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 +(NSBox*)SVR_lineWithFrame:(NSRect)frame;
 {
   NSBox *view = [[[NSBox alloc] initWithFrame:frame] autorelease];
-  [view XP_setBoxType:NSBoxSeparator];
+  [view XP_setBoxType:XPBoxSeparator];
   [view setTitlePosition:NSNoTitle];
   return view;
 }

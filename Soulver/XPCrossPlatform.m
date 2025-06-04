@@ -588,7 +588,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 @end
 
 @implementation NSButton (CrossPlatform)
--(void)XP_setBezelStyle:(NSBezelStyle)style;
+-(void)XP_setBezelStyle:(XPBezelStyle)style;
 {
 #ifdef XPSupportsButtonStyles
   [self setBezelStyle:style];
@@ -597,7 +597,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 @end
 
 @implementation NSBox (CrossPlatform)
--(void)XP_setBoxType:(NSBoxType)type;
+-(void)XP_setBoxType:(XPBoxType)type;
 {
 #ifdef XPSupportsButtonStyles
   [self setBoxType:type];
