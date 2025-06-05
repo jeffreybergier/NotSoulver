@@ -62,8 +62,9 @@
 		8C5E58412DC346F200A1648E /* XPRegularExpression.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E802D91DCE00000020F /* XPRegularExpression.m */; };
 		8C5E58422DC346F200A1648E /* slre.c in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62EB32D91DDEB0000020F /* slre.c */; };
 		8C5E58442DC346F200A1648E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
+		8C979F662DEAC95E00A82647 /* SVRAccessoryWindowViews.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C979F652DEAC95E00A82647 /* SVRAccessoryWindowViews.m */; };
+		8C979F672DEAC95E00A82647 /* SVRAccessoryWindowViews.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C979F642DEAC95E00A82647 /* SVRAccessoryWindowViews.h */; };
 		8C9CB0232DD8943300C672E3 /* MainMenu_X15.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C9CB0212DD8943300C672E3 /* MainMenu_X15.xib */; };
-		8C9CB0272DD8944700C672E3 /* AccessoryWindows_X15.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C9CB0252DD8944700C672E3 /* AccessoryWindows_X15.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -87,6 +88,8 @@
 		8C7D8F3C2DC636CF003F084F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/AccessoryWindows_X6.xib; sourceTree = "<group>"; };
 		8C8D51D02DD97A27003A8684 /* Info_X4.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info_X4.plist; sourceTree = "<group>"; };
 		8C8D51D12DD97A31003A8684 /* Info_X15.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info_X15.plist; sourceTree = "<group>"; };
+		8C979F642DEAC95E00A82647 /* SVRAccessoryWindowViews.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SVRAccessoryWindowViews.h; sourceTree = "<group>"; };
+		8C979F652DEAC95E00A82647 /* SVRAccessoryWindowViews.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SVRAccessoryWindowViews.m; sourceTree = "<group>"; };
 		8C9A4EDF2D93CD2700A80066 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/AccessoryWindows_X2.nib; sourceTree = "<group>"; };
 		8C9CB0222DD8943300C672E3 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu_X15.xib; sourceTree = "<group>"; };
 		8C9CB0262DD8944700C672E3 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/AccessoryWindows_X15.xib; sourceTree = "<group>"; };
@@ -210,6 +213,8 @@
 				8CD62E5A2D91DCDF0000020F /* NSUserDefaults+Soulver.m */,
 				8CD62E5B2D91DCDF0000020F /* SVRAccessoryWindowsOwner.h */,
 				8CD62E5C2D91DCDF0000020F /* SVRAccessoryWindowsOwner.m */,
+				8C979F642DEAC95E00A82647 /* SVRAccessoryWindowViews.h */,
+				8C979F652DEAC95E00A82647 /* SVRAccessoryWindowViews.m */,
 				8CD62E5D2D91DCDF0000020F /* SVRAppDelegate.h */,
 				8CD62E5E2D91DCDF0000020F /* SVRAppDelegate.m */,
 				8CD62E5F2D91DCDF0000020F /* SVRDocument.h */,
@@ -344,6 +349,7 @@
 				8C5E58132DC346F200A1648E /* SVRSolver.h in Headers */,
 				8C5E58142DC346F200A1648E /* SVRSolverExpressionTagger.h in Headers */,
 				8C5E58152DC346F200A1648E /* SVRSolverScanner.h in Headers */,
+				8C979F672DEAC95E00A82647 /* SVRAccessoryWindowViews.h in Headers */,
 				8C5E58162DC346F200A1648E /* SVRSolverSolutionTagger.h in Headers */,
 				8C5E58172DC346F200A1648E /* SVRSolverStyler.h in Headers */,
 				8C5E58182DC346F200A1648E /* SVRSolverTextAttachment.h in Headers */,
@@ -431,7 +437,6 @@
 				8C4D1E022DC7D1F80060CFBA /* BlocksFullSizeSMlght.tiff in Resources */,
 				8C4D1E032DC7D1F80060CFBA /* NeXTLogoMed.tiff in Resources */,
 				8C9CB0232DD8943300C672E3 /* MainMenu_X15.xib in Resources */,
-				8C9CB0272DD8944700C672E3 /* AccessoryWindows_X15.xib in Resources */,
 				8C4D1E042DC7D1F80060CFBA /* TagLine.tiff in Resources */,
 				8C4D1E052DC7D1F80060CFBA /* TM.tiff in Resources */,
 			);
@@ -456,6 +461,7 @@
 				8C5E58382DC346F200A1648E /* SVRSolverExpressionTagger.m in Sources */,
 				8C5E58392DC346F200A1648E /* SVRSolverScanner.m in Sources */,
 				8C5E583A2DC346F200A1648E /* SVRSolverSolutionTagger.m in Sources */,
+				8C979F662DEAC95E00A82647 /* SVRAccessoryWindowViews.m in Sources */,
 				8C5E583B2DC346F200A1648E /* SVRSolverStyler.m in Sources */,
 				8C5E583C2DC346F200A1648E /* SVRSolverTextAttachment.m in Sources */,
 				8C5E583D2DC346F200A1648E /* TestsIntegration.m in Sources */,

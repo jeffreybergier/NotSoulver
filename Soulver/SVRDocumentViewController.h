@@ -28,6 +28,7 @@
 //
 
 #import <AppKit/AppKit.h>
+#import "SVRAccessoryWindowViews.h"
 #import "SVRDocumentModelController.h"
 #import "XPCrossPlatform.h"
 
@@ -48,7 +49,7 @@
 
 // MARK: Private
 -(void)__themeDidChangeNotification:(NSNotification*)aNotification;
--(NSString*)__mapKeyWithTag:(XPInteger)tag;
+-(NSString*)__stringValueForKeypadKeyKind:(SVRKeypadButtonKind)tag;
 -(NSDictionary*)__typingAttributes;
 
 @end

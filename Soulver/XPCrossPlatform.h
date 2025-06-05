@@ -138,6 +138,10 @@ typedef XPUInteger XPDocumentChangeType;
 #define XPKeyedArchiver NSKeyedArchiver
 #define XPKeyedUnarchiver NSKeyedUnarchiver
 #define XPSupportsNSBezierPath
+#define XPSupportsTexturedWindows
+#define XPSupportsUtilityWindows
+#define XPSupportsButtonStyles
+#define XPSupportsUnicodeUI
 #else
 #define XPKeyedArchiver NSArchiver
 #define XPKeyedUnarchiver NSUnarchiver
@@ -175,6 +179,8 @@ typedef void (^XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPSecureCoding NSSecureCoding
 #define XPSaveOperationType NSSaveOperationType
 #define XPDataWritingAtomic NSDataWritingAtomic
+#undef  XPSupportsTexturedWindows
+#define XPSupportsUnicodeDocument // TODO: Update to NSRegularExpression
 #else
 typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *error);
 #define XPSecureCoding NSCoding
@@ -201,6 +207,7 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPWindowStyleMaskClosable NSWindowStyleMaskClosable
 #define XPWindowStyleMaskMiniaturizable NSWindowStyleMaskMiniaturizable
 #define XPWindowStyleMaskResizable NSWindowStyleMaskResizable
+#define XPWindowStyleMaskUtilityWindow NSWindowStyleMaskUtilityWindow
 #else
 #define XPWindowStyleMask XPUInteger
 #define XPBitmapImageFileTypeTIFF NSTIFFFileType
@@ -208,13 +215,16 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPWindowStyleMaskClosable NSClosableWindowMask
 #define XPWindowStyleMaskMiniaturizable NSMiniaturizableWindowMask
 #define XPWindowStyleMaskResizable NSResizableWindowMask
+#define XPWindowStyleMaskUtilityWindow NSUtilityWindowMask
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_14
 #define XPSupportsDarkMode
 #define XPSupportsNSSecureCoding
+#define XPBezelStyleFlexiblePush NSBezelStyleFlexiblePush
 typedef NSAttributedStringKey XPAttributedStringKey;
 #else
+#define XPBezelStyleFlexiblePush NSRegularSquareBezelStyle
 typedef NSString* XPAttributedStringKey;
 #endif
 
@@ -331,12 +341,6 @@ NSArray* XPRunOpenPanel(NSString *extension);
 +(id)XP_unarchivedObjectOfClass:(Class)cls fromData:(NSData*)someData;
 @end
 
-@interface NSBundle (CrossPlatform)
--(BOOL)XP_loadNibNamed:(NSString*)nibName
-                 owner:(id)owner
-       topLevelObjects:(NSArray**)topLevelObjects;
-@end
-
 @interface NSWorkspace (CrossPlatform)
 /// OpenStep basically was pre-internet and did not expect
 /// websites to be opened with this method.
@@ -440,22 +444,22 @@ NSArray* XPRunOpenPanel(NSString *extension);
 #define XPLogAssrt2(_condition, _formatString, _one, _two)                 if (!(_condition)) { __XPLogBase2(@"ASSRT", _formatString, _one, _two); } NSAssert2(_condition, _formatString, _one, _two)
 #define XPLogAssrt3(_condition, _formatString, _one, _two, _three)         if (!(_condition)) { __XPLogBase3(@"ASSRT", _formatString, _one, _two, _three); } NSAssert3(_condition, _formatString, _one, _two, _three)
 #define XPLogAssrt4(_condition, _formatString, _one, _two, _three, _four)  if (!(_condition)) { __XPLogBase4(@"ASSRT", _formatString, _one, _two, _three, _four); } NSAssert4(_condition, _formatString, _one, _two, _three, _four)
-#define XPLogCAssrt(_condition, _formatString)                             if (!(_condition)) { __XPLogBase (@"ASSRT", _formatString); } NSCAssert(_condition, _formatString)
-#define XPLogCAssrt1(_condition, _formatString, _one)                      if (!(_condition)) { __XPLogBase1(@"ASSRT", _formatString, _one); } NSCAssert1(_condition, _formatString, _one)
-#define XPLogCAssrt2(_condition, _formatString, _one, _two)                if (!(_condition)) { __XPLogBase2(@"ASSRT", _formatString, _one, _two); } NSCAssert2(_condition, _formatString, _one, _two)
-#define XPLogCAssrt3(_condition, _formatString, _one, _two, _three)        if (!(_condition)) { __XPLogBase3(@"ASSRT", _formatString, _one, _two, _three); } NSCAssert3(_condition, _formatString, _one, _two, _three)
-#define XPLogCAssrt4(_condition, _formatString, _one, _two, _three, _four) if (!(_condition)) { __XPLogBase4(@"ASSRT", _formatString, _one, _two, _three, _four); } NSCAssert4(_condition, _formatString, _one, _two, _three, _four)
+#define XPCLogAssrt(_condition, _formatString)                             if (!(_condition)) { __XPLogBase (@"ASSRT", _formatString); } NSCAssert(_condition, _formatString)
+#define XPCLogAssrt1(_condition, _formatString, _one)                      if (!(_condition)) { __XPLogBase1(@"ASSRT", _formatString, _one); } NSCAssert1(_condition, _formatString, _one)
+#define XPCLogAssrt2(_condition, _formatString, _one, _two)                if (!(_condition)) { __XPLogBase2(@"ASSRT", _formatString, _one, _two); } NSCAssert2(_condition, _formatString, _one, _two)
+#define XPCLogAssrt3(_condition, _formatString, _one, _two, _three)        if (!(_condition)) { __XPLogBase3(@"ASSRT", _formatString, _one, _two, _three); } NSCAssert3(_condition, _formatString, _one, _two, _three)
+#define XPCLogAssrt4(_condition, _formatString, _one, _two, _three, _four) if (!(_condition)) { __XPLogBase4(@"ASSRT", _formatString, _one, _two, _three, _four); } NSCAssert4(_condition, _formatString, _one, _two, _three, _four)
 #else
 #define XPLogAssrt(_condition, _formatString)
 #define XPLogAssrt1(_condition, _formatString, _one)
 #define XPLogAssrt2(_condition, _formatString, _one, _two)
 #define XPLogAssrt3(_condition, _formatString, _one, _two, _three)
 #define XPLogAssrt4(_condition, _formatString, _one, _two, _three, _four)
-#define XPLogCAssrt(_condition, _formatString)
-#define XPLogCAssrt1(_condition, _formatString, _one)
-#define XPLogCAssrt2(_condition, _formatString, _one, _two)
-#define XPLogCAssrt3(_condition, _formatString, _one, _two, _three)
-#define XPLogCAssrt4(_condition, _formatString, _one, _two, _three, _four)
+#define XPCLogAssrt(_condition, _formatString)
+#define XPCLogAssrt1(_condition, _formatString, _one)
+#define XPCLogAssrt2(_condition, _formatString, _one, _two)
+#define XPCLogAssrt3(_condition, _formatString, _one, _two, _three)
+#define XPCLogAssrt4(_condition, _formatString, _one, _two, _three, _four)
 #endif
 
 // Define Debug Macros

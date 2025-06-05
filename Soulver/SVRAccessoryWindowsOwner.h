@@ -31,34 +31,24 @@
 #import "XPCrossPlatform.h"
 #import "NSUserDefaults+Soulver.h"
 
-@interface SVRFontManager: NSFontManager
-{
-  SVRThemeFont _themeFont;
-}
-
--(SVRThemeFont)themeFont;
--(void)setThemeFont:(SVRThemeFont)themeFont;
-
-@end
-
 @interface SVRAccessoryWindowsOwner: NSObject
 {
-  mm_retain   IBOutlet NSPanel    *_keypadPanel;
-  mm_retain   IBOutlet NSWindow   *_aboutWindow;
-  mm_retain   IBOutlet NSWindow   *_settingsWindow;
-  mm_unretain IBOutlet NSTextView *_aboutTextView;
-  mm_new NSArray *_topLevelObjects;
+  mm_new IBOutlet NSPanel  *_keypadPanel;
+  mm_new IBOutlet NSWindow *_aboutWindow;
+  mm_new IBOutlet NSWindow *_settingsWindow;
+  BOOL _windowsLoaded;
 }
 
-// MARK: IBOutlets
+// MARK: Lazy-Loading Properties
 -(NSPanel *)keypadPanel;
 -(NSWindow*)aboutWindow;
 -(NSWindow*)settingsWindow;
 -(NSTextView*)aboutTextView;
 
 // MARK: Init
++(void)initialize;
 -(id)init;
--(void)awakeFromNib;
+-(void)loadWindows;
 
 // MARK: IBActions
 -(IBAction)toggleKeypadPanel:(id)sender;
@@ -88,4 +78,14 @@
 -(void)__restoreWindowWithIdentifier:(NSString*)identifier
                                state:(NSCoder*)state
                    completionHandler:(XPWindowRestoreCompletionHandler)completionHandler;
+@end
+
+@interface SVRFontManager: NSFontManager
+{
+  SVRThemeFont _themeFont;
+}
+
+-(SVRThemeFont)themeFont;
+-(void)setThemeFont:(SVRThemeFont)themeFont;
+
 @end
