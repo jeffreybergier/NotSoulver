@@ -228,6 +228,7 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
     }
   }
   
+  XPParameterRaise(_equalButton);
   return self;
 }
 
@@ -309,6 +310,9 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
                                   SVR_setImageFrameStyle:NSImageFrameGroove]
                                  SVR_setAutoresizingMask:NSViewMinYMargin | NSViewMinXMargin]];
   
+  XPParameterRaise(_textView);
+  XPParameterRaise(_viewSourceButton);
+
   return self;
 }
 
