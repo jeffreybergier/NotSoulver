@@ -78,11 +78,12 @@
 
 NSRect SVR_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 {
-  XPFloat windowPad  = SVRAccessoryWindowKeypadWindowPadding;
-  XPFloat buttonVPad = SVRAccessoryWindowKeypadWindowButtonVPadding;
-  XPFloat buttonHPad = SVRAccessoryWindowKeypadWindowButtonHPadding;
-  XPFloat groupPad   = SVRAccessoryWindowKeypadWindowGroupSpacing;
-  NSSize  buttonSize = SVRAccessoryWindowKeypadWindowButtonSize;
+  XPFloat kWinPad  = SVRAccessoryWindowKeypadWindowPadding;
+  XPFloat kBtnVPad = SVRAccessoryWindowKeypadWindowButtonVPadding;
+  XPFloat kBtnHPad = SVRAccessoryWindowKeypadWindowButtonHPadding;
+  XPFloat kGrpVPad = SVRAccessoryWindowKeypadWindowGroupSpacing;
+  NSSize  kBtnSize = SVRAccessoryWindowKeypadWindowButtonSize;
+  
   XPInteger column     = -1;
   XPInteger row        = -1;
   XPFloat   rowPadding = 0;
@@ -168,19 +169,18 @@ NSRect SVR_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind)
       break;
   }
   
-  
   if (row > 0) {
-    rowPadding += groupPad;
+    rowPadding += kGrpVPad;
   }
   if (row > 4) {
-    rowPadding += groupPad;
+    rowPadding += kGrpVPad;
   }
   
-  output.origin = NSMakePoint(((buttonHPad + buttonSize.width ) * column) + windowPad,
-                              ((buttonVPad + buttonSize.height) * row   ) + windowPad + rowPadding);
+  output.origin = NSMakePoint(((kBtnHPad + kBtnSize.width ) * column) + kWinPad,
+                              ((kBtnVPad + kBtnSize.height) * row   ) + kWinPad + rowPadding);
   output.size = kind == SVRKeypadButtonKindEqual
-                      ? NSMakeSize((buttonSize.width * 2) + buttonHPad, buttonSize.height)
-                      : buttonSize;
+                      ? NSMakeSize((kBtnSize.width * 2) + kBtnHPad, kBtnSize.height)
+                      : kBtnSize;
   return output;
 }
 
