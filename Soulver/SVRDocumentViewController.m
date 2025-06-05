@@ -138,22 +138,21 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
     case SVRKeypadButtonKind6:
     case SVRKeypadButtonKind7:
     case SVRKeypadButtonKind8:
-    case SVRKeypadButtonKind9:
-      return [NSString stringWithFormat:@"%d", (int)kind];
-    case SVRKeypadButtonKind0: return @"0";
+    case SVRKeypadButtonKind9:        return [NSString stringWithFormat:@"%d", (int)kind];
+    case SVRKeypadButtonKind0:        return @"0";
     case SVRKeypadButtonKindNegative: return @"-";
-    case SVRKeypadButtonKindDecimal: return @".";
-    case SVRKeypadButtonKindDelete: return nil;
-    case SVRKeypadButtonKindEqual: return @"=\n";
-    case SVRKeypadButtonKindAdd: return @"+";
+    case SVRKeypadButtonKindDecimal:  return @".";
+    case SVRKeypadButtonKindDelete:   return nil;
+    case SVRKeypadButtonKindEqual:    return @"=\n";
+    case SVRKeypadButtonKindAdd:      return @"+";
     case SVRKeypadButtonKindSubtract: return @"-";
-    case SVRKeypadButtonKindBRight: return @")";
+    case SVRKeypadButtonKindBRight:   return @")";
     case SVRKeypadButtonKindMultiply: return @"*";
-    case SVRKeypadButtonKindDivide: return @"/";
-    case SVRKeypadButtonKindBLeft: return @"(";
-    case SVRKeypadButtonKindPower: return @"^";
-    case SVRKeypadButtonKindRoot: return [@"2" stringByAppendingString:[NSString SVR_rootRawString]];
-    case SVRKeypadButtonKindLog: return [@"10" stringByAppendingString:[NSString SVR_logRawString]];
+    case SVRKeypadButtonKindDivide:   return @"/";
+    case SVRKeypadButtonKindBLeft:    return @"(";
+    case SVRKeypadButtonKindPower:    return @"^";
+    case SVRKeypadButtonKindRoot:     return [@"2" stringByAppendingString:[NSString SVR_rootRawString]];
+    case SVRKeypadButtonKindLog:      return [@"10" stringByAppendingString:[NSString SVR_logRawString]];
     default:
       XPLogAssrt1(NO, @"[UNKNOWN] SVRKeypadButtonKind(%d)", (int)kind);
       return @"";
