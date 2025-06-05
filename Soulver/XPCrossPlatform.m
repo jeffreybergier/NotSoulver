@@ -587,6 +587,24 @@ NSArray* XPRunOpenPanel(NSString *extension)
 }
 @end
 
+@implementation NSButton (CrossPlatform)
+-(void)XP_setBezelStyle:(XPBezelStyle)style;
+{
+#ifdef XPSupportsButtonStyles
+  [self setBezelStyle:style];
+#endif
+}
+@end
+
+@implementation NSBox (CrossPlatform)
+-(void)XP_setBoxType:(XPBoxType)type;
+{
+#ifdef XPSupportsButtonStyles
+  [self setBoxType:type];
+#endif
+}
+@end
+
 @implementation XPURL (CrossPlatformURL)
 
 -(BOOL)XP_isFileURL;
@@ -686,6 +704,13 @@ NSArray* XPRunOpenPanel(NSString *extension)
   }
 #else
   XPLogDebug(@"[IGNORE]");
+#endif
+}
+
+-(void)XP_setCollectionBehavior:(XPWindowCollectionBehavior)collectionBehavior;
+{
+#ifdef MAC_OS_X_VERSION_10_6
+  [self setCollectionBehavior:collectionBehavior];
 #endif
 }
 @end

@@ -33,7 +33,9 @@
 NSString * const SVRAccessoryWindowFrameAutosaveNameSettings = @"kSVRAccessoryWindowFrameAutosaveNameSettings";
 NSString * const SVRAccessoryWindowFrameAutosaveNameAbout    = @"kSVRAccessoryWindowFrameAutosaveNameAbout";
 NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWindowFrameAutosaveNameKeypad";
-static NSRect SVRAccessoryWindowKeypadWindowRect = {{0, 0}, {0, 0}};
+static NSRect SVRAccessoryWindowKeypadWindowRect   = {{0, 0}, {0, 0}}; // Configured in Initialize
+static NSRect SVRAccessoryWindowAboutWindowRect    = {{0, 0}, {480, 320}};
+static NSSize SVRAccessoryWindowAboutWindowMaxSize = {480*1.5, 320*1.5};
 
 @implementation SVRFontManager
 
@@ -127,29 +129,60 @@ static NSRect SVRAccessoryWindowKeypadWindowRect = {{0, 0}, {0, 0}};
 {
   Class appDelegateClass = [[[NSApplication sharedApplication] delegate] class];
   NSWindow *window = nil;
-  XPWindowStyleMask mask = (XPWindowStyleMaskTitled | XPWindowStyleMaskClosable);
+  XPWindowStyleMask mask = 0;
+  XPLogAssrt(!_windowsLoaded, @"Windows Already Loaded");
+  _windowsLoaded = YES;
+  
+  // MARK: SVRAccessoryWindowKeypadWindow
+  
+  mask = (XPWindowStyleMaskTitled | XPWindowStyleMaskClosable);
 #ifdef XPSupportsUtilityWindows
   mask |= XPWindowStyleMaskUtilityWindow;
 #endif
 #ifdef XPSupportsTexturedWindows
   mask |= NSTexturedBackgroundWindowMask;
 #endif
+  
   window = [[NSPanel alloc] initWithContentRect:SVRAccessoryWindowKeypadWindowRect
                                       styleMask:mask
                                         backing:NSBackingStoreBuffered
                                           defer:YES];
-  
-  XPLogAssrt(!_windowsLoaded, @"Windows Already Loaded");
   _keypadPanel = (NSPanel*)window;
-  _windowsLoaded = YES;
-  
   [window center];
   [window setTitle:@"Keypad"];
-  [window setContentView:[[[SVRAccessoryWindowKeypadView alloc] init] autorelease]];
+  [window setContentView:[[[SVRAccessoryWindowKeypadView alloc] initWithFrame:SVRAccessoryWindowKeypadWindowRect] autorelease]];
   [window setInitialFirstResponder:[[window contentView] equalButton]];
   [window setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameKeypad];
   [window XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameKeypad];
   [window XP_setRestorationClass:appDelegateClass];
+  
+  // MARK: SVRAccessoryWindowAboutWindow
+  
+  mask = (XPWindowStyleMaskTitled
+        | XPWindowStyleMaskClosable
+        | XPWindowStyleMaskResizable
+        | XPWindowStyleMaskMiniaturizable);
+  window = [[NSWindow alloc] initWithContentRect:SVRAccessoryWindowAboutWindowRect
+                                       styleMask:mask
+                                         backing:NSBackingStoreBuffered
+                                           defer:YES];
+  
+  _aboutWindow = (NSPanel*)window;
+
+  [window center];
+  [window setTitle:@"About"];
+  [window setReleasedWhenClosed:NO];
+  [window setMinSize:[NSWindow frameRectForContentRect:SVRAccessoryWindowAboutWindowRect styleMask:mask].size];
+  [window setMaxSize:SVRAccessoryWindowAboutWindowMaxSize];
+  [window XP_setCollectionBehavior:XPWindowCollectionBehaviorFullScreenNone];
+  [window setContentView:[[[SVRAccessoryWindowAboutView alloc] initWithFrame:SVRAccessoryWindowAboutWindowRect] autorelease]];
+  [window setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameAbout];
+  [window XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameAbout];
+  [window XP_setRestorationClass:appDelegateClass];
+  [window setInitialFirstResponder:[[window contentView] viewSourceButton]];
+  [[[window contentView] textView] setString:[Localized aboutParagraph]];
+  [[[window contentView] viewSourceButton] setTarget:self];
+  [[[window contentView] viewSourceButton] setAction:@selector(openSourceRepository:)];
   
   
   /*
@@ -160,12 +193,6 @@ static NSRect SVRAccessoryWindowKeypadWindowRect = {{0, 0}, {0, 0}};
   NSRect keypadRect   = [keypadPanel    frame];
   NSRect aboutRect    = [aboutWindow    frame];
   NSRect settingsRect = [settingsWindow frame];
-  
-  // Set the about text from the strings file
-  // TODO: Figure out why the text color does not change in dark mode
-  [ textStorage beginEditing];
-  [[textStorage mutableString] setString:[Localized aboutParagraph]];
-  [ textStorage endEditing];
 
   // Set autosave names
   [aboutWindow        XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameAbout   ];

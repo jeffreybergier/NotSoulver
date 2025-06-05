@@ -30,6 +30,8 @@
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
 
+// MARK: SVRAccessoryWindowKeypadView
+
 typedef XP_ENUM(XPInteger, SVRKeypadButtonKind) {
   SVRKeypadButtonKindUnknown,
   SVRKeypadButtonKind1,
@@ -77,10 +79,44 @@ static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
 {
   mm_unretain NSButton *_equalButton;
 }
--(id)init;
+-(id)initWithFrame:(NSRect)frameRect;
 -(NSButton*)equalButton;
 @end
 
+// MARK: SVRAccessoryWindowAboutView
+
+@interface SVRAccessoryWindowAboutView: NSView
+{
+  mm_unretain NSTextView *_textView;
+  mm_unretain NSButton   *_viewSourceButton;
+}
+-(id)initWithFrame:(NSRect)frameRect;
+-(NSTextView*)textView;
+-(NSButton*)viewSourceButton;
++(NSScrollView*)__scrollViewWithFrame:(NSRect)frame
+                             textView:(NSTextView**)inoutTextView;
++(NSButton*)__viewSourceButtonWithFrame:(NSRect)frame
+                                  title:(NSString*)title
+                             imageNamed:(NSString*)imageName;
+@end
+
 @interface NSControl (SVRAccessoryWindows)
-+(id)SVR_keypadButtonOfKind:(SVRKeypadButtonKind)kind;
++(NSButton*)SVR_keypadButtonOfKind:(SVRKeypadButtonKind)kind;
++(NSTextField*)SVR_labelWithFrame:(NSRect)frame;
+-(id)SVR_setObjectValue:(id)objectValue
+                   font:(NSFont*)font
+              alignment:(NSTextAlignment)alignment;
+@end
+
+@interface NSView (SVRAccessoryWindows)
++(NSBox*)SVR_lineWithFrame:(NSRect)frame;
+-(id)SVR_setAutoresizingMask:(XPUInteger)mask;
+@end
+
+@interface NSImageView (SVRAccessoryWindows)
++(NSImageView*)SVR_imageViewWithOrigin:(NSPoint)origin
+                  sizedToFitImageNamed:(NSString*)imageName;
++(NSImageView*)SVR_imageViewWithFrame:(NSRect)frame
+                           imageNamed:(NSString*)imageName;
+-(NSImageView*)SVR_setImageFrameStyle:(NSImageFrameStyle)imageFrameStyle;
 @end

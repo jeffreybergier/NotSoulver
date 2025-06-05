@@ -137,6 +137,9 @@ typedef XPUInteger XPDocumentChangeType;
 #ifdef MAC_OS_X_VERSION_10_2
 #define XPKeyedArchiver NSKeyedArchiver
 #define XPKeyedUnarchiver NSKeyedUnarchiver
+#define XPBezelStyle NSBezelStyle
+#define XPBoxType NSBoxType
+#define XPBoxSeparator NSBoxSeparator
 #define XPSupportsNSBezierPath
 #define XPSupportsTexturedWindows
 #define XPSupportsUtilityWindows
@@ -145,6 +148,9 @@ typedef XPUInteger XPDocumentChangeType;
 #else
 #define XPKeyedArchiver NSArchiver
 #define XPKeyedUnarchiver NSUnarchiver
+#define XPBezelStyle XPUInteger
+#define XPBoxType XPUInteger
+#define XPBoxSeparator 0
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_4
@@ -165,12 +171,14 @@ typedef NSViewController XPViewController;
 #define XPStringCompareOptions NSStringCompareOptions
 #define XPPasteboardTypeRTF NSPasteboardTypeRTF
 #define XPPasteboardTypeString NSPasteboardTypeString
+#define XPWindowCollectionBehavior NSWindowCollectionBehavior
 #define XPSupportsFormalProtocols // Protocols like NSWindowDelegate were formally added
 #else
 typedef XPUInteger XPStringCompareOptions;
 #define XPViewController NSResponder
 #define XPPasteboardTypeRTF NSRTFPboardType
 #define XPPasteboardTypeString NSStringPboardType
+#define XPWindowCollectionBehavior XPUInteger
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_8
@@ -188,19 +196,23 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPDataWritingAtomic NSAtomicWrite
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_10
+#ifdef MAC_OS_X_VERSION_10_15 // Previously 10.10
 #define XPTextAlignmentCenter NSTextAlignmentCenter
+#define XPTextAlignmentNatural NSTextAlignmentNatural
 #define XPModalResponse NSModalResponse
 #define XPModalResponseOK NSModalResponseOK
 #define XPModalResponseCancel NSModalResponseCancel
+#define XPWindowCollectionBehaviorFullScreenNone NSWindowCollectionBehaviorFullScreenNone
 #else
 #define XPTextAlignmentCenter NSCenterTextAlignment
+#define XPTextAlignmentNatural NSLeftTextAlignment
 #define XPModalResponse XPInteger
 #define XPModalResponseOK NSOKButton
 #define XPModalResponseCancel NSCancelButton
+#define XPWindowCollectionBehaviorFullScreenNone 0
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_12
+#ifdef MAC_OS_X_VERSION_10_15 // Previously 10.12
 #define XPWindowStyleMask NSWindowStyleMask
 #define XPBitmapImageFileTypeTIFF NSBitmapImageFileTypeTIFF
 #define XPWindowStyleMaskTitled NSWindowStyleMaskTitled
@@ -221,11 +233,20 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #ifdef MAC_OS_X_VERSION_10_14
 #define XPSupportsDarkMode
 #define XPSupportsNSSecureCoding
-#define XPBezelStyleFlexiblePush NSBezelStyleFlexiblePush
 typedef NSAttributedStringKey XPAttributedStringKey;
 #else
-#define XPBezelStyleFlexiblePush NSRegularSquareBezelStyle
 typedef NSString* XPAttributedStringKey;
+#endif
+
+#if defined(XPSupportsButtonStyles) && defined(MAC_OS_X_VERSION_10_15)
+#define XPBezelStyleShadowlessSquare NSBezelStyleShadowlessSquare
+#define XPBezelStyleFlexiblePush NSBezelStyleFlexiblePush
+#elif defined (XPSupportsButtonStyles)
+#define XPBezelStyleShadowlessSquare NSShadowlessSquareBezelStyle
+#define XPBezelStyleFlexiblePush NSRegularSquareBezelStyle
+#else
+#define XPBezelStyleShadowlessSquare 6
+#define XPBezelStyleFlexiblePush 0
 #endif
 
 extern const NSRange XPNotFoundRange;
@@ -369,6 +390,14 @@ NSArray* XPRunOpenPanel(NSString *extension);
 -(void)XP_setAllowsUndo:(BOOL)isAllowed;
 @end
 
+@interface NSButton (CrossPlatform)
+-(void)XP_setBezelStyle:(XPBezelStyle)style;
+@end
+
+@interface NSBox (CrossPlatform)
+-(void)XP_setBoxType:(XPBoxType)type;
+@end
+
 // NSURL does not exist on OpenStep
 // so this category attempts to unify the API
 // between NSString and NSURL
@@ -387,6 +416,7 @@ NSArray* XPRunOpenPanel(NSString *extension);
 -(void)XP_setRestorationClass:(Class)aClass;
 -(void)XP_setIdentifier:(NSString*)anIdentifier;
 -(void)XP_setAppearanceWithUserInterfaceStyle:(XPUserInterfaceStyle)aStyle;
+-(void)XP_setCollectionBehavior:(XPWindowCollectionBehavior)collectionBehavior;
 @end
 
 // MARK: XPLogging

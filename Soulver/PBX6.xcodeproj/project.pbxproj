@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C182DD92DEF1034004C47C3 /* SVRAccessoryWindowViews.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C182DD72DEF1034004C47C3 /* SVRAccessoryWindowViews.h */; };
+		8C182DDA2DEF1034004C47C3 /* SVRAccessoryWindowViews.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C182DD82DEF1034004C47C3 /* SVRAccessoryWindowViews.m */; };
 		8C4D1E002DC7D1F80060CFBA /* about-image-512.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C4D1DFA2DC7D1F80060CFBA /* about-image-512.tiff */; };
 		8C4D1E012DC7D1F80060CFBA /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 8C4D1DFB2DC7D1F80060CFBA /* AppIcon.icns */; };
 		8C4D1E022DC7D1F80060CFBA /* BlocksFullSizeSMlght.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C4D1DFC2DC7D1F80060CFBA /* BlocksFullSizeSMlght.tiff */; };
@@ -73,6 +75,8 @@
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32DBCF750370BD2300C91783 /* Soulver_Prefix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Soulver_Prefix.h; sourceTree = "<group>"; };
+		8C182DD72DEF1034004C47C3 /* SVRAccessoryWindowViews.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVRAccessoryWindowViews.h; sourceTree = "<group>"; };
+		8C182DD82DEF1034004C47C3 /* SVRAccessoryWindowViews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVRAccessoryWindowViews.m; sourceTree = "<group>"; };
 		8C4D1DFA2DC7D1F80060CFBA /* about-image-512.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "about-image-512.tiff"; path = "Images/about-image-512.tiff"; sourceTree = "<group>"; };
 		8C4D1DFB2DC7D1F80060CFBA /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = AppIcon.icns; path = Images/AppIcon.icns; sourceTree = "<group>"; };
 		8C4D1DFC2DC7D1F80060CFBA /* BlocksFullSizeSMlght.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = BlocksFullSizeSMlght.tiff; path = Images/BlocksFullSizeSMlght.tiff; sourceTree = "<group>"; };
@@ -203,6 +207,8 @@
 				8CD62E5A2D91DCDF0000020F /* NSUserDefaults+Soulver.m */,
 				8CD62E5B2D91DCDF0000020F /* SVRAccessoryWindowsOwner.h */,
 				8CD62E5C2D91DCDF0000020F /* SVRAccessoryWindowsOwner.m */,
+				8C182DD72DEF1034004C47C3 /* SVRAccessoryWindowViews.h */,
+				8C182DD82DEF1034004C47C3 /* SVRAccessoryWindowViews.m */,
 				8CD62E5D2D91DCDF0000020F /* SVRAppDelegate.h */,
 				8CD62E5E2D91DCDF0000020F /* SVRAppDelegate.m */,
 				8CD62E5F2D91DCDF0000020F /* SVRDocument.h */,
@@ -343,6 +349,7 @@
 				8C5E581C2DC346F200A1648E /* XPDocument.h in Headers */,
 				8C5E581D2DC346F200A1648E /* XPRegularExpression.h in Headers */,
 				8C5E581E2DC346F200A1648E /* slre.h in Headers */,
+				8C182DD92DEF1034004C47C3 /* SVRAccessoryWindowViews.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -444,6 +451,7 @@
 				8C5E58402DC346F200A1648E /* XPDocument.m in Sources */,
 				8C5E58412DC346F200A1648E /* XPRegularExpression.m in Sources */,
 				8C5E58422DC346F200A1648E /* slre.c in Sources */,
+				8C182DDA2DEF1034004C47C3 /* SVRAccessoryWindowViews.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
