@@ -6,6 +6,7 @@
             "NSUserDefaults+Soulver.m", 
             SVRAppDelegate.m, 
             SVRAccessoryWindowsOwner.m, 
+            SVRAccessoryWindowViews.m, 
             SVRDocument.m, 
             SVRDocumentModelController.m, 
             SVRDocumentViewController.m, 
@@ -29,6 +30,7 @@
             SVRAppDelegate.h, 
             SVRDocument.h, 
             SVRAccessoryWindowsOwner.h, 
+            SVRAccessoryWindowViews.h, 
             SVRDocumentModelController.h, 
             SVRDocumentViewController.h, 
             SVRSettingsViewController.h, 
@@ -51,7 +53,7 @@
             Images/TagLine.tiff, 
             Images/TM.tiff
         ); 
-        INTERFACES = (AccessoryWindows_42.nib, MainMenu_42.nib); 
+        INTERFACES = (MainMenu_42.nib); 
         OTHER_LINKED = (slre.c, Soulver_main.m); 
         OTHER_RESOURCES = (
             Localizable.strings, 
@@ -74,7 +76,6 @@
     }; 
     LANGUAGE = English; 
     LOCALIZABLE_FILES = {
-        AccessoryWindows_42.nib = AccessoryWindows_42.nib; 
         Localizable.strings = Localizable.strings; 
         MainMenu_42.nib = MainMenu_42.nib; 
     }; 

@@ -17,8 +17,7 @@ NEXTSTEP_DOCICONS =
 
 ICONSECTIONS =	-sectcreate __ICON app /NextLibrary/Frameworks/AppKit.framework/Resources/NSDefaultApplicationIcon.tiff
 
-LOCAL_RESOURCES = AccessoryWindows_42.nib MainMenu_42.nib\
-                  Localizable.strings
+LOCAL_RESOURCES = MainMenu_42.nib Localizable.strings
 
 GLOBAL_RESOURCES = Images/about-image-512.tiff\
                    Images/BlocksFullSizeSMlght.tiff\
@@ -29,18 +28,19 @@ GLOBAL_RESOURCES = Images/about-image-512.tiff\
                    TestsIntegration-UnsolvedRep.rtf
 
 CLASSES = NSUserDefaults+Soulver.m SVRAppDelegate.m\
-          SVRAccessoryWindowsOwner.m SVRDocument.m\
-          SVRDocumentModelController.m SVRDocumentViewController.m\
-          SVRSettingsViewController.m SVRSolver.m\
-          SVRSolverExpressionTagger.m SVRSolverScanner.m\
+          SVRAccessoryWindowsOwner.m SVRAccessoryWindowViews.m\
+          SVRDocument.m SVRDocumentModelController.m\
+          SVRDocumentViewController.m SVRSettingsViewController.m\
+          SVRSolver.m SVRSolverExpressionTagger.m SVRSolverScanner.m\
           SVRSolverSolutionTagger.m SVRSolverStyler.m\
           SVRSolverTextAttachment.m TestsIntegration.m TestsUnit.m\
           XPCrossPlatform.m XPDocument.m XPRegularExpression.m
 
 HFILES = slre.h NSUserDefaults+Soulver.h SVRAppDelegate.h SVRDocument.h\
-         SVRAccessoryWindowsOwner.h SVRDocumentModelController.h\
-         SVRDocumentViewController.h SVRSettingsViewController.h\
-         SVRSolver.h SVRSolverExpressionTagger.h SVRSolverScanner.h\
+         SVRAccessoryWindowsOwner.h SVRAccessoryWindowViews.h\
+         SVRDocumentModelController.h SVRDocumentViewController.h\
+         SVRSettingsViewController.h SVRSolver.h\
+         SVRSolverExpressionTagger.h SVRSolverScanner.h\
          SVRSolverSolutionTagger.h SVRSolverStyler.h\
          SVRSolverTextAttachment.h TestsIntegration.h TestsUnit.h\
          XPCrossPlatform.h XPDocument.h XPRegularExpression.h

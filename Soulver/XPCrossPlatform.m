@@ -134,7 +134,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
       output = [NSArray new];
       break;
     default:
-      XPLogCAssrt1(NO, @"[UNKNOWN] NSModalResponse(%d)", (int)result);
+      XPCLogAssrt1(NO, @"[UNKNOWN] NSModalResponse(%d)", (int)result);
       output = nil;
       break;
   }
@@ -434,22 +434,6 @@ NSArray* XPRunOpenPanel(NSString *extension)
   if ([output isKindOfClass:cls]) { return output; }
   XPLogRaise2(@"[FAIL] [%@ isKindOfClass:%@]", output, cls);
   return nil;
-#endif
-}
-@end
-
-@implementation NSBundle (CrossPlatform)
--(BOOL)XP_loadNibNamed:(NSString*)nibName
-                 owner:(id)owner
-       topLevelObjects:(NSArray**)topLevelObjects;
-{
-#ifdef MAC_OS_X_VERSION_10_8
-  return [self loadNibNamed:nibName
-                      owner:owner
-            topLevelObjects:topLevelObjects];
-#else
-  return [[self class] loadNibNamed:nibName
-                              owner:owner];
 #endif
 }
 @end

@@ -81,7 +81,6 @@
 -(void)applicationWillFinishLaunching:(NSNotification*)aNotification;
 {
   NSApplication *app = [aNotification object];
-  Class myClass = [self class];
   // Configure the title of the app
   [[app mainMenu] setTitle:[Localized titleAppName]];
   // Prepare UserDefaults
@@ -91,10 +90,6 @@
   // Load Accessory Windows Nib
   _accessoryWindowsOwner = [[SVRAccessoryWindowsOwner alloc] init];
   XPParameterRaise(_accessoryWindowsOwner);
-  // Configure Accessory Windows for state restoration
-  [[_accessoryWindowsOwner aboutWindow   ] XP_setRestorationClass:myClass];
-  [[_accessoryWindowsOwner keypadPanel   ] XP_setRestorationClass:myClass];
-  [[_accessoryWindowsOwner settingsWindow] XP_setRestorationClass:myClass];
   // Announce
   XPLogDebug(@"");
 }
@@ -276,10 +271,6 @@
 -(BOOL)application:(NSApplication *)sender openFile:(NSString *)filename;
 {
   return [self __application:sender openFile:filename];
-}
--(BOOL)applicationOpenUntitledFile:(NSApplication *)sender;
-{
-  return [self __applicationOpenUntitledFile:sender];
 }
 #else
 

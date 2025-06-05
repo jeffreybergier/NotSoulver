@@ -63,7 +63,8 @@
 		8C5E58422DC346F200A1648E /* slre.c in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62EB32D91DDEB0000020F /* slre.c */; };
 		8C5E58442DC346F200A1648E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		8C9CB0232DD8943300C672E3 /* MainMenu_X15.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C9CB0212DD8943300C672E3 /* MainMenu_X15.xib */; };
-		8C9CB0272DD8944700C672E3 /* AccessoryWindows_X15.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C9CB0252DD8944700C672E3 /* AccessoryWindows_X15.xib */; };
+		8CB5C5122DED604600CDE1DF /* SVRAccessoryWindowViews.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CB5C5102DED604600CDE1DF /* SVRAccessoryWindowViews.h */; };
+		8CB5C5132DED604600CDE1DF /* SVRAccessoryWindowViews.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CB5C5112DED604600CDE1DF /* SVRAccessoryWindowViews.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -84,12 +85,11 @@
 		8C5E58492DC346F200A1648E /* Info_X6.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info_X6.plist; sourceTree = "<group>"; };
 		8C5E584A2DC346F200A1648E /* Soulver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Soulver.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C7D8F392DC636BC003F084F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu_X6.xib; sourceTree = "<group>"; };
-		8C7D8F3C2DC636CF003F084F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/AccessoryWindows_X6.xib; sourceTree = "<group>"; };
 		8C8D51D02DD97A27003A8684 /* Info_X4.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info_X4.plist; sourceTree = "<group>"; };
 		8C8D51D12DD97A31003A8684 /* Info_X15.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info_X15.plist; sourceTree = "<group>"; };
-		8C9A4EDF2D93CD2700A80066 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/AccessoryWindows_X2.nib; sourceTree = "<group>"; };
 		8C9CB0222DD8943300C672E3 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu_X15.xib; sourceTree = "<group>"; };
-		8C9CB0262DD8944700C672E3 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/AccessoryWindows_X15.xib; sourceTree = "<group>"; };
+		8CB5C5102DED604600CDE1DF /* SVRAccessoryWindowViews.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SVRAccessoryWindowViews.h; sourceTree = "<group>"; };
+		8CB5C5112DED604600CDE1DF /* SVRAccessoryWindowViews.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SVRAccessoryWindowViews.m; sourceTree = "<group>"; };
 		8CD62E502D91DB730000020F /* Soulver_main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = Soulver_main.m; sourceTree = "<group>"; };
 		8CD62E552D91DCDF0000020F /* Import Log.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "Import Log.rtf"; sourceTree = "<group>"; };
 		8CD62E562D91DCDF0000020F /* Makefile */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -138,7 +138,6 @@
 		8CD62EB12D91DD700000020F /* PB.project */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = PB.project; sourceTree = "<group>"; };
 		8CD62EB32D91DDEB0000020F /* slre.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = slre.c; sourceTree = "<group>"; };
 		8CD62EB42D91DDEB0000020F /* slre.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = slre.h; sourceTree = "<group>"; };
-		8CD62EB82D91DF290000020F /* AccessoryWindows_42.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = AccessoryWindows_42.nib; path = English.lproj/AccessoryWindows_42.nib; sourceTree = "<group>"; };
 		8CD62EBA2D91DF290000020F /* MainMenu_42.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = MainMenu_42.nib; path = English.lproj/MainMenu_42.nib; sourceTree = "<group>"; };
 		8CD62EC12D91DF730000020F /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8CD62ED82D91EBA60000020F /* Soulver.iconheader */ = {isa = PBXFileReference; lastKnownFileType = text; path = Soulver.iconheader; sourceTree = "<group>"; };
@@ -210,6 +209,8 @@
 				8CD62E5A2D91DCDF0000020F /* NSUserDefaults+Soulver.m */,
 				8CD62E5B2D91DCDF0000020F /* SVRAccessoryWindowsOwner.h */,
 				8CD62E5C2D91DCDF0000020F /* SVRAccessoryWindowsOwner.m */,
+				8CB5C5102DED604600CDE1DF /* SVRAccessoryWindowViews.h */,
+				8CB5C5112DED604600CDE1DF /* SVRAccessoryWindowViews.m */,
 				8CD62E5D2D91DCDF0000020F /* SVRAppDelegate.h */,
 				8CD62E5E2D91DCDF0000020F /* SVRAppDelegate.m */,
 				8CD62E5F2D91DCDF0000020F /* SVRDocument.h */,
@@ -263,10 +264,6 @@
 				2A37F4B6FDCFA73011CA2CEA /* MainMenu_X2.nib */,
 				8C7D8F382DC636BC003F084F /* MainMenu_X6.xib */,
 				8C9CB0212DD8943300C672E3 /* MainMenu_X15.xib */,
-				8CD62EB72D91DF290000020F /* AccessoryWindows_42.nib */,
-				8C9A4EDE2D93CD2700A80066 /* AccessoryWindows_X2.nib */,
-				8C7D8F3B2DC636CF003F084F /* AccessoryWindows_X6.xib */,
-				8C9CB0252DD8944700C672E3 /* AccessoryWindows_X15.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -342,6 +339,7 @@
 				8C5E58112DC346F200A1648E /* SVRDocumentViewController.h in Headers */,
 				8C5E58122DC346F200A1648E /* SVRSettingsViewController.h in Headers */,
 				8C5E58132DC346F200A1648E /* SVRSolver.h in Headers */,
+				8CB5C5122DED604600CDE1DF /* SVRAccessoryWindowViews.h in Headers */,
 				8C5E58142DC346F200A1648E /* SVRSolverExpressionTagger.h in Headers */,
 				8C5E58152DC346F200A1648E /* SVRSolverScanner.h in Headers */,
 				8C5E58162DC346F200A1648E /* SVRSolverSolutionTagger.h in Headers */,
@@ -430,7 +428,6 @@
 				8C4D1E022DC7D1F80060CFBA /* BlocksFullSizeSMlght.tiff in Resources */,
 				8C4D1E032DC7D1F80060CFBA /* NeXTLogoMed.tiff in Resources */,
 				8C9CB0232DD8943300C672E3 /* MainMenu_X15.xib in Resources */,
-				8C9CB0272DD8944700C672E3 /* AccessoryWindows_X15.xib in Resources */,
 				8C4D1E042DC7D1F80060CFBA /* TagLine.tiff in Resources */,
 				8C4D1E052DC7D1F80060CFBA /* TM.tiff in Resources */,
 			);
@@ -446,6 +443,7 @@
 				8C5E582F2DC346F200A1648E /* Soulver_main.m in Sources */,
 				8C5E58302DC346F200A1648E /* NSUserDefaults+Soulver.m in Sources */,
 				8C5E58312DC346F200A1648E /* SVRAccessoryWindowsOwner.m in Sources */,
+				8CB5C5132DED604600CDE1DF /* SVRAccessoryWindowViews.m in Sources */,
 				8C5E58322DC346F200A1648E /* SVRAppDelegate.m in Sources */,
 				8C5E58332DC346F200A1648E /* SVRDocument.m in Sources */,
 				8C5E58342DC346F200A1648E /* SVRDocumentModelController.m in Sources */,
@@ -493,44 +491,12 @@
 			name = MainMenu_X6.xib;
 			sourceTree = "<group>";
 		};
-		8C7D8F3B2DC636CF003F084F /* AccessoryWindows_X6.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				8C7D8F3C2DC636CF003F084F /* English */,
-			);
-			name = AccessoryWindows_X6.xib;
-			sourceTree = "<group>";
-		};
-		8C9A4EDE2D93CD2700A80066 /* AccessoryWindows_X2.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				8C9A4EDF2D93CD2700A80066 /* English */,
-			);
-			name = AccessoryWindows_X2.nib;
-			sourceTree = "<group>";
-		};
 		8C9CB0212DD8943300C672E3 /* MainMenu_X15.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				8C9CB0222DD8943300C672E3 /* English */,
 			);
 			name = MainMenu_X15.xib;
-			sourceTree = "<group>";
-		};
-		8C9CB0252DD8944700C672E3 /* AccessoryWindows_X15.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				8C9CB0262DD8944700C672E3 /* English */,
-			);
-			name = AccessoryWindows_X15.xib;
-			sourceTree = "<group>";
-		};
-		8CD62EB72D91DF290000020F /* AccessoryWindows_42.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				8CD62EB82D91DF290000020F /* AccessoryWindows_42.nib */,
-			);
-			name = AccessoryWindows_42.nib;
 			sourceTree = "<group>";
 		};
 		8CD62EB92D91DF290000020F /* MainMenu_42.nib */ = {

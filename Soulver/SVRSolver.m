@@ -216,7 +216,7 @@ NSString *XPAttributedStringKeyForTag(SVRSolverTag tag)
     case SVRSolverTagExpression: return @"kSVRSoulverTagExpressionKey";
     case SVRSolverTagOriginal:   return @"kSVRSolverTagOriginalKey";
     default:
-      XPLogCAssrt1(NO, @"[UNKNOWN] SVRSolverTag(%d)", (int)tag);
+      XPCLogAssrt1(NO, @"[UNKNOWN] SVRSolverTag(%d)", (int)tag);
       return nil;
   }
 }
@@ -235,7 +235,7 @@ SVRSolverTag SVRSolverTagForKey(XPAttributedStringKey string)
   } else if ([string isEqualToString:XPAttributedStringKeyForTag(SVRSolverTagOriginal)])   {
     return SVRSolverTagOriginal;
   } else {
-    XPLogCAssrt1(NO, @"[UNKNOWN] XPAttributedStringKey(%@)", string);
+    XPCLogAssrt1(NO, @"[UNKNOWN] XPAttributedStringKey(%@)", string);
     return -1;
   }
 }
@@ -267,7 +267,7 @@ SVRSolverOperator SVRSolverOperatorForRawString(NSString *string)
   } else if ([string isEqualToString:[NSString SVR_logRawString]]) {
     return SVRSolverOperatorLog;
   } else {
-    XPLogCAssrt1(NO, @"[UNKNOWN] SVRSolverOperator(%@)", string);
+    XPCLogAssrt1(NO, @"[UNKNOWN] SVRSolverOperator(%@)", string);
     return SVRSolverOperatorUnknown;
   }
 }
@@ -284,7 +284,7 @@ NSString *RawStringForOperator(SVRSolverOperator operator)
     case SVRSolverOperatorLog:      return [NSString SVR_logRawString];
     case SVRSolverOperatorUnknown:
     default:
-      XPLogCAssrt1(NO, @"[UNKNOWN] SVRSolverOperator(%d)", (int)operator);
+      XPCLogAssrt1(NO, @"[UNKNOWN] SVRSolverOperator(%d)", (int)operator);
       return nil;
   }
 }
@@ -295,7 +295,7 @@ NSString *SVRSolverDescriptionForError(SVRCalculationError error)
     case SVRCalculationLossOfPrecision:
     case SVRCalculationUnderflow:
     case SVRCalculationOverflow:
-      XPLogCAssrt1(NO, @"[ERROR] SVRCalculationOverflow(%d)", (int)error);
+      XPCLogAssrt1(NO, @"[ERROR] SVRCalculationOverflow(%d)", (int)error);
       return nil;
     case SVRCalculationNoError:
       return nil;
@@ -322,7 +322,7 @@ NSString *SVRSolverDescriptionForError(SVRCalculationError error)
     case SVRCalculationBaseOne:
       return [NSString stringWithFormat:[Localized phraseErrorBaseOne], error];
     default:
-      XPLogCAssrt1(NO, @"[UNKNOWN] SVRCalculationError(%d)", (int)error);
+      XPCLogAssrt1(NO, @"[UNKNOWN] SVRCalculationError(%d)", (int)error);
       return nil;
   }
 }
@@ -360,7 +360,7 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
     case SVRCalculationBaseOne:
       return @"SVRCalculationBaseOne";
     default:
-      XPLogCAssrt1(NO, @"[UNKNOWN] SVRCalculationError(%d)", (int)error);
+      XPCLogAssrt1(NO, @"[UNKNOWN] SVRCalculationError(%d)", (int)error);
       return nil;
   }
 }
