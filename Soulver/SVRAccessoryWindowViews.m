@@ -326,27 +326,34 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 {
   NSTextView *textView = nil;
   NSScrollView *scrollView = nil;
-  
+  NSTextContainer *container = nil;
+
   // Create the scroll view
   scrollView = [[[NSScrollView alloc] initWithFrame:frame] autorelease];
   [scrollView setBorderType:NSGrooveBorder];
   [scrollView setHasVerticalScroller:YES];
   [scrollView setHasHorizontalScroller:NO];
-  
+
   // Create the text view
   textView = [[[NSTextView alloc] initWithFrame:frame] autorelease];
   [textView setEditable:NO];
   [textView setSelectable:YES];
   [textView setDrawsBackground:NO];
-  [textView setVerticallyResizable:YES];
-  [textView setHorizontallyResizable:YES];
   [textView setFont:[NSFont systemFontOfSize:12]];
-  [[textView textContainer] setContainerSize:NSMakeSize(frame.size.width, FLT_MAX)];
-  [[textView textContainer] setWidthTracksTextView:YES];
+  [textView setAutoresizingMask:NSViewHeightSizable | NSViewWidthSizable];
+
+  // Make the text view vertically resizable only
+  [textView setHorizontallyResizable:NO];
+  [textView setVerticallyResizable:YES];
+
+  // Set the container size and width tracking
+  container = [textView textContainer];
+  [container setContainerSize:NSMakeSize(frame.size.width, FLT_MAX)];
+  [container setWidthTracksTextView:YES];
 
   // Put the text view inside the scroll view
   [scrollView setDocumentView:textView];
-  
+
   *inoutTextView = textView;
   return scrollView;
 }
