@@ -196,7 +196,7 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPDataWritingAtomic NSAtomicWrite
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_10
+#ifdef MAC_OS_X_VERSION_10_15 // Previously 10.10
 #define XPTextAlignmentCenter NSTextAlignmentCenter
 #define XPTextAlignmentNatural NSTextAlignmentNatural
 #define XPModalResponse NSModalResponse
@@ -212,7 +212,7 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPWindowCollectionBehaviorFullScreenNone 0
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_12
+#ifdef MAC_OS_X_VERSION_10_15 // Previously 10.12
 #define XPWindowStyleMask NSWindowStyleMask
 #define XPBitmapImageFileTypeTIFF NSBitmapImageFileTypeTIFF
 #define XPWindowStyleMaskTitled NSWindowStyleMaskTitled
@@ -238,7 +238,7 @@ typedef NSAttributedStringKey XPAttributedStringKey;
 typedef NSString* XPAttributedStringKey;
 #endif
 
-#if defined(XPSupportsButtonStyles) && defined(MAC_OS_X_VERSION_10_10)
+#if defined(XPSupportsButtonStyles) && defined(MAC_OS_X_VERSION_10_15)
 #define XPBezelStyleShadowlessSquare NSBezelStyleShadowlessSquare
 #define XPBezelStyleFlexiblePush NSBezelStyleFlexiblePush
 #elif defined (XPSupportsButtonStyles)
