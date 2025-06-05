@@ -36,6 +36,7 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
 static NSRect SVRAccessoryWindowKeypadWindowRect   = {{0, 0}, {0, 0}}; // Configured in Initialize
 static NSRect SVRAccessoryWindowAboutWindowRect    = {{0, 0}, {480, 320}};
 static NSSize SVRAccessoryWindowAboutWindowMaxSize = {480*1.5, 320*1.5};
+static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Configured in Initialize
 
 @implementation SVRFontManager
 
@@ -90,12 +91,9 @@ static NSSize SVRAccessoryWindowAboutWindowMaxSize = {480*1.5, 320*1.5};
 
 +(void)initialize;
 {
-  SVRAccessoryWindowKeypadWindowRect = NSMakeRect
-  (0,
-   0,
+  SVRAccessoryWindowKeypadWindowRect = NSMakeRect(0,0,
    (SVRAccessoryWindowKeypadWindowPadding * 2) + (SVRAccessoryWindowKeypadWindowButtonSize.width  * 3) + (SVRAccessoryWindowKeypadWindowButtonHPadding * 2),
-   (SVRAccessoryWindowKeypadWindowPadding * 2) + (SVRAccessoryWindowKeypadWindowButtonSize.height * 8) + (SVRAccessoryWindowKeypadWindowButtonVPadding * 7) + (SVRAccessoryWindowKeypadWindowGroupSpacing * 2)
-   );
+   (SVRAccessoryWindowKeypadWindowPadding * 2) + (SVRAccessoryWindowKeypadWindowButtonSize.height * 8) + (SVRAccessoryWindowKeypadWindowButtonVPadding * 7) + (SVRAccessoryWindowKeypadWindowGroupSpacing * 2));
 }
 
 -(id)init;
@@ -133,7 +131,7 @@ static NSSize SVRAccessoryWindowAboutWindowMaxSize = {480*1.5, 320*1.5};
   XPLogAssrt(!_windowsLoaded, @"Windows Already Loaded");
   _windowsLoaded = YES;
   
-  // MARK: SVRAccessoryWindowKeypadWindow
+  // MARK: SVRAccessoryWindowKeypad
   
   mask = (XPWindowStyleMaskTitled | XPWindowStyleMaskClosable);
 #ifdef XPSupportsUtilityWindows
@@ -156,7 +154,7 @@ static NSSize SVRAccessoryWindowAboutWindowMaxSize = {480*1.5, 320*1.5};
   [window XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameKeypad];
   [window XP_setRestorationClass:appDelegateClass];
   
-  // MARK: SVRAccessoryWindowAboutWindow
+  // MARK: SVRAccessoryWindowAbout
   
   mask = (XPWindowStyleMaskTitled
         | XPWindowStyleMaskClosable
@@ -167,7 +165,7 @@ static NSSize SVRAccessoryWindowAboutWindowMaxSize = {480*1.5, 320*1.5};
                                          backing:NSBackingStoreBuffered
                                            defer:YES];
   
-  _aboutWindow = (NSPanel*)window;
+  _aboutWindow = window;
 
   [window center];
   [window setTitle:@"About"];
@@ -183,6 +181,27 @@ static NSSize SVRAccessoryWindowAboutWindowMaxSize = {480*1.5, 320*1.5};
   [[[window contentView] textView] setString:[Localized aboutParagraph]];
   [[[window contentView] viewSourceButton] setTarget:self];
   [[[window contentView] viewSourceButton] setAction:@selector(openSourceRepository:)];
+  
+  // MARK: SVRAccessoryWindowSettings
+  
+  mask = (XPWindowStyleMaskTitled
+        | XPWindowStyleMaskClosable
+        | XPWindowStyleMaskMiniaturizable);
+  window = [[NSWindow alloc] initWithContentRect:SVRAccessoryWindowSettingsWindowRect
+                                       styleMask:mask
+                                         backing:NSBackingStoreBuffered
+                                           defer:YES];
+  
+  _settingsWindow = window;
+
+  [window center];
+  [window setTitle:@"Settings"];
+  [window setReleasedWhenClosed:NO];
+  [window setContentView:[[[SVRAccessoryWindowSettingsView alloc] initWithFrame:SVRAccessoryWindowSettingsWindowRect] autorelease]];
+  [window setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameSettings];
+  [window XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameSettings];
+  [window XP_setRestorationClass:appDelegateClass];
+  //[window setInitialFirstResponder:[[window contentView] viewSourceButton]];
   
   
   /*
