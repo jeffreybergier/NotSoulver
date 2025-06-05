@@ -100,6 +100,14 @@ static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
                              imageNamed:(NSString*)imageName;
 @end
 
+// MARK: SVRAccessoryWindowSettingsView
+
+@interface SVRAccessoryWindowSettingsView: NSView
+{
+}
+-(id)initWithFrame:(NSRect)frameRect;
+@end
+
 @interface NSControl (SVRAccessoryWindows)
 +(NSButton*)SVR_keypadButtonOfKind:(SVRKeypadButtonKind)kind;
 +(NSTextField*)SVR_labelWithFrame:(NSRect)frame;
