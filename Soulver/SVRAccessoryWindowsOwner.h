@@ -31,11 +31,14 @@
 #import "XPCrossPlatform.h"
 #import "NSUserDefaults+Soulver.h"
 
+@class SVRAccessoryWindowsSettingsViewController;
+
 @interface SVRAccessoryWindowsOwner: NSObject
 {
-  mm_new IBOutlet NSPanel  *_keypadPanel;
-  mm_new IBOutlet NSWindow *_aboutWindow;
-  mm_new IBOutlet NSWindow *_settingsWindow;
+  mm_new NSPanel  *_keypadPanel;
+  mm_new NSWindow *_aboutWindow;
+  mm_new NSWindow *_settingsWindow;
+  mm_new SVRAccessoryWindowsSettingsViewController *_settingsViewController;
   BOOL _windowsLoaded;
 }
 
@@ -89,3 +92,27 @@
 -(void)setThemeFont:(SVRThemeFont)themeFont;
 
 @end
+
+@interface SVRAccessoryWindowsSettingsViewController: XPViewController
+{
+  mm_new      NSView *_view_42; // Used only in OpenStep
+  mm_unretain NSBox  *_generalBox;
+  mm_unretain NSBox  *_colorsBox;
+  mm_unretain NSBox  *_fontsBox;
+  mm_unretain NSPopUpButton *_selectorButton;
+}
+
+// MARK: Init
+-(void)loadView;
+
+// MARK: IBActions
+-(IBAction)selectionChanged:(NSPopUpButton*)sender;
+
+@end
+
+#ifndef XPSupportsNSViewController
+@interface SVRAccessoryWindowsSettingsViewController (CrossPlatform)
+-(NSView*)view;
+-(void)setView:(NSView*)view;
+@end
+#endif

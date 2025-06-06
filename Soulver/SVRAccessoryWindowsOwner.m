@@ -102,7 +102,11 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   
   self = [super init];
   XPParameterRaise(self);
-  _windowsLoaded = NO;
+  _windowsLoaded  = NO;
+  _keypadPanel    = nil;
+  _aboutWindow    = nil;
+  _settingsWindow = nil;
+  _settingsViewController = nil;
   [nc addObserver:self
          selector:@selector(__windowDidBecomeKey:)
              name:NSWindowDidBecomeKeyNotification
@@ -193,15 +197,21 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
                                            defer:YES];
   
   _settingsWindow = window;
+  _settingsViewController = [[SVRAccessoryWindowsSettingsViewController alloc] init];
 
   [window center];
   [window setTitle:@"Settings"];
   [window setReleasedWhenClosed:NO];
-  [window setContentView:[[[SVRAccessoryWindowSettingsView alloc] initWithFrame:SVRAccessoryWindowSettingsWindowRect] autorelease]];
+  [window setContentView:[_settingsViewController view]];
   [window setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameSettings];
   [window XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameSettings];
   [window XP_setRestorationClass:appDelegateClass];
   //[window setInitialFirstResponder:[[window contentView] viewSourceButton]];
+  
+  XPParameterRaise(_keypadPanel);
+  XPParameterRaise(_aboutWindow);
+  XPParameterRaise(_settingsWindow);
+  XPParameterRaise(_settingsViewController);
   
   
   /*
@@ -336,9 +346,11 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   [_keypadPanel     autorelease];
   [_aboutWindow     autorelease];
   [_settingsWindow  autorelease];
+  [_settingsViewController release];
   _keypadPanel     = nil;
   _aboutWindow     = nil;
   _settingsWindow  = nil;
+  _settingsViewController = nil;
   [super dealloc];
 }
 
@@ -371,4 +383,71 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
     XPLogAssrt1(NO, @"[UNKNOWN] NSUserInterfaceItemIdentifier(%@)", identifier);
   }
 }
+@end
+
+@implementation SVRAccessoryWindowsSettingsViewController
+
+// MARK: Init
+-(void)loadView;
+{
+  XPFloat kWindowPadding  = 8;
+  XPFloat kSelectorHeight = 26;
+  NSRect  kContentFrame   = SVRAccessoryWindowSettingsWindowRect;
+  NSRect  kSelectorFrame  = NSMakeRect(kWindowPadding,
+                                       kContentFrame.size.height-kWindowPadding-kSelectorHeight,
+                                       kContentFrame.size.width-kWindowPadding*2,
+                                       kSelectorHeight);
+  NSRect kBoxFrame = NSMakeRect(kWindowPadding,
+                                kWindowPadding,
+                                kContentFrame.size.width-kWindowPadding*2,
+                                kContentFrame.size.height-kSelectorFrame.size.height-kWindowPadding);
+  
+  NSView *contentView = [[[NSView alloc] initWithFrame:kContentFrame] autorelease];
+  
+  _selectorButton = [[[NSPopUpButton alloc] initWithFrame:kSelectorFrame pullsDown:NO] autorelease];
+  [_selectorButton addItemWithTitle:@"General"];
+  [_selectorButton addItemWithTitle:@"Colors"];
+  [_selectorButton addItemWithTitle:@"Fonts"];
+  [_selectorButton setAction:@selector(selectionChanged:)];
+  
+  _generalBox = [[[SVRAccessoryWindowSettingsGeneralBox alloc] initWithFrame:kBoxFrame] autorelease];
+  _colorsBox  = [[[SVRAccessoryWindowSettingsColorsBox  alloc] initWithFrame:kBoxFrame] autorelease];
+  _fontsBox   = [[[SVRAccessoryWindowSettingsFontsBox   alloc] initWithFrame:kBoxFrame] autorelease];
+ 
+  [contentView addSubview:_selectorButton];
+  [contentView addSubview:_generalBox];
+  [contentView addSubview:_colorsBox];
+  [contentView addSubview:_fontsBox];
+  
+  XPParameterRaise(_selectorButton);
+  XPParameterRaise(_generalBox);
+  XPParameterRaise(_colorsBox);
+  XPParameterRaise(_fontsBox);
+  
+  [self selectionChanged:_selectorButton];
+  [self setView:contentView];
+}
+
+// MARK: IBActions
+-(IBAction)selectionChanged:(NSPopUpButton*)sender;
+{
+  XPParameterRaise(sender);
+  [_generalBox setHidden:YES];
+  [_colorsBox setHidden:YES];
+  [_fontsBox setHidden:YES];
+  switch ([sender indexOfSelectedItem]) {
+    case 0:
+      [_generalBox setHidden:NO];
+      break;
+    case 1:
+      [_colorsBox setHidden:NO];
+      break;
+    case 2:
+      [_fontsBox setHidden:NO];
+      break;
+    default:
+      XPLogAssrt1(NO, @"[UNKNOWN] %d", (int)[sender indexOfSelectedItem]);
+  }
+}
+
 @end

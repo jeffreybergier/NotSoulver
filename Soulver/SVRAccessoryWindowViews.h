@@ -102,9 +102,15 @@ static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
 
 // MARK: SVRAccessoryWindowSettingsView
 
-@interface SVRAccessoryWindowSettingsView: NSView
-{
-}
+@interface SVRAccessoryWindowSettingsGeneralBox: NSBox
+-(id)initWithFrame:(NSRect)frameRect;
+@end
+
+@interface SVRAccessoryWindowSettingsColorsBox: NSBox
+-(id)initWithFrame:(NSRect)frameRect;
+@end
+
+@interface SVRAccessoryWindowSettingsFontsBox: NSBox
 -(id)initWithFrame:(NSRect)frameRect;
 @end
 

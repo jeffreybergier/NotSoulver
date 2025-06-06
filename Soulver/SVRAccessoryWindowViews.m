@@ -381,11 +381,32 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 
 // MARK: SVRAccessoryWindowSettingsView
 
-@implementation SVRAccessoryWindowSettingsView
+@implementation SVRAccessoryWindowSettingsGeneralBox
 -(id)initWithFrame:(NSRect)frameRect;
 {
   self = [super initWithFrame:frameRect];
   XPParameterRaise(self);
+  [self setTitle:@"General"];
+  return self;
+}
+@end
+
+@implementation SVRAccessoryWindowSettingsColorsBox
+-(id)initWithFrame:(NSRect)frameRect;
+{
+  self = [super initWithFrame:frameRect];
+  XPParameterRaise(self);
+  [self setTitle:@"Colors"];
+  return self;
+}
+@end
+
+@implementation SVRAccessoryWindowSettingsFontsBox
+-(id)initWithFrame:(NSRect)frameRect;
+{
+  self = [super initWithFrame:frameRect];
+  XPParameterRaise(self);
+  [self setTitle:@"Fonts"];
   return self;
 }
 @end
