@@ -90,6 +90,7 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
   } else {
     [self setFloat:(float)newValue forKey:XPUserDefaultsWaitTimeForRendering];
   }
+  [self __postChangeNotification];
   return [self synchronize];
 }
 

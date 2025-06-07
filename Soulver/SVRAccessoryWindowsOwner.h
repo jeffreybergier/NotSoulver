@@ -106,11 +106,16 @@
 // MARK: Init
 -(void)loadView;
 
+// MARK: Initial Load
+-(void)readWaitTime;
+-(void)themeChanged:(NSNotification*)aNotification;
+-(void)readColors;
+
 // MARK: IBActions
 -(IBAction)selectionChanged:(NSPopUpButton*)sender;
--(IBAction)themeChanged:(NSPopUpButton*)sender;
+-(IBAction)writeTheme:(NSPopUpButton*)sender;
 -(IBAction)writeWaitTime:(NSTextField*)sender;
--(IBAction)readWaitTime:(NSTextField*)sender;
+-(IBAction)writeColor:(NSColorWell*)sender;
 -(IBAction)reset:(NSButton*)sender;
 
 @end

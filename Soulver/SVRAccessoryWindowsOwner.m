@@ -423,9 +423,110 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   XPParameterRaise(_colorsBox);
   XPParameterRaise(_fontsBox);
   
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(themeChanged:)
+                                               name:SVRThemeDidChangeNotificationName
+                                             object:nil];
+  
   [self selectionChanged:_selectorButton];
-  [self readWaitTime:[_generalBox timeField]];
+  [self themeChanged:nil];
   [self setView:contentView];
+}
+
+// MARK: Initial Load
+-(void)readWaitTime;
+{
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  NSString *string = [NSString stringWithFormat:@"%g", [ud SVR_waitTimeForRendering]];
+  [[_generalBox timeField] setStringValue:string];
+}
+
+-(void)themeChanged:(NSNotification*)aNotification;
+{
+  [self readWaitTime];
+  [self readColors];
+}
+
+-(void)readColors;
+{
+  NSUserDefaults  *ud = [NSUserDefaults standardUserDefaults];
+  NSColorWell     *well = nil;
+  SVRColorWellKind kind = SVRColorWellKindUnknown;
+  for (kind =SVRColorWellKindOperandLight;
+       kind<=SVRColorWellKindBackgroundDark;
+       kind++)
+  {
+    well = [_colorsBox colorWellOfKind:kind];
+    switch (kind) {
+      case SVRColorWellKindOperandLight:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorOperandText
+                                   withStyle:XPUserInterfaceStyleLight]];
+        break;
+      case SVRColorWellKindOperandDark:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorOperandText
+                                   withStyle:XPUserInterfaceStyleDark]];
+        break;
+      case SVRColorWellKindOperatorLight:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorOperatorText
+                                   withStyle:XPUserInterfaceStyleLight]];
+        break;
+      case SVRColorWellKindOperatorDark:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorOperatorText
+                                   withStyle:XPUserInterfaceStyleDark]];
+        break;
+      case SVRColorWellKindSolutionLight:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorSolution
+                                   withStyle:XPUserInterfaceStyleLight]];
+        break;
+      case SVRColorWellKindSolutionDark:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorSolution
+                                   withStyle:XPUserInterfaceStyleDark]];
+        break;
+      case SVRColorWellKindSolutionSecondaryLight:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorSolutionSecondary
+                                   withStyle:XPUserInterfaceStyleLight]];
+        break;
+      case SVRColorWellKindSolutionSecondaryDark:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorSolutionSecondary
+                                   withStyle:XPUserInterfaceStyleDark]];
+        break;
+      case SVRColorWellKindOtherTextLight:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorOtherText
+                                   withStyle:XPUserInterfaceStyleLight]];
+        break;
+      case SVRColorWellKindOtherTextDark:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorOtherText
+                                   withStyle:XPUserInterfaceStyleDark]];
+        break;
+      case SVRColorWellKindErrorTextLight:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorErrorText
+                                   withStyle:XPUserInterfaceStyleLight]];
+        break;
+      case SVRColorWellKindErrorTextDark:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorErrorText
+                                   withStyle:XPUserInterfaceStyleDark]];
+        break;
+      case SVRColorWellKindInsertionPointLight:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorInsertionPoint
+                                   withStyle:XPUserInterfaceStyleLight]];
+        break;
+      case SVRColorWellKindInsertionPointDark:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorInsertionPoint
+                                   withStyle:XPUserInterfaceStyleDark]];
+        break;
+      case SVRColorWellKindBackgroundLight:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorBackground
+                                   withStyle:XPUserInterfaceStyleLight]];
+        break;
+      case SVRColorWellKindBackgroundDark:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorBackground
+                                   withStyle:XPUserInterfaceStyleDark]];
+        break;
+      default:
+        XPLogAssrt1(NO, @"[UNKNOWN] SVRColorWellKind(%d)", (int)kind);
+        break;
+    }
+  }
 }
 
 // MARK: IBActions
@@ -451,7 +552,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   }
 }
 
--(IBAction)themeChanged:(NSPopUpButton*)sender;
+-(IBAction)writeTheme:(NSPopUpButton*)sender;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   XPUserInterfaceStyle newStyle = [sender indexOfSelectedItem];
@@ -473,19 +574,200 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   XPFloat userTime = [sender floatValue];
   [ud SVR_setWaitTimeForRendering:userTime];
-  [self readWaitTime:sender];
 }
 
--(IBAction)readWaitTime:(NSTextField*)sender;
+-(IBAction)writeColor:(NSColorWell*)sender;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  NSString *string = [NSString stringWithFormat:@"%g", [ud SVR_waitTimeForRendering]];
-  [sender setStringValue:string];
+  SVRColorWellKind kind = SVRColorWellKindUnknown;
+  XPParameterRaise(sender);
+  kind = [sender tag];
+  switch (kind) {
+    case SVRColorWellKindOperandLight:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorOperandText
+             withStyle:XPUserInterfaceStyleLight];
+      break;
+    case SVRColorWellKindOperandDark:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorOperandText
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    case SVRColorWellKindOperatorLight:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorOperatorText
+             withStyle:XPUserInterfaceStyleLight];
+      break;
+    case SVRColorWellKindOperatorDark:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorOperatorText
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    case SVRColorWellKindSolutionLight:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorSolution
+             withStyle:XPUserInterfaceStyleLight];
+      break;
+    case SVRColorWellKindSolutionDark:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorSolution
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    case SVRColorWellKindSolutionSecondaryLight:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorSolutionSecondary
+             withStyle:XPUserInterfaceStyleLight];
+      break;
+    case SVRColorWellKindSolutionSecondaryDark:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorSolutionSecondary
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    case SVRColorWellKindOtherTextLight:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorOtherText
+             withStyle:XPUserInterfaceStyleLight];
+      break;
+    case SVRColorWellKindOtherTextDark:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorOtherText
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    case SVRColorWellKindErrorTextLight:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorErrorText
+             withStyle:XPUserInterfaceStyleLight];
+      break;
+    case SVRColorWellKindErrorTextDark:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorErrorText
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    case SVRColorWellKindInsertionPointLight:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorInsertionPoint
+             withStyle:XPUserInterfaceStyleLight];
+      break;
+    case SVRColorWellKindInsertionPointDark:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorInsertionPoint
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    case SVRColorWellKindBackgroundLight:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorBackground
+             withStyle:XPUserInterfaceStyleLight];
+      break;
+    case SVRColorWellKindBackgroundDark:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorBackground
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    default:
+      XPLogAssrt1(NO, @"[UNKNOWN] SVRColorWellKind(%d)", (int)kind);
+      break;
+  }
 }
 
 -(IBAction)reset:(NSButton*)sender;
 {
-  NSLog(@"// TODO: Figure out which reset button this is");
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  SVRResetButtonKind kind = -1;
+  XPParameterRaise(sender);
+  kind = [sender tag];
+  switch (kind) {
+    case SVRResetButtonKindWaitTime:
+      [ud SVR_setWaitTimeForRendering:-1];
+      break;
+    case SVRResetButtonKindMathFont:
+      [ud SVR_setFont:nil forTheme:SVRThemeFontMath];
+      break;
+    case SVRResetButtonKindOtherFont:
+      [ud SVR_setFont:nil forTheme:SVRThemeFontOther];
+      break;
+    case SVRResetButtonKindErrorFont:
+      [ud SVR_setFont:nil forTheme:SVRThemeFontError];
+      break;
+    case SVRResetButtonKindOperandColor:
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorOperandText
+             withStyle:XPUserInterfaceStyleLight];
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorOperandText
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    case SVRResetButtonKindOperatorColor:
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorOperatorText
+             withStyle:XPUserInterfaceStyleLight];
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorOperatorText
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    case SVRResetButtonKindSolutionColor:
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorSolution
+             withStyle:XPUserInterfaceStyleLight];
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorSolution
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    case SVRResetButtonKindPreviousSolutionColor:
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorSolutionSecondary
+             withStyle:XPUserInterfaceStyleLight];
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorSolutionSecondary
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    case SVRResetButtonKindOtherTextColor:
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorOtherText
+             withStyle:XPUserInterfaceStyleLight];
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorOtherText
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    case SVRResetButtonKindErrorTextColor:
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorErrorText
+             withStyle:XPUserInterfaceStyleLight];
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorErrorText
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    case SVRResetButtonKindInsertionPointColor:
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorInsertionPoint
+             withStyle:XPUserInterfaceStyleLight];
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorInsertionPoint
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    case SVRResetButtonKindBackgroundColor:
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorBackground
+             withStyle:XPUserInterfaceStyleLight];
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorBackground
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    default:
+      XPLogAssrt1(NO, @"[UNKNOWN] SVRResetButtonKind(%d)", (int)kind);
+      break;
+  }
+}
+
+-(void)dealloc;
+{
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [_view_42 release];
+  _view_42    = nil;
+  _fontsBox   = nil;
+  _colorsBox  = nil;
+  _generalBox = nil;
+  _selectorButton = nil;
+  [super dealloc];
 }
 
 @end

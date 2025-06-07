@@ -30,7 +30,43 @@
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
 
-// MARK: SVRAccessoryWindowKeypadView
+// MARK: View Enumerations
+
+typedef XP_ENUM(XPInteger, SVRColorWellKind) {
+  SVRColorWellKindUnknown,
+  SVRColorWellKindOperandLight,
+  SVRColorWellKindOperandDark,
+  SVRColorWellKindOperatorLight,
+  SVRColorWellKindOperatorDark,
+  SVRColorWellKindSolutionLight,
+  SVRColorWellKindSolutionDark,
+  SVRColorWellKindSolutionSecondaryLight,
+  SVRColorWellKindSolutionSecondaryDark,
+  SVRColorWellKindOtherTextLight,
+  SVRColorWellKindOtherTextDark,
+  SVRColorWellKindErrorTextLight,
+  SVRColorWellKindErrorTextDark,
+  SVRColorWellKindInsertionPointLight,
+  SVRColorWellKindInsertionPointDark,
+  SVRColorWellKindBackgroundLight,
+  SVRColorWellKindBackgroundDark,
+};
+
+typedef XP_ENUM(XPInteger, SVRResetButtonKind) {
+  SVRResetButtonKindUnknown,
+  SVRResetButtonKindWaitTime,
+  SVRResetButtonKindMathFont,
+  SVRResetButtonKindOtherFont,
+  SVRResetButtonKindErrorFont,
+  SVRResetButtonKindOperandColor,
+  SVRResetButtonKindOperatorColor,
+  SVRResetButtonKindSolutionColor,
+  SVRResetButtonKindPreviousSolutionColor,
+  SVRResetButtonKindOtherTextColor,
+  SVRResetButtonKindErrorTextColor,
+  SVRResetButtonKindInsertionPointColor,
+  SVRResetButtonKindBackgroundColor
+};
 
 typedef XP_ENUM(XPInteger, SVRKeypadButtonKind) {
   SVRKeypadButtonKindUnknown,
@@ -75,6 +111,8 @@ static const XPFloat SVRAccessoryWindowKeypadWindowButtonHPadding = 4;
 static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
 #endif
 
+// MARK: SVRAccessoryWindowKeypadView
+
 @interface SVRAccessoryWindowKeypadView: NSView
 {
   mm_unretain NSButton *_equalButton;
@@ -114,7 +152,13 @@ static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
 @end
 
 @interface SVRAccessoryWindowsSettingsColorsBox: NSBox
+{
+  mm_new NSMutableDictionary *_colorWells;
+}
 -(id)initWithFrame:(NSRect)frameRect;
+-(NSColorWell*)colorWellOfKind:(SVRColorWellKind)kind;
+-(void)setColorWell:(NSColorWell*)colorWell
+            forKind:(SVRColorWellKind)kind;
 @end
 
 @interface SVRAccessoryWindowsSettingsFontsBox: NSBox
@@ -129,7 +173,10 @@ static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
 @interface NSControl (SVRAccessoryWindows)
 +(NSButton*)SVR_keypadButtonOfKind:(SVRKeypadButtonKind)kind;
 +(NSTextField*)SVR_labelWithFrame:(NSRect)frame;
-+(NSButton*)SVR_resetButtonWithFrame:(NSRect)frame tag:(XPInteger)tag;
++(NSButton*)SVR_resetButtonWithFrame:(NSRect)frame
+                                kind:(SVRResetButtonKind)kind;
++(NSColorWell*)SVR_colorWellWithFrame:(NSRect)frame
+                                 kind:(SVRColorWellKind)kind;
 -(id)SVR_sizeToFitVertically;
 -(id)SVR_setObjectValue:(id)objectValue
                    font:(NSFont*)font
@@ -148,3 +195,6 @@ static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
                            imageNamed:(NSString*)imageName;
 -(NSImageView*)SVR_setImageFrameStyle:(NSImageFrameStyle)imageFrameStyle;
 @end
+
+NSString *SVR_stringForLabelForKind(SVRResetButtonKind kind);
+SVRResetButtonKind SVR_resetButtonKindForColorWellKind(SVRColorWellKind kind);

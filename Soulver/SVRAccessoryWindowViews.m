@@ -391,6 +391,7 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   
   self = [super initWithFrame:frameRect];
   XPParameterRaise(self);
+  
   [self setTitle:@"General"];
   [self setTitlePosition:NSNoTitle];
   
@@ -399,7 +400,7 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   [_selectorButton addItemWithTitle:@"Light"];
   [_selectorButton addItemWithTitle:@"Dark"];
   [_selectorButton SVR_sizeToFitVertically];
-  [_selectorButton setAction:@selector(themeChanged:)];
+  [_selectorButton setAction:NSSelectorFromString(@"writeTheme:")];
   [self addSubview:_selectorButton];
   
   _fieldTime = [[[NSTextField alloc] initWithFrame:fieldRect] autorelease];
@@ -408,7 +409,8 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   [_fieldTime setAction:@selector(__HACK_writeWaitTime:)];
   [[_fieldTime cell] setSendsActionOnEndEditing:YES];
   [self addSubview:_fieldTime];
-  [self addSubview:[NSButton SVR_resetButtonWithFrame:resetRect tag:0]];
+  [self addSubview:[NSButton SVR_resetButtonWithFrame:resetRect
+                                                 kind:SVRResetButtonKindWaitTime]];
   
   [self addSubview:[[[NSTextField SVR_labelWithFrame:labelRect]
                                   SVR_setObjectValue:@"Theme"
@@ -450,7 +452,7 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   // So first I make it the first responder so the
   // responder chain works properly.
   [sender becomeFirstResponder];
-  [[NSApplication sharedApplication] sendAction:@selector(writeWaitTime:)
+  [[NSApplication sharedApplication] sendAction:NSSelectorFromString(@"writeWaitTime:")
                                              to:nil
                                            from:sender];
 }
@@ -458,13 +460,89 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 @end
 
 @implementation SVRAccessoryWindowsSettingsColorsBox
+
 -(id)initWithFrame:(NSRect)frameRect;
 {
+  XPFloat kVPad = 32;
+  XPFloat kYOrigin = 226;
+  NSRect labelRect = NSMakeRect(8,   kYOrigin+4, 120, 0);
+  NSRect lightRect = NSMakeRect(132, kYOrigin,   50, 30);
+  NSRect darkkRect = NSMakeRect(184, kYOrigin,   50, 30);
+  NSRect resetRect = NSMakeRect(236, kYOrigin,   48, 30);
+  SVRColorWellKind colorKind = SVRColorWellKindUnknown;
+  SVRResetButtonKind resetKind = SVRResetButtonKindUnknown;
+  NSColorWell *colorWell = nil;
+  
   self = [super initWithFrame:frameRect];
   XPParameterRaise(self);
+  _colorWells = [NSMutableDictionary new];
+  
   [self setTitle:@"Colors"];
+  [self setTitlePosition:NSNoTitle];
+  
+  for (colorKind =SVRColorWellKindOperandLight;
+       colorKind<=SVRColorWellKindBackgroundDark;
+       colorKind++)
+  {
+    resetKind = SVR_resetButtonKindForColorWellKind(colorKind);
+    if (colorKind % 2) {
+      [self addSubview:[[[NSTextField SVR_labelWithFrame:labelRect]
+                                      SVR_setObjectValue:SVR_stringForLabelForKind(resetKind)
+                                                    font:nil
+                                               alignment:XPTextAlignmentRight]
+                                 SVR_sizeToFitVertically]];
+      colorWell = [NSColorWell SVR_colorWellWithFrame:lightRect kind:colorKind];
+      [self addSubview:colorWell];
+      labelRect.origin.y -= kVPad;
+      lightRect.origin.y -= kVPad;
+    } else {
+      [self addSubview:[NSButton SVR_resetButtonWithFrame:resetRect kind:resetKind]];
+      colorWell = [NSColorWell SVR_colorWellWithFrame:darkkRect kind:colorKind];
+      [self addSubview:colorWell];
+      darkkRect.origin.y -= kVPad;
+      resetRect.origin.y -= kVPad;
+    }
+    XPParameterRaise(colorWell);
+    [self setColorWell:colorWell forKind:colorKind];
+  }
+  
+  lightRect.origin.y = kYOrigin + kVPad;
+  darkkRect.origin.y = kYOrigin + kVPad;
+  
+  [self addSubview:[[[NSTextField SVR_labelWithFrame:lightRect]
+                                  SVR_setObjectValue:@"Light"
+                                                font:[NSFont systemFontOfSize:10]
+                                           alignment:XPTextAlignmentCenter]
+                             SVR_sizeToFitVertically]];
+  [self addSubview:[[[NSTextField SVR_labelWithFrame:darkkRect]
+                                  SVR_setObjectValue:@"Dark"
+                                                font:[NSFont systemFontOfSize:10]
+                                           alignment:XPTextAlignmentCenter]
+                             SVR_sizeToFitVertically]];
+  
   return self;
 }
+
+-(NSColorWell*)colorWellOfKind:(SVRColorWellKind)kind;
+{
+  NSColorWell *colorWell = [_colorWells objectForKey:[NSNumber XP_numberWithInteger:kind]];
+  XPParameterRaise(colorWell);
+  return colorWell;
+}
+-(void)setColorWell:(NSColorWell*)colorWell
+            forKind:(SVRColorWellKind)kind;
+{
+  XPParameterRaise(colorWell);
+  [_colorWells setObject:colorWell forKey:[NSNumber XP_numberWithInteger:kind]];
+}
+
+-(void)dealloc;
+{
+  [_colorWells release];
+  _colorWells = nil;
+  [super dealloc];
+}
+
 @end
 
 @implementation SVRAccessoryWindowsSettingsFontsBox
@@ -503,15 +581,25 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   return label;
 }
 
-+(NSButton*)SVR_resetButtonWithFrame:(NSRect)frame tag:(XPInteger)tag;
++(NSButton*)SVR_resetButtonWithFrame:(NSRect)frame
+                                kind:(SVRResetButtonKind)kind;
 {
   NSButton *button = [[[NSButton alloc] initWithFrame:frame] autorelease];
   XPParameterRaise(button);
   [button setTitle:@"Reset"];
-  [button setTag:tag];
-  [button setAction:@selector(reset:)];
+  [button setTag:kind];
+  [button setAction:NSSelectorFromString(@"reset:")];
   [button XP_setBezelStyle:XPBezelStyleShadowlessSquare];
   return button;
+}
+
++(NSColorWell*)SVR_colorWellWithFrame:(NSRect)frame
+                                 kind:(SVRColorWellKind)kind;
+{
+  NSColorWell *well = [[[NSColorWell alloc] initWithFrame:frame] autorelease];
+  [well setTag:kind];
+  [well setAction:NSSelectorFromString(@"writeColor:")];
+  return well;
 }
 
 -(id)SVR_sizeToFitVertically;
@@ -591,3 +679,69 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 }
 
 @end
+
+NSString *SVR_stringForLabelForKind(SVRResetButtonKind kind)
+{
+  switch (kind) {
+    case SVRResetButtonKindWaitTime:
+      return @"Solving Delay";
+    case SVRResetButtonKindMathFont:
+      return @"Math Text";
+    case SVRResetButtonKindOtherFont:
+      return @"Normal Text";
+    case SVRResetButtonKindErrorFont:
+      return @"Error Text";
+    case SVRResetButtonKindOperandColor:
+      return @"Operand";
+    case SVRResetButtonKindOperatorColor:
+      return @"Operator";
+    case SVRResetButtonKindSolutionColor:
+      return @"Solution";
+    case SVRResetButtonKindPreviousSolutionColor:
+      return @"Carryover";
+    case SVRResetButtonKindOtherTextColor:
+      return @"Normal Text";
+    case SVRResetButtonKindErrorTextColor:
+      return @"Error Text";
+    case SVRResetButtonKindInsertionPointColor:
+      return @"Insertion Point";
+    case SVRResetButtonKindBackgroundColor:
+      return @"Background";
+    default:
+      XPCLogAssrt1(NO, @"[UNKNOWN] SVRResetButtonKind(%d)", (int)kind);
+      return @"Unknown";
+  }
+}
+
+SVRResetButtonKind SVR_resetButtonKindForColorWellKind(SVRColorWellKind kind)
+{
+  switch (kind) {
+    case SVRColorWellKindOperandLight:
+    case SVRColorWellKindOperandDark:
+      return SVRResetButtonKindOperandColor;
+    case SVRColorWellKindOperatorLight:
+    case SVRColorWellKindOperatorDark:
+      return SVRResetButtonKindOperatorColor;
+    case SVRColorWellKindSolutionLight:
+    case SVRColorWellKindSolutionDark:
+      return SVRResetButtonKindSolutionColor;
+    case SVRColorWellKindSolutionSecondaryLight:
+    case SVRColorWellKindSolutionSecondaryDark:
+      return SVRResetButtonKindPreviousSolutionColor;
+    case SVRColorWellKindOtherTextLight:
+    case SVRColorWellKindOtherTextDark:
+      return SVRResetButtonKindOtherTextColor;
+    case SVRColorWellKindErrorTextLight:
+    case SVRColorWellKindErrorTextDark:
+      return SVRResetButtonKindErrorTextColor;
+    case SVRColorWellKindInsertionPointLight:
+    case SVRColorWellKindInsertionPointDark:
+      return SVRResetButtonKindInsertionPointColor;
+    case SVRColorWellKindBackgroundLight:
+    case SVRColorWellKindBackgroundDark:
+      return SVRResetButtonKindBackgroundColor;
+    default:
+      XPCLogAssrt1(NO, @"[UNKNOWN] SVRColorWellKind(%d)", (int)kind);
+      return SVRResetButtonKindUnknown;
+  }
+}
