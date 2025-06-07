@@ -102,21 +102,35 @@ static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
 
 // MARK: SVRAccessoryWindowSettingsView
 
-@interface SVRAccessoryWindowSettingsGeneralBox: NSBox
+@interface SVRAccessoryWindowsSettingsGeneralBox: NSBox
+{
+  mm_unretain NSPopUpButton *_selectorButton;
+  mm_unretain NSTextField *_fieldTime;
+}
+-(id)initWithFrame:(NSRect)frameRect;
+-(NSPopUpButton*)themeSelector;
+-(NSTextField*)timeField;
+-(IBAction)__HACK_writeWaitTime:(NSTextField*)sender;
+@end
+
+@interface SVRAccessoryWindowsSettingsColorsBox: NSBox
 -(id)initWithFrame:(NSRect)frameRect;
 @end
 
-@interface SVRAccessoryWindowSettingsColorsBox: NSBox
--(id)initWithFrame:(NSRect)frameRect;
-@end
-
-@interface SVRAccessoryWindowSettingsFontsBox: NSBox
+@interface SVRAccessoryWindowsSettingsFontsBox: NSBox
+{
+  mm_unretain NSTextField *_fieldTextMath;
+  mm_unretain NSTextField *_fieldTextOther;
+  mm_unretain NSTextField *_fieldTextError;
+}
 -(id)initWithFrame:(NSRect)frameRect;
 @end
 
 @interface NSControl (SVRAccessoryWindows)
 +(NSButton*)SVR_keypadButtonOfKind:(SVRKeypadButtonKind)kind;
 +(NSTextField*)SVR_labelWithFrame:(NSRect)frame;
++(NSButton*)SVR_resetButtonWithFrame:(NSRect)frame tag:(XPInteger)tag;
+-(id)SVR_sizeToFitVertically;
 -(id)SVR_setObjectValue:(id)objectValue
                    font:(NSFont*)font
               alignment:(NSTextAlignment)alignment;

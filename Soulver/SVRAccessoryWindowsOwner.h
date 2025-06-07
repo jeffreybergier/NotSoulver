@@ -30,6 +30,7 @@
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
 #import "NSUserDefaults+Soulver.h"
+#import "SVRAccessoryWindowViews.h"
 
 @class SVRAccessoryWindowsSettingsViewController;
 
@@ -96,9 +97,9 @@
 @interface SVRAccessoryWindowsSettingsViewController: XPViewController
 {
   mm_new      NSView *_view_42; // Used only in OpenStep
-  mm_unretain NSBox  *_generalBox;
-  mm_unretain NSBox  *_colorsBox;
-  mm_unretain NSBox  *_fontsBox;
+  mm_unretain SVRAccessoryWindowsSettingsGeneralBox *_generalBox;
+  mm_unretain SVRAccessoryWindowsSettingsColorsBox  *_colorsBox;
+  mm_unretain SVRAccessoryWindowsSettingsFontsBox   *_fontsBox;
   mm_unretain NSPopUpButton *_selectorButton;
 }
 
@@ -107,6 +108,10 @@
 
 // MARK: IBActions
 -(IBAction)selectionChanged:(NSPopUpButton*)sender;
+-(IBAction)themeChanged:(NSPopUpButton*)sender;
+-(IBAction)writeWaitTime:(NSTextField*)sender;
+-(IBAction)readWaitTime:(NSTextField*)sender;
+-(IBAction)reset:(NSButton*)sender;
 
 @end
 

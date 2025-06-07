@@ -272,7 +272,7 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   [self addSubview:[[NSTextField SVR_labelWithFrame:kDedicationTextFrame]
                                  SVR_setObjectValue:@"This application is dedicated to my grandmother | 1932-2024"
                                                font:[NSFont systemFontOfSize:10]
-                                          alignment:XPTextAlignmentNatural]];
+                                          alignment:XPTextAlignmentLeft]];
   
   // View Source Button
   _viewSourceButton = [[[self class] __viewSourceButtonWithFrame:kViewSourceButtonFrame
@@ -381,17 +381,83 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 
 // MARK: SVRAccessoryWindowSettingsView
 
-@implementation SVRAccessoryWindowSettingsGeneralBox
+@implementation SVRAccessoryWindowsSettingsGeneralBox
 -(id)initWithFrame:(NSRect)frameRect;
 {
+  NSRect labelRect = NSMakeRect(8, 250, 117, 0);
+  NSRect popupRect = NSMakeRect(126, 248, 162, 0);
+  NSRect fieldRect = NSMakeRect(128,     222, 156-54,  22);
+  NSRect resetRect = NSMakeRect(128+104, 222, 156-104, 22);
+  
   self = [super initWithFrame:frameRect];
   XPParameterRaise(self);
   [self setTitle:@"General"];
+  [self setTitlePosition:NSNoTitle];
+  
+  _selectorButton = [[[NSPopUpButton alloc] initWithFrame:popupRect pullsDown:NO] autorelease];
+  [_selectorButton addItemWithTitle:@"Automatic"];
+  [_selectorButton addItemWithTitle:@"Light"];
+  [_selectorButton addItemWithTitle:@"Dark"];
+  [_selectorButton SVR_sizeToFitVertically];
+  [_selectorButton setAction:@selector(themeChanged:)];
+  [self addSubview:_selectorButton];
+  
+  _fieldTime = [[[NSTextField alloc] initWithFrame:fieldRect] autorelease];
+  [_fieldTime setPlaceholderString:@"Seconds Delay Before Solving"];
+  [_fieldTime setTarget:self];
+  [_fieldTime setAction:@selector(__HACK_writeWaitTime:)];
+  [[_fieldTime cell] setSendsActionOnEndEditing:YES];
+  [self addSubview:_fieldTime];
+  [self addSubview:[NSButton SVR_resetButtonWithFrame:resetRect tag:0]];
+  
+  [self addSubview:[[[NSTextField SVR_labelWithFrame:labelRect]
+                                  SVR_setObjectValue:@"Theme"
+                                                font:nil
+                                           alignment:XPTextAlignmentRight]
+                             SVR_sizeToFitVertically]];
+  labelRect.origin.y = resetRect.origin.y;
+  [self addSubview:[[[NSTextField SVR_labelWithFrame:labelRect]
+                                  SVR_setObjectValue:@"Solving Delay"
+                                                font:nil
+                                           alignment:XPTextAlignmentRight]
+                             SVR_sizeToFitVertically]];
+  
+  XPParameterRaise(_selectorButton);
+  XPParameterRaise(_fieldTime);
+  
   return self;
 }
+
+-(NSPopUpButton*)themeSelector;
+{
+  return [[_selectorButton retain] autorelease];
+}
+
+-(NSTextField*)timeField;
+{
+  return [[_fieldTime retain] autorelease];
+}
+
+-(IBAction)__HACK_writeWaitTime:(NSTextField*)sender;
+{
+  // TODO: Remove this hack
+  // For some reason NSTextField does not send its action
+  // into the responder chain. It will only send it if its
+  // target is set. So I set it to self and fire it
+  // manually into the responder chain.
+  // Also, for some reason, even though the user is typing
+  // in the text field, its not the first responder.
+  // So first I make it the first responder so the
+  // responder chain works properly.
+  [sender becomeFirstResponder];
+  [[NSApplication sharedApplication] sendAction:@selector(writeWaitTime:)
+                                             to:nil
+                                           from:sender];
+}
+
 @end
 
-@implementation SVRAccessoryWindowSettingsColorsBox
+@implementation SVRAccessoryWindowsSettingsColorsBox
 -(id)initWithFrame:(NSRect)frameRect;
 {
   self = [super initWithFrame:frameRect];
@@ -401,7 +467,7 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 }
 @end
 
-@implementation SVRAccessoryWindowSettingsFontsBox
+@implementation SVRAccessoryWindowsSettingsFontsBox
 -(id)initWithFrame:(NSRect)frameRect;
 {
   self = [super initWithFrame:frameRect];
@@ -435,6 +501,28 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   [label setEditable:NO];
   [label setSelectable:NO];
   return label;
+}
+
++(NSButton*)SVR_resetButtonWithFrame:(NSRect)frame tag:(XPInteger)tag;
+{
+  NSButton *button = [[[NSButton alloc] initWithFrame:frame] autorelease];
+  XPParameterRaise(button);
+  [button setTitle:@"Reset"];
+  [button setTag:tag];
+  [button setAction:@selector(reset:)];
+  [button XP_setBezelStyle:XPBezelStyleShadowlessSquare];
+  return button;
+}
+
+-(id)SVR_sizeToFitVertically;
+{
+  NSRect original = [self frame];
+  NSRect new = NSZeroRect;
+  [self sizeToFit];
+  new = [self frame];
+  new.size.width = original.size.width;
+  [self setFrame:new];
+  return self;
 }
 
 -(id)SVR_setObjectValue:(id)objectValue
@@ -503,4 +591,3 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 }
 
 @end
-

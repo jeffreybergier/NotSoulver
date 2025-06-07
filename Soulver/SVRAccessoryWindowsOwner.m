@@ -28,7 +28,6 @@
 //
 
 #import "SVRAccessoryWindowsOwner.h"
-#import "SVRAccessoryWindowViews.h"
 
 NSString * const SVRAccessoryWindowFrameAutosaveNameSettings = @"kSVRAccessoryWindowFrameAutosaveNameSettings";
 NSString * const SVRAccessoryWindowFrameAutosaveNameAbout    = @"kSVRAccessoryWindowFrameAutosaveNameAbout";
@@ -400,7 +399,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   NSRect kBoxFrame = NSMakeRect(kWindowPadding,
                                 kWindowPadding,
                                 kContentFrame.size.width-kWindowPadding*2,
-                                kContentFrame.size.height-kSelectorFrame.size.height-kWindowPadding);
+                                kContentFrame.size.height-kSelectorFrame.size.height-kWindowPadding*2.5);
   
   NSView *contentView = [[[NSView alloc] initWithFrame:kContentFrame] autorelease];
   
@@ -410,9 +409,9 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   [_selectorButton addItemWithTitle:@"Fonts"];
   [_selectorButton setAction:@selector(selectionChanged:)];
   
-  _generalBox = [[[SVRAccessoryWindowSettingsGeneralBox alloc] initWithFrame:kBoxFrame] autorelease];
-  _colorsBox  = [[[SVRAccessoryWindowSettingsColorsBox  alloc] initWithFrame:kBoxFrame] autorelease];
-  _fontsBox   = [[[SVRAccessoryWindowSettingsFontsBox   alloc] initWithFrame:kBoxFrame] autorelease];
+  _generalBox = [[[SVRAccessoryWindowsSettingsGeneralBox alloc] initWithFrame:kBoxFrame] autorelease];
+  _colorsBox  = [[[SVRAccessoryWindowsSettingsColorsBox  alloc] initWithFrame:kBoxFrame] autorelease];
+  _fontsBox   = [[[SVRAccessoryWindowsSettingsFontsBox   alloc] initWithFrame:kBoxFrame] autorelease];
  
   [contentView addSubview:_selectorButton];
   [contentView addSubview:_generalBox];
@@ -425,10 +424,12 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   XPParameterRaise(_fontsBox);
   
   [self selectionChanged:_selectorButton];
+  [self readWaitTime:[_generalBox timeField]];
   [self setView:contentView];
 }
 
 // MARK: IBActions
+
 -(IBAction)selectionChanged:(NSPopUpButton*)sender;
 {
   XPParameterRaise(sender);
@@ -448,6 +449,43 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
     default:
       XPLogAssrt1(NO, @"[UNKNOWN] %d", (int)[sender indexOfSelectedItem]);
   }
+}
+
+-(IBAction)themeChanged:(NSPopUpButton*)sender;
+{
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  XPUserInterfaceStyle newStyle = [sender indexOfSelectedItem];
+  switch (newStyle) {
+    case XPUserInterfaceStyleUnspecified:
+    case XPUserInterfaceStyleLight:
+    case XPUserInterfaceStyleDark:
+      [ud SVR_setUserInterfaceStyleSetting:newStyle];
+      break;
+    default:
+      XPLogAssrt1(NO, @"XPUserInterfaceStyle(%d)", (int)newStyle);
+      break;
+  }
+  XPLogDebug(@"[SUCCESS]");
+}
+
+-(IBAction)writeWaitTime:(NSTextField*)sender;
+{
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  XPFloat userTime = [sender floatValue];
+  [ud SVR_setWaitTimeForRendering:userTime];
+  [self readWaitTime:sender];
+}
+
+-(IBAction)readWaitTime:(NSTextField*)sender;
+{
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  NSString *string = [NSString stringWithFormat:@"%g", [ud SVR_waitTimeForRendering]];
+  [sender setStringValue:string];
+}
+
+-(IBAction)reset:(NSButton*)sender;
+{
+  NSLog(@"// TODO: Figure out which reset button this is");
 }
 
 @end
