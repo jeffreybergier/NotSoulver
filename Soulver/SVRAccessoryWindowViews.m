@@ -384,10 +384,19 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 @implementation SVRAccessoryWindowsSettingsGeneralBox
 -(id)initWithFrame:(NSRect)frameRect;
 {
-  NSRect labelRect = NSMakeRect(8, 250, 117, 0);
-  NSRect popupRect = NSMakeRect(126, 248, 162, 0);
-  NSRect fieldRect = NSMakeRect(128,     222, 156-54,  22);
-  NSRect resetRect = NSMakeRect(128+104, 222, 156-104, 22);
+  XPFloat kResetWidth = 52;
+  XPFloat kLabelWidth = 116;
+  XPFloat kPopupWidth = 162;
+  XPFloat kXOriginLHS = 8;
+  XPFloat kXOriginRHS = 126;
+  XPFloat kYOriginOne = 248;
+  XPFloat kYOriginTwo = 222;
+  XPFloat kHeight = 22;
+  XPFloat HACK = 2;
+  NSRect labelRect = NSMakeRect(kXOriginLHS,      kYOriginOne+HACK, kLabelWidth, kHeight);
+  NSRect popupRect = NSMakeRect(kXOriginRHS,      kYOriginOne,      kPopupWidth, kHeight);
+  NSRect fieldRect = NSMakeRect(kXOriginRHS+HACK, kYOriginTwo,      kPopupWidth-kResetWidth-HACK-2, kHeight);
+  NSRect resetRect = NSMakeRect(kXOriginRHS+kPopupWidth-kResetWidth, kYOriginTwo, kResetWidth-HACK, kHeight);
   
   self = [super initWithFrame:frameRect];
   XPParameterRaise(self);
@@ -404,7 +413,6 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   [self addSubview:_selectorButton];
   
   _fieldTime = [[[NSTextField alloc] initWithFrame:fieldRect] autorelease];
-  [_fieldTime setPlaceholderString:@"Seconds Delay Before Solving"];
   [_fieldTime setTarget:self];
   [_fieldTime setAction:@selector(__HACK_writeWaitTime:)];
   [[_fieldTime cell] setSendsActionOnEndEditing:YES];
@@ -417,7 +425,7 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
                                                 font:nil
                                            alignment:XPTextAlignmentRight]
                              SVR_sizeToFitVertically]];
-  labelRect.origin.y = resetRect.origin.y;
+  labelRect.origin.y = resetRect.origin.y + HACK;
   [self addSubview:[[[NSTextField SVR_labelWithFrame:labelRect]
                                   SVR_setObjectValue:@"Solving Delay"
                                                 font:nil
@@ -623,9 +631,7 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   if (font) {
     [self setFont:font];
   }
-  if (alignment >= 0) {
-    [self setAlignment:alignment];
-  }
+  [self setAlignment:alignment];
   return self;
 }
 

@@ -205,7 +205,13 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   [window setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameSettings];
   [window XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameSettings];
   [window XP_setRestorationClass:appDelegateClass];
-  //[window setInitialFirstResponder:[[window contentView] viewSourceButton]];
+  
+  // Configure Views/Responder Chains
+  // In older systems the view controller is not automatically
+  // added to the responder chain. This checks for that and adds it
+  if (![window respondsToSelector:@selector(setContentViewController:)]) {
+    [window setNextResponder:_settingsViewController];
+  }
   
   XPParameterRaise(_keypadPanel);
   XPParameterRaise(_aboutWindow);
