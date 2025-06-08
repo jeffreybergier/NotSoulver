@@ -414,16 +414,13 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   [_selectorButton addItemWithTitle:@"Colors"];
   [_selectorButton addItemWithTitle:@"Fonts"];
   [_selectorButton setAction:@selector(selectionChanged:)];
-  
-  _generalBox = [[[SVRAccessoryWindowsSettingsGeneralBox alloc] initWithFrame:kBoxFrame] autorelease];
-  _colorsBox  = [[[SVRAccessoryWindowsSettingsColorsBox  alloc] initWithFrame:kBoxFrame] autorelease];
-  _fontsBox   = [[[SVRAccessoryWindowsSettingsFontsBox   alloc] initWithFrame:kBoxFrame] autorelease];
- 
   [contentView addSubview:_selectorButton];
-  [contentView addSubview:_generalBox];
-  [contentView addSubview:_colorsBox];
-  [contentView addSubview:_fontsBox];
   
+  _generalBox = [[SVRAccessoryWindowsSettingsGeneralBox alloc] initWithFrame:kBoxFrame];
+  _colorsBox  = [[SVRAccessoryWindowsSettingsColorsBox  alloc] initWithFrame:kBoxFrame];
+  _fontsBox   = [[SVRAccessoryWindowsSettingsFontsBox   alloc] initWithFrame:kBoxFrame];
+  // These get added to the view in -selectionChanged:
+   
   XPParameterRaise(_selectorButton);
   XPParameterRaise(_generalBox);
   XPParameterRaise(_colorsBox);
@@ -434,9 +431,9 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
                                                name:SVRThemeDidChangeNotificationName
                                              object:nil];
   
-  [self selectionChanged:_selectorButton];
-  [self themeChanged:nil];
   [self setView:contentView];
+  [self themeChanged:nil];
+  [self selectionChanged:_selectorButton];
 }
 
 // MARK: Initial Load
@@ -539,19 +536,20 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 
 -(IBAction)selectionChanged:(NSPopUpButton*)sender;
 {
+  NSView *myView = [self view];
   XPParameterRaise(sender);
-  [_generalBox setHidden:YES];
-  [_colorsBox setHidden:YES];
-  [_fontsBox setHidden:YES];
+  [_generalBox removeFromSuperview];
+  [_colorsBox  removeFromSuperview];
+  [_fontsBox   removeFromSuperview];
   switch ([sender indexOfSelectedItem]) {
     case 0:
-      [_generalBox setHidden:NO];
+      [myView addSubview:_generalBox];
       break;
     case 1:
-      [_colorsBox setHidden:NO];
+      [myView addSubview:_colorsBox];
       break;
     case 2:
-      [_fontsBox setHidden:NO];
+      [myView addSubview:_fontsBox];
       break;
     default:
       XPLogAssrt1(NO, @"[UNKNOWN] %d", (int)[sender indexOfSelectedItem]);
@@ -767,7 +765,10 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 -(void)dealloc;
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-  [_view_42 release];
+  [_view_42    release];
+  [_fontsBox   release];
+  [_colorsBox  release];
+  [_generalBox release];
   _view_42    = nil;
   _fontsBox   = nil;
   _colorsBox  = nil;
@@ -777,3 +778,23 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 }
 
 @end
+
+#ifndef XPSupportsNSViewController
+@implementation SVRAccessoryWindowsSettingsViewController (CrossPlatform)
+-(NSView*)view;
+{
+  if (!_view_42) {
+    [self loadView];
+    XPParameterRaise(_view_42);
+  }
+  return [[_view_42 retain] autorelease];
+}
+
+-(void)setView:(NSView*)view;
+{
+  XPParameterRaise(view);
+  [_view_42 release];
+  _view_42 = [view retain];
+}
+@end
+#endif

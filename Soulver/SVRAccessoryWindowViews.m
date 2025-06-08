@@ -586,7 +586,9 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
                                SVR_sizeToFitVertically]];
     
     // TextField
-    textField = [NSTextField SVR_textFieldWithFrame:fieldRect target:nil action:nil];
+    textField = [NSTextField SVR_textFieldWithFrame:fieldRect
+                                             target:nil
+                                             action:NULL];
     [self setTextField:textField forKind:fontKind];
     [self addSubview:textField];
     
@@ -686,12 +688,17 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
                                action:(SEL)action;
 {
   NSTextField *textField = [[[NSTextField alloc] initWithFrame:frame] autorelease];
+  BOOL isEditable = target != nil || action != NULL;
+  
+  [textField setEditable:isEditable];
   if (target) {
     [textField setTarget:target];
+  }
+  if (action != NULL) {
     [textField setAction:action];
   }
-  [textField setEditable:target != nil];
-  [[textField cell] setSendsActionOnEndEditing:YES];
+  [[textField cell] XP_setSendsActionOnEndEditing:YES];
+  
   return textField;
 }
 
@@ -769,6 +776,15 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   return self;
 }
 
+@end
+
+@implementation NSCell (CrossPlatform)
+-(void)XP_setSendsActionOnEndEditing:(BOOL)sendsAction;
+{
+#ifdef XPSupportsButtonStyles
+  [self setSendsActionOnEndEditing:sendsAction];
+#endif
+}
 @end
 
 NSString *SVR_stringForLabelForKind(SVRResetButtonKind kind)

@@ -97,9 +97,9 @@
 @interface SVRAccessoryWindowsSettingsViewController: XPViewController
 {
   mm_new      NSView *_view_42; // Used only in OpenStep
-  mm_unretain SVRAccessoryWindowsSettingsGeneralBox *_generalBox;
-  mm_unretain SVRAccessoryWindowsSettingsColorsBox  *_colorsBox;
-  mm_unretain SVRAccessoryWindowsSettingsFontsBox   *_fontsBox;
+  mm_retain SVRAccessoryWindowsSettingsGeneralBox *_generalBox;
+  mm_retain SVRAccessoryWindowsSettingsColorsBox  *_colorsBox;
+  mm_retain SVRAccessoryWindowsSettingsFontsBox   *_fontsBox;
   mm_unretain NSPopUpButton *_selectorButton;
 }
 

@@ -209,6 +209,10 @@ static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
 -(NSImageView*)SVR_setImageFrameStyle:(NSImageFrameStyle)imageFrameStyle;
 @end
 
+@interface NSCell (CrossPlatform)
+-(void)XP_setSendsActionOnEndEditing:(BOOL)sendsAction;
+@end
+
 NSString *SVR_stringForLabelForKind(SVRResetButtonKind kind);
 SVRResetButtonKind SVR_resetButtonKindForColorWellKind(SVRColorWellKind kind);
 SVRResetButtonKind SVR_resetButtonKindForFontSettingKind(SVRFontSettingKind kind);
