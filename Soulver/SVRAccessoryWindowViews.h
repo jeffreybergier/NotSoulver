@@ -32,6 +32,15 @@
 
 // MARK: View Enumerations
 
+typedef XP_ENUM(XPInteger, SVRSelectorKind) {
+  SVRSelectorKindUnknown,
+  SVRSelectorKindReset,
+  SVRSelectorKindKeypadAppend,
+  SVRSelectorKindWriteColor,
+  SVRSelectorKindWriteWaitTime,
+  SVRSelectorKindWriteUserInterfaceStyle
+};
+
 typedef XP_ENUM(XPInteger, SVRFontSettingKind) {
   SVRFontSettingKindUnknown,
   SVRFontSettingKindMath,
@@ -102,10 +111,6 @@ typedef XP_ENUM(XPInteger, SVRKeypadButtonKind) {
   SVRKeypadButtonKindRoot,
   SVRKeypadButtonKindLog
 };
-
-NSRect    SVR_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind);
-NSString *SVR_titleForKeypadButtonOfKind(SVRKeypadButtonKind kind);
-NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind);
 
 static const XPFloat SVRAccessoryWindowKeypadWindowPadding        = 4;
 static const NSSize  SVRAccessoryWindowKeypadWindowButtonSize     = {40, 32};
@@ -214,6 +219,10 @@ static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
 -(void)XP_setSendsActionOnEndEditing:(BOOL)sendsAction;
 @end
 
+SEL SVR_selectorOfKind(SVRSelectorKind kind);
+NSRect SVR_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind);
+NSString *SVR_titleForKeypadButtonOfKind(SVRKeypadButtonKind kind);
+NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind);
 NSString *SVR_localizedStringForKind(SVRResetButtonKind kind);
 SVRResetButtonKind SVR_resetButtonKindForColorWellKind(SVRColorWellKind kind);
 SVRResetButtonKind SVR_resetButtonKindForFontSettingKind(SVRFontSettingKind kind);

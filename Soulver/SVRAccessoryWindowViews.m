@@ -37,184 +37,6 @@ XPFloat const HACK_OSX = 0;
 
 // MARK: SVRAccessoryWindowKeypadView
 
-NSRect SVR_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind)
-{
-  XPFloat kWinPad  = SVRAccessoryWindowKeypadWindowPadding;
-  XPFloat kBtnVPad = SVRAccessoryWindowKeypadWindowButtonVPadding;
-  XPFloat kBtnHPad = SVRAccessoryWindowKeypadWindowButtonHPadding;
-  XPFloat kGrpVPad = SVRAccessoryWindowKeypadWindowGroupSpacing;
-  NSSize  kBtnSize = SVRAccessoryWindowKeypadWindowButtonSize;
-  
-  XPInteger column     = -1;
-  XPInteger row        = -1;
-  XPFloat   rowPadding = 0;
-  NSRect    output     = NSZeroRect;
-  
-  switch (kind) {
-    case SVRKeypadButtonKind1:
-    case SVRKeypadButtonKindNegative:
-    case SVRKeypadButtonKind4:
-    case SVRKeypadButtonKind7:
-    case SVRKeypadButtonKindAdd:
-    case SVRKeypadButtonKindMultiply:
-    case SVRKeypadButtonKindPower:
-    case SVRKeypadButtonKindDelete:
-      column = 0;
-      break;
-    case SVRKeypadButtonKindEqual:
-    case SVRKeypadButtonKind0:
-    case SVRKeypadButtonKind2:
-    case SVRKeypadButtonKind5:
-    case SVRKeypadButtonKind8:
-    case SVRKeypadButtonKindSubtract:
-    case SVRKeypadButtonKindDivide:
-    case SVRKeypadButtonKindRoot:
-      column = 1;
-      break;
-    case SVRKeypadButtonKindDecimal:
-    case SVRKeypadButtonKind3:
-    case SVRKeypadButtonKind6:
-    case SVRKeypadButtonKind9:
-    case SVRKeypadButtonKindBRight:
-    case SVRKeypadButtonKindBLeft:
-    case SVRKeypadButtonKindLog:
-      column = 2;
-      break;
-    default:
-      XPCLogAssrt1(NO, @"[UNKNOWN] SVRAccessoryWindowKeypadViewKind(%d)", (int)kind);
-      break;
-  }
-  
-  switch (kind) {
-    case SVRKeypadButtonKindDelete:
-    case SVRKeypadButtonKindEqual:
-      row = 0;
-      break;
-    case SVRKeypadButtonKindNegative:
-    case SVRKeypadButtonKind0:
-    case SVRKeypadButtonKindDecimal:
-      row = 1;
-      break;
-    case SVRKeypadButtonKind1:
-    case SVRKeypadButtonKind2:
-    case SVRKeypadButtonKind3:
-      row = 2;
-      break;
-    case SVRKeypadButtonKind4:
-    case SVRKeypadButtonKind5:
-    case SVRKeypadButtonKind6:
-      row = 3;
-      break;
-    case SVRKeypadButtonKind7:
-    case SVRKeypadButtonKind8:
-    case SVRKeypadButtonKind9:
-      row = 4;
-      break;
-    case SVRKeypadButtonKindAdd:
-    case SVRKeypadButtonKindSubtract:
-    case SVRKeypadButtonKindBRight:
-      row = 5;
-      break;
-    case SVRKeypadButtonKindMultiply:
-    case SVRKeypadButtonKindDivide:
-    case SVRKeypadButtonKindBLeft:
-      row = 6;
-      break;
-    case SVRKeypadButtonKindPower:
-    case SVRKeypadButtonKindRoot:
-    case SVRKeypadButtonKindLog:
-      row = 7;
-      break;
-    default:
-      XPCLogAssrt1(NO, @"[UNKNOWN] SVRAccessoryWindowKeypadViewKind(%d)", (int)kind);
-      break;
-  }
-  
-  if (row > 0) {
-    rowPadding += kGrpVPad;
-  }
-  if (row > 4) {
-    rowPadding += kGrpVPad;
-  }
-  
-  output.origin = NSMakePoint(((kBtnHPad + kBtnSize.width ) * column) + kWinPad,
-                              ((kBtnVPad + kBtnSize.height) * row   ) + kWinPad + rowPadding);
-  output.size = kind == SVRKeypadButtonKindEqual
-                      ? NSMakeSize((kBtnSize.width * 2) + kBtnHPad, kBtnSize.height)
-                      : kBtnSize;
-  return output;
-}
-
-NSString *SVR_titleForKeypadButtonOfKind(SVRKeypadButtonKind kind)
-{
-  switch (kind) {
-    case SVRKeypadButtonKind1:
-    case SVRKeypadButtonKind2:
-    case SVRKeypadButtonKind3:
-    case SVRKeypadButtonKind4:
-    case SVRKeypadButtonKind5:
-    case SVRKeypadButtonKind6:
-    case SVRKeypadButtonKind7:
-    case SVRKeypadButtonKind8:
-    case SVRKeypadButtonKind9:
-      return [NSString stringWithFormat:@"%d", (int)kind];
-    case SVRKeypadButtonKind0:
-      return @"0";
-    case SVRKeypadButtonKindNegative:
-      return @"-";
-    case SVRKeypadButtonKindDecimal:
-      return @".";
-    case SVRKeypadButtonKindDelete:
-#ifdef XPSupportsUnicodeUI
-      return [NSString stringWithFormat:@"%C", 0x2190];
-#else
-      return @"<-";
-#endif
-    case SVRKeypadButtonKindEqual:
-      return @"=";
-    case SVRKeypadButtonKindAdd:
-      return @"+";
-    case SVRKeypadButtonKindSubtract:
-      return @"-";
-    case SVRKeypadButtonKindBRight:
-      return @")";
-    case SVRKeypadButtonKindMultiply:
-      return @"*";
-    case SVRKeypadButtonKindDivide:
-      return @"/";
-    case SVRKeypadButtonKindBLeft:
-      return @"(";
-    case SVRKeypadButtonKindPower:
-      return @"^";
-    case SVRKeypadButtonKindRoot:
-#ifdef XPSupportsUnicodeUI
-      return [NSString stringWithFormat:@"%C", 0x221A];
-#else
-      return @"root";
-#endif
-    case SVRKeypadButtonKindLog:
-      return @"log";
-    default:
-      XPCLogAssrt1(NO, @"[UNKNOWN] SVRAccessoryWindowKeypadViewKind(%d)", (int)kind);
-      return [NSString stringWithFormat:@"%d", (int)kind];
-  }
-}
-
-NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
-{
-  switch (kind) {
-    case SVRKeypadButtonKindDelete:
-      return @"\b";
-    case SVRKeypadButtonKindRoot:
-      return @"r";
-    case SVRKeypadButtonKindLog:
-      return @"l";
-    default:
-      return SVR_titleForKeypadButtonOfKind(kind);
-  }
-}
-
-
 @implementation SVRAccessoryWindowKeypadView: NSView
 
 -(id)initWithFrame:(NSRect)frameRect;
@@ -416,11 +238,11 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   [_selectorButton addItemWithTitle:@"Automatic"];
   [_selectorButton addItemWithTitle:@"Light"];
   [_selectorButton addItemWithTitle:@"Dark"];
-  [_selectorButton setAction:NSSelectorFromString(@"writeUserInterfaceStyle:")];
+  [_selectorButton setAction:SVR_selectorOfKind(SVRSelectorKindWriteUserInterfaceStyle)];
   [self addSubview:_selectorButton];
   [self addSubview:[NSButton SVR_settingsButtonWithFrame:resetRect
                                                    title:@"Reset"
-                                                  action:@selector(reset:)
+                                                  action:SVR_selectorOfKind(SVRSelectorKindReset)
                                                      tag:kind]];
   
   // Adjust frames
@@ -441,7 +263,7 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   [self addSubview:_fieldTime];
   [self addSubview:[NSButton SVR_settingsButtonWithFrame:resetRect
                                                    title:@"Reset"
-                                                  action:@selector(reset:)
+                                                  action:SVR_selectorOfKind(SVRSelectorKindReset)
                                                      tag:kind]];
   
   XPParameterRaise(_selectorButton);
@@ -474,7 +296,7 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   // So first I make it the first responder so the
   // responder chain works properly.
   [sender becomeFirstResponder];
-  [[NSApplication sharedApplication] sendAction:NSSelectorFromString(@"writeWaitTime:")
+  [[NSApplication sharedApplication] sendAction:SVR_selectorOfKind(SVRSelectorKindWriteWaitTime)
                                              to:nil
                                            from:sender];
 }
@@ -520,7 +342,7 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
     } else {
       [self addSubview:[NSButton SVR_settingsButtonWithFrame:resetRect
                                                        title:@"Reset"
-                                                      action:@selector(reset:)
+                                                      action:SVR_selectorOfKind(SVRSelectorKindReset)
                                                          tag:resetKind]];
       colorWell = [NSColorWell SVR_colorWellWithFrame:darkkRect kind:colorKind];
       [self addSubview:colorWell];
@@ -618,7 +440,7 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
                                                        tag:fontKind]];
     [self addSubview:[NSButton SVR_settingsButtonWithFrame:resetRect
                                                      title:@"Reset"
-                                                    action:@selector(reset:)
+                                                    action:SVR_selectorOfKind(SVRSelectorKindReset)
                                                        tag:resetKind]];
     
     // Adjust frames
@@ -688,7 +510,7 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 {
   NSColorWell *well = [[[NSColorWell alloc] initWithFrame:frame] autorelease];
   [well setTag:kind];
-  [well setAction:NSSelectorFromString(@"writeColor:")];
+  [well setAction:SVR_selectorOfKind(SVRSelectorKindWriteColor)];
   return well;
 }
 
@@ -805,6 +627,209 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 #endif
 }
 @end
+
+SEL SVR_selectorOfKind(SVRSelectorKind kind)
+{
+  SEL output = NULL;
+  switch (kind) {
+    case SVRSelectorKindReset:
+      output = NSSelectorFromString(@"reset:");
+      break;
+    case SVRSelectorKindKeypadAppend:
+      output = NSSelectorFromString(@"keypadAppend:");
+      break;
+    case SVRSelectorKindWriteColor:
+      output = NSSelectorFromString(@"writeColor:");
+      break;
+    case SVRSelectorKindWriteWaitTime:
+      output = NSSelectorFromString(@"writeWaitTime:");
+      break;
+    case SVRSelectorKindWriteUserInterfaceStyle:
+      output = NSSelectorFromString(@"writeUserInterfaceStyle:");
+      break;
+    default:
+      output = NULL;
+  }
+  XPCLogAssrt1(output!=NULL, @"[UNKNOWN] SVRSelectorKind(%d)", (int)kind);
+  return output;
+}
+
+NSRect SVR_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind)
+{
+  XPFloat kWinPad  = SVRAccessoryWindowKeypadWindowPadding;
+  XPFloat kBtnVPad = SVRAccessoryWindowKeypadWindowButtonVPadding;
+  XPFloat kBtnHPad = SVRAccessoryWindowKeypadWindowButtonHPadding;
+  XPFloat kGrpVPad = SVRAccessoryWindowKeypadWindowGroupSpacing;
+  NSSize  kBtnSize = SVRAccessoryWindowKeypadWindowButtonSize;
+  
+  XPInteger column     = -1;
+  XPInteger row        = -1;
+  XPFloat   rowPadding = 0;
+  NSRect    output     = NSZeroRect;
+  
+  switch (kind) {
+    case SVRKeypadButtonKind1:
+    case SVRKeypadButtonKindNegative:
+    case SVRKeypadButtonKind4:
+    case SVRKeypadButtonKind7:
+    case SVRKeypadButtonKindAdd:
+    case SVRKeypadButtonKindMultiply:
+    case SVRKeypadButtonKindPower:
+    case SVRKeypadButtonKindDelete:
+      column = 0;
+      break;
+    case SVRKeypadButtonKindEqual:
+    case SVRKeypadButtonKind0:
+    case SVRKeypadButtonKind2:
+    case SVRKeypadButtonKind5:
+    case SVRKeypadButtonKind8:
+    case SVRKeypadButtonKindSubtract:
+    case SVRKeypadButtonKindDivide:
+    case SVRKeypadButtonKindRoot:
+      column = 1;
+      break;
+    case SVRKeypadButtonKindDecimal:
+    case SVRKeypadButtonKind3:
+    case SVRKeypadButtonKind6:
+    case SVRKeypadButtonKind9:
+    case SVRKeypadButtonKindBRight:
+    case SVRKeypadButtonKindBLeft:
+    case SVRKeypadButtonKindLog:
+      column = 2;
+      break;
+    default:
+      XPCLogAssrt1(NO, @"[UNKNOWN] SVRAccessoryWindowKeypadViewKind(%d)", (int)kind);
+      break;
+  }
+  
+  switch (kind) {
+    case SVRKeypadButtonKindDelete:
+    case SVRKeypadButtonKindEqual:
+      row = 0;
+      break;
+    case SVRKeypadButtonKindNegative:
+    case SVRKeypadButtonKind0:
+    case SVRKeypadButtonKindDecimal:
+      row = 1;
+      break;
+    case SVRKeypadButtonKind1:
+    case SVRKeypadButtonKind2:
+    case SVRKeypadButtonKind3:
+      row = 2;
+      break;
+    case SVRKeypadButtonKind4:
+    case SVRKeypadButtonKind5:
+    case SVRKeypadButtonKind6:
+      row = 3;
+      break;
+    case SVRKeypadButtonKind7:
+    case SVRKeypadButtonKind8:
+    case SVRKeypadButtonKind9:
+      row = 4;
+      break;
+    case SVRKeypadButtonKindAdd:
+    case SVRKeypadButtonKindSubtract:
+    case SVRKeypadButtonKindBRight:
+      row = 5;
+      break;
+    case SVRKeypadButtonKindMultiply:
+    case SVRKeypadButtonKindDivide:
+    case SVRKeypadButtonKindBLeft:
+      row = 6;
+      break;
+    case SVRKeypadButtonKindPower:
+    case SVRKeypadButtonKindRoot:
+    case SVRKeypadButtonKindLog:
+      row = 7;
+      break;
+    default:
+      XPCLogAssrt1(NO, @"[UNKNOWN] SVRAccessoryWindowKeypadViewKind(%d)", (int)kind);
+      break;
+  }
+  
+  if (row > 0) {
+    rowPadding += kGrpVPad;
+  }
+  if (row > 4) {
+    rowPadding += kGrpVPad;
+  }
+  
+  output.origin = NSMakePoint(((kBtnHPad + kBtnSize.width ) * column) + kWinPad,
+                              ((kBtnVPad + kBtnSize.height) * row   ) + kWinPad + rowPadding);
+  output.size = kind == SVRKeypadButtonKindEqual
+                      ? NSMakeSize((kBtnSize.width * 2) + kBtnHPad, kBtnSize.height)
+                      : kBtnSize;
+  return output;
+}
+
+NSString *SVR_titleForKeypadButtonOfKind(SVRKeypadButtonKind kind)
+{
+  switch (kind) {
+    case SVRKeypadButtonKind1:
+    case SVRKeypadButtonKind2:
+    case SVRKeypadButtonKind3:
+    case SVRKeypadButtonKind4:
+    case SVRKeypadButtonKind5:
+    case SVRKeypadButtonKind6:
+    case SVRKeypadButtonKind7:
+    case SVRKeypadButtonKind8:
+    case SVRKeypadButtonKind9:
+      return [NSString stringWithFormat:@"%d", (int)kind];
+    case SVRKeypadButtonKind0:
+      return @"0";
+    case SVRKeypadButtonKindNegative:
+      return @"-";
+    case SVRKeypadButtonKindDecimal:
+      return @".";
+    case SVRKeypadButtonKindDelete:
+#ifdef XPSupportsUnicodeUI
+      return [NSString stringWithFormat:@"%C", 0x2190];
+#else
+      return @"<-";
+#endif
+    case SVRKeypadButtonKindEqual:
+      return @"=";
+    case SVRKeypadButtonKindAdd:
+      return @"+";
+    case SVRKeypadButtonKindSubtract:
+      return @"-";
+    case SVRKeypadButtonKindBRight:
+      return @")";
+    case SVRKeypadButtonKindMultiply:
+      return @"*";
+    case SVRKeypadButtonKindDivide:
+      return @"/";
+    case SVRKeypadButtonKindBLeft:
+      return @"(";
+    case SVRKeypadButtonKindPower:
+      return @"^";
+    case SVRKeypadButtonKindRoot:
+#ifdef XPSupportsUnicodeUI
+      return [NSString stringWithFormat:@"%C", 0x221A];
+#else
+      return @"root";
+#endif
+    case SVRKeypadButtonKindLog:
+      return @"log";
+    default:
+      XPCLogAssrt1(NO, @"[UNKNOWN] SVRAccessoryWindowKeypadViewKind(%d)", (int)kind);
+      return [NSString stringWithFormat:@"%d", (int)kind];
+  }
+}
+
+NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
+{
+  switch (kind) {
+    case SVRKeypadButtonKindDelete:
+      return @"\b";
+    case SVRKeypadButtonKindRoot:
+      return @"r";
+    case SVRKeypadButtonKindLog:
+      return @"l";
+    default:
+      return SVR_titleForKeypadButtonOfKind(kind);
+  }
+}
 
 NSString *SVR_localizedStringForKind(SVRResetButtonKind kind)
 {
