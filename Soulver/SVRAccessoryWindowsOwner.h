@@ -40,7 +40,6 @@
   mm_new NSWindow *_aboutWindow;
   mm_new NSWindow *_settingsWindow;
   mm_new SVRAccessoryWindowsSettingsViewController *_settingsViewController;
-  BOOL _windowsLoaded;
 }
 
 // MARK: Lazy-Loading Properties
@@ -96,27 +95,30 @@
 
 @interface SVRAccessoryWindowsSettingsViewController: XPViewController
 {
-  mm_new      NSView *_view_42; // Used only in OpenStep
+  mm_new NSView *_view_42; // Used only in OpenStep
   mm_retain SVRAccessoryWindowsSettingsGeneralBox *_generalBox;
   mm_retain SVRAccessoryWindowsSettingsColorsBox  *_colorsBox;
   mm_retain SVRAccessoryWindowsSettingsFontsBox   *_fontsBox;
-  mm_unretain NSPopUpButton *_selectorButton;
+  mm_unretain NSPopUpButton *_settingBoxSelector;
 }
 
 // MARK: Init
 -(void)loadView;
 
 // MARK: Initial Load
+-(void)readUserInterfaceStyle;
 -(void)readWaitTime;
--(void)themeChanged:(NSNotification*)aNotification;
 -(void)readColors;
 
 // MARK: IBActions
--(IBAction)selectionChanged:(NSPopUpButton*)sender;
--(IBAction)writeTheme:(NSPopUpButton*)sender;
+-(IBAction)settingsBoxSelectionChanged:(NSPopUpButton*)sender;
+-(IBAction)writeUserInterfaceStyle:(NSPopUpButton*)sender;
 -(IBAction)writeWaitTime:(NSTextField*)sender;
 -(IBAction)writeColor:(NSColorWell*)sender;
 -(IBAction)reset:(NSButton*)sender;
+
+// MARK: Notifications
+-(void)themeDidChangeNotification:(NSNotification*)aNotification;
 
 @end
 

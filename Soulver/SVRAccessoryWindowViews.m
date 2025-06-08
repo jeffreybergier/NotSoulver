@@ -403,7 +403,7 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   [_selectorButton addItemWithTitle:@"Light"];
   [_selectorButton addItemWithTitle:@"Dark"];
   [_selectorButton SVR_sizeToFitVertically];
-  [_selectorButton setAction:NSSelectorFromString(@"writeTheme:")];
+  [_selectorButton setAction:NSSelectorFromString(@"writeUserInterfaceStyle:")];
   [self addSubview:_selectorButton];
   
   _fieldTime = [NSTextField SVR_textFieldWithFrame:fieldRect
@@ -435,11 +435,13 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 
 -(NSPopUpButton*)themeSelector;
 {
+  XPParameterRaise(_selectorButton);
   return [[_selectorButton retain] autorelease];
 }
 
 -(NSTextField*)timeField;
 {
+  XPParameterRaise(_fieldTime);
   return [[_fieldTime retain] autorelease];
 }
 

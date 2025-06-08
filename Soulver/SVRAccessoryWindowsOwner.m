@@ -55,7 +55,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 // MARK: IBOutlets
 -(NSPanel *)keypadPanel;
 {
-  if (!_windowsLoaded) {
+  if (!_keypadPanel) {
     [self loadWindows];
     XPParameterRaise(_keypadPanel);
   }
@@ -64,7 +64,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 
 -(NSWindow*)aboutWindow;
 {
-  if (!_windowsLoaded) {
+  if (!_aboutWindow) {
     [self loadWindows];
     XPParameterRaise(_aboutWindow);
   }
@@ -73,7 +73,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 
 -(NSWindow*)settingsWindow;
 {
-  if (!_windowsLoaded) {
+  if (!_settingsWindow) {
     [self loadWindows];
     XPParameterRaise(_settingsWindow);
   }
@@ -97,42 +97,21 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 
 -(id)init;
 {
-  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-  
   self = [super init];
   XPParameterRaise(self);
-  _windowsLoaded  = NO;
   _keypadPanel    = nil;
   _aboutWindow    = nil;
   _settingsWindow = nil;
   _settingsViewController = nil;
-  [nc addObserver:self
-         selector:@selector(__windowDidBecomeKey:)
-             name:NSWindowDidBecomeKeyNotification
-           object:nil];
-  [nc addObserver:self
-         selector:@selector(__windowWillCloseNotification:)
-             name:NSWindowWillCloseNotification
-           object:nil];
-  [nc addObserver:self
-         selector:@selector(__applicationWillTerminate:)
-             name:NSApplicationWillTerminateNotification
-           object:nil];
-  [nc addObserver:self
-         selector:@selector(overrideWindowAppearance)
-             name:SVRThemeDidChangeNotificationName
-           object:nil];
-  
   return self;
 }
 
 -(void)loadWindows;
 {
   Class appDelegateClass = [[[NSApplication sharedApplication] delegate] class];
+  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
   NSWindow *window = nil;
   XPWindowStyleMask mask = 0;
-  XPLogAssrt(!_windowsLoaded, @"Windows Already Loaded");
-  _windowsLoaded = YES;
   
   // MARK: SVRAccessoryWindowKeypad
   
@@ -218,42 +197,28 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   XPParameterRaise(_settingsWindow);
   XPParameterRaise(_settingsViewController);
   
-  
-  /*
-  NSTextStorage *textStorage = [[self aboutTextView] textStorage];
-  NSWindow *keypadPanel    = [self keypadPanel];
-  NSWindow *aboutWindow    = [self aboutWindow];
-  NSWindow *settingsWindow = [self settingsWindow];
-  NSRect keypadRect   = [keypadPanel    frame];
-  NSRect aboutRect    = [aboutWindow    frame];
-  NSRect settingsRect = [settingsWindow frame];
-
-  // Set autosave names
-  [aboutWindow        XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameAbout   ];
-  [settingsWindow     XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameSettings];
-  [aboutWindow    setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameAbout   ];
-  [settingsWindow setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameSettings];
-   // Configure Accessory Windows for state restoration
-   [[_accessoryWindowsOwner aboutWindow   ] XP_setRestorationClass:myClass];
-   [[_accessoryWindowsOwner settingsWindow] XP_setRestorationClass:myClass];
-  
-  // Setting the frameAutosaveName immediate changes the frame
-  // of the window if its been moved already.
-  // This code checks if the windows have never been
-  // positioned by the user before. If so, it centers them.
-  if (NSEqualRects(aboutRect, [aboutWindow frame])) {
-    [aboutWindow center];
-  }
-  if (NSEqualRects(settingsRect, [settingsWindow frame])) {
-    [settingsWindow center];
-  }
+  // Register for Notifications
+  [nc addObserver:self
+         selector:@selector(__windowDidBecomeKey:)
+             name:NSWindowDidBecomeKeyNotification
+           object:nil];
+  [nc addObserver:self
+         selector:@selector(__windowWillCloseNotification:)
+             name:NSWindowWillCloseNotification
+           object:nil];
+  [nc addObserver:self
+         selector:@selector(__applicationWillTerminate:)
+             name:NSApplicationWillTerminateNotification
+           object:nil];
+  [nc addObserver:self
+         selector:@selector(overrideWindowAppearance)
+             name:SVRThemeDidChangeNotificationName
+           object:nil];
   
   // Set appearance
   [self overrideWindowAppearance];
   
-  // Announce
   XPLogDebug(@"");
-   */
 }
 
 // MARK: IBActions
@@ -320,9 +285,9 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 -(void)__windowDidBecomeKey:(NSNotification*)aNotification;
 {
   NSWindow *window = [aNotification object];
-  BOOL isOwnedWindow = _windowsLoaded && (window == [self keypadPanel]
-                                       || window == [self aboutWindow]
-                                       || window == [self settingsWindow]);
+  BOOL isOwnedWindow = window == [self keypadPanel]
+                    || window == [self aboutWindow]
+                    || window == [self settingsWindow];
   XPLogAssrt1([window isKindOfClass:[NSWindow class]], @"%@ not a window", window);
   if (!isOwnedWindow) { XPLogExtra1(@"%@ not an AccessoryWindow", window); return; }
   [[NSUserDefaults standardUserDefaults] SVR_setVisibility:YES forWindowWithFrameAutosaveName:[window frameAutosaveName]];
@@ -331,9 +296,9 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 -(void)__windowWillCloseNotification:(NSNotification*)aNotification;
 {
   NSWindow *window = [aNotification object];
-  BOOL isOwnedWindow = _windowsLoaded && (window == [self keypadPanel]
-                                       || window == [self aboutWindow]
-                                       || window == [self settingsWindow]);
+  BOOL isOwnedWindow = window == [self keypadPanel]
+                    || window == [self aboutWindow]
+                    || window == [self settingsWindow];
   XPLogAssrt1([window isKindOfClass:[NSWindow class]], @"%@ not a window", window);
   if (!isOwnedWindow) { XPLogExtra1(@"%@ not an AccessoryWindow", window); return; }
   [[NSUserDefaults standardUserDefaults] SVR_setVisibility:NO forWindowWithFrameAutosaveName:[window frameAutosaveName]];
@@ -409,31 +374,31 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   
   NSView *contentView = [[[NSView alloc] initWithFrame:kContentFrame] autorelease];
   
-  _selectorButton = [[[NSPopUpButton alloc] initWithFrame:kSelectorFrame pullsDown:NO] autorelease];
-  [_selectorButton addItemWithTitle:@"General"];
-  [_selectorButton addItemWithTitle:@"Colors"];
-  [_selectorButton addItemWithTitle:@"Fonts"];
-  [_selectorButton setAction:@selector(selectionChanged:)];
-  [contentView addSubview:_selectorButton];
+  _settingBoxSelector = [[[NSPopUpButton alloc] initWithFrame:kSelectorFrame pullsDown:NO] autorelease];
+  [_settingBoxSelector addItemWithTitle:@"General"];
+  [_settingBoxSelector addItemWithTitle:@"Colors"];
+  [_settingBoxSelector addItemWithTitle:@"Fonts"];
+  [_settingBoxSelector setAction:@selector(settingsBoxSelectionChanged:)];
+  [contentView addSubview:_settingBoxSelector];
   
   _generalBox = [[SVRAccessoryWindowsSettingsGeneralBox alloc] initWithFrame:kBoxFrame];
   _colorsBox  = [[SVRAccessoryWindowsSettingsColorsBox  alloc] initWithFrame:kBoxFrame];
   _fontsBox   = [[SVRAccessoryWindowsSettingsFontsBox   alloc] initWithFrame:kBoxFrame];
   // These get added to the view in -selectionChanged:
    
-  XPParameterRaise(_selectorButton);
+  XPParameterRaise(_settingBoxSelector);
   XPParameterRaise(_generalBox);
   XPParameterRaise(_colorsBox);
   XPParameterRaise(_fontsBox);
   
   [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(themeChanged:)
+                                           selector:@selector(themeDidChangeNotification:)
                                                name:SVRThemeDidChangeNotificationName
                                              object:nil];
   
   [self setView:contentView];
-  [self themeChanged:nil];
-  [self selectionChanged:_selectorButton];
+  [self settingsBoxSelectionChanged:_settingBoxSelector];
+  [self themeDidChangeNotification:nil];
 }
 
 // MARK: Initial Load
@@ -444,10 +409,11 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   [[_generalBox timeField] setStringValue:string];
 }
 
--(void)themeChanged:(NSNotification*)aNotification;
+-(void)readUserInterfaceStyle;
 {
-  [self readWaitTime];
-  [self readColors];
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  XPUserInterfaceStyle style = [ud SVR_userInterfaceStyleSetting];
+  [[_generalBox themeSelector] selectItemAtIndex:style];
 }
 
 -(void)readColors;
@@ -534,7 +500,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 
 // MARK: IBActions
 
--(IBAction)selectionChanged:(NSPopUpButton*)sender;
+-(IBAction)settingsBoxSelectionChanged:(NSPopUpButton*)sender;
 {
   NSView *myView = [self view];
   XPParameterRaise(sender);
@@ -556,7 +522,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   }
 }
 
--(IBAction)writeTheme:(NSPopUpButton*)sender;
+-(IBAction)writeUserInterfaceStyle:(NSPopUpButton*)sender;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   XPUserInterfaceStyle newStyle = [sender indexOfSelectedItem];
@@ -762,6 +728,15 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   }
 }
 
+// MARK: Notifications
+
+-(void)themeDidChangeNotification:(NSNotification*)aNotification;
+{
+  [self readUserInterfaceStyle];
+  [self readWaitTime];
+  [self readColors];
+}
+
 -(void)dealloc;
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -773,7 +748,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   _fontsBox   = nil;
   _colorsBox  = nil;
   _generalBox = nil;
-  _selectorButton = nil;
+  _settingBoxSelector = nil;
   [super dealloc];
 }
 
