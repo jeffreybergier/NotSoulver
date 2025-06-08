@@ -402,7 +402,7 @@ XPFloat const HACK_OSX = 0;
   NSRect fieldRect = NSMakeRect(0,            kYOrigin,               182-HACK_OSX, 30);
   NSRect setttRect = NSMakeRect(186-HACK_OSX, kYOrigin,               50,           30);
   NSRect resetRect = NSMakeRect(240-HACK_OSX, kYOrigin,               50,           30);
-  SVRFontSettingKind fontKind = SVRFontSettingKindUnknown;
+  SVRThemeFont fontKind = SVRThemeFontUnknown;
   SVRResetButtonKind resetKind = SVRResetButtonKindUnknown;
   NSTextField *textField = nil;
   
@@ -413,8 +413,8 @@ XPFloat const HACK_OSX = 0;
   [self setTitle:@"Fonts"];
   [self setTitlePosition:NSNoTitle];
   
-  for (fontKind =SVRFontSettingKindMath;
-       fontKind<=SVRFontSettingKindError;
+  for (fontKind =SVRThemeFontMath;
+       fontKind<=SVRThemeFontError;
        fontKind++)
   {
     resetKind = SVR_resetButtonKindForFontSettingKind(fontKind);
@@ -436,7 +436,7 @@ XPFloat const HACK_OSX = 0;
     // Buttons
     [self addSubview:[NSButton SVR_settingsButtonWithFrame:setttRect
                                                      title:@"Set"
-                                                    action:@selector(requestFont:)
+                                                    action:@selector(presentFontPanel:)
                                                        tag:fontKind]];
     [self addSubview:[NSButton SVR_settingsButtonWithFrame:resetRect
                                                      title:@"Reset"
@@ -453,7 +453,7 @@ XPFloat const HACK_OSX = 0;
   return self;
 }
 
--(NSTextField*)textFieldOfKind:(SVRFontSettingKind)kind;
+-(NSTextField*)textFieldOfKind:(SVRThemeFont)kind;
 {
   NSTextField *textField = [_textFields objectForKey:[NSNumber XP_numberWithInteger:kind]];
   XPParameterRaise(textField);
@@ -461,7 +461,7 @@ XPFloat const HACK_OSX = 0;
 }
 
 -(void)setTextField:(NSTextField*)textField
-            forKind:(SVRFontSettingKind)kind;
+            forKind:(SVRThemeFont)kind;
 {
   XPParameterRaise(textField);
   [_textFields setObject:textField forKey:[NSNumber XP_numberWithInteger:kind]];
@@ -899,17 +899,17 @@ SVRResetButtonKind SVR_resetButtonKindForColorWellKind(SVRColorWellKind kind)
   }
 }
 
-SVRResetButtonKind SVR_resetButtonKindForFontSettingKind(SVRFontSettingKind kind)
+SVRResetButtonKind SVR_resetButtonKindForFontSettingKind(SVRThemeFont kind)
 {
   switch (kind) {
-    case SVRFontSettingKindMath:
+    case SVRThemeFontMath:
       return SVRResetButtonKindMathFont;
-    case SVRFontSettingKindOther:
+    case SVRThemeFontOther:
       return SVRResetButtonKindOtherFont;
-    case SVRFontSettingKindError:
+    case SVRThemeFontError:
       return SVRResetButtonKindErrorFont;
     default:
-      XPCLogAssrt1(NO, @"[UNKNOWN] SVRFontSettingKind(%d)", (int)kind);
+      XPCLogAssrt1(NO, @"[UNKNOWN] SVRThemeFont(%d)", (int)kind);
       return SVRResetButtonKindUnknown;
   }
 }

@@ -115,6 +115,8 @@
 -(IBAction)writeUserInterfaceStyle:(NSPopUpButton*)sender;
 -(IBAction)writeWaitTime:(NSTextField*)sender;
 -(IBAction)writeColor:(NSColorWell*)sender;
+-(IBAction)presentFontPanel:(NSButton*)sender;
+-(IBAction)changeFont:(NSFontManager*)sender;
 -(IBAction)reset:(NSButton*)sender;
 
 // MARK: Notifications

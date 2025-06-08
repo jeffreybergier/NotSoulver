@@ -29,6 +29,7 @@
 
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
+#import "NSUserDefaults+Soulver.h"
 
 // MARK: View Enumerations
 
@@ -39,13 +40,6 @@ typedef XP_ENUM(XPInteger, SVRSelectorKind) {
   SVRSelectorKindWriteColor,
   SVRSelectorKindWriteWaitTime,
   SVRSelectorKindWriteUserInterfaceStyle
-};
-
-typedef XP_ENUM(XPInteger, SVRFontSettingKind) {
-  SVRFontSettingKindUnknown,
-  SVRFontSettingKindMath,
-  SVRFontSettingKindOther,
-  SVRFontSettingKindError,
 };
 
 typedef XP_ENUM(XPInteger, SVRColorWellKind) {
@@ -179,9 +173,9 @@ static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
   mm_new NSMutableDictionary *_textFields;
 }
 -(id)initWithFrame:(NSRect)frameRect;
--(NSTextField*)textFieldOfKind:(SVRFontSettingKind)kind;
+-(NSTextField*)textFieldOfKind:(SVRThemeFont)kind;
 -(void)setTextField:(NSTextField*)textField
-            forKind:(SVRFontSettingKind)kind;
+            forKind:(SVRThemeFont)kind;
 @end
 
 @interface NSControl (SVRAccessoryWindows)
@@ -225,4 +219,4 @@ NSString *SVR_titleForKeypadButtonOfKind(SVRKeypadButtonKind kind);
 NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind);
 NSString *SVR_localizedStringForKind(SVRResetButtonKind kind);
 SVRResetButtonKind SVR_resetButtonKindForColorWellKind(SVRColorWellKind kind);
-SVRResetButtonKind SVR_resetButtonKindForFontSettingKind(SVRFontSettingKind kind);
+SVRResetButtonKind SVR_resetButtonKindForFontSettingKind(SVRThemeFont kind);

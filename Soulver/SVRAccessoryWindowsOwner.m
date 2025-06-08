@@ -498,6 +498,25 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   }
 }
 
+-(void)readFonts;
+{
+  NSTextField *field = nil;
+  NSFont *font = nil;
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  SVRAccessoryWindowsSettingsFontsBox *box = _fontsBox;
+  SVRThemeFont kind = SVRThemeFontUnknown;
+  
+  for (kind =SVRThemeFontMath;
+       kind<=SVRThemeFontError;
+       kind++)
+  {
+    field = [box textFieldOfKind:kind];
+    font = [ud SVR_fontForTheme:kind];
+    [field setAttributedStringValue:[[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ - %g", [font displayName], [font pointSize]]
+                                                                     attributes:[NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName]] autorelease]];
+  }
+}
+
 // MARK: IBActions
 
 -(IBAction)settingsBoxSelectionChanged:(NSPopUpButton*)sender;
@@ -639,6 +658,30 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   }
 }
 
+-(IBAction)presentFontPanel:(NSButton*)sender;
+{
+  SVRThemeFont theme = [sender tag];
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  SVRFontManager *fm = (SVRFontManager*)[NSFontManager sharedFontManager];
+  XPLogAssrt1([fm isKindOfClass:[SVRFontManager class]], @"%@ is not SVRFontManager", fm);
+  [fm setSelectedFont:[ud SVR_fontForTheme:theme] isMultiple:NO];
+  [fm setThemeFont:theme];
+  [fm orderFrontFontPanel:sender];
+}
+
+-(IBAction)changeFont:(NSFontManager*)sender;
+{
+  NSFont *font = nil;
+  SVRThemeFont theme = -1;
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  XPLogAssrt1([sender isKindOfClass:[SVRFontManager class]], @"[UNKNOWN] %@", sender);
+  font = [sender convertFont:[sender selectedFont]];
+  theme = [(SVRFontManager*)sender themeFont];
+  [ud SVR_setFont:font forTheme:theme];
+  [self readFonts];
+  XPLogDebug(@"[SUCCESS]");
+}
+
 -(IBAction)reset:(NSButton*)sender;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
@@ -738,6 +781,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   [self readUserInterfaceStyle];
   [self readWaitTime];
   [self readColors];
+  [self readFonts];
 }
 
 -(void)dealloc;
