@@ -384,19 +384,13 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 @implementation SVRAccessoryWindowsSettingsGeneralBox
 -(id)initWithFrame:(NSRect)frameRect;
 {
-  XPFloat kResetWidth = 52;
-  XPFloat kLabelWidth = 116;
-  XPFloat kPopupWidth = 162;
-  XPFloat kXOriginLHS = 8;
-  XPFloat kXOriginRHS = 126;
-  XPFloat kYOriginOne = 248;
-  XPFloat kYOriginTwo = 222;
+  XPFloat kYOrigin = 248;
   XPFloat kHeight = 22;
   XPFloat HACK = 2;
-  NSRect labelRect = NSMakeRect(kXOriginLHS,      kYOriginOne+HACK, kLabelWidth, kHeight);
-  NSRect popupRect = NSMakeRect(kXOriginRHS,      kYOriginOne,      kPopupWidth, kHeight);
-  NSRect fieldRect = NSMakeRect(kXOriginRHS+HACK, kYOriginTwo,      kPopupWidth-kResetWidth-HACK-2, kHeight);
-  NSRect resetRect = NSMakeRect(kXOriginRHS+kPopupWidth-kResetWidth, kYOriginTwo, kResetWidth-HACK, kHeight);
+  NSRect labelRect = NSMakeRect(0,      kYOrigin+HACK, 120,            0);
+  NSRect popupRect = NSMakeRect(124,    kYOrigin,      162,            0);
+  NSRect fieldRect = NSMakeRect(124,    kYOrigin-26,   162-50-2, kHeight);
+  NSRect resetRect = NSMakeRect(124+162-50, kYOrigin-26,   50,   kHeight);
   
   self = [super initWithFrame:frameRect];
   XPParameterRaise(self);
@@ -473,11 +467,11 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 -(id)initWithFrame:(NSRect)frameRect;
 {
   XPFloat kVPad = 32;
-  XPFloat kYOrigin = 226;
-  NSRect labelRect = NSMakeRect(8,   kYOrigin+4, 118, 0);
-  NSRect lightRect = NSMakeRect(132, kYOrigin,   50, 30);
+  XPFloat kYOrigin = 228;
+  NSRect labelRect = NSMakeRect(0,   kYOrigin+4, 126, 0);
+  NSRect lightRect = NSMakeRect(130, kYOrigin,   50, 30);
   NSRect darkkRect = NSMakeRect(182, kYOrigin,   50, 30);
-  NSRect resetRect = NSMakeRect(234, kYOrigin,   50, 30);
+  NSRect resetRect = NSMakeRect(236, kYOrigin,   50, 30);
   SVRColorWellKind colorKind = SVRColorWellKindUnknown;
   SVRResetButtonKind resetKind = SVRResetButtonKindUnknown;
   NSColorWell *colorWell = nil;
@@ -564,7 +558,7 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   XPFloat kLabelYOffset = 32;
   XPFloat kVPad = kLabelYOffset + 22;
   NSRect labelRect = NSMakeRect(0,   kYOrigin+kLabelYOffset, 178,  0);
-  NSRect fieldRect = NSMakeRect(0,   kYOrigin-1,             178, 32);
+  NSRect fieldRect = NSMakeRect(0,   kYOrigin,               178, 30);
   NSRect setttRect = NSMakeRect(182, kYOrigin,               50,  30);
   NSRect resetRect = NSMakeRect(236, kYOrigin,               50,  30);
   SVRFontSettingKind fontKind = SVRFontSettingKindUnknown;
