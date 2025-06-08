@@ -29,6 +29,12 @@
 
 #import "SVRAccessoryWindowViews.h"
 
+#ifdef XPSupportsButtonStyles
+XPFloat const HACK_OSX = 6;
+#else
+XPFloat const HACK_OSX = 0;
+#endif
+
 // MARK: SVRAccessoryWindowKeypadView
 
 NSRect SVR_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind)
@@ -382,15 +388,16 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 // MARK: SVRAccessoryWindowSettingsView
 
 @implementation SVRAccessoryWindowsSettingsGeneralBox
+
 -(id)initWithFrame:(NSRect)frameRect;
 {
-  XPFloat kYOrigin = 248;
-  XPFloat kHeight = 22;
-  XPFloat HACK = 2;
-  NSRect labelRect = NSMakeRect(0,      kYOrigin+HACK, 120,            0);
-  NSRect popupRect = NSMakeRect(124,    kYOrigin,      162,            0);
-  NSRect fieldRect = NSMakeRect(124,    kYOrigin-26,   162-50-2, kHeight);
-  NSRect resetRect = NSMakeRect(124+162-50, kYOrigin-26,   50,   kHeight);
+  XPFloat kYOrigin = 228;
+  XPFloat kLabelYOffset = 32;
+  XPFloat kVPad = kLabelYOffset + 22;
+  NSRect labelRect = NSMakeRect(0,            kYOrigin+kLabelYOffset, 236-HACK_OSX,  0);
+  NSRect fieldRect = NSMakeRect(0,            kYOrigin,               236-HACK_OSX, 30);
+  NSRect resetRect = NSMakeRect(240-HACK_OSX, kYOrigin,               50,           30);
+  SVRResetButtonKind kind = SVRResetButtonKindUnknown;
   
   self = [super initWithFrame:frameRect];
   XPParameterRaise(self);
@@ -398,14 +405,36 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   [self setTitle:@"General"];
   [self setTitlePosition:NSNoTitle];
   
-  _selectorButton = [[[NSPopUpButton alloc] initWithFrame:popupRect pullsDown:NO] autorelease];
+  // User Interface Style Selector
+  kind = SVRResetButtonKindUIStyle;
+  [self addSubview:[[[NSTextField SVR_labelWithFrame:labelRect]
+                                  SVR_setObjectValue:SVR_localizedStringForKind(kind)
+                                                font:nil
+                                           alignment:XPTextAlignmentLeft]
+                             SVR_sizeToFitVertically]];
+  _selectorButton = [[[NSPopUpButton alloc] initWithFrame:fieldRect pullsDown:NO] autorelease];
   [_selectorButton addItemWithTitle:@"Automatic"];
   [_selectorButton addItemWithTitle:@"Light"];
   [_selectorButton addItemWithTitle:@"Dark"];
-  [_selectorButton SVR_sizeToFitVertically];
   [_selectorButton setAction:NSSelectorFromString(@"writeUserInterfaceStyle:")];
   [self addSubview:_selectorButton];
+  [self addSubview:[NSButton SVR_settingsButtonWithFrame:resetRect
+                                                   title:@"Reset"
+                                                  action:@selector(reset:)
+                                                     tag:kind]];
   
+  // Adjust frames
+  kind = SVRResetButtonKindWaitTime;
+  labelRect.origin.y -= kVPad;
+  fieldRect.origin.y -= kVPad;
+  resetRect.origin.y -= kVPad;
+  
+  // Wait Time Field
+  [self addSubview:[[[NSTextField SVR_labelWithFrame:labelRect]
+                                  SVR_setObjectValue:SVR_localizedStringForKind(kind)
+                                                font:nil
+                                           alignment:XPTextAlignmentLeft]
+                             SVR_sizeToFitVertically]];
   _fieldTime = [NSTextField SVR_textFieldWithFrame:fieldRect
                                             target:self
                                             action:@selector(__HACK_writeWaitTime:)];
@@ -413,19 +442,7 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   [self addSubview:[NSButton SVR_settingsButtonWithFrame:resetRect
                                                    title:@"Reset"
                                                   action:@selector(reset:)
-                                                     tag:SVRResetButtonKindWaitTime]];
-  
-  [self addSubview:[[[NSTextField SVR_labelWithFrame:labelRect]
-                                  SVR_setObjectValue:@"Theme"
-                                                font:nil
-                                           alignment:XPTextAlignmentRight]
-                             SVR_sizeToFitVertically]];
-  labelRect.origin.y = resetRect.origin.y + HACK;
-  [self addSubview:[[[NSTextField SVR_labelWithFrame:labelRect]
-                                  SVR_setObjectValue:@"Solving Delay"
-                                                font:nil
-                                           alignment:XPTextAlignmentRight]
-                             SVR_sizeToFitVertically]];
+                                                     tag:kind]];
   
   XPParameterRaise(_selectorButton);
   XPParameterRaise(_fieldTime);
@@ -470,10 +487,10 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 {
   XPFloat kVPad = 32;
   XPFloat kYOrigin = 228;
-  NSRect labelRect = NSMakeRect(0,   kYOrigin+4, 126, 0);
-  NSRect lightRect = NSMakeRect(130, kYOrigin,   50, 30);
-  NSRect darkkRect = NSMakeRect(182, kYOrigin,   50, 30);
-  NSRect resetRect = NSMakeRect(236, kYOrigin,   50, 30);
+  NSRect labelRect = NSMakeRect(0,            kYOrigin+4, 128-HACK_OSX,  0);
+  NSRect lightRect = NSMakeRect(132-HACK_OSX, kYOrigin,   50,           30);
+  NSRect darkkRect = NSMakeRect(186-HACK_OSX, kYOrigin,   50,           30);
+  NSRect resetRect = NSMakeRect(240-HACK_OSX, kYOrigin,   50,           30);
   SVRColorWellKind colorKind = SVRColorWellKindUnknown;
   SVRResetButtonKind resetKind = SVRResetButtonKindUnknown;
   NSColorWell *colorWell = nil;
@@ -492,7 +509,7 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
     resetKind = SVR_resetButtonKindForColorWellKind(colorKind);
     if (colorKind % 2) {
       [self addSubview:[[[NSTextField SVR_labelWithFrame:labelRect]
-                                      SVR_setObjectValue:SVR_stringForLabelForKind(resetKind)
+                                      SVR_setObjectValue:SVR_localizedStringForKind(resetKind)
                                                     font:nil
                                                alignment:XPTextAlignmentRight]
                                  SVR_sizeToFitVertically]];
@@ -559,10 +576,10 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   XPFloat kYOrigin = 228;
   XPFloat kLabelYOffset = 32;
   XPFloat kVPad = kLabelYOffset + 22;
-  NSRect labelRect = NSMakeRect(0,   kYOrigin+kLabelYOffset, 178,  0);
-  NSRect fieldRect = NSMakeRect(0,   kYOrigin,               178, 30);
-  NSRect setttRect = NSMakeRect(182, kYOrigin,               50,  30);
-  NSRect resetRect = NSMakeRect(236, kYOrigin,               50,  30);
+  NSRect labelRect = NSMakeRect(0,            kYOrigin+kLabelYOffset, 182-HACK_OSX,  0);
+  NSRect fieldRect = NSMakeRect(0,            kYOrigin,               182-HACK_OSX, 30);
+  NSRect setttRect = NSMakeRect(186-HACK_OSX, kYOrigin,               50,           30);
+  NSRect resetRect = NSMakeRect(240-HACK_OSX, kYOrigin,               50,           30);
   SVRFontSettingKind fontKind = SVRFontSettingKindUnknown;
   SVRResetButtonKind resetKind = SVRResetButtonKindUnknown;
   NSTextField *textField = nil;
@@ -582,7 +599,7 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
     
     // Label
     [self addSubview:[[[NSTextField SVR_labelWithFrame:labelRect]
-                                    SVR_setObjectValue:SVR_stringForLabelForKind(resetKind)
+                                    SVR_setObjectValue:SVR_localizedStringForKind(resetKind)
                                                   font:nil
                                              alignment:XPTextAlignmentLeft]
                                SVR_sizeToFitVertically]];
@@ -789,9 +806,11 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 }
 @end
 
-NSString *SVR_stringForLabelForKind(SVRResetButtonKind kind)
+NSString *SVR_localizedStringForKind(SVRResetButtonKind kind)
 {
   switch (kind) {
+    case SVRResetButtonKindUIStyle:
+      return @"Theme";
     case SVRResetButtonKindWaitTime:
       return @"Solving Delay";
     case SVRResetButtonKindMathFont:

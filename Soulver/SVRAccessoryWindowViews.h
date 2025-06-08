@@ -61,6 +61,7 @@ typedef XP_ENUM(XPInteger, SVRColorWellKind) {
 
 typedef XP_ENUM(XPInteger, SVRResetButtonKind) {
   SVRResetButtonKindUnknown,
+  SVRResetButtonKindUIStyle,
   SVRResetButtonKindWaitTime,
   SVRResetButtonKindMathFont,
   SVRResetButtonKindOtherFont,
@@ -213,6 +214,6 @@ static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
 -(void)XP_setSendsActionOnEndEditing:(BOOL)sendsAction;
 @end
 
-NSString *SVR_stringForLabelForKind(SVRResetButtonKind kind);
+NSString *SVR_localizedStringForKind(SVRResetButtonKind kind);
 SVRResetButtonKind SVR_resetButtonKindForColorWellKind(SVRColorWellKind kind);
 SVRResetButtonKind SVR_resetButtonKindForFontSettingKind(SVRFontSettingKind kind);

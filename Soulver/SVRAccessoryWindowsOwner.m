@@ -646,6 +646,9 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   XPParameterRaise(sender);
   kind = [sender tag];
   switch (kind) {
+    case   SVRResetButtonKindUIStyle:
+      [ud SVR_setUserInterfaceStyleSetting:XPUserInterfaceStyleUnspecified];
+      break;
     case SVRResetButtonKindWaitTime:
       [ud SVR_setWaitTimeForRendering:-1];
       break;
