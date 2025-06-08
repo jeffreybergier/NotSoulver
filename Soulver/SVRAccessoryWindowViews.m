@@ -412,13 +412,14 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   [_selectorButton setAction:NSSelectorFromString(@"writeTheme:")];
   [self addSubview:_selectorButton];
   
-  _fieldTime = [[[NSTextField alloc] initWithFrame:fieldRect] autorelease];
-  [_fieldTime setTarget:self];
-  [_fieldTime setAction:@selector(__HACK_writeWaitTime:)];
-  [[_fieldTime cell] setSendsActionOnEndEditing:YES];
+  _fieldTime = [NSTextField SVR_textFieldWithFrame:fieldRect
+                                            target:self
+                                            action:@selector(__HACK_writeWaitTime:)];
   [self addSubview:_fieldTime];
-  [self addSubview:[NSButton SVR_resetButtonWithFrame:resetRect
-                                                 kind:SVRResetButtonKindWaitTime]];
+  [self addSubview:[NSButton SVR_settingsButtonWithFrame:resetRect
+                                                   title:@"Reset"
+                                                  action:@selector(reset:)
+                                                     tag:SVRResetButtonKindWaitTime]];
   
   [self addSubview:[[[NSTextField SVR_labelWithFrame:labelRect]
                                   SVR_setObjectValue:@"Theme"
@@ -473,10 +474,10 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 {
   XPFloat kVPad = 32;
   XPFloat kYOrigin = 226;
-  NSRect labelRect = NSMakeRect(8,   kYOrigin+4, 120, 0);
+  NSRect labelRect = NSMakeRect(8,   kYOrigin+4, 118, 0);
   NSRect lightRect = NSMakeRect(132, kYOrigin,   50, 30);
-  NSRect darkkRect = NSMakeRect(184, kYOrigin,   50, 30);
-  NSRect resetRect = NSMakeRect(236, kYOrigin,   48, 30);
+  NSRect darkkRect = NSMakeRect(182, kYOrigin,   50, 30);
+  NSRect resetRect = NSMakeRect(234, kYOrigin,   50, 30);
   SVRColorWellKind colorKind = SVRColorWellKindUnknown;
   SVRResetButtonKind resetKind = SVRResetButtonKindUnknown;
   NSColorWell *colorWell = nil;
@@ -504,7 +505,10 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
       labelRect.origin.y -= kVPad;
       lightRect.origin.y -= kVPad;
     } else {
-      [self addSubview:[NSButton SVR_resetButtonWithFrame:resetRect kind:resetKind]];
+      [self addSubview:[NSButton SVR_settingsButtonWithFrame:resetRect
+                                                       title:@"Reset"
+                                                      action:@selector(reset:)
+                                                         tag:resetKind]];
       colorWell = [NSColorWell SVR_colorWellWithFrame:darkkRect kind:colorKind];
       [self addSubview:colorWell];
       darkkRect.origin.y -= kVPad;
@@ -556,11 +560,83 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 @implementation SVRAccessoryWindowsSettingsFontsBox
 -(id)initWithFrame:(NSRect)frameRect;
 {
+  XPFloat kYOrigin = 228;
+  XPFloat kLabelYOffset = 32;
+  XPFloat kVPad = kLabelYOffset + 22;
+  NSRect labelRect = NSMakeRect(0,   kYOrigin+kLabelYOffset, 178,  0);
+  NSRect fieldRect = NSMakeRect(0,   kYOrigin-1,             178, 32);
+  NSRect setttRect = NSMakeRect(182, kYOrigin,               50,  30);
+  NSRect resetRect = NSMakeRect(236, kYOrigin,               50,  30);
+  SVRFontSettingKind fontKind = SVRFontSettingKindUnknown;
+  SVRResetButtonKind resetKind = SVRResetButtonKindUnknown;
+  NSTextField *textField = nil;
+  
   self = [super initWithFrame:frameRect];
   XPParameterRaise(self);
+  _textFields = [NSMutableDictionary new];
+  
   [self setTitle:@"Fonts"];
+  [self setTitlePosition:NSNoTitle];
+  
+  for (fontKind =SVRFontSettingKindMath;
+       fontKind<=SVRFontSettingKindError;
+       fontKind++)
+  {
+    resetKind = SVR_resetButtonKindForFontSettingKind(fontKind);
+    
+    // Label
+    [self addSubview:[[[NSTextField SVR_labelWithFrame:labelRect]
+                                    SVR_setObjectValue:SVR_stringForLabelForKind(resetKind)
+                                                  font:nil
+                                             alignment:XPTextAlignmentLeft]
+                               SVR_sizeToFitVertically]];
+    
+    // TextField
+    textField = [NSTextField SVR_textFieldWithFrame:fieldRect target:nil action:nil];
+    [self setTextField:textField forKind:fontKind];
+    [self addSubview:textField];
+    
+    // Buttons
+    [self addSubview:[NSButton SVR_settingsButtonWithFrame:setttRect
+                                                     title:@"Set"
+                                                    action:@selector(requestFont:)
+                                                       tag:fontKind]];
+    [self addSubview:[NSButton SVR_settingsButtonWithFrame:resetRect
+                                                     title:@"Reset"
+                                                    action:@selector(reset:)
+                                                       tag:resetKind]];
+    
+    // Adjust frames
+    labelRect.origin.y -= kVPad;
+    fieldRect.origin.y -= kVPad;
+    setttRect.origin.y -= kVPad;
+    resetRect.origin.y -= kVPad;
+  }
+  
   return self;
 }
+
+-(NSTextField*)textFieldOfKind:(SVRFontSettingKind)kind;
+{
+  NSTextField *textField = [_textFields objectForKey:[NSNumber XP_numberWithInteger:kind]];
+  XPParameterRaise(textField);
+  return textField;
+}
+
+-(void)setTextField:(NSTextField*)textField
+            forKind:(SVRFontSettingKind)kind;
+{
+  XPParameterRaise(textField);
+  [_textFields setObject:textField forKey:[NSNumber XP_numberWithInteger:kind]];
+}
+
+-(void)dealloc;
+{
+  [_textFields release];
+  _textFields = nil;
+  [super dealloc];
+}
+
 @end
 
 @implementation NSControl (SVRAccessoryWindows)
@@ -579,24 +655,15 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   return button;
 }
 
-+(NSTextField*)SVR_labelWithFrame:(NSRect)frame;
-{
-  NSTextField *label = [[[NSTextField alloc] initWithFrame:frame] autorelease];
-  [label setBezeled:NO];
-  [label setDrawsBackground:NO];
-  [label setEditable:NO];
-  [label setSelectable:NO];
-  return label;
-}
-
-+(NSButton*)SVR_resetButtonWithFrame:(NSRect)frame
-                                kind:(SVRResetButtonKind)kind;
++(NSButton*)SVR_settingsButtonWithFrame:(NSRect)frame
+                                  title:(NSString*)title
+                                 action:(SEL)action
+                                    tag:(XPInteger)tag;
 {
   NSButton *button = [[[NSButton alloc] initWithFrame:frame] autorelease];
-  XPParameterRaise(button);
-  [button setTitle:@"Reset"];
-  [button setTag:kind];
-  [button setAction:NSSelectorFromString(@"reset:")];
+  [button setTitle:title];
+  [button setAction:action];
+  [button setTag:tag];
   [button XP_setBezelStyle:XPBezelStyleShadowlessSquare];
   return button;
 }
@@ -608,6 +675,30 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   [well setTag:kind];
   [well setAction:NSSelectorFromString(@"writeColor:")];
   return well;
+}
+
++(NSTextField*)SVR_labelWithFrame:(NSRect)frame;
+{
+  NSTextField *label = [[[NSTextField alloc] initWithFrame:frame] autorelease];
+  [label setBezeled:NO];
+  [label setDrawsBackground:NO];
+  [label setEditable:NO];
+  [label setSelectable:NO];
+  return label;
+}
+
++(NSTextField*)SVR_textFieldWithFrame:(NSRect)frame
+                               target:(id)target
+                               action:(SEL)action;
+{
+  NSTextField *textField = [[[NSTextField alloc] initWithFrame:frame] autorelease];
+  if (target) {
+    [textField setTarget:target];
+    [textField setAction:action];
+  }
+  [textField setEditable:target != nil];
+  [[textField cell] setSendsActionOnEndEditing:YES];
+  return textField;
 }
 
 -(id)SVR_sizeToFitVertically;
@@ -748,6 +839,21 @@ SVRResetButtonKind SVR_resetButtonKindForColorWellKind(SVRColorWellKind kind)
       return SVRResetButtonKindBackgroundColor;
     default:
       XPCLogAssrt1(NO, @"[UNKNOWN] SVRColorWellKind(%d)", (int)kind);
+      return SVRResetButtonKindUnknown;
+  }
+}
+
+SVRResetButtonKind SVR_resetButtonKindForFontSettingKind(SVRFontSettingKind kind)
+{
+  switch (kind) {
+    case SVRFontSettingKindMath:
+      return SVRResetButtonKindMathFont;
+    case SVRFontSettingKindOther:
+      return SVRResetButtonKindOtherFont;
+    case SVRFontSettingKindError:
+      return SVRResetButtonKindErrorFont;
+    default:
+      XPCLogAssrt1(NO, @"[UNKNOWN] SVRFontSettingKind(%d)", (int)kind);
       return SVRResetButtonKindUnknown;
   }
 }

@@ -32,6 +32,13 @@
 
 // MARK: View Enumerations
 
+typedef XP_ENUM(XPInteger, SVRFontSettingKind) {
+  SVRFontSettingKindUnknown,
+  SVRFontSettingKindMath,
+  SVRFontSettingKindOther,
+  SVRFontSettingKindError,
+};
+
 typedef XP_ENUM(XPInteger, SVRColorWellKind) {
   SVRColorWellKindUnknown,
   SVRColorWellKindOperandLight,
@@ -163,20 +170,26 @@ static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
 
 @interface SVRAccessoryWindowsSettingsFontsBox: NSBox
 {
-  mm_unretain NSTextField *_fieldTextMath;
-  mm_unretain NSTextField *_fieldTextOther;
-  mm_unretain NSTextField *_fieldTextError;
+  mm_new NSMutableDictionary *_textFields;
 }
 -(id)initWithFrame:(NSRect)frameRect;
+-(NSTextField*)textFieldOfKind:(SVRFontSettingKind)kind;
+-(void)setTextField:(NSTextField*)textField
+            forKind:(SVRFontSettingKind)kind;
 @end
 
 @interface NSControl (SVRAccessoryWindows)
 +(NSButton*)SVR_keypadButtonOfKind:(SVRKeypadButtonKind)kind;
-+(NSTextField*)SVR_labelWithFrame:(NSRect)frame;
-+(NSButton*)SVR_resetButtonWithFrame:(NSRect)frame
-                                kind:(SVRResetButtonKind)kind;
++(NSButton*)SVR_settingsButtonWithFrame:(NSRect)frame
+                                  title:(NSString*)title
+                                 action:(SEL)action
+                                    tag:(XPInteger)tag;
 +(NSColorWell*)SVR_colorWellWithFrame:(NSRect)frame
                                  kind:(SVRColorWellKind)kind;
++(NSTextField*)SVR_labelWithFrame:(NSRect)frame;
++(NSTextField*)SVR_textFieldWithFrame:(NSRect)frame
+                               target:(id)target
+                               action:(SEL)action;
 -(id)SVR_sizeToFitVertically;
 -(id)SVR_setObjectValue:(id)objectValue
                    font:(NSFont*)font
@@ -198,3 +211,4 @@ static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
 
 NSString *SVR_stringForLabelForKind(SVRResetButtonKind kind);
 SVRResetButtonKind SVR_resetButtonKindForColorWellKind(SVRColorWellKind kind);
+SVRResetButtonKind SVR_resetButtonKindForFontSettingKind(SVRFontSettingKind kind);
