@@ -225,8 +225,6 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 {
   BOOL success = NO;
   NSString *key = [self __SVR_keyForThemeFont:theme];
-  NSFont *oldFont = [self SVR_fontForTheme:theme];
-  if ([oldFont isEqual:font]) { return YES; }
   if (font) {
     [self setObject:[font XP_data] forKey:key];
   } else {
