@@ -29,12 +29,6 @@
 
 #import "SVRAccessoryWindowViews.h"
 
-#ifdef MAC_OS_X_VERSION_10_8
-XPFloat const HACK_OSX = 6;
-#else
-XPFloat const HACK_OSX = 0;
-#endif
-
 // MARK: SVRAccessoryWindowKeypadView
 
 @implementation SVRAccessoryWindowKeypadView: NSView
@@ -213,12 +207,12 @@ XPFloat const HACK_OSX = 0;
 
 -(id)initWithFrame:(NSRect)frameRect;
 {
-  XPFloat kYOrigin = 228;
   XPFloat kLabelYOffset = 32;
+  XPFloat kYOrigin = frameRect.size.height-kLabelYOffset-16;
   XPFloat kVPad = kLabelYOffset + 22;
-  NSRect labelRect = NSMakeRect(0,            kYOrigin+kLabelYOffset, 236-HACK_OSX,  0);
-  NSRect fieldRect = NSMakeRect(0,            kYOrigin,               236-HACK_OSX, 30);
-  NSRect resetRect = NSMakeRect(240-HACK_OSX, kYOrigin,               50,           30);
+  NSRect resetRect = NSMakeRect(frameRect.size.width-50, kYOrigin,               50,                   30);
+  NSRect fieldRect = NSMakeRect(frameRect.origin.x,      kYOrigin,               resetRect.origin.x-4, 30);
+  NSRect labelRect = NSMakeRect(frameRect.origin.x,      kYOrigin+kLabelYOffset, resetRect.origin.x-4,  0);
   SVRResetButtonKind kind = SVRResetButtonKindUnknown;
   
   self = [super initWithFrame:frameRect];
@@ -305,11 +299,11 @@ XPFloat const HACK_OSX = 0;
 -(id)initWithFrame:(NSRect)frameRect;
 {
   XPFloat kVPad = 32;
-  XPFloat kYOrigin = 228;
-  NSRect labelRect = NSMakeRect(0,            kYOrigin+4, 128-HACK_OSX,  0);
-  NSRect lightRect = NSMakeRect(132-HACK_OSX, kYOrigin,   50,           30);
-  NSRect darkkRect = NSMakeRect(186-HACK_OSX, kYOrigin,   50,           30);
-  NSRect resetRect = NSMakeRect(240-HACK_OSX, kYOrigin,   50,           30);
+  XPFloat kYOrigin = frameRect.size.height-48;
+  NSRect resetRect = NSMakeRect(frameRect.size.width-50, kYOrigin,   50,                   30);
+  NSRect darkkRect = NSMakeRect(resetRect.origin.x-50-4, kYOrigin,   50,                   30);
+  NSRect lightRect = NSMakeRect(darkkRect.origin.x-50-4, kYOrigin,   50,                   30);
+  NSRect labelRect = NSMakeRect(frameRect.origin.x,      kYOrigin+4, lightRect.origin.x-4,  0);
   SVRColorWellKind colorKind = SVRColorWellKindUnknown;
   SVRResetButtonKind resetKind = SVRResetButtonKindUnknown;
   NSColorWell *colorWell = nil;
@@ -389,13 +383,13 @@ XPFloat const HACK_OSX = 0;
 @implementation SVRAccessoryWindowsSettingsFontsView
 -(id)initWithFrame:(NSRect)frameRect;
 {
-  XPFloat kYOrigin = 228;
   XPFloat kLabelYOffset = 32;
+  XPFloat kYOrigin = frameRect.size.height-kLabelYOffset-16;
   XPFloat kVPad = kLabelYOffset + 22;
-  NSRect labelRect = NSMakeRect(0,            kYOrigin+kLabelYOffset, 182-HACK_OSX,  0);
-  NSRect fieldRect = NSMakeRect(0,            kYOrigin,               182-HACK_OSX, 30);
-  NSRect setttRect = NSMakeRect(186-HACK_OSX, kYOrigin,               50,           30);
-  NSRect resetRect = NSMakeRect(240-HACK_OSX, kYOrigin,               50,           30);
+  NSRect resetRect = NSMakeRect(frameRect.size.width-50, kYOrigin,               50,                   30);
+  NSRect setttRect = NSMakeRect(resetRect.origin.x-50-4, kYOrigin,               50,                   30);
+  NSRect fieldRect = NSMakeRect(frameRect.origin.x,      kYOrigin,               setttRect.origin.x-4, 30);
+  NSRect labelRect = NSMakeRect(frameRect.origin.x,      kYOrigin+kLabelYOffset, setttRect.origin.x-4,  0);
   SVRThemeFont fontKind = SVRThemeFontUnknown;
   SVRResetButtonKind resetKind = SVRResetButtonKindUnknown;
   NSTextField *textField = nil;

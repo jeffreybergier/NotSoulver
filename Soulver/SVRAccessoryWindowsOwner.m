@@ -388,7 +388,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   [contentView addSubview:_settingsBoxParent];
   
   // These get added to the view in -settingsBoxSelectionChanged:
-  settingViewFrame = [[_settingsBoxParent contentView] bounds];
+  settingViewFrame = [[_settingsBoxParent contentView] bounds]; // <--- HERE IS THE CRITICAL CHANGE!
   _generalView = [[SVRAccessoryWindowsSettingsGeneralView alloc] initWithFrame:settingViewFrame];
   _colorsView  = [[SVRAccessoryWindowsSettingsColorsView  alloc] initWithFrame:settingViewFrame];
   _fontsView   = [[SVRAccessoryWindowsSettingsFontsView   alloc] initWithFrame:settingViewFrame];
