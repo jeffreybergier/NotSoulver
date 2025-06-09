@@ -147,7 +147,7 @@ static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
 
 // MARK: SVRAccessoryWindowSettingsView
 
-@interface SVRAccessoryWindowsSettingsGeneralBox: NSBox
+@interface SVRAccessoryWindowsSettingsGeneralView: NSView
 {
   mm_unretain NSPopUpButton *_selectorButton;
   mm_unretain NSTextField *_fieldTime;
@@ -158,7 +158,7 @@ static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
 -(IBAction)__HACK_writeWaitTime:(NSTextField*)sender;
 @end
 
-@interface SVRAccessoryWindowsSettingsColorsBox: NSBox
+@interface SVRAccessoryWindowsSettingsColorsView: NSView
 {
   mm_new NSMutableDictionary *_colorWells;
 }
@@ -168,7 +168,7 @@ static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
             forKind:(SVRColorWellKind)kind;
 @end
 
-@interface SVRAccessoryWindowsSettingsFontsBox: NSBox
+@interface SVRAccessoryWindowsSettingsFontsView: NSView
 {
   mm_new NSMutableDictionary *_textFields;
 }

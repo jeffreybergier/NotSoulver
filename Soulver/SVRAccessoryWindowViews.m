@@ -29,7 +29,7 @@
 
 #import "SVRAccessoryWindowViews.h"
 
-#ifdef XPSupportsButtonStyles
+#ifdef MAC_OS_X_VERSION_10_8
 XPFloat const HACK_OSX = 6;
 #else
 XPFloat const HACK_OSX = 0;
@@ -209,7 +209,7 @@ XPFloat const HACK_OSX = 0;
 
 // MARK: SVRAccessoryWindowSettingsView
 
-@implementation SVRAccessoryWindowsSettingsGeneralBox
+@implementation SVRAccessoryWindowsSettingsGeneralView
 
 -(id)initWithFrame:(NSRect)frameRect;
 {
@@ -223,9 +223,6 @@ XPFloat const HACK_OSX = 0;
   
   self = [super initWithFrame:frameRect];
   XPParameterRaise(self);
-  
-  [self setTitle:@"General"];
-  [self setTitlePosition:NSNoTitle];
   
   // User Interface Style Selector
   kind = SVRResetButtonKindUIStyle;
@@ -303,7 +300,7 @@ XPFloat const HACK_OSX = 0;
 
 @end
 
-@implementation SVRAccessoryWindowsSettingsColorsBox
+@implementation SVRAccessoryWindowsSettingsColorsView
 
 -(id)initWithFrame:(NSRect)frameRect;
 {
@@ -320,9 +317,6 @@ XPFloat const HACK_OSX = 0;
   self = [super initWithFrame:frameRect];
   XPParameterRaise(self);
   _colorWells = [NSMutableDictionary new];
-  
-  [self setTitle:@"Colors"];
-  [self setTitlePosition:NSNoTitle];
   
   for (colorKind =SVRColorWellKindOperandLight;
        colorKind<=SVRColorWellKindBackgroundDark;
@@ -392,7 +386,7 @@ XPFloat const HACK_OSX = 0;
 
 @end
 
-@implementation SVRAccessoryWindowsSettingsFontsBox
+@implementation SVRAccessoryWindowsSettingsFontsView
 -(id)initWithFrame:(NSRect)frameRect;
 {
   XPFloat kYOrigin = 228;
@@ -409,9 +403,6 @@ XPFloat const HACK_OSX = 0;
   self = [super initWithFrame:frameRect];
   XPParameterRaise(self);
   _textFields = [NSMutableDictionary new];
-  
-  [self setTitle:@"Fonts"];
-  [self setTitlePosition:NSNoTitle];
   
   for (fontKind =SVRThemeFontMath;
        fontKind<=SVRThemeFontError;

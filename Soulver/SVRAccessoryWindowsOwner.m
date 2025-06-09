@@ -371,25 +371,33 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
                                 kWindowPadding,
                                 kContentFrame.size.width-kWindowPadding*2,
                                 kContentFrame.size.height-kSelectorFrame.size.height-kWindowPadding*2.5);
+  NSRect settingViewFrame = NSZeroRect;
   
   NSView *contentView = [[[NSView alloc] initWithFrame:kContentFrame] autorelease];
   
-  _settingBoxSelector = [[[NSPopUpButton alloc] initWithFrame:kSelectorFrame pullsDown:NO] autorelease];
-  [_settingBoxSelector addItemWithTitle:@"General"];
-  [_settingBoxSelector addItemWithTitle:@"Colors"];
-  [_settingBoxSelector addItemWithTitle:@"Fonts"];
-  [_settingBoxSelector setAction:@selector(settingsBoxSelectionChanged:)];
-  [contentView addSubview:_settingBoxSelector];
+  _settingsBoxSelector = [[[NSPopUpButton alloc] initWithFrame:kSelectorFrame pullsDown:NO] autorelease];
+  [_settingsBoxSelector addItemWithTitle:@"General"];
+  [_settingsBoxSelector addItemWithTitle:@"Colors"];
+  [_settingsBoxSelector addItemWithTitle:@"Fonts"];
+  [_settingsBoxSelector setAction:@selector(settingsBoxSelectionChanged:)];
+  [contentView addSubview:_settingsBoxSelector];
   
-  _generalBox = [[SVRAccessoryWindowsSettingsGeneralBox alloc] initWithFrame:kBoxFrame];
-  _colorsBox  = [[SVRAccessoryWindowsSettingsColorsBox  alloc] initWithFrame:kBoxFrame];
-  _fontsBox   = [[SVRAccessoryWindowsSettingsFontsBox   alloc] initWithFrame:kBoxFrame];
-  // These get added to the view in -selectionChanged:
+  _settingsBoxParent = [[[NSBox alloc] initWithFrame:kBoxFrame] autorelease];
+  [_settingsBoxParent setTitle:@"Settings"];
+  [_settingsBoxParent setTitlePosition:NSNoTitle];
+  [contentView addSubview:_settingsBoxParent];
+  
+  // These get added to the view in -settingsBoxSelectionChanged:
+  settingViewFrame = [[_settingsBoxParent contentView] bounds];
+  _generalView = [[SVRAccessoryWindowsSettingsGeneralView alloc] initWithFrame:settingViewFrame];
+  _colorsView  = [[SVRAccessoryWindowsSettingsColorsView  alloc] initWithFrame:settingViewFrame];
+  _fontsView   = [[SVRAccessoryWindowsSettingsFontsView   alloc] initWithFrame:settingViewFrame];
    
-  XPParameterRaise(_settingBoxSelector);
-  XPParameterRaise(_generalBox);
-  XPParameterRaise(_colorsBox);
-  XPParameterRaise(_fontsBox);
+  XPParameterRaise(_settingsBoxSelector);
+  XPParameterRaise(_settingsBoxParent);
+  XPParameterRaise(_generalView);
+  XPParameterRaise(_colorsView);
+  XPParameterRaise(_fontsView);
   
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(themeDidChangeNotification:)
@@ -397,7 +405,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
                                              object:nil];
   
   [self setView:contentView];
-  [self settingsBoxSelectionChanged:_settingBoxSelector];
+  [self settingsBoxSelectionChanged:_settingsBoxSelector];
   [self themeDidChangeNotification:nil];
 }
 
@@ -406,14 +414,14 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   NSString *string = [NSString stringWithFormat:@"%g", [ud SVR_waitTimeForRendering]];
-  [[_generalBox timeField] setStringValue:string];
+  [[_generalView timeField] setStringValue:string];
 }
 
 -(void)readUserInterfaceStyle;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   XPUserInterfaceStyle style = [ud SVR_userInterfaceStyleSetting];
-  [[_generalBox themeSelector] selectItemAtIndex:style];
+  [[_generalView themeSelector] selectItemAtIndex:style];
 }
 
 -(void)readColors;
@@ -425,7 +433,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
        kind<=SVRColorWellKindBackgroundDark;
        kind++)
   {
-    well = [_colorsBox colorWellOfKind:kind];
+    well = [_colorsView colorWellOfKind:kind];
     switch (kind) {
       case SVRColorWellKindOperandLight:
         [well setColor:[ud SVR_colorForTheme:SVRThemeColorOperandText
@@ -503,7 +511,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   NSTextField *field = nil;
   NSFont *font = nil;
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  SVRAccessoryWindowsSettingsFontsBox *box = _fontsBox;
+  SVRAccessoryWindowsSettingsFontsView *box = _fontsView;
   SVRThemeFont kind = SVRThemeFontUnknown;
   
   for (kind =SVRThemeFontMath;
@@ -521,20 +529,20 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 
 -(IBAction)settingsBoxSelectionChanged:(NSPopUpButton*)sender;
 {
-  NSView *myView = [self view];
+  NSBox *myView = _settingsBoxParent;
   XPParameterRaise(sender);
-  [_generalBox removeFromSuperview];
-  [_colorsBox  removeFromSuperview];
-  [_fontsBox   removeFromSuperview];
+  [_generalView removeFromSuperview];
+  [_colorsView  removeFromSuperview];
+  [_fontsView   removeFromSuperview];
   switch ([sender indexOfSelectedItem]) {
     case 0:
-      [myView addSubview:_generalBox];
+      [myView setContentView:_generalView];
       break;
     case 1:
-      [myView addSubview:_colorsBox];
+      [myView setContentView:_colorsView];
       break;
     case 2:
-      [myView addSubview:_fontsBox];
+      [myView setContentView:_fontsView];
       break;
     default:
       XPLogAssrt1(NO, @"[UNKNOWN] %d", (int)[sender indexOfSelectedItem]);
@@ -788,14 +796,15 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [_view_42    release];
-  [_fontsBox   release];
-  [_colorsBox  release];
-  [_generalBox release];
+  [_fontsView   release];
+  [_colorsView  release];
+  [_generalView release];
   _view_42    = nil;
-  _fontsBox   = nil;
-  _colorsBox  = nil;
-  _generalBox = nil;
-  _settingBoxSelector = nil;
+  _fontsView   = nil;
+  _colorsView  = nil;
+  _generalView = nil;
+  _settingsBoxParent = nil;
+  _settingsBoxSelector = nil;
   [super dealloc];
 }
 
