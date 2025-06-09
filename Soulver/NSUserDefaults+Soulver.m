@@ -57,9 +57,9 @@ NSString *SVRThemeDarkOtherTextColor              = @"kSVRThemeDarkOtherTextColo
 NSString *SVRThemeDarkBackgroundColor             = @"kSVRThemeDarkBackgroundColorKey";
 NSString *SVRThemeDarkInsertionPoint              = @"kSVRThemeDarkInsertionPointKey";
 
-NSString *SVRThemeOtherFont                       = @"kSVRThemeOtherFontKey";
-NSString *SVRThemeMathFont                        = @"kSVRThemeMathFontKey";
-NSString *SVRThemeErrorFont                       = @"kSVRThemeErrorFontKey";
+NSString *SVRThemeOtherFontKey                    = @"kSVRThemeOtherFontKey";
+NSString *SVRThemeMathFontKey                     = @"kSVRThemeMathFontKey";
+NSString *SVRThemeErrorFontKey                    = @"kSVRThemeErrorFontKey";
 
 NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyleKey";
 
@@ -276,9 +276,12 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 -(NSString*)__SVR_keyForThemeFont:(SVRThemeFont)theme;
 {
   switch (theme) {
-    case SVRThemeFontMath:  return SVRThemeMathFont;
-    case SVRThemeFontError: return SVRThemeErrorFont;
-    case SVRThemeFontOther: return SVRThemeOtherFont;
+    case SVRThemeFontMath:  return SVRThemeMathFontKey;
+    case SVRThemeFontError: return SVRThemeErrorFontKey;
+    case SVRThemeFontOther: return SVRThemeOtherFontKey;
+    default:
+      XPCLogAssrt1(NO, @"[UNKNOWN] SVRThemeFont(%d)", (int)theme);
+      return nil;
   }
   return nil;
 }
@@ -317,9 +320,9 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
           SVRThemeDarkBackgroundColor,
           SVRThemeDarkInsertionPoint,
           // Fonts
-          SVRThemeOtherFont,
-          SVRThemeMathFont,
-          SVRThemeErrorFont,
+          SVRThemeOtherFontKey,
+          SVRThemeMathFontKey,
+          SVRThemeErrorFontKey,
           // Other
           XPUserDefaultsSavePanelLastDirectory,
           SVRThemeUserInterfaceStyle,
