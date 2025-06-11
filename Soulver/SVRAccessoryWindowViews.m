@@ -150,35 +150,41 @@
 
 +(NSScrollView*)__scrollViewWithFrame:(NSRect)frame textView:(NSTextView**)inoutTextView;
 {
+  NSSize contentSize = NSZeroSize;
+  NSRect contentBounds = NSZeroRect;
   NSTextView *textView = nil;
   NSScrollView *scrollView = nil;
-  NSTextContainer *container = nil;
 
-  // Create the scroll view
-  scrollView = [[[NSScrollView alloc] initWithFrame:frame] autorelease];
-  [scrollView setBorderType:NSGrooveBorder];
+  /// This way of constructing the TextView is directly from Apple
+  /// https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/TextUILayer/Tasks/TextInScrollView.html#//apple_ref/doc/uid/20000938-CJBBIAAF
+  
+  // ScrollView configuration
+  scrollView = [[[NSScrollView alloc] initWithFrame:frame ] autorelease];
   [scrollView setHasVerticalScroller:YES];
   [scrollView setHasHorizontalScroller:NO];
 
-  // Create the text view
-  textView = [[[NSTextView alloc] initWithFrame:frame] autorelease];
+  // TextView configuration
+  contentSize = [scrollView contentSize];
+  contentBounds = NSMakeRect(0,0, contentSize.width, contentSize.height);
+  textView = [[[NSTextView alloc] initWithFrame:contentBounds] autorelease];
+  [textView setMinSize:NSMakeSize(0.0, contentSize.height)];
+  [textView setMaxSize:NSMakeSize(FLT_MAX, FLT_MAX)];
+  [textView setVerticallyResizable:YES];
+  [textView setHorizontallyResizable:NO];
+  [textView setAutoresizingMask:NSViewWidthSizable];
+  [[textView textContainer] setContainerSize:NSMakeSize(contentSize.width, FLT_MAX)];
+  [[textView textContainer] setWidthTracksTextView:YES];
+  
+  // Embed the text view
+  [scrollView setDocumentView:textView];
+  /// END Apple Instructions
+  
+  // Customize for this app
+  [scrollView setBorderType:NSBezelBorder];
   [textView setEditable:NO];
   [textView setSelectable:YES];
   [textView setDrawsBackground:NO];
   [textView setFont:[NSFont systemFontOfSize:12]];
-  [textView setAutoresizingMask:NSViewHeightSizable | NSViewWidthSizable];
-
-  // Make the text view vertically resizable only
-  [textView setHorizontallyResizable:NO];
-  [textView setVerticallyResizable:YES];
-
-  // Set the container size and width tracking
-  container = [textView textContainer];
-  [container setContainerSize:NSMakeSize(frame.size.width, FLT_MAX)];
-  [container setWidthTracksTextView:YES];
-
-  // Put the text view inside the scroll view
-  [scrollView setDocumentView:textView];
 
   *inoutTextView = textView;
   return scrollView;
