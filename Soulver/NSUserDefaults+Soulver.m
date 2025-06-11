@@ -353,9 +353,9 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
           [[NSColor colorWithCalibratedRed:  0/255.0 green:  0/255.0 blue:  0/255.0 alpha:1.0] XP_data], // SVRThemeDarkBackgroundColor
           [[NSColor colorWithCalibratedRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0] XP_data], // SVRThemeDarkInsertionPoint
           // Fonts
-          [[NSFont userFontOfSize:12] XP_data],           // SVRThemeOtherFont
-          [[NSFont userFixedPitchFontOfSize:12] XP_data], // SVRThemeMathFont
-          [[NSFont userFixedPitchFontOfSize:12] XP_data], // SVRThemeErrorFont
+          [[NSFont userFontOfSize:14] XP_data],           // SVRThemeOtherFont
+          [[NSFont userFixedPitchFontOfSize:14] XP_data], // SVRThemeMathFont
+          [[NSFont userFontOfSize:14] XP_data],           // SVRThemeErrorFont
           // Other
           NSHomeDirectory(), // XPUserDefaultsSavePanelLastDirectory
           @"0",   // SVRThemeUserInterfaceStyle
