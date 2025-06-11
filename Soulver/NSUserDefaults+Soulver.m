@@ -85,13 +85,16 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 
 -(BOOL)SVR_setWaitTimeForRendering:(NSTimeInterval)newValue;
 {
+  BOOL success = NO;
   if (newValue < 0) {
     [self removeObjectForKey:XPUserDefaultsWaitTimeForRendering];
   } else {
     [self setFloat:(float)newValue forKey:XPUserDefaultsWaitTimeForRendering];
   }
+  success = [self synchronize];
+  XPLogAssrt(success, @"[FAIL]");
   [self __postChangeNotification];
-  return [self synchronize];
+  return success;
 }
 
 // MARK: Accessory Window Visibility
@@ -208,7 +211,8 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
     [self removeObjectForKey:key];
   }
   success = [self synchronize];
-  if (success) { [self __postChangeNotification]; }
+  [self __postChangeNotification];
+  XPLogAssrt(success, @"[FAIL]");
   return success;
 }
 
