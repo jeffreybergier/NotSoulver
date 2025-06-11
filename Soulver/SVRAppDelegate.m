@@ -99,13 +99,12 @@
   NSApplication *app = [aNotification object];
   // Observe Dark Mode
   [self beginObservingEffectiveAppearance:app];
-#ifndef XPSupportsNSDocument
+#if XPSupportsNSDocument == 0
     // Register for Notifications
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(__windowWillCloseNotification:)
                                                  name:NSWindowWillCloseNotification
                                                object:nil];
-  }
 #endif
 #ifdef XPSupportsStateRestoration
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -251,6 +250,8 @@
   id document = [window delegate];
   if (document) {
     [[self openDocuments] removeObject:document];
+  } else {
+    XPLogDebug1(@"Not a document window(%@)", window);
   }
 }
 
