@@ -180,17 +180,10 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   [window center];
   [window setTitle:@"Settings"];
   [window setReleasedWhenClosed:NO];
-  [window setContentView:[_settingsViewController view]];
   [window setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameSettings];
   [window XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameSettings];
   [window XP_setRestorationClass:appDelegateClass];
-  
-  // Configure Views/Responder Chains
-  // In older systems the view controller is not automatically
-  // added to the responder chain. This checks for that and adds it
-  if (![window respondsToSelector:@selector(setContentViewController:)]) {
-    [window setNextResponder:_settingsViewController];
-  }
+  [window XP_setContentViewController:_settingsViewController];
   
   XPParameterRaise(_keypadPanel);
   XPParameterRaise(_aboutWindow);
@@ -531,9 +524,6 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 {
   NSBox *myView = _settingsBoxParent;
   XPParameterRaise(sender);
-  [_generalView removeFromSuperview];
-  [_colorsView  removeFromSuperview];
-  [_fontsView   removeFromSuperview];
   switch ([sender indexOfSelectedItem]) {
     case 0:
       [myView setContentView:_generalView];

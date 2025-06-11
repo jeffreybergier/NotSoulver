@@ -419,6 +419,7 @@ NSArray* XPRunOpenPanel(NSString *extension);
 -(void)XP_setIdentifier:(NSString*)anIdentifier;
 -(void)XP_setAppearanceWithUserInterfaceStyle:(XPUserInterfaceStyle)aStyle;
 -(void)XP_setCollectionBehavior:(XPWindowCollectionBehavior)collectionBehavior;
+-(void)XP_setContentViewController:(XPViewController*)viewController;
 @end
 
 // MARK: XPLogging

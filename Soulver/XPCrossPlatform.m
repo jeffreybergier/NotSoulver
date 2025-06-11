@@ -713,6 +713,18 @@ NSArray* XPRunOpenPanel(NSString *extension)
   [self setCollectionBehavior:collectionBehavior];
 #endif
 }
+
+-(void)XP_setContentViewController:(XPViewController*)viewController;
+{
+  SEL toPerform = @selector(setContentViewController:);
+  if ([self respondsToSelector:toPerform]) {
+    [self performSelector:toPerform withObject:viewController];
+  } else {
+    [self setContentView:[viewController view]];
+    [self setNextResponder:viewController];
+  }
+}
+
 @end
 
 @implementation XPLog
