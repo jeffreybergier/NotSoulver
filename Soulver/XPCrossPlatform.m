@@ -713,6 +713,29 @@ NSArray* XPRunOpenPanel(NSString *extension)
   [self setCollectionBehavior:collectionBehavior];
 #endif
 }
+
+-(void)XP_setContentViewController:(XPViewController*)viewController;
+{
+  SEL toPerform = @selector(setContentViewController:);
+  SEL getView   = @selector(view);
+  if ([self respondsToSelector:toPerform]) {
+    [self performSelector:toPerform withObject:viewController];
+  } else {
+    XPLogAssrt1([viewController respondsToSelector:getView], @"%@ does not respond to -view", viewController);
+    [self setContentView:[viewController performSelector:getView]];
+    [self setNextResponder:viewController];
+  }
+}
+
+@end
+
+@implementation NSScrollView (CrossPlatform)
+-(void)XP_setDrawsBackground:(BOOL)drawsBackground;
+{
+#ifdef MAC_OS_X_VERSION_10_2
+  [self setDrawsBackground:drawsBackground];
+#endif
+}
 @end
 
 @implementation XPLog

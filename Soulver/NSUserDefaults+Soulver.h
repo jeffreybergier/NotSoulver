@@ -45,9 +45,10 @@ typedef XP_ENUM(XPInteger, SVRThemeColor) {
 };
 
 typedef XP_ENUM(XPInteger, SVRThemeFont) {
-  SVRThemeFontOther = 0,
+  SVRThemeFontUnknown = 0,
   SVRThemeFontMath = 1,
-  SVRThemeFontError = 2
+  SVRThemeFontOther = 2,
+  SVRThemeFontError = 3
 };
 
 @interface NSUserDefaults (Soulver)

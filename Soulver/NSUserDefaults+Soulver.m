@@ -57,9 +57,9 @@ NSString *SVRThemeDarkOtherTextColor              = @"kSVRThemeDarkOtherTextColo
 NSString *SVRThemeDarkBackgroundColor             = @"kSVRThemeDarkBackgroundColorKey";
 NSString *SVRThemeDarkInsertionPoint              = @"kSVRThemeDarkInsertionPointKey";
 
-NSString *SVRThemeOtherFont                       = @"kSVRThemeOtherFontKey";
-NSString *SVRThemeMathFont                        = @"kSVRThemeMathFontKey";
-NSString *SVRThemeErrorFont                       = @"kSVRThemeErrorFontKey";
+NSString *SVRThemeOtherFontKey                    = @"kSVRThemeOtherFontKey";
+NSString *SVRThemeMathFontKey                     = @"kSVRThemeMathFontKey";
+NSString *SVRThemeErrorFontKey                    = @"kSVRThemeErrorFontKey";
 
 NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyleKey";
 
@@ -85,12 +85,16 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 
 -(BOOL)SVR_setWaitTimeForRendering:(NSTimeInterval)newValue;
 {
+  BOOL success = NO;
   if (newValue < 0) {
     [self removeObjectForKey:XPUserDefaultsWaitTimeForRendering];
   } else {
     [self setFloat:(float)newValue forKey:XPUserDefaultsWaitTimeForRendering];
   }
-  return [self synchronize];
+  success = [self synchronize];
+  XPLogAssrt(success, @"[FAIL]");
+  [self __postChangeNotification];
+  return success;
 }
 
 // MARK: Accessory Window Visibility
@@ -207,7 +211,8 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
     [self removeObjectForKey:key];
   }
   success = [self synchronize];
-  if (success) { [self __postChangeNotification]; }
+  [self __postChangeNotification];
+  XPLogAssrt(success, @"[FAIL]");
   return success;
 }
 
@@ -224,8 +229,6 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 {
   BOOL success = NO;
   NSString *key = [self __SVR_keyForThemeFont:theme];
-  NSFont *oldFont = [self SVR_fontForTheme:theme];
-  if ([oldFont isEqual:font]) { return YES; }
   if (font) {
     [self setObject:[font XP_data] forKey:key];
   } else {
@@ -275,9 +278,12 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 -(NSString*)__SVR_keyForThemeFont:(SVRThemeFont)theme;
 {
   switch (theme) {
-    case SVRThemeFontMath:  return SVRThemeMathFont;
-    case SVRThemeFontError: return SVRThemeErrorFont;
-    case SVRThemeFontOther: return SVRThemeOtherFont;
+    case SVRThemeFontMath:  return SVRThemeMathFontKey;
+    case SVRThemeFontError: return SVRThemeErrorFontKey;
+    case SVRThemeFontOther: return SVRThemeOtherFontKey;
+    default:
+      XPCLogAssrt1(NO, @"[UNKNOWN] SVRThemeFont(%d)", (int)theme);
+      return nil;
   }
   return nil;
 }
@@ -316,9 +322,9 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
           SVRThemeDarkBackgroundColor,
           SVRThemeDarkInsertionPoint,
           // Fonts
-          SVRThemeOtherFont,
-          SVRThemeMathFont,
-          SVRThemeErrorFont,
+          SVRThemeOtherFontKey,
+          SVRThemeMathFontKey,
+          SVRThemeErrorFontKey,
           // Other
           XPUserDefaultsSavePanelLastDirectory,
           SVRThemeUserInterfaceStyle,
@@ -347,9 +353,9 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
           [[NSColor colorWithCalibratedRed:  0/255.0 green:  0/255.0 blue:  0/255.0 alpha:1.0] XP_data], // SVRThemeDarkBackgroundColor
           [[NSColor colorWithCalibratedRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0] XP_data], // SVRThemeDarkInsertionPoint
           // Fonts
-          [[NSFont userFontOfSize:12] XP_data],           // SVRThemeOtherFont
-          [[NSFont userFixedPitchFontOfSize:12] XP_data], // SVRThemeMathFont
-          [[NSFont userFixedPitchFontOfSize:12] XP_data], // SVRThemeErrorFont
+          [[NSFont userFontOfSize:14] XP_data],           // SVRThemeOtherFont
+          [[NSFont userFixedPitchFontOfSize:14] XP_data], // SVRThemeMathFont
+          [[NSFont userFontOfSize:14] XP_data],           // SVRThemeErrorFont
           // Other
           NSHomeDirectory(), // XPUserDefaultsSavePanelLastDirectory
           @"0",   // SVRThemeUserInterfaceStyle

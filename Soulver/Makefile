@@ -19,10 +19,8 @@ ICONSECTIONS =	-sectcreate __ICON app /NextLibrary/Frameworks/AppKit.framework/R
 
 LOCAL_RESOURCES = MainMenu_42.nib Localizable.strings
 
-GLOBAL_RESOURCES = Images/about-image-512.tiff\
-                   Images/BlocksFullSizeSMlght.tiff\
-                   Images/NeXTLogoMed.tiff Images/TagLine.tiff\
-                   Images/TM.tiff TestsIntegration-DiskRep.txt\
+GLOBAL_RESOURCES = Images/about-image-512.tiff Images/NeXTLogoMed.tiff\
+                   Images/TagLine.tiff TestsIntegration-DiskRep.txt\
                    TestsIntegration-DisplayRep.rtf\
                    TestsIntegration-SolvedRep.rtf\
                    TestsIntegration-UnsolvedRep.rtf
@@ -30,8 +28,8 @@ GLOBAL_RESOURCES = Images/about-image-512.tiff\
 CLASSES = NSUserDefaults+Soulver.m SVRAppDelegate.m\
           SVRAccessoryWindowsOwner.m SVRAccessoryWindowViews.m\
           SVRDocument.m SVRDocumentModelController.m\
-          SVRDocumentViewController.m SVRSettingsViewController.m\
-          SVRSolver.m SVRSolverExpressionTagger.m SVRSolverScanner.m\
+          SVRDocumentViewController.m SVRSolver.m\
+          SVRSolverExpressionTagger.m SVRSolverScanner.m\
           SVRSolverSolutionTagger.m SVRSolverStyler.m\
           SVRSolverTextAttachment.m TestsIntegration.m TestsUnit.m\
           XPCrossPlatform.m XPDocument.m XPRegularExpression.m
@@ -39,8 +37,7 @@ CLASSES = NSUserDefaults+Soulver.m SVRAppDelegate.m\
 HFILES = slre.h NSUserDefaults+Soulver.h SVRAppDelegate.h SVRDocument.h\
          SVRAccessoryWindowsOwner.h SVRAccessoryWindowViews.h\
          SVRDocumentModelController.h SVRDocumentViewController.h\
-         SVRSettingsViewController.h SVRSolver.h\
-         SVRSolverExpressionTagger.h SVRSolverScanner.h\
+         SVRSolver.h SVRSolverExpressionTagger.h SVRSolverScanner.h\
          SVRSolverSolutionTagger.h SVRSolverStyler.h\
          SVRSolverTextAttachment.h TestsIntegration.h TestsUnit.h\
          XPCrossPlatform.h XPDocument.h XPRegularExpression.h
@@ -49,8 +46,7 @@ MFILES = Soulver_main.m
 
 CFILES = slre.c
 
-OTHERSRCS = Makefile.preamble Makefile Makefile.postamble m.template\
-            h.template .gdbinit
+OTHERSRCS = Makefile.preamble Makefile Makefile.postamble .gdbinit
 
 
 MAKEFILEDIR = $(NEXT_ROOT)/NextDeveloper/Makefiles/pb_makefiles

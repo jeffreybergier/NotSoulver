@@ -51,8 +51,8 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 {
   NSLayoutManager *layoutManager = [[[NSLayoutManager alloc] init]                                                 autorelease];
   NSTextContainer *textContainer = [[[NSTextContainer alloc] initWithContainerSize:NSMakeSize(FLT_MAX, FLT_MAX)]   autorelease];
-  NSTextView *textView           = [[[NSTextView      alloc] initWithFrame:NSZeroRect textContainer:textContainer] autorelease];
-  NSScrollView *scrollView       = [[[NSScrollView    alloc] initWithFrame:NSZeroRect]                             autorelease];
+  NSTextView      *textView      = [[[NSTextView      alloc] initWithFrame:NSZeroRect textContainer:textContainer] autorelease];
+  NSScrollView    *scrollView    = [[[NSScrollView    alloc] initWithFrame:NSZeroRect]                             autorelease];
   SVRDocumentModelController *modelController = [self modelController];
   
   XPParameterRaise(layoutManager);
@@ -88,7 +88,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   
   // Self
   _textView = [textView retain];
-  [self setView: scrollView];
+  [self setView:scrollView];
   
   // Theming
   [self __themeDidChangeNotification:nil];

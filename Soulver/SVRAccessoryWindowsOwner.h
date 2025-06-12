@@ -30,13 +30,16 @@
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
 #import "NSUserDefaults+Soulver.h"
+#import "SVRAccessoryWindowViews.h"
+
+@class SVRAccessoryWindowsSettingsViewController;
 
 @interface SVRAccessoryWindowsOwner: NSObject
 {
-  mm_new IBOutlet NSPanel  *_keypadPanel;
-  mm_new IBOutlet NSWindow *_aboutWindow;
-  mm_new IBOutlet NSWindow *_settingsWindow;
-  BOOL _windowsLoaded;
+  mm_new NSPanel  *_keypadPanel;
+  mm_new NSWindow *_aboutWindow;
+  mm_new NSWindow *_settingsWindow;
+  mm_new SVRAccessoryWindowsSettingsViewController *_settingsViewController;
 }
 
 // MARK: Lazy-Loading Properties
@@ -89,3 +92,42 @@
 -(void)setThemeFont:(SVRThemeFont)themeFont;
 
 @end
+
+@interface SVRAccessoryWindowsSettingsViewController: XPViewController
+{
+  mm_new NSView *_view_42; // Used only in OpenStep
+  mm_retain SVRAccessoryWindowsSettingsGeneralView *_generalView;
+  mm_retain SVRAccessoryWindowsSettingsColorsView  *_colorsView;
+  mm_retain SVRAccessoryWindowsSettingsFontsView   *_fontsView;
+  mm_unretain NSPopUpButton *_settingsBoxSelector;
+  mm_unretain NSBox *_settingsBoxParent;
+}
+
+// MARK: Init
+-(void)loadView;
+
+// MARK: Initial Load
+-(void)readUserInterfaceStyle;
+-(void)readWaitTime;
+-(void)readColors;
+
+// MARK: IBActions
+-(IBAction)settingsBoxSelectionChanged:(NSPopUpButton*)sender;
+-(IBAction)writeUserInterfaceStyle:(NSPopUpButton*)sender;
+-(IBAction)writeWaitTime:(NSTextField*)sender;
+-(IBAction)writeColor:(NSColorWell*)sender;
+-(IBAction)presentFontPanel:(NSButton*)sender;
+-(IBAction)changeFont:(NSFontManager*)sender;
+-(IBAction)reset:(NSButton*)sender;
+
+// MARK: Notifications
+-(void)themeDidChangeNotification:(NSNotification*)aNotification;
+
+@end
+
+#ifndef XPSupportsNSViewController
+@interface SVRAccessoryWindowsSettingsViewController (CrossPlatform)
+-(NSView*)view;
+-(void)setView:(NSView*)view;
+@end
+#endif

@@ -8,10 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		8C0A6D152DC7CFD3001DC2A9 /* about-image-512.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C0A6D102DC7CFD3001DC2A9 /* about-image-512.tiff */; };
-		8C0A6D162DC7CFD3001DC2A9 /* BlocksFullSizeSMlght.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C0A6D112DC7CFD3001DC2A9 /* BlocksFullSizeSMlght.tiff */; };
 		8C0A6D172DC7CFD3001DC2A9 /* NeXTLogoMed.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C0A6D122DC7CFD3001DC2A9 /* NeXTLogoMed.tiff */; };
 		8C0A6D182DC7CFD3001DC2A9 /* TagLine.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C0A6D132DC7CFD3001DC2A9 /* TagLine.tiff */; };
-		8C0A6D192DC7CFD3001DC2A9 /* TM.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C0A6D142DC7CFD3001DC2A9 /* TM.tiff */; };
 		8C0BE7FA2DEB536600DD3D85 /* SVRAccessoryWindowViews.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C0BE7F82DEB536600DD3D85 /* SVRAccessoryWindowViews.h */; };
 		8C0BE7FB2DEB536600DD3D85 /* SVRAccessoryWindowViews.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C0BE7F92DEB536600DD3D85 /* SVRAccessoryWindowViews.m */; };
 		8C5E580B2DC346F200A1648E /* Soulver_Prefix.h in Headers */ = {isa = PBXBuildFile; fileRef = 32DBCF750370BD2300C91783 /* Soulver_Prefix.h */; };
@@ -21,7 +19,6 @@
 		8C5E580F2DC346F200A1648E /* SVRDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E5F2D91DCDF0000020F /* SVRDocument.h */; };
 		8C5E58102DC346F200A1648E /* SVRDocumentModelController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E612D91DCDF0000020F /* SVRDocumentModelController.h */; };
 		8C5E58112DC346F200A1648E /* SVRDocumentViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E632D91DCDF0000020F /* SVRDocumentViewController.h */; };
-		8C5E58122DC346F200A1648E /* SVRSettingsViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E652D91DCDF0000020F /* SVRSettingsViewController.h */; };
 		8C5E58132DC346F200A1648E /* SVRSolver.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E672D91DCDF0000020F /* SVRSolver.h */; };
 		8C5E58142DC346F200A1648E /* SVRSolverExpressionTagger.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E692D91DCDF0000020F /* SVRSolverExpressionTagger.h */; };
 		8C5E58152DC346F200A1648E /* SVRSolverScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E6B2D91DCDF0000020F /* SVRSolverScanner.h */; };
@@ -50,7 +47,6 @@
 		8C5E58332DC346F200A1648E /* SVRDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E602D91DCDF0000020F /* SVRDocument.m */; };
 		8C5E58342DC346F200A1648E /* SVRDocumentModelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E622D91DCDF0000020F /* SVRDocumentModelController.m */; };
 		8C5E58352DC346F200A1648E /* SVRDocumentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E642D91DCDF0000020F /* SVRDocumentViewController.m */; };
-		8C5E58362DC346F200A1648E /* SVRSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E662D91DCDF0000020F /* SVRSettingsViewController.m */; };
 		8C5E58372DC346F200A1648E /* SVRSolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E682D91DCDF0000020F /* SVRSolver.m */; };
 		8C5E58382DC346F200A1648E /* SVRSolverExpressionTagger.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E6A2D91DCDF0000020F /* SVRSolverExpressionTagger.m */; };
 		8C5E58392DC346F200A1648E /* SVRSolverScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E6C2D91DCE00000020F /* SVRSolverScanner.m */; };
@@ -74,16 +70,14 @@
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32DBCF750370BD2300C91783 /* Soulver_Prefix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Soulver_Prefix.h; sourceTree = "<group>"; };
 		8C0A6D102DC7CFD3001DC2A9 /* about-image-512.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "about-image-512.tiff"; path = "Images/about-image-512.tiff"; sourceTree = SOURCE_ROOT; };
-		8C0A6D112DC7CFD3001DC2A9 /* BlocksFullSizeSMlght.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = BlocksFullSizeSMlght.tiff; path = Images/BlocksFullSizeSMlght.tiff; sourceTree = SOURCE_ROOT; };
 		8C0A6D122DC7CFD3001DC2A9 /* NeXTLogoMed.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = NeXTLogoMed.tiff; path = Images/NeXTLogoMed.tiff; sourceTree = SOURCE_ROOT; };
 		8C0A6D132DC7CFD3001DC2A9 /* TagLine.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = TagLine.tiff; path = Images/TagLine.tiff; sourceTree = SOURCE_ROOT; };
-		8C0A6D142DC7CFD3001DC2A9 /* TM.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = TM.tiff; path = Images/TM.tiff; sourceTree = SOURCE_ROOT; };
 		8C0BE7F82DEB536600DD3D85 /* SVRAccessoryWindowViews.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SVRAccessoryWindowViews.h; path = /Net/Developer/SaturdayApps/NotSoulver/Soulver/SVRAccessoryWindowViews.h; sourceTree = "<absolute>"; };
 		8C0BE7F92DEB536600DD3D85 /* SVRAccessoryWindowViews.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = SVRAccessoryWindowViews.m; path = /Net/Developer/SaturdayApps/NotSoulver/Soulver/SVRAccessoryWindowViews.m; sourceTree = "<absolute>"; };
 		8C5B4ECA2DC10C7B002C87B3 /* TestUnitBezierPath-MANUAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "TestUnitBezierPath-MANUAL.tiff"; sourceTree = SOURCE_ROOT; };
 		8C5B4ECB2DC10C7B002C87B3 /* TestUnitBezierPath-REAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "TestUnitBezierPath-REAL.tiff"; sourceTree = SOURCE_ROOT; };
 		8C5E58492DC346F200A1648E /* Info_X4.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Info_X4.plist; sourceTree = "<group>"; };
-		8C5E584A2DC346F200A1648E /* Soulver.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Soulver.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C5E584A2DC346F200A1648E /* Soulver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Soulver.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CD62E502D91DB730000020F /* Soulver_main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = Soulver_main.m; sourceTree = "<group>"; };
 		8CD62E552D91DCDF0000020F /* Import Log.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "Import Log.rtf"; sourceTree = "<group>"; };
 		8CD62E562D91DCDF0000020F /* Makefile */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -101,8 +95,6 @@
 		8CD62E622D91DCDF0000020F /* SVRDocumentModelController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SVRDocumentModelController.m; sourceTree = "<group>"; };
 		8CD62E632D91DCDF0000020F /* SVRDocumentViewController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SVRDocumentViewController.h; sourceTree = "<group>"; };
 		8CD62E642D91DCDF0000020F /* SVRDocumentViewController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SVRDocumentViewController.m; sourceTree = "<group>"; };
-		8CD62E652D91DCDF0000020F /* SVRSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SVRSettingsViewController.h; sourceTree = "<group>"; };
-		8CD62E662D91DCDF0000020F /* SVRSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SVRSettingsViewController.m; sourceTree = "<group>"; };
 		8CD62E672D91DCDF0000020F /* SVRSolver.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SVRSolver.h; sourceTree = "<group>"; };
 		8CD62E682D91DCDF0000020F /* SVRSolver.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SVRSolver.m; sourceTree = "<group>"; };
 		8CD62E692D91DCDF0000020F /* SVRSolverExpressionTagger.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SVRSolverExpressionTagger.h; sourceTree = "<group>"; };
@@ -135,8 +127,6 @@
 		8CD62EBA2D91DF290000020F /* MainMenu_42.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = MainMenu_42.nib; path = English.lproj/MainMenu_42.nib; sourceTree = "<group>"; };
 		8CD62EC12D91DF730000020F /* English */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8CD62ED82D91EBA60000020F /* Soulver.iconheader */ = {isa = PBXFileReference; lastKnownFileType = text; path = Soulver.iconheader; sourceTree = "<group>"; };
-		8CD62ED92D91ECB40000020F /* h.template */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = h.template; sourceTree = "<group>"; };
-		8CD62EDA2D91ECB40000020F /* m.template */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = m.template; sourceTree = "<group>"; };
 		8CD632692D91FF0F0000020F /* .gdbinit */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = .gdbinit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -196,22 +186,18 @@
 		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				8CD62E592D91DCDF0000020F /* NSUserDefaults+Soulver.h */,
-				8CD62E5A2D91DCDF0000020F /* NSUserDefaults+Soulver.m */,
+				8CD62E5D2D91DCDF0000020F /* SVRAppDelegate.h */,
+				8CD62E5E2D91DCDF0000020F /* SVRAppDelegate.m */,
 				8CD62E5B2D91DCDF0000020F /* SVRAccessoryWindowsOwner.h */,
 				8CD62E5C2D91DCDF0000020F /* SVRAccessoryWindowsOwner.m */,
 				8C0BE7F82DEB536600DD3D85 /* SVRAccessoryWindowViews.h */,
 				8C0BE7F92DEB536600DD3D85 /* SVRAccessoryWindowViews.m */,
-				8CD62E5D2D91DCDF0000020F /* SVRAppDelegate.h */,
-				8CD62E5E2D91DCDF0000020F /* SVRAppDelegate.m */,
 				8CD62E5F2D91DCDF0000020F /* SVRDocument.h */,
 				8CD62E602D91DCDF0000020F /* SVRDocument.m */,
 				8CD62E612D91DCDF0000020F /* SVRDocumentModelController.h */,
 				8CD62E622D91DCDF0000020F /* SVRDocumentModelController.m */,
 				8CD62E632D91DCDF0000020F /* SVRDocumentViewController.h */,
 				8CD62E642D91DCDF0000020F /* SVRDocumentViewController.m */,
-				8CD62E652D91DCDF0000020F /* SVRSettingsViewController.h */,
-				8CD62E662D91DCDF0000020F /* SVRSettingsViewController.m */,
 				8CD62E672D91DCDF0000020F /* SVRSolver.h */,
 				8CD62E682D91DCDF0000020F /* SVRSolver.m */,
 				8CD62E692D91DCDF0000020F /* SVRSolverExpressionTagger.h */,
@@ -230,6 +216,8 @@
 				8CD62E7E2D91DCE00000020F /* XPDocument.m */,
 				8CD62E7F2D91DCE00000020F /* XPRegularExpression.h */,
 				8CD62E802D91DCE00000020F /* XPRegularExpression.m */,
+				8CD62E592D91DCDF0000020F /* NSUserDefaults+Soulver.h */,
+				8CD62E5A2D91DCDF0000020F /* NSUserDefaults+Soulver.m */,
 				8CD62EB32D91DDEB0000020F /* slre.c */,
 				8CD62EB42D91DDEB0000020F /* slre.h */,
 			);
@@ -269,10 +257,8 @@
 			isa = PBXGroup;
 			children = (
 				8C0A6D102DC7CFD3001DC2A9 /* about-image-512.tiff */,
-				8C0A6D112DC7CFD3001DC2A9 /* BlocksFullSizeSMlght.tiff */,
 				8C0A6D122DC7CFD3001DC2A9 /* NeXTLogoMed.tiff */,
 				8C0A6D132DC7CFD3001DC2A9 /* TagLine.tiff */,
-				8C0A6D142DC7CFD3001DC2A9 /* TM.tiff */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -303,8 +289,6 @@
 				8CD62E582D91DCDF0000020F /* Makefile.preamble */,
 				8CD62EB12D91DD700000020F /* PB.project */,
 				8CD62ED82D91EBA60000020F /* Soulver.iconheader */,
-				8CD62ED92D91ECB40000020F /* h.template */,
-				8CD62EDA2D91ECB40000020F /* m.template */,
 				8CD632692D91FF0F0000020F /* .gdbinit */,
 			);
 			name = Legacy;
@@ -324,7 +308,6 @@
 				8C5E580F2DC346F200A1648E /* SVRDocument.h in Headers */,
 				8C5E58102DC346F200A1648E /* SVRDocumentModelController.h in Headers */,
 				8C5E58112DC346F200A1648E /* SVRDocumentViewController.h in Headers */,
-				8C5E58122DC346F200A1648E /* SVRSettingsViewController.h in Headers */,
 				8C5E58132DC346F200A1648E /* SVRSolver.h in Headers */,
 				8C5E58142DC346F200A1648E /* SVRSolverExpressionTagger.h in Headers */,
 				8C5E58152DC346F200A1648E /* SVRSolverScanner.h in Headers */,
@@ -393,10 +376,8 @@
 				8C5E582C2DC346F200A1648E /* TestUnitBezierPath-MANUAL.tiff in Resources */,
 				8C5E582D2DC346F200A1648E /* TestUnitBezierPath-REAL.tiff in Resources */,
 				8C0A6D152DC7CFD3001DC2A9 /* about-image-512.tiff in Resources */,
-				8C0A6D162DC7CFD3001DC2A9 /* BlocksFullSizeSMlght.tiff in Resources */,
 				8C0A6D172DC7CFD3001DC2A9 /* NeXTLogoMed.tiff in Resources */,
 				8C0A6D182DC7CFD3001DC2A9 /* TagLine.tiff in Resources */,
-				8C0A6D192DC7CFD3001DC2A9 /* TM.tiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -414,7 +395,6 @@
 				8C5E58332DC346F200A1648E /* SVRDocument.m in Sources */,
 				8C5E58342DC346F200A1648E /* SVRDocumentModelController.m in Sources */,
 				8C5E58352DC346F200A1648E /* SVRDocumentViewController.m in Sources */,
-				8C5E58362DC346F200A1648E /* SVRSettingsViewController.m in Sources */,
 				8C5E58372DC346F200A1648E /* SVRSolver.m in Sources */,
 				8C5E58382DC346F200A1648E /* SVRSolverExpressionTagger.m in Sources */,
 				8C5E58392DC346F200A1648E /* SVRSolverScanner.m in Sources */,

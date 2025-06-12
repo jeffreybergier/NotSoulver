@@ -198,14 +198,16 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 
 #ifdef MAC_OS_X_VERSION_10_15 // Previously 10.10
 #define XPTextAlignmentCenter NSTextAlignmentCenter
-#define XPTextAlignmentNatural NSTextAlignmentNatural
+#define XPTextAlignmentLeft NSTextAlignmentLeft
+#define XPTextAlignmentRight NSTextAlignmentRight
 #define XPModalResponse NSModalResponse
 #define XPModalResponseOK NSModalResponseOK
 #define XPModalResponseCancel NSModalResponseCancel
 #define XPWindowCollectionBehaviorFullScreenNone NSWindowCollectionBehaviorFullScreenNone
 #else
 #define XPTextAlignmentCenter NSCenterTextAlignment
-#define XPTextAlignmentNatural NSLeftTextAlignment
+#define XPTextAlignmentLeft NSLeftTextAlignment
+#define XPTextAlignmentRight NSRightTextAlignment
 #define XPModalResponse XPInteger
 #define XPModalResponseOK NSOKButton
 #define XPModalResponseCancel NSCancelButton
@@ -417,6 +419,11 @@ NSArray* XPRunOpenPanel(NSString *extension);
 -(void)XP_setIdentifier:(NSString*)anIdentifier;
 -(void)XP_setAppearanceWithUserInterfaceStyle:(XPUserInterfaceStyle)aStyle;
 -(void)XP_setCollectionBehavior:(XPWindowCollectionBehavior)collectionBehavior;
+-(void)XP_setContentViewController:(XPViewController*)viewController;
+@end
+
+@interface NSScrollView (CrossPlatform)
+-(void)XP_setDrawsBackground:(BOOL)drawsBackground;
 @end
 
 // MARK: XPLogging
