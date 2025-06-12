@@ -422,6 +422,10 @@ NSArray* XPRunOpenPanel(NSString *extension);
 -(void)XP_setContentViewController:(XPViewController*)viewController;
 @end
 
+@interface NSScrollView (CrossPlatform)
+-(void)XP_setDrawsBackground:(BOOL)drawsBackground;
+@end
+
 // MARK: XPLogging
 
 @interface XPLog: NSObject

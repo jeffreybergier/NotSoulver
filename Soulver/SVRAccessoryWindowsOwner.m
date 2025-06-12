@@ -785,11 +785,11 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 -(void)dealloc;
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-  [_view_42    release];
+  [_view_42     release];
   [_fontsView   release];
   [_colorsView  release];
   [_generalView release];
-  _view_42    = nil;
+  _view_42     = nil;
   _fontsView   = nil;
   _colorsView  = nil;
   _generalView = nil;

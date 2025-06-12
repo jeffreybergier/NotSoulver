@@ -154,6 +154,8 @@
   NSRect contentBounds = NSZeroRect;
   NSTextView *textView = nil;
   NSScrollView *scrollView = nil;
+  
+  XPLogAssrt(inoutTextView != NULL, @"inout parameter 'textView' was NULL");
 
   /// This way of constructing the TextView is directly from Apple
   /// https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/TextUILayer/Tasks/TextInScrollView.html#//apple_ref/doc/uid/20000938-CJBBIAAF
@@ -162,6 +164,7 @@
   scrollView = [[[NSScrollView alloc] initWithFrame:frame ] autorelease];
   [scrollView setHasVerticalScroller:YES];
   [scrollView setHasHorizontalScroller:NO];
+  [scrollView XP_setDrawsBackground:NO];
 
   // TextView configuration
   contentSize = [scrollView contentSize];
@@ -180,12 +183,15 @@
   /// END Apple Instructions
   
   // Customize for this app
-  [scrollView setBorderType:NSBezelBorder];
+  [scrollView setBorderType:NSGrooveBorder];
   [textView setEditable:NO];
   [textView setSelectable:YES];
   [textView setDrawsBackground:NO];
   [textView setFont:[NSFont systemFontOfSize:12]];
-
+  
+  XPParameterRaise(textView);
+  XPParameterRaise(scrollView);
+  
   *inoutTextView = textView;
   return scrollView;
 }
