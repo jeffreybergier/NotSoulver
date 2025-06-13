@@ -105,6 +105,8 @@ typedef float XPFloat;
 #define XPDocument id<XPDocumentProtocol>
 
 #ifdef MAC_OS_X_VERSION_10_4
+// TODO: Figure out why this breaks if I change it to 0
+// I want to be able to use all the legacy api on modern os x
 #define XPSupportsNSDocument 2 // Supports NSURL APIs
 #elif defined(MAC_OS_X_VERSION_10_2)
 #define XPSupportsNSDocument 1 // NSDocument exists but URL API's appear not to work properly

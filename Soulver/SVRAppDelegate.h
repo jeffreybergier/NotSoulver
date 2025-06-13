@@ -58,7 +58,6 @@
 -(void)applicationWillFinishLaunching:(NSNotification*)aNotification;
 -(void)applicationDidFinishLaunching:(NSNotification*)notification;
 -(void)applicationWillTerminate:(NSNotification*)aNotification;
--(BOOL)applicationOpenUntitledFile:(NSApplication*)sender;
 @end
 
 @interface SVRAppDelegate (PreDocument)
@@ -74,6 +73,7 @@
 -(BOOL)__applicationShouldTerminate:(NSApplication *)sender;
 -(BOOL)__applicationShouldTerminateAfterReviewingAllDocuments:(NSApplication*)sender;
 -(BOOL)__application:(NSApplication *)sender openFile:(NSString *)filename;
+-(BOOL)__applicationOpenUntitledFile:(NSApplication*)sender;
 -(void)__windowWillCloseNotification:(NSNotification*)aNotification;
 
 // MARK: Pre-NSDocument Stubs
@@ -82,19 +82,18 @@
 -(IBAction)openDocument:(id)sender;
 -(BOOL)applicationShouldTerminate:(NSApplication *)sender;
 -(BOOL)application:(NSApplication *)sender openFile:(NSString *)filename;
+-(BOOL)applicationOpenUntitledFile:(NSApplication*)sender;
 #endif
 
 @end
 
 @interface SVRAppDelegate (DarkModeObserving)
-
 -(void)beginObservingEffectiveAppearance:(NSApplication*)app;
 -(void)endObservingEffectiveAppearance:(NSApplication*)app;
 -(void)observeValueForKeyPath:(NSString*)keyPath
                      ofObject:(id)object
                        change:(NSDictionary*)change
                       context:(void*)context;
-
 @end
 
 #ifdef XPSupportsStateRestoration
