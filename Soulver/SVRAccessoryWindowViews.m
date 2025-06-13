@@ -88,18 +88,18 @@
   
   // NeXT Tagline Image
   [self addSubview:[NSImageView SVR_imageViewWithOrigin:kTagLineOrigin
-                                   sizedToFitImageNamed:@"TagLine"]];
+                                   sizedToFitImageNamed:[Localized imageNeXTTagline]]];
   
   // Dedication Text
   [self addSubview:[[NSTextField SVR_labelWithFrame:kDedicationTextFrame]
-                                 SVR_setObjectValue:@"This application is dedicated to my grandmother | 1932-2024"
+                                 SVR_setObjectValue:[Localized phraseAboutDedication]
                                                font:[NSFont systemFontOfSize:10]
                                           alignment:XPTextAlignmentLeft]];
   
   // View Source Button
   _viewSourceButton = [[[self class] __viewSourceButtonWithFrame:kViewSourceButtonFrame
-                                                           title:@"View Source"
-                                                      imageNamed:@"NeXTLogoMed"]
+                                                           title:[Localized verbViewSource]
+                                                      imageNamed:[Localized imageNeXTLogo]]
                                          SVR_setAutoresizingMask:NSViewMinXMargin];
   [self addSubview:_viewSourceButton];
   
@@ -114,21 +114,21 @@
   
   // Add Subtitle Label
   [self addSubview:[[[NSTextField SVR_labelWithFrame:kSubtitleTextFrame]
-                                  SVR_setObjectValue:@"for OpenStep\nby Jeffrey Bergier\n2025"
+                                  SVR_setObjectValue:[Localized phraseAboutTagline]
                                                 font:[NSFont systemFontOfSize:16]
                                            alignment:XPTextAlignmentCenter]
                              SVR_setAutoresizingMask:NSViewMinYMargin | NSViewWidthSizable]];
   
   // Add Title Label
   [self addSubview:[[[NSTextField SVR_labelWithFrame:kTitleTextFrame]
-                                  SVR_setObjectValue:@"[Not]Soulver"
+                                  SVR_setObjectValue:[Localized titleAppName]
                                                 font:[NSFont boldSystemFontOfSize:36]
                                            alignment:XPTextAlignmentCenter]
                              SVR_setAutoresizingMask:NSViewMinYMargin | NSViewWidthSizable]];
   
   // Add Portrait Image View
   [self addSubview:[[[NSImageView SVR_imageViewWithFrame:kPortraitImageView
-                                              imageNamed:@"about-image-512"]
+                                              imageNamed:[Localized imageAboutPortrait]]
                                   SVR_setImageFrameStyle:NSImageFrameGroove]
                                  SVR_setAutoresizingMask:NSViewMinYMargin | NSViewMinXMargin]];
   
@@ -238,13 +238,13 @@
                                            alignment:XPTextAlignmentLeft]
                              SVR_sizeToFitVertically]];
   _selectorButton = [[[NSPopUpButton alloc] initWithFrame:fieldRect pullsDown:NO] autorelease];
-  [_selectorButton addItemWithTitle:@"Automatic"];
-  [_selectorButton addItemWithTitle:@"Light"];
-  [_selectorButton addItemWithTitle:@"Dark"];
+  [_selectorButton addItemWithTitle:[Localized titleAutomatic]];
+  [_selectorButton addItemWithTitle:[Localized titleLight]];
+  [_selectorButton addItemWithTitle:[Localized titleDark]];
   [_selectorButton setAction:SVR_selectorOfKind(SVRSelectorKindWriteUserInterfaceStyle)];
   [self addSubview:_selectorButton];
   [self addSubview:[NSButton SVR_settingsButtonWithFrame:resetRect
-                                                   title:@"Reset"
+                                                   title:[Localized verbReset]
                                                   action:SVR_selectorOfKind(SVRSelectorKindReset)
                                                      tag:kind]];
   
@@ -265,7 +265,7 @@
                                             action:@selector(__HACK_writeWaitTime:)];
   [self addSubview:_fieldTime];
   [self addSubview:[NSButton SVR_settingsButtonWithFrame:resetRect
-                                                   title:@"Reset"
+                                                   title:[Localized verbReset]
                                                   action:SVR_selectorOfKind(SVRSelectorKindReset)
                                                      tag:kind]];
   
@@ -341,7 +341,7 @@
       lightRect.origin.y -= kVPad;
     } else {
       [self addSubview:[NSButton SVR_settingsButtonWithFrame:resetRect
-                                                       title:@"Reset"
+                                                       title:[Localized verbReset]
                                                       action:SVR_selectorOfKind(SVRSelectorKindReset)
                                                          tag:resetKind]];
       colorWell = [NSColorWell SVR_colorWellWithFrame:darkkRect kind:colorKind];
@@ -357,12 +357,12 @@
   darkkRect.origin.y = kYOrigin + kVPad;
   
   [self addSubview:[[[NSTextField SVR_labelWithFrame:lightRect]
-                                  SVR_setObjectValue:@"Light"
+                                  SVR_setObjectValue:[Localized titleLight]
                                                 font:[NSFont systemFontOfSize:10]
                                            alignment:XPTextAlignmentCenter]
                              SVR_sizeToFitVertically]];
   [self addSubview:[[[NSTextField SVR_labelWithFrame:darkkRect]
-                                  SVR_setObjectValue:@"Dark"
+                                  SVR_setObjectValue:[Localized titleDark]
                                                 font:[NSFont systemFontOfSize:10]
                                            alignment:XPTextAlignmentCenter]
                              SVR_sizeToFitVertically]];
@@ -432,11 +432,11 @@
     
     // Buttons
     [self addSubview:[NSButton SVR_settingsButtonWithFrame:setttRect
-                                                     title:@"Set"
+                                                     title:[Localized verbSet]
                                                     action:SVR_selectorOfKind(SVRSelectorKindPresentFontPanel)
                                                        tag:fontKind]];
     [self addSubview:[NSButton SVR_settingsButtonWithFrame:resetRect
-                                                     title:@"Reset"
+                                                     title:[Localized verbReset]
                                                     action:SVR_selectorOfKind(SVRSelectorKindReset)
                                                        tag:resetKind]];
     
@@ -834,31 +834,29 @@ NSString *SVR_localizedStringForKind(SVRResetButtonKind kind)
 {
   switch (kind) {
     case SVRResetButtonKindUIStyle:
-      return @"Theme";
+      return [Localized titleTheme];
     case SVRResetButtonKindWaitTime:
-      return @"Solving Delay";
+      return [Localized titleSolvingDelay];
     case SVRResetButtonKindMathFont:
-      return @"Math Text";
+      return [Localized titleMathText];
     case SVRResetButtonKindOtherFont:
-      return @"Normal Text";
-    case SVRResetButtonKindErrorFont:
-      return @"Error Text";
-    case SVRResetButtonKindOperandColor:
-      return @"Operand";
-    case SVRResetButtonKindOperatorColor:
-      return @"Operator";
-    case SVRResetButtonKindSolutionColor:
-      return @"Solution";
-    case SVRResetButtonKindPreviousSolutionColor:
-      return @"Carryover";
     case SVRResetButtonKindOtherTextColor:
-      return @"Normal Text";
+      return [Localized titleNormalText];
+    case SVRResetButtonKindErrorFont:
     case SVRResetButtonKindErrorTextColor:
-      return @"Error Text";
+      return [Localized titleErrorText];
+    case SVRResetButtonKindOperandColor:
+      return [Localized titleOperand];
+    case SVRResetButtonKindOperatorColor:
+      return [Localized titleOperator];
+    case SVRResetButtonKindSolutionColor:
+      return [Localized titleSolution];
+    case SVRResetButtonKindPreviousSolutionColor:
+      return [Localized  titleCarryover];
     case SVRResetButtonKindInsertionPointColor:
-      return @"Insertion Point";
+      return [Localized titleInsertionPoint];
     case SVRResetButtonKindBackgroundColor:
-      return @"Background";
+      return [Localized titleBackground];
     default:
       XPCLogAssrt1(NO, @"[UNKNOWN] SVRResetButtonKind(%d)", (int)kind);
       return @"Unknown";

@@ -129,7 +129,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
                                           defer:YES];
   _keypadPanel = (NSPanel*)window;
   [window center];
-  [window setTitle:@"Keypad"];
+  [window setTitle:[Localized titleKeypad]];
   [window setContentView:[[[SVRAccessoryWindowKeypadView alloc] initWithFrame:SVRAccessoryWindowKeypadWindowRect] autorelease]];
   [window setInitialFirstResponder:[[window contentView] equalButton]];
   [window setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameKeypad];
@@ -150,7 +150,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   _aboutWindow = window;
 
   [window center];
-  [window setTitle:@"About"];
+  [window setTitle:[Localized titleAbout]];
   [window setReleasedWhenClosed:NO];
   [window setMinSize:[NSWindow frameRectForContentRect:SVRAccessoryWindowAboutWindowRect styleMask:mask].size];
   [window setMaxSize:SVRAccessoryWindowAboutWindowMaxSize];
@@ -178,7 +178,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   _settingsViewController = [[SVRAccessoryWindowsSettingsViewController alloc] init];
 
   [window center];
-  [window setTitle:@"Settings"];
+  [window setTitle:[Localized titleSettings]];
   [window setReleasedWhenClosed:NO];
   [window setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameSettings];
   [window XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameSettings];
@@ -369,14 +369,14 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   NSView *contentView = [[[NSView alloc] initWithFrame:kContentFrame] autorelease];
   
   _settingsBoxSelector = [[[NSPopUpButton alloc] initWithFrame:kSelectorFrame pullsDown:NO] autorelease];
-  [_settingsBoxSelector addItemWithTitle:@"General"];
-  [_settingsBoxSelector addItemWithTitle:@"Colors"];
-  [_settingsBoxSelector addItemWithTitle:@"Fonts"];
+  [_settingsBoxSelector addItemWithTitle:[Localized titleGeneral]];
+  [_settingsBoxSelector addItemWithTitle:[Localized titleColors]];
+  [_settingsBoxSelector addItemWithTitle:[Localized titleFonts]];
   [_settingsBoxSelector setAction:@selector(settingsBoxSelectionChanged:)];
   [contentView addSubview:_settingsBoxSelector];
   
   _settingsBoxParent = [[[NSBox alloc] initWithFrame:kBoxFrame] autorelease];
-  [_settingsBoxParent setTitle:@"Settings"];
+  [_settingsBoxParent setTitle:[Localized titleSettings]];
   [_settingsBoxParent setTitlePosition:NSNoTitle];
   [contentView addSubview:_settingsBoxParent];
   
