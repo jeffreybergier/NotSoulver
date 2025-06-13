@@ -39,7 +39,8 @@ typedef XP_ENUM(XPInteger, SVRSelectorKind) {
   SVRSelectorKindKeypadAppend,
   SVRSelectorKindWriteColor,
   SVRSelectorKindWriteWaitTime,
-  SVRSelectorKindWriteUserInterfaceStyle
+  SVRSelectorKindWriteUserInterfaceStyle,
+  SVRSelectorKindPresentFontPanel
 };
 
 typedef XP_ENUM(XPInteger, SVRColorWellKind) {

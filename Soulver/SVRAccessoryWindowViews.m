@@ -433,7 +433,7 @@
     // Buttons
     [self addSubview:[NSButton SVR_settingsButtonWithFrame:setttRect
                                                      title:@"Set"
-                                                    action:@selector(presentFontPanel:)
+                                                    action:SVR_selectorOfKind(SVRSelectorKindPresentFontPanel)
                                                        tag:fontKind]];
     [self addSubview:[NSButton SVR_settingsButtonWithFrame:resetRect
                                                      title:@"Reset"
@@ -477,14 +477,13 @@
 
 +(NSButton*)SVR_keypadButtonOfKind:(SVRKeypadButtonKind)kind;
 {
-  SEL buttonAction  = NSSelectorFromString(@"keypadAppend:");
   NSRect buttonRect = SVR_rectForKeypadButtonOfKind(kind);
   NSButton *button  = nil;
   button = [[[NSButton alloc] initWithFrame:buttonRect] autorelease];
   [button setTitle:SVR_titleForKeypadButtonOfKind(kind)];
   [button setKeyEquivalent:SVR_keyForKeypadButtonOfKind(kind)];
   [button setTag:kind];
-  [button setAction:buttonAction];
+  [button setAction:SVR_selectorOfKind(SVRSelectorKindKeypadAppend)];
   [button XP_setBezelStyle:XPBezelStyleFlexiblePush];
   return button;
 }
@@ -643,6 +642,9 @@ SEL SVR_selectorOfKind(SVRSelectorKind kind)
       break;
     case SVRSelectorKindWriteUserInterfaceStyle:
       output = NSSelectorFromString(@"writeUserInterfaceStyle:");
+      break;
+    case SVRSelectorKindPresentFontPanel:
+      output = NSSelectorFromString(@"presentFontPanel:");
       break;
     default:
       output = NULL;
