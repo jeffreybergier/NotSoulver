@@ -32,6 +32,12 @@
 
 extern NSString * const SVRThemeDidChangeNotificationName;
 
+typedef XP_ENUM(XPInteger, SVRSettingSelection) {
+  SVRSettingSelectionGeneral = 0,
+  SVRSettingSelectionColors = 1,
+  SVRSettingSelectionFonts = 2,
+};
+
 typedef XP_ENUM(XPInteger, SVRThemeColor) {
   SVRThemeColorOperandText = 0,
   SVRThemeColorOperatorText = 1,
@@ -60,6 +66,8 @@ typedef XP_ENUM(XPInteger, SVRThemeFont) {
 -(BOOL)SVR_setWaitTimeForRendering:(NSTimeInterval)newValue;
 
 // MARK: Accessory Window Visibility
+-(SVRSettingSelection)SVR_settingsSelection;
+-(BOOL)SVR_setSettingsSelection:(SVRSettingSelection)newValue;
 -(BOOL)SVR_visibilityForWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
 -(BOOL)SVR_setVisibility:(BOOL)isVisible forWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
 

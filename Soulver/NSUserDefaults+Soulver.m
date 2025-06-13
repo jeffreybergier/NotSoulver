@@ -62,6 +62,7 @@ NSString *SVRThemeMathFontKey                     = @"kSVRThemeMathFontKey";
 NSString *SVRThemeErrorFontKey                    = @"kSVRThemeErrorFontKey";
 
 NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyleKey";
+NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
 
 @implementation NSUserDefaults (Soulver)
 
@@ -98,6 +99,17 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 }
 
 // MARK: Accessory Window Visibility
+
+-(SVRSettingSelection)SVR_settingsSelection;
+{
+  return (SVRSettingSelection)[self integerForKey:SVRSettingsSelection];
+}
+
+-(BOOL)SVR_setSettingsSelection:(SVRSettingSelection)newValue;
+{
+  [self setInteger:newValue forKey:SVRSettingsSelection];
+  return [self synchronize];
+}
 
 -(BOOL)SVR_visibilityForWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
 {
@@ -328,6 +340,7 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
           // Other
           XPUserDefaultsSavePanelLastDirectory,
           SVRThemeUserInterfaceStyle,
+          SVRSettingsSelection,
           SVRAccessoryWindowFrameAutosaveNameKeypad,
           XPUserDefaultsWaitTimeForRendering,
           nil];
@@ -359,6 +372,7 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
           // Other
           NSHomeDirectory(), // XPUserDefaultsSavePanelLastDirectory
           @"0",   // SVRThemeUserInterfaceStyle
+          @"0",   // SVRSettingsSelection
           @"YES", // SVRAccessoryWindowKeypadVisibility
           @"2.0", // XPUserDefaultsWaitTimeForRendering
           nil];

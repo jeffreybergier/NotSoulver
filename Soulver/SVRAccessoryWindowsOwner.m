@@ -365,14 +365,18 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
                                 kContentFrame.size.width-kWindowPadding*2,
                                 kContentFrame.size.height-kSelectorFrame.size.height-kWindowPadding*2.5);
   NSRect settingViewFrame = NSZeroRect;
+  SVRSettingSelection selectionKind = -1;
   
   NSView *contentView = [[[NSView alloc] initWithFrame:kContentFrame] autorelease];
   
   _settingsBoxSelector = [[[NSPopUpButton alloc] initWithFrame:kSelectorFrame pullsDown:NO] autorelease];
-  [_settingsBoxSelector addItemWithTitle:[Localized titleGeneral]];
-  [_settingsBoxSelector addItemWithTitle:[Localized titleColors]];
-  [_settingsBoxSelector addItemWithTitle:[Localized titleFonts]];
-  [_settingsBoxSelector setAction:@selector(settingsBoxSelectionChanged:)];
+  for (selectionKind=SVRSettingSelectionGeneral;
+       selectionKind<=SVRSettingSelectionFonts;
+       selectionKind++)
+  {
+    [_settingsBoxSelector addItemWithTitle:SVR_localizedStringForSettingsSelection(selectionKind)];
+  }
+  [_settingsBoxSelector setAction:@selector(writeSettingsSelection:)];
   [contentView addSubview:_settingsBoxSelector];
   
   _settingsBoxParent = [[[NSBox alloc] initWithFrame:kBoxFrame] autorelease];
@@ -381,7 +385,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   [contentView addSubview:_settingsBoxParent];
   
   // These get added to the view in -settingsBoxSelectionChanged:
-  settingViewFrame = [[_settingsBoxParent contentView] bounds]; // <--- HERE IS THE CRITICAL CHANGE!
+  settingViewFrame = [[_settingsBoxParent contentView] bounds];
   _generalView = [[SVRAccessoryWindowsSettingsGeneralView alloc] initWithFrame:settingViewFrame];
   _colorsView  = [[SVRAccessoryWindowsSettingsColorsView  alloc] initWithFrame:settingViewFrame];
   _fontsView   = [[SVRAccessoryWindowsSettingsFontsView   alloc] initWithFrame:settingViewFrame];
@@ -398,16 +402,31 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
                                              object:nil];
   
   [self setView:contentView];
-  [self settingsBoxSelectionChanged:_settingsBoxSelector];
+  [self readSettingsSelection];
   [self themeDidChangeNotification:nil];
 }
 
 // MARK: Initial Load
--(void)readWaitTime;
+
+-(void)readSettingsSelection;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  NSString *string = [NSString stringWithFormat:@"%g", [ud SVR_waitTimeForRendering]];
-  [[_generalView timeField] setStringValue:string];
+  SVRSettingSelection selectionKind = [ud SVR_settingsSelection];
+  XPParameterRaise(_settingsBoxParent);
+  switch (selectionKind) {
+    case SVRSettingSelectionGeneral:
+      [_settingsBoxParent setContentView:_generalView];
+      break;
+    case SVRSettingSelectionColors:
+      [_settingsBoxParent setContentView:_colorsView];
+      break;
+    case SVRSettingSelectionFonts:
+      [_settingsBoxParent setContentView:_fontsView];
+      break;
+    default:
+      XPLogAssrt1(NO, @"[UNKNOWN] SVRSettingSelection(%d)", (int)selectionKind);
+  }
+  [_settingsBoxSelector selectItemAtIndex:selectionKind];
 }
 
 -(void)readUserInterfaceStyle;
@@ -415,6 +434,13 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   XPUserInterfaceStyle style = [ud SVR_userInterfaceStyleSetting];
   [[_generalView themeSelector] selectItemAtIndex:style];
+}
+
+-(void)readWaitTime;
+{
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  NSString *string = [NSString stringWithFormat:@"%g", [ud SVR_waitTimeForRendering]];
+  [[_generalView timeField] setStringValue:string];
 }
 
 -(void)readColors;
@@ -520,23 +546,21 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 
 // MARK: IBActions
 
--(IBAction)settingsBoxSelectionChanged:(NSPopUpButton*)sender;
+-(IBAction)writeSettingsSelection:(NSPopUpButton*)sender;
 {
-  NSBox *myView = _settingsBoxParent;
-  XPParameterRaise(sender);
-  switch ([sender indexOfSelectedItem]) {
-    case 0:
-      [myView setContentView:_generalView];
-      break;
-    case 1:
-      [myView setContentView:_colorsView];
-      break;
-    case 2:
-      [myView setContentView:_fontsView];
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  SVRSettingSelection newSelection = [sender indexOfSelectedItem];
+  switch (newSelection) {
+    case SVRSettingSelectionGeneral:
+    case SVRSettingSelectionColors:
+    case SVRSettingSelectionFonts:
+      [ud SVR_setSettingsSelection:newSelection];
       break;
     default:
-      XPLogAssrt1(NO, @"[UNKNOWN] %d", (int)[sender indexOfSelectedItem]);
+      XPLogAssrt1(NO, @"[UNKNOWN] SVRSettingSelection(%d)", (int)newSelection);
+      break;
   }
+  [self readSettingsSelection];
 }
 
 -(IBAction)writeUserInterfaceStyle:(NSPopUpButton*)sender;
@@ -550,7 +574,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
       [ud SVR_setUserInterfaceStyleSetting:newStyle];
       break;
     default:
-      XPLogAssrt1(NO, @"XPUserInterfaceStyle(%d)", (int)newStyle);
+      XPLogAssrt1(NO, @"[UNKNOWN] XPUserInterfaceStyle(%d)", (int)newStyle);
       break;
   }
   XPLogDebug(@"[SUCCESS]");
@@ -819,3 +843,18 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 }
 @end
 #endif
+
+NSString *SVR_localizedStringForSettingsSelection(SVRSettingSelection selection)
+{
+  switch (selection) {
+    case SVRSettingSelectionGeneral:
+      return [Localized titleGeneral];
+    case SVRSettingSelectionColors:
+      return [Localized titleColors];
+    case SVRSettingSelectionFonts:
+      return [Localized titleFonts];
+    default:
+      XPCLogAssrt1(NO, @"[UNKNOWN] SVRSettingSelection(%d)", (int)selection);
+      return nil;
+  }
+}

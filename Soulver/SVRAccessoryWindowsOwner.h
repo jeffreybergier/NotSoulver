@@ -107,12 +107,13 @@
 -(void)loadView;
 
 // MARK: Initial Load
+-(void)readSettingsSelection;
 -(void)readUserInterfaceStyle;
 -(void)readWaitTime;
 -(void)readColors;
 
 // MARK: IBActions
--(IBAction)settingsBoxSelectionChanged:(NSPopUpButton*)sender;
+-(IBAction)writeSettingsSelection:(NSPopUpButton*)sender;
 -(IBAction)writeUserInterfaceStyle:(NSPopUpButton*)sender;
 -(IBAction)writeWaitTime:(NSTextField*)sender;
 -(IBAction)writeColor:(NSColorWell*)sender;
@@ -131,3 +132,5 @@
 -(void)setView:(NSView*)view;
 @end
 #endif
+
+NSString *SVR_localizedStringForSettingsSelection(SVRSettingSelection selection);
