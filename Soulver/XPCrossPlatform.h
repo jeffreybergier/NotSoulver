@@ -114,6 +114,21 @@ typedef float XPFloat;
 #define XPSupportsNSDocument 0 // NSDocument does not exist
 #endif
 
+#define XPLiquidGlass 3
+#define XPAquaModern 2
+#define XPAquaClassic 1
+#define XPPreAqua 0
+
+#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 260000
+#define XPSupportsButtonStyles XPLiquidGlass
+#elif defined(MAC_OS_X_VERSION_10_8)
+#define XPSupportsButtonStyles XPAquaModern
+#elif defined(MAC_OS_X_VERSION_10_2)
+#define XPSupportsButtonStyles XPAquaClassic
+#else
+#define XPSupportsButtonStyles XPPreAqua
+#endif
+
 #if XPSupportsNSDocument >= 2
 #define XPURL NSURL
 #else
@@ -137,20 +152,19 @@ typedef XPUInteger XPDocumentChangeType;
 // MARK: Deprecated Constants and Types
 
 #ifdef MAC_OS_X_VERSION_10_2
+typedef NSBezelStyle XPBezelStyle;
 #define XPKeyedArchiver NSKeyedArchiver
 #define XPKeyedUnarchiver NSKeyedUnarchiver
-#define XPBezelStyle NSBezelStyle
 #define XPBoxType NSBoxType
 #define XPBoxSeparator NSBoxSeparator
 #define XPSupportsNSBezierPath
 #define XPSupportsTexturedWindows
 #define XPSupportsUtilityWindows
-#define XPSupportsButtonStyles
 #define XPSupportsUnicodeUI
 #else
+typedef XPUInteger XPBezelStyle;
 #define XPKeyedArchiver NSArchiver
 #define XPKeyedUnarchiver NSUnarchiver
-#define XPBezelStyle XPUInteger
 #define XPBoxType XPUInteger
 #define XPBoxSeparator 0
 #endif
@@ -240,17 +254,6 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 typedef NSAttributedStringKey XPAttributedStringKey;
 #else
 typedef NSString* XPAttributedStringKey;
-#endif
-
-#if defined(XPSupportsButtonStyles) && defined(MAC_OS_X_VERSION_10_15)
-#define XPBezelStyleShadowlessSquare NSBezelStyleShadowlessSquare
-#define XPBezelStyleFlexiblePush NSBezelStyleFlexiblePush
-#elif defined (XPSupportsButtonStyles)
-#define XPBezelStyleShadowlessSquare NSShadowlessSquareBezelStyle
-#define XPBezelStyleFlexiblePush NSRegularSquareBezelStyle
-#else
-#define XPBezelStyleShadowlessSquare 6
-#define XPBezelStyleFlexiblePush 0
 #endif
 
 extern const NSRange XPNotFoundRange;

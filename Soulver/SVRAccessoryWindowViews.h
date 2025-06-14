@@ -109,15 +109,9 @@ typedef XP_ENUM(XPInteger, SVRKeypadButtonKind) {
 
 static const XPFloat SVRAccessoryWindowKeypadWindowPadding        = 4;
 static const NSSize  SVRAccessoryWindowKeypadWindowButtonSize     = {40, 32};
-#ifdef XPSupportsButtonStyles
-static const XPFloat SVRAccessoryWindowKeypadWindowButtonVPadding = 0;
-static const XPFloat SVRAccessoryWindowKeypadWindowButtonHPadding = 0;
-static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 4;
-#else
 static const XPFloat SVRAccessoryWindowKeypadWindowButtonVPadding = 4;
 static const XPFloat SVRAccessoryWindowKeypadWindowButtonHPadding = 4;
 static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
-#endif
 
 // MARK: SVRAccessoryWindowKeypadView
 
@@ -221,3 +215,6 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind);
 NSString *SVR_localizedStringForKind(SVRResetButtonKind kind);
 SVRResetButtonKind SVR_resetButtonKindForColorWellKind(SVRColorWellKind kind);
 SVRResetButtonKind SVR_resetButtonKindForFontSettingKind(SVRThemeFont kind);
+XPBezelStyle SVR_keypadButtonStyle(void);
+XPBezelStyle SVR_settingsButtonStyle(void);
+XPBezelStyle SVR_aboutButtonStyle(void);

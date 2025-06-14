@@ -207,7 +207,7 @@
   [button setTitle:title];
   [button setImage:image];
   [button setImagePosition:NSImageLeft];
-  [button XP_setBezelStyle:XPBezelStyleShadowlessSquare];
+  [button XP_setBezelStyle:SVR_aboutButtonStyle()];
   return button;
 }
 
@@ -484,7 +484,7 @@
   [button setKeyEquivalent:SVR_keyForKeypadButtonOfKind(kind)];
   [button setTag:kind];
   [button setAction:SVR_selectorOfKind(SVRSelectorKindKeypadAppend)];
-  [button XP_setBezelStyle:XPBezelStyleFlexiblePush];
+  [button XP_setBezelStyle:SVR_keypadButtonStyle()];
   return button;
 }
 
@@ -497,7 +497,7 @@
   [button setTitle:title];
   [button setAction:action];
   [button setTag:tag];
-  [button XP_setBezelStyle:XPBezelStyleShadowlessSquare];
+  [button XP_setBezelStyle:SVR_settingsButtonStyle()];
   return button;
 }
 
@@ -909,4 +909,43 @@ SVRResetButtonKind SVR_resetButtonKindForFontSettingKind(SVRThemeFont kind)
       XPCLogAssrt1(NO, @"[UNKNOWN] SVRThemeFont(%d)", (int)kind);
       return SVRResetButtonKindUnknown;
   }
+}
+
+XPBezelStyle SVR_keypadButtonStyle(void)
+{
+#if XPSupportsButtonStyles == XPLiquidGlass
+  return NSBezelStyleFlexiblePush;
+#elif XPSupportsButtonStyles == XPAquaModern
+  return NSBezelStyleSmallSquare;
+#elif XPSupportsButtonStyles == XPAquaClassic
+  return NSBezelStyleTexturedSquare;
+#elif XPSupportsButtonStyles == XPPreAqua
+  return 0;
+#endif
+}
+
+XPBezelStyle SVR_settingsButtonStyle(void)
+{
+#if XPSupportsButtonStyles == XPLiquidGlass
+  return NSBezelStyleFlexiblePush;
+#elif XPSupportsButtonStyles == XPAquaModern
+  return NSBezelStyleSmallSquare;
+#elif XPSupportsButtonStyles == XPAquaClassic
+  return NSBezelStyleShadowlessSquare;
+#elif XPSupportsButtonStyles == XPPreAqua
+  return 0;
+#endif
+}
+
+XPBezelStyle SVR_aboutButtonStyle(void)
+{
+#if XPSupportsButtonStyles == XPLiquidGlass
+  return NSBezelStyleFlexiblePush;
+#elif XPSupportsButtonStyles == XPAquaModern
+  return NSBezelStyleFlexiblePush;
+#elif XPSupportsButtonStyles == XPAquaClassic
+  return NSBezelStyleShadowlessSquare;
+#elif XPSupportsButtonStyles == XPPreAqua
+  return 0;
+#endif
 }
