@@ -134,3 +134,6 @@
 #endif
 
 NSString *SVR_localizedStringForSettingsSelection(SVRSettingSelection selection);
+XPWindowStyleMask SVR_windowMaskForKeypadWindow(void);
+XPWindowStyleMask SVR_windowMaskForSettingsWindow(void);
+XPWindowStyleMask SVR_windowMaskForAboutWindow(void);

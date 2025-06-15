@@ -111,20 +111,11 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   Class appDelegateClass = [[[NSApplication sharedApplication] delegate] class];
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
   NSWindow *window = nil;
-  XPWindowStyleMask mask = 0;
   
   // MARK: SVRAccessoryWindowKeypad
   
-  mask = (XPWindowStyleMaskTitled | XPWindowStyleMaskClosable);
-#ifdef XPSupportsUtilityWindows
-  mask |= XPWindowStyleMaskUtilityWindow;
-#endif
-#ifdef XPSupportsTexturedWindows
-  mask |= NSTexturedBackgroundWindowMask;
-#endif
-  
   window = [[NSPanel alloc] initWithContentRect:SVRAccessoryWindowKeypadWindowRect
-                                      styleMask:mask
+                                      styleMask:SVR_windowMaskForKeypadWindow()
                                         backing:NSBackingStoreBuffered
                                           defer:YES];
   _keypadPanel = (NSPanel*)window;
@@ -138,12 +129,8 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   
   // MARK: SVRAccessoryWindowAbout
   
-  mask = (XPWindowStyleMaskTitled
-        | XPWindowStyleMaskClosable
-        | XPWindowStyleMaskResizable
-        | XPWindowStyleMaskMiniaturizable);
   window = [[NSWindow alloc] initWithContentRect:SVRAccessoryWindowAboutWindowRect
-                                       styleMask:mask
+                                       styleMask:SVR_windowMaskForAboutWindow()
                                          backing:NSBackingStoreBuffered
                                            defer:YES];
   
@@ -152,7 +139,8 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   [window center];
   [window setTitle:[Localized titleAbout]];
   [window setReleasedWhenClosed:NO];
-  [window setMinSize:[NSWindow frameRectForContentRect:SVRAccessoryWindowAboutWindowRect styleMask:mask].size];
+  [window setMinSize:[NSWindow frameRectForContentRect:SVRAccessoryWindowAboutWindowRect
+                                             styleMask:SVR_windowMaskForAboutWindow()].size];
   [window setMaxSize:SVRAccessoryWindowAboutWindowMaxSize];
   [window XP_setCollectionBehavior:XPWindowCollectionBehaviorFullScreenNone];
   [window setContentView:[[[SVRAccessoryWindowAboutView alloc] initWithFrame:SVRAccessoryWindowAboutWindowRect] autorelease]];
@@ -166,11 +154,8 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   
   // MARK: SVRAccessoryWindowSettings
   
-  mask = (XPWindowStyleMaskTitled
-        | XPWindowStyleMaskClosable
-        | XPWindowStyleMaskMiniaturizable);
   window = [[NSWindow alloc] initWithContentRect:SVRAccessoryWindowSettingsWindowRect
-                                       styleMask:mask
+                                       styleMask:SVR_windowMaskForSettingsWindow()
                                          backing:NSBackingStoreBuffered
                                            defer:YES];
   
@@ -857,4 +842,37 @@ NSString *SVR_localizedStringForSettingsSelection(SVRSettingSelection selection)
       XPCLogAssrt1(NO, @"[UNKNOWN] SVRSettingSelection(%d)", (int)selection);
       return nil;
   }
+}
+
+XPWindowStyleMask SVR_windowMaskForKeypadWindow(void)
+{
+  XPWindowStyleMask mask = XPWindowStyleMaskTitled | XPWindowStyleMaskClosable;
+#ifdef XPSupportsTexturedWindows
+  mask |= NSTexturedBackgroundWindowMask;
+#endif
+#if XPSupportsButtonStyles == XPAquaGlass
+  mask |= XPWindowStyleMaskUtilityWindow;
+#elif XPSupportsButtonStyles == XPAquaFlat
+  mask |= XPWindowStyleMaskUtilityWindow;
+#elif XPSupportsButtonStyles == XPAquaSmooth
+  mask |= XPWindowStyleMaskUtilityWindow;
+  mask |= NSTexturedBackgroundWindowMask;
+#elif XPSupportsButtonStyles == XPAquaGlossy
+  mask |= XPWindowStyleMaskUtilityWindow;
+  mask |= NSTexturedBackgroundWindowMask;
+#endif
+  return mask;
+}
+XPWindowStyleMask SVR_windowMaskForSettingsWindow(void)
+{
+  return XPWindowStyleMaskTitled
+       | XPWindowStyleMaskClosable
+       | XPWindowStyleMaskMiniaturizable;
+}
+XPWindowStyleMask SVR_windowMaskForAboutWindow(void)
+{
+  return XPWindowStyleMaskTitled
+       | XPWindowStyleMaskClosable
+       | XPWindowStyleMaskResizable
+       | XPWindowStyleMaskMiniaturizable;
 }
