@@ -114,8 +114,8 @@ typedef float XPFloat;
 #define XPSupportsNSDocument 0 // NSDocument does not exist
 #endif
 
-#define XPAquaGlass 3
-#define XPAquaFlat 2
+#define XPAquaGlass 4
+#define XPAquaFlat 3
 #define XPAquaSmooth 2
 #define XPAquaGlossy 1
 #define XPPreAqua 0

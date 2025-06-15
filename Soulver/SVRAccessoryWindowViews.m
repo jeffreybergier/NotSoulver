@@ -74,7 +74,7 @@
   XPFloat kAboveTextViewY = 168;
   NSPoint kTagLineOrigin = NSMakePoint(kLeftX-1, kLeftX);
   NSRect  kDedicationTextFrame = NSMakeRect(kLeftX, 30, kLeftWidth, 14);
-  NSRect  kViewSourceButtonFrame = NSMakeRect(kRightX, kLeftX, kRightWidth, 42);
+  NSRect  kViewSourceButtonFrame = NSMakeRect(kRightX, kLeftX, kRightWidth, 44);
   NSRect  kSeparatorRect = NSMakeRect(kLeftX, 49, kLeftWidth, 1);
   NSRect  kTextViewRect = NSMakeRect(kLeftX, 58, 464, 100);
   NSRect  kSubtitleTextFrame = NSMakeRect(kLeftX-4, 184, kLeftWidth, 60);
@@ -918,9 +918,9 @@ XPBezelStyle SVR_keypadButtonStyle(void)
 #elif XPSupportsButtonStyles == XPAquaFlat
   return NSBezelStyleSmallSquare;
 #elif XPSupportsButtonStyles == XPAquaSmooth
-  return NSBezelStyleSmallSquare;
+  return NSSmallSquareBezelStyle;
 #elif XPSupportsButtonStyles == XPAquaGlossy
-  return NSTexturedSquareBezelStyle; // NSBezelStyleFlexiblePush
+  return NSRegularSquareBezelStyle; // NSTexturedSquareBezelStyle
 #elif XPSupportsButtonStyles == XPPreAqua
   return 0;
 #endif
@@ -933,7 +933,7 @@ XPBezelStyle SVR_settingsButtonStyle(void)
 #elif XPSupportsButtonStyles == XPAquaFlat
   return NSBezelStyleSmallSquare;
 #elif XPSupportsButtonStyles == XPAquaSmooth
-  return NSBezelStyleSmallSquare;
+  return NSSmallSquareBezelStyle;
 #elif XPSupportsButtonStyles == XPAquaGlossy
   return NSShadowlessSquareBezelStyle;
 #elif XPSupportsButtonStyles == XPPreAqua
@@ -948,9 +948,9 @@ XPBezelStyle SVR_aboutButtonStyle(void)
 #elif XPSupportsButtonStyles == XPAquaFlat
   return NSBezelStyleFlexiblePush;
 #elif XPSupportsButtonStyles == XPAquaSmooth
-  return NSBezelStyleFlexiblePush;
+  return NSRegularSquareBezelStyle;
 #elif XPSupportsButtonStyles == XPAquaGlossy
-  return NSShadowlessSquareBezelStyle;
+  return NSRegularSquareBezelStyle; // NSShadowlessSquareBezelStyle
 #elif XPSupportsButtonStyles == XPPreAqua
   return 0;
 #endif
