@@ -918,7 +918,7 @@ XPBezelStyle SVR_keypadButtonStyle(void)
 #elif XPSupportsButtonStyles == XPAquaModern
   return NSBezelStyleSmallSquare;
 #elif XPSupportsButtonStyles == XPAquaClassic
-  return NSBezelStyleTexturedSquare;
+  return NSTexturedSquareBezelStyle;
 #elif XPSupportsButtonStyles == XPPreAqua
   return 0;
 #endif
@@ -931,7 +931,7 @@ XPBezelStyle SVR_settingsButtonStyle(void)
 #elif XPSupportsButtonStyles == XPAquaModern
   return NSBezelStyleSmallSquare;
 #elif XPSupportsButtonStyles == XPAquaClassic
-  return NSBezelStyleShadowlessSquare;
+  return NSShadowlessSquareBezelStyle;
 #elif XPSupportsButtonStyles == XPPreAqua
   return 0;
 #endif
@@ -944,7 +944,7 @@ XPBezelStyle SVR_aboutButtonStyle(void)
 #elif XPSupportsButtonStyles == XPAquaModern
   return NSBezelStyleFlexiblePush;
 #elif XPSupportsButtonStyles == XPAquaClassic
-  return NSBezelStyleShadowlessSquare;
+  return NSShadowlessSquareBezelStyle;
 #elif XPSupportsButtonStyles == XPPreAqua
   return 0;
 #endif
