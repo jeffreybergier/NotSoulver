@@ -590,7 +590,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 @implementation NSButton (CrossPlatform)
 -(void)XP_setBezelStyle:(XPBezelStyle)style;
 {
-#ifdef XPSupportsButtonStyles
+#if XPSupportsButtonStyles >= XPAquaGlossy
   [self setBezelStyle:style];
 #endif
 }
@@ -599,7 +599,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 @implementation NSBox (CrossPlatform)
 -(void)XP_setBoxType:(XPBoxType)type;
 {
-#ifdef XPSupportsButtonStyles
+#if XPSupportsButtonStyles >= XPAquaGlossy
   [self setBoxType:type];
 #endif
 }

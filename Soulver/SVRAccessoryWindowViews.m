@@ -617,7 +617,7 @@
 @implementation NSCell (CrossPlatform)
 -(void)XP_setSendsActionOnEndEditing:(BOOL)sendsAction;
 {
-#ifdef XPSupportsButtonStyles
+#if XPSupportsButtonStyles >= XPAquaGlossy
   [self setSendsActionOnEndEditing:sendsAction];
 #endif
 }
