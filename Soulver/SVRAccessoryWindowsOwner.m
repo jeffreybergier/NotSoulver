@@ -147,7 +147,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   [window setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameAbout];
   [window XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameAbout];
   [window XP_setRestorationClass:appDelegateClass];
-  [window setInitialFirstResponder:[[window contentView] viewSourceButton]];
+//[window setInitialFirstResponder:[[window contentView] viewSourceButton]];
   [[[window contentView] textView] setString:[Localized aboutParagraph]];
   [[[window contentView] viewSourceButton] setTarget:self];
   [[[window contentView] viewSourceButton] setAction:@selector(openSourceRepository:)];

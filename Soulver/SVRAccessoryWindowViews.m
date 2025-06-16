@@ -912,6 +912,7 @@ SVRResetButtonKind SVR_resetButtonKindForFontSettingKind(SVRThemeFont kind)
 
 XPBezelStyle SVR_keypadButtonStyle(void)
 {  
+  return NSRegularSquareBezelStyle;
 #if XPSupportsButtonStyles == XPAquaGlass
   return NSBezelStyleFlexiblePush;
 #elif XPSupportsButtonStyles == XPAquaFlat
@@ -927,6 +928,7 @@ XPBezelStyle SVR_keypadButtonStyle(void)
 
 XPBezelStyle SVR_settingsButtonStyle(void)
 {
+  return NSRegularSquareBezelStyle;
 #if XPSupportsButtonStyles == XPAquaGlass
   return NSBezelStyleFlexiblePush;
 #elif XPSupportsButtonStyles == XPAquaFlat
@@ -942,14 +944,15 @@ XPBezelStyle SVR_settingsButtonStyle(void)
 
 XPBezelStyle SVR_aboutButtonStyle(void)
 {
+  return NSRegularSquareBezelStyle;
 #if XPSupportsButtonStyles == XPAquaGlass
   return NSBezelStyleSmallSquare;
 #elif XPSupportsButtonStyles == XPAquaFlat
   return NSBezelStyleSmallSquare;
 #elif XPSupportsButtonStyles == XPAquaSmooth
-  return NSSmallSquareBezelStyle;
+  return NSRegularSquareBezelStyle;
 #elif XPSupportsButtonStyles == XPAquaGlossy
-  return NSSmallSquareBezelStyle;
+  return NSRegularSquareBezelStyle;
 #elif XPSupportsButtonStyles == XPPreAqua
   return 0;
 #endif
