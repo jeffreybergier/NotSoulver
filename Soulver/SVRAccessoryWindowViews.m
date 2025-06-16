@@ -68,18 +68,17 @@
 -(id)initWithFrame:(NSRect)frameRect;
 {
   XPFloat kLeftX = 8;
-  XPFloat kLeftWidth = 312;
+  XPFloat kLeftWidth = 314;
   XPFloat kRightX = 328;
   XPFloat kRightWidth = 144;
-  XPFloat kAboveTextViewY = 168;
   NSPoint kTagLineOrigin = NSMakePoint(kLeftX-1, kLeftX);
   NSRect  kDedicationTextFrame = NSMakeRect(kLeftX, 30, kLeftWidth, 14);
-  NSRect  kViewSourceButtonFrame = NSMakeRect(kRightX, kLeftX, kRightWidth, 44);
+  NSRect  kViewSourceButtonFrame = NSMakeRect(kRightX, kLeftX, kRightWidth, 43);
   NSRect  kSeparatorRect = NSMakeRect(kLeftX, 49, kLeftWidth, 1);
   NSRect  kTextViewRect = NSMakeRect(kLeftX, 58, 464, 100);
   NSRect  kSubtitleTextFrame = NSMakeRect(kLeftX-4, 184, kLeftWidth, 60);
   NSRect  kTitleTextFrame = NSMakeRect(kLeftX-4, 256, kLeftWidth, 44);
-  NSRect  kPortraitImageView = NSMakeRect(kRightX, kAboveTextViewY, kRightWidth, kRightWidth);
+  NSRect  kPortraitImageView = NSMakeRect(kRightX, 166, kRightWidth, kRightWidth);
   
   self = [super initWithFrame:frameRect];
   XPParameterRaise(self);
@@ -183,7 +182,7 @@
   /// END Apple Instructions
   
   // Customize for this app
-  [scrollView setBorderType:NSGrooveBorder];
+  [scrollView setBorderType:NSBezelBorder];
   [textView setEditable:NO];
   [textView setSelectable:YES];
   [textView setDrawsBackground:NO];
@@ -944,13 +943,13 @@ XPBezelStyle SVR_settingsButtonStyle(void)
 XPBezelStyle SVR_aboutButtonStyle(void)
 {
 #if XPSupportsButtonStyles == XPAquaGlass
-  return NSBezelStyleFlexiblePush;
+  return NSBezelStyleSmallSquare;
 #elif XPSupportsButtonStyles == XPAquaFlat
-  return NSBezelStyleFlexiblePush;
+  return NSBezelStyleSmallSquare;
 #elif XPSupportsButtonStyles == XPAquaSmooth
-  return NSRegularSquareBezelStyle;
+  return NSSmallSquareBezelStyle;
 #elif XPSupportsButtonStyles == XPAquaGlossy
-  return NSRegularSquareBezelStyle; // NSShadowlessSquareBezelStyle
+  return NSSmallSquareBezelStyle;
 #elif XPSupportsButtonStyles == XPPreAqua
   return 0;
 #endif
