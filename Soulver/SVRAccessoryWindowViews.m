@@ -73,7 +73,7 @@
   XPFloat kRightWidth = 144;
   NSPoint kTagLineOrigin = NSMakePoint(kLeftX-1, kLeftX);
   NSRect  kDedicationTextFrame = NSMakeRect(kLeftX, 30, kLeftWidth, 14);
-  NSRect  kViewSourceButtonFrame = NSMakeRect(kRightX, kLeftX, kRightWidth, 43);
+  NSRect  kViewSourceButtonFrame = NSMakeRect(kRightX, kLeftX, kRightWidth, 44);
   NSRect  kSeparatorRect = NSMakeRect(kLeftX, 49, kLeftWidth, 1);
   NSRect  kTextViewRect = NSMakeRect(kLeftX, 58, 464, 100);
   NSRect  kSubtitleTextFrame = NSMakeRect(kLeftX-4, 184, kLeftWidth, 60);
@@ -96,7 +96,7 @@
                                           alignment:XPTextAlignmentLeft]];
   
   // View Source Button
-  _viewSourceButton = [[[self class] __viewSourceButtonWithFrame:kViewSourceButtonFrame
+  _viewSourceButton = [[[self class] __viewSourceButtonWithFrame:SVR_rectByAdjustingAquaButtonRect(kViewSourceButtonFrame)
                                                            title:[Localized verbViewSource]
                                                       imageNamed:[Localized imageNeXTLogo]]
                                          SVR_setAutoresizingMask:NSViewMinXMargin];
@@ -242,7 +242,7 @@
   [_selectorButton addItemWithTitle:[Localized titleDark]];
   [_selectorButton setAction:SVR_selectorOfKind(SVRSelectorKindWriteUserInterfaceStyle)];
   [self addSubview:_selectorButton];
-  [self addSubview:[NSButton SVR_settingsButtonWithFrame:resetRect
+  [self addSubview:[NSButton SVR_settingsButtonWithFrame:SVR_rectByAdjustingAquaButtonRect(resetRect)
                                                    title:[Localized verbReset]
                                                   action:SVR_selectorOfKind(SVRSelectorKindReset)
                                                      tag:kind]];
@@ -263,7 +263,7 @@
                                             target:self
                                             action:@selector(__HACK_writeWaitTime:)];
   [self addSubview:_fieldTime];
-  [self addSubview:[NSButton SVR_settingsButtonWithFrame:resetRect
+  [self addSubview:[NSButton SVR_settingsButtonWithFrame:SVR_rectByAdjustingAquaButtonRect(resetRect)
                                                    title:[Localized verbReset]
                                                   action:SVR_selectorOfKind(SVRSelectorKindReset)
                                                      tag:kind]];
@@ -339,7 +339,7 @@
       labelRect.origin.y -= kVPad;
       lightRect.origin.y -= kVPad;
     } else {
-      [self addSubview:[NSButton SVR_settingsButtonWithFrame:resetRect
+      [self addSubview:[NSButton SVR_settingsButtonWithFrame:SVR_rectByAdjustingAquaButtonRect(resetRect)
                                                        title:[Localized verbReset]
                                                       action:SVR_selectorOfKind(SVRSelectorKindReset)
                                                          tag:resetKind]];
@@ -430,11 +430,11 @@
     [self addSubview:textField];
     
     // Buttons
-    [self addSubview:[NSButton SVR_settingsButtonWithFrame:setttRect
+    [self addSubview:[NSButton SVR_settingsButtonWithFrame:SVR_rectByAdjustingAquaButtonRect(setttRect)
                                                      title:[Localized verbSet]
                                                     action:SVR_selectorOfKind(SVRSelectorKindPresentFontPanel)
                                                        tag:fontKind]];
-    [self addSubview:[NSButton SVR_settingsButtonWithFrame:resetRect
+    [self addSubview:[NSButton SVR_settingsButtonWithFrame:SVR_rectByAdjustingAquaButtonRect(resetRect)
                                                      title:[Localized verbReset]
                                                     action:SVR_selectorOfKind(SVRSelectorKindReset)
                                                        tag:resetKind]];
@@ -476,9 +476,7 @@
 
 +(NSButton*)SVR_keypadButtonOfKind:(SVRKeypadButtonKind)kind;
 {
-  NSRect buttonRect = SVR_rectForKeypadButtonOfKind(kind);
-  NSButton *button  = nil;
-  button = [[[NSButton alloc] initWithFrame:buttonRect] autorelease];
+  NSButton *button = [[[NSButton alloc] initWithFrame:SVR_rectForKeypadButtonOfKind(kind)] autorelease];
   [button setTitle:SVR_titleForKeypadButtonOfKind(kind)];
   [button setKeyEquivalent:SVR_keyForKeypadButtonOfKind(kind)];
   [button setTag:kind];
@@ -617,7 +615,7 @@
 @implementation NSCell (CrossPlatform)
 -(void)XP_setSendsActionOnEndEditing:(BOOL)sendsAction;
 {
-#if XPSupportsButtonStyles >= XPAquaGlossy
+#ifdef XPSupportsButtonStyles
   [self setSendsActionOnEndEditing:sendsAction];
 #endif
 }
@@ -757,7 +755,21 @@ NSRect SVR_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   output.size = kind == SVRKeypadButtonKindEqual
                       ? NSMakeSize((kBtnSize.width * 2) + kBtnHPad, kBtnSize.height)
                       : kBtnSize;
-  return output;
+  return SVR_rectByAdjustingAquaButtonRect(output);
+}
+
+NSRect SVR_rectByAdjustingAquaButtonRect(NSRect rect)
+{
+#if XPUserInterface == XPUserInterfaceAqua
+  XPFloat xPad = 2;
+  XPFloat yPad = 2;
+  return NSMakeRect(rect.origin.x-xPad,
+                    rect.origin.y-yPad,
+                    rect.size.width+xPad*2,
+                    rect.size.height+yPad*2);
+#else
+  return rect;
+#endif
 }
 
 NSString *SVR_titleForKeypadButtonOfKind(SVRKeypadButtonKind kind)
@@ -912,48 +924,27 @@ SVRResetButtonKind SVR_resetButtonKindForFontSettingKind(SVRThemeFont kind)
 
 XPBezelStyle SVR_keypadButtonStyle(void)
 {  
-  return NSRegularSquareBezelStyle;
-#if XPSupportsButtonStyles == XPAquaGlass
+#ifdef XPSupportsButtonStyles
   return NSBezelStyleFlexiblePush;
-#elif XPSupportsButtonStyles == XPAquaFlat
-  return NSBezelStyleSmallSquare;
-#elif XPSupportsButtonStyles == XPAquaSmooth
-  return NSSmallSquareBezelStyle;
-#elif XPSupportsButtonStyles == XPAquaGlossy
-  return NSRegularSquareBezelStyle; // NSTexturedSquareBezelStyle
-#elif XPSupportsButtonStyles == XPPreAqua
+#else
   return 0;
 #endif
 }
 
 XPBezelStyle SVR_settingsButtonStyle(void)
 {
-  return NSRegularSquareBezelStyle;
-#if XPSupportsButtonStyles == XPAquaGlass
+#ifdef XPSupportsButtonStyles
   return NSBezelStyleFlexiblePush;
-#elif XPSupportsButtonStyles == XPAquaFlat
-  return NSBezelStyleSmallSquare;
-#elif XPSupportsButtonStyles == XPAquaSmooth
-  return NSSmallSquareBezelStyle;
-#elif XPSupportsButtonStyles == XPAquaGlossy
-  return NSShadowlessSquareBezelStyle;
-#elif XPSupportsButtonStyles == XPPreAqua
+#else
   return 0;
 #endif
 }
 
 XPBezelStyle SVR_aboutButtonStyle(void)
 {
-  return NSRegularSquareBezelStyle;
-#if XPSupportsButtonStyles == XPAquaGlass
-  return NSBezelStyleSmallSquare;
-#elif XPSupportsButtonStyles == XPAquaFlat
-  return NSBezelStyleSmallSquare;
-#elif XPSupportsButtonStyles == XPAquaSmooth
-  return NSRegularSquareBezelStyle;
-#elif XPSupportsButtonStyles == XPAquaGlossy
-  return NSRegularSquareBezelStyle;
-#elif XPSupportsButtonStyles == XPPreAqua
+#ifdef XPSupportsButtonStyles
+  return NSBezelStyleFlexiblePush;
+#else
   return 0;
 #endif
 }

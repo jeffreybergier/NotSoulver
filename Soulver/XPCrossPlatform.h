@@ -114,22 +114,16 @@ typedef float XPFloat;
 #define XPSupportsNSDocument 0 // NSDocument does not exist
 #endif
 
-#define XPAquaGlass 4
-#define XPAquaFlat 3
-#define XPAquaSmooth 2
-#define XPAquaGlossy 1
-#define XPPreAqua 0
+#define XPUserInterfaceGlass 2
+#define XPUserInterfaceAqua 1
+#define XPUserInterfaceNone 0
 
 #if __MAC_OS_X_VERSION_MAX_ALLOWED >= 260000
-#define XPSupportsButtonStyles XPAquaGlass
-#elif defined(MAC_OS_X_VERSION_10_10)
-#define XPSupportsButtonStyles XPAquaFlat
-#elif defined(MAC_OS_X_VERSION_10_7)
-#define XPSupportsButtonStyles XPAquaSmooth
-#elif defined(MAC_OS_X_VERSION_10_0)
-#define XPSupportsButtonStyles XPAquaGlossy
+#define XPUserInterface XPUserInterfaceGlass
+#elif defined(MAC_OS_X_VERSION_10_2)
+#define XPUserInterface XPUserInterfaceAqua
 #else
-#define XPSupportsButtonStyles XPPreAqua
+#define XPUserInterface XPUserInterfaceNone
 #endif
 
 #if XPSupportsNSDocument >= 2
@@ -162,6 +156,9 @@ typedef NSBezelStyle XPBezelStyle;
 #define XPBoxSeparator NSBoxSeparator
 #define XPSupportsNSBezierPath
 #define XPSupportsUnicodeUI
+#define XPSupportsTexturedWindows
+#define XPSupportsUtilityWindows
+#define XPSupportsButtonStyles
 #else
 typedef XPUInteger XPBezelStyle;
 #define XPKeyedArchiver NSArchiver
@@ -205,6 +202,7 @@ typedef void (^XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPSaveOperationType NSSaveOperationType
 #define XPDataWritingAtomic NSDataWritingAtomic
 #define XPSupportsUnicodeDocument // TODO: Update to NSRegularExpression
+#undef  XPSupportsTexturedWindows
 #else
 typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *error);
 #define XPSecureCoding NSCoding

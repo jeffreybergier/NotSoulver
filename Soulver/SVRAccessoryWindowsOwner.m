@@ -850,15 +850,8 @@ XPWindowStyleMask SVR_windowMaskForKeypadWindow(void)
 #ifdef XPSupportsTexturedWindows
   mask |= NSTexturedBackgroundWindowMask;
 #endif
-#if XPSupportsButtonStyles == XPAquaGlass
+#ifdef XPSupportsUtilityWindows
   mask |= XPWindowStyleMaskUtilityWindow;
-#elif XPSupportsButtonStyles == XPAquaFlat
-  mask |= XPWindowStyleMaskUtilityWindow;
-#elif XPSupportsButtonStyles == XPAquaSmooth
-  mask |= XPWindowStyleMaskUtilityWindow;
-#elif XPSupportsButtonStyles == XPAquaGlossy
-  mask |= XPWindowStyleMaskUtilityWindow;
-  mask |= NSTexturedBackgroundWindowMask;
 #endif
   return mask;
 }

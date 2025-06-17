@@ -107,11 +107,11 @@ typedef XP_ENUM(XPInteger, SVRKeypadButtonKind) {
   SVRKeypadButtonKindLog
 };
 
-static const XPFloat SVRAccessoryWindowKeypadWindowPadding        = 4;
+static const XPFloat SVRAccessoryWindowKeypadWindowPadding        = 6;
 static const NSSize  SVRAccessoryWindowKeypadWindowButtonSize     = {40, 32};
+static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
 static const XPFloat SVRAccessoryWindowKeypadWindowButtonVPadding = 4;
 static const XPFloat SVRAccessoryWindowKeypadWindowButtonHPadding = 4;
-static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
 
 // MARK: SVRAccessoryWindowKeypadView
 
@@ -210,6 +210,7 @@ static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
 
 SEL SVR_selectorOfKind(SVRSelectorKind kind);
 NSRect SVR_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind);
+NSRect SVR_rectByAdjustingAquaButtonRect(NSRect rect);
 NSString *SVR_titleForKeypadButtonOfKind(SVRKeypadButtonKind kind);
 NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind);
 NSString *SVR_localizedStringForKind(SVRResetButtonKind kind);
