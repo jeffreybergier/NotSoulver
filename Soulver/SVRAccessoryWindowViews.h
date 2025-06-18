@@ -145,12 +145,13 @@ static const XPFloat SVRAccessoryWindowKeypadWindowButtonHPadding = 4;
 @interface SVRAccessoryWindowsSettingsGeneralView: NSView
 {
   mm_unretain NSPopUpButton *_selectorButton;
-  mm_unretain NSTextField *_fieldTime;
+  mm_unretain NSTextField *_delayLabel;
+  mm_unretain NSSlider *_delaySlider;
 }
 -(id)initWithFrame:(NSRect)frameRect;
 -(NSPopUpButton*)themeSelector;
--(NSTextField*)timeField;
--(IBAction)__HACK_writeWaitTime:(NSTextField*)sender;
+-(NSTextField*)delayLabel;
+-(NSSlider*)delaySlider;
 @end
 
 @interface SVRAccessoryWindowsSettingsColorsView: NSView

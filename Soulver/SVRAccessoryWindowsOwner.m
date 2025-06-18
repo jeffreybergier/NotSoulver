@@ -424,8 +424,10 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 -(void)readWaitTime;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  NSString *string = [NSString stringWithFormat:@"%g", [ud SVR_waitTimeForRendering]];
-  [[_generalView timeField] setStringValue:string];
+  double delay = [ud SVR_waitTimeForRendering];
+  NSString *string = [NSString stringWithFormat:@"%.0f", delay];
+  [[_generalView delayLabel] setStringValue:string];
+  [[_generalView delaySlider] setDoubleValue:delay];
 }
 
 -(void)readColors;
@@ -568,8 +570,9 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 -(IBAction)writeWaitTime:(NSTextField*)sender;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  XPFloat userTime = [sender floatValue];
+  XPFloat userTime = rint([sender floatValue]);
   [ud SVR_setWaitTimeForRendering:userTime];
+  [self readWaitTime];
 }
 
 -(IBAction)writeColor:(NSColorWell*)sender;
@@ -701,6 +704,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
       break;
     case SVRResetButtonKindWaitTime:
       [ud SVR_setWaitTimeForRendering:-1];
+      [self readWaitTime];
       break;
     case SVRResetButtonKindMathFont:
       [ud SVR_setFont:nil forTheme:SVRThemeFontMath];

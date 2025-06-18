@@ -222,6 +222,8 @@
   XPFloat kYOrigin = frameRect.size.height-kLabelYOffset-16;
   XPFloat kVPad = kLabelYOffset + 22;
   NSRect resetRect = NSMakeRect(frameRect.size.width-50, kYOrigin,               50,                   30);
+  NSRect setttRect = NSMakeRect(resetRect.origin.x-50-4, kYOrigin,               50,                   30);
+  NSRect slidrRect = NSMakeRect(frameRect.origin.x,      kYOrigin,               setttRect.origin.x-4, 30);
   NSRect fieldRect = NSMakeRect(frameRect.origin.x,      kYOrigin,               resetRect.origin.x-4, 30);
   NSRect labelRect = NSMakeRect(frameRect.origin.x,      kYOrigin+kLabelYOffset, resetRect.origin.x-4,  0);
   SVRResetButtonKind kind = SVRResetButtonKindUnknown;
@@ -251,25 +253,36 @@
   kind = SVRResetButtonKindWaitTime;
   labelRect.origin.y -= kVPad;
   fieldRect.origin.y -= kVPad;
+  slidrRect.origin.y -= kVPad;
+  setttRect.origin.y -= kVPad;
   resetRect.origin.y -= kVPad;
   
-  // Wait Time Field
+  // Wait Time Slider
   [self addSubview:[[[NSTextField SVR_labelWithFrame:labelRect]
                                   SVR_setObjectValue:SVR_localizedStringForKind(kind)
                                                 font:nil
                                            alignment:XPTextAlignmentLeft]
                              SVR_sizeToFitVertically]];
-  _fieldTime = [NSTextField SVR_textFieldWithFrame:fieldRect
-                                            target:self
-                                            action:@selector(__HACK_writeWaitTime:)];
-  [self addSubview:_fieldTime];
+  
+  _delayLabel = [NSTextField SVR_textFieldWithFrame:setttRect
+                                             target:nil
+                                             action:NULL];
+  [_delayLabel setAlignment:XPTextAlignmentCenter];
+  [self addSubview:_delayLabel];
+  
+  _delaySlider = [[[NSSlider alloc] initWithFrame:slidrRect] autorelease];
+  [_delaySlider setMinValue:0];
+  [_delaySlider setMaxValue:10];
+  [_delaySlider setAction:SVR_selectorOfKind(SVRSelectorKindWriteWaitTime)];
+  [self addSubview:_delaySlider];
   [self addSubview:[NSButton SVR_settingsButtonWithFrame:SVR_rectByAdjustingAquaButtonRect(resetRect)
                                                    title:[Localized verbReset]
                                                   action:SVR_selectorOfKind(SVRSelectorKindReset)
                                                      tag:kind]];
+
   
   XPParameterRaise(_selectorButton);
-  XPParameterRaise(_fieldTime);
+  XPParameterRaise(_delayLabel);
   
   return self;
 }
@@ -280,27 +293,16 @@
   return [[_selectorButton retain] autorelease];
 }
 
--(NSTextField*)timeField;
+-(NSTextField*)delayLabel;
 {
-  XPParameterRaise(_fieldTime);
-  return [[_fieldTime retain] autorelease];
+  XPParameterRaise(_delayLabel);
+  return [[_delayLabel retain] autorelease];
 }
 
--(IBAction)__HACK_writeWaitTime:(NSTextField*)sender;
+-(NSSlider*)delaySlider;
 {
-  // TODO: Remove this hack
-  // For some reason NSTextField does not send its action
-  // into the responder chain. It will only send it if its
-  // target is set. So I set it to self and fire it
-  // manually into the responder chain.
-  // Also, for some reason, even though the user is typing
-  // in the text field, its not the first responder.
-  // So first I make it the first responder so the
-  // responder chain works properly.
-  [sender becomeFirstResponder];
-  [[NSApplication sharedApplication] sendAction:SVR_selectorOfKind(SVRSelectorKindWriteWaitTime)
-                                             to:nil
-                                           from:sender];
+  XPParameterRaise(_delaySlider);
+  return [[_delaySlider retain] autorelease];
 }
 
 @end
@@ -525,13 +527,15 @@
   BOOL isEditable = target != nil || action != NULL;
   
   [textField setEditable:isEditable];
-  if (target) {
+  if (isEditable) {
     [textField setTarget:target];
-  }
-  if (action != NULL) {
     [textField setAction:action];
+    [[textField cell] XP_setSendsActionOnEndEditing:YES];
   }
-  [[textField cell] XP_setSendsActionOnEndEditing:YES];
+  
+#ifdef XPSupportsButtonStyles
+  [textField setBezelStyle:NSRoundedBezelStyle];
+#endif
   
   return textField;
 }

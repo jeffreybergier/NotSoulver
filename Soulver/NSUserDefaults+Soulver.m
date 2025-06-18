@@ -94,7 +94,6 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
   }
   success = [self synchronize];
   XPLogAssrt(success, @"[FAIL]");
-  [self __postChangeNotification];
   return success;
 }
 
