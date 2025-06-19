@@ -218,14 +218,12 @@
 
 -(id)initWithFrame:(NSRect)frameRect;
 {
-  XPFloat kLabelYOffset = 32;
-  XPFloat kYOrigin = frameRect.size.height-kLabelYOffset-16;
-  XPFloat kVPad = kLabelYOffset + 22;
+  XPFloat kYOrigin = frameRect.size.height-92;
   NSRect resetRect = NSMakeRect(frameRect.size.width-50, kYOrigin,               50,                   30);
   NSRect setttRect = NSMakeRect(resetRect.origin.x-50-4, kYOrigin,               50,                   30);
   NSRect slidrRect = NSMakeRect(frameRect.origin.x,      kYOrigin,               setttRect.origin.x-4, 30);
-  NSRect fieldRect = NSMakeRect(frameRect.origin.x,      kYOrigin,               resetRect.origin.x-4, 30);
-  NSRect labelRect = NSMakeRect(frameRect.origin.x,      kYOrigin+kLabelYOffset, resetRect.origin.x-4,  0);
+  NSRect sgmntRect = NSMakeRect(frameRect.origin.x,      kYOrigin,               frameRect.size.width, 72);
+  NSRect labelRect = NSMakeRect(frameRect.origin.x,      kYOrigin+sgmntRect.size.height+4, frameRect.size.width,  0);
   SVRResetButtonKind kind = SVRResetButtonKindUnknown;
   
   self = [super initWithFrame:frameRect];
@@ -238,24 +236,24 @@
                                                 font:nil
                                            alignment:XPTextAlignmentLeft]
                              SVR_sizeToFitVertically]];
-  _selectorButton = [[[NSPopUpButton alloc] initWithFrame:fieldRect pullsDown:NO] autorelease];
-  [_selectorButton addItemWithTitle:[Localized titleAutomatic]];
-  [_selectorButton addItemWithTitle:[Localized titleLight]];
-  [_selectorButton addItemWithTitle:[Localized titleDark]];
-  [_selectorButton setAction:SVR_selectorOfKind(SVRSelectorKindWriteUserInterfaceStyle)];
-  [self addSubview:_selectorButton];
-  [self addSubview:[NSButton SVR_settingsButtonWithFrame:SVR_rectByAdjustingAquaButtonRect(resetRect)
-                                                   title:[Localized verbReset]
-                                                  action:SVR_selectorOfKind(SVRSelectorKindReset)
-                                                     tag:kind]];
+  
+  _selectorControl = [[[XPSegmentedControl alloc] initWithFrame:sgmntRect] autorelease];
+  [_selectorControl setSegmentCount:3];
+  [_selectorControl setLabel:[Localized titleAutomatic] forSegment:0];
+  [_selectorControl setLabel:[Localized titleLight    ] forSegment:1];
+  [_selectorControl setLabel:[Localized titleDark     ] forSegment:2];
+  [_selectorControl setImage:[NSImage imageNamed:[Localized imageNeXTLogo]] forSegment:0];
+  [_selectorControl setImage:[NSImage imageNamed:[Localized imageNeXTLogo]] forSegment:1];
+  [_selectorControl setImage:[NSImage imageNamed:[Localized imageNeXTLogo]] forSegment:2];
+  [_selectorControl setAction:SVR_selectorOfKind(SVRSelectorKindWriteUserInterfaceStyle)];
+  [self addSubview:_selectorControl];
   
   // Adjust frames
   kind = SVRResetButtonKindWaitTime;
-  labelRect.origin.y -= kVPad;
-  fieldRect.origin.y -= kVPad;
-  slidrRect.origin.y -= kVPad;
-  setttRect.origin.y -= kVPad;
-  resetRect.origin.y -= kVPad;
+  labelRect.origin.y -= slidrRect.size.height+72;
+  slidrRect.origin.y -= slidrRect.size.height+32;
+  setttRect.origin.y -= slidrRect.size.height+32;
+  resetRect.origin.y -= slidrRect.size.height+32;
   
   // Wait Time Slider
   [self addSubview:[[[NSTextField SVR_labelWithFrame:labelRect]
@@ -279,18 +277,18 @@
                                                    title:[Localized verbReset]
                                                   action:SVR_selectorOfKind(SVRSelectorKindReset)
                                                      tag:kind]];
-
   
-  XPParameterRaise(_selectorButton);
+  XPParameterRaise(_selectorControl);
   XPParameterRaise(_delayLabel);
+  XPParameterRaise(_delaySlider);
   
   return self;
 }
 
--(NSPopUpButton*)themeSelector;
+-(XPSegmentedControl*)themeSelector;
 {
-  XPParameterRaise(_selectorButton);
-  return [[_selectorButton retain] autorelease];
+  XPParameterRaise(_selectorControl);
+  return [[_selectorControl retain] autorelease];
 }
 
 -(NSTextField*)delayLabel;
@@ -469,6 +467,121 @@
 {
   [_textFields release];
   _textFields = nil;
+  [super dealloc];
+}
+
+@end
+
+@implementation XPSegmentedControl
+
+-(id)initWithFrame:(NSRect)frameRect;
+{
+  self = [super initWithFrame:frameRect];
+  XPParameterRaise(self);
+  _buttons = [NSMutableArray new];
+  _selectedSegment = 0;
+  return self;
+}
+
+-(void)setSegmentCount:(XPInteger)_;
+{
+}
+
+-(XPInteger)selectedSegment;
+{
+  return _selectedSegment;
+}
+
+-(void)setSelectedSegment:(XPInteger)_selection;
+{
+  XPUInteger selection = (XPUInteger)_selection;
+  XPUInteger count = [_buttons count];
+  XPUInteger index = 0;
+  XPLogAssrt1(count > selection, @"[BOUNDS] Selection(%d)", (int)selection);
+  for (index=0; index<count; index++) {
+    [[_buttons objectAtIndex:index] setState:index==selection];
+  }
+  _selectedSegment = _selection;
+}
+
+-(NSString*)labelForSegment:(XPInteger)segment;
+{
+  return [[_buttons objectAtIndex:segment] title];
+}
+
+-(void)setLabel:(NSString*)label forSegment:(XPInteger)segment;
+{
+  XPInteger count = (XPInteger)[_buttons count];
+  NSButton *button = nil;
+  if (segment < count) {
+    [[_buttons objectAtIndex:segment] setTitle:label];
+  } else {
+    button = [self __newButtonAtIndex:segment];
+    [button setTitle:label];
+  }
+}
+
+-(NSImage*)imageForSegment:(XPInteger)segment;
+{
+  return [[_buttons objectAtIndex:segment] image];
+}
+
+-(void)setImage:(NSImage*)image forSegment:(XPInteger)segment;
+{
+  XPInteger count = (XPInteger)[_buttons count];
+  NSButton *button = nil;
+  if (segment < count) {
+    [[_buttons objectAtIndex:segment] setImage:image];
+  } else {
+    button = [self __newButtonAtIndex:segment];
+    [button setImage:image];
+  }
+}
+
+-(IBAction)__selectedSegmentChanged:(NSButton*)sender;
+{
+  XPUInteger index = [_buttons indexOfObject:sender];
+  XPLogAssrt1(index != (XPUInteger)NSNotFound, @"[UNKNOWN] Sender(%@)", sender);
+  [self setSelectedSegment:index];
+  [self sendAction:[self action] to:[self target]];
+}
+
+-(NSButton*)__newButtonAtIndex:(XPInteger)index;
+{
+  NSButton *button = [[[NSButton alloc] initWithFrame:NSZeroRect] autorelease];
+  [_buttons insertObject:button atIndex:index];
+  
+  [button setBezelStyle:NSRegularSquareBezelStyle];
+  [button setButtonType:NSPushOnPushOffButton];
+  [button setImagePosition:NSImageAbove];
+  [button setAction:@selector(__selectedSegmentChanged:)];
+  [button setTarget:self];
+  
+  [self __recalculateFrames];
+  [self setSelectedSegment:_selectedSegment];
+  [self addSubview:button];
+  return button;
+}
+
+-(void)__recalculateFrames;
+{
+  const XPFloat kPad = 4;
+  XPInteger index = 0;
+  NSRect myBounds = [self bounds];
+  NSRect buttonFrame = myBounds;
+  XPInteger count = [_buttons count];
+  
+  buttonFrame.size.width = floor(myBounds.size.width/count) - (kPad/2);
+  for (index=0; index<count; index++) {
+    buttonFrame.origin.x = (buttonFrame.size.width*index) + (kPad*index);
+    [[_buttons objectAtIndex:index] setFrame:SVR_rectByAdjustingAquaButtonRect(buttonFrame)];
+  }
+}
+
+-(void)dealloc;
+{
+  [_buttons release];
+  _buttons = nil;
   [super dealloc];
 }
 

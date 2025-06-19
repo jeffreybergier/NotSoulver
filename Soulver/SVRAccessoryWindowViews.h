@@ -142,14 +142,16 @@ static const XPFloat SVRAccessoryWindowKeypadWindowButtonHPadding = 4;
 
 // MARK: SVRAccessoryWindowSettingsView
 
+@class XPSegmentedControl;
+
 @interface SVRAccessoryWindowsSettingsGeneralView: NSView
 {
-  mm_unretain NSPopUpButton *_selectorButton;
+  mm_unretain XPSegmentedControl *_selectorControl;
   mm_unretain NSTextField *_delayLabel;
   mm_unretain NSSlider *_delaySlider;
 }
 -(id)initWithFrame:(NSRect)frameRect;
--(NSPopUpButton*)themeSelector;
+-(XPSegmentedControl*)themeSelector;
 -(NSTextField*)delayLabel;
 -(NSSlider*)delaySlider;
 @end
@@ -172,6 +174,25 @@ static const XPFloat SVRAccessoryWindowKeypadWindowButtonHPadding = 4;
 -(NSTextField*)textFieldOfKind:(SVRThemeFont)kind;
 -(void)setTextField:(NSTextField*)textField
             forKind:(SVRThemeFont)kind;
+@end
+
+@interface XPSegmentedControl: NSControl
+{
+  mm_new NSMutableArray *_buttons;
+  XPUInteger _selectedSegment;
+}
+-(id)initWithFrame:(NSRect)frameRect;
+/// Ignored in XPSegmentedControl but required in NSSegmentedControl
+-(void)setSegmentCount:(XPInteger)_;
+-(XPInteger)selectedSegment;
+-(void)setSelectedSegment:(XPInteger)selection;
+-(NSString*)labelForSegment:(XPInteger)segment;
+-(void)setLabel:(NSString*)label forSegment:(XPInteger)segment;
+-(NSImage*)imageForSegment:(XPInteger)segment;
+-(void)setImage:(NSImage*)image forSegment:(XPInteger)segment;
+-(IBAction)__selectedSegmentChanged:(NSButton*)sender;
+-(NSButton*)__newButtonAtIndex:(XPInteger)index;
+-(void)__recalculateFrames;
 @end
 
 @interface NSControl (SVRAccessoryWindows)

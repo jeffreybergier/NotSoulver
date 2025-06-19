@@ -418,7 +418,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   XPUserInterfaceStyle style = [ud SVR_userInterfaceStyleSetting];
-  [[_generalView themeSelector] selectItemAtIndex:style];
+  [[_generalView themeSelector] setSelectedSegment:style];
 }
 
 -(void)readWaitTime;
@@ -550,10 +550,10 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   [self readSettingsSelection];
 }
 
--(IBAction)writeUserInterfaceStyle:(NSPopUpButton*)sender;
+-(IBAction)writeUserInterfaceStyle:(XPSegmentedControl*)sender;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  XPUserInterfaceStyle newStyle = [sender indexOfSelectedItem];
+  XPUserInterfaceStyle newStyle = [sender selectedSegment];
   switch (newStyle) {
     case XPUserInterfaceStyleUnspecified:
     case XPUserInterfaceStyleLight:

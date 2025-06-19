@@ -114,7 +114,7 @@
 
 // MARK: IBActions
 -(IBAction)writeSettingsSelection:(NSPopUpButton*)sender;
--(IBAction)writeUserInterfaceStyle:(NSPopUpButton*)sender;
+-(IBAction)writeUserInterfaceStyle:(XPSegmentedControl*)sender;
 -(IBAction)writeWaitTime:(NSTextField*)sender;
 -(IBAction)writeColor:(NSColorWell*)sender;
 -(IBAction)presentFontPanel:(NSButton*)sender;
