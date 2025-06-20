@@ -187,6 +187,7 @@ typedef NSViewController XPViewController;
 #define XPPasteboardTypeString NSPasteboardTypeString
 #define XPWindowCollectionBehavior NSWindowCollectionBehavior
 #define XPSupportsFormalProtocols // Protocols like NSWindowDelegate were formally added
+#define XPSupportsTemplateImage
 #else
 typedef XPUInteger XPStringCompareOptions;
 #define XPViewController NSResponder

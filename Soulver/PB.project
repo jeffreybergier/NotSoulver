@@ -3,48 +3,58 @@
     DYNAMIC_CODE_GEN = YES; 
     FILESTABLE = {
         CLASSES = (
-            SVRAppDelegate.m,
-            SVRAccessoryWindowsOwner.m,
-            SVRAccessoryWindowViews.m,
-            SVRDocument.m,
-            SVRDocumentModelController.m,
-            SVRDocumentViewController.m,
-            SVRSolver.m,
-            SVRSolverExpressionTagger.m,
-            SVRSolverScanner.m,
-            SVRSolverSolutionTagger.m,
-            SVRSolverStyler.m,
-            SVRSolverTextAttachment.m,
-            XPCrossPlatform.m,
-            XPDocument.m,
-            XPRegularExpression.m,
-            "NSUserDefaults+Soulver.m",
-            TestsIntegration.m,
+            SVRAppDelegate.m, 
+            SVRAccessoryWindowsOwner.m, 
+            SVRAccessoryWindowViews.m, 
+            SVRDocument.m, 
+            SVRDocumentModelController.m, 
+            SVRDocumentViewController.m, 
+            SVRSolver.m, 
+            SVRSolverExpressionTagger.m, 
+            SVRSolverScanner.m, 
+            SVRSolverSolutionTagger.m, 
+            SVRSolverStyler.m, 
+            SVRSolverTextAttachment.m, 
+            XPCrossPlatform.m, 
+            XPDocument.m, 
+            XPRegularExpression.m, 
+            "NSUserDefaults+Soulver.m", 
+            TestsIntegration.m, 
             TestsUnit.m
-        );
+        ); 
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
         H_FILES = (
             SVRAppDelegate.h, 
-            SVRAccessoryWindowsOwner.h,
-            SVRAccessoryWindowViews.h,
-            SVRDocument.h,
-            SVRDocumentModelController.h,
+            SVRAccessoryWindowsOwner.h, 
+            SVRAccessoryWindowViews.h, 
+            SVRDocument.h, 
+            SVRDocumentModelController.h, 
             SVRDocumentViewController.h, 
             SVRSolver.h, 
             SVRSolverExpressionTagger.h, 
             SVRSolverScanner.h, 
             SVRSolverSolutionTagger.h, 
             SVRSolverStyler.h, 
-            SVRSolverTextAttachment.h,
+            SVRSolverTextAttachment.h, 
             XPCrossPlatform.h, 
             XPDocument.h, 
-            XPRegularExpression.h,
-            "NSUserDefaults+Soulver.h",
-            TestsIntegration.h,
-            TestsUnit.h,
+            XPRegularExpression.h, 
+            "NSUserDefaults+Soulver.h", 
+            TestsIntegration.h, 
+            TestsUnit.h, 
             slre.h
-        );
-        IMAGES = ("Images/about-image-512.tiff", Images/NeXTLogoMed.tiff, Images/TagLine.tiff); 
+        ); 
+        IMAGES = (
+            "Images/about-image-512.tiff", 
+            Images/NeXTLogoMed.tiff, 
+            Images/TagLine.tiff, 
+            ThemeAuto.tiff, 
+            "ThemeAuto@2x.tiff", 
+            ThemeDark.tiff, 
+            "ThemeDark@2x.tiff", 
+            ThemeLight.tiff, 
+            "ThemeLight@2x.tiff"
+        ); 
         INTERFACES = (MainMenu_42.nib); 
         OTHER_LINKED = (slre.c, Soulver_main.m); 
         OTHER_RESOURCES = (

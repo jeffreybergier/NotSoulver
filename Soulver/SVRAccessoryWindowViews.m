@@ -219,9 +219,8 @@
 -(id)initWithFrame:(NSRect)frameRect;
 {
   XPFloat kYOrigin = frameRect.size.height-92;
-  NSRect resetRect = NSMakeRect(frameRect.size.width-50, kYOrigin,               50,                   30);
-  NSRect setttRect = NSMakeRect(resetRect.origin.x-50-4, kYOrigin,               50,                   30);
-  NSRect slidrRect = NSMakeRect(frameRect.origin.x,      kYOrigin,               setttRect.origin.x-4, 30);
+  NSRect delayRect = NSMakeRect(frameRect.size.width-50, kYOrigin,               50,                   30);
+  NSRect slidrRect = NSMakeRect(frameRect.origin.x,      kYOrigin,               delayRect.origin.x-4, 26);
   NSRect sgmntRect = NSMakeRect(frameRect.origin.x,      kYOrigin,               frameRect.size.width, 72);
   NSRect labelRect = NSMakeRect(frameRect.origin.x,      kYOrigin+sgmntRect.size.height+4, frameRect.size.width,  0);
   SVRResetButtonKind kind = SVRResetButtonKindUnknown;
@@ -242,18 +241,17 @@
   [_selectorControl setLabel:[Localized titleAutomatic] forSegment:0];
   [_selectorControl setLabel:[Localized titleLight    ] forSegment:1];
   [_selectorControl setLabel:[Localized titleDark     ] forSegment:2];
-  [_selectorControl setImage:[NSImage imageNamed:[Localized imageNeXTLogo]] forSegment:0];
-  [_selectorControl setImage:[NSImage imageNamed:[Localized imageNeXTLogo]] forSegment:1];
-  [_selectorControl setImage:[NSImage imageNamed:[Localized imageNeXTLogo]] forSegment:2];
+  [_selectorControl setImage:[[NSImage imageNamed:@"ThemeAuto" ] SVR_asTemplateImage] forSegment:0];
+  [_selectorControl setImage:[[NSImage imageNamed:@"ThemeLight"] SVR_asTemplateImage] forSegment:1];
+  [_selectorControl setImage:[[NSImage imageNamed:@"ThemeDark" ] SVR_asTemplateImage] forSegment:2];
   [_selectorControl setAction:SVR_selectorOfKind(SVRSelectorKindWriteUserInterfaceStyle)];
   [self addSubview:_selectorControl];
   
   // Adjust frames
   kind = SVRResetButtonKindWaitTime;
-  labelRect.origin.y -= slidrRect.size.height+72;
-  slidrRect.origin.y -= slidrRect.size.height+32;
-  setttRect.origin.y -= slidrRect.size.height+32;
-  resetRect.origin.y -= slidrRect.size.height+32;
+  labelRect.origin.y -= slidrRect.size.height+80;
+  slidrRect.origin.y -= slidrRect.size.height+36;
+  delayRect.origin.y -= slidrRect.size.height+36;
   
   // Wait Time Slider
   [self addSubview:[[[NSTextField SVR_labelWithFrame:labelRect]
@@ -262,7 +260,7 @@
                                            alignment:XPTextAlignmentLeft]
                              SVR_sizeToFitVertically]];
   
-  _delayLabel = [NSTextField SVR_textFieldWithFrame:setttRect
+  _delayLabel = [NSTextField SVR_textFieldWithFrame:delayRect
                                              target:nil
                                              action:NULL];
   [_delayLabel setAlignment:XPTextAlignmentCenter];
@@ -273,10 +271,6 @@
   [_delaySlider setMaxValue:10];
   [_delaySlider setAction:SVR_selectorOfKind(SVRSelectorKindWriteWaitTime)];
   [self addSubview:_delaySlider];
-  [self addSubview:[NSButton SVR_settingsButtonWithFrame:SVR_rectByAdjustingAquaButtonRect(resetRect)
-                                                   title:[Localized verbReset]
-                                                  action:SVR_selectorOfKind(SVRSelectorKindReset)
-                                                     tag:kind]];
   
   XPParameterRaise(_selectorControl);
   XPParameterRaise(_delayLabel);
@@ -727,6 +721,16 @@
   return self;
 }
 
+@end
+
+@implementation NSImage (SVRAccessoryWindows)
+-(NSImage*)SVR_asTemplateImage;
+{
+#ifdef XPSupportsTemplateImage
+  [self setTemplate:YES];
+#endif
+  return self;
+}
 @end
 
 @implementation NSCell (CrossPlatform)

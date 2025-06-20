@@ -226,6 +226,10 @@ static const XPFloat SVRAccessoryWindowKeypadWindowButtonHPadding = 4;
 -(NSImageView*)SVR_setImageFrameStyle:(NSImageFrameStyle)imageFrameStyle;
 @end
 
+@interface NSImage (SVRAccessoryWindows)
+-(NSImage*)SVR_asTemplateImage;
+@end
+
 @interface NSCell (CrossPlatform)
 -(void)XP_setSendsActionOnEndEditing:(BOOL)sendsAction;
 @end
