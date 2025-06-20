@@ -181,6 +181,9 @@ static const XPFloat SVRAccessoryWindowKeypadWindowButtonHPadding = 4;
   mm_new NSMutableArray *_buttons;
   XPUInteger _selectedSegment;
 }
+// This is needed on older systems to ensure that
+// Target and Action are properly stored
++(Class)cellClass;
 -(id)initWithFrame:(NSRect)frameRect;
 /// Ignored in XPSegmentedControl but required in NSSegmentedControl
 -(void)setSegmentCount:(XPInteger)_;
@@ -242,6 +245,3 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind);
 NSString *SVR_localizedStringForKind(SVRResetButtonKind kind);
 SVRResetButtonKind SVR_resetButtonKindForColorWellKind(SVRColorWellKind kind);
 SVRResetButtonKind SVR_resetButtonKindForFontSettingKind(SVRThemeFont kind);
-XPBezelStyle SVR_keypadButtonStyle(void);
-XPBezelStyle SVR_settingsButtonStyle(void);
-XPBezelStyle SVR_aboutButtonStyle(void);

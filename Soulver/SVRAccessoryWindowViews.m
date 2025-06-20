@@ -206,7 +206,7 @@
   [button setTitle:title];
   [button setImage:image];
   [button setImagePosition:NSImageLeft];
-  [button XP_setBezelStyle:SVR_aboutButtonStyle()];
+  [button XP_setBezelStyle:XPBezelStyleFlexiblePush];
   return button;
 }
 
@@ -220,7 +220,7 @@
 {
   XPFloat kYOrigin = frameRect.size.height-92;
   NSRect delayRect = NSMakeRect(frameRect.size.width-50, kYOrigin,               50,                   30);
-  NSRect slidrRect = NSMakeRect(frameRect.origin.x,      kYOrigin,               delayRect.origin.x-4, 26);
+  NSRect slidrRect = NSMakeRect(frameRect.origin.x,      kYOrigin,               delayRect.origin.x-4, 30);
   NSRect sgmntRect = NSMakeRect(frameRect.origin.x,      kYOrigin,               frameRect.size.width, 72);
   NSRect labelRect = NSMakeRect(frameRect.origin.x,      kYOrigin+sgmntRect.size.height+4, frameRect.size.width,  0);
   SVRResetButtonKind kind = SVRResetButtonKindUnknown;
@@ -249,7 +249,7 @@
   
   // Adjust frames
   kind = SVRResetButtonKindWaitTime;
-  labelRect.origin.y -= slidrRect.size.height+80;
+  labelRect.origin.y -= slidrRect.size.height+76;
   slidrRect.origin.y -= slidrRect.size.height+36;
   delayRect.origin.y -= slidrRect.size.height+36;
   
@@ -468,6 +468,11 @@
 
 @implementation XPSegmentedControl
 
++(Class)cellClass;
+{
+	return [NSActionCell class];
+}
+
 -(id)initWithFrame:(NSRect)frameRect;
 {
   self = [super initWithFrame:frameRect];
@@ -536,6 +541,7 @@
 {
   XPUInteger index = [_buttons indexOfObject:sender];
   XPLogAssrt1(index != (XPUInteger)NSNotFound, @"[UNKNOWN] Sender(%@)", sender);
+	XPLogAssrt([self action], @"Selector was NULL");
   [self setSelectedSegment:index];
   [self sendAction:[self action] to:[self target]];
 }
@@ -545,8 +551,8 @@
   NSButton *button = [[[NSButton alloc] initWithFrame:NSZeroRect] autorelease];
   [_buttons insertObject:button atIndex:index];
   
-  [button setBezelStyle:NSRegularSquareBezelStyle];
-  [button setButtonType:NSPushOnPushOffButton];
+  [button XP_setBezelStyle:XPBezelStyleFlexiblePush];
+  [button setButtonType:XPButtonTypePushOnPushOff];
   [button setImagePosition:NSImageAbove];
   [button setAction:@selector(__selectedSegmentChanged:)];
   [button setTarget:self];
@@ -590,7 +596,7 @@
   [button setKeyEquivalent:SVR_keyForKeypadButtonOfKind(kind)];
   [button setTag:kind];
   [button setAction:SVR_selectorOfKind(SVRSelectorKindKeypadAppend)];
-  [button XP_setBezelStyle:SVR_keypadButtonStyle()];
+  [button XP_setBezelStyle:XPBezelStyleFlexiblePush];
   return button;
 }
 
@@ -603,7 +609,7 @@
   [button setTitle:title];
   [button setAction:action];
   [button setTag:tag];
-  [button XP_setBezelStyle:SVR_settingsButtonStyle()];
+  [button XP_setBezelStyle:XPBezelStyleFlexiblePush];
   return button;
 }
 
@@ -633,16 +639,12 @@
   NSTextField *textField = [[[NSTextField alloc] initWithFrame:frame] autorelease];
   BOOL isEditable = target != nil || action != NULL;
   
+  [textField XP_setBezelStyle:XPTextFieldRoundedBezel];
   [textField setEditable:isEditable];
   if (isEditable) {
     [textField setTarget:target];
     [textField setAction:action];
-    [[textField cell] XP_setSendsActionOnEndEditing:YES];
   }
-  
-#ifdef XPSupportsButtonStyles
-  [textField setBezelStyle:NSRoundedBezelStyle];
-#endif
   
   return textField;
 }
@@ -730,15 +732,6 @@
   [self setTemplate:YES];
 #endif
   return self;
-}
-@end
-
-@implementation NSCell (CrossPlatform)
--(void)XP_setSendsActionOnEndEditing:(BOOL)sendsAction;
-{
-#ifdef XPSupportsButtonStyles
-  [self setSendsActionOnEndEditing:sendsAction];
-#endif
 }
 @end
 
@@ -1041,31 +1034,4 @@ SVRResetButtonKind SVR_resetButtonKindForFontSettingKind(SVRThemeFont kind)
       XPCLogAssrt1(NO, @"[UNKNOWN] SVRThemeFont(%d)", (int)kind);
       return SVRResetButtonKindUnknown;
   }
-}
-
-XPBezelStyle SVR_keypadButtonStyle(void)
-{  
-#ifdef XPSupportsButtonStyles
-  return NSBezelStyleFlexiblePush;
-#else
-  return 0;
-#endif
-}
-
-XPBezelStyle SVR_settingsButtonStyle(void)
-{
-#ifdef XPSupportsButtonStyles
-  return NSBezelStyleFlexiblePush;
-#else
-  return 0;
-#endif
-}
-
-XPBezelStyle SVR_aboutButtonStyle(void)
-{
-#ifdef XPSupportsButtonStyles
-  return NSBezelStyleFlexiblePush;
-#else
-  return 0;
-#endif
 }

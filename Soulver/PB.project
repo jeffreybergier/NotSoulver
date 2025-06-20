@@ -48,13 +48,13 @@
             "Images/about-image-512.tiff", 
             Images/NeXTLogoMed.tiff, 
             Images/TagLine.tiff, 
-            ThemeAuto.tiff, 
-            "ThemeAuto@2x.tiff", 
-            ThemeDark.tiff, 
-            "ThemeDark@2x.tiff", 
-            ThemeLight.tiff, 
-            "ThemeLight@2x.tiff"
-        ); 
+            Images/ThemeAuto.tiff,
+            "Images/ThemeAuto@2x.tiff",
+            Images/ThemeDark.tiff,
+            "Images/ThemeDark@2x.tiff",
+            Images/ThemeLight.tiff,
+            "Images/ThemeLight@2x.tiff"
+        );
         INTERFACES = (MainMenu_42.nib); 
         OTHER_LINKED = (slre.c, Soulver_main.m); 
         OTHER_RESOURCES = (

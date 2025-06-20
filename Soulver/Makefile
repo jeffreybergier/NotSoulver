@@ -20,9 +20,10 @@ ICONSECTIONS =	-sectcreate __ICON app /NextLibrary/Frameworks/AppKit.framework/R
 LOCAL_RESOURCES = MainMenu_42.nib Localizable.strings
 
 GLOBAL_RESOURCES = Images/about-image-512.tiff Images/NeXTLogoMed.tiff\
-                   Images/TagLine.tiff ThemeAuto.tiff ThemeAuto@2x.tiff\
-                   ThemeDark.tiff ThemeDark@2x.tiff ThemeLight.tiff\
-                   ThemeLight@2x.tiff TestsIntegration-DiskRep.txt\
+                   Images/TagLine.tiff Images/ThemeAuto.tiff\
+                   Images/ThemeAuto@2x.tiff Images/ThemeDark.tiff\
+                   Images/ThemeDark@2x.tiff Images/ThemeLight.tiff\
+                   Images/ThemeLight@2x.tiff TestsIntegration-DiskRep.txt\
                    TestsIntegration-DisplayRep.rtf\
                    TestsIntegration-SolvedRep.rtf\
                    TestsIntegration-UnsolvedRep.rtf

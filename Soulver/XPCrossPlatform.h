@@ -202,6 +202,7 @@ typedef void (^XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPSecureCoding NSSecureCoding
 #define XPSaveOperationType NSSaveOperationType
 #define XPDataWritingAtomic NSDataWritingAtomic
+#define XPButtonTypePushOnPushOff NSButtonTypePushOnPushOff
 #define XPSupportsUnicodeDocument // TODO: Update to NSRegularExpression
 #undef  XPSupportsTexturedWindows
 #else
@@ -209,6 +210,7 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPSecureCoding NSCoding
 #define XPSaveOperationType XPUInteger
 #define XPDataWritingAtomic NSAtomicWrite
+#define XPButtonTypePushOnPushOff NSPushOnPushOffButton
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_15 // Previously 10.10
@@ -237,6 +239,7 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPWindowStyleMaskMiniaturizable NSWindowStyleMaskMiniaturizable
 #define XPWindowStyleMaskResizable NSWindowStyleMaskResizable
 #define XPWindowStyleMaskUtilityWindow NSWindowStyleMaskUtilityWindow
+#define XPTextFieldBezelStyle NSTextFieldBezelStyle
 #else
 #define XPWindowStyleMask XPUInteger
 #define XPBitmapImageFileTypeTIFF NSTIFFFileType
@@ -245,6 +248,7 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPWindowStyleMaskMiniaturizable NSMiniaturizableWindowMask
 #define XPWindowStyleMaskResizable NSResizableWindowMask
 #define XPWindowStyleMaskUtilityWindow NSUtilityWindowMask
+#define XPTextFieldBezelStyle XPBezelStyle
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_14
@@ -253,6 +257,17 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 typedef NSAttributedStringKey XPAttributedStringKey;
 #else
 typedef NSString* XPAttributedStringKey;
+#endif
+
+#ifdef MAC_OS_X_VERSION_10_15
+#define XPBezelStyleFlexiblePush NSBezelStyleFlexiblePush
+#define XPTextFieldRoundedBezel NSTextFieldRoundedBezel
+#elif defined(MAC_OS_X_VERSION_10_2)
+#define XPBezelStyleFlexiblePush NSRegularSquareBezelStyle
+#define XPTextFieldRoundedBezel NSRoundedBezelStyle
+#else
+#define XPBezelStyleFlexiblePush -1
+#define XPTextFieldRoundedBezel -1
 #endif
 
 extern const NSRange XPNotFoundRange;
@@ -394,6 +409,10 @@ NSArray* XPRunOpenPanel(NSString *extension);
 @interface NSTextView (CrossPlatform)
 -(void)XP_insertText:(id)string;
 -(void)XP_setAllowsUndo:(BOOL)isAllowed;
+@end
+
+@interface NSTextField (CrossPlatform)
+-(void)XP_setBezelStyle:(XPTextFieldBezelStyle)style;
 @end
 
 @interface NSButton (CrossPlatform)
