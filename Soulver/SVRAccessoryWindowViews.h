@@ -230,7 +230,7 @@ static const XPFloat SVRAccessoryWindowKeypadWindowButtonHPadding = 4;
 @end
 
 @interface NSImage (SVRAccessoryWindows)
--(NSImage*)SVR_asTemplateImage;
+-(NSImage*)SVR_setTemplate:(BOOL)flag;
 @end
 
 @interface NSCell (CrossPlatform)

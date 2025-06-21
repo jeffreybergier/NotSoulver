@@ -218,11 +218,14 @@
 
 -(id)initWithFrame:(NSRect)frameRect;
 {
-  XPFloat kYOrigin = frameRect.size.height-92;
-  NSRect delayRect = NSMakeRect(frameRect.size.width-50, kYOrigin,               50,                   30);
-  NSRect slidrRect = NSMakeRect(frameRect.origin.x,      kYOrigin,               delayRect.origin.x-4, 30);
-  NSRect sgmntRect = NSMakeRect(frameRect.origin.x,      kYOrigin,               frameRect.size.width, 72);
-  NSRect labelRect = NSMakeRect(frameRect.origin.x,      kYOrigin+sgmntRect.size.height+4, frameRect.size.width,  0);
+  XPFloat kTopY = frameRect.size.height-92;
+  XPFloat kBotY = frameRect.size.height-160;
+  XPFloat kSgmntH  = 72;
+  XPFloat kSlidrH  = 30;
+  NSRect delayRect = NSMakeRect(frameRect.size.width-50, kBotY,           50,                   kSlidrH);
+  NSRect slidrRect = NSMakeRect(frameRect.origin.x,      kBotY,           delayRect.origin.x-4, kSlidrH);
+  NSRect sgmntRect = NSMakeRect(frameRect.origin.x,      kTopY,           frameRect.size.width, kSgmntH);
+  NSRect labelRect = NSMakeRect(frameRect.origin.x,      kTopY+kSgmntH+4, frameRect.size.width,  0);
   SVRResetButtonKind kind = SVRResetButtonKindUnknown;
   
   self = [super initWithFrame:frameRect];
@@ -241,17 +244,15 @@
   [_selectorControl setLabel:[Localized titleAutomatic] forSegment:0];
   [_selectorControl setLabel:[Localized titleLight    ] forSegment:1];
   [_selectorControl setLabel:[Localized titleDark     ] forSegment:2];
-  [_selectorControl setImage:[[NSImage imageNamed:@"ThemeAuto" ] SVR_asTemplateImage] forSegment:0];
-  [_selectorControl setImage:[[NSImage imageNamed:@"ThemeLight"] SVR_asTemplateImage] forSegment:1];
-  [_selectorControl setImage:[[NSImage imageNamed:@"ThemeDark" ] SVR_asTemplateImage] forSegment:2];
+  [_selectorControl setImage:[[NSImage imageNamed:@"ThemeAuto" ] SVR_setTemplate:YES] forSegment:0];
+  [_selectorControl setImage:[[NSImage imageNamed:@"ThemeLight"] SVR_setTemplate:YES] forSegment:1];
+  [_selectorControl setImage:[[NSImage imageNamed:@"ThemeDark" ] SVR_setTemplate:YES] forSegment:2];
   [_selectorControl setAction:SVR_selectorOfKind(SVRSelectorKindWriteUserInterfaceStyle)];
   [self addSubview:_selectorControl];
   
   // Adjust frames
   kind = SVRResetButtonKindWaitTime;
-  labelRect.origin.y -= slidrRect.size.height+76;
-  slidrRect.origin.y -= slidrRect.size.height+36;
-  delayRect.origin.y -= slidrRect.size.height+36;
+  labelRect.origin.y = slidrRect.origin.y+kSlidrH+4;
   
   // Wait Time Slider
   [self addSubview:[[[NSTextField SVR_labelWithFrame:labelRect]
@@ -726,10 +727,10 @@
 @end
 
 @implementation NSImage (SVRAccessoryWindows)
--(NSImage*)SVR_asTemplateImage;
+-(NSImage*)SVR_setTemplate:(BOOL)flag;
 {
 #ifdef XPSupportsTemplateImage
-  [self setTemplate:YES];
+  [self setTemplate:flag];
 #endif
   return self;
 }
