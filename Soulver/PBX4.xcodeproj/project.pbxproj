@@ -12,6 +12,12 @@
 		8C0A6D182DC7CFD3001DC2A9 /* TagLine.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C0A6D132DC7CFD3001DC2A9 /* TagLine.tiff */; };
 		8C0BE7FA2DEB536600DD3D85 /* SVRAccessoryWindowViews.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C0BE7F82DEB536600DD3D85 /* SVRAccessoryWindowViews.h */; };
 		8C0BE7FB2DEB536600DD3D85 /* SVRAccessoryWindowViews.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C0BE7F92DEB536600DD3D85 /* SVRAccessoryWindowViews.m */; };
+		8C0E08952E05AC5F00D0FBC0 /* ThemeAuto.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C0E088F2E05AC5F00D0FBC0 /* ThemeAuto.tiff */; };
+		8C0E08962E05AC5F00D0FBC0 /* ThemeAuto@2x.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C0E08902E05AC5F00D0FBC0 /* ThemeAuto@2x.tiff */; };
+		8C0E08972E05AC5F00D0FBC0 /* ThemeDark.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C0E08912E05AC5F00D0FBC0 /* ThemeDark.tiff */; };
+		8C0E08982E05AC5F00D0FBC0 /* ThemeDark@2x.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C0E08922E05AC5F00D0FBC0 /* ThemeDark@2x.tiff */; };
+		8C0E08992E05AC5F00D0FBC0 /* ThemeLight.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C0E08932E05AC5F00D0FBC0 /* ThemeLight.tiff */; };
+		8C0E089A2E05AC5F00D0FBC0 /* ThemeLight@2x.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C0E08942E05AC5F00D0FBC0 /* ThemeLight@2x.tiff */; };
 		8C5E580B2DC346F200A1648E /* Soulver_Prefix.h in Headers */ = {isa = PBXBuildFile; fileRef = 32DBCF750370BD2300C91783 /* Soulver_Prefix.h */; };
 		8C5E580C2DC346F200A1648E /* NSUserDefaults+Soulver.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E592D91DCDF0000020F /* NSUserDefaults+Soulver.h */; };
 		8C5E580D2DC346F200A1648E /* SVRAccessoryWindowsOwner.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E5B2D91DCDF0000020F /* SVRAccessoryWindowsOwner.h */; };
@@ -74,10 +80,16 @@
 		8C0A6D132DC7CFD3001DC2A9 /* TagLine.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = TagLine.tiff; path = Images/TagLine.tiff; sourceTree = SOURCE_ROOT; };
 		8C0BE7F82DEB536600DD3D85 /* SVRAccessoryWindowViews.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SVRAccessoryWindowViews.h; path = /Net/Developer/SaturdayApps/NotSoulver/Soulver/SVRAccessoryWindowViews.h; sourceTree = "<absolute>"; };
 		8C0BE7F92DEB536600DD3D85 /* SVRAccessoryWindowViews.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = SVRAccessoryWindowViews.m; path = /Net/Developer/SaturdayApps/NotSoulver/Soulver/SVRAccessoryWindowViews.m; sourceTree = "<absolute>"; };
+		8C0E088F2E05AC5F00D0FBC0 /* ThemeAuto.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeAuto.tiff; path = /Net/Developer/SaturdayApps/NotSoulver/Soulver/Images/ThemeAuto.tiff; sourceTree = "<absolute>"; };
+		8C0E08902E05AC5F00D0FBC0 /* ThemeAuto@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeAuto@2x.tiff"; path = "/Net/Developer/SaturdayApps/NotSoulver/Soulver/Images/ThemeAuto@2x.tiff"; sourceTree = "<absolute>"; };
+		8C0E08912E05AC5F00D0FBC0 /* ThemeDark.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeDark.tiff; path = /Net/Developer/SaturdayApps/NotSoulver/Soulver/Images/ThemeDark.tiff; sourceTree = "<absolute>"; };
+		8C0E08922E05AC5F00D0FBC0 /* ThemeDark@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeDark@2x.tiff"; path = "/Net/Developer/SaturdayApps/NotSoulver/Soulver/Images/ThemeDark@2x.tiff"; sourceTree = "<absolute>"; };
+		8C0E08932E05AC5F00D0FBC0 /* ThemeLight.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeLight.tiff; path = /Net/Developer/SaturdayApps/NotSoulver/Soulver/Images/ThemeLight.tiff; sourceTree = "<absolute>"; };
+		8C0E08942E05AC5F00D0FBC0 /* ThemeLight@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeLight@2x.tiff"; path = "/Net/Developer/SaturdayApps/NotSoulver/Soulver/Images/ThemeLight@2x.tiff"; sourceTree = "<absolute>"; };
 		8C5B4ECA2DC10C7B002C87B3 /* TestUnitBezierPath-MANUAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "TestUnitBezierPath-MANUAL.tiff"; sourceTree = SOURCE_ROOT; };
 		8C5B4ECB2DC10C7B002C87B3 /* TestUnitBezierPath-REAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "TestUnitBezierPath-REAL.tiff"; sourceTree = SOURCE_ROOT; };
 		8C5E58492DC346F200A1648E /* Info_X4.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Info_X4.plist; sourceTree = "<group>"; };
-		8C5E584A2DC346F200A1648E /* Soulver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Soulver.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C5E584A2DC346F200A1648E /* Soulver.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Soulver.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CD62E502D91DB730000020F /* Soulver_main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = Soulver_main.m; sourceTree = "<group>"; };
 		8CD62E552D91DCDF0000020F /* Import Log.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "Import Log.rtf"; sourceTree = "<group>"; };
 		8CD62E562D91DCDF0000020F /* Makefile */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -259,6 +271,12 @@
 				8C0A6D102DC7CFD3001DC2A9 /* about-image-512.tiff */,
 				8C0A6D122DC7CFD3001DC2A9 /* NeXTLogoMed.tiff */,
 				8C0A6D132DC7CFD3001DC2A9 /* TagLine.tiff */,
+				8C0E088F2E05AC5F00D0FBC0 /* ThemeAuto.tiff */,
+				8C0E08902E05AC5F00D0FBC0 /* ThemeAuto@2x.tiff */,
+				8C0E08912E05AC5F00D0FBC0 /* ThemeDark.tiff */,
+				8C0E08922E05AC5F00D0FBC0 /* ThemeDark@2x.tiff */,
+				8C0E08932E05AC5F00D0FBC0 /* ThemeLight.tiff */,
+				8C0E08942E05AC5F00D0FBC0 /* ThemeLight@2x.tiff */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -378,6 +396,12 @@
 				8C0A6D152DC7CFD3001DC2A9 /* about-image-512.tiff in Resources */,
 				8C0A6D172DC7CFD3001DC2A9 /* NeXTLogoMed.tiff in Resources */,
 				8C0A6D182DC7CFD3001DC2A9 /* TagLine.tiff in Resources */,
+				8C0E08952E05AC5F00D0FBC0 /* ThemeAuto.tiff in Resources */,
+				8C0E08962E05AC5F00D0FBC0 /* ThemeAuto@2x.tiff in Resources */,
+				8C0E08972E05AC5F00D0FBC0 /* ThemeDark.tiff in Resources */,
+				8C0E08982E05AC5F00D0FBC0 /* ThemeDark@2x.tiff in Resources */,
+				8C0E08992E05AC5F00D0FBC0 /* ThemeLight.tiff in Resources */,
+				8C0E089A2E05AC5F00D0FBC0 /* ThemeLight@2x.tiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

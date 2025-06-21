@@ -107,13 +107,14 @@
 -(void)loadView;
 
 // MARK: Initial Load
+-(void)readSettingsSelection;
 -(void)readUserInterfaceStyle;
 -(void)readWaitTime;
 -(void)readColors;
 
 // MARK: IBActions
--(IBAction)settingsBoxSelectionChanged:(NSPopUpButton*)sender;
--(IBAction)writeUserInterfaceStyle:(NSPopUpButton*)sender;
+-(IBAction)writeSettingsSelection:(NSPopUpButton*)sender;
+-(IBAction)writeUserInterfaceStyle:(XPSegmentedControl*)sender;
 -(IBAction)writeWaitTime:(NSTextField*)sender;
 -(IBAction)writeColor:(NSColorWell*)sender;
 -(IBAction)presentFontPanel:(NSButton*)sender;
@@ -131,3 +132,8 @@
 -(void)setView:(NSView*)view;
 @end
 #endif
+
+NSString *SVR_localizedStringForSettingsSelection(SVRSettingSelection selection);
+XPWindowStyleMask SVR_windowMaskForKeypadWindow(void);
+XPWindowStyleMask SVR_windowMaskForSettingsWindow(void);
+XPWindowStyleMask SVR_windowMaskForAboutWindow(void);

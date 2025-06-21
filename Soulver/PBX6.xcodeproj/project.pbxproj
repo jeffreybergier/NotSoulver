@@ -61,6 +61,12 @@
 		8C5E58422DC346F200A1648E /* slre.c in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62EB32D91DDEB0000020F /* slre.c */; };
 		8C5E58442DC346F200A1648E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		8C7D8F3A2DC636BC003F084F /* MainMenu_X6.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C7D8F382DC636BC003F084F /* MainMenu_X6.xib */; };
+		8CB6F5E22E0651C90048C614 /* ThemeAuto.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8CB6F5DC2E0651C90048C614 /* ThemeAuto.tiff */; };
+		8CB6F5E32E0651C90048C614 /* ThemeAuto@2x.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8CB6F5DD2E0651C90048C614 /* ThemeAuto@2x.tiff */; };
+		8CB6F5E42E0651C90048C614 /* ThemeDark.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8CB6F5DE2E0651C90048C614 /* ThemeDark.tiff */; };
+		8CB6F5E52E0651C90048C614 /* ThemeDark@2x.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8CB6F5DF2E0651C90048C614 /* ThemeDark@2x.tiff */; };
+		8CB6F5E62E0651C90048C614 /* ThemeLight.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8CB6F5E02E0651C90048C614 /* ThemeLight.tiff */; };
+		8CB6F5E72E0651C90048C614 /* ThemeLight@2x.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8CB6F5E12E0651C90048C614 /* ThemeLight@2x.tiff */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -81,6 +87,12 @@
 		8C5E58492DC346F200A1648E /* Info_X6.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info_X6.plist; sourceTree = "<group>"; };
 		8C5E584A2DC346F200A1648E /* Soulver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Soulver.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C7D8F392DC636BC003F084F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu_X6.xib; sourceTree = "<group>"; };
+		8CB6F5DC2E0651C90048C614 /* ThemeAuto.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeAuto.tiff; path = Images/ThemeAuto.tiff; sourceTree = "<group>"; };
+		8CB6F5DD2E0651C90048C614 /* ThemeAuto@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeAuto@2x.tiff"; path = "Images/ThemeAuto@2x.tiff"; sourceTree = "<group>"; };
+		8CB6F5DE2E0651C90048C614 /* ThemeDark.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeDark.tiff; path = Images/ThemeDark.tiff; sourceTree = "<group>"; };
+		8CB6F5DF2E0651C90048C614 /* ThemeDark@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeDark@2x.tiff"; path = "Images/ThemeDark@2x.tiff"; sourceTree = "<group>"; };
+		8CB6F5E02E0651C90048C614 /* ThemeLight.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeLight.tiff; path = Images/ThemeLight.tiff; sourceTree = "<group>"; };
+		8CB6F5E12E0651C90048C614 /* ThemeLight@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeLight@2x.tiff"; path = "Images/ThemeLight@2x.tiff"; sourceTree = "<group>"; };
 		8CD62E502D91DB730000020F /* Soulver_main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = Soulver_main.m; sourceTree = "<group>"; };
 		8CD62E552D91DCDF0000020F /* Import Log.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "Import Log.rtf"; sourceTree = "<group>"; };
 		8CD62E562D91DCDF0000020F /* Makefile */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -264,6 +276,12 @@
 				8C4D1DFB2DC7D1F80060CFBA /* AppIcon.icns */,
 				8C4D1DFD2DC7D1F80060CFBA /* NeXTLogoMed.tiff */,
 				8C4D1DFE2DC7D1F80060CFBA /* TagLine.tiff */,
+				8CB6F5DC2E0651C90048C614 /* ThemeAuto.tiff */,
+				8CB6F5DD2E0651C90048C614 /* ThemeAuto@2x.tiff */,
+				8CB6F5DE2E0651C90048C614 /* ThemeDark.tiff */,
+				8CB6F5DF2E0651C90048C614 /* ThemeDark@2x.tiff */,
+				8CB6F5E02E0651C90048C614 /* ThemeLight.tiff */,
+				8CB6F5E12E0651C90048C614 /* ThemeLight@2x.tiff */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -394,6 +412,12 @@
 				8C4D1E012DC7D1F80060CFBA /* AppIcon.icns in Resources */,
 				8C4D1E032DC7D1F80060CFBA /* NeXTLogoMed.tiff in Resources */,
 				8C4D1E042DC7D1F80060CFBA /* TagLine.tiff in Resources */,
+				8CB6F5E22E0651C90048C614 /* ThemeAuto.tiff in Resources */,
+				8CB6F5E32E0651C90048C614 /* ThemeAuto@2x.tiff in Resources */,
+				8CB6F5E42E0651C90048C614 /* ThemeDark.tiff in Resources */,
+				8CB6F5E52E0651C90048C614 /* ThemeDark@2x.tiff in Resources */,
+				8CB6F5E62E0651C90048C614 /* ThemeLight.tiff in Resources */,
+				8CB6F5E72E0651C90048C614 /* ThemeLight@2x.tiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

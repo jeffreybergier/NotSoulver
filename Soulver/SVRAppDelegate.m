@@ -123,24 +123,6 @@
   [self endObservingEffectiveAppearance:[aNotification object]];
 }
 
--(BOOL)applicationOpenUntitledFile:(NSApplication*)sender;
-{
-#ifdef XPSupportsStateRestoration
-  // After 10.7 an open panel is expected to open
-  [[NSDocumentController sharedDocumentController] openDocument:sender];
-  return YES;
-#elif XPSupportsNSDocument >= 1
-  // Between 10.0 and 10.7, a new blank document is expected to open,
-  // and this is handled automatically by NSDocument
-  return NO;
-#else
-  // In OpenStep a new document is expected,
-  // but this has to be done manually
-  [self __newDocument:sender];
-  return YES;
-#endif
-}
-
 @end
 
 @implementation SVRAppDelegate (PreDocument)
@@ -244,6 +226,12 @@
   return YES;
 }
 
+-(BOOL)__applicationOpenUntitledFile:(NSApplication*)sender;
+{
+  [self __newDocument:sender];
+  return YES;
+}
+
 -(void)__windowWillCloseNotification:(NSNotification*)aNotification;
 {
   NSWindow *window = [aNotification object];
@@ -272,6 +260,10 @@
 -(BOOL)application:(NSApplication *)sender openFile:(NSString *)filename;
 {
   return [self __application:sender openFile:filename];
+}
+-(BOOL)applicationOpenUntitledFile:(NSApplication*)sender;
+{
+  return [self __applicationOpenUntitledFile:sender];
 }
 #else
 

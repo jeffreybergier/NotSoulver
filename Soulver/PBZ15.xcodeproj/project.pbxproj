@@ -7,10 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8C4D1E002DC7D1F80060CFBA /* about-image-512.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C4D1DFA2DC7D1F80060CFBA /* about-image-512.tiff */; };
-		8C4D1E012DC7D1F80060CFBA /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 8C4D1DFB2DC7D1F80060CFBA /* AppIcon.icns */; };
-		8C4D1E032DC7D1F80060CFBA /* NeXTLogoMed.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C4D1DFD2DC7D1F80060CFBA /* NeXTLogoMed.tiff */; };
-		8C4D1E042DC7D1F80060CFBA /* TagLine.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C4D1DFE2DC7D1F80060CFBA /* TagLine.tiff */; };
 		8C5E580B2DC346F200A1648E /* Soulver_Prefix.h in Headers */ = {isa = PBXBuildFile; fileRef = 32DBCF750370BD2300C91783 /* Soulver_Prefix.h */; };
 		8C5E580C2DC346F200A1648E /* NSUserDefaults+Soulver.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E592D91DCDF0000020F /* NSUserDefaults+Soulver.h */; };
 		8C5E580D2DC346F200A1648E /* SVRAccessoryWindowsOwner.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E5B2D91DCDF0000020F /* SVRAccessoryWindowsOwner.h */; };
@@ -58,6 +54,16 @@
 		8C5E58412DC346F200A1648E /* XPRegularExpression.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E802D91DCE00000020F /* XPRegularExpression.m */; };
 		8C5E58422DC346F200A1648E /* slre.c in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62EB32D91DDEB0000020F /* slre.c */; };
 		8C5E58442DC346F200A1648E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
+		8C6F13DC2E05669500EB7DEC /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 8C6F13D72E05669500EB7DEC /* AppIcon.icns */; };
+		8C6F13DD2E05669500EB7DEC /* about-image-512.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C6F13D62E05669500EB7DEC /* about-image-512.tiff */; };
+		8C6F13DE2E05669500EB7DEC /* TagLine.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C6F13D92E05669500EB7DEC /* TagLine.tiff */; };
+		8C6F13DF2E05669500EB7DEC /* ThemeDark.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C6F13DA2E05669500EB7DEC /* ThemeDark.tiff */; };
+		8C6F13E02E05669500EB7DEC /* ThemeDark@2x.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C6F13DB2E05669500EB7DEC /* ThemeDark@2x.tiff */; };
+		8C6F13E12E05669500EB7DEC /* NeXTLogoMed.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C6F13D82E05669500EB7DEC /* NeXTLogoMed.tiff */; };
+		8C6F13E62E056C2800EB7DEC /* ThemeLight.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C6F13E42E056C2800EB7DEC /* ThemeLight.tiff */; };
+		8C6F13E72E056C2800EB7DEC /* ThemeLight@2x.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C6F13E52E056C2800EB7DEC /* ThemeLight@2x.tiff */; };
+		8C6F13E82E056C2800EB7DEC /* ThemeAuto.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C6F13E22E056C2800EB7DEC /* ThemeAuto.tiff */; };
+		8C6F13E92E056C2800EB7DEC /* ThemeAuto@2x.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C6F13E32E056C2800EB7DEC /* ThemeAuto@2x.tiff */; };
 		8C979F662DEAC95E00A82647 /* SVRAccessoryWindowViews.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C979F652DEAC95E00A82647 /* SVRAccessoryWindowViews.m */; };
 		8C979F672DEAC95E00A82647 /* SVRAccessoryWindowViews.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C979F642DEAC95E00A82647 /* SVRAccessoryWindowViews.h */; };
 		8C9CB0232DD8943300C672E3 /* MainMenu_X15.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C9CB0212DD8943300C672E3 /* MainMenu_X15.xib */; };
@@ -70,14 +76,20 @@
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32DBCF750370BD2300C91783 /* Soulver_Prefix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Soulver_Prefix.h; sourceTree = "<group>"; };
-		8C4D1DFA2DC7D1F80060CFBA /* about-image-512.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "about-image-512.tiff"; path = "Images/about-image-512.tiff"; sourceTree = "<group>"; };
-		8C4D1DFB2DC7D1F80060CFBA /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = AppIcon.icns; path = Images/AppIcon.icns; sourceTree = "<group>"; };
-		8C4D1DFD2DC7D1F80060CFBA /* NeXTLogoMed.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = NeXTLogoMed.tiff; path = Images/NeXTLogoMed.tiff; sourceTree = "<group>"; };
-		8C4D1DFE2DC7D1F80060CFBA /* TagLine.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = TagLine.tiff; path = Images/TagLine.tiff; sourceTree = "<group>"; };
 		8C5B4ECA2DC10C7B002C87B3 /* TestUnitBezierPath-MANUAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "TestUnitBezierPath-MANUAL.tiff"; sourceTree = SOURCE_ROOT; };
 		8C5B4ECB2DC10C7B002C87B3 /* TestUnitBezierPath-REAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "TestUnitBezierPath-REAL.tiff"; sourceTree = SOURCE_ROOT; };
 		8C5E58492DC346F200A1648E /* Info_X6.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info_X6.plist; sourceTree = "<group>"; };
 		8C5E584A2DC346F200A1648E /* Soulver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Soulver.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C6F13D62E05669500EB7DEC /* about-image-512.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "about-image-512.tiff"; path = "Images/about-image-512.tiff"; sourceTree = "<group>"; };
+		8C6F13D72E05669500EB7DEC /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = AppIcon.icns; path = Images/AppIcon.icns; sourceTree = "<group>"; };
+		8C6F13D82E05669500EB7DEC /* NeXTLogoMed.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = NeXTLogoMed.tiff; path = Images/NeXTLogoMed.tiff; sourceTree = "<group>"; };
+		8C6F13D92E05669500EB7DEC /* TagLine.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = TagLine.tiff; path = Images/TagLine.tiff; sourceTree = "<group>"; };
+		8C6F13DA2E05669500EB7DEC /* ThemeDark.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeDark.tiff; path = Images/ThemeDark.tiff; sourceTree = "<group>"; };
+		8C6F13DB2E05669500EB7DEC /* ThemeDark@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeDark@2x.tiff"; path = "Images/ThemeDark@2x.tiff"; sourceTree = "<group>"; };
+		8C6F13E22E056C2800EB7DEC /* ThemeAuto.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeAuto.tiff; path = Images/ThemeAuto.tiff; sourceTree = "<group>"; };
+		8C6F13E32E056C2800EB7DEC /* ThemeAuto@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeAuto@2x.tiff"; path = "Images/ThemeAuto@2x.tiff"; sourceTree = "<group>"; };
+		8C6F13E42E056C2800EB7DEC /* ThemeLight.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeLight.tiff; path = Images/ThemeLight.tiff; sourceTree = "<group>"; };
+		8C6F13E52E056C2800EB7DEC /* ThemeLight@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeLight@2x.tiff"; path = "Images/ThemeLight@2x.tiff"; sourceTree = "<group>"; };
 		8C7D8F392DC636BC003F084F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu_X6.xib; sourceTree = "<group>"; };
 		8C8D51D02DD97A27003A8684 /* Info_X4.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info_X4.plist; sourceTree = "<group>"; };
 		8C8D51D12DD97A31003A8684 /* Info_X15.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info_X15.plist; sourceTree = "<group>"; };
@@ -268,10 +280,16 @@
 		8CD62EAE2D91DCFD0000020F /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				8C4D1DFA2DC7D1F80060CFBA /* about-image-512.tiff */,
-				8C4D1DFB2DC7D1F80060CFBA /* AppIcon.icns */,
-				8C4D1DFD2DC7D1F80060CFBA /* NeXTLogoMed.tiff */,
-				8C4D1DFE2DC7D1F80060CFBA /* TagLine.tiff */,
+				8C6F13D62E05669500EB7DEC /* about-image-512.tiff */,
+				8C6F13D72E05669500EB7DEC /* AppIcon.icns */,
+				8C6F13D82E05669500EB7DEC /* NeXTLogoMed.tiff */,
+				8C6F13D92E05669500EB7DEC /* TagLine.tiff */,
+				8C6F13E22E056C2800EB7DEC /* ThemeAuto.tiff */,
+				8C6F13E32E056C2800EB7DEC /* ThemeAuto@2x.tiff */,
+				8C6F13DA2E05669500EB7DEC /* ThemeDark.tiff */,
+				8C6F13DB2E05669500EB7DEC /* ThemeDark@2x.tiff */,
+				8C6F13E42E056C2800EB7DEC /* ThemeLight.tiff */,
+				8C6F13E52E056C2800EB7DEC /* ThemeLight@2x.tiff */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -406,12 +424,18 @@
 				8C5E58262DC346F200A1648E /* TestsIntegration-UnsolvedRep.rtf in Resources */,
 				8C5E582A2DC346F200A1648E /* Localizable.strings in Resources */,
 				8C5E582C2DC346F200A1648E /* TestUnitBezierPath-MANUAL.tiff in Resources */,
+				8C6F13DC2E05669500EB7DEC /* AppIcon.icns in Resources */,
+				8C6F13DD2E05669500EB7DEC /* about-image-512.tiff in Resources */,
+				8C6F13DE2E05669500EB7DEC /* TagLine.tiff in Resources */,
+				8C6F13E62E056C2800EB7DEC /* ThemeLight.tiff in Resources */,
+				8C6F13E72E056C2800EB7DEC /* ThemeLight@2x.tiff in Resources */,
+				8C6F13E82E056C2800EB7DEC /* ThemeAuto.tiff in Resources */,
+				8C6F13E92E056C2800EB7DEC /* ThemeAuto@2x.tiff in Resources */,
+				8C6F13DF2E05669500EB7DEC /* ThemeDark.tiff in Resources */,
+				8C6F13E02E05669500EB7DEC /* ThemeDark@2x.tiff in Resources */,
+				8C6F13E12E05669500EB7DEC /* NeXTLogoMed.tiff in Resources */,
 				8C5E582D2DC346F200A1648E /* TestUnitBezierPath-REAL.tiff in Resources */,
-				8C4D1E002DC7D1F80060CFBA /* about-image-512.tiff in Resources */,
-				8C4D1E012DC7D1F80060CFBA /* AppIcon.icns in Resources */,
-				8C4D1E032DC7D1F80060CFBA /* NeXTLogoMed.tiff in Resources */,
 				8C9CB0232DD8943300C672E3 /* MainMenu_X15.xib in Resources */,
-				8C4D1E042DC7D1F80060CFBA /* TagLine.tiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

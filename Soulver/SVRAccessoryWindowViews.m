@@ -68,18 +68,17 @@
 -(id)initWithFrame:(NSRect)frameRect;
 {
   XPFloat kLeftX = 8;
-  XPFloat kLeftWidth = 312;
+  XPFloat kLeftWidth = 314;
   XPFloat kRightX = 328;
   XPFloat kRightWidth = 144;
-  XPFloat kAboveTextViewY = 168;
   NSPoint kTagLineOrigin = NSMakePoint(kLeftX-1, kLeftX);
   NSRect  kDedicationTextFrame = NSMakeRect(kLeftX, 30, kLeftWidth, 14);
-  NSRect  kViewSourceButtonFrame = NSMakeRect(kRightX, kLeftX, kRightWidth, 42);
+  NSRect  kViewSourceButtonFrame = NSMakeRect(kRightX, kLeftX, kRightWidth, 44);
   NSRect  kSeparatorRect = NSMakeRect(kLeftX, 49, kLeftWidth, 1);
   NSRect  kTextViewRect = NSMakeRect(kLeftX, 58, 464, 100);
   NSRect  kSubtitleTextFrame = NSMakeRect(kLeftX-4, 184, kLeftWidth, 60);
   NSRect  kTitleTextFrame = NSMakeRect(kLeftX-4, 256, kLeftWidth, 44);
-  NSRect  kPortraitImageView = NSMakeRect(kRightX, kAboveTextViewY, kRightWidth, kRightWidth);
+  NSRect  kPortraitImageView = NSMakeRect(kRightX, 166, kRightWidth, kRightWidth);
   
   self = [super initWithFrame:frameRect];
   XPParameterRaise(self);
@@ -88,18 +87,18 @@
   
   // NeXT Tagline Image
   [self addSubview:[NSImageView SVR_imageViewWithOrigin:kTagLineOrigin
-                                   sizedToFitImageNamed:@"TagLine"]];
+                                   sizedToFitImageNamed:[Localized imageNeXTTagline]]];
   
   // Dedication Text
   [self addSubview:[[NSTextField SVR_labelWithFrame:kDedicationTextFrame]
-                                 SVR_setObjectValue:@"This application is dedicated to my grandmother | 1932-2024"
+                                 SVR_setObjectValue:[Localized phraseAboutDedication]
                                                font:[NSFont systemFontOfSize:10]
                                           alignment:XPTextAlignmentLeft]];
   
   // View Source Button
-  _viewSourceButton = [[[self class] __viewSourceButtonWithFrame:kViewSourceButtonFrame
-                                                           title:@"View Source"
-                                                      imageNamed:@"NeXTLogoMed"]
+  _viewSourceButton = [[[self class] __viewSourceButtonWithFrame:SVR_rectByAdjustingAquaButtonRect(kViewSourceButtonFrame)
+                                                           title:[Localized verbViewSource]
+                                                      imageNamed:[Localized imageNeXTLogo]]
                                          SVR_setAutoresizingMask:NSViewMinXMargin];
   [self addSubview:_viewSourceButton];
   
@@ -114,21 +113,21 @@
   
   // Add Subtitle Label
   [self addSubview:[[[NSTextField SVR_labelWithFrame:kSubtitleTextFrame]
-                                  SVR_setObjectValue:@"for OpenStep\nby Jeffrey Bergier\n2025"
+                                  SVR_setObjectValue:[Localized phraseAboutTagline]
                                                 font:[NSFont systemFontOfSize:16]
                                            alignment:XPTextAlignmentCenter]
                              SVR_setAutoresizingMask:NSViewMinYMargin | NSViewWidthSizable]];
   
   // Add Title Label
   [self addSubview:[[[NSTextField SVR_labelWithFrame:kTitleTextFrame]
-                                  SVR_setObjectValue:@"[Not]Soulver"
+                                  SVR_setObjectValue:[Localized titleAppName]
                                                 font:[NSFont boldSystemFontOfSize:36]
                                            alignment:XPTextAlignmentCenter]
                              SVR_setAutoresizingMask:NSViewMinYMargin | NSViewWidthSizable]];
   
   // Add Portrait Image View
   [self addSubview:[[[NSImageView SVR_imageViewWithFrame:kPortraitImageView
-                                              imageNamed:@"about-image-512"]
+                                              imageNamed:[Localized imageAboutPortrait]]
                                   SVR_setImageFrameStyle:NSImageFrameGroove]
                                  SVR_setAutoresizingMask:NSViewMinYMargin | NSViewMinXMargin]];
   
@@ -183,7 +182,7 @@
   /// END Apple Instructions
   
   // Customize for this app
-  [scrollView setBorderType:NSGrooveBorder];
+  [scrollView setBorderType:NSBezelBorder];
   [textView setEditable:NO];
   [textView setSelectable:YES];
   [textView setDrawsBackground:NO];
@@ -207,7 +206,7 @@
   [button setTitle:title];
   [button setImage:image];
   [button setImagePosition:NSImageLeft];
-  [button XP_setBezelStyle:XPBezelStyleShadowlessSquare];
+  [button XP_setBezelStyle:XPBezelStyleFlexiblePush];
   return button;
 }
 
@@ -219,12 +218,14 @@
 
 -(id)initWithFrame:(NSRect)frameRect;
 {
-  XPFloat kLabelYOffset = 32;
-  XPFloat kYOrigin = frameRect.size.height-kLabelYOffset-16;
-  XPFloat kVPad = kLabelYOffset + 22;
-  NSRect resetRect = NSMakeRect(frameRect.size.width-50, kYOrigin,               50,                   30);
-  NSRect fieldRect = NSMakeRect(frameRect.origin.x,      kYOrigin,               resetRect.origin.x-4, 30);
-  NSRect labelRect = NSMakeRect(frameRect.origin.x,      kYOrigin+kLabelYOffset, resetRect.origin.x-4,  0);
+  XPFloat kTopY = frameRect.size.height-92;
+  XPFloat kBotY = frameRect.size.height-160;
+  XPFloat kSgmntH  = 72;
+  XPFloat kSlidrH  = 30;
+  NSRect delayRect = NSMakeRect(frameRect.size.width-50, kBotY,           50,                   kSlidrH);
+  NSRect slidrRect = NSMakeRect(frameRect.origin.x,      kBotY,           delayRect.origin.x-4, kSlidrH);
+  NSRect sgmntRect = NSMakeRect(frameRect.origin.x,      kTopY,           frameRect.size.width, kSgmntH);
+  NSRect labelRect = NSMakeRect(frameRect.origin.x,      kTopY+kSgmntH+4, frameRect.size.width,  0);
   SVRResetButtonKind kind = SVRResetButtonKindUnknown;
   
   self = [super initWithFrame:frameRect];
@@ -237,71 +238,64 @@
                                                 font:nil
                                            alignment:XPTextAlignmentLeft]
                              SVR_sizeToFitVertically]];
-  _selectorButton = [[[NSPopUpButton alloc] initWithFrame:fieldRect pullsDown:NO] autorelease];
-  [_selectorButton addItemWithTitle:@"Automatic"];
-  [_selectorButton addItemWithTitle:@"Light"];
-  [_selectorButton addItemWithTitle:@"Dark"];
-  [_selectorButton setAction:SVR_selectorOfKind(SVRSelectorKindWriteUserInterfaceStyle)];
-  [self addSubview:_selectorButton];
-  [self addSubview:[NSButton SVR_settingsButtonWithFrame:resetRect
-                                                   title:@"Reset"
-                                                  action:SVR_selectorOfKind(SVRSelectorKindReset)
-                                                     tag:kind]];
+  
+  _selectorControl = [[[XPSegmentedControl alloc] initWithFrame:sgmntRect] autorelease];
+  [_selectorControl setSegmentCount:3];
+  [_selectorControl setLabel:[Localized titleAutomatic] forSegment:0];
+  [_selectorControl setLabel:[Localized titleLight    ] forSegment:1];
+  [_selectorControl setLabel:[Localized titleDark     ] forSegment:2];
+  [_selectorControl setImage:[[NSImage imageNamed:[Localized imageThemeAuto ]] SVR_setTemplate:YES] forSegment:0];
+  [_selectorControl setImage:[[NSImage imageNamed:[Localized imageThemeLight]] SVR_setTemplate:YES] forSegment:1];
+  [_selectorControl setImage:[[NSImage imageNamed:[Localized imageThemeDark ]] SVR_setTemplate:YES] forSegment:2];
+  [_selectorControl setAction:SVR_selectorOfKind(SVRSelectorKindWriteUserInterfaceStyle)];
+  [self addSubview:_selectorControl];
   
   // Adjust frames
   kind = SVRResetButtonKindWaitTime;
-  labelRect.origin.y -= kVPad;
-  fieldRect.origin.y -= kVPad;
-  resetRect.origin.y -= kVPad;
+  labelRect.origin.y = slidrRect.origin.y+kSlidrH+4;
   
-  // Wait Time Field
+  // Wait Time Slider
   [self addSubview:[[[NSTextField SVR_labelWithFrame:labelRect]
                                   SVR_setObjectValue:SVR_localizedStringForKind(kind)
                                                 font:nil
                                            alignment:XPTextAlignmentLeft]
                              SVR_sizeToFitVertically]];
-  _fieldTime = [NSTextField SVR_textFieldWithFrame:fieldRect
-                                            target:self
-                                            action:@selector(__HACK_writeWaitTime:)];
-  [self addSubview:_fieldTime];
-  [self addSubview:[NSButton SVR_settingsButtonWithFrame:resetRect
-                                                   title:@"Reset"
-                                                  action:SVR_selectorOfKind(SVRSelectorKindReset)
-                                                     tag:kind]];
   
-  XPParameterRaise(_selectorButton);
-  XPParameterRaise(_fieldTime);
+  _delayLabel = [NSTextField SVR_textFieldWithFrame:delayRect
+                                             target:nil
+                                             action:NULL];
+  [_delayLabel setAlignment:XPTextAlignmentCenter];
+  [self addSubview:_delayLabel];
+  
+  _delaySlider = [[[NSSlider alloc] initWithFrame:slidrRect] autorelease];
+  [_delaySlider setMinValue:0];
+  [_delaySlider setMaxValue:10];
+  [_delaySlider setAction:SVR_selectorOfKind(SVRSelectorKindWriteWaitTime)];
+  [self addSubview:_delaySlider];
+  
+  XPParameterRaise(_selectorControl);
+  XPParameterRaise(_delayLabel);
+  XPParameterRaise(_delaySlider);
   
   return self;
 }
 
--(NSPopUpButton*)themeSelector;
+-(XPSegmentedControl*)themeSelector;
 {
-  XPParameterRaise(_selectorButton);
-  return [[_selectorButton retain] autorelease];
+  XPParameterRaise(_selectorControl);
+  return [[_selectorControl retain] autorelease];
 }
 
--(NSTextField*)timeField;
+-(NSTextField*)delayLabel;
 {
-  XPParameterRaise(_fieldTime);
-  return [[_fieldTime retain] autorelease];
+  XPParameterRaise(_delayLabel);
+  return [[_delayLabel retain] autorelease];
 }
 
--(IBAction)__HACK_writeWaitTime:(NSTextField*)sender;
+-(NSSlider*)delaySlider;
 {
-  // TODO: Remove this hack
-  // For some reason NSTextField does not send its action
-  // into the responder chain. It will only send it if its
-  // target is set. So I set it to self and fire it
-  // manually into the responder chain.
-  // Also, for some reason, even though the user is typing
-  // in the text field, its not the first responder.
-  // So first I make it the first responder so the
-  // responder chain works properly.
-  [sender becomeFirstResponder];
-  [[NSApplication sharedApplication] sendAction:SVR_selectorOfKind(SVRSelectorKindWriteWaitTime)
-                                             to:nil
-                                           from:sender];
+  XPParameterRaise(_delaySlider);
+  return [[_delaySlider retain] autorelease];
 }
 
 @end
@@ -340,8 +334,8 @@
       labelRect.origin.y -= kVPad;
       lightRect.origin.y -= kVPad;
     } else {
-      [self addSubview:[NSButton SVR_settingsButtonWithFrame:resetRect
-                                                       title:@"Reset"
+      [self addSubview:[NSButton SVR_settingsButtonWithFrame:SVR_rectByAdjustingAquaButtonRect(resetRect)
+                                                       title:[Localized verbReset]
                                                       action:SVR_selectorOfKind(SVRSelectorKindReset)
                                                          tag:resetKind]];
       colorWell = [NSColorWell SVR_colorWellWithFrame:darkkRect kind:colorKind];
@@ -357,12 +351,12 @@
   darkkRect.origin.y = kYOrigin + kVPad;
   
   [self addSubview:[[[NSTextField SVR_labelWithFrame:lightRect]
-                                  SVR_setObjectValue:@"Light"
+                                  SVR_setObjectValue:[Localized titleLight]
                                                 font:[NSFont systemFontOfSize:10]
                                            alignment:XPTextAlignmentCenter]
                              SVR_sizeToFitVertically]];
   [self addSubview:[[[NSTextField SVR_labelWithFrame:darkkRect]
-                                  SVR_setObjectValue:@"Dark"
+                                  SVR_setObjectValue:[Localized titleDark]
                                                 font:[NSFont systemFontOfSize:10]
                                            alignment:XPTextAlignmentCenter]
                              SVR_sizeToFitVertically]];
@@ -431,12 +425,12 @@
     [self addSubview:textField];
     
     // Buttons
-    [self addSubview:[NSButton SVR_settingsButtonWithFrame:setttRect
-                                                     title:@"Set"
-                                                    action:@selector(presentFontPanel:)
+    [self addSubview:[NSButton SVR_settingsButtonWithFrame:SVR_rectByAdjustingAquaButtonRect(setttRect)
+                                                     title:[Localized verbSet]
+                                                    action:SVR_selectorOfKind(SVRSelectorKindPresentFontPanel)
                                                        tag:fontKind]];
-    [self addSubview:[NSButton SVR_settingsButtonWithFrame:resetRect
-                                                     title:@"Reset"
+    [self addSubview:[NSButton SVR_settingsButtonWithFrame:SVR_rectByAdjustingAquaButtonRect(resetRect)
+                                                     title:[Localized verbReset]
                                                     action:SVR_selectorOfKind(SVRSelectorKindReset)
                                                        tag:resetKind]];
     
@@ -473,18 +467,136 @@
 
 @end
 
+@implementation XPSegmentedControl
+
++(Class)cellClass;
+{
+	return [NSActionCell class];
+}
+
+-(id)initWithFrame:(NSRect)frameRect;
+{
+  self = [super initWithFrame:frameRect];
+  XPParameterRaise(self);
+  _buttons = [NSMutableArray new];
+  _selectedSegment = 0;
+  return self;
+}
+
+-(void)setSegmentCount:(XPInteger)_;
+{
+}
+
+-(XPInteger)selectedSegment;
+{
+  return _selectedSegment;
+}
+
+-(void)setSelectedSegment:(XPInteger)_selection;
+{
+  XPUInteger selection = (XPUInteger)_selection;
+  XPUInteger count = [_buttons count];
+  XPUInteger index = 0;
+  XPLogAssrt1(count > selection, @"[BOUNDS] Selection(%d)", (int)selection);
+  for (index=0; index<count; index++) {
+    [[_buttons objectAtIndex:index] setState:index==selection];
+  }
+  _selectedSegment = _selection;
+}
+
+-(NSString*)labelForSegment:(XPInteger)segment;
+{
+  return [[_buttons objectAtIndex:segment] title];
+}
+
+-(void)setLabel:(NSString*)label forSegment:(XPInteger)segment;
+{
+  XPInteger count = (XPInteger)[_buttons count];
+  NSButton *button = nil;
+  if (segment < count) {
+    [[_buttons objectAtIndex:segment] setTitle:label];
+  } else {
+    button = [self __newButtonAtIndex:segment];
+    [button setTitle:label];
+  }
+}
+
+-(NSImage*)imageForSegment:(XPInteger)segment;
+{
+  return [[_buttons objectAtIndex:segment] image];
+}
+
+-(void)setImage:(NSImage*)image forSegment:(XPInteger)segment;
+{
+  XPInteger count = (XPInteger)[_buttons count];
+  NSButton *button = nil;
+  if (segment < count) {
+    [[_buttons objectAtIndex:segment] setImage:image];
+  } else {
+    button = [self __newButtonAtIndex:segment];
+    [button setImage:image];
+  }
+}
+
+-(IBAction)__selectedSegmentChanged:(NSButton*)sender;
+{
+  XPUInteger index = [_buttons indexOfObject:sender];
+  XPLogAssrt1(index != (XPUInteger)NSNotFound, @"[UNKNOWN] Sender(%@)", sender);
+	XPLogAssrt([self action], @"Selector was NULL");
+  [self setSelectedSegment:index];
+  [self sendAction:[self action] to:[self target]];
+}
+
+-(NSButton*)__newButtonAtIndex:(XPInteger)index;
+{
+  NSButton *button = [[[NSButton alloc] initWithFrame:NSZeroRect] autorelease];
+  [_buttons insertObject:button atIndex:index];
+  
+  [button XP_setBezelStyle:XPBezelStyleFlexiblePush];
+  [button setButtonType:XPButtonTypePushOnPushOff];
+  [button setImagePosition:NSImageAbove];
+  [button setAction:@selector(__selectedSegmentChanged:)];
+  [button setTarget:self];
+  
+  [self __recalculateFrames];
+  [self setSelectedSegment:_selectedSegment];
+  [self addSubview:button];
+  return button;
+}
+
+-(void)__recalculateFrames;
+{
+  const XPFloat kPad = 4;
+  XPInteger index = 0;
+  NSRect myBounds = [self bounds];
+  NSRect buttonFrame = myBounds;
+  XPInteger count = [_buttons count];
+  
+  buttonFrame.size.width = floor(myBounds.size.width/count) - (kPad/2);
+  for (index=0; index<count; index++) {
+    buttonFrame.origin.x = (buttonFrame.size.width*index) + (kPad*index);
+    [[_buttons objectAtIndex:index] setFrame:SVR_rectByAdjustingAquaButtonRect(buttonFrame)];
+  }
+}
+
+-(void)dealloc;
+{
+  [_buttons release];
+  _buttons = nil;
+  [super dealloc];
+}
+
+@end
+
 @implementation NSControl (SVRAccessoryWindows)
 
 +(NSButton*)SVR_keypadButtonOfKind:(SVRKeypadButtonKind)kind;
 {
-  SEL buttonAction  = NSSelectorFromString(@"keypadAppend:");
-  NSRect buttonRect = SVR_rectForKeypadButtonOfKind(kind);
-  NSButton *button  = nil;
-  button = [[[NSButton alloc] initWithFrame:buttonRect] autorelease];
+  NSButton *button = [[[NSButton alloc] initWithFrame:SVR_rectForKeypadButtonOfKind(kind)] autorelease];
   [button setTitle:SVR_titleForKeypadButtonOfKind(kind)];
   [button setKeyEquivalent:SVR_keyForKeypadButtonOfKind(kind)];
   [button setTag:kind];
-  [button setAction:buttonAction];
+  [button setAction:SVR_selectorOfKind(SVRSelectorKindKeypadAppend)];
   [button XP_setBezelStyle:XPBezelStyleFlexiblePush];
   return button;
 }
@@ -498,7 +610,7 @@
   [button setTitle:title];
   [button setAction:action];
   [button setTag:tag];
-  [button XP_setBezelStyle:XPBezelStyleShadowlessSquare];
+  [button XP_setBezelStyle:XPBezelStyleFlexiblePush];
   return button;
 }
 
@@ -529,13 +641,14 @@
   BOOL isEditable = target != nil || action != NULL;
   
   [textField setEditable:isEditable];
-  if (target) {
+  if (isEditable) {
     [textField setTarget:target];
-  }
-  if (action != NULL) {
     [textField setAction:action];
   }
-  [[textField cell] XP_setSendsActionOnEndEditing:YES];
+  
+#ifdef XPSupportsAttractiveRoundTextFields
+  [textField XP_setBezelStyle:XPTextFieldRoundedBezel];
+#endif
   
   return textField;
 }
@@ -616,12 +729,13 @@
 
 @end
 
-@implementation NSCell (CrossPlatform)
--(void)XP_setSendsActionOnEndEditing:(BOOL)sendsAction;
+@implementation NSImage (SVRAccessoryWindows)
+-(NSImage*)SVR_setTemplate:(BOOL)flag;
 {
-#ifdef XPSupportsButtonStyles
-  [self setSendsActionOnEndEditing:sendsAction];
+#ifdef XPSupportsTemplateImage
+  [self setTemplate:flag];
 #endif
+  return self;
 }
 @end
 
@@ -643,6 +757,9 @@ SEL SVR_selectorOfKind(SVRSelectorKind kind)
       break;
     case SVRSelectorKindWriteUserInterfaceStyle:
       output = NSSelectorFromString(@"writeUserInterfaceStyle:");
+      break;
+    case SVRSelectorKindPresentFontPanel:
+      output = NSSelectorFromString(@"presentFontPanel:");
       break;
     default:
       output = NULL;
@@ -756,7 +873,21 @@ NSRect SVR_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   output.size = kind == SVRKeypadButtonKindEqual
                       ? NSMakeSize((kBtnSize.width * 2) + kBtnHPad, kBtnSize.height)
                       : kBtnSize;
-  return output;
+  return SVR_rectByAdjustingAquaButtonRect(output);
+}
+
+NSRect SVR_rectByAdjustingAquaButtonRect(NSRect rect)
+{
+#if XPUserInterface == XPUserInterfaceAqua
+  XPFloat xPad = 2;
+  XPFloat yPad = 2;
+  return NSMakeRect(rect.origin.x-xPad,
+                    rect.origin.y-yPad,
+                    rect.size.width+xPad*2,
+                    rect.size.height+yPad*2);
+#else
+  return rect;
+#endif
 }
 
 NSString *SVR_titleForKeypadButtonOfKind(SVRKeypadButtonKind kind)
@@ -832,31 +963,29 @@ NSString *SVR_localizedStringForKind(SVRResetButtonKind kind)
 {
   switch (kind) {
     case SVRResetButtonKindUIStyle:
-      return @"Theme";
+      return [Localized titleTheme];
     case SVRResetButtonKindWaitTime:
-      return @"Solving Delay";
+      return [Localized titleSolvingDelay];
     case SVRResetButtonKindMathFont:
-      return @"Math Text";
+      return [Localized titleMathText];
     case SVRResetButtonKindOtherFont:
-      return @"Normal Text";
-    case SVRResetButtonKindErrorFont:
-      return @"Error Text";
-    case SVRResetButtonKindOperandColor:
-      return @"Operand";
-    case SVRResetButtonKindOperatorColor:
-      return @"Operator";
-    case SVRResetButtonKindSolutionColor:
-      return @"Solution";
-    case SVRResetButtonKindPreviousSolutionColor:
-      return @"Carryover";
     case SVRResetButtonKindOtherTextColor:
-      return @"Normal Text";
+      return [Localized titleNormalText];
+    case SVRResetButtonKindErrorFont:
     case SVRResetButtonKindErrorTextColor:
-      return @"Error Text";
+      return [Localized titleErrorText];
+    case SVRResetButtonKindOperandColor:
+      return [Localized titleOperand];
+    case SVRResetButtonKindOperatorColor:
+      return [Localized titleOperator];
+    case SVRResetButtonKindSolutionColor:
+      return [Localized titleSolution];
+    case SVRResetButtonKindPreviousSolutionColor:
+      return [Localized  titleCarryover];
     case SVRResetButtonKindInsertionPointColor:
-      return @"Insertion Point";
+      return [Localized titleInsertionPoint];
     case SVRResetButtonKindBackgroundColor:
-      return @"Background";
+      return [Localized titleBackground];
     default:
       XPCLogAssrt1(NO, @"[UNKNOWN] SVRResetButtonKind(%d)", (int)kind);
       return @"Unknown";

@@ -61,6 +61,12 @@
 		8C7D8F3A2DC636BC003F084F /* MainMenu_X6.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C7D8F382DC636BC003F084F /* MainMenu_X6.xib */; };
 		8C93A10E2DEC2FC900D8FDBA /* SVRAccessoryWindowViews.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C93A10C2DEC2FC900D8FDBA /* SVRAccessoryWindowViews.h */; };
 		8C93A10F2DEC2FC900D8FDBA /* SVRAccessoryWindowViews.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C93A10D2DEC2FC900D8FDBA /* SVRAccessoryWindowViews.m */; };
+		8CD3A2362E0652A300A24178 /* ThemeAuto.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8CD3A2302E0652A300A24178 /* ThemeAuto.tiff */; };
+		8CD3A2372E0652A300A24178 /* ThemeAuto@2x.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8CD3A2312E0652A300A24178 /* ThemeAuto@2x.tiff */; };
+		8CD3A2382E0652A300A24178 /* ThemeDark.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8CD3A2322E0652A300A24178 /* ThemeDark.tiff */; };
+		8CD3A2392E0652A300A24178 /* ThemeDark@2x.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8CD3A2332E0652A300A24178 /* ThemeDark@2x.tiff */; };
+		8CD3A23A2E0652A300A24178 /* ThemeLight.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8CD3A2342E0652A300A24178 /* ThemeLight.tiff */; };
+		8CD3A23B2E0652A300A24178 /* ThemeLight@2x.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8CD3A2352E0652A300A24178 /* ThemeLight@2x.tiff */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -81,6 +87,12 @@
 		8C7D8F392DC636BC003F084F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu_X6.xib; sourceTree = "<group>"; };
 		8C93A10C2DEC2FC900D8FDBA /* SVRAccessoryWindowViews.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVRAccessoryWindowViews.h; sourceTree = "<group>"; };
 		8C93A10D2DEC2FC900D8FDBA /* SVRAccessoryWindowViews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVRAccessoryWindowViews.m; sourceTree = "<group>"; };
+		8CD3A2302E0652A300A24178 /* ThemeAuto.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeAuto.tiff; path = Images/ThemeAuto.tiff; sourceTree = "<group>"; };
+		8CD3A2312E0652A300A24178 /* ThemeAuto@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeAuto@2x.tiff"; path = "Images/ThemeAuto@2x.tiff"; sourceTree = "<group>"; };
+		8CD3A2322E0652A300A24178 /* ThemeDark.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeDark.tiff; path = Images/ThemeDark.tiff; sourceTree = "<group>"; };
+		8CD3A2332E0652A300A24178 /* ThemeDark@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeDark@2x.tiff"; path = "Images/ThemeDark@2x.tiff"; sourceTree = "<group>"; };
+		8CD3A2342E0652A300A24178 /* ThemeLight.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeLight.tiff; path = Images/ThemeLight.tiff; sourceTree = "<group>"; };
+		8CD3A2352E0652A300A24178 /* ThemeLight@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeLight@2x.tiff"; path = "Images/ThemeLight@2x.tiff"; sourceTree = "<group>"; };
 		8CD62E502D91DB730000020F /* Soulver_main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = Soulver_main.m; sourceTree = "<group>"; };
 		8CD62E552D91DCDF0000020F /* Import Log.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "Import Log.rtf"; sourceTree = "<group>"; };
 		8CD62E562D91DCDF0000020F /* Makefile */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -266,6 +278,12 @@
 				8C4D1DFB2DC7D1F80060CFBA /* AppIcon.icns */,
 				8C4D1DFD2DC7D1F80060CFBA /* NeXTLogoMed.tiff */,
 				8C4D1DFE2DC7D1F80060CFBA /* TagLine.tiff */,
+				8CD3A2302E0652A300A24178 /* ThemeAuto.tiff */,
+				8CD3A2312E0652A300A24178 /* ThemeAuto@2x.tiff */,
+				8CD3A2322E0652A300A24178 /* ThemeDark.tiff */,
+				8CD3A2332E0652A300A24178 /* ThemeDark@2x.tiff */,
+				8CD3A2342E0652A300A24178 /* ThemeLight.tiff */,
+				8CD3A2352E0652A300A24178 /* ThemeLight@2x.tiff */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -392,15 +410,21 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8CD3A2372E0652A300A24178 /* ThemeAuto@2x.tiff in Resources */,
+				8CD3A23B2E0652A300A24178 /* ThemeLight@2x.tiff in Resources */,
 				8C5E58212DC346F200A1648E /* InfoPlist.strings in Resources */,
 				8C5E58232DC346F200A1648E /* TestsIntegration-DiskRep.txt in Resources */,
 				8C5E58242DC346F200A1648E /* TestsIntegration-DisplayRep.rtf in Resources */,
 				8C5E58252DC346F200A1648E /* TestsIntegration-SolvedRep.rtf in Resources */,
+				8CD3A2392E0652A300A24178 /* ThemeDark@2x.tiff in Resources */,
 				8C5E58262DC346F200A1648E /* TestsIntegration-UnsolvedRep.rtf in Resources */,
+				8CD3A2362E0652A300A24178 /* ThemeAuto.tiff in Resources */,
 				8C5E582A2DC346F200A1648E /* Localizable.strings in Resources */,
 				8C5E582C2DC346F200A1648E /* TestUnitBezierPath-MANUAL.tiff in Resources */,
 				8C5E582D2DC346F200A1648E /* TestUnitBezierPath-REAL.tiff in Resources */,
+				8CD3A2382E0652A300A24178 /* ThemeDark.tiff in Resources */,
 				8C7D8F3A2DC636BC003F084F /* MainMenu_X6.xib in Resources */,
+				8CD3A23A2E0652A300A24178 /* ThemeLight.tiff in Resources */,
 				8C4D1E002DC7D1F80060CFBA /* about-image-512.tiff in Resources */,
 				8C4D1E012DC7D1F80060CFBA /* AppIcon.icns in Resources */,
 				8C4D1E032DC7D1F80060CFBA /* NeXTLogoMed.tiff in Resources */,

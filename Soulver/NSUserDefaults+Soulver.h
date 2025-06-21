@@ -32,6 +32,12 @@
 
 extern NSString * const SVRThemeDidChangeNotificationName;
 
+typedef XP_ENUM(XPInteger, SVRSettingSelection) {
+  SVRSettingSelectionGeneral = 0,
+  SVRSettingSelectionColors = 1,
+  SVRSettingSelectionFonts = 2,
+};
+
 typedef XP_ENUM(XPInteger, SVRThemeColor) {
   SVRThemeColorOperandText = 0,
   SVRThemeColorOperatorText = 1,
@@ -60,6 +66,8 @@ typedef XP_ENUM(XPInteger, SVRThemeFont) {
 -(BOOL)SVR_setWaitTimeForRendering:(NSTimeInterval)newValue;
 
 // MARK: Accessory Window Visibility
+-(SVRSettingSelection)SVR_settingsSelection;
+-(BOOL)SVR_setSettingsSelection:(SVRSettingSelection)newValue;
 -(BOOL)SVR_visibilityForWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
 -(BOOL)SVR_setVisibility:(BOOL)isVisible forWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
 
@@ -94,6 +102,26 @@ typedef XP_ENUM(XPInteger, SVRThemeFont) {
 +(NSString*)titleUntitled;
 +(NSString*)titleAlert;
 +(NSString*)titleClose;
++(NSString*)titleAbout;
++(NSString*)titleKeypad;
++(NSString*)titleSettings;
++(NSString*)titleGeneral;
++(NSString*)titleColors;
++(NSString*)titleFonts;
++(NSString*)titleAutomatic;
++(NSString*)titleLight;
++(NSString*)titleDark;
++(NSString*)titleTheme;
++(NSString*)titleSolvingDelay;
++(NSString*)titleMathText;
++(NSString*)titleNormalText;
++(NSString*)titleErrorText;
++(NSString*)titleOperand;
++(NSString*)titleOperator;
++(NSString*)titleSolution;
++(NSString*)titleCarryover;
++(NSString*)titleInsertionPoint;
++(NSString*)titleBackground;
 +(NSString*)phraseEditedWindows;
 +(NSString*)phraseSaveChangesTo;
 +(NSString*)phraseRevertChangesTo;
@@ -110,7 +138,12 @@ typedef XP_ENUM(XPInteger, SVRThemeFont) {
 +(NSString*)phraseErrorBaseOne;
 +(NSString*)phraseSourceRepositoryURL;
 +(NSString*)phraseCopyWebURLToClipboard;
++(NSString*)phraseAboutTagline;
++(NSString*)phraseAboutDedication;
 +(NSString*)aboutParagraph;
++(NSString*)verbSet;
++(NSString*)verbReset;
++(NSString*)verbViewSource;
 +(NSString*)verbReviewUnsaved;
 +(NSString*)verbQuitAnyway;
 +(NSString*)verbCancel;
@@ -119,4 +152,10 @@ typedef XP_ENUM(XPInteger, SVRThemeFont) {
 +(NSString*)verbDontSave;
 +(NSString*)verbCopyToClipboard;
 +(NSString*)verbDontCopy;
++(NSString*)imageAboutPortrait;
++(NSString*)imageNeXTLogo;
++(NSString*)imageNeXTTagline;
++(NSString*)imageThemeAuto;
++(NSString*)imageThemeLight;
++(NSString*)imageThemeDark;
 @end

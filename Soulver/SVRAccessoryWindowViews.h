@@ -39,7 +39,8 @@ typedef XP_ENUM(XPInteger, SVRSelectorKind) {
   SVRSelectorKindKeypadAppend,
   SVRSelectorKindWriteColor,
   SVRSelectorKindWriteWaitTime,
-  SVRSelectorKindWriteUserInterfaceStyle
+  SVRSelectorKindWriteUserInterfaceStyle,
+  SVRSelectorKindPresentFontPanel
 };
 
 typedef XP_ENUM(XPInteger, SVRColorWellKind) {
@@ -106,17 +107,11 @@ typedef XP_ENUM(XPInteger, SVRKeypadButtonKind) {
   SVRKeypadButtonKindLog
 };
 
-static const XPFloat SVRAccessoryWindowKeypadWindowPadding        = 4;
+static const XPFloat SVRAccessoryWindowKeypadWindowPadding        = 6;
 static const NSSize  SVRAccessoryWindowKeypadWindowButtonSize     = {40, 32};
-#ifdef XPSupportsButtonStyles
-static const XPFloat SVRAccessoryWindowKeypadWindowButtonVPadding = 0;
-static const XPFloat SVRAccessoryWindowKeypadWindowButtonHPadding = 0;
-static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 4;
-#else
+static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
 static const XPFloat SVRAccessoryWindowKeypadWindowButtonVPadding = 4;
 static const XPFloat SVRAccessoryWindowKeypadWindowButtonHPadding = 4;
-static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
-#endif
 
 // MARK: SVRAccessoryWindowKeypadView
 
@@ -147,15 +142,18 @@ static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
 
 // MARK: SVRAccessoryWindowSettingsView
 
+@class XPSegmentedControl;
+
 @interface SVRAccessoryWindowsSettingsGeneralView: NSView
 {
-  mm_unretain NSPopUpButton *_selectorButton;
-  mm_unretain NSTextField *_fieldTime;
+  mm_unretain XPSegmentedControl *_selectorControl;
+  mm_unretain NSTextField *_delayLabel;
+  mm_unretain NSSlider *_delaySlider;
 }
 -(id)initWithFrame:(NSRect)frameRect;
--(NSPopUpButton*)themeSelector;
--(NSTextField*)timeField;
--(IBAction)__HACK_writeWaitTime:(NSTextField*)sender;
+-(XPSegmentedControl*)themeSelector;
+-(NSTextField*)delayLabel;
+-(NSSlider*)delaySlider;
 @end
 
 @interface SVRAccessoryWindowsSettingsColorsView: NSView
@@ -176,6 +174,28 @@ static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
 -(NSTextField*)textFieldOfKind:(SVRThemeFont)kind;
 -(void)setTextField:(NSTextField*)textField
             forKind:(SVRThemeFont)kind;
+@end
+
+@interface XPSegmentedControl: NSControl
+{
+  mm_new NSMutableArray *_buttons;
+  XPUInteger _selectedSegment;
+}
+// This is needed on older systems to ensure that
+// Target and Action are properly stored
++(Class)cellClass;
+-(id)initWithFrame:(NSRect)frameRect;
+/// Ignored in XPSegmentedControl but required in NSSegmentedControl
+-(void)setSegmentCount:(XPInteger)_;
+-(XPInteger)selectedSegment;
+-(void)setSelectedSegment:(XPInteger)selection;
+-(NSString*)labelForSegment:(XPInteger)segment;
+-(void)setLabel:(NSString*)label forSegment:(XPInteger)segment;
+-(NSImage*)imageForSegment:(XPInteger)segment;
+-(void)setImage:(NSImage*)image forSegment:(XPInteger)segment;
+-(IBAction)__selectedSegmentChanged:(NSButton*)sender;
+-(NSButton*)__newButtonAtIndex:(XPInteger)index;
+-(void)__recalculateFrames;
 @end
 
 @interface NSControl (SVRAccessoryWindows)
@@ -209,12 +229,17 @@ static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
 -(NSImageView*)SVR_setImageFrameStyle:(NSImageFrameStyle)imageFrameStyle;
 @end
 
+@interface NSImage (SVRAccessoryWindows)
+-(NSImage*)SVR_setTemplate:(BOOL)flag;
+@end
+
 @interface NSCell (CrossPlatform)
 -(void)XP_setSendsActionOnEndEditing:(BOOL)sendsAction;
 @end
 
 SEL SVR_selectorOfKind(SVRSelectorKind kind);
 NSRect SVR_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind);
+NSRect SVR_rectByAdjustingAquaButtonRect(NSRect rect);
 NSString *SVR_titleForKeypadButtonOfKind(SVRKeypadButtonKind kind);
 NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind);
 NSString *SVR_localizedStringForKind(SVRResetButtonKind kind);

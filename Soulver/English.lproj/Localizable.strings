@@ -5,14 +5,39 @@
 "NEXT_T_Untitled" = "UNTITLED";
 "NEXT_T_Alert" = "Alert";
 "NEXT_T_Close" = "Close";
+"NEXT_T_About" = "About";
+"NEXT_T_Keypad" = "Keypad";
+"NEXT_T_Settings" = "Settings";
+"NEXT_T_General" = "General";
+"NEXT_T_Colors" = "Colors";
+"NEXT_T_Fonts" = "Fonts";
+"NEXT_T_Automatic" = "Automatic";
+"NEXT_T_Light" = "Light";
+"NEXT_T_Dark" = "Dark";
+"NEXT_T_Theme" = "Theme";
+"NEXT_T_SolvingDelay" = "Solving Delay";
+"NEXT_T_MathText" = "Math Text";
+"NEXT_T_NormalText" = "Normal Text";
+"NEXT_T_ErrorText" = "Error Text";
+"NEXT_T_Operand" = "Operand";
+"NEXT_T_Operator" = "Operator";
+"NEXT_T_Solution" = "Solution";
+"NEXT_T_Carryover" = "Carryover";
+"NEXT_T_InsertionPoint" = "Insertion Point";
+"NEXT_T_Background" = "Background";
 
 // Verbs
-"NEXT_V_Cancel" = "Cancel";
-"NEXT_V_QuitAnyway" = "Quit Anyway";
+"NEXT_V_Set" = "Set";
+"NEXT_V_Reset" = "Reset";
+"NEXT_V_ViewSource" = "View Source";
 "NEXT_V_ReviewUnsaved" = "Review Unsaved";
+"NEXT_V_QuitAnyway" = "Quit Anyway";
+"NEXT_V_Cancel" = "Cancel";
 "NEXT_V_Save" = "Save";
 "NEXT_V_Revert" = "Revert";
 "NEXT_V_DontSave" = "Don't Save";
+
+// Phrases
 "NEXT_P_ErrorInvalidCharacter%d" = "%d|Incompatible character";
 "NEXT_P_ErrorMismatchedBrackets%d" = "%d|Parentheses not balanced";
 "NEXT_P_ErrorMissingOperand%d" = "%d|Missing operand";
@@ -26,12 +51,19 @@
 "NEXT_P_ErrorBaseOne%d" = "%d|Base 1";
 "NEXT_P_CopyToClipboard" = "Copy to Clipboard";
 "NEXT_P_DontCopy" = "Don't Copy";
-
-// Phrases
 "NEXT_P_EditedWindows" = "There are edited windows.";
 "NEXT_P_SaveChangesTo%@" = "Save changes to %@?";
 "NEXT_P_RevertChangesTo%@" = "Revert changes to %@?";
 "NEXT_P_SourceRepositoryURL" = "http://github.com/jeffreybergier/NotSoulver";
 "NEXT_P_CopyWebURLToClipboard%@" = "Copy `%@` to the clipboard?";
+"NEXT_P_AboutTagline" = "for OpenStep\nby Jeffrey Bergier\n2025";
+"NEXT_P_AboutDedication" = "This application is dedicated to my grandmother | 1932-2024";
 "NEXT_P_AboutParagraph" = "I wrote [Not]Soulver as a learning exercise. It was supposed to be an experiment in learning how to develop for OpenStep, i.e. without Swift, without ARC, without Blocks, without Properties, etc. But I ended up learning a whole lot more. I can honestly say that learning how to develop for OpenStep will bring you much closer to how Cocoa and Cocoa Touch actually work. The OpenStep documentation is wonderful and you get the sense that every object in Foundation and AppKit was delightfully crafted with its own personality and quirks. It has been a joy to bring a single codebase through 30 years of Apple Operating System history.";
 
+// Images
+"NEXT_M_AboutPortrait" = "about-image-512";
+"NEXT_M_NeXTLogo" = "NeXTLogoMed";
+"NEXT_M_NeXTTagline" = "TagLine";
+"NEXT_M_ThemeAuto" = "ThemeAuto";
+"NEXT_M_ThemeLight" = "ThemeLight";
+"NEXT_M_ThemeDark" = "ThemeDark";

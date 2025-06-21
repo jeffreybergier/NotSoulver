@@ -62,6 +62,7 @@ NSString *SVRThemeMathFontKey                     = @"kSVRThemeMathFontKey";
 NSString *SVRThemeErrorFontKey                    = @"kSVRThemeErrorFontKey";
 
 NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyleKey";
+NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
 
 @implementation NSUserDefaults (Soulver)
 
@@ -93,11 +94,21 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
   }
   success = [self synchronize];
   XPLogAssrt(success, @"[FAIL]");
-  [self __postChangeNotification];
   return success;
 }
 
 // MARK: Accessory Window Visibility
+
+-(SVRSettingSelection)SVR_settingsSelection;
+{
+  return (SVRSettingSelection)[self integerForKey:SVRSettingsSelection];
+}
+
+-(BOOL)SVR_setSettingsSelection:(SVRSettingSelection)newValue;
+{
+  [self setInteger:newValue forKey:SVRSettingsSelection];
+  return [self synchronize];
+}
 
 -(BOOL)SVR_visibilityForWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
 {
@@ -328,6 +339,7 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
           // Other
           XPUserDefaultsSavePanelLastDirectory,
           SVRThemeUserInterfaceStyle,
+          SVRSettingsSelection,
           SVRAccessoryWindowFrameAutosaveNameKeypad,
           XPUserDefaultsWaitTimeForRendering,
           nil];
@@ -359,6 +371,7 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
           // Other
           NSHomeDirectory(), // XPUserDefaultsSavePanelLastDirectory
           @"0",   // SVRThemeUserInterfaceStyle
+          @"0",   // SVRSettingsSelection
           @"YES", // SVRAccessoryWindowKeypadVisibility
           @"2.0", // XPUserDefaultsWaitTimeForRendering
           nil];
@@ -380,6 +393,46 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 { return NSLocalizedString(@"NEXT_T_Alert", @""); }
 +(NSString*)titleClose;
 { return NSLocalizedString(@"NEXT_T_Close", @""); }
++(NSString*)titleAbout;
+{ return NSLocalizedString(@"NEXT_T_About", @""); }
++(NSString*)titleKeypad;
+{ return NSLocalizedString(@"NEXT_T_Keypad", @""); }
++(NSString*)titleSettings;
+{ return NSLocalizedString(@"NEXT_T_Settings", @""); }
++(NSString*)titleGeneral;
+{ return NSLocalizedString(@"NEXT_T_General", @""); }
++(NSString*)titleColors;
+{ return NSLocalizedString(@"NEXT_T_Colors", @""); }
++(NSString*)titleFonts;
+{ return NSLocalizedString(@"NEXT_T_Fonts", @""); }
++(NSString*)titleAutomatic;
+{ return NSLocalizedString(@"NEXT_T_Automatic", @""); }
++(NSString*)titleLight;
+{ return NSLocalizedString(@"NEXT_T_Light", @""); }
++(NSString*)titleDark;
+{ return NSLocalizedString(@"NEXT_T_Dark", @""); }
++(NSString*)titleTheme;
+{ return NSLocalizedString(@"NEXT_T_Theme", @""); }
++(NSString*)titleSolvingDelay;
+{ return NSLocalizedString(@"NEXT_T_SolvingDelay", @""); }
++(NSString*)titleMathText;
+{ return NSLocalizedString(@"NEXT_T_MathText", @""); }
++(NSString*)titleNormalText;
+{ return NSLocalizedString(@"NEXT_T_NormalText", @""); }
++(NSString*)titleErrorText;
+{ return NSLocalizedString(@"NEXT_T_ErrorText", @""); }
++(NSString*)titleOperand;
+{ return NSLocalizedString(@"NEXT_T_Operand", @""); }
++(NSString*)titleOperator;
+{ return NSLocalizedString(@"NEXT_T_Operator", @""); }
++(NSString*)titleSolution;
+{ return NSLocalizedString(@"NEXT_T_Solution", @""); }
++(NSString*)titleCarryover;
+{ return NSLocalizedString(@"NEXT_T_Carryover", @""); }
++(NSString*)titleInsertionPoint;
+{ return NSLocalizedString(@"NEXT_T_InsertionPoint", @""); }
++(NSString*)titleBackground;
+{ return NSLocalizedString(@"NEXT_T_Background", @""); }
 +(NSString*)phraseEditedWindows;
 { return NSLocalizedString(@"NEXT_P_EditedWindows", @""); }
 +(NSString*)phraseSaveChangesTo;
@@ -412,8 +465,18 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 { return NSLocalizedString(@"NEXT_P_SourceRepositoryURL", @""); }
 +(NSString*)phraseCopyWebURLToClipboard;
 { return NSLocalizedString(@"NEXT_P_CopyWebURLToClipboard%@", @""); }
++(NSString*)phraseAboutTagline;
+{ return NSLocalizedString(@"NEXT_P_AboutTagline", @""); }
++(NSString*)phraseAboutDedication;
+{ return NSLocalizedString(@"NEXT_P_AboutDedication", @""); }
 +(NSString*)aboutParagraph;
 { return NSLocalizedString(@"NEXT_P_AboutParagraph", @""); }
++(NSString*)verbSet;
+{ return NSLocalizedString(@"NEXT_V_Set", @""); }
++(NSString*)verbReset;
+{ return NSLocalizedString(@"NEXT_V_Reset", @""); }
++(NSString*)verbViewSource;
+{ return NSLocalizedString(@"NEXT_V_ViewSource", @""); }
 +(NSString*)verbReviewUnsaved;
 { return NSLocalizedString(@"NEXT_V_ReviewUnsaved", @""); }
 +(NSString*)verbQuitAnyway;
@@ -430,5 +493,17 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 { return NSLocalizedString(@"NEXT_P_CopyToClipboard", @""); }
 +(NSString*)verbDontCopy;
 { return NSLocalizedString(@"NEXT_P_DontCopy", @""); }
++(NSString*)imageAboutPortrait;
+{ return NSLocalizedString(@"NEXT_M_AboutPortrait", @""); }
++(NSString*)imageNeXTLogo;
+{ return NSLocalizedString(@"NEXT_M_NeXTLogo", @""); }
++(NSString*)imageNeXTTagline;
+{ return NSLocalizedString(@"NEXT_M_NeXTTagline", @""); }
++(NSString*)imageThemeAuto;
+{ return NSLocalizedString(@"NEXT_M_ThemeAuto", @""); }
++(NSString*)imageThemeLight;
+{ return NSLocalizedString(@"NEXT_M_ThemeLight", @""); }
++(NSString*)imageThemeDark;
+{ return NSLocalizedString(@"NEXT_M_ThemeDark", @""); }
 
 @end

@@ -105,11 +105,25 @@ typedef float XPFloat;
 #define XPDocument id<XPDocumentProtocol>
 
 #ifdef MAC_OS_X_VERSION_10_4
+// TODO: Figure out why this breaks if I change it to 0
+// I want to be able to use all the legacy api on modern os x
 #define XPSupportsNSDocument 2 // Supports NSURL APIs
 #elif defined(MAC_OS_X_VERSION_10_2)
 #define XPSupportsNSDocument 1 // NSDocument exists but URL API's appear not to work properly
 #else
 #define XPSupportsNSDocument 0 // NSDocument does not exist
+#endif
+
+#define XPUserInterfaceGlass 2
+#define XPUserInterfaceAqua 1
+#define XPUserInterfaceNone 0
+
+#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 260000
+#define XPUserInterface XPUserInterfaceGlass
+#elif defined(MAC_OS_X_VERSION_10_2)
+#define XPUserInterface XPUserInterfaceAqua
+#else
+#define XPUserInterface XPUserInterfaceNone
 #endif
 
 #if XPSupportsNSDocument >= 2
@@ -135,20 +149,20 @@ typedef XPUInteger XPDocumentChangeType;
 // MARK: Deprecated Constants and Types
 
 #ifdef MAC_OS_X_VERSION_10_2
+typedef NSBezelStyle XPBezelStyle;
 #define XPKeyedArchiver NSKeyedArchiver
 #define XPKeyedUnarchiver NSKeyedUnarchiver
-#define XPBezelStyle NSBezelStyle
 #define XPBoxType NSBoxType
 #define XPBoxSeparator NSBoxSeparator
 #define XPSupportsNSBezierPath
+#define XPSupportsUnicodeUI
 #define XPSupportsTexturedWindows
 #define XPSupportsUtilityWindows
 #define XPSupportsButtonStyles
-#define XPSupportsUnicodeUI
 #else
+typedef XPUInteger XPBezelStyle;
 #define XPKeyedArchiver NSArchiver
 #define XPKeyedUnarchiver NSUnarchiver
-#define XPBezelStyle XPUInteger
 #define XPBoxType XPUInteger
 #define XPBoxSeparator 0
 #endif
@@ -173,6 +187,7 @@ typedef NSViewController XPViewController;
 #define XPPasteboardTypeString NSPasteboardTypeString
 #define XPWindowCollectionBehavior NSWindowCollectionBehavior
 #define XPSupportsFormalProtocols // Protocols like NSWindowDelegate were formally added
+#define XPSupportsTemplateImage
 #else
 typedef XPUInteger XPStringCompareOptions;
 #define XPViewController NSResponder
@@ -187,8 +202,8 @@ typedef void (^XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPSecureCoding NSSecureCoding
 #define XPSaveOperationType NSSaveOperationType
 #define XPDataWritingAtomic NSDataWritingAtomic
-#undef  XPSupportsTexturedWindows
 #define XPSupportsUnicodeDocument // TODO: Update to NSRegularExpression
+#undef  XPSupportsTexturedWindows
 #else
 typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *error);
 #define XPSecureCoding NSCoding
@@ -196,7 +211,7 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPDataWritingAtomic NSAtomicWrite
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_15 // Previously 10.10
+#ifdef MAC_OS_X_VERSION_10_15
 #define XPTextAlignmentCenter NSTextAlignmentCenter
 #define XPTextAlignmentLeft NSTextAlignmentLeft
 #define XPTextAlignmentRight NSTextAlignmentRight
@@ -204,6 +219,16 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPModalResponseOK NSModalResponseOK
 #define XPModalResponseCancel NSModalResponseCancel
 #define XPWindowCollectionBehaviorFullScreenNone NSWindowCollectionBehaviorFullScreenNone
+#define XPButtonTypePushOnPushOff NSButtonTypePushOnPushOff
+#define XPWindowStyleMask NSWindowStyleMask
+#define XPBitmapImageFileTypeTIFF NSBitmapImageFileTypeTIFF
+#define XPWindowStyleMaskTitled NSWindowStyleMaskTitled
+#define XPWindowStyleMaskClosable NSWindowStyleMaskClosable
+#define XPWindowStyleMaskMiniaturizable NSWindowStyleMaskMiniaturizable
+#define XPWindowStyleMaskResizable NSWindowStyleMaskResizable
+#define XPWindowStyleMaskUtilityWindow NSWindowStyleMaskUtilityWindow
+#define XPTextFieldBezelStyle NSTextFieldBezelStyle
+#define XPSupportsAttractiveRoundTextFields
 #else
 #define XPTextAlignmentCenter NSCenterTextAlignment
 #define XPTextAlignmentLeft NSLeftTextAlignment
@@ -212,17 +237,7 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPModalResponseOK NSOKButton
 #define XPModalResponseCancel NSCancelButton
 #define XPWindowCollectionBehaviorFullScreenNone 0
-#endif
-
-#ifdef MAC_OS_X_VERSION_10_15 // Previously 10.12
-#define XPWindowStyleMask NSWindowStyleMask
-#define XPBitmapImageFileTypeTIFF NSBitmapImageFileTypeTIFF
-#define XPWindowStyleMaskTitled NSWindowStyleMaskTitled
-#define XPWindowStyleMaskClosable NSWindowStyleMaskClosable
-#define XPWindowStyleMaskMiniaturizable NSWindowStyleMaskMiniaturizable
-#define XPWindowStyleMaskResizable NSWindowStyleMaskResizable
-#define XPWindowStyleMaskUtilityWindow NSWindowStyleMaskUtilityWindow
-#else
+#define XPButtonTypePushOnPushOff NSPushOnPushOffButton
 #define XPWindowStyleMask XPUInteger
 #define XPBitmapImageFileTypeTIFF NSTIFFFileType
 #define XPWindowStyleMaskTitled NSTitledWindowMask
@@ -230,6 +245,7 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPWindowStyleMaskMiniaturizable NSMiniaturizableWindowMask
 #define XPWindowStyleMaskResizable NSResizableWindowMask
 #define XPWindowStyleMaskUtilityWindow NSUtilityWindowMask
+#define XPTextFieldBezelStyle XPBezelStyle
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_14
@@ -240,15 +256,15 @@ typedef NSAttributedStringKey XPAttributedStringKey;
 typedef NSString* XPAttributedStringKey;
 #endif
 
-#if defined(XPSupportsButtonStyles) && defined(MAC_OS_X_VERSION_10_15)
-#define XPBezelStyleShadowlessSquare NSBezelStyleShadowlessSquare
+#ifdef MAC_OS_X_VERSION_10_15
 #define XPBezelStyleFlexiblePush NSBezelStyleFlexiblePush
-#elif defined (XPSupportsButtonStyles)
-#define XPBezelStyleShadowlessSquare NSShadowlessSquareBezelStyle
+#define XPTextFieldRoundedBezel NSTextFieldRoundedBezel
+#elif defined(MAC_OS_X_VERSION_10_2)
 #define XPBezelStyleFlexiblePush NSRegularSquareBezelStyle
+#define XPTextFieldRoundedBezel NSRoundedBezelStyle
 #else
-#define XPBezelStyleShadowlessSquare 6
-#define XPBezelStyleFlexiblePush 0
+#define XPBezelStyleFlexiblePush -1
+#define XPTextFieldRoundedBezel -1
 #endif
 
 extern const NSRange XPNotFoundRange;
@@ -390,6 +406,10 @@ NSArray* XPRunOpenPanel(NSString *extension);
 @interface NSTextView (CrossPlatform)
 -(void)XP_insertText:(id)string;
 -(void)XP_setAllowsUndo:(BOOL)isAllowed;
+@end
+
+@interface NSTextField (CrossPlatform)
+-(void)XP_setBezelStyle:(XPTextFieldBezelStyle)style;
 @end
 
 @interface NSButton (CrossPlatform)

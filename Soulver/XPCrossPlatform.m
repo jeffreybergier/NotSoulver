@@ -587,6 +587,15 @@ NSArray* XPRunOpenPanel(NSString *extension)
 }
 @end
 
+@implementation NSTextField (CrossPlatform)
+-(void)XP_setBezelStyle:(XPTextFieldBezelStyle)style;
+{
+#ifdef XPSupportsButtonStyles
+  [self setBezelStyle:style];
+#endif
+}
+@end
+
 @implementation NSButton (CrossPlatform)
 -(void)XP_setBezelStyle:(XPBezelStyle)style;
 {
