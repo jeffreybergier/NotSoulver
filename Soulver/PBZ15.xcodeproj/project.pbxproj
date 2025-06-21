@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8C5E580B2DC346F200A1648E /* Soulver_Prefix.h in Headers */ = {isa = PBXBuildFile; fileRef = 32DBCF750370BD2300C91783 /* Soulver_Prefix.h */; };
 		8C5E580C2DC346F200A1648E /* NSUserDefaults+Soulver.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E592D91DCDF0000020F /* NSUserDefaults+Soulver.h */; };
 		8C5E580D2DC346F200A1648E /* SVRAccessoryWindowsOwner.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E5B2D91DCDF0000020F /* SVRAccessoryWindowsOwner.h */; };
 		8C5E580E2DC346F200A1648E /* SVRAppDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E5D2D91DCDF0000020F /* SVRAppDelegate.h */; };
@@ -66,7 +65,6 @@
 		8C6F13E92E056C2800EB7DEC /* ThemeAuto@2x.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C6F13E32E056C2800EB7DEC /* ThemeAuto@2x.tiff */; };
 		8C979F662DEAC95E00A82647 /* SVRAccessoryWindowViews.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C979F652DEAC95E00A82647 /* SVRAccessoryWindowViews.m */; };
 		8C979F672DEAC95E00A82647 /* SVRAccessoryWindowViews.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C979F642DEAC95E00A82647 /* SVRAccessoryWindowViews.h */; };
-		8C9CB0232DD8943300C672E3 /* MainMenu_X15.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C9CB0212DD8943300C672E3 /* MainMenu_X15.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,7 +73,6 @@
 		2A37F4B7FDCFA73011CA2CEA /* MainMenu_X2.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = MainMenu_X2.nib; path = English.lproj/MainMenu_X2.nib; sourceTree = "<group>"; };
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		32DBCF750370BD2300C91783 /* Soulver_Prefix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Soulver_Prefix.h; sourceTree = "<group>"; };
 		8C5B4ECA2DC10C7B002C87B3 /* TestUnitBezierPath-MANUAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "TestUnitBezierPath-MANUAL.tiff"; sourceTree = SOURCE_ROOT; };
 		8C5B4ECB2DC10C7B002C87B3 /* TestUnitBezierPath-REAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "TestUnitBezierPath-REAL.tiff"; sourceTree = SOURCE_ROOT; };
 		8C5E58492DC346F200A1648E /* Info_X6.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info_X6.plist; sourceTree = "<group>"; };
@@ -248,7 +245,6 @@
 		2A37F4AFFDCFA73011CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				32DBCF750370BD2300C91783 /* Soulver_Prefix.h */,
 				8CD62E502D91DB730000020F /* Soulver_main.m */,
 			);
 			name = "Other Sources";
@@ -332,7 +328,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C5E580B2DC346F200A1648E /* Soulver_Prefix.h in Headers */,
 				8C5E580C2DC346F200A1648E /* NSUserDefaults+Soulver.h in Headers */,
 				8C5E580D2DC346F200A1648E /* SVRAccessoryWindowsOwner.h in Headers */,
 				8C5E580E2DC346F200A1648E /* SVRAppDelegate.h in Headers */,
@@ -435,7 +430,6 @@
 				8C6F13E02E05669500EB7DEC /* ThemeDark@2x.tiff in Resources */,
 				8C6F13E12E05669500EB7DEC /* NeXTLogoMed.tiff in Resources */,
 				8C5E582D2DC346F200A1648E /* TestUnitBezierPath-REAL.tiff in Resources */,
-				8C9CB0232DD8943300C672E3 /* MainMenu_X15.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -656,7 +650,6 @@
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_PREFIX_HEADER = Soulver_Prefix.h;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					DEBUG,
 					"LOGLEVEL=2",
@@ -721,7 +714,6 @@
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Soulver_Prefix.h;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_TREAT_NONCONFORMANT_CODE_ERRORS_AS_WARNINGS = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
@@ -777,7 +769,6 @@
 				DEVELOPMENT_TEAM = V6ESYGU6CV;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
-				GCC_PREFIX_HEADER = Soulver_Prefix.h;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					DEBUG,
 					"LOGLEVEL=2",
