@@ -81,6 +81,8 @@
 -(void)applicationWillFinishLaunching:(NSNotification*)aNotification;
 {
   NSApplication *app = [aNotification object];
+  // Set the menu
+  [app setMainMenu:[[SVRMainMenu newMainMenu] autorelease]];
   // Configure the title of the app
   [[app mainMenu] setTitle:[Localized titleAppName]];
   // Prepare UserDefaults
@@ -357,6 +359,58 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   [owner __restoreWindowWithIdentifier:identifier
                                  state:state
                      completionHandler:completionHandler];
+}
+
+@end
+
+@implementation SVRMainMenu: NSObject
++(NSMenu*)newMainMenu;
+{
+  NSMenu *output = [[NSMenu alloc] init];
+  NSMenuItem *topMenuItem = nil;
+  NSMenu *topMenu = nil;
+  
+  // Application Menu
+  topMenuItem = [[[NSMenuItem alloc] init] autorelease];
+  topMenu = [[[NSMenu alloc] init] autorelease];
+  [topMenuItem setSubmenu:topMenu];
+  [output addItem:topMenuItem];
+
+  [topMenu addItemWithTitle:@"About [Not]Soulver" action:@selector(showAboutWindow:) keyEquivalent:@""];
+  [topMenu addItem:[NSMenuItem separatorItem]];
+  [topMenu addItemWithTitle:@"Settings" action:@selector(showSettingsWindow:) keyEquivalent:@","];
+  [topMenu addItem:[NSMenuItem separatorItem]];
+  [topMenu addItem:[self __servicesMenuItem]];
+  [topMenu addItem:[NSMenuItem separatorItem]];
+  [topMenu addItemWithTitle:@"Hide [Not]Soulver" action:@selector(hide:) keyEquivalent:@"h"];
+  [topMenu addItem:[self __hideOthersMenuItem]];
+  [topMenu addItemWithTitle:@"Show All" action:@selector(unhideAllApplications:) keyEquivalent:@""];
+  [topMenu addItem:[NSMenuItem separatorItem]];
+  [topMenu addItemWithTitle:@"Quit [Not]Soulver" action:@selector(terminate:) keyEquivalent:@"q"];
+  
+  // File Menu
+    
+  return output;
+}
+
++(NSMenuItem*)__servicesMenuItem;
+{
+  NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:@"Services"
+                                                action:NULL
+                                         keyEquivalent:@""];
+  NSMenu *menu = [[NSMenu alloc] init];
+  [item setSubmenu:menu];
+  [[NSApplication sharedApplication] setServicesMenu:menu];
+  return item;
+}
+
++(NSMenuItem*)__hideOthersMenuItem;
+{
+  NSMenuItem *item = [[[NSMenuItem alloc] initWithTitle:@"Hide Others"
+                                                 action:@selector(hideOtherApplications:)
+                                          keyEquivalent:@"h"] autorelease];;
+  [item setKeyEquivalentModifierMask:NSEventModifierFlagOption | NSEventModifierFlagCommand];
+  return item;
 }
 
 @end

@@ -107,3 +107,9 @@
                              state:(NSCoder*)state
                  completionHandler:(XPWindowRestoreCompletionHandler)completionHandler;
 @end
+
+@interface SVRMainMenu: NSObject
++(NSMenu*)newMainMenu;
++(NSMenuItem*)__servicesMenuItem;
++(NSMenuItem*)__hideOthersMenuItem;
+@end
