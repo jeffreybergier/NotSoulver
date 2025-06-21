@@ -155,4 +155,7 @@ typedef XP_ENUM(XPInteger, SVRThemeFont) {
 +(NSString*)imageAboutPortrait;
 +(NSString*)imageNeXTLogo;
 +(NSString*)imageNeXTTagline;
++(NSString*)imageThemeAuto;
++(NSString*)imageThemeLight;
++(NSString*)imageThemeDark;
 @end

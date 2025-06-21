@@ -244,9 +244,9 @@
   [_selectorControl setLabel:[Localized titleAutomatic] forSegment:0];
   [_selectorControl setLabel:[Localized titleLight    ] forSegment:1];
   [_selectorControl setLabel:[Localized titleDark     ] forSegment:2];
-  [_selectorControl setImage:[[NSImage imageNamed:@"ThemeAuto" ] SVR_setTemplate:YES] forSegment:0];
-  [_selectorControl setImage:[[NSImage imageNamed:@"ThemeLight"] SVR_setTemplate:YES] forSegment:1];
-  [_selectorControl setImage:[[NSImage imageNamed:@"ThemeDark" ] SVR_setTemplate:YES] forSegment:2];
+  [_selectorControl setImage:[[NSImage imageNamed:[Localized imageThemeAuto ]] SVR_setTemplate:YES] forSegment:0];
+  [_selectorControl setImage:[[NSImage imageNamed:[Localized imageThemeLight]] SVR_setTemplate:YES] forSegment:1];
+  [_selectorControl setImage:[[NSImage imageNamed:[Localized imageThemeDark ]] SVR_setTemplate:YES] forSegment:2];
   [_selectorControl setAction:SVR_selectorOfKind(SVRSelectorKindWriteUserInterfaceStyle)];
   [self addSubview:_selectorControl];
   

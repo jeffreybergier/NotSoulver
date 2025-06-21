@@ -64,3 +64,6 @@
 "NEXT_M_AboutPortrait" = "about-image-512";
 "NEXT_M_NeXTLogo" = "NeXTLogoMed";
 "NEXT_M_NeXTTagline" = "TagLine";
+"NEXT_M_ThemeAuto" = "ThemeAuto";
+"NEXT_M_ThemeLight" = "ThemeLight";
+"NEXT_M_ThemeDark" = "ThemeDark";

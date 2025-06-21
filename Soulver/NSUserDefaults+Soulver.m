@@ -499,5 +499,11 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
 { return NSLocalizedString(@"NEXT_M_NeXTLogo", @""); }
 +(NSString*)imageNeXTTagline;
 { return NSLocalizedString(@"NEXT_M_NeXTTagline", @""); }
++(NSString*)imageThemeAuto;
+{ return NSLocalizedString(@"NEXT_M_ThemeAuto", @""); }
++(NSString*)imageThemeLight;
+{ return NSLocalizedString(@"NEXT_M_ThemeLight", @""); }
++(NSString*)imageThemeDark;
+{ return NSLocalizedString(@"NEXT_M_ThemeDark", @""); }
 
 @end
