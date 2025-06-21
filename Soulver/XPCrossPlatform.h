@@ -211,7 +211,7 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPDataWritingAtomic NSAtomicWrite
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_15 // Previously 10.10
+#ifdef MAC_OS_X_VERSION_10_15
 #define XPTextAlignmentCenter NSTextAlignmentCenter
 #define XPTextAlignmentLeft NSTextAlignmentLeft
 #define XPTextAlignmentRight NSTextAlignmentRight
@@ -220,6 +220,15 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPModalResponseCancel NSModalResponseCancel
 #define XPWindowCollectionBehaviorFullScreenNone NSWindowCollectionBehaviorFullScreenNone
 #define XPButtonTypePushOnPushOff NSButtonTypePushOnPushOff
+#define XPWindowStyleMask NSWindowStyleMask
+#define XPBitmapImageFileTypeTIFF NSBitmapImageFileTypeTIFF
+#define XPWindowStyleMaskTitled NSWindowStyleMaskTitled
+#define XPWindowStyleMaskClosable NSWindowStyleMaskClosable
+#define XPWindowStyleMaskMiniaturizable NSWindowStyleMaskMiniaturizable
+#define XPWindowStyleMaskResizable NSWindowStyleMaskResizable
+#define XPWindowStyleMaskUtilityWindow NSWindowStyleMaskUtilityWindow
+#define XPTextFieldBezelStyle NSTextFieldBezelStyle
+#define XPSupportsAttractiveRoundTextFields
 #else
 #define XPTextAlignmentCenter NSCenterTextAlignment
 #define XPTextAlignmentLeft NSLeftTextAlignment
@@ -229,18 +238,6 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPModalResponseCancel NSCancelButton
 #define XPWindowCollectionBehaviorFullScreenNone 0
 #define XPButtonTypePushOnPushOff NSPushOnPushOffButton
-#endif
-
-#ifdef MAC_OS_X_VERSION_10_15 // Previously 10.12
-#define XPWindowStyleMask NSWindowStyleMask
-#define XPBitmapImageFileTypeTIFF NSBitmapImageFileTypeTIFF
-#define XPWindowStyleMaskTitled NSWindowStyleMaskTitled
-#define XPWindowStyleMaskClosable NSWindowStyleMaskClosable
-#define XPWindowStyleMaskMiniaturizable NSWindowStyleMaskMiniaturizable
-#define XPWindowStyleMaskResizable NSWindowStyleMaskResizable
-#define XPWindowStyleMaskUtilityWindow NSWindowStyleMaskUtilityWindow
-#define XPTextFieldBezelStyle NSTextFieldBezelStyle
-#else
 #define XPWindowStyleMask XPUInteger
 #define XPBitmapImageFileTypeTIFF NSTIFFFileType
 #define XPWindowStyleMaskTitled NSTitledWindowMask

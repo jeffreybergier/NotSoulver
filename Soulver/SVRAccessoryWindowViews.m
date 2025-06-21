@@ -640,12 +640,15 @@
   NSTextField *textField = [[[NSTextField alloc] initWithFrame:frame] autorelease];
   BOOL isEditable = target != nil || action != NULL;
   
-  [textField XP_setBezelStyle:XPTextFieldRoundedBezel];
   [textField setEditable:isEditable];
   if (isEditable) {
     [textField setTarget:target];
     [textField setAction:action];
   }
+  
+#ifdef XPSupportsAttractiveRoundTextFields
+  [textField XP_setBezelStyle:XPTextFieldRoundedBezel];
+#endif
   
   return textField;
 }
