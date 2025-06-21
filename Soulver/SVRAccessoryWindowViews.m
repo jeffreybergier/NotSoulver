@@ -516,7 +516,7 @@
   if (segment < count) {
     [[_buttons objectAtIndex:segment] setTitle:label];
   } else {
-    button = [self __newButtonAtIndex:segment];
+    button = [self __insertButtonAtIndex:segment];
     [button setTitle:label];
   }
 }
@@ -533,7 +533,7 @@
   if (segment < count) {
     [[_buttons objectAtIndex:segment] setImage:image];
   } else {
-    button = [self __newButtonAtIndex:segment];
+    button = [self __insertButtonAtIndex:segment];
     [button setImage:image];
   }
 }
@@ -547,9 +547,9 @@
   [self sendAction:[self action] to:[self target]];
 }
 
--(NSButton*)__newButtonAtIndex:(XPInteger)index;
+-(NSButton*)__insertButtonAtIndex:(XPInteger)index;
 {
-  NSButton *button = [[[NSButton alloc] initWithFrame:NSZeroRect] autorelease];
+  NSButton *button = [[NSButton alloc] initWithFrame:NSZeroRect];
   [_buttons insertObject:button atIndex:index];
   
   [button XP_setBezelStyle:XPBezelStyleFlexiblePush];

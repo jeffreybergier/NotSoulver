@@ -194,7 +194,7 @@ static const XPFloat SVRAccessoryWindowKeypadWindowButtonHPadding = 4;
 -(NSImage*)imageForSegment:(XPInteger)segment;
 -(void)setImage:(NSImage*)image forSegment:(XPInteger)segment;
 -(IBAction)__selectedSegmentChanged:(NSButton*)sender;
--(NSButton*)__newButtonAtIndex:(XPInteger)index;
+-(NSButton*)__insertButtonAtIndex:(XPInteger)index;
 -(void)__recalculateFrames;
 @end
 
