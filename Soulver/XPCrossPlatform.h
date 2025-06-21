@@ -202,7 +202,6 @@ typedef void (^XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPSecureCoding NSSecureCoding
 #define XPSaveOperationType NSSaveOperationType
 #define XPDataWritingAtomic NSDataWritingAtomic
-#define XPButtonTypePushOnPushOff NSButtonTypePushOnPushOff
 #define XPSupportsUnicodeDocument // TODO: Update to NSRegularExpression
 #undef  XPSupportsTexturedWindows
 #else
@@ -210,7 +209,6 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPSecureCoding NSCoding
 #define XPSaveOperationType XPUInteger
 #define XPDataWritingAtomic NSAtomicWrite
-#define XPButtonTypePushOnPushOff NSPushOnPushOffButton
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_15 // Previously 10.10
@@ -221,6 +219,7 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPModalResponseOK NSModalResponseOK
 #define XPModalResponseCancel NSModalResponseCancel
 #define XPWindowCollectionBehaviorFullScreenNone NSWindowCollectionBehaviorFullScreenNone
+#define XPButtonTypePushOnPushOff NSButtonTypePushOnPushOff
 #else
 #define XPTextAlignmentCenter NSCenterTextAlignment
 #define XPTextAlignmentLeft NSLeftTextAlignment
@@ -229,6 +228,7 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPModalResponseOK NSOKButton
 #define XPModalResponseCancel NSCancelButton
 #define XPWindowCollectionBehaviorFullScreenNone 0
+#define XPButtonTypePushOnPushOff NSPushOnPushOffButton
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_15 // Previously 10.12
