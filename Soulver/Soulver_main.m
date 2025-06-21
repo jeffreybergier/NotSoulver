@@ -28,7 +28,7 @@
 //
 
 #import <AppKit/AppKit.h>
-#import "NSUserDefaults+Soulver.h"
+#import "SVRAppDelegate.h"
 #import "TestsIntegration.h"
 #import "TestsUnit.h"
 
@@ -51,5 +51,7 @@ int main(int argc, const char *argv[]) {
   TestsIntegrationExecute();
   
   // 4. Load NSApplication
+  XPCParameterRaise([NSApplication sharedApplication]);
+  [[NSApplication sharedApplication] setDelegate:[[[SVRAppDelegate alloc] init] autorelease]];
   return NSApplicationMain(argc, argv);
 }

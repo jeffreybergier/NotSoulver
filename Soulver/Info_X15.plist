@@ -57,8 +57,6 @@
 	<string>1.0</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.productivity</string>
-	<key>NSMainNibFile</key>
-	<string>MainMenu_X15</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>NSQuitAlwaysKeepsWindows</key>
