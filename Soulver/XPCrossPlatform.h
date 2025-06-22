@@ -229,6 +229,9 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPWindowStyleMaskResizable NSWindowStyleMaskResizable
 #define XPWindowStyleMaskUtilityWindow NSWindowStyleMaskUtilityWindow
 #define XPTextFieldBezelStyle NSTextFieldBezelStyle
+#define XPEventModifierFlagOption NSEventModifierFlagOption
+#define XPEventModifierFlagCommand NSEventModifierFlagCommand
+#define XPEventModifierFlagShift NSEventModifierFlagShift
 #define XPSupportsAttractiveRoundTextFields
 #else
 #define XPTextAlignmentCenter NSCenterTextAlignment
@@ -246,6 +249,9 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPWindowStyleMaskMiniaturizable NSMiniaturizableWindowMask
 #define XPWindowStyleMaskResizable NSResizableWindowMask
 #define XPWindowStyleMaskUtilityWindow NSUtilityWindowMask
+#define XPEventModifierFlagOption NSAlternateKeyMask
+#define XPEventModifierFlagCommand NSCommandKeyMask
+#define XPEventModifierFlagShift NSShiftKeyMask
 #define XPTextFieldBezelStyle XPBezelStyle
 #endif
 

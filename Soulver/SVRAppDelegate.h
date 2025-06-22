@@ -119,9 +119,14 @@
 +(NSMenu*)newMainMenu:(NSMutableArray*)storage;
 +(void)__buildAppMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
 +(void)__buildInfoMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
++(void)__buildFileMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
 +(void)__buildTrailingMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
 @end
 
 @interface NSMenu (CrossPlatform)
 -(void)XP_addSeparatorItem;
+@end
+
+@interface NSString (SVRMainMenu)
+-(NSString*)SVR_stringByAppendingEllipsis;
 @end

@@ -414,6 +414,8 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   [self __buildInfoMenuInMainMenu:mainMenu storage:storage];
 #endif
   
+  [self __buildFileMenuInMainMenu:mainMenu storage:storage];
+  
 #ifndef XPSupportsApplicationMenu
   [self __buildTrailingMenuInMainMenu:mainMenu storage:storage];
 #endif
@@ -435,7 +437,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 
   [menu addItemWithTitle:@"About [Not]Soulver" action:@selector(showAboutWindow:) keyEquivalent:@""];
   [menu XP_addSeparatorItem];
-  [menu addItemWithTitle:@"Settings…" action:@selector(showSettingsWindow:) keyEquivalent:@","];
+  [menu addItemWithTitle:[@"Settings" SVR_stringByAppendingEllipsis] action:@selector(showSettingsWindow:) keyEquivalent:@","];
   [menu XP_addSeparatorItem];
   item = [menu addItemWithTitle:@"Services" action:NULL keyEquivalent:@""];
   [menu setSubmenu:servicesMenu forItem:item];
@@ -443,7 +445,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   [menu XP_addSeparatorItem];
   [menu addItemWithTitle:@"Hide [Not]Soulver" action:@selector(hide:) keyEquivalent:@"h"];
   item = [menu addItemWithTitle:@"Hide Others" action:@selector(hideOtherApplications:) keyEquivalent:@"h"];
-  [item setKeyEquivalentModifierMask:NSAlternateKeyMask | NSCommandKeyMask];
+  [item setKeyEquivalentModifierMask:XPEventModifierFlagCommand|XPEventModifierFlagOption];
   [menu addItemWithTitle:@"Show All" action:@selector(unhideAllApplications:) keyEquivalent:@""];
   [menu XP_addSeparatorItem];
   [menu addItemWithTitle:@"Quit [Not]Soulver" action:@selector(terminate:) keyEquivalent:@"q"];
@@ -451,17 +453,46 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 
 +(void)__buildInfoMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
 {
-  NSMenu *menu = nil;
+  NSMenu *menu = [[[NSMenu alloc] init] autorelease];
   NSMenuItem *item = nil;
   
-  menu = [[[NSMenu alloc] init] autorelease];
   item = [mainMenu addItemWithTitle:@"Info" action:NULL keyEquivalent:@""];
   [mainMenu setSubmenu:menu forItem:item];
   [storage addObject:menu];
 
-  [menu addItemWithTitle:@"Info..." action:@selector(showAboutWindow:) keyEquivalent:@""];
-  [menu addItemWithTitle:@"Settings..." action:@selector(showSettingsWindow:) keyEquivalent:@","];
-  [menu addItemWithTitle:@"Help..." action:@selector(openSourceRepository:) keyEquivalent:@"?"];
+  [menu addItemWithTitle:[@"Info..." SVR_stringByAppendingEllipsis] action:@selector(showAboutWindow:) keyEquivalent:@""];
+  [menu addItemWithTitle:[@"Settings..." SVR_stringByAppendingEllipsis] action:@selector(showSettingsWindow:) keyEquivalent:@","];
+  [menu addItemWithTitle:[@"Help" SVR_stringByAppendingEllipsis] action:@selector(openSourceRepository:) keyEquivalent:@"?"];
+}
+
++(void)__buildFileMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
+{
+  NSMenu *menu = [[[NSMenu alloc] init] autorelease];
+  NSMenu *submenu = nil;
+  NSMenuItem *item = nil;
+  
+  item = [mainMenu addItemWithTitle:@"File" action:NULL keyEquivalent:@""];
+  [mainMenu setSubmenu:menu forItem:item];
+  [storage addObject:menu];
+  
+  [menu addItemWithTitle:@"New" action:@selector(newDocument:) keyEquivalent:@"n"];
+  [menu addItemWithTitle:[@"Open" SVR_stringByAppendingEllipsis] action:@selector(openDocument:) keyEquivalent:@"o"];
+  [menu XP_addSeparatorItem];
+  [menu addItemWithTitle:@"Close" action:@selector(performClose:) keyEquivalent:@"w"];
+  [menu addItemWithTitle:[@"Save" SVR_stringByAppendingEllipsis] action:@selector(newDocument:) keyEquivalent:@"s"];
+  [menu addItemWithTitle:[@"Save All" SVR_stringByAppendingEllipsis] action:@selector(saveAllDocuments:) keyEquivalent:@""];
+  item = [menu addItemWithTitle:[@"Duplicate" SVR_stringByAppendingEllipsis] action:@selector(duplicateDocument:) keyEquivalent:@"s"];
+  [item setKeyEquivalentModifierMask:XPEventModifierFlagShift|XPEventModifierFlagCommand];
+  item = [menu addItemWithTitle:[@"Save As" SVR_stringByAppendingEllipsis] action:@selector(saveDocumentAs:) keyEquivalent:@"s"];
+  [item setKeyEquivalentModifierMask:XPEventModifierFlagShift|XPEventModifierFlagCommand|XPEventModifierFlagOption];
+  [menu addItemWithTitle:[@"Rename" SVR_stringByAppendingEllipsis] action:@selector(renameDocument:) keyEquivalent:@""];
+  [menu addItemWithTitle:[@"Move To" SVR_stringByAppendingEllipsis] action:@selector(moveDocument:) keyEquivalent:@""];
+  item = [menu addItemWithTitle:@"Revert To" action:NULL keyEquivalent:@""];
+  submenu = [[[NSMenu alloc] init] autorelease];
+  [menu setSubmenu:submenu forItem:item];
+  [storage addObject:submenu];
+  [submenu addItemWithTitle:@"Last Saved Version" action:@selector(revertDocumentToSaved:) keyEquivalent:@""];
+  [submenu addItemWithTitle:[@"Browse All Versions" SVR_stringByAppendingEllipsis] action:@selector(browseDocumentVersions:) keyEquivalent:@""];
 }
 
 +(void)__buildTrailingMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
@@ -485,6 +516,17 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 {
 #ifdef MAC_OS_X_VERSION_10_2
   [self addItem:[NSMenuItem separatorItem]];
+#endif
+}
+@end
+
+@implementation NSString (SVRMainMenu)
+-(NSString*)SVR_stringByAppendingEllipsis;
+{
+#ifdef XPSupportsUnicodeUI
+  return [self stringByAppendingFormat:@"%C", 0x2026];
+#else
+  return [self stringByAppendingString:@"..."];
 #endif
 }
 @end
