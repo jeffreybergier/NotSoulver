@@ -156,11 +156,11 @@
 -(void)dealloc;
 {
   XPLogDebug1(@"<%@>", XPPointerString(self));
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
   [_viewController  release];
   [_modelController release];
   _viewController  = nil;
   _modelController = nil;
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
 }
 

@@ -33,6 +33,9 @@
 #import "TestsUnit.h"
 
 int main(int argc, const char *argv[]) {
+  NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
+  SVRAppDelegate *delegate = [SVRAppDelegate sharedDelegate];
+  NSApplication *app = [NSApplication sharedApplication];
   
   // MARK: Boot Sequence
   // 1. Warn when build includes features that should not be in release build
@@ -45,13 +48,16 @@ int main(int argc, const char *argv[]) {
   
   // 2. Log the environment
   [XPLog logCheckedPoundDefines];
+  XPCParameterRaise(app);
+  XPCParameterRaise(delegate);
   
   // 3. Execute Unit Tests
   TestsUnitExecute();
   TestsIntegrationExecute();
   
   // 4. Load NSApplication
-  XPCParameterRaise([NSApplication sharedApplication]);
-  [[NSApplication sharedApplication] setDelegate:[[[SVRAppDelegate alloc] init] autorelease]];
-  return NSApplicationMain(argc, argv);
+  [app setDelegate:delegate];
+  [app run];
+  [pool release];
+  return 0;
 }

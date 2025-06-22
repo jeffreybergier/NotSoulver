@@ -37,11 +37,18 @@
 @interface SVRAppDelegate: NSObject
 #endif
 {
+  // This menus array is because OpenStep does not retain
+  // the main menu or the top level menus on its own.
+  // I assume this was handled by some magical NIB based
+  // memory mangement before. So this will replace that.
+  mm_new NSMutableArray *_menus;
   mm_new NSMutableSet *_openDocuments;
   mm_new SVRAccessoryWindowsOwner *_accessoryWindowsOwner;
 }
 
 // MARK: Init
+
++(id)sharedDelegate;
 -(id)init;
 
 // MARK: Properties
@@ -109,7 +116,9 @@
 @end
 
 @interface SVRMainMenu: NSObject
-+(NSMenu*)newMainMenu;
-+(NSMenuItem*)__servicesMenuItem;
-+(NSMenuItem*)__hideOthersMenuItem;
++(NSMenu*)newMainMenu:(NSMutableArray*)menus;
+@end
+
+@interface NSMenu (CrossPlatform)
+-(void)XP_addSeparatorItem;
 @end

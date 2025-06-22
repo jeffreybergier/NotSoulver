@@ -31,12 +31,24 @@
 #import "SVRDocument.h"
 #import "NSUserDefaults+Soulver.h"
 
+SVRAppDelegate *_sharedDelegate = nil;
+
 @implementation SVRAppDelegate
+
++(id)sharedDelegate;
+{
+  if (!_sharedDelegate) {
+    _sharedDelegate = [[SVRAppDelegate alloc] init];
+  }
+  XPParameterRaise(_sharedDelegate);
+  return _sharedDelegate;
+}
 
 -(id)init;
 {
   self = [super init];
   XPParameterRaise(self);
+  _menus = [NSMutableArray new];
   _openDocuments = [NSMutableSet new];
   _accessoryWindowsOwner = nil; // Set in applicationWillFinishLaunching:
   return self;
@@ -65,11 +77,13 @@
 -(void)dealloc;
 {
   XPLogDebug1(@"<%@>", XPPointerString(self));
-  [_openDocuments release];
-  [_accessoryWindowsOwner release];
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [_menus autorelease];
+  [_openDocuments autorelease];
+  [_accessoryWindowsOwner autorelease];
+  _menus = nil;
   _openDocuments = nil;
   _accessoryWindowsOwner = nil;
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
   [super dealloc];
 }
 
@@ -82,7 +96,7 @@
 {
   NSApplication *app = [aNotification object];
   // Set the menu
-  [app setMainMenu:[[SVRMainMenu newMainMenu] autorelease]];
+  [app setMainMenu:[SVRMainMenu newMainMenu:_menus]];
   // Configure the title of the app
   [[app mainMenu] setTitle:[Localized titleAppName]];
   // Prepare UserDefaults
@@ -123,6 +137,8 @@
 -(void)applicationWillTerminate:(NSNotification*)aNotification;
 {
   [self endObservingEffectiveAppearance:[aNotification object]];
+  [_sharedDelegate release];
+  _sharedDelegate = nil;
 }
 
 @end
@@ -364,53 +380,61 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 @end
 
 @implementation SVRMainMenu: NSObject
-+(NSMenu*)newMainMenu;
++(NSMenu*)newMainMenu:(NSMutableArray*)menus;
 {
-  NSMenu *output = [[NSMenu alloc] init];
-  NSMenuItem *topMenuItem = nil;
-  NSMenu *topMenu = nil;
+  NSMenu *mainMenu = [[[NSMenu alloc] init] autorelease];
+  NSMenu *menu = nil;
+  NSMenuItem *item = nil;
+  NSMenu *servicesMenu = [[[NSMenu alloc] init] autorelease];
+  
+  // Store main menu in array
+  [menus addObject:mainMenu];
+  [menus addObject:servicesMenu];
   
   // Application Menu
-  topMenuItem = [[[NSMenuItem alloc] init] autorelease];
-  topMenu = [[[NSMenu alloc] init] autorelease];
-  [topMenuItem setSubmenu:topMenu];
-  [output addItem:topMenuItem];
+  menu = [[[NSMenu alloc] init] autorelease];
+  item = [mainMenu addItemWithTitle:@"[Not]Soulver" action:NULL keyEquivalent:@""];
+  [mainMenu setSubmenu:menu forItem:item];
+  [menus addObject:menu];
 
-  [topMenu addItemWithTitle:@"About [Not]Soulver" action:@selector(showAboutWindow:) keyEquivalent:@""];
-  [topMenu addItem:[NSMenuItem separatorItem]];
-  [topMenu addItemWithTitle:@"Settings" action:@selector(showSettingsWindow:) keyEquivalent:@","];
-  [topMenu addItem:[NSMenuItem separatorItem]];
-  [topMenu addItem:[self __servicesMenuItem]];
-  [topMenu addItem:[NSMenuItem separatorItem]];
-  [topMenu addItemWithTitle:@"Hide [Not]Soulver" action:@selector(hide:) keyEquivalent:@"h"];
-  [topMenu addItem:[self __hideOthersMenuItem]];
-  [topMenu addItemWithTitle:@"Show All" action:@selector(unhideAllApplications:) keyEquivalent:@""];
-  [topMenu addItem:[NSMenuItem separatorItem]];
-  [topMenu addItemWithTitle:@"Quit [Not]Soulver" action:@selector(terminate:) keyEquivalent:@"q"];
+  [menu addItemWithTitle:@"About [Not]Soulver" action:@selector(showAboutWindow:) keyEquivalent:@""];
+  [menu XP_addSeparatorItem];
+  [menu addItemWithTitle:@"Settings" action:@selector(showSettingsWindow:) keyEquivalent:@","];
+  [menu XP_addSeparatorItem];
+  item = [menu addItemWithTitle:@"Services" action:NULL keyEquivalent:@""];
+  [menu setSubmenu:servicesMenu forItem:item];
+  [[NSApplication sharedApplication] setServicesMenu:servicesMenu];
+  [menu XP_addSeparatorItem];
+  [menu addItemWithTitle:@"Hide [Not]Soulver" action:@selector(hide:) keyEquivalent:@"h"];
+  item = [menu addItemWithTitle:@"Hide Others" action:@selector(hideOtherApplications:) keyEquivalent:@"h"];
+  [item setKeyEquivalentModifierMask:NSAlternateKeyMask | NSCommandKeyMask];
+  [menu addItemWithTitle:@"Show All" action:@selector(unhideAllApplications:) keyEquivalent:@""];
+  [menu XP_addSeparatorItem];
+  [menu addItemWithTitle:@"Quit [Not]Soulver" action:@selector(terminate:) keyEquivalent:@"q"];
   
   // File Menu
     
-  return output;
+  return mainMenu;
 }
 
-+(NSMenuItem*)__servicesMenuItem;
+//+(NSMenuItem*)__servicesMenuItem;
+//{
+//  NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:@"Services"
+//                                                action:NULL
+//                                         keyEquivalent:@""];
+//  NSMenu *menu = [[NSMenu alloc] init];
+//  [item setSubmenu:menu];
+//  [[NSApplication sharedApplication] setServicesMenu:menu];
+//  return item;
+//}
+
+@end
+
+@implementation NSMenu (CrossPlatform)
+-(void)XP_addSeparatorItem;
 {
-  NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:@"Services"
-                                                action:NULL
-                                         keyEquivalent:@""];
-  NSMenu *menu = [[NSMenu alloc] init];
-  [item setSubmenu:menu];
-  [[NSApplication sharedApplication] setServicesMenu:menu];
-  return item;
+#ifdef MAC_OS_X_VERSION_10_2
+  [self addItem:[NSMenuItem separatorItem]];
+#endif
 }
-
-+(NSMenuItem*)__hideOthersMenuItem;
-{
-  NSMenuItem *item = [[[NSMenuItem alloc] initWithTitle:@"Hide Others"
-                                                 action:@selector(hideOtherApplications:)
-                                          keyEquivalent:@"h"] autorelease];;
-  [item setKeyEquivalentModifierMask:NSEventModifierFlagOption | NSEventModifierFlagCommand];
-  return item;
-}
-
 @end

@@ -374,7 +374,6 @@
 {
   XPLogExtra1(@"<%@>", XPPointerString(self));
   // Skipping release for window because it releases itself when closed
-  [_window_42 setDelegate:nil];
   [_fileURL   release];
   [_fileType  release];
   [_fileExtension release];
