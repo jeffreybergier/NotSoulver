@@ -579,12 +579,48 @@ NSArray* XPRunOpenPanel(NSString *extension)
 #endif
 }
 
--(void)XP_setAllowsUndo:(BOOL)isAllowed;
+-(void)XP_setAllowsUndo:(BOOL)flag;
 {
 #if XPSupportsNSDocument >= 1
-  [self setAllowsUndo:isAllowed];
+  [self setAllowsUndo:flag];
 #endif
 }
+
+-(void)XP_setUsesFindPanel:(BOOL)flag;
+{
+#ifdef XPSupportsTextViewAdvancedFind
+  [self setUsesFindPanel:flag];
+#endif
+}
+
+-(void)XP_setUsesFindBar:(BOOL)flag;
+{
+#ifdef XPSupportsTextViewAdvancedFind
+  [self setUsesFindBar:flag];
+#endif
+}
+
+-(void)XP_setContinuousSpellCheckingEnabled:(BOOL)flag;
+{
+#ifdef XPSupportsTextViewGrammarChecks
+  [self setContinuousSpellCheckingEnabled:flag];
+#endif
+}
+
+-(void)XP_setGrammarCheckingEnabled:(BOOL)flag;
+{
+#ifdef XPSupportsTextViewGrammarChecks
+  [self setGrammarCheckingEnabled:flag];
+#endif
+}
+
+-(void)XP_setAutomaticSpellingCorrectionEnabled:(BOOL)flag;
+{
+#ifdef XPSupportsTextViewGrammarChecks
+  [self setAutomaticSpellingCorrectionEnabled:flag];
+#endif
+}
+
 @end
 
 @implementation NSTextField (CrossPlatform)

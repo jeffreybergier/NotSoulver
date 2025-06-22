@@ -525,13 +525,13 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   [menu setSubmenu:submenu forItem:item];
   [storage addObject:submenu];
   item = [submenu addItemWithTitle:[@"Find" SVR_stringByAppendingEllipsis] action:@selector(performFindPanelAction:) keyEquivalent:@"f"];
-  [item setTag:NSFindPanelActionShowFindPanel];
+  [item setTag:XPFindPanelActionShowFindPanel];
   item = [submenu addItemWithTitle:@"Find Next" action:@selector(performFindPanelAction:) keyEquivalent:@"g"];
-  [item setTag:NSFindPanelActionNext];
+  [item setTag:XPFindPanelActionNext];
   item = [submenu addItemWithTitle:@"Find Previous" action:@selector(performFindPanelAction:) keyEquivalent:@"d"];
-  [item setTag:NSFindPanelActionPrevious];
+  [item setTag:XPFindPanelActionPrevious];
   item = [submenu addItemWithTitle:@"Use Selection for Find" action:@selector(performFindPanelAction:) keyEquivalent:@"e"];
-  [item setTag:NSFindPanelActionSetFindString];
+  [item setTag:XPFindPanelActionSetFindString];
   [submenu addItemWithTitle:@"Scroll to Selection" action:@selector(centerSelectionInVisibleArea:) keyEquivalent:@"j"];
   item = [menu addItemWithTitle:@"Spelling" action:NULL keyEquivalent:@""];
   submenu = [[[NSMenu alloc] init] autorelease];

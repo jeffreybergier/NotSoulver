@@ -76,13 +76,13 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   [textView setVerticallyResizable:YES];
   [textView setHorizontallyResizable:NO];
   [textView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-  [textView setUsesFindPanel:YES];
-  [textView setUsesFindBar:YES];
+  [textView XP_setUsesFindPanel:YES];
+  [textView XP_setUsesFindBar:YES];
   [textView XP_setAllowsUndo:YES];
   // TODO: Consider preserving these settings in NSUserDefaults
-  [textView setContinuousSpellCheckingEnabled:YES];
-  [textView setGrammarCheckingEnabled:NO];
-  [textView setAutomaticSpellingCorrectionEnabled:YES];
+  [textView XP_setContinuousSpellCheckingEnabled:YES];
+  [textView XP_setGrammarCheckingEnabled:NO];
+  [textView XP_setAutomaticSpellingCorrectionEnabled:YES];
   
   // ModelController
   [[modelController model] addLayoutManager:layoutManager];

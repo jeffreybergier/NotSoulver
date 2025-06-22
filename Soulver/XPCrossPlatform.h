@@ -171,11 +171,19 @@ typedef XPUInteger XPBezelStyle;
 #ifdef MAC_OS_X_VERSION_10_4
 #define XPRTFDocumentAttributes [NSDictionary dictionaryWithObject:NSRTFTextDocumentType forKey:NSDocumentTypeDocumentAttribute]
 #define XPError NSError
+#define XPFindPanelActionShowFindPanel NSFindPanelActionShowFindPanel
+#define XPFindPanelActionNext NSFindPanelActionNext
+#define XPFindPanelActionPrevious NSFindPanelActionPrevious
+#define XPFindPanelActionSetFindString NSFindPanelActionSetFindString
 typedef NSError** XPErrorPointer;
 typedef NSRangePointer XPRangePointer;
 #else
 #define XPRTFDocumentAttributes nil
 #define XPError NSNumber
+#define XPFindPanelActionShowFindPanel 1
+#define XPFindPanelActionNext 2
+#define XPFindPanelActionPrevious 3
+#define XPFindPanelActionSetFindString 7
 typedef NSRange* XPRangePointer;
 typedef NSNumber** XPErrorPointer;
 #endif
@@ -189,6 +197,7 @@ typedef NSViewController XPViewController;
 #define XPWindowCollectionBehavior NSWindowCollectionBehavior
 #define XPSupportsFormalProtocols // Protocols like NSWindowDelegate were formally added
 #define XPSupportsTemplateImage
+#define XPSupportsTextViewGrammarChecks
 #else
 typedef XPUInteger XPStringCompareOptions;
 #define XPViewController NSResponder
@@ -204,6 +213,7 @@ typedef void (^XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPSaveOperationType NSSaveOperationType
 #define XPDataWritingAtomic NSDataWritingAtomic
 #define XPSupportsUnicodeDocument // TODO: Update to NSRegularExpression
+#define XPSupportsTextViewAdvancedFind
 #undef  XPSupportsTexturedWindows
 #else
 typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *error);
@@ -412,7 +422,12 @@ NSArray* XPRunOpenPanel(NSString *extension);
 
 @interface NSTextView (CrossPlatform)
 -(void)XP_insertText:(id)string;
--(void)XP_setAllowsUndo:(BOOL)isAllowed;
+-(void)XP_setAllowsUndo:(BOOL)flag;
+-(void)XP_setUsesFindPanel:(BOOL)flag;
+-(void)XP_setUsesFindBar:(BOOL)flag;
+-(void)XP_setContinuousSpellCheckingEnabled:(BOOL)flag;
+-(void)XP_setGrammarCheckingEnabled:(BOOL)flag;
+-(void)XP_setAutomaticSpellingCorrectionEnabled:(BOOL)flag;
 @end
 
 @interface NSTextField (CrossPlatform)
