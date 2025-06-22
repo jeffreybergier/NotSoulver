@@ -403,26 +403,39 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 @end
 
 @implementation SVRMainMenu: NSObject
-+(NSMenu*)newMainMenu:(NSMutableArray*)menus;
++(NSMenu*)newMainMenu:(NSMutableArray*)storage;
 {
   NSMenu *mainMenu = [[[NSMenu alloc] init] autorelease];
+  [storage addObject:mainMenu];
+  
+#ifdef XPSupportsApplicationMenu
+  [self __buildAppMenuInMainMenu:mainMenu storage:storage];
+#else
+  [self __buildInfoMenuInMainMenu:mainMenu storage:storage];
+#endif
+  
+#ifndef XPSupportsApplicationMenu
+  [self __buildTrailingMenuInMainMenu:mainMenu storage:storage];
+#endif
+    
+  return mainMenu;
+}
+
++(void)__buildAppMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
+{
   NSMenu *menu = nil;
   NSMenuItem *item = nil;
   NSMenu *servicesMenu = [[[NSMenu alloc] init] autorelease];
+  [storage addObject:servicesMenu];
   
-  // Store main menu in array
-  [menus addObject:mainMenu];
-  [menus addObject:servicesMenu];
-  
-  // Application Menu
   menu = [[[NSMenu alloc] init] autorelease];
   item = [mainMenu addItemWithTitle:@"[Not]Soulver" action:NULL keyEquivalent:@""];
   [mainMenu setSubmenu:menu forItem:item];
-  [menus addObject:menu];
+  [storage addObject:menu];
 
   [menu addItemWithTitle:@"About [Not]Soulver" action:@selector(showAboutWindow:) keyEquivalent:@""];
   [menu XP_addSeparatorItem];
-  [menu addItemWithTitle:@"Settings" action:@selector(showSettingsWindow:) keyEquivalent:@","];
+  [menu addItemWithTitle:@"Settings…" action:@selector(showSettingsWindow:) keyEquivalent:@","];
   [menu XP_addSeparatorItem];
   item = [menu addItemWithTitle:@"Services" action:NULL keyEquivalent:@""];
   [menu setSubmenu:servicesMenu forItem:item];
@@ -434,22 +447,36 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   [menu addItemWithTitle:@"Show All" action:@selector(unhideAllApplications:) keyEquivalent:@""];
   [menu XP_addSeparatorItem];
   [menu addItemWithTitle:@"Quit [Not]Soulver" action:@selector(terminate:) keyEquivalent:@"q"];
-  
-  // File Menu
-    
-  return mainMenu;
 }
 
-//+(NSMenuItem*)__servicesMenuItem;
-//{
-//  NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:@"Services"
-//                                                action:NULL
-//                                         keyEquivalent:@""];
-//  NSMenu *menu = [[NSMenu alloc] init];
-//  [item setSubmenu:menu];
-//  [[NSApplication sharedApplication] setServicesMenu:menu];
-//  return item;
-//}
++(void)__buildInfoMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
+{
+  NSMenu *menu = nil;
+  NSMenuItem *item = nil;
+  
+  menu = [[[NSMenu alloc] init] autorelease];
+  item = [mainMenu addItemWithTitle:@"Info" action:NULL keyEquivalent:@""];
+  [mainMenu setSubmenu:menu forItem:item];
+  [storage addObject:menu];
+
+  [menu addItemWithTitle:@"Info..." action:@selector(showAboutWindow:) keyEquivalent:@""];
+  [menu addItemWithTitle:@"Settings..." action:@selector(showSettingsWindow:) keyEquivalent:@","];
+  [menu addItemWithTitle:@"Help..." action:@selector(openSourceRepository:) keyEquivalent:@"?"];
+}
+
++(void)__buildTrailingMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
+{
+  NSMenuItem *item = nil;
+  NSMenu *servicesMenu = [[[NSMenu alloc] init] autorelease];
+  
+  [storage addObject:servicesMenu];
+  
+  item = [mainMenu addItemWithTitle:@"Services" action:NULL keyEquivalent:@""];
+  [mainMenu setSubmenu:servicesMenu forItem:item];
+  [[NSApplication sharedApplication] setServicesMenu:servicesMenu];
+  [mainMenu addItemWithTitle:@"Hide" action:@selector(hide:) keyEquivalent:@"h"];
+  [mainMenu addItemWithTitle:@"Quit" action:@selector(terminate:) keyEquivalent:@"q"];
+}
 
 @end
 

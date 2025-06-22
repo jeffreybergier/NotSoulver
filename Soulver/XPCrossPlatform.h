@@ -159,6 +159,7 @@ typedef NSBezelStyle XPBezelStyle;
 #define XPSupportsTexturedWindows
 #define XPSupportsUtilityWindows
 #define XPSupportsButtonStyles
+#define XPSupportsApplicationMenu
 #else
 typedef XPUInteger XPBezelStyle;
 #define XPKeyedArchiver NSArchiver
