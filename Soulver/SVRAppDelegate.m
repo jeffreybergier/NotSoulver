@@ -415,6 +415,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 #endif
   
   [self __buildFileMenuInMainMenu:mainMenu storage:storage];
+  [self __buildEditMenuInMainMenu:mainMenu storage:storage];
   
 #ifndef XPSupportsApplicationMenu
   [self __buildTrailingMenuInMainMenu:mainMenu storage:storage];
@@ -493,6 +494,55 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   [storage addObject:submenu];
   [submenu addItemWithTitle:@"Last Saved Version" action:@selector(revertDocumentToSaved:) keyEquivalent:@""];
   [submenu addItemWithTitle:[@"Browse All Versions" SVR_stringByAppendingEllipsis] action:@selector(browseDocumentVersions:) keyEquivalent:@""];
+}
+
++(void)__buildEditMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
+{
+  NSMenu *menu = [[[NSMenu alloc] init] autorelease];
+  NSMenu *submenu = nil;
+  NSMenuItem *item = nil;
+  
+  item = [mainMenu addItemWithTitle:@"Edit" action:NULL keyEquivalent:@""];
+  [mainMenu setSubmenu:menu forItem:item];
+  [storage addObject:menu];
+  
+  [menu addItemWithTitle:@"Undo" action:@selector(undo:) keyEquivalent:@"z"];
+  item = [menu addItemWithTitle:@"Redo" action:@selector(redo:) keyEquivalent:@"z"];
+  [item setKeyEquivalentModifierMask:XPEventModifierFlagShift|XPEventModifierFlagCommand];
+  [menu XP_addSeparatorItem];
+  [menu addItemWithTitle:@"Cut" action:@selector(cutUniversal:) keyEquivalent:@"x"];
+  [menu addItemWithTitle:@"Copy" action:@selector(copyUniversal:) keyEquivalent:@"c"];
+  item = [menu addItemWithTitle:@"Cut Unsolved" action:@selector(cutUnsolved:) keyEquivalent:@"x"];
+  [item setKeyEquivalentModifierMask:XPEventModifierFlagShift|XPEventModifierFlagCommand];
+  item = [menu addItemWithTitle:@"Copy Unsolved" action:@selector(copyUnsolved:) keyEquivalent:@"c"];
+  [item setKeyEquivalentModifierMask:XPEventModifierFlagShift|XPEventModifierFlagCommand];
+  [menu addItemWithTitle:@"Paste" action:@selector(paste:) keyEquivalent:@"v"];
+  [menu addItemWithTitle:@"Delete" action:@selector(delete:) keyEquivalent:@""];
+  [menu addItemWithTitle:@"Select All" action:@selector(selectAll:) keyEquivalent:@"a"];
+  [menu XP_addSeparatorItem];
+  item = [menu addItemWithTitle:@"Find" action:NULL keyEquivalent:@""];
+  submenu = [[[NSMenu alloc] init] autorelease];
+  [menu setSubmenu:submenu forItem:item];
+  [storage addObject:submenu];
+  item = [submenu addItemWithTitle:[@"Find" SVR_stringByAppendingEllipsis] action:@selector(performFindPanelAction:) keyEquivalent:@"f"];
+  [item setTag:NSFindPanelActionShowFindPanel];
+  item = [submenu addItemWithTitle:@"Find Next" action:@selector(performFindPanelAction:) keyEquivalent:@"g"];
+  [item setTag:NSFindPanelActionNext];
+  item = [submenu addItemWithTitle:@"Find Previous" action:@selector(performFindPanelAction:) keyEquivalent:@"d"];
+  [item setTag:NSFindPanelActionPrevious];
+  item = [submenu addItemWithTitle:@"Use Selection for Find" action:@selector(performFindPanelAction:) keyEquivalent:@"e"];
+  [item setTag:NSFindPanelActionSetFindString];
+  [submenu addItemWithTitle:@"Scroll to Selection" action:@selector(centerSelectionInVisibleArea:) keyEquivalent:@"j"];
+  item = [menu addItemWithTitle:@"Spelling" action:NULL keyEquivalent:@""];
+  submenu = [[[NSMenu alloc] init] autorelease];
+  [menu setSubmenu:submenu forItem:item];
+  [storage addObject:submenu];
+  [submenu addItemWithTitle:@"Show Spelling and Grammar" action:@selector(showGuessPanel:) keyEquivalent:@":"];
+  [submenu addItemWithTitle:@"Check Document Now" action:@selector(checkSpelling:) keyEquivalent:@";"];
+  [submenu XP_addSeparatorItem];
+  [submenu addItemWithTitle:@"Check Spelling While Typing" action:@selector(toggleContinuousSpellChecking:) keyEquivalent:@""];
+  [submenu addItemWithTitle:@"Check Grammar With Spelling" action:@selector(toggleGrammarChecking:) keyEquivalent:@""];
+  [submenu addItemWithTitle:@"Correct Spelling Automatically" action:@selector(toggleAutomaticSpellingCorrection:) keyEquivalent:@""];
 }
 
 +(void)__buildTrailingMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
