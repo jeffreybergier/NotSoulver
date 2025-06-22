@@ -147,10 +147,9 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   [window setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameAbout];
   [window XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameAbout];
   [window XP_setRestorationClass:appDelegateClass];
-//[window setInitialFirstResponder:[[window contentView] viewSourceButton]];
+  [window setInitialFirstResponder:[[window contentView] viewSourceButton]];
   [[[window contentView] textView] setString:[Localized aboutParagraph]];
-  [[[window contentView] viewSourceButton] setTarget:self];
-  [[[window contentView] viewSourceButton] setAction:@selector(openSourceRepository:)];
+  [[[window contentView] viewSourceButton] setAction:NSSelectorFromString(@"openSourceRepository:")];
   
   // MARK: SVRAccessoryWindowSettings
   
@@ -219,29 +218,6 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 -(IBAction)showAboutWindow:(id)sender;
 {
   [[self aboutWindow] makeKeyAndOrderFront:sender];
-}
-
--(IBAction)openSourceRepository:(id)sender;
-{
-  BOOL success = NO;
-  XPAlertReturn copyToClipboard = XPAlertReturnError;
-  NSPasteboard *pb = [NSPasteboard generalPasteboard];
-  NSWorkspace *ws = [NSWorkspace sharedWorkspace];
-  NSString *webURLToOpen = [Localized phraseSourceRepositoryURL];
-  success = [ws XP_openWebURL:webURLToOpen];
-  if (success) { return; }
-  NSBeep();
-  copyToClipboard = XPRunCopyWebURLToPasteboardAlert(webURLToOpen);
-  switch (copyToClipboard) {
-    case XPAlertReturnDefault:
-      [pb declareTypes:[NSArray arrayWithObject:XPPasteboardTypeString] owner:self];
-      success = [pb setString:webURLToOpen forType:XPPasteboardTypeString];
-      XPLogAssrt1(success, @"[NSPasteboard setString:%@", webURLToOpen);
-      return;
-    default:
-      XPLogDebug1(@"[Cancelled] [NSPasteboard setString:%@", webURLToOpen);
-      return;
-  }
 }
 
 // MARK: Restore Window State

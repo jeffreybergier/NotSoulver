@@ -74,6 +74,29 @@ SVRAppDelegate *_sharedDelegate = nil;
   [[self accessoryWindowsOwner] showAboutWindow:sender];
 }
 
+-(IBAction)openSourceRepository:(id)sender;
+{
+  BOOL success = NO;
+  XPAlertReturn copyToClipboard = XPAlertReturnError;
+  NSPasteboard *pb = [NSPasteboard generalPasteboard];
+  NSWorkspace *ws = [NSWorkspace sharedWorkspace];
+  NSString *webURLToOpen = [Localized phraseSourceRepositoryURL];
+  success = [ws XP_openWebURL:webURLToOpen];
+  if (success) { return; }
+  NSBeep();
+  copyToClipboard = XPRunCopyWebURLToPasteboardAlert(webURLToOpen);
+  switch (copyToClipboard) {
+    case XPAlertReturnDefault:
+      [pb declareTypes:[NSArray arrayWithObject:XPPasteboardTypeString] owner:self];
+      success = [pb setString:webURLToOpen forType:XPPasteboardTypeString];
+      XPLogAssrt1(success, @"[NSPasteboard setString:%@", webURLToOpen);
+      return;
+    default:
+      XPLogDebug1(@"[Cancelled] [NSPasteboard setString:%@", webURLToOpen);
+      return;
+  }
+}
+
 -(void)dealloc;
 {
   XPLogDebug1(@"<%@>", XPPointerString(self));

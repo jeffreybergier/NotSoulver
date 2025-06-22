@@ -57,7 +57,6 @@
 -(IBAction)toggleKeypadPanel:(id)sender;
 -(IBAction)showSettingsWindow:(id)sender;
 -(IBAction)showAboutWindow:(id)sender;
--(IBAction)openSourceRepository:(id)sender;
 
 // MARK: Restore Window State
 /// Is only effective on systems that do not support state restoration

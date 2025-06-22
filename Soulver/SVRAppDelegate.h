@@ -58,7 +58,7 @@
 -(IBAction)toggleKeypadPanel:(id)sender;
 -(IBAction)showSettingsWindow:(id)sender;
 -(IBAction)showAboutWindow:(id)sender;
-
+-(IBAction)openSourceRepository:(id)sender;
 @end
 
 @interface SVRAppDelegate (NSApplicationDelegate)
