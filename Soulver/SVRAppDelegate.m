@@ -426,15 +426,15 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 
 +(void)__buildAppMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
 {
-  NSMenu *menu = nil;
   NSMenuItem *item = nil;
+  NSMenu *menu = [[[NSMenu alloc] init] autorelease];
   NSMenu *servicesMenu = [[[NSMenu alloc] init] autorelease];
+  
+  [storage addObject:menu];
   [storage addObject:servicesMenu];
   
-  menu = [[[NSMenu alloc] init] autorelease];
   item = [mainMenu addItemWithTitle:@"[Not]Soulver" action:NULL keyEquivalent:@""];
   [mainMenu setSubmenu:menu forItem:item];
-  [storage addObject:menu];
 
   [menu addItemWithTitle:@"About [Not]Soulver" action:@selector(showAboutWindow:) keyEquivalent:@""];
   [menu XP_addSeparatorItem];
