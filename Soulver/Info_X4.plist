@@ -53,8 +53,6 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
-	<key>NSMainNibFile</key>
-	<string>MainMenu_X2</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 </dict>
