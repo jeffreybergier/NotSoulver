@@ -121,7 +121,8 @@ SVRAppDelegate *_sharedDelegate = nil;
   // Set the menu
   [app setMainMenu:[SVRMainMenu newMainMenu:_menus]];
   // Configure the title of the app
-  [[app mainMenu] setTitle:[Localized titleAppName]];
+  // TODO: Figure out why this is always the app name
+  [[app mainMenu] setTitle:@"ZZZ"];//[Localized titleAppName]];
   // Prepare UserDefaults
   [[NSUserDefaults standardUserDefaults] SVR_configure];
   // Prepare FontManager
@@ -405,7 +406,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 @implementation SVRMainMenu: NSObject
 +(NSMenu*)newMainMenu:(NSMutableArray*)storage;
 {
-  NSMenu *mainMenu = [[[NSMenu alloc] init] autorelease];
+  NSMenu *mainMenu = [[[NSMenu alloc] initWithTitle:@"MainMenu"] autorelease];
   [storage addObject:mainMenu];
   
 #ifdef XPSupportsApplicationMenu
@@ -427,13 +428,15 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 +(void)__buildAppMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
 {
   NSMenuItem *item = nil;
-  NSMenu *menu = [[[NSMenu alloc] init] autorelease];
-  NSMenu *servicesMenu = [[[NSMenu alloc] init] autorelease];
+	// TODO: On 10.4 and older the app menus appears as a second menu
+  NSMenu *menu = [[[NSMenu alloc] initWithTitle:@"XXX"] autorelease];
+  NSMenu *servicesMenu = [[[NSMenu alloc] initWithTitle:@"Services"] autorelease];
   
   [storage addObject:menu];
   [storage addObject:servicesMenu];
   
-  item = [mainMenu addItemWithTitle:@"[Not]Soulver" action:NULL keyEquivalent:@""];
+	// TODO: On 10.4 and older the app menus appears as a second menu
+  item = [mainMenu addItemWithTitle:@"YYY" action:NULL keyEquivalent:@""];
   [mainMenu setSubmenu:menu forItem:item];
 
   [menu addItemWithTitle:@"About [Not]Soulver" action:@selector(showAboutWindow:) keyEquivalent:@""];
@@ -454,7 +457,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 
 +(void)__buildInfoMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
 {
-  NSMenu *menu = [[[NSMenu alloc] init] autorelease];
+  NSMenu *menu = [[[NSMenu alloc] initWithTitle:@"Info"] autorelease];
   NSMenuItem *item = nil;
   
   item = [mainMenu addItemWithTitle:@"Info" action:NULL keyEquivalent:@""];
@@ -468,11 +471,12 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 
 +(void)__buildFileMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
 {
-  NSMenu *menu = [[[NSMenu alloc] init] autorelease];
+  NSMenu *menu = [[[NSMenu alloc] initWithTitle:@"File"] autorelease];
   NSMenu *submenu = nil;
   NSMenuItem *item = nil;
   
   item = [mainMenu addItemWithTitle:@"File" action:NULL keyEquivalent:@""];
+  XPParameterRaise(item);
   [mainMenu setSubmenu:menu forItem:item];
   [storage addObject:menu];
   
@@ -489,7 +493,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   [menu addItemWithTitle:[@"Rename" SVR_stringByAppendingEllipsis] action:@selector(renameDocument:) keyEquivalent:@""];
   [menu addItemWithTitle:[@"Move To" SVR_stringByAppendingEllipsis] action:@selector(moveDocument:) keyEquivalent:@""];
   item = [menu addItemWithTitle:@"Revert To" action:NULL keyEquivalent:@""];
-  submenu = [[[NSMenu alloc] init] autorelease];
+  submenu = [[[NSMenu alloc] initWithTitle:@"Revert To"] autorelease];
   [menu setSubmenu:submenu forItem:item];
   [storage addObject:submenu];
   [submenu addItemWithTitle:@"Last Saved Version" action:@selector(revertDocumentToSaved:) keyEquivalent:@""];
@@ -498,7 +502,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 
 +(void)__buildEditMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
 {
-  NSMenu *menu = [[[NSMenu alloc] init] autorelease];
+  NSMenu *menu = [[[NSMenu alloc] initWithTitle:@"Edit"] autorelease];
   NSMenu *submenu = nil;
   NSMenuItem *item = nil;
   
@@ -523,7 +527,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   // TODO: Add Insert, Attach Files, Add Link
   // Find Submenu
   item = [menu addItemWithTitle:@"Find" action:NULL keyEquivalent:@""];
-  submenu = [[[NSMenu alloc] init] autorelease];
+  submenu = [[[NSMenu alloc] initWithTitle:@"Find"] autorelease];
   [menu setSubmenu:submenu forItem:item];
   [storage addObject:submenu];
   item = [submenu addItemWithTitle:[@"Find" SVR_stringByAppendingEllipsis] action:@selector(performFindPanelAction:) keyEquivalent:@"f"];
@@ -537,7 +541,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   [submenu addItemWithTitle:@"Scroll to Selection" action:@selector(centerSelectionInVisibleArea:) keyEquivalent:@"j"];
   // Spelling Submenu
   item = [menu addItemWithTitle:@"Spelling" action:NULL keyEquivalent:@""];
-  submenu = [[[NSMenu alloc] init] autorelease];
+  submenu = [[[NSMenu alloc] initWithTitle:@"Spelling"] autorelease];
   [menu setSubmenu:submenu forItem:item];
   [storage addObject:submenu];
   [submenu addItemWithTitle:@"Show Spelling and Grammar" action:@selector(showGuessPanel:) keyEquivalent:@":"];
@@ -548,7 +552,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   [submenu addItemWithTitle:@"Correct Spelling Automatically" action:@selector(toggleAutomaticSpellingCorrection:) keyEquivalent:@""];
   // Substitutions Submenu
   item = [menu addItemWithTitle:@"Substitutions" action:NULL keyEquivalent:@""];
-  submenu = [[[NSMenu alloc] init] autorelease];
+  submenu = [[[NSMenu alloc] initWithTitle:@"Substitutions"] autorelease];
   [menu setSubmenu:submenu forItem:item];
   [storage addObject:submenu];
   [submenu addItemWithTitle:@"Show Substitutions" action:@selector(orderFrontSubstitutionsPanel:) keyEquivalent:@""];
