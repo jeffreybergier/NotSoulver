@@ -406,7 +406,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 @implementation SVRMainMenu: NSObject
 +(NSMenu*)newMainMenu:(NSMutableArray*)storage;
 {
-  NSMenu *mainMenu = [[[NSMenu alloc] initWithTitle:@"MainMenu"] autorelease];
+  NSMenu *mainMenu = [[[NSMenu alloc] initWithTitle:@"[Not]Soulver"] autorelease];
   [storage addObject:mainMenu];
   
 #ifdef XPSupportsApplicationMenu
@@ -465,10 +465,11 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 
 +(void)__buildInfoMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
 {
-  NSMenu *menu = [[[NSMenu alloc] initWithTitle:@"Info"] autorelease];
+  NSMenu *menu = nil;
   NSMenuItem *item = nil;
   
-  item = [mainMenu addItemWithTitle:@"" action:NULL keyEquivalent:@""];
+  item = [mainMenu addItemWithTitle:@"Info" action:NULL keyEquivalent:@""];
+  menu = [[[NSMenu alloc] initWithTitle:@"Info"] autorelease];
   [mainMenu setSubmenu:menu forItem:item];
   [storage addObject:menu];
 
@@ -479,12 +480,12 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 
 +(void)__buildFileMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
 {
-  NSMenu *menu = [[[NSMenu alloc] initWithTitle:@"File"] autorelease];
+  NSMenu *menu = nil;
   NSMenu *submenu = nil;
   NSMenuItem *item = nil;
   
-  item = [mainMenu addItemWithTitle:@"" action:NULL keyEquivalent:@""];
-  XPParameterRaise(item);
+  item = [mainMenu addItemWithTitle:@"File" action:NULL keyEquivalent:@""];
+  menu = [[[NSMenu alloc] initWithTitle:@"File"] autorelease];
   [mainMenu setSubmenu:menu forItem:item];
   [storage addObject:menu];
   
@@ -510,11 +511,12 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 
 +(void)__buildEditMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
 {
-  NSMenu *menu = [[[NSMenu alloc] initWithTitle:@"Edit"] autorelease];
+  NSMenu *menu = nil;
   NSMenu *submenu = nil;
   NSMenuItem *item = nil;
   
-  item = [mainMenu addItemWithTitle:@"" action:NULL keyEquivalent:@""];
+  item = [mainMenu addItemWithTitle:@"Edit" action:NULL keyEquivalent:@""];
+  menu = [[[NSMenu alloc] initWithTitle:@"Edit"] autorelease];
   [mainMenu setSubmenu:menu forItem:item];
   [storage addObject:menu];
   
@@ -591,10 +593,9 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 +(void)__buildViewMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
 {
   NSMenu *menu = nil;
-  NSMenu *submenu = nil;
   NSMenuItem *item = nil;
   
-  item = [mainMenu addItemWithTitle:@"" action:NULL keyEquivalent:@""];
+  item = [mainMenu addItemWithTitle:@"View" action:NULL keyEquivalent:@""];
   menu = [[[NSMenu alloc] initWithTitle:@"View"] autorelease];
   [mainMenu setSubmenu:menu forItem:item];
   [storage addObject:menu];
