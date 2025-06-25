@@ -418,8 +418,11 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   [self __buildFileMenuInMainMenu:mainMenu storage:storage];
   [self __buildEditMenuInMainMenu:mainMenu storage:storage];
   [self __buildViewMenuInMainMenu:mainMenu storage:storage];
+  [self __buildWindowsMenuInMainMenu:mainMenu storage:storage];
   
-#ifndef XPSupportsApplicationMenu
+#ifdef XPSupportsApplicationMenu
+  [self __buildHelpMenuInMainMenu:mainMenu storage:storage];
+#else
   [self __buildTrailingMenuInMainMenu:mainMenu storage:storage];
 #endif
     
@@ -601,6 +604,30 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   [menu addItemWithTitle:@"Zoom In" action:@selector(zoomIn:) keyEquivalent:@"+"];
   [menu addItemWithTitle:@"Zoom Out" action:@selector(zoomOut:) keyEquivalent:@"-"];
   [menu XP_addSeparatorItem];
+}
+
++(void)__buildWindowsMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
+{
+  NSMenu *menu = nil;
+  NSMenuItem *item = nil;
+  
+  item = [mainMenu addItemWithTitle:@"Windows" action:NULL keyEquivalent:@""];
+  menu = [[[NSMenu alloc] initWithTitle:@"Windows"] autorelease];
+  [mainMenu setSubmenu:menu forItem:item];
+  [storage addObject:menu];
+  [[NSApplication sharedApplication] setWindowsMenu:menu];
+}
+
++(void)__buildHelpMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
+{
+  NSMenu *menu = nil;
+  NSMenuItem *item = nil;
+  
+  item = [mainMenu addItemWithTitle:@"Help" action:NULL keyEquivalent:@""];
+  menu = [[[NSMenu alloc] initWithTitle:@"Help"] autorelease];
+  [mainMenu setSubmenu:menu forItem:item];
+  [storage addObject:menu];
+  [menu addItemWithTitle:[@"Help" SVR_stringByAppendingEllipsis] action:@selector(openSourceRepository:) keyEquivalent:@"?"];
 }
 
 +(void)__buildTrailingMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
