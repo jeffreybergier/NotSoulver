@@ -563,8 +563,21 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   [submenu addItemWithTitle:@"Smart Links" action:@selector(toggleAutomaticLinkDetection:) keyEquivalent:@""];
   [submenu addItemWithTitle:@"Data Detectors" action:@selector(toggleAutomaticDataDetection:) keyEquivalent:@""];
   [submenu addItemWithTitle:@"Text Replacement" action:@selector(toggleAutomaticTextReplacement:) keyEquivalent:@""];
-  // TODO: Transformations Submenu
-  // TODO: Speech Submenu
+  // Transformations Submenu
+  item = [menu addItemWithTitle:@"ITEM-Transformations" action:NULL keyEquivalent:@""];
+  submenu = [[[NSMenu alloc] initWithTitle:@"MENU-Transformations"] autorelease];
+  [menu setSubmenu:submenu forItem:item];
+  [storage addObject:submenu];
+  [submenu addItemWithTitle:@"Make Upper Case" action:@selector(uppercaseWord:) keyEquivalent:@""];
+  [submenu addItemWithTitle:@"Make Lower Case" action:@selector(lowercaseWord:) keyEquivalent:@""];
+  [submenu addItemWithTitle:@"Capitalize" action:@selector(capitalizeWord:) keyEquivalent:@""];
+  // Speech Submenu
+  item = [menu addItemWithTitle:@"ITEM-Speech" action:NULL keyEquivalent:@""];
+  submenu = [[[NSMenu alloc] initWithTitle:@"MENU-Speech"] autorelease];
+  [menu setSubmenu:submenu forItem:item];
+  [storage addObject:submenu];
+  [submenu addItemWithTitle:@"Start Speaking" action:@selector(startSpeaking:) keyEquivalent:@""];
+  [submenu addItemWithTitle:@"Stop Speaking" action:@selector(stopSpeaking:) keyEquivalent:@""];
 }
 
 +(void)__buildTrailingMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
