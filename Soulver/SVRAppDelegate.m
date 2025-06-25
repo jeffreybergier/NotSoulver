@@ -617,6 +617,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   [mainMenu setSubmenu:menu forItem:item];
   [storage addObject:menu];
   [[NSApplication sharedApplication] setWindowsMenu:menu];
+  [menu addItemWithTitle:@"Show Keypad" action:@selector(toggleKeypadPanel:) keyEquivalent:@"k"];
 }
 
 +(void)__buildHelpMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
