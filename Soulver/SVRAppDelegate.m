@@ -417,6 +417,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   
   [self __buildFileMenuInMainMenu:mainMenu storage:storage];
   [self __buildEditMenuInMainMenu:mainMenu storage:storage];
+  [self __buildViewMenuInMainMenu:mainMenu storage:storage];
   
 #ifndef XPSupportsApplicationMenu
   [self __buildTrailingMenuInMainMenu:mainMenu storage:storage];
@@ -582,6 +583,24 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   [storage addObject:submenu];
   [submenu addItemWithTitle:@"Start Speaking" action:@selector(startSpeaking:) keyEquivalent:@""];
   [submenu addItemWithTitle:@"Stop Speaking" action:@selector(stopSpeaking:) keyEquivalent:@""];
+}
+
++(void)__buildViewMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
+{
+  NSMenu *menu = nil;
+  NSMenu *submenu = nil;
+  NSMenuItem *item = nil;
+  
+  item = [mainMenu addItemWithTitle:@"" action:NULL keyEquivalent:@""];
+  menu = [[[NSMenu alloc] initWithTitle:@"View"] autorelease];
+  [mainMenu setSubmenu:menu forItem:item];
+  [storage addObject:menu];
+  
+  // TODO: Implement these methods in my NSScrollView
+  [menu addItemWithTitle:@"Actual Size" action:@selector(actualSize:) keyEquivalent:@"0"];
+  [menu addItemWithTitle:@"Zoom In" action:@selector(zoomIn:) keyEquivalent:@"+"];
+  [menu addItemWithTitle:@"Zoom Out" action:@selector(zoomOut:) keyEquivalent:@"-"];
+  [menu XP_addSeparatorItem];
 }
 
 +(void)__buildTrailingMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
