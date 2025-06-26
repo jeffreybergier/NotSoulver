@@ -489,7 +489,7 @@
 
 -(XPInteger)selectedSegment;
 {
-  return _selectedSegment;
+  return (XPInteger)_selectedSegment;
 }
 
 -(void)setSelectedSegment:(XPInteger)_selection;
@@ -501,12 +501,12 @@
   for (index=0; index<count; index++) {
     [[_buttons objectAtIndex:index] setState:index==selection];
   }
-  _selectedSegment = _selection;
+  _selectedSegment = selection;
 }
 
 -(NSString*)labelForSegment:(XPInteger)segment;
 {
-  return [[_buttons objectAtIndex:segment] title];
+  return [[_buttons objectAtIndex:(XPUInteger)segment] title];
 }
 
 -(void)setLabel:(NSString*)label forSegment:(XPInteger)segment;
@@ -514,7 +514,7 @@
   XPInteger count = (XPInteger)[_buttons count];
   NSButton *button = nil;
   if (segment < count) {
-    [[_buttons objectAtIndex:segment] setTitle:label];
+    [[_buttons objectAtIndex:(XPUInteger)segment] setTitle:label];
   } else {
     button = [self __insertButtonAtIndex:segment];
     [button setTitle:label];
@@ -523,7 +523,7 @@
 
 -(NSImage*)imageForSegment:(XPInteger)segment;
 {
-  return [[_buttons objectAtIndex:segment] image];
+  return [[_buttons objectAtIndex:(XPUInteger)segment] image];
 }
 
 -(void)setImage:(NSImage*)image forSegment:(XPInteger)segment;
@@ -531,7 +531,7 @@
   XPInteger count = (XPInteger)[_buttons count];
   NSButton *button = nil;
   if (segment < count) {
-    [[_buttons objectAtIndex:segment] setImage:image];
+    [[_buttons objectAtIndex:(XPUInteger)segment] setImage:image];
   } else {
     button = [self __insertButtonAtIndex:segment];
     [button setImage:image];
@@ -540,7 +540,7 @@
 
 -(IBAction)__selectedSegmentChanged:(NSButton*)sender;
 {
-  XPUInteger index = [_buttons indexOfObject:sender];
+  XPInteger index = (XPInteger)[_buttons indexOfObject:sender];
   XPLogAssrt1(index != (XPUInteger)NSNotFound, @"[UNKNOWN] Sender(%@)", sender);
 	XPLogAssrt([self action], @"Selector was NULL");
   [self setSelectedSegment:index];
@@ -550,7 +550,7 @@
 -(NSButton*)__insertButtonAtIndex:(XPInteger)index;
 {
   NSButton *button = [[NSButton alloc] initWithFrame:NSZeroRect];
-  [_buttons insertObject:button atIndex:index];
+  [_buttons insertObject:button atIndex:(XPUInteger)index];
   
   [button XP_setBezelStyle:XPBezelStyleFlexiblePush];
   [button setButtonType:XPButtonTypePushOnPushOff];
@@ -559,7 +559,7 @@
   [button setTarget:self];
   
   [self __recalculateFrames];
-  [self setSelectedSegment:_selectedSegment];
+  [self setSelectedSegment:(XPInteger)_selectedSegment];
   [self addSubview:button];
   return button;
 }
@@ -567,10 +567,10 @@
 -(void)__recalculateFrames;
 {
   const XPFloat kPad = 4;
-  XPInteger index = 0;
+  XPUInteger index = 0;
   NSRect myBounds = [self bounds];
   NSRect buttonFrame = myBounds;
-  XPInteger count = [_buttons count];
+  XPUInteger count = [_buttons count];
   
   buttonFrame.size.width = floor(myBounds.size.width/count) - (kPad/2);
   for (index=0; index<count; index++) {
