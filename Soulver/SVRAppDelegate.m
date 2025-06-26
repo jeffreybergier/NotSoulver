@@ -535,20 +535,22 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   [menu addItemWithTitle:@"Select All" action:@selector(selectAll:) keyEquivalent:@"a"];
   [menu XP_addSeparatorItem];
   // TODO: Add Insert, Attach Files, Add Link
+#if XPSupportsTextFind >= XPSupportsTextFindPanel
   // Find Submenu
   item = [menu addItemWithTitle:@"Find" action:NULL keyEquivalent:@""];
   submenu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
   [menu setSubmenu:submenu forItem:item];
   [storage addObject:submenu];
   item = [submenu addItemWithTitle:[@"Find" SVR_stringByAppendingEllipsis] action:@selector(performFindPanelAction:) keyEquivalent:@"f"];
-  [item setTag:XPFindPanelActionShowFindPanel];
+  [item setTag:NSFindPanelActionShowFindPanel];
   item = [submenu addItemWithTitle:@"Find Next" action:@selector(performFindPanelAction:) keyEquivalent:@"g"];
-  [item setTag:XPFindPanelActionNext];
+  [item setTag:NSFindPanelActionNext];
   item = [submenu addItemWithTitle:@"Find Previous" action:@selector(performFindPanelAction:) keyEquivalent:@"d"];
-  [item setTag:XPFindPanelActionPrevious];
+  [item setTag:NSFindPanelActionPrevious];
   item = [submenu addItemWithTitle:@"Use Selection for Find" action:@selector(performFindPanelAction:) keyEquivalent:@"e"];
-  [item setTag:XPFindPanelActionSetFindString];
+  [item setTag:NSFindPanelActionSetFindString];
   [submenu addItemWithTitle:@"Scroll to Selection" action:@selector(centerSelectionInVisibleArea:) keyEquivalent:@"j"];
+#endif
   // Spelling Submenu
   item = [menu addItemWithTitle:@"Spelling" action:NULL keyEquivalent:@""];
   submenu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
@@ -560,6 +562,8 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   [submenu addItemWithTitle:@"Check Spelling While Typing" action:@selector(toggleContinuousSpellChecking:) keyEquivalent:@""];
   [submenu addItemWithTitle:@"Check Grammar With Spelling" action:@selector(toggleGrammarChecking:) keyEquivalent:@""];
   [submenu addItemWithTitle:@"Correct Spelling Automatically" action:@selector(toggleAutomaticSpellingCorrection:) keyEquivalent:@""];
+  
+#if XPSupportsTextFind >= XPSupportsTextFindPanel
   // Substitutions Submenu
   item = [menu addItemWithTitle:@"Substitutions" action:NULL keyEquivalent:@""];
   submenu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
@@ -573,6 +577,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   [submenu addItemWithTitle:@"Smart Links" action:@selector(toggleAutomaticLinkDetection:) keyEquivalent:@""];
   [submenu addItemWithTitle:@"Data Detectors" action:@selector(toggleAutomaticDataDetection:) keyEquivalent:@""];
   [submenu addItemWithTitle:@"Text Replacement" action:@selector(toggleAutomaticTextReplacement:) keyEquivalent:@""];
+#endif
   // Transformations Submenu
   item = [menu addItemWithTitle:@"Transformations" action:NULL keyEquivalent:@""];
   submenu = [[[NSMenu alloc] initWithTitle:@""] autorelease];

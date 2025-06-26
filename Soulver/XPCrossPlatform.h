@@ -114,6 +114,18 @@ typedef float XPFloat;
 #define XPSupportsNSDocument 0 // NSDocument does not exist
 #endif
 
+#define XPSupportsTextFindNone 0
+#define XPSupportsTextFindPanel 1
+#define XPSupportsTextFinder 2
+
+#ifdef MAC_OS_X_VERSION_10_8
+#define XPSupportsTextFind XPSupportsTextFinder
+#elif defined(MAC_OS_X_VERSION_10_4)
+#define XPSupportsTextFind XPSupportsTextFindPanel
+#else
+#define XPSupportsTextFind XPSupportsTextFindNone
+#endif
+
 #define XPUserInterfaceGlass 2
 #define XPUserInterfaceAqua 1
 #define XPUserInterfaceNone 0
@@ -171,19 +183,11 @@ typedef XPUInteger XPBezelStyle;
 #ifdef MAC_OS_X_VERSION_10_4
 #define XPRTFDocumentAttributes [NSDictionary dictionaryWithObject:NSRTFTextDocumentType forKey:NSDocumentTypeDocumentAttribute]
 #define XPError NSError
-#define XPFindPanelActionShowFindPanel NSFindPanelActionShowFindPanel
-#define XPFindPanelActionNext NSFindPanelActionNext
-#define XPFindPanelActionPrevious NSFindPanelActionPrevious
-#define XPFindPanelActionSetFindString NSFindPanelActionSetFindString
 typedef NSError** XPErrorPointer;
 typedef NSRangePointer XPRangePointer;
 #else
 #define XPRTFDocumentAttributes nil
 #define XPError NSNumber
-#define XPFindPanelActionShowFindPanel 1
-#define XPFindPanelActionNext 2
-#define XPFindPanelActionPrevious 3
-#define XPFindPanelActionSetFindString 7
 typedef NSRange* XPRangePointer;
 typedef NSNumber** XPErrorPointer;
 #endif
@@ -213,7 +217,6 @@ typedef void (^XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPSaveOperationType NSSaveOperationType
 #define XPDataWritingAtomic NSDataWritingAtomic
 #define XPSupportsUnicodeDocument // TODO: Update to NSRegularExpression
-#define XPSupportsTextViewAdvancedFind
 #undef  XPSupportsTexturedWindows
 #else
 typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *error);

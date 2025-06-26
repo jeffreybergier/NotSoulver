@@ -588,14 +588,14 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 -(void)XP_setUsesFindPanel:(BOOL)flag;
 {
-#ifdef XPSupportsTextViewAdvancedFind
+#if XPSupportsTextFind >= XPSupportsTextFindPanel
   [self setUsesFindPanel:flag];
 #endif
 }
 
 -(void)XP_setUsesFindBar:(BOOL)flag;
 {
-#ifdef XPSupportsTextViewAdvancedFind
+#if XPSupportsTextFind >= XPSupportsTextFinder
   [self setUsesFindBar:flag];
 #endif
 }
