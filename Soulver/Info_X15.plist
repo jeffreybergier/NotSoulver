@@ -36,17 +36,17 @@
 		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
-	<string>Soulver</string>
+	<string>MathEdit</string>
 	<key>CFBundleGetInfoString</key>
 	<string>v1.0</string>
 	<key>CFBundleIconFile</key>
 	<string>AppIcon</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.saturdayapps.notsoulver</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>[Not]Soulver</string>
+	<string>MathEdit</string>
 	<key>CFBundlePackageType</key>
 	<string>NSVR</string>
 	<key>CFBundleShortVersionString</key>
