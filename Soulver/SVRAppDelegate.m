@@ -118,11 +118,8 @@ SVRAppDelegate *_sharedDelegate = nil;
 -(void)applicationWillFinishLaunching:(NSNotification*)aNotification;
 {
   NSApplication *app = [aNotification object];
-  // Set the menu
+  // Build the menu
   [app setMainMenu:[SVRMainMenu newMainMenu:_menus]];
-  // Configure the title of the app
-  // TODO: Figure out why this is always the app name
-  //[[app mainMenu] setTitle:@"ZZZ"];//[Localized titleAppName]];
   // Prepare UserDefaults
   [[NSUserDefaults standardUserDefaults] SVR_configure];
   // Prepare FontManager
@@ -406,11 +403,14 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 @implementation SVRMainMenu: NSObject
 +(NSMenu*)newMainMenu:(NSMutableArray*)storage;
 {
-  NSMenu *mainMenu = [[[NSMenu alloc] initWithTitle:[[NSProcessInfo processInfo] processName]] autorelease];
+	NSString *title = [[NSProcessInfo processInfo] processName];
+  NSMenu *mainMenu = [[[NSMenu alloc] initWithTitle:title] autorelease];
   [storage addObject:mainMenu];
   
 #ifdef XPSupportsApplicationMenu
-  [self __buildAppMenuInMainMenu:mainMenu storage:storage];
+  [self __buildAppMenuInMainMenu:mainMenu 
+                     application:[NSApplication sharedApplication] 
+                         storage:storage];
 #else
   [self __buildInfoMenuInMainMenu:mainMenu storage:storage];
 #endif
@@ -429,17 +429,24 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   return mainMenu;
 }
 
-+(void)__buildAppMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
++(void)__buildAppMenuInMainMenu:(NSMenu*)mainMenu
+                    application:(NSApplication*)app
+                        storage:(NSMutableArray*)storage;
 {
   NSMenu *menu = nil;
   NSMenu *submenu = nil;
   NSMenuItem *item = nil;
+  NSString *title = @"Apple";
+  // This Hack is credited to Jeff Johnson.
+  // I couldn't have gotten menus to work in Tiger or Jaguar without you!
+  // https://lapcatsoftware.com/blog/2007/06/04/working-without-a-nib-part-2-also-also-wik/
+  SEL HACK_setAppleMenu = @selector(setAppleMenu:);
   
   // Application menu
-  // TODO: On 10.4 and older the app menus appears as a second menu
-  item = [mainMenu addItemWithTitle:[[NSProcessInfo processInfo] processName] action:NULL keyEquivalent:@""];
-  menu = [[[NSMenu alloc] initWithTitle:[[NSProcessInfo processInfo] processName]] autorelease];
+  item = [mainMenu addItemWithTitle:title	action:NULL keyEquivalent:@""];
+  menu = [[[NSMenu alloc] initWithTitle:title] autorelease];
   [storage addObject:menu];
+  [app performSelector:HACK_setAppleMenu withObject:menu];
   [mainMenu setSubmenu:menu forItem:item];
 
   [menu addItemWithTitle:@"About [Not]Soulver" action:@selector(showAboutWindow:) keyEquivalent:@""];
