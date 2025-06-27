@@ -406,7 +406,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 @implementation SVRMainMenu: NSObject
 +(NSMenu*)newMainMenu:(NSMutableArray*)storage;
 {
-  NSMenu *mainMenu = [[[NSMenu alloc] initWithTitle:@"[Not]Soulver"] autorelease];
+  NSMenu *mainMenu = [[[NSMenu alloc] initWithTitle:[[NSProcessInfo processInfo] processName]] autorelease];
   [storage addObject:mainMenu];
   
 #ifdef XPSupportsApplicationMenu
@@ -437,8 +437,8 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   
   // Application menu
   // TODO: On 10.4 and older the app menus appears as a second menu
-  item = [mainMenu addItemWithTitle:@"ITEM-Soulver" action:NULL keyEquivalent:@""];
-  menu = [[[NSMenu alloc] initWithTitle:@"MENU-Soulver"] autorelease];
+  item = [mainMenu addItemWithTitle:[[NSProcessInfo processInfo] processName] action:NULL keyEquivalent:@""];
+  menu = [[[NSMenu alloc] initWithTitle:[[NSProcessInfo processInfo] processName]] autorelease];
   [storage addObject:menu];
   [mainMenu setSubmenu:menu forItem:item];
 
