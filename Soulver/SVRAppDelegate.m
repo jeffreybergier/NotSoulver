@@ -48,9 +48,13 @@ SVRAppDelegate *_sharedDelegate = nil;
 {
   self = [super init];
   XPParameterRaise(self);
-  _menus = [NSMutableArray new];
   _openDocuments = [NSMutableSet new];
   _accessoryWindowsOwner = nil; // Set in applicationWillFinishLaunching:
+#ifdef AFF_MainMenuNotRetainedBySystem
+  _menus = [NSMutableArray new];
+#else
+  _menus = nil;
+#endif
   return self;
 }
 
@@ -101,12 +105,14 @@ SVRAppDelegate *_sharedDelegate = nil;
 {
   XPLogDebug1(@"<%@>", XPPointerString(self));
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-  [_menus autorelease];
   [_openDocuments autorelease];
   [_accessoryWindowsOwner autorelease];
-  _menus = nil;
   _openDocuments = nil;
   _accessoryWindowsOwner = nil;
+#ifdef AFF_MainMenuNotRetainedBySystem
+  [_menus autorelease];
+  _menus = nil;
+#endif
   [super dealloc];
 }
 
@@ -437,17 +443,18 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   NSMenu *submenu = nil;
   NSMenuItem *item = nil;
   NSString *title = @"Apple";
-  // This Hack is credited to Jeff Johnson.
-  // I couldn't have gotten menus to work in Tiger or Jaguar without you!
-  // https://lapcatsoftware.com/blog/2007/06/04/working-without-a-nib-part-2-also-also-wik/
-  SEL HACK_setAppleMenu = @selector(setAppleMenu:);
   
   // Application menu
   item = [mainMenu addItemWithTitle:title	action:NULL keyEquivalent:@""];
   menu = [[[NSMenu alloc] initWithTitle:title] autorelease];
   [storage addObject:menu];
-  [app performSelector:HACK_setAppleMenu withObject:menu];
   [mainMenu setSubmenu:menu forItem:item];
+#ifdef AFF_MainMenuRequiresSetAppleMenu
+  // This Hack is credited to Jeff Johnson.
+  // I couldn't have gotten menus to work in Tiger or Jaguar without you!
+  // https://lapcatsoftware.com/blog/2007/06/04/working-without-a-nib-part-2-also-also-wik/
+  [app performSelector:@selector(setAppleMenu:) withObject:menu];
+#endif
 
   [menu addItemWithTitle:@"About [Not]Soulver" action:@selector(showAboutWindow:) keyEquivalent:@""];
   [menu XP_addSeparatorItem];

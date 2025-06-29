@@ -100,6 +100,24 @@ typedef float XPFloat;
   #define XP_ENUM(_type, _name) _type _name; enum
 #endif
 
+// MARK: Antifeature Flags
+
+#define AFF_MainMenuFailsNSApplicationMain
+#define AFF_MainMenuNotRetainedBySystem
+#define AFF_MainMenuRequiresSetAppleMenu
+
+#ifdef MAC_OS_X_VERSION_10_2
+#undef AFF_MainMenuNotRetainedBySystem
+#endif
+
+#ifdef MAC_OS_X_VERSION_10_6
+#undef AFF_MainMenuRequiresSetAppleMenu
+#endif
+
+#ifdef MAC_OS_X_VERSION_10_8
+#undef AFF_MainMenuFailsNSApplicationMain
+#endif
+
 // MARK: NSDocument
 
 #define XPDocument id<XPDocumentProtocol>

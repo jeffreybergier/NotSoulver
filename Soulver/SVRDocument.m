@@ -76,6 +76,7 @@
   [self overrideWindowAppearance];
   [aWindow setMinSize:NSMakeSize(200, 200)];
   [aWindow setContentView:[viewController view]];
+  [aWindow setInitialFirstResponder:[viewController textView]];
   
   // Subscribe to theme and model updates
   [nc addObserver:self

@@ -93,7 +93,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   [scrollView setDocumentView:textView];
   
   // Self
-  _textView = [textView retain];
+  _textView = textView;
   [self setView:scrollView];
   
   // Theming

@@ -35,8 +35,8 @@
 @interface SVRDocumentViewController: XPViewController
 {
   mm_new NSView *_view_42; // Used only in OpenStep
-  mm_new NSTextView *_textView;
-  mm_retain SVRDocumentModelController *_modelController;
+  mm_new SVRDocumentModelController *_modelController;
+  mm_unretain NSTextView *_textView;
 }
 
 // MARK: Init
