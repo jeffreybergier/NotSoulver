@@ -505,5 +505,27 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
 { return NSLocalizedString(@"NEXT_M_ThemeLight", @""); }
 +(NSString*)imageThemeDark;
 { return NSLocalizedString(@"NEXT_M_ThemeDark", @""); }
++(NSString*)menuAppAbout;
+{ return NSLocalizedString(@"MENU_AppAbout", @""); }
++(NSString*)menuAppSettings;
+{ return NSLocalizedString(@"MENU_AppSettings", @""); }
++(NSString*)menuAppServices;
+{ return NSLocalizedString(@"MENU_AppServices", @""); }
++(NSString*)menuAppHideSelf;
+{ return NSLocalizedString(@"MENU_AppHideSelf", @""); }
++(NSString*)menuAppHideOthers;
+{ return NSLocalizedString(@"MENU_AppHideOthers", @""); }
++(NSString*)menuAppShowAll;
+{ return NSLocalizedString(@"MENU_AppShowAll", @""); }
++(NSString*)menuAppQuit;
+{ return NSLocalizedString(@"MENU_AppQuit", @""); }
++(NSString*)menuAppHideLegacy;
+{ return NSLocalizedString(@"MENU_AppHideLegacy", @""); }
++(NSString*)menuAppQuitLegacy;
+{ return NSLocalizedString(@"MENU_AppQuitLegacy", @""); }
++(NSString*)menuAppInfoLegacy;
+{ return NSLocalizedString(@"MENU_AppInfoLegacy", @""); }
++(NSString*)menuHelp;
+{ return NSLocalizedString(@"MENU_Help", @""); }
 
 @end

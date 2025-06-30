@@ -158,4 +158,15 @@ typedef XP_ENUM(XPInteger, SVRThemeFont) {
 +(NSString*)imageThemeAuto;
 +(NSString*)imageThemeLight;
 +(NSString*)imageThemeDark;
++(NSString*)menuAppAbout;
++(NSString*)menuAppSettings;
++(NSString*)menuAppServices;
++(NSString*)menuAppHideSelf;
++(NSString*)menuAppHideOthers;
++(NSString*)menuAppShowAll;
++(NSString*)menuAppQuit;
++(NSString*)menuAppHideLegacy;
++(NSString*)menuAppQuitLegacy;
++(NSString*)menuAppInfoLegacy;
++(NSString*)menuHelp;
 @end

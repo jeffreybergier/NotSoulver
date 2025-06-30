@@ -67,3 +67,16 @@
 "NEXT_M_ThemeAuto" = "ThemeAuto";
 "NEXT_M_ThemeLight" = "ThemeLight";
 "NEXT_M_ThemeDark" = "ThemeDark";
+
+// Menus
+"MENU_AppAbout" = "About [Not]Soulver";
+"MENU_AppSettings" = "Settings";
+"MENU_AppServices" = "Services";
+"MENU_AppHideSelf" = "Hide [Not]Soulver";
+"MENU_AppHideOthers" = "Hide Others";
+"MENU_AppShowAll" = "Show All";
+"MENU_AppQuit" = "Quit Xcode";
+"MENU_AppHideLegacy" = "Hide";
+"MENU_AppQuitLegacy" = "Quit";
+"MENU_AppInfoLegacy" = "Info";
+"MENU_Help" = "Help";

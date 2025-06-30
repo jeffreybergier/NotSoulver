@@ -410,8 +410,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 +(NSMenu*)SVR_mainMenuWithApp:(NSApplication*)app
                       storage:(NSMutableArray*)storage;
 {
-	NSString *title = [[NSProcessInfo processInfo] processName];
-  NSMenu *mainMenu = [[[NSMenu alloc] initWithTitle:title] autorelease];
+  NSMenu *mainMenu = [[[NSMenu alloc] initWithTitle:[Localized titleAppName]] autorelease];
   [storage addObject:mainMenu];
   
 #ifdef XPSupportsApplicationMenu
@@ -460,25 +459,25 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   [app performSelector:@selector(setAppleMenu:) withObject:menu];
 #endif
 
-  [menu addItemWithTitle:@"About [Not]Soulver" action:@selector(showAboutWindow:) keyEquivalent:@""];
+  [menu addItemWithTitle:[Localized menuAppAbout] action:@selector(showAboutWindow:) keyEquivalent:@""];
   [menu XP_addSeparatorItem];
-  [menu addItemWithTitle:[@"Settings" SVR_stringByAppendingEllipsis] action:@selector(showSettingsWindow:) keyEquivalent:@","];
+  [menu addItemWithTitle:[[Localized menuAppSettings] SVR_stringByAppendingEllipsis] action:@selector(showSettingsWindow:) keyEquivalent:@","];
   [menu XP_addSeparatorItem];
   
   // Services submenu
-  item = [menu addItemWithTitle:@"Services" action:NULL keyEquivalent:@""];
-  submenu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
+  item = [menu addItemWithTitle:[Localized menuAppServices] action:NULL keyEquivalent:@""];
+  submenu = [[[NSMenu alloc] initWithTitle:[Localized menuAppServices]] autorelease];
   [storage addObject:submenu];
   [menu setSubmenu:submenu forItem:item];
   [app setServicesMenu:submenu];
   [menu XP_addSeparatorItem];
   
-  [menu addItemWithTitle:@"Hide [Not]Soulver" action:@selector(hide:) keyEquivalent:@"h"];
-  item = [menu addItemWithTitle:@"Hide Others" action:@selector(hideOtherApplications:) keyEquivalent:@"h"];
+  [menu addItemWithTitle:[Localized menuAppHideSelf] action:@selector(hide:) keyEquivalent:@"h"];
+  item = [menu addItemWithTitle:[Localized menuAppHideOthers] action:@selector(hideOtherApplications:) keyEquivalent:@"h"];
   [item setKeyEquivalentModifierMask:XPEventModifierFlagCommand|XPEventModifierFlagOption];
-  [menu addItemWithTitle:@"Show All" action:@selector(unhideAllApplications:) keyEquivalent:@""];
+  [menu addItemWithTitle:[Localized menuAppShowAll] action:@selector(unhideAllApplications:) keyEquivalent:@""];
   [menu XP_addSeparatorItem];
-  [menu addItemWithTitle:@"Quit [Not]Soulver" action:@selector(terminate:) keyEquivalent:@"q"];
+  [menu addItemWithTitle:[Localized menuAppQuit] action:@selector(terminate:) keyEquivalent:@"q"];
 }
 
 +(void)__buildInfoMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
@@ -486,14 +485,14 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   NSMenu *menu = nil;
   NSMenuItem *item = nil;
   
-  item = [mainMenu addItemWithTitle:@"Info" action:NULL keyEquivalent:@""];
-  menu = [[[NSMenu alloc] initWithTitle:@"Info"] autorelease];
+  item = [mainMenu addItemWithTitle:[Localized menuAppInfoLegacy] action:NULL keyEquivalent:@""];
+  menu = [[[NSMenu alloc] initWithTitle:[Localized menuAppInfoLegacy]] autorelease];
   [mainMenu setSubmenu:menu forItem:item];
   [storage addObject:menu];
 
-  [menu addItemWithTitle:[@"Info" SVR_stringByAppendingEllipsis] action:@selector(showAboutWindow:) keyEquivalent:@""];
-  [menu addItemWithTitle:[@"Settings" SVR_stringByAppendingEllipsis] action:@selector(showSettingsWindow:) keyEquivalent:@","];
-  [menu addItemWithTitle:[@"Help" SVR_stringByAppendingEllipsis] action:@selector(openSourceRepository:) keyEquivalent:@"?"];
+  [menu addItemWithTitle:[[Localized menuAppInfoLegacy] SVR_stringByAppendingEllipsis] action:@selector(showAboutWindow:) keyEquivalent:@""];
+  [menu addItemWithTitle:[[Localized menuAppSettings] SVR_stringByAppendingEllipsis] action:@selector(showSettingsWindow:) keyEquivalent:@","];
+  [menu addItemWithTitle:[[Localized menuHelp] SVR_stringByAppendingEllipsis] action:@selector(openSourceRepository:) keyEquivalent:@"?"];
 }
 
 +(void)__buildFileMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
@@ -650,11 +649,11 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   NSMenu *menu = nil;
   NSMenuItem *item = nil;
   
-  item = [mainMenu addItemWithTitle:@"Help" action:NULL keyEquivalent:@""];
-  menu = [[[NSMenu alloc] initWithTitle:@"Help"] autorelease];
+  item = [mainMenu addItemWithTitle:[Localized menuHelp] action:NULL keyEquivalent:@""];
+  menu = [[[NSMenu alloc] initWithTitle:[Localized menuHelp]] autorelease];
   [mainMenu setSubmenu:menu forItem:item];
   [storage addObject:menu];
-  [menu addItemWithTitle:[@"Help" SVR_stringByAppendingEllipsis] action:@selector(openSourceRepository:) keyEquivalent:@"?"];
+  [menu addItemWithTitle:[[Localized menuHelp] SVR_stringByAppendingEllipsis] action:@selector(openSourceRepository:) keyEquivalent:@"?"];
 }
 
 +(void)__buildTrailingMenuInMainMenu:(NSMenu*)mainMenu
@@ -662,15 +661,16 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
                              storage:(NSMutableArray*)storage;
 {
   NSMenuItem *item = nil;
-  NSMenu *servicesMenu = [[[NSMenu alloc] init] autorelease];
+  NSMenu *submenu = nil;
   
-  [storage addObject:servicesMenu];
+  item = [mainMenu addItemWithTitle:[Localized menuAppServices] action:NULL keyEquivalent:@""];
+  submenu = [[[NSMenu alloc] initWithTitle:[Localized menuAppServices]] autorelease];
+  [storage addObject:submenu];
+  [mainMenu setSubmenu:submenu forItem:item];
+  [app setServicesMenu:submenu];
   
-  item = [mainMenu addItemWithTitle:@"Services" action:NULL keyEquivalent:@""];
-  [mainMenu setSubmenu:servicesMenu forItem:item];
-  [app setServicesMenu:servicesMenu];
-  [mainMenu addItemWithTitle:@"Hide" action:@selector(hide:) keyEquivalent:@"h"];
-  [mainMenu addItemWithTitle:@"Quit" action:@selector(terminate:) keyEquivalent:@"q"];
+  [mainMenu addItemWithTitle:[Localized menuAppHideLegacy] action:@selector(hide:) keyEquivalent:@"h"];
+  [mainMenu addItemWithTitle:[Localized menuAppQuitLegacy] action:@selector(terminate:) keyEquivalent:@"q"];
 }
 
 @end
