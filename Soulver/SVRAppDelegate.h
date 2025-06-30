@@ -115,18 +115,23 @@
                  completionHandler:(XPWindowRestoreCompletionHandler)completionHandler;
 @end
 
-@interface SVRMainMenu: NSObject
-+(NSMenu*)newMainMenu:(NSMutableArray*)storage;
-+(void)__buildAppMenuInMainMenu:(NSMenu*)mainMenu 
-                    application:(NSApplication*)app 
+@interface NSMenu (AppDelegate)
++(NSMenu*)SVR_mainMenuWithApp:(NSApplication*)app
+                      storage:(NSMutableArray*)storage;
++(void)__buildAppMenuInMainMenu:(NSMenu*)mainMenu
+                    application:(NSApplication*)app
                         storage:(NSMutableArray*)storage;
 +(void)__buildInfoMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
 +(void)__buildFileMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
 +(void)__buildEditMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
 +(void)__buildViewMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
-+(void)__buildWindowsMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
++(void)__buildWindowsMenuInMainMenu:(NSMenu*)mainMenu
+                                app:(NSApplication*)app
+                            storage:(NSMutableArray*)storage;
 +(void)__buildHelpMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
-+(void)__buildTrailingMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
++(void)__buildTrailingMenuInMainMenu:(NSMenu*)mainMenu
+                                 app:(NSApplication*)app
+                             storage:(NSMutableArray*)storage;
 @end
 
 @interface NSMenu (CrossPlatform)

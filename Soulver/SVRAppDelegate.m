@@ -125,7 +125,7 @@ SVRAppDelegate *_sharedDelegate = nil;
 {
   NSApplication *app = [aNotification object];
   // Build the menu
-  [app setMainMenu:[SVRMainMenu newMainMenu:_menus]];
+  [app setMainMenu:[NSMenu SVR_mainMenuWithApp:app storage:_menus]];
   // Prepare UserDefaults
   [[NSUserDefaults standardUserDefaults] SVR_configure];
   // Prepare FontManager
@@ -406,8 +406,9 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 
 @end
 
-@implementation SVRMainMenu: NSObject
-+(NSMenu*)newMainMenu:(NSMutableArray*)storage;
+@implementation NSMenu (AppDelegate)
++(NSMenu*)SVR_mainMenuWithApp:(NSApplication*)app
+                      storage:(NSMutableArray*)storage;
 {
 	NSString *title = [[NSProcessInfo processInfo] processName];
   NSMenu *mainMenu = [[[NSMenu alloc] initWithTitle:title] autorelease];
@@ -415,7 +416,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   
 #ifdef XPSupportsApplicationMenu
   [self __buildAppMenuInMainMenu:mainMenu 
-                     application:[NSApplication sharedApplication] 
+                     application:app
                          storage:storage];
 #else
   [self __buildInfoMenuInMainMenu:mainMenu storage:storage];
@@ -424,12 +425,16 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   [self __buildFileMenuInMainMenu:mainMenu storage:storage];
   [self __buildEditMenuInMainMenu:mainMenu storage:storage];
   [self __buildViewMenuInMainMenu:mainMenu storage:storage];
-  [self __buildWindowsMenuInMainMenu:mainMenu storage:storage];
+  [self __buildWindowsMenuInMainMenu:mainMenu 
+                                 app:app
+                             storage:storage];
   
 #ifdef XPSupportsApplicationMenu
   [self __buildHelpMenuInMainMenu:mainMenu storage:storage];
 #else
-  [self __buildTrailingMenuInMainMenu:mainMenu storage:storage];
+  [self __buildTrailingMenuInMainMenu:mainMenu 
+                                  app:app
+                              storage:storage];
 #endif
     
   return mainMenu;
@@ -442,11 +447,10 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   NSMenu *menu = nil;
   NSMenu *submenu = nil;
   NSMenuItem *item = nil;
-  NSString *title = @"Apple";
   
   // Application menu
-  item = [mainMenu addItemWithTitle:title	action:NULL keyEquivalent:@""];
-  menu = [[[NSMenu alloc] initWithTitle:title] autorelease];
+  item = [mainMenu addItemWithTitle:@"MENU-App" action:NULL keyEquivalent:@""];
+  menu = [[[NSMenu alloc] initWithTitle:@"ITEM-App"] autorelease];
   [storage addObject:menu];
   [mainMenu setSubmenu:menu forItem:item];
 #ifdef AFF_MainMenuRequiresSetAppleMenu
@@ -466,7 +470,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   submenu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
   [storage addObject:submenu];
   [menu setSubmenu:submenu forItem:item];
-  [[NSApplication sharedApplication] setServicesMenu:submenu];
+  [app setServicesMenu:submenu];
   [menu XP_addSeparatorItem];
   
   [menu addItemWithTitle:@"Hide [Not]Soulver" action:@selector(hide:) keyEquivalent:@"h"];
@@ -626,7 +630,9 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   [menu XP_addSeparatorItem];
 }
 
-+(void)__buildWindowsMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
++(void)__buildWindowsMenuInMainMenu:(NSMenu*)mainMenu
+                                app:(NSApplication*)app
+                            storage:(NSMutableArray*)storage;
 {
   NSMenu *menu = nil;
   NSMenuItem *item = nil;
@@ -635,7 +641,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   menu = [[[NSMenu alloc] initWithTitle:@"Windows"] autorelease];
   [mainMenu setSubmenu:menu forItem:item];
   [storage addObject:menu];
-  [[NSApplication sharedApplication] setWindowsMenu:menu];
+  [app setWindowsMenu:menu];
   [menu addItemWithTitle:@"Show Keypad" action:@selector(toggleKeypadPanel:) keyEquivalent:@"k"];
 }
 
@@ -651,7 +657,9 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   [menu addItemWithTitle:[@"Help" SVR_stringByAppendingEllipsis] action:@selector(openSourceRepository:) keyEquivalent:@"?"];
 }
 
-+(void)__buildTrailingMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
++(void)__buildTrailingMenuInMainMenu:(NSMenu*)mainMenu
+                                 app:(NSApplication*)app
+                             storage:(NSMutableArray*)storage;
 {
   NSMenuItem *item = nil;
   NSMenu *servicesMenu = [[[NSMenu alloc] init] autorelease];
@@ -660,7 +668,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   
   item = [mainMenu addItemWithTitle:@"Services" action:NULL keyEquivalent:@""];
   [mainMenu setSubmenu:servicesMenu forItem:item];
-  [[NSApplication sharedApplication] setServicesMenu:servicesMenu];
+  [app setServicesMenu:servicesMenu];
   [mainMenu addItemWithTitle:@"Hide" action:@selector(hide:) keyEquivalent:@"h"];
   [mainMenu addItemWithTitle:@"Quit" action:@selector(terminate:) keyEquivalent:@"q"];
 }
