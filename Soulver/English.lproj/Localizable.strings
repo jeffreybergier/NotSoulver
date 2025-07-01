@@ -93,3 +93,10 @@
 "MENU_FileRevertTo" = "Revert To";
 "MENU_FileLastSavedVersion" = "Last Saved Version";
 "MENU_FileBrowseAllVersions" = "Browse All Versions";
+
+"MENU_View" = "View";
+"MENU_ViewActualSize" = "Actual Size";
+"MENU_ViewZoomIn" = "Zoom In";
+"MENU_ViewZoomOut" = "Zoom Out";
+"MENU_Window" = "Window";
+"MENU_WindowShowKeypad" = "Show Keypad";

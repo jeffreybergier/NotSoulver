@@ -182,4 +182,10 @@ typedef XP_ENUM(XPInteger, SVRThemeFont) {
 +(NSString*)menuFileRevertTo;
 +(NSString*)menuFileLastSavedVersion;
 +(NSString*)menuFileBrowseAllVersions;
++(NSString*)menuView;
++(NSString*)menuViewActualSize;
++(NSString*)menuViewZoomIn;
++(NSString*)menuViewZoomOut;
++(NSString*)menuWindow;
++(NSString*)menuWindowShowKeypad;
 @end

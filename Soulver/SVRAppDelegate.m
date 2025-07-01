@@ -617,16 +617,17 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   NSMenu *menu = nil;
   NSMenuItem *item = nil;
   
-  item = [mainMenu addItemWithTitle:@"View" action:NULL keyEquivalent:@""];
-  menu = [[[NSMenu alloc] initWithTitle:@"View"] autorelease];
+  item = [mainMenu addItemWithTitle:[Localized menuView] action:NULL keyEquivalent:@""];
+  menu = [[[NSMenu alloc] initWithTitle:[Localized menuView]] autorelease];
   [mainMenu setSubmenu:menu forItem:item];
   [storage addObject:menu];
   
   // TODO: Implement these methods in my NSScrollView
-  [menu addItemWithTitle:@"Actual Size" action:@selector(actualSize:) keyEquivalent:@"0"];
-  [menu addItemWithTitle:@"Zoom In" action:@selector(zoomIn:) keyEquivalent:@"+"];
-  [menu addItemWithTitle:@"Zoom Out" action:@selector(zoomOut:) keyEquivalent:@"-"];
-  [menu XP_addSeparatorItem];
+  [menu addItemWithTitle:[Localized menuViewActualSize] action:@selector(actualSize:) keyEquivalent:@"0"];
+  item = [menu addItemWithTitle:[Localized menuViewZoomIn] action:@selector(zoomIn:) keyEquivalent:@"."];
+  [item setKeyEquivalentModifierMask:XPEventModifierFlagCommand|XPEventModifierFlagShift];
+  item = [menu addItemWithTitle:[Localized menuViewZoomOut] action:@selector(zoomOut:) keyEquivalent:@","];
+  [item setKeyEquivalentModifierMask:XPEventModifierFlagCommand|XPEventModifierFlagShift];
 }
 
 +(void)__buildWindowsMenuInMainMenu:(NSMenu*)mainMenu
@@ -636,12 +637,12 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   NSMenu *menu = nil;
   NSMenuItem *item = nil;
   
-  item = [mainMenu addItemWithTitle:@"Windows" action:NULL keyEquivalent:@""];
-  menu = [[[NSMenu alloc] initWithTitle:@"Windows"] autorelease];
+  item = [mainMenu addItemWithTitle:[Localized menuWindow] action:NULL keyEquivalent:@""];
+  menu = [[[NSMenu alloc] initWithTitle:[Localized menuWindow]] autorelease];
   [mainMenu setSubmenu:menu forItem:item];
   [storage addObject:menu];
   [app setWindowsMenu:menu];
-  [menu addItemWithTitle:@"Show Keypad" action:@selector(toggleKeypadPanel:) keyEquivalent:@"k"];
+  [menu addItemWithTitle:[Localized menuWindowShowKeypad] action:@selector(toggleKeypadPanel:) keyEquivalent:@"k"];
 }
 
 +(void)__buildHelpMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;

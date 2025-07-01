@@ -554,4 +554,17 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
 +(NSString*)menuFileBrowseAllVersions;
 { return NSLocalizedString(@"MENU_FileBrowseAllVersions", @""); }
 
+
++(NSString*)menuView;
+{ return NSLocalizedString(@"MENU_View", @""); }
++(NSString*)menuViewActualSize;
+{ return NSLocalizedString(@"MENU_ViewActualSize", @""); }
++(NSString*)menuViewZoomIn;
+{ return NSLocalizedString(@"MENU_ViewZoomIn", @""); }
++(NSString*)menuViewZoomOut;
+{ return NSLocalizedString(@"MENU_ViewZoomOut", @""); }
++(NSString*)menuWindow;
+{ return NSLocalizedString(@"MENU_Window", @""); }
++(NSString*)menuWindowShowKeypad;
+{ return NSLocalizedString(@"MENU_WindowShowKeypad", @""); }
 @end
