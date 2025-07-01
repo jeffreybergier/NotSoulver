@@ -169,4 +169,17 @@ typedef XP_ENUM(XPInteger, SVRThemeFont) {
 +(NSString*)menuAppQuitLegacy;
 +(NSString*)menuAppInfoLegacy;
 +(NSString*)menuHelp;
++(NSString*)menuFile;
++(NSString*)menuFileNew;
++(NSString*)menuFileOpen;
++(NSString*)menuFileClose;
++(NSString*)menuFileSave;
++(NSString*)menuFileSaveAll;
++(NSString*)menuFileDuplicate;
++(NSString*)menuFileSaveAs;
++(NSString*)menuFileRename;
++(NSString*)menuFileMoveTo;
++(NSString*)menuFileRevertTo;
++(NSString*)menuFileLastSavedVersion;
++(NSString*)menuFileBrowseAllVersions;
 @end

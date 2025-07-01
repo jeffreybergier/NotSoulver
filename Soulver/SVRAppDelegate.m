@@ -501,29 +501,29 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   NSMenu *submenu = nil;
   NSMenuItem *item = nil;
   
-  item = [mainMenu addItemWithTitle:@"File" action:NULL keyEquivalent:@""];
-  menu = [[[NSMenu alloc] initWithTitle:@"File"] autorelease];
+  item = [mainMenu addItemWithTitle:[Localized menuFile] action:NULL keyEquivalent:@""];
+  menu = [[[NSMenu alloc] initWithTitle:[Localized menuFile]] autorelease];
   [mainMenu setSubmenu:menu forItem:item];
   [storage addObject:menu];
   
-  [menu addItemWithTitle:@"New" action:@selector(newDocument:) keyEquivalent:@"n"];
-  [menu addItemWithTitle:[@"Open" SVR_stringByAppendingEllipsis] action:@selector(openDocument:) keyEquivalent:@"o"];
+  [menu addItemWithTitle:[Localized menuFileNew] action:@selector(newDocument:) keyEquivalent:@"n"];
+  [menu addItemWithTitle:[[Localized menuFileOpen] SVR_stringByAppendingEllipsis] action:@selector(openDocument:) keyEquivalent:@"o"];
   [menu XP_addSeparatorItem];
-  [menu addItemWithTitle:@"Close" action:@selector(performClose:) keyEquivalent:@"w"];
-  [menu addItemWithTitle:[@"Save" SVR_stringByAppendingEllipsis] action:@selector(newDocument:) keyEquivalent:@"s"];
-  [menu addItemWithTitle:[@"Save All" SVR_stringByAppendingEllipsis] action:@selector(saveAllDocuments:) keyEquivalent:@""];
-  item = [menu addItemWithTitle:[@"Duplicate" SVR_stringByAppendingEllipsis] action:@selector(duplicateDocument:) keyEquivalent:@"s"];
-  [item setKeyEquivalentModifierMask:XPEventModifierFlagShift|XPEventModifierFlagCommand];
-  item = [menu addItemWithTitle:[@"Save As" SVR_stringByAppendingEllipsis] action:@selector(saveDocumentAs:) keyEquivalent:@"s"];
+  [menu addItemWithTitle:[Localized menuFileClose] action:@selector(performClose:) keyEquivalent:@"w"];
+  [menu addItemWithTitle:[[Localized menuFileSave] SVR_stringByAppendingEllipsis] action:@selector(saveDocument:) keyEquivalent:@"s"];
+  [menu addItemWithTitle:[[Localized menuFileSaveAll] SVR_stringByAppendingEllipsis] action:@selector(saveAllDocuments:) keyEquivalent:@""];
+  item = [menu addItemWithTitle:[[Localized menuFileSaveAs] SVR_stringByAppendingEllipsis] action:@selector(saveDocumentAs:) keyEquivalent:@"s"];
   [item setKeyEquivalentModifierMask:XPEventModifierFlagShift|XPEventModifierFlagCommand|XPEventModifierFlagOption];
-  [menu addItemWithTitle:[@"Rename" SVR_stringByAppendingEllipsis] action:@selector(renameDocument:) keyEquivalent:@""];
-  [menu addItemWithTitle:[@"Move To" SVR_stringByAppendingEllipsis] action:@selector(moveDocument:) keyEquivalent:@""];
-  item = [menu addItemWithTitle:@"Revert To" action:NULL keyEquivalent:@""];
-  submenu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
+  item = [menu addItemWithTitle:[[Localized menuFileDuplicate] SVR_stringByAppendingEllipsis] action:@selector(duplicateDocument:) keyEquivalent:@"s"];
+  [item setKeyEquivalentModifierMask:XPEventModifierFlagShift|XPEventModifierFlagCommand];
+  [menu addItemWithTitle:[[Localized menuFileRename] SVR_stringByAppendingEllipsis] action:@selector(renameDocument:) keyEquivalent:@""];
+  [menu addItemWithTitle:[[Localized menuFileMoveTo] SVR_stringByAppendingEllipsis] action:@selector(moveDocument:) keyEquivalent:@""];
+  item = [menu addItemWithTitle:[Localized menuFileRevertTo] action:NULL keyEquivalent:@""];
+  submenu = [[[NSMenu alloc] initWithTitle:[Localized menuFileRevertTo]] autorelease];
   [menu setSubmenu:submenu forItem:item];
   [storage addObject:submenu];
-  [submenu addItemWithTitle:@"Last Saved Version" action:@selector(revertDocumentToSaved:) keyEquivalent:@""];
-  [submenu addItemWithTitle:[@"Browse All Versions" SVR_stringByAppendingEllipsis] action:@selector(browseDocumentVersions:) keyEquivalent:@""];
+  [submenu addItemWithTitle:[Localized menuFileLastSavedVersion] action:@selector(revertDocumentToSaved:) keyEquivalent:@""];
+  [submenu addItemWithTitle:[[Localized menuFileBrowseAllVersions] SVR_stringByAppendingEllipsis] action:@selector(browseDocumentVersions:) keyEquivalent:@""];
 }
 
 +(void)__buildEditMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;

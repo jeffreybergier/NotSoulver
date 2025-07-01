@@ -80,3 +80,16 @@
 "MENU_AppQuitLegacy" = "Quit";
 "MENU_AppInfoLegacy" = "Info";
 "MENU_Help" = "Help";
+"MENU_File" = "File";
+"MENU_FileNew" = "New";
+"MENU_FileOpen" = "Open";
+"MENU_FileClose" = "Close";
+"MENU_FileSave" = "Save";
+"MENU_FileSaveAll" = "Save All";
+"MENU_FileDuplicate" = "Duplicate";
+"MENU_FileSaveAs" = "Save As";
+"MENU_FileRename" = "Rename";
+"MENU_FileMoveTo" = "Move To";
+"MENU_FileRevertTo" = "Revert To";
+"MENU_FileLastSavedVersion" = "Last Saved Version";
+"MENU_FileBrowseAllVersions" = "Browse All Versions";

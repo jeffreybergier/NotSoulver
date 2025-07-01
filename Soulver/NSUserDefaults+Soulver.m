@@ -527,5 +527,31 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
 { return NSLocalizedString(@"MENU_AppInfoLegacy", @""); }
 +(NSString*)menuHelp;
 { return NSLocalizedString(@"MENU_Help", @""); }
++(NSString*)menuFile;
+{ return NSLocalizedString(@"MENU_File", @""); }
++(NSString*)menuFileNew;
+{ return NSLocalizedString(@"MENU_FileNew", @""); }
++(NSString*)menuFileOpen;
+{ return NSLocalizedString(@"MENU_FileOpen", @""); }
++(NSString*)menuFileClose;
+{ return NSLocalizedString(@"MENU_FileClose", @""); }
++(NSString*)menuFileSave;
+{ return NSLocalizedString(@"MENU_FileSave", @""); }
++(NSString*)menuFileSaveAll;
+{ return NSLocalizedString(@"MENU_FileSaveAll", @""); }
++(NSString*)menuFileDuplicate;
+{ return NSLocalizedString(@"MENU_FileDuplicate", @""); }
++(NSString*)menuFileSaveAs;
+{ return NSLocalizedString(@"MENU_FileSaveAs", @""); }
++(NSString*)menuFileRename;
+{ return NSLocalizedString(@"MENU_FileRename", @""); }
++(NSString*)menuFileMoveTo;
+{ return NSLocalizedString(@"MENU_FileMoveTo", @""); }
++(NSString*)menuFileRevertTo;
+{ return NSLocalizedString(@"MENU_FileRevertTo", @""); }
++(NSString*)menuFileLastSavedVersion;
+{ return NSLocalizedString(@"MENU_FileLastSavedVersion", @""); }
++(NSString*)menuFileBrowseAllVersions;
+{ return NSLocalizedString(@"MENU_FileBrowseAllVersions", @""); }
 
 @end
