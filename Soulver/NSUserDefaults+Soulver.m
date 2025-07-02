@@ -553,8 +553,78 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
 { return NSLocalizedString(@"MENU_FileLastSavedVersion", @""); }
 +(NSString*)menuFileBrowseAllVersions;
 { return NSLocalizedString(@"MENU_FileBrowseAllVersions", @""); }
-
-
++(NSString*)menuEdit;
+{ return NSLocalizedString(@"MENU_Edit", @""); }
++(NSString*)menuEditUndo;
+{ return NSLocalizedString(@"MENU_EditUndo", @""); }
++(NSString*)menuEditRedo;
+{ return NSLocalizedString(@"MENU_EditRedo", @""); }
++(NSString*)menuEditCut;
+{ return NSLocalizedString(@"MENU_EditCut", @""); }
++(NSString*)menuEditCopy;
+{ return NSLocalizedString(@"MENU_EditCopy", @""); }
++(NSString*)menuEditCutUnsolved;
+{ return NSLocalizedString(@"MENU_EditCutUnsolved", @""); }
++(NSString*)menuEditCopyUnsolved;
+{ return NSLocalizedString(@"MENU_EditCopyUnsolved", @""); }
++(NSString*)menuEditPaste;
+{ return NSLocalizedString(@"MENU_EditPaste", @""); }
++(NSString*)menuEditDelete;
+{ return NSLocalizedString(@"MENU_EditDelete", @""); }
++(NSString*)menuEditSelectAll;
+{ return NSLocalizedString(@"MENU_EditSelectAll", @""); }
++(NSString*)menuEditFind;
+{ return NSLocalizedString(@"MENU_EditFind", @""); }
++(NSString*)menuEditFindNext;
+{ return NSLocalizedString(@"MENU_EditFindNext", @""); }
++(NSString*)menuEditFindPrevious;
+{ return NSLocalizedString(@"MENU_EditFindPrevious", @""); }
++(NSString*)menuEditFindUseSelection;
+{ return NSLocalizedString(@"MENU_EditFindUseSelection", @""); }
++(NSString*)menuEditFindScroll;
+{ return NSLocalizedString(@"MENU_EditFindScroll", @""); }
++(NSString*)menuEditSpelling;
+{ return NSLocalizedString(@"MENU_EditSpelling", @""); }
++(NSString*)menuEditSpellingShow;
+{ return NSLocalizedString(@"MENU_EditSpellingShow", @""); }
++(NSString*)menuEditSpellingCheckNow;
+{ return NSLocalizedString(@"MENU_EditSpellingCheckNow", @""); }
++(NSString*)menuEditSpellingCheckWhileTyping;
+{ return NSLocalizedString(@"MENU_EditSpellingCheckWhileTyping", @""); }
++(NSString*)menuEditSpellingCheckGrammar;
+{ return NSLocalizedString(@"MENU_EditSpellingCheckGrammar", @""); }
++(NSString*)menuEditSpellingAutoCorrect;
+{ return NSLocalizedString(@"MENU_EditSpellingAutoCorrect", @""); }
++(NSString*)menuEditSubstitutions;
+{ return NSLocalizedString(@"MENU_EditSubstitutions", @""); }
++(NSString*)menuEditSubstitutionsShow;
+{ return NSLocalizedString(@"MENU_EditSubstitutionsShow", @""); }
++(NSString*)menuEditSubstitutionsSmartCopyPaste;
+{ return NSLocalizedString(@"MENU_EditSubstitutionsSmartCopyPaste", @""); }
++(NSString*)menuEditSubstitutionsSmartQuotes;
+{ return NSLocalizedString(@"MENU_EditSubstitutionsSmartQuotes", @""); }
++(NSString*)menuEditSubstitutionsSmartDashes;
+{ return NSLocalizedString(@"MENU_EditSubstitutionsSmartDashes", @""); }
++(NSString*)menuEditSubstitutionsSmartLinks;
+{ return NSLocalizedString(@"MENU_EditSubstitutionsSmartLinks", @""); }
++(NSString*)menuEditSubstitutionsDataDetectors;
+{ return NSLocalizedString(@"MENU_EditSubstitutionsDataDetectors", @""); }
++(NSString*)menuEditSubstitutionsTextReplacements;
+{ return NSLocalizedString(@"MENU_EditSubstitutionsTextReplacements", @""); }
++(NSString*)menuEditTransformations;
+{ return NSLocalizedString(@"MENU_EditTransformations", @""); }
++(NSString*)menuEditTransformationsUpperCase;
+{ return NSLocalizedString(@"MENU_EditTransformationsUpperCase", @""); }
++(NSString*)menuEditTransformationsLowerCase;
+{ return NSLocalizedString(@"MENU_EditTransformationsLowerCase", @""); }
++(NSString*)menuEditTransformationsCapitalize;
+{ return NSLocalizedString(@"MENU_EditTransformationsCapitalize", @""); }
++(NSString*)menuEditSpeech;
+{ return NSLocalizedString(@"MENU_EditSpeech", @""); }
++(NSString*)menuEditSpeechStart;
+{ return NSLocalizedString(@"MENU_EditSpeechStart", @""); }
++(NSString*)menuEditSpeechStop;
+{ return NSLocalizedString(@"MENU_EditSpeechStop", @""); }
 +(NSString*)menuView;
 { return NSLocalizedString(@"MENU_View", @""); }
 +(NSString*)menuViewActualSize;

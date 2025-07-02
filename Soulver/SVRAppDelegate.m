@@ -532,84 +532,84 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   NSMenu *submenu = nil;
   NSMenuItem *item = nil;
   
-  item = [mainMenu addItemWithTitle:@"Edit" action:NULL keyEquivalent:@""];
-  menu = [[[NSMenu alloc] initWithTitle:@"Edit"] autorelease];
+  item = [mainMenu addItemWithTitle:[Localized menuEdit] action:NULL keyEquivalent:@""];
+  menu = [[[NSMenu alloc] initWithTitle:[Localized menuEdit]] autorelease];
   [mainMenu setSubmenu:menu forItem:item];
   [storage addObject:menu];
   
-  [menu addItemWithTitle:@"Undo" action:@selector(undo:) keyEquivalent:@"z"];
-  item = [menu addItemWithTitle:@"Redo" action:@selector(redo:) keyEquivalent:@"z"];
+  [menu addItemWithTitle:[Localized menuEditUndo] action:@selector(undo:) keyEquivalent:@"z"];
+  item = [menu addItemWithTitle:[Localized menuEditRedo] action:@selector(redo:) keyEquivalent:@"z"];
   [item setKeyEquivalentModifierMask:XPEventModifierFlagShift|XPEventModifierFlagCommand];
   [menu XP_addSeparatorItem];
-  [menu addItemWithTitle:@"Cut" action:@selector(cutUniversal:) keyEquivalent:@"x"];
-  [menu addItemWithTitle:@"Copy" action:@selector(copyUniversal:) keyEquivalent:@"c"];
-  item = [menu addItemWithTitle:@"Cut Unsolved" action:@selector(cutUnsolved:) keyEquivalent:@"x"];
+  [menu addItemWithTitle:[Localized menuEditCut] action:@selector(cutUniversal:) keyEquivalent:@"x"];
+  [menu addItemWithTitle:[Localized menuEditCopy] action:@selector(copyUniversal:) keyEquivalent:@"c"];
+  item = [menu addItemWithTitle:[Localized menuEditCutUnsolved] action:@selector(cutUnsolved:) keyEquivalent:@"x"];
   [item setKeyEquivalentModifierMask:XPEventModifierFlagShift|XPEventModifierFlagCommand];
-  item = [menu addItemWithTitle:@"Copy Unsolved" action:@selector(copyUnsolved:) keyEquivalent:@"c"];
+  item = [menu addItemWithTitle:[Localized menuEditCopyUnsolved] action:@selector(copyUnsolved:) keyEquivalent:@"c"];
   [item setKeyEquivalentModifierMask:XPEventModifierFlagShift|XPEventModifierFlagCommand];
-  [menu addItemWithTitle:@"Paste" action:@selector(paste:) keyEquivalent:@"v"];
-  [menu addItemWithTitle:@"Delete" action:@selector(delete:) keyEquivalent:@""];
-  [menu addItemWithTitle:@"Select All" action:@selector(selectAll:) keyEquivalent:@"a"];
+  [menu addItemWithTitle:[Localized menuEditPaste] action:@selector(paste:) keyEquivalent:@"v"];
+  [menu addItemWithTitle:[Localized menuEditDelete] action:@selector(delete:) keyEquivalent:@""];
+  [menu addItemWithTitle:[Localized menuEditSelectAll] action:@selector(selectAll:) keyEquivalent:@"a"];
   [menu XP_addSeparatorItem];
   // TODO: Add Insert, Attach Files, Add Link
 #if XPSupportsTextFind >= XPSupportsTextFindPanel
   // Find Submenu
-  item = [menu addItemWithTitle:@"Find" action:NULL keyEquivalent:@""];
-  submenu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
+  item = [menu addItemWithTitle:[Localized menuEditFind] action:NULL keyEquivalent:@""];
+  submenu = [[[NSMenu alloc] initWithTitle:[Localized menuEditFind]] autorelease];
   [menu setSubmenu:submenu forItem:item];
   [storage addObject:submenu];
-  item = [submenu addItemWithTitle:[@"Find" SVR_stringByAppendingEllipsis] action:@selector(performFindPanelAction:) keyEquivalent:@"f"];
+  item = [submenu addItemWithTitle:[[Localized menuEditFind] SVR_stringByAppendingEllipsis] action:@selector(performFindPanelAction:) keyEquivalent:@"f"];
   [item setTag:NSFindPanelActionShowFindPanel];
-  item = [submenu addItemWithTitle:@"Find Next" action:@selector(performFindPanelAction:) keyEquivalent:@"g"];
+  item = [submenu addItemWithTitle:[Localized menuEditFindNext] action:@selector(performFindPanelAction:) keyEquivalent:@"g"];
   [item setTag:NSFindPanelActionNext];
-  item = [submenu addItemWithTitle:@"Find Previous" action:@selector(performFindPanelAction:) keyEquivalent:@"d"];
+  item = [submenu addItemWithTitle:[Localized menuEditFindPrevious] action:@selector(performFindPanelAction:) keyEquivalent:@"d"];
   [item setTag:NSFindPanelActionPrevious];
-  item = [submenu addItemWithTitle:@"Use Selection for Find" action:@selector(performFindPanelAction:) keyEquivalent:@"e"];
+  item = [submenu addItemWithTitle:[Localized menuEditFindUseSelection] action:@selector(performFindPanelAction:) keyEquivalent:@"e"];
   [item setTag:NSFindPanelActionSetFindString];
-  [submenu addItemWithTitle:@"Scroll to Selection" action:@selector(centerSelectionInVisibleArea:) keyEquivalent:@"j"];
+  [submenu addItemWithTitle:[Localized menuEditFindScroll] action:@selector(centerSelectionInVisibleArea:) keyEquivalent:@"j"];
 #endif
   // Spelling Submenu
-  item = [menu addItemWithTitle:@"Spelling" action:NULL keyEquivalent:@""];
-  submenu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
+  item = [menu addItemWithTitle:[Localized menuEditSpelling] action:NULL keyEquivalent:@""];
+  submenu = [[[NSMenu alloc] initWithTitle:[Localized menuEditSpelling]] autorelease];
   [menu setSubmenu:submenu forItem:item];
   [storage addObject:submenu];
-  [submenu addItemWithTitle:@"Show Spelling and Grammar" action:@selector(showGuessPanel:) keyEquivalent:@":"];
-  [submenu addItemWithTitle:@"Check Document Now" action:@selector(checkSpelling:) keyEquivalent:@";"];
+  [submenu addItemWithTitle:[Localized menuEditSpellingShow] action:@selector(showGuessPanel:) keyEquivalent:@":"];
+  [submenu addItemWithTitle:[Localized menuEditSpellingCheckNow] action:@selector(checkSpelling:) keyEquivalent:@";"];
   [submenu XP_addSeparatorItem];
-  [submenu addItemWithTitle:@"Check Spelling While Typing" action:@selector(toggleContinuousSpellChecking:) keyEquivalent:@""];
-  [submenu addItemWithTitle:@"Check Grammar With Spelling" action:@selector(toggleGrammarChecking:) keyEquivalent:@""];
-  [submenu addItemWithTitle:@"Correct Spelling Automatically" action:@selector(toggleAutomaticSpellingCorrection:) keyEquivalent:@""];
+  [submenu addItemWithTitle:[Localized menuEditSpellingCheckWhileTyping] action:@selector(toggleContinuousSpellChecking:) keyEquivalent:@""];
+  [submenu addItemWithTitle:[Localized menuEditSpellingCheckGrammar] action:@selector(toggleGrammarChecking:) keyEquivalent:@""];
+  [submenu addItemWithTitle:[Localized menuEditSpellingAutoCorrect] action:@selector(toggleAutomaticSpellingCorrection:) keyEquivalent:@""];
   
 #if XPSupportsTextFind >= XPSupportsTextFindPanel
   // Substitutions Submenu
-  item = [menu addItemWithTitle:@"Substitutions" action:NULL keyEquivalent:@""];
-  submenu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
+  item = [menu addItemWithTitle:[Localized menuEditSubstitutions] action:NULL keyEquivalent:@""];
+  submenu = [[[NSMenu alloc] initWithTitle:[Localized menuEditSubstitutions]] autorelease];
   [menu setSubmenu:submenu forItem:item];
   [storage addObject:submenu];
-  [submenu addItemWithTitle:@"Show Substitutions" action:@selector(orderFrontSubstitutionsPanel:) keyEquivalent:@""];
+  [submenu addItemWithTitle:[Localized menuEditSubstitutionsShow] action:@selector(orderFrontSubstitutionsPanel:) keyEquivalent:@""];
   [submenu XP_addSeparatorItem];
-  [submenu addItemWithTitle:@"Smart Copy/Paste" action:@selector(toggleSmartInsertDelete:) keyEquivalent:@""];
-  [submenu addItemWithTitle:@"Smart Quotes" action:@selector(toggleAutomaticQuoteSubstitution:) keyEquivalent:@""];
-  [submenu addItemWithTitle:@"Smart Dashes" action:@selector(toggleAutomaticDashSubstitution:) keyEquivalent:@""];
-  [submenu addItemWithTitle:@"Smart Links" action:@selector(toggleAutomaticLinkDetection:) keyEquivalent:@""];
-  [submenu addItemWithTitle:@"Data Detectors" action:@selector(toggleAutomaticDataDetection:) keyEquivalent:@""];
-  [submenu addItemWithTitle:@"Text Replacement" action:@selector(toggleAutomaticTextReplacement:) keyEquivalent:@""];
+  [submenu addItemWithTitle:[Localized menuEditSubstitutionsSmartCopyPaste] action:@selector(toggleSmartInsertDelete:) keyEquivalent:@""];
+  [submenu addItemWithTitle:[Localized menuEditSubstitutionsSmartQuotes] action:@selector(toggleAutomaticQuoteSubstitution:) keyEquivalent:@""];
+  [submenu addItemWithTitle:[Localized menuEditSubstitutionsSmartDashes] action:@selector(toggleAutomaticDashSubstitution:) keyEquivalent:@""];
+  [submenu addItemWithTitle:[Localized menuEditSubstitutionsSmartLinks] action:@selector(toggleAutomaticLinkDetection:) keyEquivalent:@""];
+  [submenu addItemWithTitle:[Localized menuEditSubstitutionsDataDetectors] action:@selector(toggleAutomaticDataDetection:) keyEquivalent:@""];
+  [submenu addItemWithTitle:[Localized menuEditSubstitutionsTextReplacements] action:@selector(toggleAutomaticTextReplacement:) keyEquivalent:@""];
 #endif
   // Transformations Submenu
-  item = [menu addItemWithTitle:@"Transformations" action:NULL keyEquivalent:@""];
-  submenu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
+  item = [menu addItemWithTitle:[Localized menuEditTransformations] action:NULL keyEquivalent:@""];
+  submenu = [[[NSMenu alloc] initWithTitle:[Localized menuEditTransformations]] autorelease];
   [menu setSubmenu:submenu forItem:item];
   [storage addObject:submenu];
-  [submenu addItemWithTitle:@"Make Upper Case" action:@selector(uppercaseWord:) keyEquivalent:@""];
-  [submenu addItemWithTitle:@"Make Lower Case" action:@selector(lowercaseWord:) keyEquivalent:@""];
-  [submenu addItemWithTitle:@"Capitalize" action:@selector(capitalizeWord:) keyEquivalent:@""];
+  [submenu addItemWithTitle:[Localized menuEditTransformationsUpperCase] action:@selector(uppercaseWord:) keyEquivalent:@""];
+  [submenu addItemWithTitle:[Localized menuEditTransformationsLowerCase] action:@selector(lowercaseWord:) keyEquivalent:@""];
+  [submenu addItemWithTitle:[Localized menuEditTransformationsCapitalize] action:@selector(capitalizeWord:) keyEquivalent:@""];
   // Speech Submenu
-  item = [menu addItemWithTitle:@"Speech" action:NULL keyEquivalent:@""];
-  submenu = [[[NSMenu alloc] initWithTitle:@""] autorelease];
+  item = [menu addItemWithTitle:[Localized menuEditSpeech] action:NULL keyEquivalent:@""];
+  submenu = [[[NSMenu alloc] initWithTitle:[Localized menuEditSpeech]] autorelease];
   [menu setSubmenu:submenu forItem:item];
   [storage addObject:submenu];
-  [submenu addItemWithTitle:@"Start Speaking" action:@selector(startSpeaking:) keyEquivalent:@""];
-  [submenu addItemWithTitle:@"Stop Speaking" action:@selector(stopSpeaking:) keyEquivalent:@""];
+  [submenu addItemWithTitle:[Localized menuEditSpeechStart] action:@selector(startSpeaking:) keyEquivalent:@""];
+  [submenu addItemWithTitle:[Localized menuEditSpeechStop] action:@selector(stopSpeaking:) keyEquivalent:@""];
 }
 
 +(void)__buildViewMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
