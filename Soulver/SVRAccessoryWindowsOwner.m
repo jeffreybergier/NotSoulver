@@ -148,7 +148,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   [window XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameAbout];
   [window XP_setRestorationClass:appDelegateClass];
   [window setInitialFirstResponder:[[window contentView] viewSourceButton]];
-  [[[window contentView] textView] setString:[Localized aboutParagraph]];
+  [[[window contentView] textView] setString:[Localized phraseAboutParagraph]];
   [[[window contentView] viewSourceButton] setAction:NSSelectorFromString(@"openSourceRepository:")];
   
   // MARK: SVRAccessoryWindowSettings
@@ -212,12 +212,16 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 
 -(IBAction)showSettingsWindow:(id)sender;
 {
-  [[self settingsWindow] makeKeyAndOrderFront:sender];
+  NSWindow *settingsWindow = [self settingsWindow];
+  [settingsWindow center];
+  [settingsWindow makeKeyAndOrderFront:sender];
 }
 
 -(IBAction)showAboutWindow:(id)sender;
 {
-  [[self aboutWindow] makeKeyAndOrderFront:sender];
+  NSWindow *aboutWindow = [self aboutWindow];
+  [aboutWindow center];
+  [aboutWindow makeKeyAndOrderFront:sender];
 }
 
 // MARK: Restore Window State
