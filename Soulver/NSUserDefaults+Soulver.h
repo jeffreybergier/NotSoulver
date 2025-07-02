@@ -225,4 +225,11 @@ typedef XP_ENUM(XPInteger, SVRThemeFont) {
 +(NSString*)menuWindow;
 +(NSString*)menuWindowShowKeypad;
 
++(BOOL)respondsToSelector:(SEL)aSelector;
+@end
+
+@interface LocalizedProxy: NSProxy
++(LocalizedProxy*)sharedProxy;
+-(NSMethodSignature *)methodSignatureForSelector:(SEL)sel;
+-(void)forwardInvocation:(NSInvocation*)invocation;
 @end

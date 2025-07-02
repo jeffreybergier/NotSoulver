@@ -638,3 +638,27 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
 +(NSString*)menuWindowShowKeypad;
 { return NSLocalizedString(@"MENU_WindowShowKeypad", @""); }
 @end
+
+@implementation LocalizedProxy: NSProxy
++(LocalizedProxy*)sharedProxy;
+{
+  static LocalizedProxy *sharedInstance = nil;
+  if (sharedInstance == nil) {
+    sharedInstance = [LocalizedProxy alloc];
+  }
+  XPParameterRaise(sharedInstance);
+  return sharedInstance;
+}
+-(NSMethodSignature*)methodSignatureForSelector:(SEL)sel;
+{
+  return [NSMethodSignature signatureWithObjCTypes:"@@:"];
+}
+-(void)forwardInvocation:(NSInvocation*)invocation;
+{
+  SEL sel = [invocation selector];
+  NSString *key = NSStringFromSelector(sel);
+  NSString *value = NSLocalizedString(key, @"");
+  XPParameterRaise(value);
+  [invocation setReturnValue:&value];
+}
+@end
