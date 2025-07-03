@@ -136,6 +136,10 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
     // automatically resizes the text view to fit the width.
     // This is an issue in TextEdit as well, so I assume there
     // is some sort of issue with NSScrollView.
+    // NOTE: viewWillLayout was added in 10.10 so this feature
+    // is broken in 10.8 Mountain Lion. But its OK
+    // opening and closing the document resolves the issue.
+    // As long as zoom is never used, everything works normally
     textViewFrame.size.width = scrollViewWidth;
     [textView setFrame:textViewFrame];
     XPLogExtra1(@"Manually Resized TextView(%@)", textView);
@@ -289,7 +293,6 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   [scrollView XP_setMagnification:1];
   [scrollView setHasHorizontalScroller:NO];
   [textView setFrame:newTextViewFrame];
-  [textView setNeedsLayout:YES];
 }
 
 -(IBAction)zoomIn:(id)sender;

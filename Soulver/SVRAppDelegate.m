@@ -614,6 +614,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 
 +(void)__buildViewMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
 {
+#ifndef AFF_ScrollViewNoMagnification
   NSMenu *menu = nil;
   NSMenuItem *item = nil;
   
@@ -622,7 +623,6 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   [mainMenu setSubmenu:menu forItem:item];
   [storage addObject:menu];
   
-#ifndef AFF_ScrollViewNoMagnification
   [menu addItemWithTitle:[Localized menuViewActualSize] action:@selector(actualSize:) keyEquivalent:@"0"];
   item = [menu addItemWithTitle:[Localized menuViewZoomIn] action:@selector(zoomIn:) keyEquivalent:@"."];
   [item setKeyEquivalentModifierMask:XPEventModifierFlagCommand|XPEventModifierFlagShift];
