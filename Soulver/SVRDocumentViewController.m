@@ -68,6 +68,9 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   // ScrollView
   [scrollView setHasVerticalScroller:YES];
   [scrollView setHasHorizontalScroller:NO];
+  // TODO: Reenable this when I figure out how to make wrapping
+  // work correctly again after choosing "actualSize:" in the Menu
+  // [scrollView setAllowsMagnification:YES];
   [scrollView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
   
   // TextView
@@ -102,6 +105,9 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
                                            selector:@selector(__themeDidChangeNotification:)
                                                name:SVRThemeDidChangeNotificationName
                                              object:nil];
+  
+  XPParameterRaise(_textView);
+  XPParameterRaise([self view]);
 }
 
 // MARK: Properties
@@ -226,13 +232,20 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   NSRange selectedRange = XPNotFoundRange;
   BOOL canCopy  = NO;
   BOOL canPaste = NO;
+  BOOL canMagnify = [self __canMagnify];
   
   menuAction = [menuItem action];
   selectedRange = [[self textView] selectedRange];
   canCopy  = !XPIsNotFoundRange(selectedRange) && selectedRange.length > 0;
   canPaste = !XPIsNotFoundRange(selectedRange);
   
-  if        (menuAction == @selector(copyUnsolved:)) {
+  if        (menuAction == @selector(actualSize:)) {
+    return canMagnify;
+  } else if (menuAction == @selector(zoomIn:)) {
+    return canMagnify;
+  } else if (menuAction == @selector(zoomOut:)) {
+    return canMagnify;
+  } else if (menuAction == @selector(copyUnsolved:)) {
     return canCopy;
   } else if (menuAction == @selector(copyUniversal:)) {
     return canCopy;
@@ -245,6 +258,35 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   }
 
   return NO;
+}
+
+-(IBAction)actualSize:(id)sender;
+{
+  NSTextView *textView = [self textView];
+  NSScrollView *scrollView = [textView enclosingScrollView];
+  NSRect newTextViewFrame = [textView frame];
+  newTextViewFrame.size.width = [scrollView contentSize].width;
+  
+  // TODO: Figure out why I can't get wrapping to work after zooming happens
+  // The textview stops resizing itself when the scrollview resizes
+  [scrollView setMagnification:1];
+  [textView setFrame:newTextViewFrame];
+  
+  [textView setNeedsLayout:YES];
+}
+
+-(IBAction)zoomIn:(id)sender;
+{
+  NSScrollView *scrollView = [[self textView] enclosingScrollView];
+  [scrollView setMagnification:[scrollView magnification]+0.25];
+  [scrollView setHasHorizontalScroller:YES];
+}
+
+-(IBAction)zoomOut:(id)sender;
+{
+  NSScrollView *scrollView = [[self textView] enclosingScrollView];
+  [scrollView setMagnification:[scrollView magnification]-0.25];
+  [scrollView setHasHorizontalScroller:YES];
 }
 
 -(IBAction)cutUnsolved:(id)sender;
@@ -304,6 +346,11 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
     [textView pasteAsPlainText:sender];
     return;
   }
+}
+
+-(BOOL)__canMagnify;
+{
+  return [NSScrollView instancesRespondToSelector:@selector(setMagnification:)];
 }
 
 -(BOOL)__universalCopyRTFData:(NSData*)rtfData

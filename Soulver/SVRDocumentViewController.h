@@ -58,11 +58,15 @@
 
 -(IBAction)keypadAppend:(NSButton*)sender;
 -(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
+-(IBAction)actualSize:(id)sender;
+-(IBAction)zoomIn:(id)sender;
+-(IBAction)zoomOut:(id)sender;
 -(IBAction)cutUnsolved:(id)sender;
 -(IBAction)cutUniversal:(id)sender;
 -(IBAction)copyUnsolved:(id)sender;
 -(IBAction)copyUniversal:(id)sender;
 -(IBAction)pasteUniversal:(id)sender;
+-(BOOL)__canMagnify;
 -(BOOL)__universalCopyRTFData:(NSData*)rtfData
                   diskRepData:(NSData*)diskRepData;
 
