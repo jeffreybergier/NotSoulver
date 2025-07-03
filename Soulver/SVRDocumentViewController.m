@@ -68,9 +68,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   // ScrollView
   [scrollView setHasVerticalScroller:YES];
   [scrollView setHasHorizontalScroller:NO];
-  // TODO: Reenable this when I figure out how to make wrapping
-  // work correctly again after choosing "actualSize:" in the Menu
-  // [scrollView setAllowsMagnification:YES];
+  [scrollView setAllowsMagnification:YES];
   [scrollView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
   
   // TextView
@@ -123,6 +121,26 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 }
 
 // MARK: Private
+
+-(void)viewWillLayout;
+{
+  NSTextView *textView = [self textView];
+  NSScrollView *scrollView = [textView enclosingScrollView];
+  NSRect textViewFrame = [textView frame];
+  XPFloat scrollViewWidth = [scrollView contentSize].width;
+  XPFloat magnification = [scrollView magnification];
+  if (magnification == 1 && textViewFrame.size.width != scrollViewWidth) {
+    // TODO: ScrollView Zoom Problem
+    // after changing the magnification of the scroll view
+    // even after it is changed back to 1, it no longer
+    // automatically resizes the text view to fit the width.
+    // This is an issue in TextEdit as well, so I assume there
+    // is some sort of issue with NSScrollView.
+    textViewFrame.size.width = scrollViewWidth;
+    [textView setFrame:textViewFrame];
+    XPLogExtra1(@"Manually Resized TextView(%@)", textView);
+  }
+}
 
 -(void)__themeDidChangeNotification:(NSNotification*)aNotification;
 {
@@ -267,8 +285,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   NSRect newTextViewFrame = [textView frame];
   newTextViewFrame.size.width = [scrollView contentSize].width;
   
-  // TODO: Figure out why I can't get wrapping to work after zooming happens
-  // The textview stops resizing itself when the scrollview resizes
+  // TODO: ScrollView Zoom Problem - See -viewWillLayout;
   [scrollView setMagnification:1];
   [textView setFrame:newTextViewFrame];
   

@@ -48,6 +48,7 @@
 -(SVRDocumentModelController*)modelController;
 
 // MARK: Private
+-(void)viewWillLayout;
 -(void)__themeDidChangeNotification:(NSNotification*)aNotification;
 -(NSString*)__stringValueForKeypadKeyKind:(SVRKeypadButtonKind)tag;
 -(NSDictionary*)__typingAttributes;
