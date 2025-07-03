@@ -622,12 +622,14 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   [mainMenu setSubmenu:menu forItem:item];
   [storage addObject:menu];
   
-  // TODO: Implement these methods in my NSScrollView
+#ifndef AFF_ScrollViewNoMagnification
   [menu addItemWithTitle:[Localized menuViewActualSize] action:@selector(actualSize:) keyEquivalent:@"0"];
   item = [menu addItemWithTitle:[Localized menuViewZoomIn] action:@selector(zoomIn:) keyEquivalent:@"."];
   [item setKeyEquivalentModifierMask:XPEventModifierFlagCommand|XPEventModifierFlagShift];
   item = [menu addItemWithTitle:[Localized menuViewZoomOut] action:@selector(zoomOut:) keyEquivalent:@","];
   [item setKeyEquivalentModifierMask:XPEventModifierFlagCommand|XPEventModifierFlagShift];
+  [menu XP_addSeparatorItem];
+#endif
 }
 
 +(void)__buildWindowsMenuInMainMenu:(NSMenu*)mainMenu

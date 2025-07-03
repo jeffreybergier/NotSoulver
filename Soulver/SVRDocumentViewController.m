@@ -68,7 +68,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   // ScrollView
   [scrollView setHasVerticalScroller:YES];
   [scrollView setHasHorizontalScroller:NO];
-  [scrollView setAllowsMagnification:YES];
+  [scrollView XP_setAllowsMagnification:YES];
   [scrollView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
   
   // TextView
@@ -128,7 +128,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   NSScrollView *scrollView = [textView enclosingScrollView];
   NSRect textViewFrame = [textView frame];
   XPFloat scrollViewWidth = [scrollView contentSize].width;
-  XPFloat magnification = [scrollView magnification];
+  XPFloat magnification = [scrollView XP_magnification];
   if (magnification == 1 && textViewFrame.size.width != scrollViewWidth) {
     // TODO: ScrollView Zoom Problem
     // after changing the magnification of the scroll view
@@ -286,23 +286,23 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   newTextViewFrame.size.width = [scrollView contentSize].width;
   
   // TODO: ScrollView Zoom Problem - See -viewWillLayout;
-  [scrollView setMagnification:1];
+  [scrollView XP_setMagnification:1];
+  [scrollView setHasHorizontalScroller:NO];
   [textView setFrame:newTextViewFrame];
-  
   [textView setNeedsLayout:YES];
 }
 
 -(IBAction)zoomIn:(id)sender;
 {
   NSScrollView *scrollView = [[self textView] enclosingScrollView];
-  [scrollView setMagnification:[scrollView magnification]+0.25];
+  [scrollView XP_setMagnification:[scrollView XP_magnification]+0.25];
   [scrollView setHasHorizontalScroller:YES];
 }
 
 -(IBAction)zoomOut:(id)sender;
 {
   NSScrollView *scrollView = [[self textView] enclosingScrollView];
-  [scrollView setMagnification:[scrollView magnification]-0.25];
+  [scrollView XP_setMagnification:[scrollView XP_magnification]-0.25];
   [scrollView setHasHorizontalScroller:YES];
 }
 
@@ -367,7 +367,11 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 
 -(BOOL)__canMagnify;
 {
-  return [NSScrollView instancesRespondToSelector:@selector(setMagnification:)];
+#ifdef AFF_ScrollViewNoMagnification
+  return NO;
+#else
+  return YES;
+#endif
 }
 
 -(BOOL)__universalCopyRTFData:(NSData*)rtfData

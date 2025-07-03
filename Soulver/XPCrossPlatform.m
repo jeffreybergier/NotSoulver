@@ -775,12 +775,37 @@ NSArray* XPRunOpenPanel(NSString *extension)
 @end
 
 @implementation NSScrollView (CrossPlatform)
+
 -(void)XP_setDrawsBackground:(BOOL)drawsBackground;
 {
 #ifdef MAC_OS_X_VERSION_10_2
   [self setDrawsBackground:drawsBackground];
 #endif
 }
+
+-(void)XP_setAllowsMagnification:(BOOL)flag;
+{
+#ifndef AFF_ScrollViewNoMagnification
+  [self setAllowsMagnification:flag];
+#endif
+}
+
+-(void)XP_setMagnification:(XPFloat)newValue;
+{
+#ifndef AFF_ScrollViewNoMagnification
+  [self setMagnification:newValue];
+#endif
+}
+
+-(XPFloat)XP_magnification;
+{
+#ifdef AFF_ScrollViewNoMagnification
+  return 1.0;
+#else
+  return [self magnification];
+#endif
+}
+
 @end
 
 @implementation XPLog

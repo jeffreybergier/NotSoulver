@@ -105,6 +105,7 @@ typedef float XPFloat;
 #define AFF_MainMenuFailsNSApplicationMain
 #define AFF_MainMenuNotRetainedBySystem
 #define AFF_MainMenuRequiresSetAppleMenu
+#define AFF_ScrollViewNoMagnification
 
 #ifdef MAC_OS_X_VERSION_10_2
 #undef AFF_MainMenuNotRetainedBySystem
@@ -116,6 +117,7 @@ typedef float XPFloat;
 
 #ifdef MAC_OS_X_VERSION_10_8
 #undef AFF_MainMenuFailsNSApplicationMain
+#undef AFF_ScrollViewNoMagnification
 #endif
 
 // MARK: NSDocument
@@ -487,6 +489,9 @@ NSArray* XPRunOpenPanel(NSString *extension);
 
 @interface NSScrollView (CrossPlatform)
 -(void)XP_setDrawsBackground:(BOOL)drawsBackground;
+-(void)XP_setAllowsMagnification:(BOOL)flag;
+-(void)XP_setMagnification:(XPFloat)newValue;
+-(XPFloat)XP_magnification;
 @end
 
 // MARK: XPLogging
