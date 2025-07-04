@@ -31,17 +31,23 @@
 #import "SVRDocument.h"
 #import "NSUserDefaults+Soulver.h"
 
-SVRAppDelegate *_sharedDelegate = nil;
-
 @implementation SVRAppDelegate
 
 +(id)sharedDelegate;
 {
-  if (!_sharedDelegate) {
-    _sharedDelegate = [[SVRAppDelegate alloc] init];
+  static SVRAppDelegate *sharedInstance = nil;
+#ifdef AFF_ObjCNoDispatch
+  if (sharedInstance == nil) {
+    sharedInstance = [[SVRAppDelegate alloc] init];
   }
-  XPParameterRaise(_sharedDelegate);
-  return _sharedDelegate;
+#else
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    sharedInstance = [[SVRAppDelegate alloc] init];
+  });
+#endif
+  XPParameterRaise(sharedInstance);
+  return sharedInstance;
 }
 
 -(id)init;
@@ -164,8 +170,6 @@ SVRAppDelegate *_sharedDelegate = nil;
 -(void)applicationWillTerminate:(NSNotification*)aNotification;
 {
   [self endObservingEffectiveAppearance:[aNotification object]];
-  [_sharedDelegate release];
-  _sharedDelegate = nil;
 }
 
 @end

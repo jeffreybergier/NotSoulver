@@ -385,9 +385,16 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
 +(LocalizedProxy*)sharedProxy;
 {
   static LocalizedProxy *sharedInstance = nil;
+#ifdef AFF_ObjCNoDispatch
   if (sharedInstance == nil) {
     sharedInstance = [LocalizedProxy alloc];
   }
+#else
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    sharedInstance = [LocalizedProxy alloc];
+  });
+#endif
   XPParameterRaise(sharedInstance);
   return sharedInstance;
 }
