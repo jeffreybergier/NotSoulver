@@ -48,10 +48,10 @@ int main(int argc, const char *argv[]) {
   NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
 #endif
   NSApplication *app = [NSApplication sharedApplication];
+  XPCParameterRaise(app);
   
   // 2. Log the environment
   [XPLog logCheckedPoundDefines];
-  XPCParameterRaise(app);
   
   // 3. Execute Unit Tests
   TestsUnitExecute();

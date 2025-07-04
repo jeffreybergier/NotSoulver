@@ -146,7 +146,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
     // As long as zoom is never used, everything works normally
     textViewFrame.size.width = scrollViewWidth;
     [textView setFrame:textViewFrame];
-    XPLogExtra1(@"Manually Resized TextView(%@)", textView);
+    XPLogDebug(@"[HACK] Manually Resized TextView");
   }
 }
 
