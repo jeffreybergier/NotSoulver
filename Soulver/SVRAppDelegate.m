@@ -452,8 +452,8 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   NSMenuItem *item = nil;
   
   // Application menu
-  item = [mainMenu addItemWithTitle:@"MENU-App" action:NULL keyEquivalent:@""];
-  menu = [[[NSMenu alloc] initWithTitle:@"ITEM-App"] autorelease];
+  item = [mainMenu addItemWithTitle:NSLocalizedString(@"MENU-App", @"This menu title is not shown") action:NULL keyEquivalent:@""];
+  menu = [[[NSMenu alloc] initWithTitle:NSLocalizedString(@"ITEM-App", @"This menu title is not shown")] autorelease];
   [storage addObject:menu];
   [mainMenu setSubmenu:menu forItem:item];
 #ifdef AFF_MainMenuRequiresSetAppleMenu
