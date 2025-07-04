@@ -106,6 +106,7 @@ typedef float XPFloat;
 #define AFF_MainMenuNotRetainedBySystem
 #define AFF_MainMenuRequiresSetAppleMenu
 #define AFF_ScrollViewNoMagnification
+#define AFF_NSWindowNoFullScreen
 
 #ifdef MAC_OS_X_VERSION_10_2
 #undef AFF_MainMenuNotRetainedBySystem
@@ -118,6 +119,10 @@ typedef float XPFloat;
 #ifdef MAC_OS_X_VERSION_10_8
 #undef AFF_MainMenuFailsNSApplicationMain
 #undef AFF_ScrollViewNoMagnification
+#endif
+
+#ifdef MAC_OS_X_VERSION_10_15
+#undef AFF_NSWindowNoFullScreen
 #endif
 
 // MARK: NSDocument
