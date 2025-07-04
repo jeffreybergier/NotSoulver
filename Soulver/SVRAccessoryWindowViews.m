@@ -247,7 +247,7 @@
   [_selectorControl setImage:[[NSImage imageNamed:[Localized imageThemeAuto ]] SVR_setTemplate:YES] forSegment:0];
   [_selectorControl setImage:[[NSImage imageNamed:[Localized imageThemeLight]] SVR_setTemplate:YES] forSegment:1];
   [_selectorControl setImage:[[NSImage imageNamed:[Localized imageThemeDark ]] SVR_setTemplate:YES] forSegment:2];
-  [_selectorControl setAction:SVR_selectorOfKind(SVRSelectorKindWriteUserInterfaceStyle)];
+  [_selectorControl setAction:@selector(writeUserInterfaceStyle:)];
   [self addSubview:_selectorControl];
   
   // Adjust frames
@@ -270,7 +270,7 @@
   _delaySlider = [[[NSSlider alloc] initWithFrame:slidrRect] autorelease];
   [_delaySlider setMinValue:0];
   [_delaySlider setMaxValue:10];
-  [_delaySlider setAction:SVR_selectorOfKind(SVRSelectorKindWriteWaitTime)];
+  [_delaySlider setAction:@selector(writeWaitTime:)];
   [self addSubview:_delaySlider];
   
   XPParameterRaise(_selectorControl);
@@ -336,7 +336,7 @@
     } else {
       [self addSubview:[NSButton SVR_settingsButtonWithFrame:SVR_rectByAdjustingAquaButtonRect(resetRect)
                                                        title:[Localized verbReset]
-                                                      action:SVR_selectorOfKind(SVRSelectorKindReset)
+                                                      action:@selector(reset:)
                                                          tag:resetKind]];
       colorWell = [NSColorWell SVR_colorWellWithFrame:darkkRect kind:colorKind];
       [self addSubview:colorWell];
@@ -427,11 +427,11 @@
     // Buttons
     [self addSubview:[NSButton SVR_settingsButtonWithFrame:SVR_rectByAdjustingAquaButtonRect(setttRect)
                                                      title:[Localized verbSet]
-                                                    action:SVR_selectorOfKind(SVRSelectorKindPresentFontPanel)
+                                                    action:@selector(presentFontPanel:)
                                                        tag:fontKind]];
     [self addSubview:[NSButton SVR_settingsButtonWithFrame:SVR_rectByAdjustingAquaButtonRect(resetRect)
                                                      title:[Localized verbReset]
-                                                    action:SVR_selectorOfKind(SVRSelectorKindReset)
+                                                    action:@selector(reset:)
                                                        tag:resetKind]];
     
     // Adjust frames
@@ -596,7 +596,7 @@
   [button setTitle:SVR_titleForKeypadButtonOfKind(kind)];
   [button setKeyEquivalent:SVR_keyForKeypadButtonOfKind(kind)];
   [button setTag:kind];
-  [button setAction:SVR_selectorOfKind(SVRSelectorKindKeypadAppend)];
+  [button setAction:@selector(keypadAppend:)];
   [button XP_setBezelStyle:XPBezelStyleFlexiblePush];
   return button;
 }
@@ -619,7 +619,7 @@
 {
   NSColorWell *well = [[[NSColorWell alloc] initWithFrame:frame] autorelease];
   [well setTag:kind];
-  [well setAction:SVR_selectorOfKind(SVRSelectorKindWriteColor)];
+  [well setAction:@selector(writeColor:)];
   return well;
 }
 
@@ -738,35 +738,6 @@
   return self;
 }
 @end
-
-SEL SVR_selectorOfKind(SVRSelectorKind kind)
-{
-  SEL output = NULL;
-  switch (kind) {
-    case SVRSelectorKindReset:
-      output = NSSelectorFromString(@"reset:");
-      break;
-    case SVRSelectorKindKeypadAppend:
-      output = NSSelectorFromString(@"keypadAppend:");
-      break;
-    case SVRSelectorKindWriteColor:
-      output = NSSelectorFromString(@"writeColor:");
-      break;
-    case SVRSelectorKindWriteWaitTime:
-      output = NSSelectorFromString(@"writeWaitTime:");
-      break;
-    case SVRSelectorKindWriteUserInterfaceStyle:
-      output = NSSelectorFromString(@"writeUserInterfaceStyle:");
-      break;
-    case SVRSelectorKindPresentFontPanel:
-      output = NSSelectorFromString(@"presentFontPanel:");
-      break;
-    default:
-      output = NULL;
-  }
-  XPCLogAssrt1(output!=NULL, @"[UNKNOWN] SVRSelectorKind(%d)", (int)kind);
-  return output;
-}
 
 NSRect SVR_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 {

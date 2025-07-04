@@ -33,16 +33,6 @@
 
 // MARK: View Enumerations
 
-typedef XP_ENUM(XPInteger, SVRSelectorKind) {
-  SVRSelectorKindUnknown,
-  SVRSelectorKindReset,
-  SVRSelectorKindKeypadAppend,
-  SVRSelectorKindWriteColor,
-  SVRSelectorKindWriteWaitTime,
-  SVRSelectorKindWriteUserInterfaceStyle,
-  SVRSelectorKindPresentFontPanel
-};
-
 typedef XP_ENUM(XPInteger, SVRColorWellKind) {
   SVRColorWellKindUnknown,
   SVRColorWellKindOperandLight,
@@ -237,7 +227,6 @@ static const XPFloat SVRAccessoryWindowKeypadWindowButtonHPadding = 4;
 -(void)XP_setSendsActionOnEndEditing:(BOOL)sendsAction;
 @end
 
-SEL SVR_selectorOfKind(SVRSelectorKind kind);
 NSRect SVR_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind);
 NSRect SVR_rectByAdjustingAquaButtonRect(NSRect rect);
 NSString *SVR_titleForKeypadButtonOfKind(SVRKeypadButtonKind kind);
@@ -245,3 +234,14 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind);
 NSString *SVR_localizedStringForKind(SVRResetButtonKind kind);
 SVRResetButtonKind SVR_resetButtonKindForColorWellKind(SVRColorWellKind kind);
 SVRResetButtonKind SVR_resetButtonKindForFontSettingKind(SVRThemeFont kind);
+
+// These are not implemented, but silence compiler warnings
+@interface NSResponder (SVRIBActions)
+-(IBAction)openSourceRepository:(id)sender;
+-(IBAction)presentFontPanel:(id)sender;
+-(IBAction)writeUserInterfaceStyle:(id)sender;
+-(IBAction)writeColor:(id)sender;
+-(IBAction)writeWaitTime:(id)sender;
+-(IBAction)keypadAppend:(id)sender;
+-(IBAction)reset:(id)sender;
+@end

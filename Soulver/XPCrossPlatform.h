@@ -494,6 +494,12 @@ NSArray* XPRunOpenPanel(NSString *extension);
 -(XPFloat)XP_magnification;
 @end
 
+// These are not implemented, but silence compiler warnings
+@interface NSResponder (XPFirstResponder)
+-(IBAction)undo:(id)sender;
+-(IBAction)redo:(id)sender;
+@end
+
 // MARK: XPLogging
 
 @interface XPLog: NSObject

@@ -149,7 +149,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   [window XP_setRestorationClass:appDelegateClass];
   [window setInitialFirstResponder:[[window contentView] viewSourceButton]];
   [[[window contentView] textView] setString:[Localized phraseAboutParagraph]];
-  [[[window contentView] viewSourceButton] setAction:NSSelectorFromString(@"openSourceRepository:")];
+  [[[window contentView] viewSourceButton] setAction:@selector(openSourceRepository:)];
   
   // MARK: SVRAccessoryWindowSettings
   
