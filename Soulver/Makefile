@@ -17,7 +17,7 @@ NEXTSTEP_DOCICONS =
 
 ICONSECTIONS =	-sectcreate __ICON app /NextLibrary/Frameworks/AppKit.framework/Resources/NSDefaultApplicationIcon.tiff
 
-LOCAL_RESOURCES = MainMenu_42.nib Localizable.strings
+LOCAL_RESOURCES = Localizable.strings
 
 GLOBAL_RESOURCES = Images/about-image-512.tiff Images/NeXTLogoMed.tiff\
                    Images/TagLine.tiff Images/ThemeAuto.tiff\
