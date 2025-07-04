@@ -67,9 +67,13 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   
   // ScrollView
   [scrollView setHasVerticalScroller:YES];
-  [scrollView setHasHorizontalScroller:NO];
   [scrollView XP_setAllowsMagnification:YES];
   [scrollView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+#ifdef AFF_ScrollViewNoMagnification
+  [scrollView setHasHorizontalScroller:NO];
+#else
+  [scrollView setHasHorizontalScroller:YES];
+#endif
   
   // TextView
   [textView setMinSize:NSMakeSize(0, 0)];
@@ -291,7 +295,6 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   
   // TODO: ScrollView Zoom Problem - See -viewWillLayout;
   [scrollView XP_setMagnification:1];
-  [scrollView setHasHorizontalScroller:NO];
   [textView setFrame:newTextViewFrame];
 }
 
@@ -299,14 +302,12 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 {
   NSScrollView *scrollView = [[self textView] enclosingScrollView];
   [scrollView XP_setMagnification:[scrollView XP_magnification]+0.25];
-  [scrollView setHasHorizontalScroller:YES];
 }
 
 -(IBAction)zoomOut:(id)sender;
 {
   NSScrollView *scrollView = [[self textView] enclosingScrollView];
   [scrollView XP_setMagnification:[scrollView XP_magnification]-0.25];
-  [scrollView setHasHorizontalScroller:YES];
 }
 
 -(IBAction)cutUnsolved:(id)sender;
