@@ -96,6 +96,16 @@ typedef XP_ENUM(XPInteger, SVRThemeFont) {
 +(NSDictionary*)__SVR_standardDictionary;
 @end
 
+#ifdef AFF_ObjCNSMethodSignatureUndocumentedClassMethod
+// TODO: HACK Silences Warning in OpenStep
+// This method is not declared in the header in OpenStep
+// but it does respond to this methid and it works fine.
+// So this category method silences the warning.
+@interface NSMethodSignature (CrossPlatform)
++(NSMethodSignature*)signatureWithObjCTypes:(const char*)types;
+@end
+#endif
+
 #define Localized [LocalizedProxy sharedProxy]
 @interface LocalizedProxy: NSProxy
 +(LocalizedProxy*)sharedProxy;

@@ -108,8 +108,10 @@ typedef float XPFloat;
 #define AFF_ScrollViewNoMagnification
 #define AFF_NSWindowNoFullScreen
 #define AFF_ObjCNoDispatch
+#define AFF_ObjCNSMethodSignatureUndocumentedClassMethod
 
 #ifdef MAC_OS_X_VERSION_10_2
+#undef AFF_ObjCNSMethodSignatureUndocumentedClassMethod
 #undef AFF_MainMenuNotRetainedBySystem
 #endif
 
