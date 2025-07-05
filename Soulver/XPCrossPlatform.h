@@ -306,7 +306,7 @@ typedef NSString* XPAttributedStringKey;
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_15
-#define XPBezelStyleFlexiblePush NSBezelStyleFlexiblePush
+#define XPBezelStyleFlexiblePush NSBezelStyleRegularSquare
 #define XPTextFieldRoundedBezel NSTextFieldRoundedBezel
 #elif defined(MAC_OS_X_VERSION_10_2)
 #define XPBezelStyleFlexiblePush NSRegularSquareBezelStyle
