@@ -37,11 +37,18 @@
 @interface SVRAppDelegate: NSObject
 #endif
 {
+  // This menus array is because OpenStep does not retain
+  // the main menu or the top level menus on its own.
+  // I assume this was handled by some magical NIB based
+  // memory mangement before. So this will replace that.
+  mm_new NSMutableArray *_menus;
   mm_new NSMutableSet *_openDocuments;
   mm_new SVRAccessoryWindowsOwner *_accessoryWindowsOwner;
 }
 
 // MARK: Init
+
++(id)sharedDelegate;
 -(id)init;
 
 // MARK: Properties
@@ -51,7 +58,7 @@
 -(IBAction)toggleKeypadPanel:(id)sender;
 -(IBAction)showSettingsWindow:(id)sender;
 -(IBAction)showAboutWindow:(id)sender;
-
+-(IBAction)openSourceRepository:(id)sender;
 @end
 
 @interface SVRAppDelegate (NSApplicationDelegate)
@@ -106,4 +113,31 @@
 +(void)restoreWindowWithIdentifier:(NSString*)identifier
                              state:(NSCoder*)state
                  completionHandler:(XPWindowRestoreCompletionHandler)completionHandler;
+@end
+
+@interface NSMenu (AppDelegate)
++(NSMenu*)SVR_mainMenuWithApp:(NSApplication*)app
+                      storage:(NSMutableArray*)storage;
++(void)__buildAppMenuInMainMenu:(NSMenu*)mainMenu
+                    application:(NSApplication*)app
+                        storage:(NSMutableArray*)storage;
++(void)__buildInfoMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
++(void)__buildFileMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
++(void)__buildEditMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
++(void)__buildViewMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
++(void)__buildWindowsMenuInMainMenu:(NSMenu*)mainMenu
+                                app:(NSApplication*)app
+                            storage:(NSMutableArray*)storage;
++(void)__buildHelpMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
++(void)__buildTrailingMenuInMainMenu:(NSMenu*)mainMenu
+                                 app:(NSApplication*)app
+                             storage:(NSMutableArray*)storage;
+@end
+
+@interface NSMenu (CrossPlatform)
+-(void)XP_addSeparatorItem;
+@end
+
+@interface NSString (SVRMainMenu)
+-(NSString*)SVR_stringByAppendingEllipsis;
 @end

@@ -32,15 +32,14 @@
 void TestsUnitExecute(void)
 {
 #if TESTING==1
-  NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
   [XPLog executeTests];
   [XPRegularExpression executeTests];
   [SVRSolverScanner executeTests];
 #ifdef MAC_OS_X_VERSION_10_4
+  // TODO: Change to Antifeature flat
 //[NSBezierPath saveTestFiles];
   [NSBezierPath executeTests];
 #endif
-  [pool release];
 #endif
 }
 

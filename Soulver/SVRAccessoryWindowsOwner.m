@@ -147,9 +147,8 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   [window setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameAbout];
   [window XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameAbout];
   [window XP_setRestorationClass:appDelegateClass];
-//[window setInitialFirstResponder:[[window contentView] viewSourceButton]];
-  [[[window contentView] textView] setString:[Localized aboutParagraph]];
-  [[[window contentView] viewSourceButton] setTarget:self];
+  [window setInitialFirstResponder:[[window contentView] viewSourceButton]];
+  [[[window contentView] textView] setString:[Localized phraseAboutParagraph]];
   [[[window contentView] viewSourceButton] setAction:@selector(openSourceRepository:)];
   
   // MARK: SVRAccessoryWindowSettings
@@ -179,11 +178,11 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   [nc addObserver:self
          selector:@selector(__windowDidBecomeKey:)
              name:NSWindowDidBecomeKeyNotification
-           object:nil];
+           object:_keypadPanel];
   [nc addObserver:self
          selector:@selector(__windowWillCloseNotification:)
              name:NSWindowWillCloseNotification
-           object:nil];
+           object:_keypadPanel];
   [nc addObserver:self
          selector:@selector(__applicationWillTerminate:)
              name:NSApplicationWillTerminateNotification
@@ -213,73 +212,41 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 
 -(IBAction)showSettingsWindow:(id)sender;
 {
-  [[self settingsWindow] makeKeyAndOrderFront:sender];
+  NSWindow *settingsWindow = [self settingsWindow];
+  [settingsWindow makeKeyAndOrderFront:sender];
 }
 
 -(IBAction)showAboutWindow:(id)sender;
 {
-  [[self aboutWindow] makeKeyAndOrderFront:sender];
+  NSWindow *aboutWindow = [self aboutWindow];
+  [aboutWindow center];
+  [aboutWindow makeKeyAndOrderFront:sender];
 }
 
--(IBAction)openSourceRepository:(id)sender;
-{
-  BOOL success = NO;
-  XPAlertReturn copyToClipboard = XPAlertReturnError;
-  NSPasteboard *pb = [NSPasteboard generalPasteboard];
-  NSWorkspace *ws = [NSWorkspace sharedWorkspace];
-  NSString *webURLToOpen = [Localized phraseSourceRepositoryURL];
-  success = [ws XP_openWebURL:webURLToOpen];
-  if (success) { return; }
-  NSBeep();
-  copyToClipboard = XPRunCopyWebURLToPasteboardAlert(webURLToOpen);
-  switch (copyToClipboard) {
-    case XPAlertReturnDefault:
-      [pb declareTypes:[NSArray arrayWithObject:XPPasteboardTypeString] owner:self];
-      success = [pb setString:webURLToOpen forType:XPPasteboardTypeString];
-      XPLogAssrt1(success, @"[NSPasteboard setString:%@", webURLToOpen);
-      return;
-    default:
-      XPLogDebug1(@"[Cancelled] [NSPasteboard setString:%@", webURLToOpen);
-      return;
-  }
-}
-
-// MARK: Restore Window State
+// MARK: Restore Keypad Visibility
 -(void)legacy_restoreWindowVisibility;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  
-  BOOL keypadVisible    = [ud SVR_visibilityForWindowWithFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameKeypad  ];
-  BOOL aboutVisible     = [ud SVR_visibilityForWindowWithFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameAbout   ];
-  BOOL settingsVisible  = [ud SVR_visibilityForWindowWithFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameSettings];
-  
-  if (keypadVisible)   { [self  toggleKeypadPanel:ud]; }
-  if (aboutVisible)    { [self    showAboutWindow:ud]; }
-  if (settingsVisible) { [self showSettingsWindow:ud]; }
+  BOOL keypadVisible = [ud SVR_visibilityForWindowWithFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameKeypad];
+  if (keypadVisible) { 
+    [self toggleKeypadPanel:ud];
+	}
 }
 
 // MARK: Notifications (Save window state)
 
 -(void)__windowDidBecomeKey:(NSNotification*)aNotification;
 {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   NSWindow *window = [aNotification object];
-  BOOL isOwnedWindow = window == [self keypadPanel]
-                    || window == [self aboutWindow]
-                    || window == [self settingsWindow];
-  XPLogAssrt1([window isKindOfClass:[NSWindow class]], @"%@ not a window", window);
-  if (!isOwnedWindow) { XPLogExtra1(@"%@ not an AccessoryWindow", window); return; }
-  [[NSUserDefaults standardUserDefaults] SVR_setVisibility:YES forWindowWithFrameAutosaveName:[window frameAutosaveName]];
+  [ud SVR_setVisibility:YES forWindowWithFrameAutosaveName:[window frameAutosaveName]];
 }
 
 -(void)__windowWillCloseNotification:(NSNotification*)aNotification;
 {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   NSWindow *window = [aNotification object];
-  BOOL isOwnedWindow = window == [self keypadPanel]
-                    || window == [self aboutWindow]
-                    || window == [self settingsWindow];
-  XPLogAssrt1([window isKindOfClass:[NSWindow class]], @"%@ not a window", window);
-  if (!isOwnedWindow) { XPLogExtra1(@"%@ not an AccessoryWindow", window); return; }
-  [[NSUserDefaults standardUserDefaults] SVR_setVisibility:NO forWindowWithFrameAutosaveName:[window frameAutosaveName]];
+  [ud SVR_setVisibility:NO forWindowWithFrameAutosaveName:[window frameAutosaveName]];
 }
 
 -(void)__applicationWillTerminate:(NSNotification*)aNotification;

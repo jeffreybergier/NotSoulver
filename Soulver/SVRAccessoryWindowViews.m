@@ -247,7 +247,7 @@
   [_selectorControl setImage:[[NSImage imageNamed:[Localized imageThemeAuto ]] SVR_setTemplate:YES] forSegment:0];
   [_selectorControl setImage:[[NSImage imageNamed:[Localized imageThemeLight]] SVR_setTemplate:YES] forSegment:1];
   [_selectorControl setImage:[[NSImage imageNamed:[Localized imageThemeDark ]] SVR_setTemplate:YES] forSegment:2];
-  [_selectorControl setAction:SVR_selectorOfKind(SVRSelectorKindWriteUserInterfaceStyle)];
+  [_selectorControl setAction:@selector(writeUserInterfaceStyle:)];
   [self addSubview:_selectorControl];
   
   // Adjust frames
@@ -270,7 +270,7 @@
   _delaySlider = [[[NSSlider alloc] initWithFrame:slidrRect] autorelease];
   [_delaySlider setMinValue:0];
   [_delaySlider setMaxValue:10];
-  [_delaySlider setAction:SVR_selectorOfKind(SVRSelectorKindWriteWaitTime)];
+  [_delaySlider setAction:@selector(writeWaitTime:)];
   [self addSubview:_delaySlider];
   
   XPParameterRaise(_selectorControl);
@@ -336,7 +336,7 @@
     } else {
       [self addSubview:[NSButton SVR_settingsButtonWithFrame:SVR_rectByAdjustingAquaButtonRect(resetRect)
                                                        title:[Localized verbReset]
-                                                      action:SVR_selectorOfKind(SVRSelectorKindReset)
+                                                      action:@selector(reset:)
                                                          tag:resetKind]];
       colorWell = [NSColorWell SVR_colorWellWithFrame:darkkRect kind:colorKind];
       [self addSubview:colorWell];
@@ -427,11 +427,11 @@
     // Buttons
     [self addSubview:[NSButton SVR_settingsButtonWithFrame:SVR_rectByAdjustingAquaButtonRect(setttRect)
                                                      title:[Localized verbSet]
-                                                    action:SVR_selectorOfKind(SVRSelectorKindPresentFontPanel)
+                                                    action:@selector(presentFontPanel:)
                                                        tag:fontKind]];
     [self addSubview:[NSButton SVR_settingsButtonWithFrame:SVR_rectByAdjustingAquaButtonRect(resetRect)
                                                      title:[Localized verbReset]
-                                                    action:SVR_selectorOfKind(SVRSelectorKindReset)
+                                                    action:@selector(reset:)
                                                        tag:resetKind]];
     
     // Adjust frames
@@ -489,7 +489,7 @@
 
 -(XPInteger)selectedSegment;
 {
-  return _selectedSegment;
+  return (XPInteger)_selectedSegment;
 }
 
 -(void)setSelectedSegment:(XPInteger)_selection;
@@ -501,12 +501,12 @@
   for (index=0; index<count; index++) {
     [[_buttons objectAtIndex:index] setState:index==selection];
   }
-  _selectedSegment = _selection;
+  _selectedSegment = selection;
 }
 
 -(NSString*)labelForSegment:(XPInteger)segment;
 {
-  return [[_buttons objectAtIndex:segment] title];
+  return [[_buttons objectAtIndex:(XPUInteger)segment] title];
 }
 
 -(void)setLabel:(NSString*)label forSegment:(XPInteger)segment;
@@ -514,16 +514,16 @@
   XPInteger count = (XPInteger)[_buttons count];
   NSButton *button = nil;
   if (segment < count) {
-    [[_buttons objectAtIndex:segment] setTitle:label];
+    [[_buttons objectAtIndex:(XPUInteger)segment] setTitle:label];
   } else {
-    button = [self __newButtonAtIndex:segment];
+    button = [self __insertButtonAtIndex:segment];
     [button setTitle:label];
   }
 }
 
 -(NSImage*)imageForSegment:(XPInteger)segment;
 {
-  return [[_buttons objectAtIndex:segment] image];
+  return [[_buttons objectAtIndex:(XPUInteger)segment] image];
 }
 
 -(void)setImage:(NSImage*)image forSegment:(XPInteger)segment;
@@ -531,26 +531,26 @@
   XPInteger count = (XPInteger)[_buttons count];
   NSButton *button = nil;
   if (segment < count) {
-    [[_buttons objectAtIndex:segment] setImage:image];
+    [[_buttons objectAtIndex:(XPUInteger)segment] setImage:image];
   } else {
-    button = [self __newButtonAtIndex:segment];
+    button = [self __insertButtonAtIndex:segment];
     [button setImage:image];
   }
 }
 
 -(IBAction)__selectedSegmentChanged:(NSButton*)sender;
 {
-  XPUInteger index = [_buttons indexOfObject:sender];
+  XPInteger index = (XPInteger)[_buttons indexOfObject:sender];
   XPLogAssrt1(index != (XPUInteger)NSNotFound, @"[UNKNOWN] Sender(%@)", sender);
 	XPLogAssrt([self action], @"Selector was NULL");
   [self setSelectedSegment:index];
   [self sendAction:[self action] to:[self target]];
 }
 
--(NSButton*)__newButtonAtIndex:(XPInteger)index;
+-(NSButton*)__insertButtonAtIndex:(XPInteger)index;
 {
-  NSButton *button = [[[NSButton alloc] initWithFrame:NSZeroRect] autorelease];
-  [_buttons insertObject:button atIndex:index];
+  NSButton *button = [[NSButton alloc] initWithFrame:NSZeroRect];
+  [_buttons insertObject:button atIndex:(XPUInteger)index];
   
   [button XP_setBezelStyle:XPBezelStyleFlexiblePush];
   [button setButtonType:XPButtonTypePushOnPushOff];
@@ -559,7 +559,7 @@
   [button setTarget:self];
   
   [self __recalculateFrames];
-  [self setSelectedSegment:_selectedSegment];
+  [self setSelectedSegment:(XPInteger)_selectedSegment];
   [self addSubview:button];
   return button;
 }
@@ -567,10 +567,10 @@
 -(void)__recalculateFrames;
 {
   const XPFloat kPad = 4;
-  XPInteger index = 0;
+  XPUInteger index = 0;
   NSRect myBounds = [self bounds];
   NSRect buttonFrame = myBounds;
-  XPInteger count = [_buttons count];
+  XPUInteger count = [_buttons count];
   
   buttonFrame.size.width = floor(myBounds.size.width/count) - (kPad/2);
   for (index=0; index<count; index++) {
@@ -596,7 +596,7 @@
   [button setTitle:SVR_titleForKeypadButtonOfKind(kind)];
   [button setKeyEquivalent:SVR_keyForKeypadButtonOfKind(kind)];
   [button setTag:kind];
-  [button setAction:SVR_selectorOfKind(SVRSelectorKindKeypadAppend)];
+  [button setAction:@selector(keypadAppend:)];
   [button XP_setBezelStyle:XPBezelStyleFlexiblePush];
   return button;
 }
@@ -619,7 +619,7 @@
 {
   NSColorWell *well = [[[NSColorWell alloc] initWithFrame:frame] autorelease];
   [well setTag:kind];
-  [well setAction:SVR_selectorOfKind(SVRSelectorKindWriteColor)];
+  [well setAction:@selector(writeColor:)];
   return well;
 }
 
@@ -738,35 +738,6 @@
   return self;
 }
 @end
-
-SEL SVR_selectorOfKind(SVRSelectorKind kind)
-{
-  SEL output = NULL;
-  switch (kind) {
-    case SVRSelectorKindReset:
-      output = NSSelectorFromString(@"reset:");
-      break;
-    case SVRSelectorKindKeypadAppend:
-      output = NSSelectorFromString(@"keypadAppend:");
-      break;
-    case SVRSelectorKindWriteColor:
-      output = NSSelectorFromString(@"writeColor:");
-      break;
-    case SVRSelectorKindWriteWaitTime:
-      output = NSSelectorFromString(@"writeWaitTime:");
-      break;
-    case SVRSelectorKindWriteUserInterfaceStyle:
-      output = NSSelectorFromString(@"writeUserInterfaceStyle:");
-      break;
-    case SVRSelectorKindPresentFontPanel:
-      output = NSSelectorFromString(@"presentFontPanel:");
-      break;
-    default:
-      output = NULL;
-  }
-  XPCLogAssrt1(output!=NULL, @"[UNKNOWN] SVRSelectorKind(%d)", (int)kind);
-  return output;
-}
 
 NSRect SVR_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 {

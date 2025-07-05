@@ -28,20 +28,27 @@
 //
 
 #import <AppKit/AppKit.h>
-#import "NSUserDefaults+Soulver.h"
+#import "SVRAppDelegate.h"
 #import "TestsIntegration.h"
 #import "TestsUnit.h"
 
 int main(int argc, const char *argv[]) {
   
-  // MARK: Boot Sequence
-  // 1. Warn when build includes features that should not be in release build
+  // Warn when build includes features that should not be in release build
 #if TESTING==1
   int WARN_TESTING_ENABLED = TESTING;
 #endif
 #if LOGLEVEL >= LOGLEVELDEBUG
   int WARN_HEAVY_LOGGING_ENABLED = LOGLEVEL;
 #endif
+  
+  // MARK: Boot Sequence
+  // 1. Get necessary references
+#ifdef AFF_MainMenuFailsNSApplicationMain
+  NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
+#endif
+  NSApplication *app = [NSApplication sharedApplication];
+  XPCParameterRaise(app);
   
   // 2. Log the environment
   [XPLog logCheckedPoundDefines];
@@ -51,5 +58,12 @@ int main(int argc, const char *argv[]) {
   TestsIntegrationExecute();
   
   // 4. Load NSApplication
+  [app setDelegate:[SVRAppDelegate sharedDelegate]];
+#ifdef AFF_MainMenuFailsNSApplicationMain
+  [app run];
+  [pool release];
+  return 0;
+#else
   return NSApplicationMain(argc, argv);
+#endif
 }

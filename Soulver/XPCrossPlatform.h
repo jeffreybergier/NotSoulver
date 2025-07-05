@@ -100,6 +100,35 @@ typedef float XPFloat;
   #define XP_ENUM(_type, _name) _type _name; enum
 #endif
 
+// MARK: Antifeature Flags
+
+#define AFF_MainMenuFailsNSApplicationMain
+#define AFF_MainMenuNotRetainedBySystem
+#define AFF_MainMenuRequiresSetAppleMenu
+#define AFF_ScrollViewNoMagnification
+#define AFF_NSWindowNoFullScreen
+#define AFF_ObjCNoDispatch
+#define AFF_ObjCNSMethodSignatureUndocumentedClassMethod
+
+#ifdef MAC_OS_X_VERSION_10_2
+#undef AFF_MainMenuNotRetainedBySystem
+#endif
+
+#ifdef MAC_OS_X_VERSION_10_6
+#undef AFF_ObjCNSMethodSignatureUndocumentedClassMethod
+#undef AFF_MainMenuRequiresSetAppleMenu
+#endif
+
+#ifdef MAC_OS_X_VERSION_10_8
+#undef AFF_MainMenuFailsNSApplicationMain
+#undef AFF_ScrollViewNoMagnification
+#undef AFF_ObjCNoDispatch
+#endif
+
+#ifdef MAC_OS_X_VERSION_10_15
+#undef AFF_NSWindowNoFullScreen
+#endif
+
 // MARK: NSDocument
 
 #define XPDocument id<XPDocumentProtocol>
@@ -112,6 +141,18 @@ typedef float XPFloat;
 #define XPSupportsNSDocument 1 // NSDocument exists but URL API's appear not to work properly
 #else
 #define XPSupportsNSDocument 0 // NSDocument does not exist
+#endif
+
+#define XPSupportsTextFindNone 0
+#define XPSupportsTextFindPanel 1
+#define XPSupportsTextFinder 2
+
+#ifdef MAC_OS_X_VERSION_10_8
+#define XPSupportsTextFind XPSupportsTextFinder
+#elif defined(MAC_OS_X_VERSION_10_4)
+#define XPSupportsTextFind XPSupportsTextFindPanel
+#else
+#define XPSupportsTextFind XPSupportsTextFindNone
 #endif
 
 #define XPUserInterfaceGlass 2
@@ -159,6 +200,7 @@ typedef NSBezelStyle XPBezelStyle;
 #define XPSupportsTexturedWindows
 #define XPSupportsUtilityWindows
 #define XPSupportsButtonStyles
+#define XPSupportsApplicationMenu
 #else
 typedef XPUInteger XPBezelStyle;
 #define XPKeyedArchiver NSArchiver
@@ -188,6 +230,7 @@ typedef NSViewController XPViewController;
 #define XPWindowCollectionBehavior NSWindowCollectionBehavior
 #define XPSupportsFormalProtocols // Protocols like NSWindowDelegate were formally added
 #define XPSupportsTemplateImage
+#define XPSupportsTextViewGrammarChecks
 #else
 typedef XPUInteger XPStringCompareOptions;
 #define XPViewController NSResponder
@@ -228,6 +271,9 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPWindowStyleMaskResizable NSWindowStyleMaskResizable
 #define XPWindowStyleMaskUtilityWindow NSWindowStyleMaskUtilityWindow
 #define XPTextFieldBezelStyle NSTextFieldBezelStyle
+#define XPEventModifierFlagOption NSEventModifierFlagOption
+#define XPEventModifierFlagCommand NSEventModifierFlagCommand
+#define XPEventModifierFlagShift NSEventModifierFlagShift
 #define XPSupportsAttractiveRoundTextFields
 #else
 #define XPTextAlignmentCenter NSCenterTextAlignment
@@ -245,6 +291,9 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPWindowStyleMaskMiniaturizable NSMiniaturizableWindowMask
 #define XPWindowStyleMaskResizable NSResizableWindowMask
 #define XPWindowStyleMaskUtilityWindow NSUtilityWindowMask
+#define XPEventModifierFlagOption NSAlternateKeyMask
+#define XPEventModifierFlagCommand NSCommandKeyMask
+#define XPEventModifierFlagShift NSShiftKeyMask
 #define XPTextFieldBezelStyle XPBezelStyle
 #endif
 
@@ -257,7 +306,7 @@ typedef NSString* XPAttributedStringKey;
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_15
-#define XPBezelStyleFlexiblePush NSBezelStyleFlexiblePush
+#define XPBezelStyleFlexiblePush NSBezelStyleRegularSquare
 #define XPTextFieldRoundedBezel NSTextFieldRoundedBezel
 #elif defined(MAC_OS_X_VERSION_10_2)
 #define XPBezelStyleFlexiblePush NSRegularSquareBezelStyle
@@ -405,7 +454,12 @@ NSArray* XPRunOpenPanel(NSString *extension);
 
 @interface NSTextView (CrossPlatform)
 -(void)XP_insertText:(id)string;
--(void)XP_setAllowsUndo:(BOOL)isAllowed;
+-(void)XP_setAllowsUndo:(BOOL)flag;
+-(void)XP_setUsesFindPanel:(BOOL)flag;
+-(void)XP_setUsesFindBar:(BOOL)flag;
+-(void)XP_setContinuousSpellCheckingEnabled:(BOOL)flag;
+-(void)XP_setGrammarCheckingEnabled:(BOOL)flag;
+-(void)XP_setAutomaticSpellingCorrectionEnabled:(BOOL)flag;
 @end
 
 @interface NSTextField (CrossPlatform)
@@ -444,6 +498,15 @@ NSArray* XPRunOpenPanel(NSString *extension);
 
 @interface NSScrollView (CrossPlatform)
 -(void)XP_setDrawsBackground:(BOOL)drawsBackground;
+-(void)XP_setAllowsMagnification:(BOOL)flag;
+-(void)XP_setMagnification:(XPFloat)newValue;
+-(XPFloat)XP_magnification;
+@end
+
+// These are not implemented, but silence compiler warnings
+@interface NSResponder (XPFirstResponder)
+-(IBAction)undo:(id)sender;
+-(IBAction)redo:(id)sender;
 @end
 
 // MARK: XPLogging

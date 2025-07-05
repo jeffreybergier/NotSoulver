@@ -579,12 +579,48 @@ NSArray* XPRunOpenPanel(NSString *extension)
 #endif
 }
 
--(void)XP_setAllowsUndo:(BOOL)isAllowed;
+-(void)XP_setAllowsUndo:(BOOL)flag;
 {
 #if XPSupportsNSDocument >= 1
-  [self setAllowsUndo:isAllowed];
+  [self setAllowsUndo:flag];
 #endif
 }
+
+-(void)XP_setUsesFindPanel:(BOOL)flag;
+{
+#if XPSupportsTextFind >= XPSupportsTextFindPanel
+  [self setUsesFindPanel:flag];
+#endif
+}
+
+-(void)XP_setUsesFindBar:(BOOL)flag;
+{
+#if XPSupportsTextFind >= XPSupportsTextFinder
+  [self setUsesFindBar:flag];
+#endif
+}
+
+-(void)XP_setContinuousSpellCheckingEnabled:(BOOL)flag;
+{
+#ifdef XPSupportsTextViewGrammarChecks
+  [self setContinuousSpellCheckingEnabled:flag];
+#endif
+}
+
+-(void)XP_setGrammarCheckingEnabled:(BOOL)flag;
+{
+#ifdef XPSupportsTextViewGrammarChecks
+  [self setGrammarCheckingEnabled:flag];
+#endif
+}
+
+-(void)XP_setAutomaticSpellingCorrectionEnabled:(BOOL)flag;
+{
+#ifdef XPSupportsTextViewGrammarChecks
+  [self setAutomaticSpellingCorrectionEnabled:flag];
+#endif
+}
+
 @end
 
 @implementation NSTextField (CrossPlatform)
@@ -739,12 +775,37 @@ NSArray* XPRunOpenPanel(NSString *extension)
 @end
 
 @implementation NSScrollView (CrossPlatform)
+
 -(void)XP_setDrawsBackground:(BOOL)drawsBackground;
 {
 #ifdef MAC_OS_X_VERSION_10_2
   [self setDrawsBackground:drawsBackground];
 #endif
 }
+
+-(void)XP_setAllowsMagnification:(BOOL)flag;
+{
+#ifndef AFF_ScrollViewNoMagnification
+  [self setAllowsMagnification:flag];
+#endif
+}
+
+-(void)XP_setMagnification:(XPFloat)newValue;
+{
+#ifndef AFF_ScrollViewNoMagnification
+  [self setMagnification:newValue];
+#endif
+}
+
+-(XPFloat)XP_magnification;
+{
+#ifdef AFF_ScrollViewNoMagnification
+  return 1.0;
+#else
+  return [self magnification];
+#endif
+}
+
 @end
 
 @implementation XPLog

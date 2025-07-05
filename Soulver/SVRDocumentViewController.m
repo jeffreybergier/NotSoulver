@@ -67,8 +67,13 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   
   // ScrollView
   [scrollView setHasVerticalScroller:YES];
-  [scrollView setHasHorizontalScroller:NO];
+  [scrollView XP_setAllowsMagnification:YES];
   [scrollView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+#ifdef AFF_ScrollViewNoMagnification
+  [scrollView setHasHorizontalScroller:NO];
+#else
+  [scrollView setHasHorizontalScroller:YES];
+#endif
   
   // TextView
   [textView setMinSize:NSMakeSize(0, 0)];
@@ -76,7 +81,13 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   [textView setVerticallyResizable:YES];
   [textView setHorizontallyResizable:NO];
   [textView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+  [textView XP_setUsesFindPanel:YES];
+  [textView XP_setUsesFindBar:YES];
   [textView XP_setAllowsUndo:YES];
+  // TODO: Consider preserving these settings in NSUserDefaults
+  [textView XP_setContinuousSpellCheckingEnabled:YES];
+  [textView XP_setGrammarCheckingEnabled:NO];
+  [textView XP_setAutomaticSpellingCorrectionEnabled:YES];
   
   // ModelController
   [[modelController model] addLayoutManager:layoutManager];
@@ -87,7 +98,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   [scrollView setDocumentView:textView];
   
   // Self
-  _textView = [textView retain];
+  _textView = textView;
   [self setView:scrollView];
   
   // Theming
@@ -96,6 +107,9 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
                                            selector:@selector(__themeDidChangeNotification:)
                                                name:SVRThemeDidChangeNotificationName
                                              object:nil];
+  
+  XPParameterRaise(_textView);
+  XPParameterRaise([self view]);
 }
 
 // MARK: Properties
@@ -111,6 +125,30 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 }
 
 // MARK: Private
+
+-(void)viewWillLayout;
+{
+  NSTextView *textView = [self textView];
+  NSScrollView *scrollView = [textView enclosingScrollView];
+  NSRect textViewFrame = [textView frame];
+  XPFloat scrollViewWidth = [scrollView contentSize].width;
+  XPFloat magnification = [scrollView XP_magnification];
+  if (magnification == 1 && textViewFrame.size.width != scrollViewWidth) {
+    // TODO: ScrollView Zoom Problem
+    // after changing the magnification of the scroll view
+    // even after it is changed back to 1, it no longer
+    // automatically resizes the text view to fit the width.
+    // This is an issue in TextEdit as well, so I assume there
+    // is some sort of issue with NSScrollView.
+    // NOTE: viewWillLayout was added in 10.10 so this feature
+    // is broken in 10.8 Mountain Lion. But its OK
+    // opening and closing the document resolves the issue.
+    // As long as zoom is never used, everything works normally
+    textViewFrame.size.width = scrollViewWidth;
+    [textView setFrame:textViewFrame];
+    XPLogDebug(@"[HACK] Manually Resized TextView");
+  }
+}
 
 -(void)__themeDidChangeNotification:(NSNotification*)aNotification;
 {
@@ -220,13 +258,20 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   NSRange selectedRange = XPNotFoundRange;
   BOOL canCopy  = NO;
   BOOL canPaste = NO;
+  BOOL canMagnify = [self __canMagnify];
   
   menuAction = [menuItem action];
   selectedRange = [[self textView] selectedRange];
   canCopy  = !XPIsNotFoundRange(selectedRange) && selectedRange.length > 0;
   canPaste = !XPIsNotFoundRange(selectedRange);
   
-  if        (menuAction == @selector(copyUnsolved:)) {
+  if        (menuAction == @selector(actualSize:)) {
+    return canMagnify;
+  } else if (menuAction == @selector(zoomIn:)) {
+    return canMagnify;
+  } else if (menuAction == @selector(zoomOut:)) {
+    return canMagnify;
+  } else if (menuAction == @selector(copyUnsolved:)) {
     return canCopy;
   } else if (menuAction == @selector(copyUniversal:)) {
     return canCopy;
@@ -239,6 +284,30 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   }
 
   return NO;
+}
+
+-(IBAction)actualSize:(id)sender;
+{
+  NSTextView *textView = [self textView];
+  NSScrollView *scrollView = [textView enclosingScrollView];
+  NSRect newTextViewFrame = [textView frame];
+  newTextViewFrame.size.width = [scrollView contentSize].width;
+  
+  // TODO: ScrollView Zoom Problem - See -viewWillLayout;
+  [scrollView XP_setMagnification:1];
+  [textView setFrame:newTextViewFrame];
+}
+
+-(IBAction)zoomIn:(id)sender;
+{
+  NSScrollView *scrollView = [[self textView] enclosingScrollView];
+  [scrollView XP_setMagnification:[scrollView XP_magnification]+0.25];
+}
+
+-(IBAction)zoomOut:(id)sender;
+{
+  NSScrollView *scrollView = [[self textView] enclosingScrollView];
+  [scrollView XP_setMagnification:[scrollView XP_magnification]-0.25];
 }
 
 -(IBAction)cutUnsolved:(id)sender;
@@ -298,6 +367,15 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
     [textView pasteAsPlainText:sender];
     return;
   }
+}
+
+-(BOOL)__canMagnify;
+{
+#ifdef AFF_ScrollViewNoMagnification
+  return NO;
+#else
+  return YES;
+#endif
 }
 
 -(BOOL)__universalCopyRTFData:(NSData*)rtfData

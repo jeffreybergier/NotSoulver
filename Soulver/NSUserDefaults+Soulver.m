@@ -381,129 +381,33 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
 
 @end
 
-@implementation Localized
-
-+(NSString*)titleAppName;
-{ return NSLocalizedString(@"NEXT_T_AppName", @""); }
-+(NSString*)titleQuit;
-{ return NSLocalizedString(@"NEXT_T_Quit", @""); }
-+(NSString*)titleUntitled;
-{ return NSLocalizedString(@"NEXT_T_Untitled", @""); }
-+(NSString*)titleAlert;
-{ return NSLocalizedString(@"NEXT_T_Alert", @""); }
-+(NSString*)titleClose;
-{ return NSLocalizedString(@"NEXT_T_Close", @""); }
-+(NSString*)titleAbout;
-{ return NSLocalizedString(@"NEXT_T_About", @""); }
-+(NSString*)titleKeypad;
-{ return NSLocalizedString(@"NEXT_T_Keypad", @""); }
-+(NSString*)titleSettings;
-{ return NSLocalizedString(@"NEXT_T_Settings", @""); }
-+(NSString*)titleGeneral;
-{ return NSLocalizedString(@"NEXT_T_General", @""); }
-+(NSString*)titleColors;
-{ return NSLocalizedString(@"NEXT_T_Colors", @""); }
-+(NSString*)titleFonts;
-{ return NSLocalizedString(@"NEXT_T_Fonts", @""); }
-+(NSString*)titleAutomatic;
-{ return NSLocalizedString(@"NEXT_T_Automatic", @""); }
-+(NSString*)titleLight;
-{ return NSLocalizedString(@"NEXT_T_Light", @""); }
-+(NSString*)titleDark;
-{ return NSLocalizedString(@"NEXT_T_Dark", @""); }
-+(NSString*)titleTheme;
-{ return NSLocalizedString(@"NEXT_T_Theme", @""); }
-+(NSString*)titleSolvingDelay;
-{ return NSLocalizedString(@"NEXT_T_SolvingDelay", @""); }
-+(NSString*)titleMathText;
-{ return NSLocalizedString(@"NEXT_T_MathText", @""); }
-+(NSString*)titleNormalText;
-{ return NSLocalizedString(@"NEXT_T_NormalText", @""); }
-+(NSString*)titleErrorText;
-{ return NSLocalizedString(@"NEXT_T_ErrorText", @""); }
-+(NSString*)titleOperand;
-{ return NSLocalizedString(@"NEXT_T_Operand", @""); }
-+(NSString*)titleOperator;
-{ return NSLocalizedString(@"NEXT_T_Operator", @""); }
-+(NSString*)titleSolution;
-{ return NSLocalizedString(@"NEXT_T_Solution", @""); }
-+(NSString*)titleCarryover;
-{ return NSLocalizedString(@"NEXT_T_Carryover", @""); }
-+(NSString*)titleInsertionPoint;
-{ return NSLocalizedString(@"NEXT_T_InsertionPoint", @""); }
-+(NSString*)titleBackground;
-{ return NSLocalizedString(@"NEXT_T_Background", @""); }
-+(NSString*)phraseEditedWindows;
-{ return NSLocalizedString(@"NEXT_P_EditedWindows", @""); }
-+(NSString*)phraseSaveChangesTo;
-{ return NSLocalizedString(@"NEXT_P_SaveChangesTo%@", @""); }
-+(NSString*)phraseRevertChangesTo;
-{ return NSLocalizedString(@"NEXT_P_RevertChangesTo%@", @""); }
-+(NSString*)phraseErrorInvalidCharacter;
-{ return NSLocalizedString(@"NEXT_P_ErrorInvalidCharacter%d", @""); }
-+(NSString*)phraseErrorMismatchedBrackets;
-{ return NSLocalizedString(@"NEXT_P_ErrorMismatchedBrackets%d", @""); }
-+(NSString*)phraseErrorMissingOperand;
-{ return NSLocalizedString(@"NEXT_P_ErrorMissingOperand%d", @""); }
-+(NSString*)phraseErrorDividByZero;
-{ return NSLocalizedString(@"NEXT_P_ErrorDividByZero%d", @""); }
-+(NSString*)phraseErrorNaN;
-{ return NSLocalizedString(@"NEXT_P_ErrorNaN%d", @""); }
-+(NSString*)phraseErrorInfinite;
-{ return NSLocalizedString(@"NEXT_P_ErrorInfinite%d", @""); }
-+(NSString*)phraseErrorImaginary;
-{ return NSLocalizedString(@"NEXT_P_ErrorImaginary%d", @""); }
-+(NSString*)phraseErrorIndexZero;
-{ return NSLocalizedString(@"NEXT_P_ErrorIndexNegative%d", @""); }
-+(NSString*)phraseErrorArgumentNegative;
-{ return NSLocalizedString(@"NEXT_P_ErrorArgumentNegative%d", @""); }
-+(NSString*)phraseErrorBaseNegative;
-{ return NSLocalizedString(@"NEXT_P_ErrorBaseNegative%d", @""); }
-+(NSString*)phraseErrorBaseOne;
-{ return NSLocalizedString(@"NEXT_P_ErrorBaseOne%d", @""); }
-+(NSString*)phraseSourceRepositoryURL;
-{ return NSLocalizedString(@"NEXT_P_SourceRepositoryURL", @""); }
-+(NSString*)phraseCopyWebURLToClipboard;
-{ return NSLocalizedString(@"NEXT_P_CopyWebURLToClipboard%@", @""); }
-+(NSString*)phraseAboutTagline;
-{ return NSLocalizedString(@"NEXT_P_AboutTagline", @""); }
-+(NSString*)phraseAboutDedication;
-{ return NSLocalizedString(@"NEXT_P_AboutDedication", @""); }
-+(NSString*)aboutParagraph;
-{ return NSLocalizedString(@"NEXT_P_AboutParagraph", @""); }
-+(NSString*)verbSet;
-{ return NSLocalizedString(@"NEXT_V_Set", @""); }
-+(NSString*)verbReset;
-{ return NSLocalizedString(@"NEXT_V_Reset", @""); }
-+(NSString*)verbViewSource;
-{ return NSLocalizedString(@"NEXT_V_ViewSource", @""); }
-+(NSString*)verbReviewUnsaved;
-{ return NSLocalizedString(@"NEXT_V_ReviewUnsaved", @""); }
-+(NSString*)verbQuitAnyway;
-{ return NSLocalizedString(@"NEXT_V_QuitAnyway", @""); }
-+(NSString*)verbCancel;
-{ return NSLocalizedString(@"NEXT_V_Cancel", @""); }
-+(NSString*)verbSave;
-{ return NSLocalizedString(@"NEXT_V_Save", @""); }
-+(NSString*)verbRevert;
-{ return NSLocalizedString(@"NEXT_V_Revert", @""); }
-+(NSString*)verbDontSave;
-{ return NSLocalizedString(@"NEXT_V_DontSave", @""); }
-+(NSString*)verbCopyToClipboard;
-{ return NSLocalizedString(@"NEXT_P_CopyToClipboard", @""); }
-+(NSString*)verbDontCopy;
-{ return NSLocalizedString(@"NEXT_P_DontCopy", @""); }
-+(NSString*)imageAboutPortrait;
-{ return NSLocalizedString(@"NEXT_M_AboutPortrait", @""); }
-+(NSString*)imageNeXTLogo;
-{ return NSLocalizedString(@"NEXT_M_NeXTLogo", @""); }
-+(NSString*)imageNeXTTagline;
-{ return NSLocalizedString(@"NEXT_M_NeXTTagline", @""); }
-+(NSString*)imageThemeAuto;
-{ return NSLocalizedString(@"NEXT_M_ThemeAuto", @""); }
-+(NSString*)imageThemeLight;
-{ return NSLocalizedString(@"NEXT_M_ThemeLight", @""); }
-+(NSString*)imageThemeDark;
-{ return NSLocalizedString(@"NEXT_M_ThemeDark", @""); }
-
+@implementation LocalizedProxy: NSProxy
++(LocalizedProxy*)sharedProxy;
+{
+  static LocalizedProxy *sharedInstance = nil;
+#ifdef AFF_ObjCNoDispatch
+  if (sharedInstance == nil) {
+    sharedInstance = [LocalizedProxy alloc];
+  }
+#else
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    sharedInstance = [LocalizedProxy alloc];
+  });
+#endif
+  XPParameterRaise(sharedInstance);
+  return sharedInstance;
+}
+-(NSMethodSignature*)methodSignatureForSelector:(SEL)sel;
+{
+  return [NSMethodSignature signatureWithObjCTypes:"@@:"];
+}
+-(void)forwardInvocation:(NSInvocation*)invocation;
+{
+  SEL sel = [invocation selector];
+  NSString *key = NSStringFromSelector(sel);
+  NSString *value = NSLocalizedString(key, @"");
+  XPParameterRaise(value);
+  [invocation setReturnValue:&value];
+}
 @end

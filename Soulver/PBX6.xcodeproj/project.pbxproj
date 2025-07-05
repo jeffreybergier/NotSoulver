@@ -13,7 +13,6 @@
 		8C4D1E012DC7D1F80060CFBA /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 8C4D1DFB2DC7D1F80060CFBA /* AppIcon.icns */; };
 		8C4D1E032DC7D1F80060CFBA /* NeXTLogoMed.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C4D1DFD2DC7D1F80060CFBA /* NeXTLogoMed.tiff */; };
 		8C4D1E042DC7D1F80060CFBA /* TagLine.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C4D1DFE2DC7D1F80060CFBA /* TagLine.tiff */; };
-		8C5E580B2DC346F200A1648E /* Soulver_Prefix.h in Headers */ = {isa = PBXBuildFile; fileRef = 32DBCF750370BD2300C91783 /* Soulver_Prefix.h */; };
 		8C5E580C2DC346F200A1648E /* NSUserDefaults+Soulver.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E592D91DCDF0000020F /* NSUserDefaults+Soulver.h */; };
 		8C5E580D2DC346F200A1648E /* SVRAccessoryWindowsOwner.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E5B2D91DCDF0000020F /* SVRAccessoryWindowsOwner.h */; };
 		8C5E580E2DC346F200A1648E /* SVRAppDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E5D2D91DCDF0000020F /* SVRAppDelegate.h */; };
@@ -60,7 +59,6 @@
 		8C5E58412DC346F200A1648E /* XPRegularExpression.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E802D91DCE00000020F /* XPRegularExpression.m */; };
 		8C5E58422DC346F200A1648E /* slre.c in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62EB32D91DDEB0000020F /* slre.c */; };
 		8C5E58442DC346F200A1648E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
-		8C7D8F3A2DC636BC003F084F /* MainMenu_X6.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C7D8F382DC636BC003F084F /* MainMenu_X6.xib */; };
 		8CB6F5E22E0651C90048C614 /* ThemeAuto.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8CB6F5DC2E0651C90048C614 /* ThemeAuto.tiff */; };
 		8CB6F5E32E0651C90048C614 /* ThemeAuto@2x.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8CB6F5DD2E0651C90048C614 /* ThemeAuto@2x.tiff */; };
 		8CB6F5E42E0651C90048C614 /* ThemeDark.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8CB6F5DE2E0651C90048C614 /* ThemeDark.tiff */; };
@@ -72,10 +70,8 @@
 /* Begin PBXFileReference section */
 		089C1660FE840EACC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		2A37F4B7FDCFA73011CA2CEA /* MainMenu_X2.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = MainMenu_X2.nib; path = English.lproj/MainMenu_X2.nib; sourceTree = "<group>"; };
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		32DBCF750370BD2300C91783 /* Soulver_Prefix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Soulver_Prefix.h; sourceTree = "<group>"; };
 		8C182DD72DEF1034004C47C3 /* SVRAccessoryWindowViews.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVRAccessoryWindowViews.h; sourceTree = "<group>"; };
 		8C182DD82DEF1034004C47C3 /* SVRAccessoryWindowViews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVRAccessoryWindowViews.m; sourceTree = "<group>"; };
 		8C4D1DFA2DC7D1F80060CFBA /* about-image-512.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "about-image-512.tiff"; path = "Images/about-image-512.tiff"; sourceTree = "<group>"; };
@@ -84,9 +80,8 @@
 		8C4D1DFE2DC7D1F80060CFBA /* TagLine.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = TagLine.tiff; path = Images/TagLine.tiff; sourceTree = "<group>"; };
 		8C5B4ECA2DC10C7B002C87B3 /* TestUnitBezierPath-MANUAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "TestUnitBezierPath-MANUAL.tiff"; sourceTree = SOURCE_ROOT; };
 		8C5B4ECB2DC10C7B002C87B3 /* TestUnitBezierPath-REAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "TestUnitBezierPath-REAL.tiff"; sourceTree = SOURCE_ROOT; };
-		8C5E58492DC346F200A1648E /* Info_X6.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info_X6.plist; sourceTree = "<group>"; };
+		8C5E58492DC346F200A1648E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8C5E584A2DC346F200A1648E /* Soulver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Soulver.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		8C7D8F392DC636BC003F084F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu_X6.xib; sourceTree = "<group>"; };
 		8CB6F5DC2E0651C90048C614 /* ThemeAuto.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeAuto.tiff; path = Images/ThemeAuto.tiff; sourceTree = "<group>"; };
 		8CB6F5DD2E0651C90048C614 /* ThemeAuto@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeAuto@2x.tiff"; path = "Images/ThemeAuto@2x.tiff"; sourceTree = "<group>"; };
 		8CB6F5DE2E0651C90048C614 /* ThemeDark.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeDark.tiff; path = Images/ThemeDark.tiff; sourceTree = "<group>"; };
@@ -139,7 +134,6 @@
 		8CD62EB12D91DD700000020F /* PB.project */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = PB.project; sourceTree = "<group>"; };
 		8CD62EB32D91DDEB0000020F /* slre.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = slre.c; sourceTree = "<group>"; };
 		8CD62EB42D91DDEB0000020F /* slre.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = slre.h; sourceTree = "<group>"; };
-		8CD62EBA2D91DF290000020F /* MainMenu_42.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = MainMenu_42.nib; path = English.lproj/MainMenu_42.nib; sourceTree = "<group>"; };
 		8CD62EC12D91DF730000020F /* English */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8CD62ED82D91EBA60000020F /* Soulver.iconheader */ = {isa = PBXFileReference; lastKnownFileType = text; path = Soulver.iconheader; sourceTree = "<group>"; };
 		8CD632692D91FF0F0000020F /* .gdbinit */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = .gdbinit; sourceTree = "<group>"; };
@@ -193,7 +187,7 @@
 				8CD62EB02D91DD420000020F /* Legacy */,
 				2A37F4C3FDCFA73011CA2CEA /* Frameworks */,
 				19C28FB0FE9D524F11CA2CBB /* Products */,
-				8C5E58492DC346F200A1648E /* Info_X6.plist */,
+				8C5E58492DC346F200A1648E /* Info.plist */,
 			);
 			name = Soulver;
 			sourceTree = "<group>";
@@ -242,7 +236,6 @@
 		2A37F4AFFDCFA73011CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				32DBCF750370BD2300C91783 /* Soulver_Prefix.h */,
 				8CD62E502D91DB730000020F /* Soulver_main.m */,
 			);
 			name = "Other Sources";
@@ -253,9 +246,6 @@
 			children = (
 				8CD62EC02D91DF730000020F /* Localizable.strings */,
 				089C165FFE840EACC02AAC07 /* InfoPlist.strings */,
-				8CD62EB92D91DF290000020F /* MainMenu_42.nib */,
-				2A37F4B6FDCFA73011CA2CEA /* MainMenu_X2.nib */,
-				8C7D8F382DC636BC003F084F /* MainMenu_X6.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -324,7 +314,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C5E580B2DC346F200A1648E /* Soulver_Prefix.h in Headers */,
 				8C5E580C2DC346F200A1648E /* NSUserDefaults+Soulver.h in Headers */,
 				8C5E580D2DC346F200A1648E /* SVRAccessoryWindowsOwner.h in Headers */,
 				8C5E580E2DC346F200A1648E /* SVRAppDelegate.h in Headers */,
@@ -407,7 +396,6 @@
 				8C5E582A2DC346F200A1648E /* Localizable.strings in Resources */,
 				8C5E582C2DC346F200A1648E /* TestUnitBezierPath-MANUAL.tiff in Resources */,
 				8C5E582D2DC346F200A1648E /* TestUnitBezierPath-REAL.tiff in Resources */,
-				8C7D8F3A2DC636BC003F084F /* MainMenu_X6.xib in Resources */,
 				8C4D1E002DC7D1F80060CFBA /* about-image-512.tiff in Resources */,
 				8C4D1E012DC7D1F80060CFBA /* AppIcon.icns in Resources */,
 				8C4D1E032DC7D1F80060CFBA /* NeXTLogoMed.tiff in Resources */,
@@ -462,30 +450,6 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		2A37F4B6FDCFA73011CA2CEA /* MainMenu_X2.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				2A37F4B7FDCFA73011CA2CEA /* MainMenu_X2.nib */,
-			);
-			name = MainMenu_X2.nib;
-			sourceTree = "<group>";
-		};
-		8C7D8F382DC636BC003F084F /* MainMenu_X6.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				8C7D8F392DC636BC003F084F /* English */,
-			);
-			name = MainMenu_X6.xib;
-			sourceTree = "<group>";
-		};
-		8CD62EB92D91DF290000020F /* MainMenu_42.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				8CD62EBA2D91DF290000020F /* MainMenu_42.nib */,
-			);
-			name = MainMenu_42.nib;
-			sourceTree = "<group>";
-		};
 		8CD62EC02D91DF730000020F /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -534,7 +498,6 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREFIX_HEADER = Soulver_Prefix.h;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					DEBUG,
 					"LOGLEVEL=2",
@@ -567,7 +530,7 @@
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = Info_X6.plist;
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = "";
@@ -593,7 +556,6 @@
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Soulver_Prefix.h;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_TREAT_NONCONFORMANT_CODE_ERRORS_AS_WARNINGS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -620,7 +582,7 @@
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = Info_X6.plist;
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_LDFLAGS = "";
@@ -643,7 +605,6 @@
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREFIX_HEADER = Soulver_Prefix.h;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					DEBUG,
 					"LOGLEVEL=2",
@@ -676,7 +637,7 @@
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = Info_X6.plist;
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = "";

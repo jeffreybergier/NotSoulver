@@ -5,12 +5,6 @@
 	};
 	objectVersion = 38;
 	objects = {
-		080E96DAFE201CDB7F000001 = {
-			fileRef = 2A37F4B6FDCFA73011CA2CEA;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
 		089C165FFE840EACC02AAC07 = {
 			children = (
 				089C1660FE840EACC02AAC07,
@@ -189,7 +183,6 @@
 		};
 		2A37F4AFFDCFA73011CA2CEA = {
 			children = (
-				32DBCF750370BD2300C91783,
 				8CD62E502D91DB730000020F,
 			);
 			isa = PBXGroup;
@@ -197,26 +190,9 @@
 			path = "";
 			refType = 4;
 		};
-		2A37F4B6FDCFA73011CA2CEA = {
-			children = (
-				2A37F4B7FDCFA73011CA2CEA,
-			);
-			isa = PBXVariantGroup;
-			name = MainMenu_X2.nib;
-			path = "";
-			refType = 4;
-		};
-		2A37F4B7FDCFA73011CA2CEA = {
-			isa = PBXFileReference;
-			name = MainMenu_X2.nib;
-			path = English.lproj/MainMenu_X2.nib;
-			refType = 4;
-		};
 		2A37F4B8FDCFA73011CA2CEA = {
 			children = (
 				8CD62EC02D91DF730000020F,
-				8CD62EB92D91DF290000020F,
-				2A37F4B6FDCFA73011CA2CEA,
 				089C165FFE840EACC02AAC07,
 			);
 			isa = PBXGroup;
@@ -261,7 +237,6 @@
 				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "-DDEBUG -DLOGLEVEL=2 -DTESTING=1";
 				OTHER_LDFLAGS = "";
-				PREFIX_HEADER = Soulver_Prefix.h;
 				PRODUCT_NAME = Soulver;
 				SECTORDER_FLAGS = "";
 				USE_GCC3_PFE_SUPPORT = NO;
@@ -324,8 +299,6 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
-	<key>NSMainNibFile</key>
-	<string>MainMenu_X2</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 </dict>
@@ -335,7 +308,6 @@
 		2A37F4C7FDCFA73011CA2CEA = {
 			buildActionMask = 2147483647;
 			files = (
-				32DBCF760370BD2300C91783,
 				8CD62E862D91DCE00000020F,
 				8CD62E882D91DCE00000020F,
 				8CD62E8A2D91DCE00000020F,
@@ -368,7 +340,6 @@
 				8CD62EA22D91DCE00000020F,
 				8CD62EA32D91DCE00000020F,
 				8CD62EC22D91DF730000020F,
-				080E96DAFE201CDB7F000001,
 				8C9C62902DC7C9F600A80066,
 				8C9C62922DC7C9F600A80066,
 				8C9C62932DC7C9F600A80066,
@@ -422,28 +393,6 @@
 //2A2
 //2A3
 //2A4
-//320
-//321
-//322
-//323
-//324
-		32DBCF750370BD2300C91783 = {
-			fileEncoding = 4;
-			isa = PBXFileReference;
-			path = Soulver_Prefix.h;
-			refType = 4;
-		};
-		32DBCF760370BD2300C91783 = {
-			fileRef = 32DBCF750370BD2300C91783;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-//320
-//321
-//322
-//323
-//324
 //4A0
 //4A1
 //4A2
@@ -691,7 +640,6 @@
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_LDFLAGS = "";
 				PRECOMPILE_PREFIX_HEADER = YES;
-				PREFIX_HEADER = Soulver_Prefix.h;
 				PRODUCT_NAME = Soulver;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
@@ -753,8 +701,6 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
-	<key>NSMainNibFile</key>
-	<string>MainMenu_X2</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 </dict>
@@ -764,7 +710,6 @@
 		8CC318F62DBF1B3300A80066 = {
 			buildActionMask = 2147483647;
 			files = (
-				8CC318F72DBF1B3300A80066,
 				8CC318F82DBF1B3300A80066,
 				8CC318F92DBF1B3300A80066,
 				8CC318FA2DBF1B3300A80066,
@@ -787,12 +732,6 @@
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8CC318F72DBF1B3300A80066 = {
-			fileRef = 32DBCF750370BD2300C91783;
-			isa = PBXBuildFile;
-			settings = {
-			};
 		};
 		8CC318F82DBF1B3300A80066 = {
 			fileRef = 8CD62E592D91DCDF0000020F;
@@ -911,7 +850,6 @@
 				8CC319112DBF1B3300A80066,
 				8CC319122DBF1B3300A80066,
 				8CC319162DBF1B3300A80066,
-				8CC3190C2DBF1B3300A80066,
 				8C9C62952DC7C9F600A80066,
 				8C9C62972DC7C9F600A80066,
 				8C9C62982DC7C9F600A80066,
@@ -924,12 +862,6 @@
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8CC3190C2DBF1B3300A80066 = {
-			fileRef = 2A37F4B6FDCFA73011CA2CEA;
-			isa = PBXBuildFile;
-			settings = {
-			};
 		};
 		8CC3190D2DBF1B3300A80066 = {
 			fileRef = 089C165FFE840EACC02AAC07;
@@ -1689,21 +1621,6 @@
 			isa = PBXBuildFile;
 			settings = {
 			};
-		};
-		8CD62EB92D91DF290000020F = {
-			children = (
-				8CD62EBA2D91DF290000020F,
-			);
-			isa = PBXVariantGroup;
-			name = MainMenu_42.nib;
-			path = "";
-			refType = 4;
-		};
-		8CD62EBA2D91DF290000020F = {
-			isa = PBXFileReference;
-			name = MainMenu_42.nib;
-			path = English.lproj/MainMenu_42.nib;
-			refType = 4;
 		};
 		8CD62EC02D91DF730000020F = {
 			children = (

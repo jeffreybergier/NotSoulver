@@ -300,7 +300,7 @@ NSString *SVRSolverDescriptionForError(SVRCalculationError error)
     case SVRCalculationNoError:
       return nil;
     case SVRCalculationDivideByZero:
-      return [NSString stringWithFormat:[Localized phraseErrorDividByZero], error];
+      return [NSString stringWithFormat:[Localized phraseErrorDivideByZero], error];
     case SVRCalculationInvalidCharacter:
       return [NSString stringWithFormat:[Localized phraseErrorInvalidCharacter], error];
     case SVRCalculationMismatchedBrackets:
