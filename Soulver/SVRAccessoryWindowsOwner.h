@@ -30,41 +30,33 @@
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
 #import "NSUserDefaults+Soulver.h"
+#import "SVRAccessoryWindowViews.h"
 
-@interface SVRFontManager: NSFontManager
-{
-  SVRThemeFont _themeFont;
-}
-
--(SVRThemeFont)themeFont;
--(void)setThemeFont:(SVRThemeFont)themeFont;
-
-@end
+@class SVRAccessoryWindowsSettingsViewController;
 
 @interface SVRAccessoryWindowsOwner: NSObject
 {
-  mm_retain   IBOutlet NSPanel    *_keypadPanel;
-  mm_retain   IBOutlet NSWindow   *_aboutWindow;
-  mm_retain   IBOutlet NSWindow   *_settingsWindow;
-  mm_unretain IBOutlet NSTextView *_aboutTextView;
-  mm_new NSArray *_topLevelObjects;
+  mm_new NSPanel  *_keypadPanel;
+  mm_new NSWindow *_aboutWindow;
+  mm_new NSWindow *_settingsWindow;
+  mm_new SVRAccessoryWindowsSettingsViewController *_settingsViewController;
 }
 
-// MARK: IBOutlets
+// MARK: Lazy-Loading Properties
 -(NSPanel *)keypadPanel;
 -(NSWindow*)aboutWindow;
 -(NSWindow*)settingsWindow;
 -(NSTextView*)aboutTextView;
 
 // MARK: Init
++(void)initialize;
 -(id)init;
--(void)awakeFromNib;
+-(void)loadWindows;
 
 // MARK: IBActions
 -(IBAction)toggleKeypadPanel:(id)sender;
 -(IBAction)showSettingsWindow:(id)sender;
 -(IBAction)showAboutWindow:(id)sender;
--(IBAction)openSourceRepository:(id)sender;
 
 // MARK: Restore Window State
 /// Is only effective on systems that do not support state restoration
@@ -89,3 +81,58 @@
                                state:(NSCoder*)state
                    completionHandler:(XPWindowRestoreCompletionHandler)completionHandler;
 @end
+
+@interface SVRFontManager: NSFontManager
+{
+  SVRThemeFont _themeFont;
+}
+
+-(SVRThemeFont)themeFont;
+-(void)setThemeFont:(SVRThemeFont)themeFont;
+
+@end
+
+@interface SVRAccessoryWindowsSettingsViewController: XPViewController
+{
+  mm_new NSView *_view_42; // Used only in OpenStep
+  mm_retain SVRAccessoryWindowsSettingsGeneralView *_generalView;
+  mm_retain SVRAccessoryWindowsSettingsColorsView  *_colorsView;
+  mm_retain SVRAccessoryWindowsSettingsFontsView   *_fontsView;
+  mm_unretain NSPopUpButton *_settingsBoxSelector;
+  mm_unretain NSBox *_settingsBoxParent;
+}
+
+// MARK: Init
+-(void)loadView;
+
+// MARK: Initial Load
+-(void)readSettingsSelection;
+-(void)readUserInterfaceStyle;
+-(void)readWaitTime;
+-(void)readColors;
+
+// MARK: IBActions
+-(IBAction)writeSettingsSelection:(NSPopUpButton*)sender;
+-(IBAction)writeUserInterfaceStyle:(XPSegmentedControl*)sender;
+-(IBAction)writeWaitTime:(NSTextField*)sender;
+-(IBAction)writeColor:(NSColorWell*)sender;
+-(IBAction)presentFontPanel:(NSButton*)sender;
+-(IBAction)changeFont:(NSFontManager*)sender;
+-(IBAction)reset:(NSButton*)sender;
+
+// MARK: Notifications
+-(void)themeDidChangeNotification:(NSNotification*)aNotification;
+
+@end
+
+#ifndef XPSupportsNSViewController
+@interface SVRAccessoryWindowsSettingsViewController (CrossPlatform)
+-(NSView*)view;
+-(void)setView:(NSView*)view;
+@end
+#endif
+
+NSString *SVR_localizedStringForSettingsSelection(SVRSettingSelection selection);
+XPWindowStyleMask SVR_windowMaskForKeypadWindow(void);
+XPWindowStyleMask SVR_windowMaskForSettingsWindow(void);
+XPWindowStyleMask SVR_windowMaskForAboutWindow(void);

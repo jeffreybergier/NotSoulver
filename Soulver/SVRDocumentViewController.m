@@ -51,8 +51,8 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 {
   NSLayoutManager *layoutManager = [[[NSLayoutManager alloc] init]                                                 autorelease];
   NSTextContainer *textContainer = [[[NSTextContainer alloc] initWithContainerSize:NSMakeSize(FLT_MAX, FLT_MAX)]   autorelease];
-  NSTextView *textView           = [[[NSTextView      alloc] initWithFrame:NSZeroRect textContainer:textContainer] autorelease];
-  NSScrollView *scrollView       = [[[NSScrollView    alloc] initWithFrame:NSZeroRect]                             autorelease];
+  NSTextView      *textView      = [[[NSTextView      alloc] initWithFrame:NSZeroRect textContainer:textContainer] autorelease];
+  NSScrollView    *scrollView    = [[[NSScrollView    alloc] initWithFrame:NSZeroRect]                             autorelease];
   SVRDocumentModelController *modelController = [self modelController];
   
   XPParameterRaise(layoutManager);
@@ -67,8 +67,13 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   
   // ScrollView
   [scrollView setHasVerticalScroller:YES];
-  [scrollView setHasHorizontalScroller:NO];
+  [scrollView XP_setAllowsMagnification:YES];
   [scrollView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+#ifdef AFF_ScrollViewNoMagnification
+  [scrollView setHasHorizontalScroller:NO];
+#else
+  [scrollView setHasHorizontalScroller:YES];
+#endif
   
   // TextView
   [textView setMinSize:NSMakeSize(0, 0)];
@@ -76,7 +81,13 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   [textView setVerticallyResizable:YES];
   [textView setHorizontallyResizable:NO];
   [textView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+  [textView XP_setUsesFindPanel:YES];
+  [textView XP_setUsesFindBar:YES];
   [textView XP_setAllowsUndo:YES];
+  // TODO: Consider preserving these settings in NSUserDefaults
+  [textView XP_setContinuousSpellCheckingEnabled:YES];
+  [textView XP_setGrammarCheckingEnabled:NO];
+  [textView XP_setAutomaticSpellingCorrectionEnabled:YES];
   
   // ModelController
   [[modelController model] addLayoutManager:layoutManager];
@@ -87,8 +98,8 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   [scrollView setDocumentView:textView];
   
   // Self
-  _textView = [textView retain];
-  [self setView: scrollView];
+  _textView = textView;
+  [self setView:scrollView];
   
   // Theming
   [self __themeDidChangeNotification:nil];
@@ -96,6 +107,9 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
                                            selector:@selector(__themeDidChangeNotification:)
                                                name:SVRThemeDidChangeNotificationName
                                              object:nil];
+  
+  XPParameterRaise(_textView);
+  XPParameterRaise([self view]);
 }
 
 // MARK: Properties
@@ -112,6 +126,30 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 
 // MARK: Private
 
+-(void)viewWillLayout;
+{
+  NSTextView *textView = [self textView];
+  NSScrollView *scrollView = [textView enclosingScrollView];
+  NSRect textViewFrame = [textView frame];
+  XPFloat scrollViewWidth = [scrollView contentSize].width;
+  XPFloat magnification = [scrollView XP_magnification];
+  if (magnification == 1 && textViewFrame.size.width != scrollViewWidth) {
+    // TODO: ScrollView Zoom Problem
+    // after changing the magnification of the scroll view
+    // even after it is changed back to 1, it no longer
+    // automatically resizes the text view to fit the width.
+    // This is an issue in TextEdit as well, so I assume there
+    // is some sort of issue with NSScrollView.
+    // NOTE: viewWillLayout was added in 10.10 so this feature
+    // is broken in 10.8 Mountain Lion. But its OK
+    // opening and closing the document resolves the issue.
+    // As long as zoom is never used, everything works normally
+    textViewFrame.size.width = scrollViewWidth;
+    [textView setFrame:textViewFrame];
+    XPLogDebug(@"[HACK] Manually Resized TextView");
+  }
+}
+
 -(void)__themeDidChangeNotification:(NSNotification*)aNotification;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
@@ -127,35 +165,36 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 
 // Returns NIL if backspace
 // Exception if unknown tag
--(NSString*)__mapKeyWithTag:(XPInteger)tag;
+-(NSString*)__stringValueForKeypadKeyKind:(SVRKeypadButtonKind)kind;
 {
-  switch (tag) {
-    case  1: return @"1";
-    case  2: return @"2";
-    case  3: return @"3";
-    case  4: return @"4";
-    case  5: return @"5";
-    case  6: return @"6";
-    case  7: return @"7";
-    case  8: return @"8";
-    case  9: return @"9";
-    case 10: return @"0";
-    case 11: return @"-";
-    case 12: return @".";
-    case 14: return @"=\n";
-    case 15: return @"+";
-    case 16: return @"-";
-    case 17: return @")";
-    case 18: return @"*";
-    case 19: return @"/";
-    case 20: return @"(";
-    case 21: return @"^";
-    case 22: return [@"2" stringByAppendingString:[NSString SVR_rootRawString]];
-    case 23: return [@"10" stringByAppendingString:[NSString SVR_logRawString]];
-    case 13: return nil; // Backspace key
+  switch (kind) {
+    case SVRKeypadButtonKind1:
+    case SVRKeypadButtonKind2:
+    case SVRKeypadButtonKind3:
+    case SVRKeypadButtonKind4:
+    case SVRKeypadButtonKind5:
+    case SVRKeypadButtonKind6:
+    case SVRKeypadButtonKind7:
+    case SVRKeypadButtonKind8:
+    case SVRKeypadButtonKind9:        return [NSString stringWithFormat:@"%d", (int)kind];
+    case SVRKeypadButtonKind0:        return @"0";
+    case SVRKeypadButtonKindNegative: return @"-";
+    case SVRKeypadButtonKindDecimal:  return @".";
+    case SVRKeypadButtonKindDelete:   return nil;
+    case SVRKeypadButtonKindEqual:    return @"=\n";
+    case SVRKeypadButtonKindAdd:      return @"+";
+    case SVRKeypadButtonKindSubtract: return @"-";
+    case SVRKeypadButtonKindBRight:   return @")";
+    case SVRKeypadButtonKindMultiply: return @"*";
+    case SVRKeypadButtonKindDivide:   return @"/";
+    case SVRKeypadButtonKindBLeft:    return @"(";
+    case SVRKeypadButtonKindPower:    return @"^";
+    case SVRKeypadButtonKindRoot:     return [@"2" stringByAppendingString:[NSString SVR_rootRawString]];
+    case SVRKeypadButtonKindLog:      return [@"10" stringByAppendingString:[NSString SVR_logRawString]];
+    default:
+      XPLogAssrt1(NO, @"[UNKNOWN] SVRKeypadButtonKind(%d)", (int)kind);
+      return @"";
   }
-  XPLogAssrt1(NO, @"[UNKNOWN] tag(%d)", (int)tag);
-  return nil;
 }
 
 -(NSDictionary*)__typingAttributes;
@@ -194,7 +233,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 -(IBAction)keypadAppend:(NSButton*)sender;
 {
   NSTextView *textView = [self textView];
-  NSString   *toAppend = [self __mapKeyWithTag:[sender tag]];
+  NSString   *toAppend = [self __stringValueForKeypadKeyKind:[sender tag]];
   NSRange range;
   
   if (toAppend) {
@@ -219,13 +258,20 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   NSRange selectedRange = XPNotFoundRange;
   BOOL canCopy  = NO;
   BOOL canPaste = NO;
+  BOOL canMagnify = [self __canMagnify];
   
   menuAction = [menuItem action];
   selectedRange = [[self textView] selectedRange];
   canCopy  = !XPIsNotFoundRange(selectedRange) && selectedRange.length > 0;
   canPaste = !XPIsNotFoundRange(selectedRange);
   
-  if        (menuAction == @selector(copyUnsolved:)) {
+  if        (menuAction == @selector(actualSize:)) {
+    return canMagnify;
+  } else if (menuAction == @selector(zoomIn:)) {
+    return canMagnify;
+  } else if (menuAction == @selector(zoomOut:)) {
+    return canMagnify;
+  } else if (menuAction == @selector(copyUnsolved:)) {
     return canCopy;
   } else if (menuAction == @selector(copyUniversal:)) {
     return canCopy;
@@ -238,6 +284,30 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   }
 
   return NO;
+}
+
+-(IBAction)actualSize:(id)sender;
+{
+  NSTextView *textView = [self textView];
+  NSScrollView *scrollView = [textView enclosingScrollView];
+  NSRect newTextViewFrame = [textView frame];
+  newTextViewFrame.size.width = [scrollView contentSize].width;
+  
+  // TODO: ScrollView Zoom Problem - See -viewWillLayout;
+  [scrollView XP_setMagnification:1];
+  [textView setFrame:newTextViewFrame];
+}
+
+-(IBAction)zoomIn:(id)sender;
+{
+  NSScrollView *scrollView = [[self textView] enclosingScrollView];
+  [scrollView XP_setMagnification:[scrollView XP_magnification]+0.25];
+}
+
+-(IBAction)zoomOut:(id)sender;
+{
+  NSScrollView *scrollView = [[self textView] enclosingScrollView];
+  [scrollView XP_setMagnification:[scrollView XP_magnification]-0.25];
 }
 
 -(IBAction)cutUnsolved:(id)sender;
@@ -297,6 +367,15 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
     [textView pasteAsPlainText:sender];
     return;
   }
+}
+
+-(BOOL)__canMagnify;
+{
+#ifdef AFF_ScrollViewNoMagnification
+  return NO;
+#else
+  return YES;
+#endif
 }
 
 -(BOOL)__universalCopyRTFData:(NSData*)rtfData

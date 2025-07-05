@@ -32,6 +32,12 @@
 
 extern NSString * const SVRThemeDidChangeNotificationName;
 
+typedef XP_ENUM(XPInteger, SVRSettingSelection) {
+  SVRSettingSelectionGeneral = 0,
+  SVRSettingSelectionColors = 1,
+  SVRSettingSelectionFonts = 2,
+};
+
 typedef XP_ENUM(XPInteger, SVRThemeColor) {
   SVRThemeColorOperandText = 0,
   SVRThemeColorOperatorText = 1,
@@ -45,9 +51,10 @@ typedef XP_ENUM(XPInteger, SVRThemeColor) {
 };
 
 typedef XP_ENUM(XPInteger, SVRThemeFont) {
-  SVRThemeFontOther = 0,
+  SVRThemeFontUnknown = 0,
   SVRThemeFontMath = 1,
-  SVRThemeFontError = 2
+  SVRThemeFontOther = 2,
+  SVRThemeFontError = 3
 };
 
 @interface NSUserDefaults (Soulver)
@@ -59,6 +66,8 @@ typedef XP_ENUM(XPInteger, SVRThemeFont) {
 -(BOOL)SVR_setWaitTimeForRendering:(NSTimeInterval)newValue;
 
 // MARK: Accessory Window Visibility
+-(SVRSettingSelection)SVR_settingsSelection;
+-(BOOL)SVR_setSettingsSelection:(SVRSettingSelection)newValue;
 -(BOOL)SVR_visibilityForWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
 -(BOOL)SVR_setVisibility:(BOOL)isVisible forWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
 
@@ -87,35 +96,149 @@ typedef XP_ENUM(XPInteger, SVRThemeFont) {
 +(NSDictionary*)__SVR_standardDictionary;
 @end
 
-@interface Localized: NSObject
-+(NSString*)titleAppName;
-+(NSString*)titleQuit;
-+(NSString*)titleUntitled;
-+(NSString*)titleAlert;
-+(NSString*)titleClose;
-+(NSString*)phraseEditedWindows;
-+(NSString*)phraseSaveChangesTo;
-+(NSString*)phraseRevertChangesTo;
-+(NSString*)phraseErrorInvalidCharacter;
-+(NSString*)phraseErrorMismatchedBrackets;
-+(NSString*)phraseErrorMissingOperand;
-+(NSString*)phraseErrorDividByZero;
-+(NSString*)phraseErrorNaN;
-+(NSString*)phraseErrorInfinite;
-+(NSString*)phraseErrorImaginary;
-+(NSString*)phraseErrorIndexZero;
-+(NSString*)phraseErrorArgumentNegative;
-+(NSString*)phraseErrorBaseNegative;
-+(NSString*)phraseErrorBaseOne;
-+(NSString*)phraseSourceRepositoryURL;
-+(NSString*)phraseCopyWebURLToClipboard;
-+(NSString*)aboutParagraph;
-+(NSString*)verbReviewUnsaved;
-+(NSString*)verbQuitAnyway;
-+(NSString*)verbCancel;
-+(NSString*)verbSave;
-+(NSString*)verbRevert;
-+(NSString*)verbDontSave;
-+(NSString*)verbCopyToClipboard;
-+(NSString*)verbDontCopy;
+#ifdef AFF_ObjCNSMethodSignatureUndocumentedClassMethod
+// TODO: HACK Silences Warning in OpenStep
+// This method is not declared in the header in OpenStep
+// but it does respond to this methid and it works fine.
+// So this category method silences the warning.
+@interface NSMethodSignature (CrossPlatform)
++(NSMethodSignature*)signatureWithObjCTypes:(const char*)types;
+@end
+#endif
+
+#define Localized [LocalizedProxy sharedProxy]
+@interface LocalizedProxy: NSProxy
++(LocalizedProxy*)sharedProxy;
+-(NSMethodSignature *)methodSignatureForSelector:(SEL)sel;
+-(void)forwardInvocation:(NSInvocation*)invocation;
+@end
+
+@interface LocalizedProxy (LocalizedStringKey)
+-(NSString*)titleAppName;
+-(NSString*)titleQuit;
+-(NSString*)titleUntitled;
+-(NSString*)titleAlert;
+-(NSString*)titleClose;
+-(NSString*)titleAbout;
+-(NSString*)titleKeypad;
+-(NSString*)titleSettings;
+-(NSString*)titleGeneral;
+-(NSString*)titleColors;
+-(NSString*)titleFonts;
+-(NSString*)titleAutomatic;
+-(NSString*)titleLight;
+-(NSString*)titleDark;
+-(NSString*)titleTheme;
+-(NSString*)titleSolvingDelay;
+-(NSString*)titleMathText;
+-(NSString*)titleNormalText;
+-(NSString*)titleErrorText;
+-(NSString*)titleOperand;
+-(NSString*)titleOperator;
+-(NSString*)titleSolution;
+-(NSString*)titleCarryover;
+-(NSString*)titleInsertionPoint;
+-(NSString*)titleBackground;
+-(NSString*)phraseEditedWindows;
+-(NSString*)phraseSaveChangesTo;
+-(NSString*)phraseRevertChangesTo;
+-(NSString*)phraseErrorInvalidCharacter;
+-(NSString*)phraseErrorMismatchedBrackets;
+-(NSString*)phraseErrorMissingOperand;
+-(NSString*)phraseErrorDivideByZero;
+-(NSString*)phraseErrorNaN;
+-(NSString*)phraseErrorInfinite;
+-(NSString*)phraseErrorImaginary;
+-(NSString*)phraseErrorIndexZero;
+-(NSString*)phraseErrorArgumentNegative;
+-(NSString*)phraseErrorBaseNegative;
+-(NSString*)phraseErrorBaseOne;
+-(NSString*)phraseSourceRepositoryURL;
+-(NSString*)phraseCopyWebURLToClipboard;
+-(NSString*)phraseAboutTagline;
+-(NSString*)phraseAboutDedication;
+-(NSString*)phraseAboutParagraph;
+-(NSString*)verbSet;
+-(NSString*)verbReset;
+-(NSString*)verbViewSource;
+-(NSString*)verbReviewUnsaved;
+-(NSString*)verbQuitAnyway;
+-(NSString*)verbCancel;
+-(NSString*)verbSave;
+-(NSString*)verbRevert;
+-(NSString*)verbDontSave;
+-(NSString*)verbCopyToClipboard;
+-(NSString*)verbDontCopy;
+-(NSString*)imageAboutPortrait;
+-(NSString*)imageNeXTLogo;
+-(NSString*)imageNeXTTagline;
+-(NSString*)imageThemeAuto;
+-(NSString*)imageThemeLight;
+-(NSString*)imageThemeDark;
+-(NSString*)menuAppAbout;
+-(NSString*)menuAppSettings;
+-(NSString*)menuAppServices;
+-(NSString*)menuAppHideSelf;
+-(NSString*)menuAppHideOthers;
+-(NSString*)menuAppShowAll;
+-(NSString*)menuAppQuit;
+-(NSString*)menuAppHideLegacy;
+-(NSString*)menuAppQuitLegacy;
+-(NSString*)menuAppInfoLegacy;
+-(NSString*)menuHelp;
+-(NSString*)menuFile;
+-(NSString*)menuFileNew;
+-(NSString*)menuFileOpen;
+-(NSString*)menuFileClose;
+-(NSString*)menuFileSave;
+-(NSString*)menuFileSaveAll;
+-(NSString*)menuFileDuplicate;
+-(NSString*)menuFileSaveAs;
+-(NSString*)menuFileRename;
+-(NSString*)menuFileMoveTo;
+-(NSString*)menuFileRevertTo;
+-(NSString*)menuFileLastSavedVersion;
+-(NSString*)menuFileBrowseAllVersions;
+-(NSString*)menuEdit;
+-(NSString*)menuEditUndo;
+-(NSString*)menuEditRedo;
+-(NSString*)menuEditCut;
+-(NSString*)menuEditCopy;
+-(NSString*)menuEditCutUnsolved;
+-(NSString*)menuEditCopyUnsolved;
+-(NSString*)menuEditPaste;
+-(NSString*)menuEditDelete;
+-(NSString*)menuEditSelectAll;
+-(NSString*)menuEditFind;
+-(NSString*)menuEditFindNext;
+-(NSString*)menuEditFindPrevious;
+-(NSString*)menuEditFindUseSelection;
+-(NSString*)menuEditFindScroll;
+-(NSString*)menuEditSpelling;
+-(NSString*)menuEditSpellingShow;
+-(NSString*)menuEditSpellingCheckNow;
+-(NSString*)menuEditSpellingCheckWhileTyping;
+-(NSString*)menuEditSpellingCheckGrammar;
+-(NSString*)menuEditSpellingAutoCorrect;
+-(NSString*)menuEditSubstitutions;
+-(NSString*)menuEditSubstitutionsShow;
+-(NSString*)menuEditSubstitutionsSmartCopyPaste;
+-(NSString*)menuEditSubstitutionsSmartQuotes;
+-(NSString*)menuEditSubstitutionsSmartDashes;
+-(NSString*)menuEditSubstitutionsSmartLinks;
+-(NSString*)menuEditSubstitutionsDataDetectors;
+-(NSString*)menuEditSubstitutionsTextReplacements;
+-(NSString*)menuEditTransformations;
+-(NSString*)menuEditTransformationsUpperCase;
+-(NSString*)menuEditTransformationsLowerCase;
+-(NSString*)menuEditTransformationsCapitalize;
+-(NSString*)menuEditSpeech;
+-(NSString*)menuEditSpeechStart;
+-(NSString*)menuEditSpeechStop;
+-(NSString*)menuView;
+-(NSString*)menuViewActualSize;
+-(NSString*)menuViewZoomIn;
+-(NSString*)menuViewZoomOut;
+-(NSString*)menuWindow;
+-(NSString*)menuWindowShowKeypad;
 @end

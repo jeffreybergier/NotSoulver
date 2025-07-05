@@ -28,14 +28,15 @@
 //
 
 #import <AppKit/AppKit.h>
+#import "SVRAccessoryWindowViews.h"
 #import "SVRDocumentModelController.h"
 #import "XPCrossPlatform.h"
 
 @interface SVRDocumentViewController: XPViewController
 {
   mm_new NSView *_view_42; // Used only in OpenStep
-  mm_new NSTextView *_textView;
-  mm_retain SVRDocumentModelController *_modelController;
+  mm_new SVRDocumentModelController *_modelController;
+  mm_unretain NSTextView *_textView;
 }
 
 // MARK: Init
@@ -47,8 +48,9 @@
 -(SVRDocumentModelController*)modelController;
 
 // MARK: Private
+-(void)viewWillLayout;
 -(void)__themeDidChangeNotification:(NSNotification*)aNotification;
--(NSString*)__mapKeyWithTag:(XPInteger)tag;
+-(NSString*)__stringValueForKeypadKeyKind:(SVRKeypadButtonKind)tag;
 -(NSDictionary*)__typingAttributes;
 
 @end
@@ -57,11 +59,15 @@
 
 -(IBAction)keypadAppend:(NSButton*)sender;
 -(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
+-(IBAction)actualSize:(id)sender;
+-(IBAction)zoomIn:(id)sender;
+-(IBAction)zoomOut:(id)sender;
 -(IBAction)cutUnsolved:(id)sender;
 -(IBAction)cutUniversal:(id)sender;
 -(IBAction)copyUnsolved:(id)sender;
 -(IBAction)copyUniversal:(id)sender;
 -(IBAction)pasteUniversal:(id)sender;
+-(BOOL)__canMagnify;
 -(BOOL)__universalCopyRTFData:(NSData*)rtfData
                   diskRepData:(NSData*)diskRepData;
 

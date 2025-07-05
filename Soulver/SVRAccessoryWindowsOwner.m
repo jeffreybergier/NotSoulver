@@ -32,6 +32,10 @@
 NSString * const SVRAccessoryWindowFrameAutosaveNameSettings = @"kSVRAccessoryWindowFrameAutosaveNameSettings";
 NSString * const SVRAccessoryWindowFrameAutosaveNameAbout    = @"kSVRAccessoryWindowFrameAutosaveNameAbout";
 NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWindowFrameAutosaveNameKeypad";
+static NSRect SVRAccessoryWindowKeypadWindowRect   = {{0, 0}, {0, 0}}; // Configured in Initialize
+static NSRect SVRAccessoryWindowAboutWindowRect    = {{0, 0}, {480, 320}};
+static NSSize SVRAccessoryWindowAboutWindowMaxSize = {480*1.5, 320*1.5};
+static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Configured in Initialize
 
 @implementation SVRFontManager
 
@@ -51,56 +55,134 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
 // MARK: IBOutlets
 -(NSPanel *)keypadPanel;
 {
+  if (!_keypadPanel) {
+    [self loadWindows];
+    XPParameterRaise(_keypadPanel);
+  }
   return [[_keypadPanel retain] autorelease];
 }
 
 -(NSWindow*)aboutWindow;
 {
+  if (!_aboutWindow) {
+    [self loadWindows];
+    XPParameterRaise(_aboutWindow);
+  }
   return [[_aboutWindow retain] autorelease];
 }
 
 -(NSWindow*)settingsWindow;
 {
+  if (!_settingsWindow) {
+    [self loadWindows];
+    XPParameterRaise(_settingsWindow);
+  }
   return [[_settingsWindow retain] autorelease];
 }
 
 -(NSTextView*)aboutTextView;
 {
-  return [[_aboutTextView retain] autorelease];
+  XPLogRaise(@"No text view");
+  return nil;
 }
 
 // MARK: Init
+
++(void)initialize;
+{
+  SVRAccessoryWindowKeypadWindowRect = NSMakeRect(0,0,
+   (SVRAccessoryWindowKeypadWindowPadding * 2) + (SVRAccessoryWindowKeypadWindowButtonSize.width  * 3) + (SVRAccessoryWindowKeypadWindowButtonHPadding * 2),
+   (SVRAccessoryWindowKeypadWindowPadding * 2) + (SVRAccessoryWindowKeypadWindowButtonSize.height * 8) + (SVRAccessoryWindowKeypadWindowButtonVPadding * 7) + (SVRAccessoryWindowKeypadWindowGroupSpacing * 2));
+}
+
 -(id)init;
 {
-#ifdef MAC_OS_X_VERSION_10_15
-  NSString *nibName = @"AccessoryWindows_X15";
-#elif defined(MAC_OS_X_VERSION_10_6)
-  NSString *nibName = @"AccessoryWindows_X6";
-#elif defined(MAC_OS_X_VERSION_10_2)
-  NSString *nibName = @"AccessoryWindows_X2";
-#else
-  NSString *nibName = @"AccessoryWindows_42";
-#endif
-  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-  
   self = [super init];
   XPParameterRaise(self);
+  _keypadPanel    = nil;
+  _aboutWindow    = nil;
+  _settingsWindow = nil;
+  _settingsViewController = nil;
+  return self;
+}
+
+-(void)loadWindows;
+{
+  Class appDelegateClass = [[[NSApplication sharedApplication] delegate] class];
+  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+  NSWindow *window = nil;
   
-  // Load NIB
-  _topLevelObjects = nil;
-  [[NSBundle mainBundle] XP_loadNibNamed:nibName
-                                   owner:self
-                         topLevelObjects:&_topLevelObjects];
-  [_topLevelObjects retain];
+  // MARK: SVRAccessoryWindowKeypad
   
+  window = [[NSPanel alloc] initWithContentRect:SVRAccessoryWindowKeypadWindowRect
+                                      styleMask:SVR_windowMaskForKeypadWindow()
+                                        backing:NSBackingStoreBuffered
+                                          defer:YES];
+  _keypadPanel = (NSPanel*)window;
+  [window center];
+  [window setTitle:[Localized titleKeypad]];
+  [window setContentView:[[[SVRAccessoryWindowKeypadView alloc] initWithFrame:SVRAccessoryWindowKeypadWindowRect] autorelease]];
+  [window setInitialFirstResponder:[[window contentView] equalButton]];
+  [window setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameKeypad];
+  [window XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameKeypad];
+  [window XP_setRestorationClass:appDelegateClass];
+  
+  // MARK: SVRAccessoryWindowAbout
+  
+  window = [[NSWindow alloc] initWithContentRect:SVRAccessoryWindowAboutWindowRect
+                                       styleMask:SVR_windowMaskForAboutWindow()
+                                         backing:NSBackingStoreBuffered
+                                           defer:YES];
+  
+  _aboutWindow = window;
+
+  [window center];
+  [window setTitle:[Localized titleAbout]];
+  [window setReleasedWhenClosed:NO];
+  [window setMinSize:[NSWindow frameRectForContentRect:SVRAccessoryWindowAboutWindowRect
+                                             styleMask:SVR_windowMaskForAboutWindow()].size];
+  [window setMaxSize:SVRAccessoryWindowAboutWindowMaxSize];
+  [window XP_setCollectionBehavior:XPWindowCollectionBehaviorFullScreenNone];
+  [window setContentView:[[[SVRAccessoryWindowAboutView alloc] initWithFrame:SVRAccessoryWindowAboutWindowRect] autorelease]];
+  [window setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameAbout];
+  [window XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameAbout];
+  [window XP_setRestorationClass:appDelegateClass];
+  [window setInitialFirstResponder:[[window contentView] viewSourceButton]];
+  [[[window contentView] textView] setString:[Localized phraseAboutParagraph]];
+  [[[window contentView] viewSourceButton] setAction:@selector(openSourceRepository:)];
+  
+  // MARK: SVRAccessoryWindowSettings
+  
+  window = [[NSWindow alloc] initWithContentRect:SVRAccessoryWindowSettingsWindowRect
+                                       styleMask:SVR_windowMaskForSettingsWindow()
+                                         backing:NSBackingStoreBuffered
+                                           defer:YES];
+  
+  _settingsWindow = window;
+  _settingsViewController = [[SVRAccessoryWindowsSettingsViewController alloc] init];
+
+  [window center];
+  [window setTitle:[Localized titleSettings]];
+  [window setReleasedWhenClosed:NO];
+  [window setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameSettings];
+  [window XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameSettings];
+  [window XP_setRestorationClass:appDelegateClass];
+  [window XP_setContentViewController:_settingsViewController];
+  
+  XPParameterRaise(_keypadPanel);
+  XPParameterRaise(_aboutWindow);
+  XPParameterRaise(_settingsWindow);
+  XPParameterRaise(_settingsViewController);
+  
+  // Register for Notifications
   [nc addObserver:self
          selector:@selector(__windowDidBecomeKey:)
              name:NSWindowDidBecomeKeyNotification
-           object:nil];
+           object:_keypadPanel];
   [nc addObserver:self
          selector:@selector(__windowWillCloseNotification:)
              name:NSWindowWillCloseNotification
-           object:nil];
+           object:_keypadPanel];
   [nc addObserver:self
          selector:@selector(__applicationWillTerminate:)
              name:NSApplicationWillTerminateNotification
@@ -110,51 +192,9 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
              name:SVRThemeDidChangeNotificationName
            object:nil];
   
-  return self;
-}
-
--(void)awakeFromNib;
-{
-  NSTextStorage *textStorage = [[self aboutTextView] textStorage];
-  NSWindow *keypadPanel    = [self keypadPanel];
-  NSWindow *aboutWindow    = [self aboutWindow];
-  NSWindow *settingsWindow = [self settingsWindow];
-  NSRect keypadRect   = [keypadPanel    frame];
-  NSRect aboutRect    = [aboutWindow    frame];
-  NSRect settingsRect = [settingsWindow frame];
-  
-  // Set the about text from the strings file
-  // TODO: Figure out why the text color does not change in dark mode
-  [ textStorage beginEditing];
-  [[textStorage mutableString] setString:[Localized aboutParagraph]];
-  [ textStorage endEditing];
-
-  // Set autosave names
-  [keypadPanel        XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameKeypad  ];
-  [aboutWindow        XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameAbout   ];
-  [settingsWindow     XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameSettings];
-  [keypadPanel    setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameKeypad  ];
-  [aboutWindow    setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameAbout   ];
-  [settingsWindow setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameSettings];
-  
-  // Setting the frameAutosaveName immediate changes the frame
-  // of the window if its been moved already.
-  // This code checks if the windows have never been
-  // positioned by the user before. If so, it centers them.
-  if (NSEqualRects(keypadRect, [keypadPanel frame])) {
-    [keypadPanel center];
-  }
-  if (NSEqualRects(aboutRect, [aboutWindow frame])) {
-    [aboutWindow center];
-  }
-  if (NSEqualRects(settingsRect, [settingsWindow frame])) {
-    [settingsWindow center];
-  }
-  
   // Set appearance
   [self overrideWindowAppearance];
   
-  // Announce
   XPLogDebug(@"");
 }
 
@@ -172,73 +212,41 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
 
 -(IBAction)showSettingsWindow:(id)sender;
 {
-  [[self settingsWindow] makeKeyAndOrderFront:sender];
+  NSWindow *settingsWindow = [self settingsWindow];
+  [settingsWindow makeKeyAndOrderFront:sender];
 }
 
 -(IBAction)showAboutWindow:(id)sender;
 {
-  [[self aboutWindow] makeKeyAndOrderFront:sender];
+  NSWindow *aboutWindow = [self aboutWindow];
+  [aboutWindow center];
+  [aboutWindow makeKeyAndOrderFront:sender];
 }
 
--(IBAction)openSourceRepository:(id)sender;
-{
-  BOOL success = NO;
-  XPAlertReturn copyToClipboard = XPAlertReturnError;
-  NSPasteboard *pb = [NSPasteboard generalPasteboard];
-  NSWorkspace *ws = [NSWorkspace sharedWorkspace];
-  NSString *webURLToOpen = [Localized phraseSourceRepositoryURL];
-  success = [ws XP_openWebURL:webURLToOpen];
-  if (success) { return; }
-  NSBeep();
-  copyToClipboard = XPRunCopyWebURLToPasteboardAlert(webURLToOpen);
-  switch (copyToClipboard) {
-    case XPAlertReturnDefault:
-      [pb declareTypes:[NSArray arrayWithObject:XPPasteboardTypeString] owner:self];
-      success = [pb setString:webURLToOpen forType:XPPasteboardTypeString];
-      XPLogAssrt1(success, @"[NSPasteboard setString:%@", webURLToOpen);
-      return;
-    default:
-      XPLogDebug1(@"[Cancelled] [NSPasteboard setString:%@", webURLToOpen);
-      return;
-  }
-}
-
-// MARK: Restore Window State
+// MARK: Restore Keypad Visibility
 -(void)legacy_restoreWindowVisibility;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  
-  BOOL keypadVisible    = [ud SVR_visibilityForWindowWithFrameAutosaveName:[[self keypadPanel]    frameAutosaveName]];
-  BOOL aboutVisible     = [ud SVR_visibilityForWindowWithFrameAutosaveName:[[self aboutWindow]    frameAutosaveName]];
-  BOOL settingsVisible  = [ud SVR_visibilityForWindowWithFrameAutosaveName:[[self settingsWindow] frameAutosaveName]];
-  
-  if (keypadVisible)   { [self  toggleKeypadPanel:ud]; }
-  if (aboutVisible)    { [self    showAboutWindow:ud]; }
-  if (settingsVisible) { [self showSettingsWindow:ud]; }
+  BOOL keypadVisible = [ud SVR_visibilityForWindowWithFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameKeypad];
+  if (keypadVisible) { 
+    [self toggleKeypadPanel:ud];
+	}
 }
 
 // MARK: Notifications (Save window state)
 
 -(void)__windowDidBecomeKey:(NSNotification*)aNotification;
 {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   NSWindow *window = [aNotification object];
-  if (window != [self keypadPanel] && window != [self aboutWindow] && window != [self settingsWindow]) {
-    XPLogExtra1(@"%@ not an AccessoryWindow", window);
-    XPLogAssrt1([window isKindOfClass:[NSWindow class]], @"%@ not a window", window);
-    return;
-  }
-  [[NSUserDefaults standardUserDefaults] SVR_setVisibility:YES forWindowWithFrameAutosaveName:[window frameAutosaveName]];
+  [ud SVR_setVisibility:YES forWindowWithFrameAutosaveName:[window frameAutosaveName]];
 }
 
 -(void)__windowWillCloseNotification:(NSNotification*)aNotification;
 {
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   NSWindow *window = [aNotification object];
-  if (window != [self keypadPanel] && window != [self aboutWindow] && window != [self settingsWindow]) {
-    XPLogExtra1(@"%@ not an AccessoryWindow", window);
-    XPLogAssrt1([window isKindOfClass:[NSWindow class]], @"%@ not a window", window);
-    return;
-  }
-  [[NSUserDefaults standardUserDefaults] SVR_setVisibility:NO forWindowWithFrameAutosaveName:[window frameAutosaveName]];
+  [ud SVR_setVisibility:NO forWindowWithFrameAutosaveName:[window frameAutosaveName]];
 }
 
 -(void)__applicationWillTerminate:(NSNotification*)aNotification;
@@ -253,12 +261,11 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
   [_keypadPanel     autorelease];
   [_aboutWindow     autorelease];
   [_settingsWindow  autorelease];
-  [_topLevelObjects release];
+  [_settingsViewController release];
   _keypadPanel     = nil;
   _aboutWindow     = nil;
   _settingsWindow  = nil;
-  _aboutTextView   = nil;
-  _topLevelObjects = nil;
+  _settingsViewController = nil;
   [super dealloc];
 }
 
@@ -292,3 +299,543 @@ NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWi
   }
 }
 @end
+
+@implementation SVRAccessoryWindowsSettingsViewController
+
+// MARK: Init
+-(void)loadView;
+{
+  XPFloat kWindowPadding  = 8;
+  XPFloat kSelectorHeight = 26;
+  NSRect  kContentFrame   = SVRAccessoryWindowSettingsWindowRect;
+  NSRect  kSelectorFrame  = NSMakeRect(kWindowPadding,
+                                       kContentFrame.size.height-kWindowPadding-kSelectorHeight,
+                                       kContentFrame.size.width-kWindowPadding*2,
+                                       kSelectorHeight);
+  NSRect kBoxFrame = NSMakeRect(kWindowPadding,
+                                kWindowPadding,
+                                kContentFrame.size.width-kWindowPadding*2,
+                                kContentFrame.size.height-kSelectorFrame.size.height-kWindowPadding*2.5);
+  NSRect settingViewFrame = NSZeroRect;
+  SVRSettingSelection selectionKind = -1;
+  
+  NSView *contentView = [[[NSView alloc] initWithFrame:kContentFrame] autorelease];
+  
+  _settingsBoxSelector = [[[NSPopUpButton alloc] initWithFrame:kSelectorFrame pullsDown:NO] autorelease];
+  for (selectionKind=SVRSettingSelectionGeneral;
+       selectionKind<=SVRSettingSelectionFonts;
+       selectionKind++)
+  {
+    [_settingsBoxSelector addItemWithTitle:SVR_localizedStringForSettingsSelection(selectionKind)];
+  }
+  [_settingsBoxSelector setAction:@selector(writeSettingsSelection:)];
+  [contentView addSubview:_settingsBoxSelector];
+  
+  _settingsBoxParent = [[[NSBox alloc] initWithFrame:kBoxFrame] autorelease];
+  [_settingsBoxParent setTitle:[Localized titleSettings]];
+  [_settingsBoxParent setTitlePosition:NSNoTitle];
+  [contentView addSubview:_settingsBoxParent];
+  
+  // These get added to the view in -settingsBoxSelectionChanged:
+  settingViewFrame = [[_settingsBoxParent contentView] bounds];
+  _generalView = [[SVRAccessoryWindowsSettingsGeneralView alloc] initWithFrame:settingViewFrame];
+  _colorsView  = [[SVRAccessoryWindowsSettingsColorsView  alloc] initWithFrame:settingViewFrame];
+  _fontsView   = [[SVRAccessoryWindowsSettingsFontsView   alloc] initWithFrame:settingViewFrame];
+   
+  XPParameterRaise(_settingsBoxSelector);
+  XPParameterRaise(_settingsBoxParent);
+  XPParameterRaise(_generalView);
+  XPParameterRaise(_colorsView);
+  XPParameterRaise(_fontsView);
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(themeDidChangeNotification:)
+                                               name:SVRThemeDidChangeNotificationName
+                                             object:nil];
+  
+  [self setView:contentView];
+  [self readSettingsSelection];
+  [self themeDidChangeNotification:nil];
+}
+
+// MARK: Initial Load
+
+-(void)readSettingsSelection;
+{
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  SVRSettingSelection selectionKind = [ud SVR_settingsSelection];
+  XPParameterRaise(_settingsBoxParent);
+  switch (selectionKind) {
+    case SVRSettingSelectionGeneral:
+      [_settingsBoxParent setContentView:_generalView];
+      break;
+    case SVRSettingSelectionColors:
+      [_settingsBoxParent setContentView:_colorsView];
+      break;
+    case SVRSettingSelectionFonts:
+      [_settingsBoxParent setContentView:_fontsView];
+      break;
+    default:
+      XPLogAssrt1(NO, @"[UNKNOWN] SVRSettingSelection(%d)", (int)selectionKind);
+  }
+  [_settingsBoxSelector selectItemAtIndex:selectionKind];
+}
+
+-(void)readUserInterfaceStyle;
+{
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  XPUserInterfaceStyle style = [ud SVR_userInterfaceStyleSetting];
+  [[_generalView themeSelector] setSelectedSegment:style];
+}
+
+-(void)readWaitTime;
+{
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  double delay = [ud SVR_waitTimeForRendering];
+  NSString *string = [NSString stringWithFormat:@"%.0f", delay];
+  [[_generalView delayLabel] setStringValue:string];
+  [[_generalView delaySlider] setDoubleValue:delay];
+}
+
+-(void)readColors;
+{
+  NSUserDefaults  *ud = [NSUserDefaults standardUserDefaults];
+  NSColorWell     *well = nil;
+  SVRColorWellKind kind = SVRColorWellKindUnknown;
+  for (kind =SVRColorWellKindOperandLight;
+       kind<=SVRColorWellKindBackgroundDark;
+       kind++)
+  {
+    well = [_colorsView colorWellOfKind:kind];
+    switch (kind) {
+      case SVRColorWellKindOperandLight:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorOperandText
+                                   withStyle:XPUserInterfaceStyleLight]];
+        break;
+      case SVRColorWellKindOperandDark:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorOperandText
+                                   withStyle:XPUserInterfaceStyleDark]];
+        break;
+      case SVRColorWellKindOperatorLight:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorOperatorText
+                                   withStyle:XPUserInterfaceStyleLight]];
+        break;
+      case SVRColorWellKindOperatorDark:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorOperatorText
+                                   withStyle:XPUserInterfaceStyleDark]];
+        break;
+      case SVRColorWellKindSolutionLight:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorSolution
+                                   withStyle:XPUserInterfaceStyleLight]];
+        break;
+      case SVRColorWellKindSolutionDark:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorSolution
+                                   withStyle:XPUserInterfaceStyleDark]];
+        break;
+      case SVRColorWellKindSolutionSecondaryLight:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorSolutionSecondary
+                                   withStyle:XPUserInterfaceStyleLight]];
+        break;
+      case SVRColorWellKindSolutionSecondaryDark:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorSolutionSecondary
+                                   withStyle:XPUserInterfaceStyleDark]];
+        break;
+      case SVRColorWellKindOtherTextLight:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorOtherText
+                                   withStyle:XPUserInterfaceStyleLight]];
+        break;
+      case SVRColorWellKindOtherTextDark:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorOtherText
+                                   withStyle:XPUserInterfaceStyleDark]];
+        break;
+      case SVRColorWellKindErrorTextLight:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorErrorText
+                                   withStyle:XPUserInterfaceStyleLight]];
+        break;
+      case SVRColorWellKindErrorTextDark:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorErrorText
+                                   withStyle:XPUserInterfaceStyleDark]];
+        break;
+      case SVRColorWellKindInsertionPointLight:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorInsertionPoint
+                                   withStyle:XPUserInterfaceStyleLight]];
+        break;
+      case SVRColorWellKindInsertionPointDark:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorInsertionPoint
+                                   withStyle:XPUserInterfaceStyleDark]];
+        break;
+      case SVRColorWellKindBackgroundLight:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorBackground
+                                   withStyle:XPUserInterfaceStyleLight]];
+        break;
+      case SVRColorWellKindBackgroundDark:
+        [well setColor:[ud SVR_colorForTheme:SVRThemeColorBackground
+                                   withStyle:XPUserInterfaceStyleDark]];
+        break;
+      default:
+        XPLogAssrt1(NO, @"[UNKNOWN] SVRColorWellKind(%d)", (int)kind);
+        break;
+    }
+  }
+}
+
+-(void)readFonts;
+{
+  NSTextField *field = nil;
+  NSFont *font = nil;
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  SVRAccessoryWindowsSettingsFontsView *box = _fontsView;
+  SVRThemeFont kind = SVRThemeFontUnknown;
+  
+  for (kind =SVRThemeFontMath;
+       kind<=SVRThemeFontError;
+       kind++)
+  {
+    field = [box textFieldOfKind:kind];
+    font = [ud SVR_fontForTheme:kind];
+    [field setAttributedStringValue:[[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ - %g", [font displayName], [font pointSize]]
+                                                                     attributes:[NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName]] autorelease]];
+  }
+}
+
+// MARK: IBActions
+
+-(IBAction)writeSettingsSelection:(NSPopUpButton*)sender;
+{
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  SVRSettingSelection newSelection = [sender indexOfSelectedItem];
+  switch (newSelection) {
+    case SVRSettingSelectionGeneral:
+    case SVRSettingSelectionColors:
+    case SVRSettingSelectionFonts:
+      [ud SVR_setSettingsSelection:newSelection];
+      break;
+    default:
+      XPLogAssrt1(NO, @"[UNKNOWN] SVRSettingSelection(%d)", (int)newSelection);
+      break;
+  }
+  [self readSettingsSelection];
+}
+
+-(IBAction)writeUserInterfaceStyle:(XPSegmentedControl*)sender;
+{
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  XPUserInterfaceStyle newStyle = [sender selectedSegment];
+  switch (newStyle) {
+    case XPUserInterfaceStyleUnspecified:
+    case XPUserInterfaceStyleLight:
+    case XPUserInterfaceStyleDark:
+      [ud SVR_setUserInterfaceStyleSetting:newStyle];
+      break;
+    default:
+      XPLogAssrt1(NO, @"[UNKNOWN] XPUserInterfaceStyle(%d)", (int)newStyle);
+      break;
+  }
+  XPLogDebug(@"[SUCCESS]");
+}
+
+-(IBAction)writeWaitTime:(NSTextField*)sender;
+{
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  XPFloat userTime = rint([sender floatValue]);
+  [ud SVR_setWaitTimeForRendering:userTime];
+  [self readWaitTime];
+}
+
+-(IBAction)writeColor:(NSColorWell*)sender;
+{
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  SVRColorWellKind kind = SVRColorWellKindUnknown;
+  XPParameterRaise(sender);
+  kind = [sender tag];
+  switch (kind) {
+    case SVRColorWellKindOperandLight:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorOperandText
+             withStyle:XPUserInterfaceStyleLight];
+      break;
+    case SVRColorWellKindOperandDark:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorOperandText
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    case SVRColorWellKindOperatorLight:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorOperatorText
+             withStyle:XPUserInterfaceStyleLight];
+      break;
+    case SVRColorWellKindOperatorDark:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorOperatorText
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    case SVRColorWellKindSolutionLight:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorSolution
+             withStyle:XPUserInterfaceStyleLight];
+      break;
+    case SVRColorWellKindSolutionDark:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorSolution
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    case SVRColorWellKindSolutionSecondaryLight:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorSolutionSecondary
+             withStyle:XPUserInterfaceStyleLight];
+      break;
+    case SVRColorWellKindSolutionSecondaryDark:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorSolutionSecondary
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    case SVRColorWellKindOtherTextLight:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorOtherText
+             withStyle:XPUserInterfaceStyleLight];
+      break;
+    case SVRColorWellKindOtherTextDark:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorOtherText
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    case SVRColorWellKindErrorTextLight:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorErrorText
+             withStyle:XPUserInterfaceStyleLight];
+      break;
+    case SVRColorWellKindErrorTextDark:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorErrorText
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    case SVRColorWellKindInsertionPointLight:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorInsertionPoint
+             withStyle:XPUserInterfaceStyleLight];
+      break;
+    case SVRColorWellKindInsertionPointDark:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorInsertionPoint
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    case SVRColorWellKindBackgroundLight:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorBackground
+             withStyle:XPUserInterfaceStyleLight];
+      break;
+    case SVRColorWellKindBackgroundDark:
+      [ud SVR_setColor:[sender color]
+              forTheme:SVRThemeColorBackground
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    default:
+      XPLogAssrt1(NO, @"[UNKNOWN] SVRColorWellKind(%d)", (int)kind);
+      break;
+  }
+}
+
+-(IBAction)presentFontPanel:(NSButton*)sender;
+{
+  SVRThemeFont theme = [sender tag];
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  SVRFontManager *fm = (SVRFontManager*)[NSFontManager sharedFontManager];
+  XPLogAssrt1([fm isKindOfClass:[SVRFontManager class]], @"%@ is not SVRFontManager", fm);
+  [fm setSelectedFont:[ud SVR_fontForTheme:theme] isMultiple:NO];
+  [fm setThemeFont:theme];
+  [fm orderFrontFontPanel:sender];
+}
+
+-(IBAction)changeFont:(NSFontManager*)sender;
+{
+  NSFont *font = nil;
+  SVRThemeFont theme = -1;
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  XPLogAssrt1([sender isKindOfClass:[SVRFontManager class]], @"[UNKNOWN] %@", sender);
+  font = [sender convertFont:[sender selectedFont]];
+  theme = [(SVRFontManager*)sender themeFont];
+  [ud SVR_setFont:font forTheme:theme];
+  [self readFonts];
+  XPLogDebug(@"[SUCCESS]");
+}
+
+-(IBAction)reset:(NSButton*)sender;
+{
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  SVRResetButtonKind kind = -1;
+  XPParameterRaise(sender);
+  kind = [sender tag];
+  switch (kind) {
+    case   SVRResetButtonKindUIStyle:
+      [ud SVR_setUserInterfaceStyleSetting:XPUserInterfaceStyleUnspecified];
+      break;
+    case SVRResetButtonKindWaitTime:
+      [ud SVR_setWaitTimeForRendering:-1];
+      [self readWaitTime];
+      break;
+    case SVRResetButtonKindMathFont:
+      [ud SVR_setFont:nil forTheme:SVRThemeFontMath];
+      break;
+    case SVRResetButtonKindOtherFont:
+      [ud SVR_setFont:nil forTheme:SVRThemeFontOther];
+      break;
+    case SVRResetButtonKindErrorFont:
+      [ud SVR_setFont:nil forTheme:SVRThemeFontError];
+      break;
+    case SVRResetButtonKindOperandColor:
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorOperandText
+             withStyle:XPUserInterfaceStyleLight];
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorOperandText
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    case SVRResetButtonKindOperatorColor:
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorOperatorText
+             withStyle:XPUserInterfaceStyleLight];
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorOperatorText
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    case SVRResetButtonKindSolutionColor:
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorSolution
+             withStyle:XPUserInterfaceStyleLight];
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorSolution
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    case SVRResetButtonKindPreviousSolutionColor:
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorSolutionSecondary
+             withStyle:XPUserInterfaceStyleLight];
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorSolutionSecondary
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    case SVRResetButtonKindOtherTextColor:
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorOtherText
+             withStyle:XPUserInterfaceStyleLight];
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorOtherText
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    case SVRResetButtonKindErrorTextColor:
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorErrorText
+             withStyle:XPUserInterfaceStyleLight];
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorErrorText
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    case SVRResetButtonKindInsertionPointColor:
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorInsertionPoint
+             withStyle:XPUserInterfaceStyleLight];
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorInsertionPoint
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    case SVRResetButtonKindBackgroundColor:
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorBackground
+             withStyle:XPUserInterfaceStyleLight];
+      [ud SVR_setColor:nil
+              forTheme:SVRThemeColorBackground
+             withStyle:XPUserInterfaceStyleDark];
+      break;
+    default:
+      XPLogAssrt1(NO, @"[UNKNOWN] SVRResetButtonKind(%d)", (int)kind);
+      break;
+  }
+}
+
+// MARK: Notifications
+
+-(void)themeDidChangeNotification:(NSNotification*)aNotification;
+{
+  [self readUserInterfaceStyle];
+  [self readWaitTime];
+  [self readColors];
+  [self readFonts];
+}
+
+-(void)dealloc;
+{
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [_view_42     release];
+  [_fontsView   release];
+  [_colorsView  release];
+  [_generalView release];
+  _view_42     = nil;
+  _fontsView   = nil;
+  _colorsView  = nil;
+  _generalView = nil;
+  _settingsBoxParent = nil;
+  _settingsBoxSelector = nil;
+  [super dealloc];
+}
+
+@end
+
+#ifndef XPSupportsNSViewController
+@implementation SVRAccessoryWindowsSettingsViewController (CrossPlatform)
+-(NSView*)view;
+{
+  if (!_view_42) {
+    [self loadView];
+    XPParameterRaise(_view_42);
+  }
+  return [[_view_42 retain] autorelease];
+}
+
+-(void)setView:(NSView*)view;
+{
+  XPParameterRaise(view);
+  [_view_42 release];
+  _view_42 = [view retain];
+}
+@end
+#endif
+
+NSString *SVR_localizedStringForSettingsSelection(SVRSettingSelection selection)
+{
+  switch (selection) {
+    case SVRSettingSelectionGeneral:
+      return [Localized titleGeneral];
+    case SVRSettingSelectionColors:
+      return [Localized titleColors];
+    case SVRSettingSelectionFonts:
+      return [Localized titleFonts];
+    default:
+      XPCLogAssrt1(NO, @"[UNKNOWN] SVRSettingSelection(%d)", (int)selection);
+      return nil;
+  }
+}
+
+XPWindowStyleMask SVR_windowMaskForKeypadWindow(void)
+{
+  XPWindowStyleMask mask = XPWindowStyleMaskTitled | XPWindowStyleMaskClosable;
+#ifdef XPSupportsTexturedWindows
+  mask |= NSTexturedBackgroundWindowMask;
+#endif
+#ifdef XPSupportsUtilityWindows
+  mask |= XPWindowStyleMaskUtilityWindow;
+#endif
+  return mask;
+}
+XPWindowStyleMask SVR_windowMaskForSettingsWindow(void)
+{
+  return XPWindowStyleMaskTitled
+       | XPWindowStyleMaskClosable
+       | XPWindowStyleMaskMiniaturizable;
+}
+XPWindowStyleMask SVR_windowMaskForAboutWindow(void)
+{
+  return XPWindowStyleMaskTitled
+       | XPWindowStyleMaskClosable
+       | XPWindowStyleMaskResizable
+       | XPWindowStyleMaskMiniaturizable;
+}

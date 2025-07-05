@@ -3,55 +3,59 @@
     DYNAMIC_CODE_GEN = YES; 
     FILESTABLE = {
         CLASSES = (
-            "NSUserDefaults+Soulver.m", 
             SVRAppDelegate.m, 
             SVRAccessoryWindowsOwner.m, 
+            SVRAccessoryWindowViews.m, 
             SVRDocument.m, 
             SVRDocumentModelController.m, 
             SVRDocumentViewController.m, 
-            SVRSettingsViewController.m, 
             SVRSolver.m, 
             SVRSolverExpressionTagger.m, 
             SVRSolverScanner.m, 
             SVRSolverSolutionTagger.m, 
             SVRSolverStyler.m, 
             SVRSolverTextAttachment.m, 
-            TestsIntegration.m, 
-            TestsUnit.m, 
             XPCrossPlatform.m, 
             XPDocument.m, 
-            XPRegularExpression.m
+            XPRegularExpression.m, 
+            "NSUserDefaults+Soulver.m", 
+            TestsIntegration.m, 
+            TestsUnit.m
         ); 
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
         H_FILES = (
-            slre.h, 
-            "NSUserDefaults+Soulver.h", 
             SVRAppDelegate.h, 
-            SVRDocument.h, 
             SVRAccessoryWindowsOwner.h, 
+            SVRAccessoryWindowViews.h, 
+            SVRDocument.h, 
             SVRDocumentModelController.h, 
             SVRDocumentViewController.h, 
-            SVRSettingsViewController.h, 
             SVRSolver.h, 
             SVRSolverExpressionTagger.h, 
             SVRSolverScanner.h, 
             SVRSolverSolutionTagger.h, 
             SVRSolverStyler.h, 
             SVRSolverTextAttachment.h, 
-            TestsIntegration.h, 
-            TestsUnit.h, 
             XPCrossPlatform.h, 
             XPDocument.h, 
-            XPRegularExpression.h
+            XPRegularExpression.h, 
+            "NSUserDefaults+Soulver.h", 
+            TestsIntegration.h, 
+            TestsUnit.h, 
+            slre.h
         ); 
         IMAGES = (
             "Images/about-image-512.tiff", 
-            Images/BlocksFullSizeSMlght.tiff, 
             Images/NeXTLogoMed.tiff, 
             Images/TagLine.tiff, 
-            Images/TM.tiff
+            Images/ThemeAuto.tiff, 
+            "Images/ThemeAuto@2x.tiff", 
+            Images/ThemeDark.tiff, 
+            "Images/ThemeDark@2x.tiff", 
+            Images/ThemeLight.tiff, 
+            "Images/ThemeLight@2x.tiff"
         ); 
-        INTERFACES = (AccessoryWindows_42.nib, MainMenu_42.nib); 
+        INTERFACES = (); 
         OTHER_LINKED = (slre.c, Soulver_main.m); 
         OTHER_RESOURCES = (
             Localizable.strings, 
@@ -60,30 +64,18 @@
             "TestsIntegration-SolvedRep.rtf", 
             "TestsIntegration-UnsolvedRep.rtf"
         ); 
-        OTHER_SOURCES = (
-            Makefile.preamble, 
-            Makefile, 
-            Makefile.postamble, 
-            m.template, 
-            h.template, 
-            .gdbinit
-        ); 
+        OTHER_SOURCES = (Makefile.preamble, Makefile, Makefile.postamble, .gdbinit); 
         PRECOMPILED_HEADERS = (); 
         PROJECT_HEADERS = (); 
         PUBLIC_HEADERS = (); 
     }; 
     LANGUAGE = English; 
-    LOCALIZABLE_FILES = {
-        AccessoryWindows_42.nib = AccessoryWindows_42.nib; 
-        Localizable.strings = Localizable.strings; 
-        MainMenu_42.nib = MainMenu_42.nib; 
-    }; 
+    LOCALIZABLE_FILES = {Localizable.strings = Localizable.strings; }; 
     MAKEFILEDIR = "$(NEXT_ROOT)/NextDeveloper/Makefiles/pb_makefiles"; 
     NEXTSTEP_BUILDDIR = "$(HOME)/Library/DerivedData/Soulver"; 
     NEXTSTEP_BUILDTOOL = /bin/gnumake; 
     NEXTSTEP_DOCUMENTEXTENSIONS = ({Extension = nsv; Image = ""; }); 
     NEXTSTEP_INSTALLDIR = "$(HOME)/Apps"; 
-    NEXTSTEP_MAINNIB = MainMenu_42; 
     PDO_UNIX_BUILDTOOL = $NEXT_ROOT/NextDeveloper/bin/make; 
     PROJECTNAME = Soulver; 
     PROJECTTYPE = Application; 
@@ -92,5 +84,4 @@
     WINDOWS_BUILDTOOL = $NEXT_ROOT/NextDeveloper/Executables/make; 
     WINDOWS_DOCUMENTEXTENSIONS = (); 
     WINDOWS_INSTALLDIR = /MyApps; 
-    WINDOWS_MAINNIB = WINDOWS_Soulver.nib; 
 }

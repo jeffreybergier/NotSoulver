@@ -57,11 +57,12 @@ NSString *SVRThemeDarkOtherTextColor              = @"kSVRThemeDarkOtherTextColo
 NSString *SVRThemeDarkBackgroundColor             = @"kSVRThemeDarkBackgroundColorKey";
 NSString *SVRThemeDarkInsertionPoint              = @"kSVRThemeDarkInsertionPointKey";
 
-NSString *SVRThemeOtherFont                       = @"kSVRThemeOtherFontKey";
-NSString *SVRThemeMathFont                        = @"kSVRThemeMathFontKey";
-NSString *SVRThemeErrorFont                       = @"kSVRThemeErrorFontKey";
+NSString *SVRThemeOtherFontKey                    = @"kSVRThemeOtherFontKey";
+NSString *SVRThemeMathFontKey                     = @"kSVRThemeMathFontKey";
+NSString *SVRThemeErrorFontKey                    = @"kSVRThemeErrorFontKey";
 
 NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyleKey";
+NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
 
 @implementation NSUserDefaults (Soulver)
 
@@ -85,15 +86,29 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 
 -(BOOL)SVR_setWaitTimeForRendering:(NSTimeInterval)newValue;
 {
+  BOOL success = NO;
   if (newValue < 0) {
     [self removeObjectForKey:XPUserDefaultsWaitTimeForRendering];
   } else {
     [self setFloat:(float)newValue forKey:XPUserDefaultsWaitTimeForRendering];
   }
-  return [self synchronize];
+  success = [self synchronize];
+  XPLogAssrt(success, @"[FAIL]");
+  return success;
 }
 
 // MARK: Accessory Window Visibility
+
+-(SVRSettingSelection)SVR_settingsSelection;
+{
+  return (SVRSettingSelection)[self integerForKey:SVRSettingsSelection];
+}
+
+-(BOOL)SVR_setSettingsSelection:(SVRSettingSelection)newValue;
+{
+  [self setInteger:newValue forKey:SVRSettingsSelection];
+  return [self synchronize];
+}
 
 -(BOOL)SVR_visibilityForWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
 {
@@ -207,7 +222,8 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
     [self removeObjectForKey:key];
   }
   success = [self synchronize];
-  if (success) { [self __postChangeNotification]; }
+  [self __postChangeNotification];
+  XPLogAssrt(success, @"[FAIL]");
   return success;
 }
 
@@ -224,8 +240,6 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 {
   BOOL success = NO;
   NSString *key = [self __SVR_keyForThemeFont:theme];
-  NSFont *oldFont = [self SVR_fontForTheme:theme];
-  if ([oldFont isEqual:font]) { return YES; }
   if (font) {
     [self setObject:[font XP_data] forKey:key];
   } else {
@@ -275,9 +289,12 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 -(NSString*)__SVR_keyForThemeFont:(SVRThemeFont)theme;
 {
   switch (theme) {
-    case SVRThemeFontMath:  return SVRThemeMathFont;
-    case SVRThemeFontError: return SVRThemeErrorFont;
-    case SVRThemeFontOther: return SVRThemeOtherFont;
+    case SVRThemeFontMath:  return SVRThemeMathFontKey;
+    case SVRThemeFontError: return SVRThemeErrorFontKey;
+    case SVRThemeFontOther: return SVRThemeOtherFontKey;
+    default:
+      XPCLogAssrt1(NO, @"[UNKNOWN] SVRThemeFont(%d)", (int)theme);
+      return nil;
   }
   return nil;
 }
@@ -316,12 +333,13 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
           SVRThemeDarkBackgroundColor,
           SVRThemeDarkInsertionPoint,
           // Fonts
-          SVRThemeOtherFont,
-          SVRThemeMathFont,
-          SVRThemeErrorFont,
+          SVRThemeOtherFontKey,
+          SVRThemeMathFontKey,
+          SVRThemeErrorFontKey,
           // Other
           XPUserDefaultsSavePanelLastDirectory,
           SVRThemeUserInterfaceStyle,
+          SVRSettingsSelection,
           SVRAccessoryWindowFrameAutosaveNameKeypad,
           XPUserDefaultsWaitTimeForRendering,
           nil];
@@ -347,12 +365,13 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
           [[NSColor colorWithCalibratedRed:  0/255.0 green:  0/255.0 blue:  0/255.0 alpha:1.0] XP_data], // SVRThemeDarkBackgroundColor
           [[NSColor colorWithCalibratedRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0] XP_data], // SVRThemeDarkInsertionPoint
           // Fonts
-          [[NSFont userFontOfSize:12] XP_data],           // SVRThemeOtherFont
-          [[NSFont userFixedPitchFontOfSize:12] XP_data], // SVRThemeMathFont
-          [[NSFont userFixedPitchFontOfSize:12] XP_data], // SVRThemeErrorFont
+          [[NSFont userFontOfSize:14] XP_data],           // SVRThemeOtherFont
+          [[NSFont userFixedPitchFontOfSize:14] XP_data], // SVRThemeMathFont
+          [[NSFont userFontOfSize:14] XP_data],           // SVRThemeErrorFont
           // Other
           NSHomeDirectory(), // XPUserDefaultsSavePanelLastDirectory
           @"0",   // SVRThemeUserInterfaceStyle
+          @"0",   // SVRSettingsSelection
           @"YES", // SVRAccessoryWindowKeypadVisibility
           @"2.0", // XPUserDefaultsWaitTimeForRendering
           nil];
@@ -362,67 +381,33 @@ NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyl
 
 @end
 
-@implementation Localized
-
-+(NSString*)titleAppName;
-{ return NSLocalizedString(@"NEXT_T_AppName", @""); }
-+(NSString*)titleQuit;
-{ return NSLocalizedString(@"NEXT_T_Quit", @""); }
-+(NSString*)titleUntitled;
-{ return NSLocalizedString(@"NEXT_T_Untitled", @""); }
-+(NSString*)titleAlert;
-{ return NSLocalizedString(@"NEXT_T_Alert", @""); }
-+(NSString*)titleClose;
-{ return NSLocalizedString(@"NEXT_T_Close", @""); }
-+(NSString*)phraseEditedWindows;
-{ return NSLocalizedString(@"NEXT_P_EditedWindows", @""); }
-+(NSString*)phraseSaveChangesTo;
-{ return NSLocalizedString(@"NEXT_P_SaveChangesTo%@", @""); }
-+(NSString*)phraseRevertChangesTo;
-{ return NSLocalizedString(@"NEXT_P_RevertChangesTo%@", @""); }
-+(NSString*)phraseErrorInvalidCharacter;
-{ return NSLocalizedString(@"NEXT_P_ErrorInvalidCharacter%d", @""); }
-+(NSString*)phraseErrorMismatchedBrackets;
-{ return NSLocalizedString(@"NEXT_P_ErrorMismatchedBrackets%d", @""); }
-+(NSString*)phraseErrorMissingOperand;
-{ return NSLocalizedString(@"NEXT_P_ErrorMissingOperand%d", @""); }
-+(NSString*)phraseErrorDividByZero;
-{ return NSLocalizedString(@"NEXT_P_ErrorDividByZero%d", @""); }
-+(NSString*)phraseErrorNaN;
-{ return NSLocalizedString(@"NEXT_P_ErrorNaN%d", @""); }
-+(NSString*)phraseErrorInfinite;
-{ return NSLocalizedString(@"NEXT_P_ErrorInfinite%d", @""); }
-+(NSString*)phraseErrorImaginary;
-{ return NSLocalizedString(@"NEXT_P_ErrorImaginary%d", @""); }
-+(NSString*)phraseErrorIndexZero;
-{ return NSLocalizedString(@"NEXT_P_ErrorIndexNegative%d", @""); }
-+(NSString*)phraseErrorArgumentNegative;
-{ return NSLocalizedString(@"NEXT_P_ErrorArgumentNegative%d", @""); }
-+(NSString*)phraseErrorBaseNegative;
-{ return NSLocalizedString(@"NEXT_P_ErrorBaseNegative%d", @""); }
-+(NSString*)phraseErrorBaseOne;
-{ return NSLocalizedString(@"NEXT_P_ErrorBaseOne%d", @""); }
-+(NSString*)phraseSourceRepositoryURL;
-{ return NSLocalizedString(@"NEXT_P_SourceRepositoryURL", @""); }
-+(NSString*)phraseCopyWebURLToClipboard;
-{ return NSLocalizedString(@"NEXT_P_CopyWebURLToClipboard%@", @""); }
-+(NSString*)aboutParagraph;
-{ return NSLocalizedString(@"NEXT_P_AboutParagraph", @""); }
-+(NSString*)verbReviewUnsaved;
-{ return NSLocalizedString(@"NEXT_V_ReviewUnsaved", @""); }
-+(NSString*)verbQuitAnyway;
-{ return NSLocalizedString(@"NEXT_V_QuitAnyway", @""); }
-+(NSString*)verbCancel;
-{ return NSLocalizedString(@"NEXT_V_Cancel", @""); }
-+(NSString*)verbSave;
-{ return NSLocalizedString(@"NEXT_V_Save", @""); }
-+(NSString*)verbRevert;
-{ return NSLocalizedString(@"NEXT_V_Revert", @""); }
-+(NSString*)verbDontSave;
-{ return NSLocalizedString(@"NEXT_V_DontSave", @""); }
-+(NSString*)verbCopyToClipboard;
-{ return NSLocalizedString(@"NEXT_P_CopyToClipboard", @""); }
-+(NSString*)verbDontCopy;
-{ return NSLocalizedString(@"NEXT_P_DontCopy", @""); }
-
+@implementation LocalizedProxy: NSProxy
++(LocalizedProxy*)sharedProxy;
+{
+  static LocalizedProxy *sharedInstance = nil;
+#ifdef AFF_ObjCNoDispatch
+  if (sharedInstance == nil) {
+    sharedInstance = [LocalizedProxy alloc];
+  }
+#else
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    sharedInstance = [LocalizedProxy alloc];
+  });
+#endif
+  XPParameterRaise(sharedInstance);
+  return sharedInstance;
+}
+-(NSMethodSignature*)methodSignatureForSelector:(SEL)sel;
+{
+  return [NSMethodSignature signatureWithObjCTypes:"@@:"];
+}
+-(void)forwardInvocation:(NSInvocation*)invocation;
+{
+  SEL sel = [invocation selector];
+  NSString *key = NSStringFromSelector(sel);
+  NSString *value = NSLocalizedString(key, @"");
+  XPParameterRaise(value);
+  [invocation setReturnValue:&value];
+}
 @end

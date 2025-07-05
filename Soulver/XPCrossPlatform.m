@@ -134,7 +134,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
       output = [NSArray new];
       break;
     default:
-      XPLogCAssrt1(NO, @"[UNKNOWN] NSModalResponse(%d)", (int)result);
+      XPCLogAssrt1(NO, @"[UNKNOWN] NSModalResponse(%d)", (int)result);
       output = nil;
       break;
   }
@@ -438,22 +438,6 @@ NSArray* XPRunOpenPanel(NSString *extension)
 }
 @end
 
-@implementation NSBundle (CrossPlatform)
--(BOOL)XP_loadNibNamed:(NSString*)nibName
-                 owner:(id)owner
-       topLevelObjects:(NSArray**)topLevelObjects;
-{
-#ifdef MAC_OS_X_VERSION_10_8
-  return [self loadNibNamed:nibName
-                      owner:owner
-            topLevelObjects:topLevelObjects];
-#else
-  return [[self class] loadNibNamed:nibName
-                              owner:owner];
-#endif
-}
-@end
-
 @implementation NSWorkspace (CrossPlatform)
 
 -(BOOL)XP_openWebURL:(NSString*)webURL;
@@ -595,10 +579,73 @@ NSArray* XPRunOpenPanel(NSString *extension)
 #endif
 }
 
--(void)XP_setAllowsUndo:(BOOL)isAllowed;
+-(void)XP_setAllowsUndo:(BOOL)flag;
 {
 #if XPSupportsNSDocument >= 1
-  [self setAllowsUndo:isAllowed];
+  [self setAllowsUndo:flag];
+#endif
+}
+
+-(void)XP_setUsesFindPanel:(BOOL)flag;
+{
+#if XPSupportsTextFind >= XPSupportsTextFindPanel
+  [self setUsesFindPanel:flag];
+#endif
+}
+
+-(void)XP_setUsesFindBar:(BOOL)flag;
+{
+#if XPSupportsTextFind >= XPSupportsTextFinder
+  [self setUsesFindBar:flag];
+#endif
+}
+
+-(void)XP_setContinuousSpellCheckingEnabled:(BOOL)flag;
+{
+#ifdef XPSupportsTextViewGrammarChecks
+  [self setContinuousSpellCheckingEnabled:flag];
+#endif
+}
+
+-(void)XP_setGrammarCheckingEnabled:(BOOL)flag;
+{
+#ifdef XPSupportsTextViewGrammarChecks
+  [self setGrammarCheckingEnabled:flag];
+#endif
+}
+
+-(void)XP_setAutomaticSpellingCorrectionEnabled:(BOOL)flag;
+{
+#ifdef XPSupportsTextViewGrammarChecks
+  [self setAutomaticSpellingCorrectionEnabled:flag];
+#endif
+}
+
+@end
+
+@implementation NSTextField (CrossPlatform)
+-(void)XP_setBezelStyle:(XPTextFieldBezelStyle)style;
+{
+#ifdef XPSupportsButtonStyles
+  [self setBezelStyle:style];
+#endif
+}
+@end
+
+@implementation NSButton (CrossPlatform)
+-(void)XP_setBezelStyle:(XPBezelStyle)style;
+{
+#ifdef XPSupportsButtonStyles
+  [self setBezelStyle:style];
+#endif
+}
+@end
+
+@implementation NSBox (CrossPlatform)
+-(void)XP_setBoxType:(XPBoxType)type;
+{
+#ifdef XPSupportsButtonStyles
+  [self setBoxType:type];
 #endif
 }
 @end
@@ -704,6 +751,61 @@ NSArray* XPRunOpenPanel(NSString *extension)
   XPLogDebug(@"[IGNORE]");
 #endif
 }
+
+-(void)XP_setCollectionBehavior:(XPWindowCollectionBehavior)collectionBehavior;
+{
+#ifdef MAC_OS_X_VERSION_10_6
+  [self setCollectionBehavior:collectionBehavior];
+#endif
+}
+
+-(void)XP_setContentViewController:(XPViewController*)viewController;
+{
+  SEL toPerform = @selector(setContentViewController:);
+  SEL getView   = @selector(view);
+  if ([self respondsToSelector:toPerform]) {
+    [self performSelector:toPerform withObject:viewController];
+  } else {
+    XPLogAssrt1([viewController respondsToSelector:getView], @"%@ does not respond to -view", viewController);
+    [self setContentView:[viewController performSelector:getView]];
+    [self setNextResponder:viewController];
+  }
+}
+
+@end
+
+@implementation NSScrollView (CrossPlatform)
+
+-(void)XP_setDrawsBackground:(BOOL)drawsBackground;
+{
+#ifdef MAC_OS_X_VERSION_10_2
+  [self setDrawsBackground:drawsBackground];
+#endif
+}
+
+-(void)XP_setAllowsMagnification:(BOOL)flag;
+{
+#ifndef AFF_ScrollViewNoMagnification
+  [self setAllowsMagnification:flag];
+#endif
+}
+
+-(void)XP_setMagnification:(XPFloat)newValue;
+{
+#ifndef AFF_ScrollViewNoMagnification
+  [self setMagnification:newValue];
+#endif
+}
+
+-(XPFloat)XP_magnification;
+{
+#ifdef AFF_ScrollViewNoMagnification
+  return 1.0;
+#else
+  return [self magnification];
+#endif
+}
+
 @end
 
 @implementation XPLog
