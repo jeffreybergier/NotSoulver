@@ -20,11 +20,11 @@
 #import "NSUserDefaults+Soulver.h"
 #import "SVRSolver.h"
 
-NSString *const SVRDocumentModelExtension   = @"nsv";
-NSString *const SVRDocumentModelRepDisk     = @"SVRDocumentModelRepDisk";
-NSString *const SVRDocumentModelRepDisplay  = @"SVRDocumentModelRepDisplay";
-NSString *const SVRDocumentModelRepSolved   = @"SVRDocumentModelRepSolved";
-NSString *const SVRDocumentModelRepUnsolved = @"SVRDocumentModelRepUnsolved";
+NSString *const SVRDocumentModelExtension   = @"mtxt";
+NSString *const SVRDocumentModelRepDisk     = @"com.saturdayapps.mathedit.plain";
+NSString *const SVRDocumentModelRepDisplay  = @"com.saturdayapps.mathedit.display";
+NSString *const SVRDocumentModelRepSolved   = @"com.saturdayapps.mathedit.solved";
+NSString *const SVRDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsolved";
 
 @implementation SVRDocumentModelController
 

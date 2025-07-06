@@ -138,7 +138,7 @@
 		8CD62EB32D91DDEB0000020F /* slre.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = slre.c; sourceTree = "<group>"; };
 		8CD62EB42D91DDEB0000020F /* slre.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = slre.h; sourceTree = "<group>"; };
 		8CD62EC12D91DF730000020F /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
-		8CD62ED82D91EBA60000020F /* Soulver.iconheader */ = {isa = PBXFileReference; lastKnownFileType = text; path = Soulver.iconheader; sourceTree = "<group>"; };
+		8CD62ED82D91EBA60000020F /* MathEdit.iconheader */ = {isa = PBXFileReference; lastKnownFileType = text; path = MathEdit.iconheader; sourceTree = "<group>"; };
 		8CD632692D91FF0F0000020F /* .gdbinit */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = .gdbinit; sourceTree = "<group>"; };
 		8CF1CCE52DD8792A0097573E /* PB.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = PB.entitlements; path = PB.xcconfig/PB.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -317,7 +317,7 @@
 				8CD62E572D91DCDF0000020F /* Makefile.postamble */,
 				8CD62E582D91DCDF0000020F /* Makefile.preamble */,
 				8CD62EB12D91DD700000020F /* PB.project */,
-				8CD62ED82D91EBA60000020F /* Soulver.iconheader */,
+				8CD62ED82D91EBA60000020F /* MathEdit.iconheader */,
 				8CD632692D91FF0F0000020F /* .gdbinit */,
 			);
 			name = Legacy;
