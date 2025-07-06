@@ -36,7 +36,6 @@
 		8C5E581C2DC346F200A1648E /* XPDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E7D2D91DCE00000020F /* XPDocument.h */; };
 		8C5E581D2DC346F200A1648E /* XPRegularExpression.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E7F2D91DCE00000020F /* XPRegularExpression.h */; };
 		8C5E581E2DC346F200A1648E /* slre.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62EB42D91DDEB0000020F /* slre.h */; };
-		8C5E58212DC346F200A1648E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165FFE840EACC02AAC07 /* InfoPlist.strings */; };
 		8C5E58232DC346F200A1648E /* TestsIntegration-DiskRep.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8CD62E732D91DCE00000020F /* TestsIntegration-DiskRep.txt */; };
 		8C5E58242DC346F200A1648E /* TestsIntegration-DisplayRep.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 8CD62E742D91DCE00000020F /* TestsIntegration-DisplayRep.rtf */; };
 		8C5E58252DC346F200A1648E /* TestsIntegration-SolvedRep.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 8CD62E752D91DCE00000020F /* TestsIntegration-SolvedRep.rtf */; };
@@ -44,7 +43,7 @@
 		8C5E582A2DC346F200A1648E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8CD62EC02D91DF730000020F /* Localizable.strings */; };
 		8C5E582C2DC346F200A1648E /* TestUnitBezierPath-MANUAL.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C5B4ECA2DC10C7B002C87B3 /* TestUnitBezierPath-MANUAL.tiff */; };
 		8C5E582D2DC346F200A1648E /* TestUnitBezierPath-REAL.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C5B4ECB2DC10C7B002C87B3 /* TestUnitBezierPath-REAL.tiff */; };
-		8C5E582F2DC346F200A1648E /* Soulver_main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E502D91DB730000020F /* Soulver_main.m */; };
+		8C5E582F2DC346F200A1648E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E502D91DB730000020F /* main.m */; };
 		8C5E58302DC346F200A1648E /* NSUserDefaults+Soulver.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E5A2D91DCDF0000020F /* NSUserDefaults+Soulver.m */; };
 		8C5E58312DC346F200A1648E /* SVRAccessoryWindowsOwner.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E5C2D91DCDF0000020F /* SVRAccessoryWindowsOwner.m */; };
 		8C5E58322DC346F200A1648E /* SVRAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E5E2D91DCDF0000020F /* SVRAppDelegate.m */; };
@@ -67,7 +66,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		089C1660FE840EACC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
@@ -82,11 +80,15 @@
 		8C0E08922E05AC5F00D0FBC0 /* ThemeDark@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeDark@2x.tiff"; path = "/Net/Developer/SaturdayApps/NotSoulver/Soulver/Images/ThemeDark@2x.tiff"; sourceTree = "<absolute>"; };
 		8C0E08932E05AC5F00D0FBC0 /* ThemeLight.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeLight.tiff; path = /Net/Developer/SaturdayApps/NotSoulver/Soulver/Images/ThemeLight.tiff; sourceTree = "<absolute>"; };
 		8C0E08942E05AC5F00D0FBC0 /* ThemeLight@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeLight@2x.tiff"; path = "/Net/Developer/SaturdayApps/NotSoulver/Soulver/Images/ThemeLight@2x.tiff"; sourceTree = "<absolute>"; };
+		8C2A01752E0B60A90062F033 /* PBRelease.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = PBRelease.xcconfig; path = /Net/Developer/SaturdayApps/NotSoulver/Soulver/PB.xcconfig/PBRelease.xcconfig; sourceTree = "<absolute>"; };
+		8C2A01762E0B60A90062F033 /* PBDebug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = PBDebug.xcconfig; path = /Net/Developer/SaturdayApps/NotSoulver/Soulver/PB.xcconfig/PBDebug.xcconfig; sourceTree = "<absolute>"; };
+		8C2A01772E0B60A90062F033 /* PBBase.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = PBBase.xcconfig; path = /Net/Developer/SaturdayApps/NotSoulver/Soulver/PB.xcconfig/PBBase.xcconfig; sourceTree = "<absolute>"; };
+		8C2A01782E0B60A90062F033 /* PB.entitlements */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = PB.entitlements; path = /Net/Developer/SaturdayApps/NotSoulver/Soulver/PB.xcconfig/PB.entitlements; sourceTree = "<absolute>"; };
 		8C5B4ECA2DC10C7B002C87B3 /* TestUnitBezierPath-MANUAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "TestUnitBezierPath-MANUAL.tiff"; sourceTree = SOURCE_ROOT; };
 		8C5B4ECB2DC10C7B002C87B3 /* TestUnitBezierPath-REAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "TestUnitBezierPath-REAL.tiff"; sourceTree = SOURCE_ROOT; };
-		8C5E58492DC346F200A1648E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Info.plist; sourceTree = "<group>"; };
+		8C5E58492DC346F200A1648E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Info.plist; path = PB.xcconfig/Info.plist; sourceTree = "<group>"; };
 		8C5E584A2DC346F200A1648E /* Soulver.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Soulver.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		8CD62E502D91DB730000020F /* Soulver_main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = Soulver_main.m; sourceTree = "<group>"; };
+		8CD62E502D91DB730000020F /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8CD62E552D91DCDF0000020F /* Import Log.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "Import Log.rtf"; sourceTree = "<group>"; };
 		8CD62E562D91DCDF0000020F /* Makefile */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		8CD62E572D91DCDF0000020F /* Makefile.postamble */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = Makefile.postamble; sourceTree = "<group>"; };
@@ -133,7 +135,7 @@
 		8CD62EB32D91DDEB0000020F /* slre.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = slre.c; sourceTree = "<group>"; };
 		8CD62EB42D91DDEB0000020F /* slre.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = slre.h; sourceTree = "<group>"; };
 		8CD62EC12D91DF730000020F /* English */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
-		8CD62ED82D91EBA60000020F /* Soulver.iconheader */ = {isa = PBXFileReference; lastKnownFileType = text; path = Soulver.iconheader; sourceTree = "<group>"; };
+		8CD62ED82D91EBA60000020F /* MathEdit.iconheader */ = {isa = PBXFileReference; lastKnownFileType = text; path = MathEdit.iconheader; sourceTree = "<group>"; };
 		8CD632692D91FF0F0000020F /* .gdbinit */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = .gdbinit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -182,10 +184,10 @@
 				2A37F4AFFDCFA73011CA2CEA /* Other Sources */,
 				8CD62EAE2D91DCFD0000020F /* Images */,
 				2A37F4B8FDCFA73011CA2CEA /* Resources */,
+				8C2A01672E0B604F0062F033 /* XCConfig */,
 				8CD62EB02D91DD420000020F /* Legacy */,
 				2A37F4C3FDCFA73011CA2CEA /* Frameworks */,
 				19C28FB0FE9D524F11CA2CBB /* Products */,
-				8C5E58492DC346F200A1648E /* Info.plist */,
 			);
 			name = Soulver;
 			sourceTree = "<group>";
@@ -234,7 +236,7 @@
 		2A37F4AFFDCFA73011CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				8CD62E502D91DB730000020F /* Soulver_main.m */,
+				8CD62E502D91DB730000020F /* main.m */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -243,7 +245,6 @@
 			isa = PBXGroup;
 			children = (
 				8CD62EC02D91DF730000020F /* Localizable.strings */,
-				089C165FFE840EACC02AAC07 /* InfoPlist.strings */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -255,6 +256,18 @@
 				1058C7A8FEA54F5311CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8C2A01672E0B604F0062F033 /* XCConfig */ = {
+			isa = PBXGroup;
+			children = (
+				8C5E58492DC346F200A1648E /* Info.plist */,
+				8C2A01782E0B60A90062F033 /* PB.entitlements */,
+				8C2A01772E0B60A90062F033 /* PBBase.xcconfig */,
+				8C2A01762E0B60A90062F033 /* PBDebug.xcconfig */,
+				8C2A01752E0B60A90062F033 /* PBRelease.xcconfig */,
+			);
+			name = XCConfig;
 			sourceTree = "<group>";
 		};
 		8CD62EAE2D91DCFD0000020F /* Images */ = {
@@ -298,7 +311,7 @@
 				8CD62E572D91DCDF0000020F /* Makefile.postamble */,
 				8CD62E582D91DCDF0000020F /* Makefile.preamble */,
 				8CD62EB12D91DD700000020F /* PB.project */,
-				8CD62ED82D91EBA60000020F /* Soulver.iconheader */,
+				8CD62ED82D91EBA60000020F /* MathEdit.iconheader */,
 				8CD632692D91FF0F0000020F /* .gdbinit */,
 			);
 			name = Legacy;
@@ -375,7 +388,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C5E58212DC346F200A1648E /* InfoPlist.strings in Resources */,
 				8C5E58232DC346F200A1648E /* TestsIntegration-DiskRep.txt in Resources */,
 				8C5E58242DC346F200A1648E /* TestsIntegration-DisplayRep.rtf in Resources */,
 				8C5E58252DC346F200A1648E /* TestsIntegration-SolvedRep.rtf in Resources */,
@@ -402,7 +414,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C5E582F2DC346F200A1648E /* Soulver_main.m in Sources */,
+				8C5E582F2DC346F200A1648E /* main.m in Sources */,
 				8C5E58302DC346F200A1648E /* NSUserDefaults+Soulver.m in Sources */,
 				8C5E58312DC346F200A1648E /* SVRAccessoryWindowsOwner.m in Sources */,
 				8C5E58322DC346F200A1648E /* SVRAppDelegate.m in Sources */,
@@ -428,14 +440,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		089C165FFE840EACC02AAC07 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				089C1660FE840EACC02AAC07 /* English */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
 		8CD62EC02D91DF730000020F /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -511,7 +515,7 @@
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_FILE = PB.xcconfig/Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.3;
@@ -568,7 +572,7 @@
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_FILE = PB.xcconfig/Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.3;
