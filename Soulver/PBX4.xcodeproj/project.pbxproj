@@ -349,9 +349,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		8C5E58092DC346F200A1648E /* Soulver */ = {
+		8C5E58092DC346F200A1648E /* MathEdit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8C5E58452DC346F200A1648E /* Build configuration list for PBXNativeTarget "Soulver" */;
+			buildConfigurationList = 8C5E58452DC346F200A1648E /* Build configuration list for PBXNativeTarget "MathEdit" */;
 			buildPhases = (
 				8C5E580A2DC346F200A1648E /* Headers */,
 				8C5E581F2DC346F200A1648E /* Resources */,
@@ -362,7 +362,7 @@
 			);
 			dependencies = (
 			);
-			name = Soulver;
+			name = MathEdit;
 			productInstallPath = "$(HOME)/Applications";
 			productName = Soulver;
 			productReference = 8C5E584A2DC346F200A1648E /* Soulver.app */;
@@ -378,7 +378,7 @@
 			mainGroup = 2A37F4AAFDCFA73011CA2CEA /* Soulver */;
 			projectDirPath = "";
 			targets = (
-				8C5E58092DC346F200A1648E /* Soulver */,
+				8C5E58092DC346F200A1648E /* MathEdit */,
 			);
 		};
 /* End PBXProject section */
@@ -451,7 +451,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		8C0A75882DC107FF0064EDCA /* Development */ = {
+		8C0A75882DC107FF0064EDCA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = (
@@ -461,9 +461,9 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
-			name = Development;
+			name = Debug;
 		};
-		8C0A75892DC107FF0064EDCA /* Deployment */ = {
+		8C0A75892DC107FF0064EDCA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = (
@@ -473,9 +473,9 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
-			name = Deployment;
+			name = Release;
 		};
-		8C5E58462DC346F200A1648E /* Development */ = {
+		8C5E58462DC346F200A1648E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH)";
@@ -531,9 +531,9 @@
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;
 			};
-			name = Development;
+			name = Debug;
 		};
-		8C5E58472DC346F200A1648E /* Deployment */ = {
+		8C5E58472DC346F200A1648E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = (
@@ -587,7 +587,7 @@
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;
 			};
-			name = Deployment;
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
@@ -595,20 +595,20 @@
 		8C0A75872DC107FF0064EDCA /* Build configuration list for PBXProject "PBX4" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				8C0A75882DC107FF0064EDCA /* Development */,
-				8C0A75892DC107FF0064EDCA /* Deployment */,
+				8C0A75882DC107FF0064EDCA /* Debug */,
+				8C0A75892DC107FF0064EDCA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Development;
+			defaultConfigurationName = Debug;
 		};
-		8C5E58452DC346F200A1648E /* Build configuration list for PBXNativeTarget "Soulver" */ = {
+		8C5E58452DC346F200A1648E /* Build configuration list for PBXNativeTarget "MathEdit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				8C5E58462DC346F200A1648E /* Development */,
-				8C5E58472DC346F200A1648E /* Deployment */,
+				8C5E58462DC346F200A1648E /* Debug */,
+				8C5E58472DC346F200A1648E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Development;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};
