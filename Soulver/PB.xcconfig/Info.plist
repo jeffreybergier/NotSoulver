@@ -37,21 +37,19 @@
 	</array>
 	<key>CFBundleExecutable</key>
 	<string>MathEdit</string>
+	<key>CFBundleDisplayName</key>
+	<string>MathEdit</string>
+	<key>CFBundleName</key>
+	<string>MathEdit</string>
 	<key>CFBundleIconFile</key>
 	<string>AppIcon</string>
 	<key>CFBundleIdentifier</key>
-	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<string>com.saturdayapps.mathedit</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
-	<key>CFBundleName</key>
-	<string>MathEdit</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
-	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
-	<key>CFBundleVersion</key>
+	<key>CFBundleShortVersion</key>
 	<string>1.0</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.productivity</string>

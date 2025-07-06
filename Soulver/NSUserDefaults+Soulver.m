@@ -292,7 +292,7 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
 
 -(void)SVR_configure;
 {
-  return [self registerDefaults:[NSUserDefaults __SVR_standardDictionary]];
+  [self registerDefaults:[NSUserDefaults __SVR_standardDictionary]];
 }
 
 +(NSDictionary*)__SVR_standardDictionary;

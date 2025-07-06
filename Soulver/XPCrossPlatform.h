@@ -506,7 +506,7 @@ NSArray* XPRunOpenPanel(NSString *extension);
 
 // OpenStep does not understand the %p format string so this works around that
 #ifdef MAC_OS_X_VERSION_10_2
-#define XPPointerString(_self) ([NSString stringWithFormat:@"%p", _self])
+#define XPPointerString(_self) ([NSString stringWithFormat:@"%p", (void*)_self])
 #else
 #define XPPointerString(_self) ([NSString stringWithFormat:@"0x%08x", (unsigned int)(_self)])
 #endif

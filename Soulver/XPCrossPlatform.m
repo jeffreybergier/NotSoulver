@@ -708,7 +708,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 -(void)XP_setRestorationClass:(Class)aClass;
 {
 #ifdef XPSupportsStateRestoration
-  return [self setRestorationClass:aClass];
+  [self setRestorationClass:aClass];
 #else
   XPLogDebug(@"[IGNORE]");
 #endif
@@ -717,7 +717,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 -(void)XP_setIdentifier:(NSString*)anIdentifier;
 {
 #ifdef XPSupportsStateRestoration
-  return [self setIdentifier:anIdentifier];
+  [self setIdentifier:anIdentifier];
 #else
   XPLogDebug(@"[IGNORE]");
 #endif
