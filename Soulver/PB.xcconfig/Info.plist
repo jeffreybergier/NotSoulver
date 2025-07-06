@@ -98,5 +98,9 @@
 	<true/>
 	<key>NSSupportsAutomationTermination</key>
 	<true/>
+  <key>CFBundleGetInfoString</key>
+  <string>MathEdit for OpenStep</string>
+  <key>NSHumanReadableCopyright</key>
+  <string>Copyright 2025 Jeffrey Bergier</string>
 </dict>
 </plist>
