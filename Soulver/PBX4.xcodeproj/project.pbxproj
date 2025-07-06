@@ -87,7 +87,7 @@
 		8C5B4ECA2DC10C7B002C87B3 /* TestUnitBezierPath-MANUAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "TestUnitBezierPath-MANUAL.tiff"; sourceTree = SOURCE_ROOT; };
 		8C5B4ECB2DC10C7B002C87B3 /* TestUnitBezierPath-REAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "TestUnitBezierPath-REAL.tiff"; sourceTree = SOURCE_ROOT; };
 		8C5E58492DC346F200A1648E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Info.plist; path = PB.xcconfig/Info.plist; sourceTree = "<group>"; };
-		8C5E584A2DC346F200A1648E /* Soulver.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Soulver.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C5E584A2DC346F200A1648E /* MathEdit.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MathEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CD62E502D91DB730000020F /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8CD62E552D91DCDF0000020F /* Import Log.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "Import Log.rtf"; sourceTree = "<group>"; };
 		8CD62E562D91DCDF0000020F /* Makefile */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -171,7 +171,7 @@
 		19C28FB0FE9D524F11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8C5E584A2DC346F200A1648E /* Soulver.app */,
+				8C5E584A2DC346F200A1648E /* MathEdit.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -365,7 +365,7 @@
 			name = MathEdit;
 			productInstallPath = "$(HOME)/Applications";
 			productName = Soulver;
-			productReference = 8C5E584A2DC346F200A1648E /* Soulver.app */;
+			productReference = 8C5E584A2DC346F200A1648E /* MathEdit.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -454,138 +454,37 @@
 		8C0A75882DC107FF0064EDCA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					"$(NATIVE_ARCH)",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
 			name = Debug;
 		};
 		8C0A75892DC107FF0064EDCA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					"$(NATIVE_ARCH)",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
 			name = Release;
 		};
 		8C5E58462DC346F200A1648E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8C2A01772E0B60A90062F033 /* PBBase.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH)";
-				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = "";
-				GCC_DYNAMIC_NO_PIC = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					DEBUG,
-					"LOGLEVEL=2",
-					"TESTING=1",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_TREAT_NONCONFORMANT_CODE_ERRORS_AS_WARNINGS = YES;
-				GCC_USE_GCC3_PFE_SUPPORT = YES;
-				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
-				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
-				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
-				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
-				GCC_WARN_MISSING_PARENTHESES = YES;
-				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
-				GCC_WARN_PEDANTIC = NO;
-				GCC_WARN_SHADOW = NO;
-				GCC_WARN_SIGN_COMPARE = YES;
-				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = NO;
-				GCC_WARN_UNKNOWN_PRAGMAS = YES;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_LABEL = YES;
-				GCC_WARN_UNUSED_PARAMETER = YES;
-				GCC_WARN_UNUSED_VALUE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = PB.xcconfig/Info.plist;
-				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.3;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = Soulver;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wall",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-				WRAPPER_EXTENSION = app;
-				ZERO_LINK = NO;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
 			name = Debug;
 		};
 		8C5E58472DC346F200A1648E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8C2A01772E0B60A90062F033 /* PBBase.xcconfig */;
 			buildSettings = {
 				ARCHS = (
 					ppc,
 					"$(NATIVE_ARCH)",
 				);
-				COPY_PHASE_STRIP = YES;
-				DEPLOYMENT_POSTPROCESSING = NO;
-				FRAMEWORK_SEARCH_PATHS = "";
-				GCC_DYNAMIC_NO_PIC = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_TREAT_NONCONFORMANT_CODE_ERRORS_AS_WARNINGS = YES;
-				GCC_USE_GCC3_PFE_SUPPORT = YES;
-				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
-				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
-				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
-				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
-				GCC_WARN_MISSING_PARENTHESES = YES;
-				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
-				GCC_WARN_PEDANTIC = NO;
-				GCC_WARN_SHADOW = NO;
-				GCC_WARN_SIGN_COMPARE = YES;
-				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = NO;
-				GCC_WARN_UNKNOWN_PRAGMAS = YES;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_LABEL = YES;
-				GCC_WARN_UNUSED_PARAMETER = YES;
-				GCC_WARN_UNUSED_VALUE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = PB.xcconfig/Info.plist;
-				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = "";
+				GCC_OPTIMIZATION_LEVEL = 3;
 				MACOSX_DEPLOYMENT_TARGET = 10.3;
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = Soulver;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wall",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-				WRAPPER_EXTENSION = app;
-				ZERO_LINK = NO;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
 			name = Release;
 		};
