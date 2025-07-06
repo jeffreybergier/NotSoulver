@@ -284,6 +284,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   } else if ([identifier isEqualToString:SVRAccessoryWindowFrameAutosaveNameSettings]) {
     completionHandler([self settingsWindow], nil);
   } else {
+    completionHandler(nil, nil);
     XPLogAssrt1(NO, @"[UNKNOWN] NSUserInterfaceItemIdentifier(%@)", identifier);
   }
 }

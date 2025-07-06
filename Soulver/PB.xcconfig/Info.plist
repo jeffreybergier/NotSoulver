@@ -17,6 +17,12 @@
 			</array>
 			<key>CFBundleTypeName</key>
 			<string>SVRDocumentModelRepDisk</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string></string>
+			</array>
 			<key>CFBundleTypeOSTypes</key>
 			<array>
 				<string>NSVR</string>
@@ -32,27 +38,29 @@
 				<string>NSStringPboardType</string>
 			</array>
 			<key>NSUbiquitousDocumentUserActivityType</key>
-			<string>com.saturdayapps.notsoulver.document</string>
+			<string>com.saturdayapps.mathedit.plain</string>
 		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
-	<string>MathEdit</string>
+	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundleDisplayName</key>
-	<string>MathEdit</string>
+	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundleName</key>
-	<string>MathEdit</string>
+	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundleIconFile</key>
 	<string>AppIcon</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.saturdayapps.mathedit</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
-	<key>CFBundleShortVersion</key>
-	<string>1.0</string>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MARKETING_VERSION)</string>
 	<key>LSApplicationCategoryType</key>
-	<string>public.app-category.productivity</string>
+	<string>$(INFOPLIST_KEY_LSApplicationCategoryType)</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>NSQuitAlwaysKeepsWindows</key>
