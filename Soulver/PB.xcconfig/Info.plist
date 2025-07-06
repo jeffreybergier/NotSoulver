@@ -91,7 +91,7 @@
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSApplicationCategoryType</key>
-	<string>public.app-category.productivity</string>
+	<string>$(INFOPLIST_KEY_LSApplicationCategoryType)</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>NSQuitAlwaysKeepsWindows</key>
