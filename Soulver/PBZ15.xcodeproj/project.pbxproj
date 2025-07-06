@@ -505,6 +505,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8C4DA6222E1A1BA6006A3BE9 /* PBDebug.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = V6ESYGU6CV;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
@@ -512,6 +517,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8C4DA6232E1A1BA6006A3BE9 /* PBRelease.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = V6ESYGU6CV;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};
