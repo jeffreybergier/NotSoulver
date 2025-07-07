@@ -53,6 +53,8 @@
 "verbSave" = "Save";
 "verbRevert" = "Revert";
 "verbDontSave" = "Don't Save";
+"verbDontCopy" = "Don't Copy";
+"verbDontCopy" = "Don't Copy";
 
 // Phrases
 "phraseErrorInvalidCharacter" = "%d|Incompatible character";
@@ -67,7 +69,6 @@
 "phraseErrorBaseNegative" = "%d|Base <= 0";
 "phraseErrorBaseOne" = "%d|Base 1";
 "phraseCopyToClipboard" = "Copy to Clipboard";
-"phraseDontCopy" = "Don't Copy";
 "phraseEditedWindows" = "There are edited windows.";
 "phraseSaveChangesTo%@" = "Save changes to %@?";
 "phraseRevertChangesTo%@" = "Revert changes to %@?";
