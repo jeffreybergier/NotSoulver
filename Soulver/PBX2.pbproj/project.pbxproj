@@ -201,8 +201,6 @@
 				HEADER_SEARCH_PATHS = "";
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = "";
-				OPTIMIZATION_CFLAGS = "-O0";
-				OTHER_CFLAGS = "-DDEBUG -DLOGLEVEL=2 -DTESTING=1";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = MathEdit;
 				SECTORDER_FLAGS = "";
@@ -371,6 +369,7 @@
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 				OPTIMIZATION_CFLAGS = "-O0";
+				OTHER_CFLAGS = "-DDEBUG -DLOGLEVEL=2 -DTESTING=1";
 			};
 			isa = PBXBuildStyle;
 			name = Debug;
@@ -380,6 +379,7 @@
 			);
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
+				OPTIMIZATION_CFLAGS = "-O3";
 			};
 			isa = PBXBuildStyle;
 			name = Release;
