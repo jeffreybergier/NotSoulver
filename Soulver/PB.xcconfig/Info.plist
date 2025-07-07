@@ -27,7 +27,7 @@
 				<string>text/plain</string>
 			</array>
 			<key>CFBundleTypeName</key>
-			<string>SVRDocumentModelRepDisk</string>
+			<string>com.saturdayapps.mathedit.plain</string>
 			<key>CFBundleTypeOSTypes</key>
 			<array>
 				<string>TEXT</string>

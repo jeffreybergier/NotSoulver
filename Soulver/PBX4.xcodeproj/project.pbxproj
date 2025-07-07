@@ -469,6 +469,11 @@
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH)";
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					DEBUG,
+					"LOGLEVEL=2",
+					"TESTING=1",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.3;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
