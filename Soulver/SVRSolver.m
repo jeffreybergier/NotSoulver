@@ -22,7 +22,7 @@
 #import "MATHSolverStyler.h"
 #import "MATHSolverScanner.h"
 #import "MATHSolverSolutionTagger.h"
-#import "SVRSolverExpressionTagger.h"
+#import "MATHSolverExpressionTagger.h"
 #import "MATHSolverTextAttachment.h"
 
 #ifndef MAC_OS_X_VERSION_10_2
