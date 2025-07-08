@@ -19,7 +19,7 @@
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
 #import "XPDocument.h"
-#import "SVRDocumentViewController.h"
+#import "MATHDocumentViewController.h"
 
 #if XPSupportsNSDocument >= 1
 @interface SVRDocument: NSDocument
