@@ -722,13 +722,13 @@
 		8CD62E692D91DCDF0000020F = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			path = SVRSolverExpressionTagger.h;
+			path = MATHSolverExpressionTagger.h;
 			refType = 4;
 		};
 		8CD62E6A2D91DCDF0000020F = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			path = SVRSolverExpressionTagger.m;
+			path = MATHSolverExpressionTagger.m;
 			refType = 4;
 		};
 		8CD62E6B2D91DCDF0000020F = {
