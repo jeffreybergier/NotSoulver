@@ -31,7 +31,7 @@ GLOBAL_RESOURCES = Images/about-image-512.tiff Images/NeXTLogoMed.tiff\
 CLASSES = MATHAppDelegate.m MATHAccessoryWindowsOwner.m\
           MATHAccessoryWindowViews.m MATHDocument.m\
           MATHDocumentModelController.m MATHDocumentViewController.m\
-          SVRSolver.m SVRSolverExpressionTagger.m SVRSolverScanner.m\
+          SVRSolver.m SVRSolverExpressionTagger.m MATHSolverScanner.m\
           MATHSolverSolutionTagger.m MATHSolverStyler.m\
           MATHSolverTextAttachment.m XPCrossPlatform.m XPDocument.m\
           XPRegularExpression.m NSUserDefaults+MathEdit.m\
@@ -40,7 +40,7 @@ CLASSES = MATHAppDelegate.m MATHAccessoryWindowsOwner.m\
 HFILES = MATHAppDelegate.h MATHAccessoryWindowsOwner.h\
          MATHAccessoryWindowViews.h MATHDocument.h\
          MATHDocumentModelController.h MATHDocumentViewController.h\
-         SVRSolver.h SVRSolverExpressionTagger.h SVRSolverScanner.h\
+         SVRSolver.h SVRSolverExpressionTagger.h MATHSolverScanner.h\
          MATHSolverSolutionTagger.h MATHSolverStyler.h\
          MATHSolverTextAttachment.h XPCrossPlatform.h XPDocument.h\
          XPRegularExpression.h NSUserDefaults+MathEdit.h\

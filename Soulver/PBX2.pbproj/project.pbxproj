@@ -734,13 +734,13 @@
 		8CD62E6B2D91DCDF0000020F = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			path = SVRSolverScanner.h;
+			path = MATHSolverScanner.h;
 			refType = 4;
 		};
 		8CD62E6C2D91DCE00000020F = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			path = SVRSolverScanner.m;
+			path = MATHSolverScanner.m;
 			refType = 4;
 		};
 		8CD62E6D2D91DCE00000020F = {
