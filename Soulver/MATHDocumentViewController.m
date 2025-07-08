@@ -16,9 +16,8 @@
 // along with MathEdit. If not, see <https://www.gnu.org/licenses/>.
 //
 
+#import "MATHSolver.h"
 #import "MATHDocumentViewController.h"
-#import "NSUserDefaults+MathEdit.h"
-#import "SVRSolver.h"
 
 NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.notsoulver.unsolved";
 

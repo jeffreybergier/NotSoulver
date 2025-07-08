@@ -16,7 +16,7 @@
 // along with MathEdit. If not, see <https://www.gnu.org/licenses/>.
 //
 
-#import "SVRSolver.h"
+#import "MATHSolver.h"
 #import "NSUserDefaults+MathEdit.h"
 #import "XPCrossPlatform.h"
 #import "MATHSolverStyler.h"

@@ -16,7 +16,7 @@
 // along with MathEdit. If not, see <https://www.gnu.org/licenses/>.
 //
 
-#import "SVRSolver.h"
+#import "MATHSolver.h"
 #import "MATHSolverScanner.h"
 
 NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;

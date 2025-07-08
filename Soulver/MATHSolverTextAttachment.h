@@ -17,7 +17,7 @@
 //
 
 #import <AppKit/AppKit.h>
-#import "SVRSolver.h"
+#import "MATHSolver.h"
 #import "XPCrossPlatform.h"
 
 @interface SVRSolverTextAttachment: NSTextAttachment

@@ -21,7 +21,7 @@ void TestsIntegrationExecute(void);
 #if TESTING==1
 
 #import "MATHDocumentModelController.h"
-#import "SVRSolver.h"
+#import "MATHSolver.h"
 
 @interface SVRDocumentModelController (TestsIntegration)
 +(void)executeTests;

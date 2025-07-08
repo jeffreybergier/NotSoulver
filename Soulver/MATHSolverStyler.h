@@ -17,7 +17,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SVRSolver.h"
+#import "MATHSolver.h"
 
 @interface SVRSolverStyler: NSObject
 

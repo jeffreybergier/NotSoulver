@@ -16,9 +16,9 @@
 // along with MathEdit. If not, see <https://www.gnu.org/licenses/>.
 //
 
-#import "MATHDocumentModelController.h"
 #import "NSUserDefaults+MathEdit.h"
-#import "SVRSolver.h"
+#import "MATHSolver.h"
+#import "MATHDocumentModelController.h"
 
 NSString *const SVRDocumentModelExtension   = @"mtxt";
 NSString *const SVRDocumentModelRepDisk     = @"com.saturdayapps.mathedit.plain";
