@@ -53,6 +53,8 @@
 "verbSave" = "Save";
 "verbRevert" = "Revert";
 "verbDontSave" = "Don't Save";
+"verbDontCopy" = "Don't Copy";
+"verbCopyToClipboard" = "Copy to Clipboard";
 
 // Phrases
 "phraseErrorInvalidCharacter" = "%d|Incompatible character";
@@ -66,13 +68,11 @@
 "phraseErrorArgumentNegative" = "%d|Argument < 0";
 "phraseErrorBaseNegative" = "%d|Base <= 0";
 "phraseErrorBaseOne" = "%d|Base 1";
-"phraseCopyToClipboard" = "Copy to Clipboard";
-"phraseDontCopy" = "Don't Copy";
 "phraseEditedWindows" = "There are edited windows.";
-"phraseSaveChangesTo%@" = "Save changes to %@?";
-"phraseRevertChangesTo%@" = "Revert changes to %@?";
+"phraseSaveChangesTo" = "Save changes to '%@'?";
+"phraseRevertChangesTo" = "Revert changes to '%@'?";
 "phraseSourceRepositoryURL" = "http://github.com/jeffreybergier/NotSoulver";
-"phraseCopyWebURLToClipboard%@" = "Copy `%@` to the clipboard?";
+"phraseCopyWebURLToClipboard" = "Copy '%@' to the clipboard?";
 "phraseAboutTagline" = "for OpenStep\nby Jeffrey Bergier\n2025";
 "phraseAboutDedication" = "This application is dedicated to my grandmother | 1932-2024";
 "phraseAboutParagraph" = "I wrote MathEdit as a learning exercise. It was supposed to be an experiment in learning how to develop for OpenStep, i.e. without Swift, without ARC, without Blocks, without Properties, etc. But I ended up learning a whole lot more. I can honestly say that learning how to develop for OpenStep will bring you much closer to how Cocoa and Cocoa Touch actually work. The OpenStep documentation is wonderful and you get the sense that every object in Foundation and AppKit was delightfully crafted with its own personality and quirks. It has been a joy to bring a single codebase through 30 years of Apple Operating System history.";
