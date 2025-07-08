@@ -686,13 +686,13 @@
 		8CD62E612D91DCDF0000020F = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			path = SVRDocumentModelController.h;
+			path = MATHDocumentModelController.h;
 			refType = 4;
 		};
 		8CD62E622D91DCDF0000020F = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			path = SVRDocumentModelController.m;
+			path = MATHDocumentModelController.m;
 			refType = 4;
 		};
 		8CD62E632D91DCDF0000020F = {
