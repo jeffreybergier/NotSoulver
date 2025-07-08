@@ -4,7 +4,7 @@
     FILESTABLE = {
         CLASSES = (
             MATHAppDelegate.m, 
-            SVRAccessoryWindowsOwner.m, 
+            MATHAccessoryWindowsOwner.m, 
             SVRAccessoryWindowViews.m, 
             SVRDocument.m, 
             SVRDocumentModelController.m, 
@@ -25,7 +25,7 @@
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
         H_FILES = (
             MATHAppDelegate.h, 
-            SVRAccessoryWindowsOwner.h, 
+            MATHAccessoryWindowsOwner.h, 
             SVRAccessoryWindowViews.h, 
             SVRDocument.h, 
             SVRDocumentModelController.h, 

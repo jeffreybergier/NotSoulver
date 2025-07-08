@@ -650,13 +650,13 @@
 		8CD62E5B2D91DCDF0000020F = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			path = SVRAccessoryWindowsOwner.h;
+			path = MATHAccessoryWindowsOwner.h;
 			refType = 4;
 		};
 		8CD62E5C2D91DCDF0000020F = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			path = SVRAccessoryWindowsOwner.m;
+			path = MATHAccessoryWindowsOwner.m;
 			refType = 4;
 		};
 		8CD62E5D2D91DCDF0000020F = {
