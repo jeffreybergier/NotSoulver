@@ -31,7 +31,6 @@
 		8C5E581C2DC346F200A1648E /* XPDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E7D2D91DCE00000020F /* XPDocument.h */; };
 		8C5E581D2DC346F200A1648E /* XPRegularExpression.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E7F2D91DCE00000020F /* XPRegularExpression.h */; };
 		8C5E581E2DC346F200A1648E /* slre.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62EB42D91DDEB0000020F /* slre.h */; };
-		8C5E58212DC346F200A1648E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165FFE840EACC02AAC07 /* InfoPlist.strings */; };
 		8C5E58232DC346F200A1648E /* TestsIntegration-DiskRep.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8CD62E732D91DCE00000020F /* TestsIntegration-DiskRep.txt */; };
 		8C5E58242DC346F200A1648E /* TestsIntegration-DisplayRep.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 8CD62E742D91DCE00000020F /* TestsIntegration-DisplayRep.rtf */; };
 		8C5E58252DC346F200A1648E /* TestsIntegration-SolvedRep.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 8CD62E752D91DCE00000020F /* TestsIntegration-SolvedRep.rtf */; };
@@ -39,7 +38,7 @@
 		8C5E582A2DC346F200A1648E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8CD62EC02D91DF730000020F /* Localizable.strings */; };
 		8C5E582C2DC346F200A1648E /* TestUnitBezierPath-MANUAL.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C5B4ECA2DC10C7B002C87B3 /* TestUnitBezierPath-MANUAL.tiff */; };
 		8C5E582D2DC346F200A1648E /* TestUnitBezierPath-REAL.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C5B4ECB2DC10C7B002C87B3 /* TestUnitBezierPath-REAL.tiff */; };
-		8C5E582F2DC346F200A1648E /* Soulver_main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E502D91DB730000020F /* Soulver_main.m */; };
+		8C5E582F2DC346F200A1648E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E502D91DB730000020F /* main.m */; };
 		8C5E58302DC346F200A1648E /* NSUserDefaults+Soulver.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E5A2D91DCDF0000020F /* NSUserDefaults+Soulver.m */; };
 		8C5E58312DC346F200A1648E /* SVRAccessoryWindowsOwner.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E5C2D91DCDF0000020F /* SVRAccessoryWindowsOwner.m */; };
 		8C5E58322DC346F200A1648E /* SVRAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E5E2D91DCDF0000020F /* SVRAppDelegate.m */; };
@@ -68,27 +67,30 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		089C1660FE840EACC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8C182DD72DEF1034004C47C3 /* SVRAccessoryWindowViews.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVRAccessoryWindowViews.h; sourceTree = "<group>"; };
 		8C182DD82DEF1034004C47C3 /* SVRAccessoryWindowViews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVRAccessoryWindowViews.m; sourceTree = "<group>"; };
+		8C33535A2E1A81E6004752CA /* PB.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = PB.entitlements; path = PB.xcconfig/PB.entitlements; sourceTree = "<group>"; };
+		8C33535B2E1A81E6004752CA /* PBBase.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = PBBase.xcconfig; path = PB.xcconfig/PBBase.xcconfig; sourceTree = "<group>"; };
+		8C33535C2E1A81E6004752CA /* PBDebug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = PBDebug.xcconfig; path = PB.xcconfig/PBDebug.xcconfig; sourceTree = "<group>"; };
+		8C33535D2E1A81E6004752CA /* PBRelease.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = PBRelease.xcconfig; path = PB.xcconfig/PBRelease.xcconfig; sourceTree = "<group>"; };
 		8C4D1DFA2DC7D1F80060CFBA /* about-image-512.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "about-image-512.tiff"; path = "Images/about-image-512.tiff"; sourceTree = "<group>"; };
 		8C4D1DFB2DC7D1F80060CFBA /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = AppIcon.icns; path = Images/AppIcon.icns; sourceTree = "<group>"; };
 		8C4D1DFD2DC7D1F80060CFBA /* NeXTLogoMed.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = NeXTLogoMed.tiff; path = Images/NeXTLogoMed.tiff; sourceTree = "<group>"; };
 		8C4D1DFE2DC7D1F80060CFBA /* TagLine.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = TagLine.tiff; path = Images/TagLine.tiff; sourceTree = "<group>"; };
 		8C5B4ECA2DC10C7B002C87B3 /* TestUnitBezierPath-MANUAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "TestUnitBezierPath-MANUAL.tiff"; sourceTree = SOURCE_ROOT; };
 		8C5B4ECB2DC10C7B002C87B3 /* TestUnitBezierPath-REAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "TestUnitBezierPath-REAL.tiff"; sourceTree = SOURCE_ROOT; };
-		8C5E58492DC346F200A1648E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8C5E584A2DC346F200A1648E /* Soulver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Soulver.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C5E58492DC346F200A1648E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = PB.xcconfig/Info.plist; sourceTree = "<group>"; };
+		8C5E584A2DC346F200A1648E /* MathEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MathEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CB6F5DC2E0651C90048C614 /* ThemeAuto.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeAuto.tiff; path = Images/ThemeAuto.tiff; sourceTree = "<group>"; };
 		8CB6F5DD2E0651C90048C614 /* ThemeAuto@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeAuto@2x.tiff"; path = "Images/ThemeAuto@2x.tiff"; sourceTree = "<group>"; };
 		8CB6F5DE2E0651C90048C614 /* ThemeDark.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeDark.tiff; path = Images/ThemeDark.tiff; sourceTree = "<group>"; };
 		8CB6F5DF2E0651C90048C614 /* ThemeDark@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeDark@2x.tiff"; path = "Images/ThemeDark@2x.tiff"; sourceTree = "<group>"; };
 		8CB6F5E02E0651C90048C614 /* ThemeLight.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeLight.tiff; path = Images/ThemeLight.tiff; sourceTree = "<group>"; };
 		8CB6F5E12E0651C90048C614 /* ThemeLight@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeLight@2x.tiff"; path = "Images/ThemeLight@2x.tiff"; sourceTree = "<group>"; };
-		8CD62E502D91DB730000020F /* Soulver_main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = Soulver_main.m; sourceTree = "<group>"; };
+		8CD62E502D91DB730000020F /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8CD62E552D91DCDF0000020F /* Import Log.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "Import Log.rtf"; sourceTree = "<group>"; };
 		8CD62E562D91DCDF0000020F /* Makefile */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		8CD62E572D91DCDF0000020F /* Makefile.postamble */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = Makefile.postamble; sourceTree = "<group>"; };
@@ -135,7 +137,7 @@
 		8CD62EB32D91DDEB0000020F /* slre.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = slre.c; sourceTree = "<group>"; };
 		8CD62EB42D91DDEB0000020F /* slre.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = slre.h; sourceTree = "<group>"; };
 		8CD62EC12D91DF730000020F /* English */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
-		8CD62ED82D91EBA60000020F /* Soulver.iconheader */ = {isa = PBXFileReference; lastKnownFileType = text; path = Soulver.iconheader; sourceTree = "<group>"; };
+		8CD62ED82D91EBA60000020F /* MathEdit.iconheader */ = {isa = PBXFileReference; lastKnownFileType = text; path = MathEdit.iconheader; sourceTree = "<group>"; };
 		8CD632692D91FF0F0000020F /* .gdbinit */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = .gdbinit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -171,7 +173,7 @@
 		19C28FB0FE9D524F11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8C5E584A2DC346F200A1648E /* Soulver.app */,
+				8C5E584A2DC346F200A1648E /* MathEdit.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -184,10 +186,10 @@
 				2A37F4AFFDCFA73011CA2CEA /* Other Sources */,
 				8CD62EAE2D91DCFD0000020F /* Images */,
 				2A37F4B8FDCFA73011CA2CEA /* Resources */,
+				8C3353592E1A8188004752CA /* XCConfig */,
 				8CD62EB02D91DD420000020F /* Legacy */,
 				2A37F4C3FDCFA73011CA2CEA /* Frameworks */,
 				19C28FB0FE9D524F11CA2CBB /* Products */,
-				8C5E58492DC346F200A1648E /* Info.plist */,
 			);
 			name = Soulver;
 			sourceTree = "<group>";
@@ -236,7 +238,7 @@
 		2A37F4AFFDCFA73011CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				8CD62E502D91DB730000020F /* Soulver_main.m */,
+				8CD62E502D91DB730000020F /* main.m */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -245,7 +247,6 @@
 			isa = PBXGroup;
 			children = (
 				8CD62EC02D91DF730000020F /* Localizable.strings */,
-				089C165FFE840EACC02AAC07 /* InfoPlist.strings */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -257,6 +258,18 @@
 				1058C7A8FEA54F5311CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8C3353592E1A8188004752CA /* XCConfig */ = {
+			isa = PBXGroup;
+			children = (
+				8C5E58492DC346F200A1648E /* Info.plist */,
+				8C33535A2E1A81E6004752CA /* PB.entitlements */,
+				8C33535B2E1A81E6004752CA /* PBBase.xcconfig */,
+				8C33535C2E1A81E6004752CA /* PBDebug.xcconfig */,
+				8C33535D2E1A81E6004752CA /* PBRelease.xcconfig */,
+			);
+			name = XCConfig;
 			sourceTree = "<group>";
 		};
 		8CD62EAE2D91DCFD0000020F /* Images */ = {
@@ -301,7 +314,7 @@
 				8CD62E572D91DCDF0000020F /* Makefile.postamble */,
 				8CD62E582D91DCDF0000020F /* Makefile.preamble */,
 				8CD62EB12D91DD700000020F /* PB.project */,
-				8CD62ED82D91EBA60000020F /* Soulver.iconheader */,
+				8CD62ED82D91EBA60000020F /* MathEdit.iconheader */,
 				8CD632692D91FF0F0000020F /* .gdbinit */,
 			);
 			name = Legacy;
@@ -339,9 +352,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		8C5E58092DC346F200A1648E /* Soulver */ = {
+		8C5E58092DC346F200A1648E /* MathEdit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8C5E58452DC346F200A1648E /* Build configuration list for PBXNativeTarget "Soulver" */;
+			buildConfigurationList = 8C5E58452DC346F200A1648E /* Build configuration list for PBXNativeTarget "MathEdit" */;
 			buildPhases = (
 				8C5E580A2DC346F200A1648E /* Headers */,
 				8C5E581F2DC346F200A1648E /* Resources */,
@@ -352,10 +365,10 @@
 			);
 			dependencies = (
 			);
-			name = Soulver;
+			name = MathEdit;
 			productInstallPath = "$(HOME)/Applications";
 			productName = Soulver;
-			productReference = 8C5E584A2DC346F200A1648E /* Soulver.app */;
+			productReference = 8C5E584A2DC346F200A1648E /* MathEdit.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -378,7 +391,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8C5E58092DC346F200A1648E /* Soulver */,
+				8C5E58092DC346F200A1648E /* MathEdit */,
 			);
 		};
 /* End PBXProject section */
@@ -388,7 +401,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C5E58212DC346F200A1648E /* InfoPlist.strings in Resources */,
 				8C5E58232DC346F200A1648E /* TestsIntegration-DiskRep.txt in Resources */,
 				8C5E58242DC346F200A1648E /* TestsIntegration-DisplayRep.rtf in Resources */,
 				8C5E58252DC346F200A1648E /* TestsIntegration-SolvedRep.rtf in Resources */,
@@ -416,7 +428,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C5E582F2DC346F200A1648E /* Soulver_main.m in Sources */,
+				8C5E582F2DC346F200A1648E /* main.m in Sources */,
 				8C5E58302DC346F200A1648E /* NSUserDefaults+Soulver.m in Sources */,
 				8C5E58312DC346F200A1648E /* SVRAccessoryWindowsOwner.m in Sources */,
 				8C5E58322DC346F200A1648E /* SVRAppDelegate.m in Sources */,
@@ -442,14 +454,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		089C165FFE840EACC02AAC07 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				089C1660FE840EACC02AAC07 /* English */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
 		8CD62EC02D91DF730000020F /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -461,197 +465,39 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		8C0A75882DC107FF0064EDCA /* Development */ = {
+		8C0A75882DC107FF0064EDCA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8C33535B2E1A81E6004752CA /* PBBase.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				SDKROOT = macosx;
 			};
-			name = Development;
+			name = Debug;
 		};
-		8C0A75892DC107FF0064EDCA /* Deployment */ = {
+		8C0A75892DC107FF0064EDCA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8C33535B2E1A81E6004752CA /* PBBase.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				SDKROOT = macosx;
 			};
-			name = Deployment;
+			name = Release;
 		};
-		8C0A758A2DC107FF0064EDCA /* Default */ = {
+		8C5E58462DC346F200A1648E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8C33535C2E1A81E6004752CA /* PBDebug.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				SDKROOT = macosx;
 			};
-			name = Default;
+			name = Debug;
 		};
-		8C5E58462DC346F200A1648E /* Development */ = {
+		8C5E58472DC346F200A1648E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8C33535D2E1A81E6004752CA /* PBRelease.xcconfig */;
 			buildSettings = {
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
-				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = "";
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					DEBUG,
-					"LOGLEVEL=2",
-					"TESTING=1",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_TREAT_NONCONFORMANT_CODE_ERRORS_AS_WARNINGS = YES;
-				GCC_USE_GCC3_PFE_SUPPORT = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
-				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
-				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
-				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
-				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
-				GCC_WARN_MISSING_PARENTHESES = YES;
-				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
-				GCC_WARN_PEDANTIC = NO;
-				GCC_WARN_SHADOW = NO;
-				GCC_WARN_SIGN_COMPARE = YES;
-				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = NO;
-				GCC_WARN_UNKNOWN_PRAGMAS = YES;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_LABEL = YES;
-				GCC_WARN_UNUSED_PARAMETER = NO;
-				GCC_WARN_UNUSED_VALUE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = Soulver;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wall",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-				WRAPPER_EXTENSION = app;
-				ZERO_LINK = YES;
 			};
-			name = Development;
-		};
-		8C5E58472DC346F200A1648E /* Deployment */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
-				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = "";
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_TREAT_NONCONFORMANT_CODE_ERRORS_AS_WARNINGS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
-				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
-				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
-				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
-				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
-				GCC_WARN_MISSING_PARENTHESES = YES;
-				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
-				GCC_WARN_PEDANTIC = NO;
-				GCC_WARN_SHADOW = NO;
-				GCC_WARN_SIGN_COMPARE = YES;
-				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = NO;
-				GCC_WARN_UNKNOWN_PRAGMAS = YES;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_LABEL = YES;
-				GCC_WARN_UNUSED_PARAMETER = NO;
-				GCC_WARN_UNUSED_VALUE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = Soulver;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wall",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-				WRAPPER_EXTENSION = app;
-				ZERO_LINK = NO;
-			};
-			name = Deployment;
-		};
-		8C5E58482DC346F200A1648E /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
-				FRAMEWORK_SEARCH_PATHS = "";
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					DEBUG,
-					"LOGLEVEL=2",
-					"TESTING=1",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_TREAT_NONCONFORMANT_CODE_ERRORS_AS_WARNINGS = YES;
-				GCC_USE_GCC3_PFE_SUPPORT = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
-				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
-				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
-				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
-				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
-				GCC_WARN_MISSING_PARENTHESES = YES;
-				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
-				GCC_WARN_PEDANTIC = NO;
-				GCC_WARN_SHADOW = NO;
-				GCC_WARN_SIGN_COMPARE = YES;
-				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = NO;
-				GCC_WARN_UNKNOWN_PRAGMAS = YES;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_LABEL = YES;
-				GCC_WARN_UNUSED_PARAMETER = NO;
-				GCC_WARN_UNUSED_VALUE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "";
-				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = Soulver;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wall",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-				WRAPPER_EXTENSION = app;
-			};
-			name = Default;
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
@@ -659,22 +505,20 @@
 		8C0A75872DC107FF0064EDCA /* Build configuration list for PBXProject "PBX6" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				8C0A75882DC107FF0064EDCA /* Development */,
-				8C0A75892DC107FF0064EDCA /* Deployment */,
-				8C0A758A2DC107FF0064EDCA /* Default */,
+				8C0A75882DC107FF0064EDCA /* Debug */,
+				8C0A75892DC107FF0064EDCA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Debug;
 		};
-		8C5E58452DC346F200A1648E /* Build configuration list for PBXNativeTarget "Soulver" */ = {
+		8C5E58452DC346F200A1648E /* Build configuration list for PBXNativeTarget "MathEdit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				8C5E58462DC346F200A1648E /* Development */,
-				8C5E58472DC346F200A1648E /* Deployment */,
-				8C5E58482DC346F200A1648E /* Default */,
+				8C5E58462DC346F200A1648E /* Debug */,
+				8C5E58472DC346F200A1648E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};

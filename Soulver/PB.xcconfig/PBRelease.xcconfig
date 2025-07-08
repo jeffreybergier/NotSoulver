@@ -16,19 +16,6 @@
 // along with MathEdit. If not, see <https://www.gnu.org/licenses/>.
 //
 
-#import <Foundation/Foundation.h>
+// Configuration settings file format documentation can be found at:
+// https://developer.apple.com/documentation/xcode/adding-a-build-configuration-file-to-your-project
 
-@interface SVRSolverExpressionTagger: NSObject
-
-+(void)step1_tagOperatorsAtRanges:(NSSet*)ranges
-               inAttributedString:(NSMutableAttributedString*)string;
-// TODO: Improve Regex so that this does not have to manually
-// remove the - operator which can conflict with negative numbers
-+(void)step2_tagNumbersAtRanges:(NSSet*)ranges
-             inAttributedString:(NSMutableAttributedString*)string;
-+(void)step3_tagBracketsAtRanges:(NSSet*)ranges
-              inAttributedString:(NSMutableAttributedString*)string;
-+(void)step4_tagExpressionsAtRanges:(NSSet*)ranges
-                 inAttributedString:(NSMutableAttributedString*)string;
-
-@end

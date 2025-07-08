@@ -56,7 +56,7 @@
             "Images/ThemeLight@2x.tiff"
         ); 
         INTERFACES = (); 
-        OTHER_LINKED = (slre.c, Soulver_main.m); 
+        OTHER_LINKED = (slre.c, main.m); 
         OTHER_RESOURCES = (
             Localizable.strings, 
             "TestsIntegration-DiskRep.txt", 
@@ -72,12 +72,12 @@
     LANGUAGE = English; 
     LOCALIZABLE_FILES = {Localizable.strings = Localizable.strings; }; 
     MAKEFILEDIR = "$(NEXT_ROOT)/NextDeveloper/Makefiles/pb_makefiles"; 
-    NEXTSTEP_BUILDDIR = "$(HOME)/Library/DerivedData/Soulver"; 
+    NEXTSTEP_BUILDDIR = "$(HOME)/Library/DerivedData/MathEdit"; 
     NEXTSTEP_BUILDTOOL = /bin/gnumake; 
-    NEXTSTEP_DOCUMENTEXTENSIONS = ({Extension = nsv; Image = ""; }); 
+    NEXTSTEP_DOCUMENTEXTENSIONS = ({Extension = mtxt; Image = ""; }); 
     NEXTSTEP_INSTALLDIR = "$(HOME)/Apps"; 
     PDO_UNIX_BUILDTOOL = $NEXT_ROOT/NextDeveloper/bin/make; 
-    PROJECTNAME = Soulver; 
+    PROJECTNAME = MathEdit; 
     PROJECTTYPE = Application; 
     PROJECTVERSION = 2.6; 
     SYSTEMEXTENSIONS = (); 

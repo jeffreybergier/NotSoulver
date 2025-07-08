@@ -7,7 +7,7 @@
 # and Makefile.postamble (both optional), and Makefile will include them.
 #
 
-NAME = Soulver
+NAME = MathEdit
 
 PROJECTVERSION = 2.6
 PROJECT_TYPE = Application
@@ -46,7 +46,7 @@ HFILES = SVRAppDelegate.h SVRAccessoryWindowsOwner.h\
          XPRegularExpression.h NSUserDefaults+Soulver.h\
          TestsIntegration.h TestsUnit.h slre.h
 
-MFILES = Soulver_main.m
+MFILES = main.m
 
 CFILES = slre.c
 
@@ -66,7 +66,7 @@ PROF_LIBS = $(LIBS)
 FRAMEWORKS = -framework AppKit -framework Foundation
 
 
-NEXTSTEP_BUILD_OUTPUT_DIR = $(HOME)/Library/DerivedData/Soulver
+NEXTSTEP_BUILD_OUTPUT_DIR = $(HOME)/Library/DerivedData/MathEdit
 
 include $(MAKEFILEDIR)/platform.make
 
