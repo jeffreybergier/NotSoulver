@@ -674,13 +674,13 @@
 		8CD62E5F2D91DCDF0000020F = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			path = SVRDocument.h;
+			path = MATHDocument.h;
 			refType = 4;
 		};
 		8CD62E602D91DCDF0000020F = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			path = SVRDocument.m;
+			path = MATHDocument.m;
 			refType = 4;
 		};
 		8CD62E612D91DCDF0000020F = {
