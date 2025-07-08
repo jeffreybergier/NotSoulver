@@ -17,7 +17,7 @@
 //
 
 #import <AppKit/AppKit.h>
-#import "SVRAccessoryWindowViews.h"
+#import "MATHAccessoryWindowViews.h"
 #import "SVRDocumentModelController.h"
 #import "XPCrossPlatform.h"
 

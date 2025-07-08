@@ -19,7 +19,7 @@
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
 #import "NSUserDefaults+Soulver.h"
-#import "SVRAccessoryWindowViews.h"
+#import "MATHAccessoryWindowViews.h"
 
 @class SVRAccessoryWindowsSettingsViewController;
 
