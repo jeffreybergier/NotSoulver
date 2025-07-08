@@ -21,7 +21,7 @@
 #import "XPCrossPlatform.h"
 #import "MATHSolverStyler.h"
 #import "SVRSolverScanner.h"
-#import "SVRSolverSolutionTagger.h"
+#import "MATHSolverSolutionTagger.h"
 #import "SVRSolverExpressionTagger.h"
 #import "MATHSolverTextAttachment.h"
 

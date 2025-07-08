@@ -16,7 +16,7 @@
 // along with MathEdit. If not, see <https://www.gnu.org/licenses/>.
 //
 
-#import "SVRSolverSolutionTagger.h"
+#import "MATHSolverSolutionTagger.h"
 #import "MATHSolverTextAttachment.h"
 
 NSSet *SVRSolverSolutionTaggerSetExponent = nil;

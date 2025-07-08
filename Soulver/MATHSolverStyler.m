@@ -18,7 +18,7 @@
 
 #import "MATHSolverStyler.h"
 #import "XPCrossPlatform.h"
-#import "SVRSolverSolutionTagger.h"
+#import "MATHSolverSolutionTagger.h"
 #import "SVRSolver.h"
 
 @implementation SVRSolverStyler
