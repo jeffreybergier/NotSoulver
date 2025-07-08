@@ -638,13 +638,13 @@
 		8CD62E592D91DCDF0000020F = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			path = "NSUserDefaults+Soulver.h";
+			path = "NSUserDefaults+MathEdit.h";
 			refType = 4;
 		};
 		8CD62E5A2D91DCDF0000020F = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			path = "NSUserDefaults+Soulver.m";
+			path = "NSUserDefaults+MathEdit.m";
 			refType = 4;
 		};
 		8CD62E5B2D91DCDF0000020F = {

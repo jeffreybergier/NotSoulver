@@ -18,7 +18,7 @@
             XPCrossPlatform.m, 
             XPDocument.m, 
             XPRegularExpression.m, 
-            "NSUserDefaults+Soulver.m", 
+            "NSUserDefaults+MathEdit.m", 
             TestsIntegration.m, 
             TestsUnit.m
         ); 
@@ -39,7 +39,7 @@
             XPCrossPlatform.h, 
             XPDocument.h, 
             XPRegularExpression.h, 
-            "NSUserDefaults+Soulver.h", 
+            "NSUserDefaults+MathEdit.h", 
             TestsIntegration.h, 
             TestsUnit.h, 
             slre.h

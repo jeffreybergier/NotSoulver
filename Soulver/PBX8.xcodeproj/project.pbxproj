@@ -11,7 +11,7 @@
 		8C4D1E012DC7D1F80060CFBA /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 8C4D1DFB2DC7D1F80060CFBA /* AppIcon.icns */; };
 		8C4D1E032DC7D1F80060CFBA /* NeXTLogoMed.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C4D1DFD2DC7D1F80060CFBA /* NeXTLogoMed.tiff */; };
 		8C4D1E042DC7D1F80060CFBA /* TagLine.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C4D1DFE2DC7D1F80060CFBA /* TagLine.tiff */; };
-		8C5E580C2DC346F200A1648E /* NSUserDefaults+Soulver.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E592D91DCDF0000020F /* NSUserDefaults+Soulver.h */; };
+		8C5E580C2DC346F200A1648E /* NSUserDefaults+MathEdit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E592D91DCDF0000020F /* NSUserDefaults+MathEdit.h */; };
 		8C5E580D2DC346F200A1648E /* MATHAccessoryWindowsOwner.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E5B2D91DCDF0000020F /* MATHAccessoryWindowsOwner.h */; };
 		8C5E580E2DC346F200A1648E /* MATHAppDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E5D2D91DCDF0000020F /* MATHAppDelegate.h */; };
 		8C5E580F2DC346F200A1648E /* MATHDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E5F2D91DCDF0000020F /* MATHDocument.h */; };
@@ -37,7 +37,7 @@
 		8C5E582C2DC346F200A1648E /* TestUnitBezierPath-MANUAL.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C5B4ECA2DC10C7B002C87B3 /* TestUnitBezierPath-MANUAL.tiff */; };
 		8C5E582D2DC346F200A1648E /* TestUnitBezierPath-REAL.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C5B4ECB2DC10C7B002C87B3 /* TestUnitBezierPath-REAL.tiff */; };
 		8C5E582F2DC346F200A1648E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E502D91DB730000020F /* main.m */; };
-		8C5E58302DC346F200A1648E /* NSUserDefaults+Soulver.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E5A2D91DCDF0000020F /* NSUserDefaults+Soulver.m */; };
+		8C5E58302DC346F200A1648E /* NSUserDefaults+MathEdit.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E5A2D91DCDF0000020F /* NSUserDefaults+MathEdit.m */; };
 		8C5E58312DC346F200A1648E /* MATHAccessoryWindowsOwner.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E5C2D91DCDF0000020F /* MATHAccessoryWindowsOwner.m */; };
 		8C5E58322DC346F200A1648E /* MATHAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E5E2D91DCDF0000020F /* MATHAppDelegate.m */; };
 		8C5E58332DC346F200A1648E /* MATHDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E602D91DCDF0000020F /* MATHDocument.m */; };
@@ -97,8 +97,8 @@
 		8CD62E562D91DCDF0000020F /* Makefile */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		8CD62E572D91DCDF0000020F /* Makefile.postamble */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = Makefile.postamble; sourceTree = "<group>"; };
 		8CD62E582D91DCDF0000020F /* Makefile.preamble */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = Makefile.preamble; sourceTree = "<group>"; };
-		8CD62E592D91DCDF0000020F /* NSUserDefaults+Soulver.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+Soulver.h"; sourceTree = "<group>"; };
-		8CD62E5A2D91DCDF0000020F /* NSUserDefaults+Soulver.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+Soulver.m"; sourceTree = "<group>"; };
+		8CD62E592D91DCDF0000020F /* NSUserDefaults+MathEdit.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+MathEdit.h"; sourceTree = "<group>"; };
+		8CD62E5A2D91DCDF0000020F /* NSUserDefaults+MathEdit.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+MathEdit.m"; sourceTree = "<group>"; };
 		8CD62E5B2D91DCDF0000020F /* MATHAccessoryWindowsOwner.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MATHAccessoryWindowsOwner.h; sourceTree = "<group>"; };
 		8CD62E5C2D91DCDF0000020F /* MATHAccessoryWindowsOwner.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MATHAccessoryWindowsOwner.m; sourceTree = "<group>"; };
 		8CD62E5D2D91DCDF0000020F /* MATHAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MATHAppDelegate.h; sourceTree = "<group>"; };
@@ -230,8 +230,8 @@
 				8CD62E7E2D91DCE00000020F /* XPDocument.m */,
 				8CD62E7F2D91DCE00000020F /* XPRegularExpression.h */,
 				8CD62E802D91DCE00000020F /* XPRegularExpression.m */,
-				8CD62E592D91DCDF0000020F /* NSUserDefaults+Soulver.h */,
-				8CD62E5A2D91DCDF0000020F /* NSUserDefaults+Soulver.m */,
+				8CD62E592D91DCDF0000020F /* NSUserDefaults+MathEdit.h */,
+				8CD62E5A2D91DCDF0000020F /* NSUserDefaults+MathEdit.m */,
 				8CD62EB32D91DDEB0000020F /* slre.c */,
 				8CD62EB42D91DDEB0000020F /* slre.h */,
 			);
@@ -330,7 +330,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C5E580C2DC346F200A1648E /* NSUserDefaults+Soulver.h in Headers */,
+				8C5E580C2DC346F200A1648E /* NSUserDefaults+MathEdit.h in Headers */,
 				8C5E580D2DC346F200A1648E /* MATHAccessoryWindowsOwner.h in Headers */,
 				8C5E580E2DC346F200A1648E /* MATHAppDelegate.h in Headers */,
 				8C5E580F2DC346F200A1648E /* MATHDocument.h in Headers */,
@@ -444,7 +444,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C5E582F2DC346F200A1648E /* main.m in Sources */,
-				8C5E58302DC346F200A1648E /* NSUserDefaults+Soulver.m in Sources */,
+				8C5E58302DC346F200A1648E /* NSUserDefaults+MathEdit.m in Sources */,
 				8C5E58312DC346F200A1648E /* MATHAccessoryWindowsOwner.m in Sources */,
 				8C93A10F2DEC2FC900D8FDBA /* MATHAccessoryWindowViews.m in Sources */,
 				8C5E58322DC346F200A1648E /* MATHAppDelegate.m in Sources */,
