@@ -16,7 +16,7 @@
 // along with MathEdit. If not, see <https://www.gnu.org/licenses/>.
 //
 
-#import "SVRAccessoryWindowsOwner.h"
+#import "MATHAccessoryWindowsOwner.h"
 
 NSString * const SVRAccessoryWindowFrameAutosaveNameSettings = @"kSVRAccessoryWindowFrameAutosaveNameSettings";
 NSString * const SVRAccessoryWindowFrameAutosaveNameAbout    = @"kSVRAccessoryWindowFrameAutosaveNameAbout";

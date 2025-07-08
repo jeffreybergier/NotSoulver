@@ -17,7 +17,7 @@
 //
 
 #import "TestsIntegration.h"
-#import "SVRAccessoryWindowsOwner.h"
+#import "MATHAccessoryWindowsOwner.h"
 
 void TestsIntegrationExecute(void)
 {

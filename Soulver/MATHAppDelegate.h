@@ -18,7 +18,7 @@
 
 #import <AppKit/AppKit.h>
 #import "SVRDocument.h"
-#import "SVRAccessoryWindowsOwner.h"
+#import "MATHAccessoryWindowsOwner.h"
 
 #ifdef XPSupportsFormalProtocols
 @interface SVRAppDelegate: NSObject <NSApplicationDelegate>
