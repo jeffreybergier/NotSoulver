@@ -17,7 +17,7 @@
 //
 
 #import <AppKit/AppKit.h>
-#import "SVRDocument.h"
+#import "MATHDocument.h"
 #import "MATHAccessoryWindowsOwner.h"
 
 #ifdef XPSupportsFormalProtocols

@@ -17,7 +17,7 @@
 //
 
 #import "MATHAppDelegate.h"
-#import "SVRDocument.h"
+#import "MATHDocument.h"
 #import "NSUserDefaults+Soulver.h"
 
 @implementation SVRAppDelegate
