@@ -22,7 +22,7 @@ void TestsUnitExecute(void);
 
 #import "XPCrossPlatform.h"
 #import "XPRegularExpression.h"
-#import "SVRSolverScanner.h"
+#import "MATHSolverScanner.h"
 
 @interface XPLog (TestsUnit)
 +(void)executeTests;

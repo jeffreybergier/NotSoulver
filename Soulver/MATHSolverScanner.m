@@ -17,7 +17,7 @@
 //
 
 #import "SVRSolver.h"
-#import "SVRSolverScanner.h"
+#import "MATHSolverScanner.h"
 
 NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
 

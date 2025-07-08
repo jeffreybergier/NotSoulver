@@ -20,7 +20,7 @@
 #import "NSUserDefaults+MathEdit.h"
 #import "XPCrossPlatform.h"
 #import "MATHSolverStyler.h"
-#import "SVRSolverScanner.h"
+#import "MATHSolverScanner.h"
 #import "MATHSolverSolutionTagger.h"
 #import "SVRSolverExpressionTagger.h"
 #import "MATHSolverTextAttachment.h"
