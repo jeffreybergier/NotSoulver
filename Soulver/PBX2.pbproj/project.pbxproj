@@ -746,13 +746,13 @@
 		8CD62E6D2D91DCE00000020F = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			path = SVRSolverSolutionTagger.h;
+			path = MATHSolverSolutionTagger.h;
 			refType = 4;
 		};
 		8CD62E6E2D91DCE00000020F = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			path = SVRSolverSolutionTagger.m;
+			path = MATHSolverSolutionTagger.m;
 			refType = 4;
 		};
 		8CD62E6F2D91DCE00000020F = {

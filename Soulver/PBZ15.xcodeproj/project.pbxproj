@@ -16,7 +16,7 @@
 		8C5E58132DC346F200A1648E /* SVRSolver.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E672D91DCDF0000020F /* SVRSolver.h */; };
 		8C5E58142DC346F200A1648E /* SVRSolverExpressionTagger.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E692D91DCDF0000020F /* SVRSolverExpressionTagger.h */; };
 		8C5E58152DC346F200A1648E /* SVRSolverScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E6B2D91DCDF0000020F /* SVRSolverScanner.h */; };
-		8C5E58162DC346F200A1648E /* SVRSolverSolutionTagger.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E6D2D91DCE00000020F /* SVRSolverSolutionTagger.h */; };
+		8C5E58162DC346F200A1648E /* MATHSolverSolutionTagger.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E6D2D91DCE00000020F /* MATHSolverSolutionTagger.h */; };
 		8C5E58172DC346F200A1648E /* MATHSolverStyler.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E6F2D91DCE00000020F /* MATHSolverStyler.h */; };
 		8C5E58182DC346F200A1648E /* MATHSolverTextAttachment.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E712D91DCE00000020F /* MATHSolverTextAttachment.h */; };
 		8C5E58192DC346F200A1648E /* TestsIntegration.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E772D91DCE00000020F /* TestsIntegration.h */; };
@@ -42,7 +42,7 @@
 		8C5E58372DC346F200A1648E /* SVRSolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E682D91DCDF0000020F /* SVRSolver.m */; };
 		8C5E58382DC346F200A1648E /* SVRSolverExpressionTagger.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E6A2D91DCDF0000020F /* SVRSolverExpressionTagger.m */; };
 		8C5E58392DC346F200A1648E /* SVRSolverScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E6C2D91DCE00000020F /* SVRSolverScanner.m */; };
-		8C5E583A2DC346F200A1648E /* SVRSolverSolutionTagger.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E6E2D91DCE00000020F /* SVRSolverSolutionTagger.m */; };
+		8C5E583A2DC346F200A1648E /* MATHSolverSolutionTagger.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E6E2D91DCE00000020F /* MATHSolverSolutionTagger.m */; };
 		8C5E583B2DC346F200A1648E /* MATHSolverStyler.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E702D91DCE00000020F /* MATHSolverStyler.m */; };
 		8C5E583C2DC346F200A1648E /* MATHSolverTextAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E722D91DCE00000020F /* MATHSolverTextAttachment.m */; };
 		8C5E583D2DC346F200A1648E /* TestsIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E782D91DCE00000020F /* TestsIntegration.m */; };
@@ -112,8 +112,8 @@
 		8CD62E6A2D91DCDF0000020F /* SVRSolverExpressionTagger.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SVRSolverExpressionTagger.m; sourceTree = "<group>"; };
 		8CD62E6B2D91DCDF0000020F /* SVRSolverScanner.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SVRSolverScanner.h; sourceTree = "<group>"; };
 		8CD62E6C2D91DCE00000020F /* SVRSolverScanner.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SVRSolverScanner.m; sourceTree = "<group>"; };
-		8CD62E6D2D91DCE00000020F /* SVRSolverSolutionTagger.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SVRSolverSolutionTagger.h; sourceTree = "<group>"; };
-		8CD62E6E2D91DCE00000020F /* SVRSolverSolutionTagger.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SVRSolverSolutionTagger.m; sourceTree = "<group>"; };
+		8CD62E6D2D91DCE00000020F /* MATHSolverSolutionTagger.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MATHSolverSolutionTagger.h; sourceTree = "<group>"; };
+		8CD62E6E2D91DCE00000020F /* MATHSolverSolutionTagger.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MATHSolverSolutionTagger.m; sourceTree = "<group>"; };
 		8CD62E6F2D91DCE00000020F /* MATHSolverStyler.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MATHSolverStyler.h; sourceTree = "<group>"; };
 		8CD62E702D91DCE00000020F /* MATHSolverStyler.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MATHSolverStyler.m; sourceTree = "<group>"; };
 		8CD62E712D91DCE00000020F /* MATHSolverTextAttachment.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MATHSolverTextAttachment.h; sourceTree = "<group>"; };
@@ -215,8 +215,8 @@
 				8CD62E6A2D91DCDF0000020F /* SVRSolverExpressionTagger.m */,
 				8CD62E6B2D91DCDF0000020F /* SVRSolverScanner.h */,
 				8CD62E6C2D91DCE00000020F /* SVRSolverScanner.m */,
-				8CD62E6D2D91DCE00000020F /* SVRSolverSolutionTagger.h */,
-				8CD62E6E2D91DCE00000020F /* SVRSolverSolutionTagger.m */,
+				8CD62E6D2D91DCE00000020F /* MATHSolverSolutionTagger.h */,
+				8CD62E6E2D91DCE00000020F /* MATHSolverSolutionTagger.m */,
 				8CD62E6F2D91DCE00000020F /* MATHSolverStyler.h */,
 				8CD62E702D91DCE00000020F /* MATHSolverStyler.m */,
 				8CD62E712D91DCE00000020F /* MATHSolverTextAttachment.h */,
@@ -337,7 +337,7 @@
 				8C5E58142DC346F200A1648E /* SVRSolverExpressionTagger.h in Headers */,
 				8C5E58152DC346F200A1648E /* SVRSolverScanner.h in Headers */,
 				8C979F672DEAC95E00A82647 /* MATHAccessoryWindowViews.h in Headers */,
-				8C5E58162DC346F200A1648E /* SVRSolverSolutionTagger.h in Headers */,
+				8C5E58162DC346F200A1648E /* MATHSolverSolutionTagger.h in Headers */,
 				8C5E58172DC346F200A1648E /* MATHSolverStyler.h in Headers */,
 				8C5E58182DC346F200A1648E /* MATHSolverTextAttachment.h in Headers */,
 				8C5E58192DC346F200A1648E /* TestsIntegration.h in Headers */,
@@ -448,7 +448,7 @@
 				8C5E58372DC346F200A1648E /* SVRSolver.m in Sources */,
 				8C5E58382DC346F200A1648E /* SVRSolverExpressionTagger.m in Sources */,
 				8C5E58392DC346F200A1648E /* SVRSolverScanner.m in Sources */,
-				8C5E583A2DC346F200A1648E /* SVRSolverSolutionTagger.m in Sources */,
+				8C5E583A2DC346F200A1648E /* MATHSolverSolutionTagger.m in Sources */,
 				8C979F662DEAC95E00A82647 /* MATHAccessoryWindowViews.m in Sources */,
 				8C5E583B2DC346F200A1648E /* MATHSolverStyler.m in Sources */,
 				8C5E583C2DC346F200A1648E /* MATHSolverTextAttachment.m in Sources */,
