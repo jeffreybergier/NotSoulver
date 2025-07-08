@@ -29,7 +29,7 @@ GLOBAL_RESOURCES = Images/about-image-512.tiff Images/NeXTLogoMed.tiff\
                    TestsIntegration-UnsolvedRep.rtf
 
 CLASSES = MATHAppDelegate.m MATHAccessoryWindowsOwner.m\
-          SVRAccessoryWindowViews.m SVRDocument.m\
+          MATHAccessoryWindowViews.m SVRDocument.m\
           SVRDocumentModelController.m SVRDocumentViewController.m\
           SVRSolver.m SVRSolverExpressionTagger.m SVRSolverScanner.m\
           SVRSolverSolutionTagger.m SVRSolverStyler.m\
@@ -38,7 +38,7 @@ CLASSES = MATHAppDelegate.m MATHAccessoryWindowsOwner.m\
           TestsIntegration.m TestsUnit.m
 
 HFILES = MATHAppDelegate.h MATHAccessoryWindowsOwner.h\
-         SVRAccessoryWindowViews.h SVRDocument.h\
+         MATHAccessoryWindowViews.h SVRDocument.h\
          SVRDocumentModelController.h SVRDocumentViewController.h\
          SVRSolver.h SVRSolverExpressionTagger.h SVRSolverScanner.h\
          SVRSolverSolutionTagger.h SVRSolverStyler.h\

@@ -62,8 +62,8 @@
 		8C9AD7CF2E06488400DE8B5A /* ThemeLight.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C9AD7CA2E06488400DE8B5A /* ThemeLight.tiff */; };
 		8C9AD7D02E06488400DE8B5A /* ThemeDark.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C9AD7C82E06488400DE8B5A /* ThemeDark.tiff */; };
 		8C9AD7D12E06488400DE8B5A /* ThemeLight@2x.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C9AD7CB2E06488400DE8B5A /* ThemeLight@2x.tiff */; };
-		8CB5C5122DED604600CDE1DF /* SVRAccessoryWindowViews.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CB5C5102DED604600CDE1DF /* SVRAccessoryWindowViews.h */; };
-		8CB5C5132DED604600CDE1DF /* SVRAccessoryWindowViews.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CB5C5112DED604600CDE1DF /* SVRAccessoryWindowViews.m */; };
+		8CB5C5122DED604600CDE1DF /* MATHAccessoryWindowViews.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CB5C5102DED604600CDE1DF /* MATHAccessoryWindowViews.h */; };
+		8CB5C5132DED604600CDE1DF /* MATHAccessoryWindowViews.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CB5C5112DED604600CDE1DF /* MATHAccessoryWindowViews.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -87,8 +87,8 @@
 		8C9AD7C92E06488400DE8B5A /* ThemeDark@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeDark@2x.tiff"; path = "Images/ThemeDark@2x.tiff"; sourceTree = "<group>"; };
 		8C9AD7CA2E06488400DE8B5A /* ThemeLight.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeLight.tiff; path = Images/ThemeLight.tiff; sourceTree = "<group>"; };
 		8C9AD7CB2E06488400DE8B5A /* ThemeLight@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeLight@2x.tiff"; path = "Images/ThemeLight@2x.tiff"; sourceTree = "<group>"; };
-		8CB5C5102DED604600CDE1DF /* SVRAccessoryWindowViews.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SVRAccessoryWindowViews.h; sourceTree = "<group>"; };
-		8CB5C5112DED604600CDE1DF /* SVRAccessoryWindowViews.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SVRAccessoryWindowViews.m; sourceTree = "<group>"; };
+		8CB5C5102DED604600CDE1DF /* MATHAccessoryWindowViews.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MATHAccessoryWindowViews.h; sourceTree = "<group>"; };
+		8CB5C5112DED604600CDE1DF /* MATHAccessoryWindowViews.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MATHAccessoryWindowViews.m; sourceTree = "<group>"; };
 		8CD62E502D91DB730000020F /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8CD62E552D91DCDF0000020F /* Import Log.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "Import Log.rtf"; sourceTree = "<group>"; };
 		8CD62E562D91DCDF0000020F /* Makefile */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -201,8 +201,8 @@
 				8CD62E5E2D91DCDF0000020F /* MATHAppDelegate.m */,
 				8CD62E5B2D91DCDF0000020F /* MATHAccessoryWindowsOwner.h */,
 				8CD62E5C2D91DCDF0000020F /* MATHAccessoryWindowsOwner.m */,
-				8CB5C5102DED604600CDE1DF /* SVRAccessoryWindowViews.h */,
-				8CB5C5112DED604600CDE1DF /* SVRAccessoryWindowViews.m */,
+				8CB5C5102DED604600CDE1DF /* MATHAccessoryWindowViews.h */,
+				8CB5C5112DED604600CDE1DF /* MATHAccessoryWindowViews.m */,
 				8CD62E5F2D91DCDF0000020F /* SVRDocument.h */,
 				8CD62E602D91DCDF0000020F /* SVRDocument.m */,
 				8CD62E612D91DCDF0000020F /* SVRDocumentModelController.h */,
@@ -334,7 +334,7 @@
 				8C5E58102DC346F200A1648E /* SVRDocumentModelController.h in Headers */,
 				8C5E58112DC346F200A1648E /* SVRDocumentViewController.h in Headers */,
 				8C5E58132DC346F200A1648E /* SVRSolver.h in Headers */,
-				8CB5C5122DED604600CDE1DF /* SVRAccessoryWindowViews.h in Headers */,
+				8CB5C5122DED604600CDE1DF /* MATHAccessoryWindowViews.h in Headers */,
 				8C5E58142DC346F200A1648E /* SVRSolverExpressionTagger.h in Headers */,
 				8C5E58152DC346F200A1648E /* SVRSolverScanner.h in Headers */,
 				8C5E58162DC346F200A1648E /* SVRSolverSolutionTagger.h in Headers */,
@@ -440,7 +440,7 @@
 				8C5E582F2DC346F200A1648E /* main.m in Sources */,
 				8C5E58302DC346F200A1648E /* NSUserDefaults+Soulver.m in Sources */,
 				8C5E58312DC346F200A1648E /* MATHAccessoryWindowsOwner.m in Sources */,
-				8CB5C5132DED604600CDE1DF /* SVRAccessoryWindowViews.m in Sources */,
+				8CB5C5132DED604600CDE1DF /* MATHAccessoryWindowViews.m in Sources */,
 				8C5E58322DC346F200A1648E /* MATHAppDelegate.m in Sources */,
 				8C5E58332DC346F200A1648E /* SVRDocument.m in Sources */,
 				8C5E58342DC346F200A1648E /* SVRDocumentModelController.m in Sources */,

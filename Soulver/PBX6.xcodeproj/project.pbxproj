@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8C182DD92DEF1034004C47C3 /* SVRAccessoryWindowViews.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C182DD72DEF1034004C47C3 /* SVRAccessoryWindowViews.h */; };
-		8C182DDA2DEF1034004C47C3 /* SVRAccessoryWindowViews.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C182DD82DEF1034004C47C3 /* SVRAccessoryWindowViews.m */; };
+		8C182DD92DEF1034004C47C3 /* MATHAccessoryWindowViews.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C182DD72DEF1034004C47C3 /* MATHAccessoryWindowViews.h */; };
+		8C182DDA2DEF1034004C47C3 /* MATHAccessoryWindowViews.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C182DD82DEF1034004C47C3 /* MATHAccessoryWindowViews.m */; };
 		8C4D1E002DC7D1F80060CFBA /* about-image-512.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C4D1DFA2DC7D1F80060CFBA /* about-image-512.tiff */; };
 		8C4D1E012DC7D1F80060CFBA /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 8C4D1DFB2DC7D1F80060CFBA /* AppIcon.icns */; };
 		8C4D1E032DC7D1F80060CFBA /* NeXTLogoMed.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C4D1DFD2DC7D1F80060CFBA /* NeXTLogoMed.tiff */; };
@@ -70,8 +70,8 @@
 		1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		8C182DD72DEF1034004C47C3 /* SVRAccessoryWindowViews.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVRAccessoryWindowViews.h; sourceTree = "<group>"; };
-		8C182DD82DEF1034004C47C3 /* SVRAccessoryWindowViews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVRAccessoryWindowViews.m; sourceTree = "<group>"; };
+		8C182DD72DEF1034004C47C3 /* MATHAccessoryWindowViews.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MATHAccessoryWindowViews.h; sourceTree = "<group>"; };
+		8C182DD82DEF1034004C47C3 /* MATHAccessoryWindowViews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MATHAccessoryWindowViews.m; sourceTree = "<group>"; };
 		8C33535A2E1A81E6004752CA /* PB.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = PB.entitlements; path = PB.xcconfig/PB.entitlements; sourceTree = "<group>"; };
 		8C33535B2E1A81E6004752CA /* PBBase.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = PBBase.xcconfig; path = PB.xcconfig/PBBase.xcconfig; sourceTree = "<group>"; };
 		8C33535C2E1A81E6004752CA /* PBDebug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = PBDebug.xcconfig; path = PB.xcconfig/PBDebug.xcconfig; sourceTree = "<group>"; };
@@ -201,8 +201,8 @@
 				8CD62E5E2D91DCDF0000020F /* MATHAppDelegate.m */,
 				8CD62E5B2D91DCDF0000020F /* MATHAccessoryWindowsOwner.h */,
 				8CD62E5C2D91DCDF0000020F /* MATHAccessoryWindowsOwner.m */,
-				8C182DD72DEF1034004C47C3 /* SVRAccessoryWindowViews.h */,
-				8C182DD82DEF1034004C47C3 /* SVRAccessoryWindowViews.m */,
+				8C182DD72DEF1034004C47C3 /* MATHAccessoryWindowViews.h */,
+				8C182DD82DEF1034004C47C3 /* MATHAccessoryWindowViews.m */,
 				8CD62E5F2D91DCDF0000020F /* SVRDocument.h */,
 				8CD62E602D91DCDF0000020F /* SVRDocument.m */,
 				8CD62E612D91DCDF0000020F /* SVRDocumentModelController.h */,
@@ -345,7 +345,7 @@
 				8C5E581C2DC346F200A1648E /* XPDocument.h in Headers */,
 				8C5E581D2DC346F200A1648E /* XPRegularExpression.h in Headers */,
 				8C5E581E2DC346F200A1648E /* slre.h in Headers */,
-				8C182DD92DEF1034004C47C3 /* SVRAccessoryWindowViews.h in Headers */,
+				8C182DD92DEF1034004C47C3 /* MATHAccessoryWindowViews.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -447,7 +447,7 @@
 				8C5E58402DC346F200A1648E /* XPDocument.m in Sources */,
 				8C5E58412DC346F200A1648E /* XPRegularExpression.m in Sources */,
 				8C5E58422DC346F200A1648E /* slre.c in Sources */,
-				8C182DDA2DEF1034004C47C3 /* SVRAccessoryWindowViews.m in Sources */,
+				8C182DDA2DEF1034004C47C3 /* MATHAccessoryWindowViews.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

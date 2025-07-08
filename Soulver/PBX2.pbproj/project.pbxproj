@@ -543,13 +543,13 @@
 		8C98C9E72DEC210800A80066 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			path = SVRAccessoryWindowViews.h;
+			path = MATHAccessoryWindowViews.h;
 			refType = 4;
 		};
 		8C98C9E82DEC210800A80066 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			path = SVRAccessoryWindowViews.m;
+			path = MATHAccessoryWindowViews.m;
 			refType = 4;
 		};
 		8C98C9E92DEC210800A80066 = {

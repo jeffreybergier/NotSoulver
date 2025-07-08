@@ -56,8 +56,8 @@
 		8C5E58412DC346F200A1648E /* XPRegularExpression.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E802D91DCE00000020F /* XPRegularExpression.m */; };
 		8C5E58422DC346F200A1648E /* slre.c in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62EB32D91DDEB0000020F /* slre.c */; };
 		8C5E58442DC346F200A1648E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
-		8C93A10E2DEC2FC900D8FDBA /* SVRAccessoryWindowViews.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C93A10C2DEC2FC900D8FDBA /* SVRAccessoryWindowViews.h */; };
-		8C93A10F2DEC2FC900D8FDBA /* SVRAccessoryWindowViews.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C93A10D2DEC2FC900D8FDBA /* SVRAccessoryWindowViews.m */; };
+		8C93A10E2DEC2FC900D8FDBA /* MATHAccessoryWindowViews.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C93A10C2DEC2FC900D8FDBA /* MATHAccessoryWindowViews.h */; };
+		8C93A10F2DEC2FC900D8FDBA /* MATHAccessoryWindowViews.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C93A10D2DEC2FC900D8FDBA /* MATHAccessoryWindowViews.m */; };
 		8CAE45A42E1A7A44007B136C /* PBBase.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 8CAE45A12E1A7A44007B136C /* PBBase.xcconfig */; };
 		8CAE45A52E1A7A44007B136C /* PBDebug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 8CAE45A22E1A7A44007B136C /* PBDebug.xcconfig */; };
 		8CAE45A62E1A7A44007B136C /* PBRelease.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 8CAE45A32E1A7A44007B136C /* PBRelease.xcconfig */; };
@@ -81,8 +81,8 @@
 		8C5B4ECB2DC10C7B002C87B3 /* TestUnitBezierPath-REAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "TestUnitBezierPath-REAL.tiff"; sourceTree = SOURCE_ROOT; };
 		8C5E58492DC346F200A1648E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = PB.xcconfig/Info.plist; sourceTree = "<group>"; };
 		8C5E584A2DC346F200A1648E /* MathEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MathEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		8C93A10C2DEC2FC900D8FDBA /* SVRAccessoryWindowViews.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVRAccessoryWindowViews.h; sourceTree = "<group>"; };
-		8C93A10D2DEC2FC900D8FDBA /* SVRAccessoryWindowViews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVRAccessoryWindowViews.m; sourceTree = "<group>"; };
+		8C93A10C2DEC2FC900D8FDBA /* MATHAccessoryWindowViews.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MATHAccessoryWindowViews.h; sourceTree = "<group>"; };
+		8C93A10D2DEC2FC900D8FDBA /* MATHAccessoryWindowViews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MATHAccessoryWindowViews.m; sourceTree = "<group>"; };
 		8CAE45A12E1A7A44007B136C /* PBBase.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = PBBase.xcconfig; path = PB.xcconfig/PBBase.xcconfig; sourceTree = "<group>"; };
 		8CAE45A22E1A7A44007B136C /* PBDebug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = PBDebug.xcconfig; path = PB.xcconfig/PBDebug.xcconfig; sourceTree = "<group>"; };
 		8CAE45A32E1A7A44007B136C /* PBRelease.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = PBRelease.xcconfig; path = PB.xcconfig/PBRelease.xcconfig; sourceTree = "<group>"; };
@@ -204,8 +204,8 @@
 				8CD62E5E2D91DCDF0000020F /* MATHAppDelegate.m */,
 				8CD62E5B2D91DCDF0000020F /* MATHAccessoryWindowsOwner.h */,
 				8CD62E5C2D91DCDF0000020F /* MATHAccessoryWindowsOwner.m */,
-				8C93A10C2DEC2FC900D8FDBA /* SVRAccessoryWindowViews.h */,
-				8C93A10D2DEC2FC900D8FDBA /* SVRAccessoryWindowViews.m */,
+				8C93A10C2DEC2FC900D8FDBA /* MATHAccessoryWindowViews.h */,
+				8C93A10D2DEC2FC900D8FDBA /* MATHAccessoryWindowViews.m */,
 				8CD62E5F2D91DCDF0000020F /* SVRDocument.h */,
 				8CD62E602D91DCDF0000020F /* SVRDocument.m */,
 				8CD62E612D91DCDF0000020F /* SVRDocumentModelController.h */,
@@ -337,7 +337,7 @@
 				8C5E58102DC346F200A1648E /* SVRDocumentModelController.h in Headers */,
 				8C5E58112DC346F200A1648E /* SVRDocumentViewController.h in Headers */,
 				8C5E58132DC346F200A1648E /* SVRSolver.h in Headers */,
-				8C93A10E2DEC2FC900D8FDBA /* SVRAccessoryWindowViews.h in Headers */,
+				8C93A10E2DEC2FC900D8FDBA /* MATHAccessoryWindowViews.h in Headers */,
 				8C5E58142DC346F200A1648E /* SVRSolverExpressionTagger.h in Headers */,
 				8C5E58152DC346F200A1648E /* SVRSolverScanner.h in Headers */,
 				8C5E58162DC346F200A1648E /* SVRSolverSolutionTagger.h in Headers */,
@@ -446,7 +446,7 @@
 				8C5E582F2DC346F200A1648E /* main.m in Sources */,
 				8C5E58302DC346F200A1648E /* NSUserDefaults+Soulver.m in Sources */,
 				8C5E58312DC346F200A1648E /* MATHAccessoryWindowsOwner.m in Sources */,
-				8C93A10F2DEC2FC900D8FDBA /* SVRAccessoryWindowViews.m in Sources */,
+				8C93A10F2DEC2FC900D8FDBA /* MATHAccessoryWindowViews.m in Sources */,
 				8C5E58322DC346F200A1648E /* MATHAppDelegate.m in Sources */,
 				8C5E58332DC346F200A1648E /* SVRDocument.m in Sources */,
 				8C5E58342DC346F200A1648E /* SVRDocumentModelController.m in Sources */,
