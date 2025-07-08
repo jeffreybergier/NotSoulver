@@ -662,13 +662,13 @@
 		8CD62E5D2D91DCDF0000020F = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			path = SVRAppDelegate.h;
+			path = MATHAppDelegate.h;
 			refType = 4;
 		};
 		8CD62E5E2D91DCDF0000020F = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			path = SVRAppDelegate.m;
+			path = MATHAppDelegate.m;
 			refType = 4;
 		};
 		8CD62E5F2D91DCDF0000020F = {

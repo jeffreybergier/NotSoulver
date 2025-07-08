@@ -13,7 +13,7 @@
 		8C4D1E042DC7D1F80060CFBA /* TagLine.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C4D1DFE2DC7D1F80060CFBA /* TagLine.tiff */; };
 		8C5E580C2DC346F200A1648E /* NSUserDefaults+Soulver.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E592D91DCDF0000020F /* NSUserDefaults+Soulver.h */; };
 		8C5E580D2DC346F200A1648E /* SVRAccessoryWindowsOwner.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E5B2D91DCDF0000020F /* SVRAccessoryWindowsOwner.h */; };
-		8C5E580E2DC346F200A1648E /* SVRAppDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E5D2D91DCDF0000020F /* SVRAppDelegate.h */; };
+		8C5E580E2DC346F200A1648E /* MATHAppDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E5D2D91DCDF0000020F /* MATHAppDelegate.h */; };
 		8C5E580F2DC346F200A1648E /* SVRDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E5F2D91DCDF0000020F /* SVRDocument.h */; };
 		8C5E58102DC346F200A1648E /* SVRDocumentModelController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E612D91DCDF0000020F /* SVRDocumentModelController.h */; };
 		8C5E58112DC346F200A1648E /* SVRDocumentViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E632D91DCDF0000020F /* SVRDocumentViewController.h */; };
@@ -39,7 +39,7 @@
 		8C5E582F2DC346F200A1648E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E502D91DB730000020F /* main.m */; };
 		8C5E58302DC346F200A1648E /* NSUserDefaults+Soulver.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E5A2D91DCDF0000020F /* NSUserDefaults+Soulver.m */; };
 		8C5E58312DC346F200A1648E /* SVRAccessoryWindowsOwner.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E5C2D91DCDF0000020F /* SVRAccessoryWindowsOwner.m */; };
-		8C5E58322DC346F200A1648E /* SVRAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E5E2D91DCDF0000020F /* SVRAppDelegate.m */; };
+		8C5E58322DC346F200A1648E /* MATHAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E5E2D91DCDF0000020F /* MATHAppDelegate.m */; };
 		8C5E58332DC346F200A1648E /* SVRDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E602D91DCDF0000020F /* SVRDocument.m */; };
 		8C5E58342DC346F200A1648E /* SVRDocumentModelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E622D91DCDF0000020F /* SVRDocumentModelController.m */; };
 		8C5E58352DC346F200A1648E /* SVRDocumentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E642D91DCDF0000020F /* SVRDocumentViewController.m */; };
@@ -98,8 +98,8 @@
 		8CD62E5A2D91DCDF0000020F /* NSUserDefaults+Soulver.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+Soulver.m"; sourceTree = "<group>"; };
 		8CD62E5B2D91DCDF0000020F /* SVRAccessoryWindowsOwner.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SVRAccessoryWindowsOwner.h; sourceTree = "<group>"; };
 		8CD62E5C2D91DCDF0000020F /* SVRAccessoryWindowsOwner.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SVRAccessoryWindowsOwner.m; sourceTree = "<group>"; };
-		8CD62E5D2D91DCDF0000020F /* SVRAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SVRAppDelegate.h; sourceTree = "<group>"; };
-		8CD62E5E2D91DCDF0000020F /* SVRAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SVRAppDelegate.m; sourceTree = "<group>"; };
+		8CD62E5D2D91DCDF0000020F /* MATHAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MATHAppDelegate.h; sourceTree = "<group>"; };
+		8CD62E5E2D91DCDF0000020F /* MATHAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MATHAppDelegate.m; sourceTree = "<group>"; };
 		8CD62E5F2D91DCDF0000020F /* SVRDocument.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SVRDocument.h; sourceTree = "<group>"; };
 		8CD62E602D91DCDF0000020F /* SVRDocument.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SVRDocument.m; sourceTree = "<group>"; };
 		8CD62E612D91DCDF0000020F /* SVRDocumentModelController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SVRDocumentModelController.h; sourceTree = "<group>"; };
@@ -197,8 +197,8 @@
 		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				8CD62E5D2D91DCDF0000020F /* SVRAppDelegate.h */,
-				8CD62E5E2D91DCDF0000020F /* SVRAppDelegate.m */,
+				8CD62E5D2D91DCDF0000020F /* MATHAppDelegate.h */,
+				8CD62E5E2D91DCDF0000020F /* MATHAppDelegate.m */,
 				8CD62E5B2D91DCDF0000020F /* SVRAccessoryWindowsOwner.h */,
 				8CD62E5C2D91DCDF0000020F /* SVRAccessoryWindowsOwner.m */,
 				8CB5C5102DED604600CDE1DF /* SVRAccessoryWindowViews.h */,
@@ -329,7 +329,7 @@
 			files = (
 				8C5E580C2DC346F200A1648E /* NSUserDefaults+Soulver.h in Headers */,
 				8C5E580D2DC346F200A1648E /* SVRAccessoryWindowsOwner.h in Headers */,
-				8C5E580E2DC346F200A1648E /* SVRAppDelegate.h in Headers */,
+				8C5E580E2DC346F200A1648E /* MATHAppDelegate.h in Headers */,
 				8C5E580F2DC346F200A1648E /* SVRDocument.h in Headers */,
 				8C5E58102DC346F200A1648E /* SVRDocumentModelController.h in Headers */,
 				8C5E58112DC346F200A1648E /* SVRDocumentViewController.h in Headers */,
@@ -441,7 +441,7 @@
 				8C5E58302DC346F200A1648E /* NSUserDefaults+Soulver.m in Sources */,
 				8C5E58312DC346F200A1648E /* SVRAccessoryWindowsOwner.m in Sources */,
 				8CB5C5132DED604600CDE1DF /* SVRAccessoryWindowViews.m in Sources */,
-				8C5E58322DC346F200A1648E /* SVRAppDelegate.m in Sources */,
+				8C5E58322DC346F200A1648E /* MATHAppDelegate.m in Sources */,
 				8C5E58332DC346F200A1648E /* SVRDocument.m in Sources */,
 				8C5E58342DC346F200A1648E /* SVRDocumentModelController.m in Sources */,
 				8C5E58352DC346F200A1648E /* SVRDocumentViewController.m in Sources */,

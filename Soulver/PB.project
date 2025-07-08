@@ -3,7 +3,7 @@
     DYNAMIC_CODE_GEN = YES; 
     FILESTABLE = {
         CLASSES = (
-            SVRAppDelegate.m, 
+            MATHAppDelegate.m, 
             SVRAccessoryWindowsOwner.m, 
             SVRAccessoryWindowViews.m, 
             SVRDocument.m, 
@@ -24,7 +24,7 @@
         ); 
         FRAMEWORKS = (AppKit.framework, Foundation.framework); 
         H_FILES = (
-            SVRAppDelegate.h, 
+            MATHAppDelegate.h, 
             SVRAccessoryWindowsOwner.h, 
             SVRAccessoryWindowViews.h, 
             SVRDocument.h, 
