@@ -16,7 +16,7 @@
 // along with MathEdit. If not, see <https://www.gnu.org/licenses/>.
 //
 
-#import "SVRSolverTextAttachment.h"
+#import "MATHSolverTextAttachment.h"
 
 @implementation SVRSolverTextAttachment
 

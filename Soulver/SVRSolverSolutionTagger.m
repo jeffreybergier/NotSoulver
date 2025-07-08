@@ -17,7 +17,7 @@
 //
 
 #import "SVRSolverSolutionTagger.h"
-#import "SVRSolverTextAttachment.h"
+#import "MATHSolverTextAttachment.h"
 
 NSSet *SVRSolverSolutionTaggerSetExponent = nil;
 NSSet *SVRSolverSolutionTaggerSetMultDiv  = nil;

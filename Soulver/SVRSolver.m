@@ -23,7 +23,7 @@
 #import "SVRSolverScanner.h"
 #import "SVRSolverSolutionTagger.h"
 #import "SVRSolverExpressionTagger.h"
-#import "SVRSolverTextAttachment.h"
+#import "MATHSolverTextAttachment.h"
 
 #ifndef MAC_OS_X_VERSION_10_2
 // Silences warning for these functions on OpenStep
