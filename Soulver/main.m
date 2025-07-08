@@ -17,7 +17,7 @@
 //
 
 #import <AppKit/AppKit.h>
-#import "SVRAppDelegate.h"
+#import "MATHAppDelegate.h"
 #import "TestsIntegration.h"
 #import "TestsUnit.h"
 

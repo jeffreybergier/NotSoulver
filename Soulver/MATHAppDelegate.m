@@ -16,7 +16,7 @@
 // along with MathEdit. If not, see <https://www.gnu.org/licenses/>.
 //
 
-#import "SVRAppDelegate.h"
+#import "MATHAppDelegate.h"
 #import "SVRDocument.h"
 #import "NSUserDefaults+Soulver.h"
 
