@@ -19,7 +19,7 @@
 #import "SVRSolver.h"
 #import "NSUserDefaults+MathEdit.h"
 #import "XPCrossPlatform.h"
-#import "SVRSolverStyler.h"
+#import "MATHSolverStyler.h"
 #import "SVRSolverScanner.h"
 #import "SVRSolverSolutionTagger.h"
 #import "SVRSolverExpressionTagger.h"
