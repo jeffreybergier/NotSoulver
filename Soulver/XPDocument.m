@@ -17,7 +17,7 @@
 //
 
 #import "XPDocument.h"
-#import "NSUserDefaults+Soulver.h"
+#import "NSUserDefaults+MathEdit.h"
 
 // Because this class is only used in OpenStep
 // I will add insturctions for LLVM to ignore

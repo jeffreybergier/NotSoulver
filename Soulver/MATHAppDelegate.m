@@ -18,7 +18,7 @@
 
 #import "MATHAppDelegate.h"
 #import "MATHDocument.h"
-#import "NSUserDefaults+Soulver.h"
+#import "NSUserDefaults+MathEdit.h"
 
 @implementation SVRAppDelegate
 

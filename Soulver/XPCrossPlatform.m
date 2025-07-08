@@ -17,7 +17,7 @@
 //
 
 #import "XPCrossPlatform.h"
-#import "NSUserDefaults+Soulver.h"
+#import "NSUserDefaults+MathEdit.h"
 
 const NSRange XPNotFoundRange = {NSNotFound, 0};
 BOOL XPIsNotFoundRange(NSRange range)

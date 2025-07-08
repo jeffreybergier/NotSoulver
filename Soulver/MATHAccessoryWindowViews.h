@@ -18,7 +18,7 @@
 
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
-#import "NSUserDefaults+Soulver.h"
+#import "NSUserDefaults+MathEdit.h"
 
 // MARK: View Enumerations
 

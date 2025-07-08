@@ -17,7 +17,7 @@
 //
 
 #import "SVRSolver.h"
-#import "NSUserDefaults+Soulver.h"
+#import "NSUserDefaults+MathEdit.h"
 #import "XPCrossPlatform.h"
 #import "SVRSolverStyler.h"
 #import "SVRSolverScanner.h"

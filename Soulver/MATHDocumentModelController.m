@@ -17,7 +17,7 @@
 //
 
 #import "MATHDocumentModelController.h"
-#import "NSUserDefaults+Soulver.h"
+#import "NSUserDefaults+MathEdit.h"
 #import "SVRSolver.h"
 
 NSString *const SVRDocumentModelExtension   = @"mtxt";

@@ -17,7 +17,7 @@
 //
 
 #import "MATHDocumentViewController.h"
-#import "NSUserDefaults+Soulver.h"
+#import "NSUserDefaults+MathEdit.h"
 #import "SVRSolver.h"
 
 NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.notsoulver.unsolved";

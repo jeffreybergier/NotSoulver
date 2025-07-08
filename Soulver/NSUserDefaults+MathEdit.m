@@ -16,7 +16,7 @@
 // along with MathEdit. If not, see <https://www.gnu.org/licenses/>.
 //
 
-#import "NSUserDefaults+Soulver.h"
+#import "NSUserDefaults+MathEdit.h"
 
 // Implementation in AccessoryWindowsOwner.m
 extern NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad;
