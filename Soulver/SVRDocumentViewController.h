@@ -18,7 +18,7 @@
 
 #import <AppKit/AppKit.h>
 #import "MATHAccessoryWindowViews.h"
-#import "SVRDocumentModelController.h"
+#import "MATHDocumentModelController.h"
 #import "XPCrossPlatform.h"
 
 @interface SVRDocumentViewController: XPViewController

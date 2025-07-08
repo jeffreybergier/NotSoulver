@@ -20,7 +20,7 @@ void TestsIntegrationExecute(void);
 
 #if TESTING==1
 
-#import "SVRDocumentModelController.h"
+#import "MATHDocumentModelController.h"
 #import "SVRSolver.h"
 
 @interface SVRDocumentModelController (TestsIntegration)
