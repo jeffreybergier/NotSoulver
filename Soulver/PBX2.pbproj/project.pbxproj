@@ -758,13 +758,13 @@
 		8CD62E6F2D91DCE00000020F = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			path = SVRSolverStyler.h;
+			path = MATHSolverStyler.h;
 			refType = 4;
 		};
 		8CD62E702D91DCE00000020F = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			path = SVRSolverStyler.m;
+			path = MATHSolverStyler.m;
 			refType = 4;
 		};
 		8CD62E712D91DCE00000020F = {

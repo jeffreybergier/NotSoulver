@@ -32,7 +32,7 @@ CLASSES = MATHAppDelegate.m MATHAccessoryWindowsOwner.m\
           MATHAccessoryWindowViews.m MATHDocument.m\
           MATHDocumentModelController.m MATHDocumentViewController.m\
           SVRSolver.m SVRSolverExpressionTagger.m SVRSolverScanner.m\
-          SVRSolverSolutionTagger.m SVRSolverStyler.m\
+          SVRSolverSolutionTagger.m MATHSolverStyler.m\
           MATHSolverTextAttachment.m XPCrossPlatform.m XPDocument.m\
           XPRegularExpression.m NSUserDefaults+MathEdit.m\
           TestsIntegration.m TestsUnit.m
@@ -41,7 +41,7 @@ HFILES = MATHAppDelegate.h MATHAccessoryWindowsOwner.h\
          MATHAccessoryWindowViews.h MATHDocument.h\
          MATHDocumentModelController.h MATHDocumentViewController.h\
          SVRSolver.h SVRSolverExpressionTagger.h SVRSolverScanner.h\
-         SVRSolverSolutionTagger.h SVRSolverStyler.h\
+         SVRSolverSolutionTagger.h MATHSolverStyler.h\
          MATHSolverTextAttachment.h XPCrossPlatform.h XPDocument.h\
          XPRegularExpression.h NSUserDefaults+MathEdit.h\
          TestsIntegration.h TestsUnit.h slre.h
