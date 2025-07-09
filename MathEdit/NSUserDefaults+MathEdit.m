@@ -53,7 +53,7 @@ NSString *MATHThemeErrorFontKey                     = @"kMATHThemeErrorFontKey";
 NSString *MATHThemeUserInterfaceStyle               = @"kMATHThemeUserInterfaceStyleKey";
 NSString *MATHSettingsSelection                     = @"kMATHSettingsSelectionKey";
 
-@implementation NSUserDefaults (Soulver)
+@implementation NSUserDefaults (MathEdit)
 
 // MARK: Basics
 

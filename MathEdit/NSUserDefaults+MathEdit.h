@@ -46,7 +46,7 @@ typedef XP_ENUM(XPInteger, MATHThemeFont) {
   MATHThemeFontError = 3
 };
 
-@interface NSUserDefaults (Soulver)
+@interface NSUserDefaults (MathEdit)
 
 // MARK: Basics
 -(NSString*)MATH_savePanelLastDirectory;

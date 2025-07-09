@@ -19,7 +19,7 @@
 #import "MATHSolver.h"
 #import "MATHDocumentViewController.h"
 
-NSString *MATHDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.notsoulver.unsolved";
+NSString *MATHDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.mathedit.unsolved";
 
 @implementation MATHDocumentViewController
 

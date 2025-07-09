@@ -53,7 +53,7 @@
 
 @end
 
-@interface XPRegularExpression (Soulver)
+@interface XPRegularExpression (MathEdit)
 
 +(id)MATH_regexForNumbers;
 +(id)MATH_regexForOperators;

@@ -222,7 +222,7 @@ NSSet *MATHSolverScannerNegativeNumberPrefixSet = nil;
 
 @end
 
-@implementation XPRegularExpression (Soulver)
+@implementation XPRegularExpression (MathEdit)
 
 +(id)MATH_regexForNumbers;
 {

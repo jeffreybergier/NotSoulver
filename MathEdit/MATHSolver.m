@@ -199,10 +199,10 @@ NSCharacterSet *MATHSolverTextAttachmentCharacterSet = nil;
 NSString *XPAttributedStringKeyForTag(MATHSolverTag tag)
 {
   switch (tag) {
-    case MATHSolverTagNumber:     return @"kMATHSoulverTagNumberKey";
-    case MATHSolverTagBracket:    return @"kMATHSoulverTagBracketKey";
-    case MATHSolverTagOperator:   return @"kMATHSoulverTagOperatorKey";
-    case MATHSolverTagExpression: return @"kMATHSoulverTagExpressionKey";
+    case MATHSolverTagNumber:     return @"kMATHSolverTagNumberKey";
+    case MATHSolverTagBracket:    return @"kMATHSolverTagBracketKey";
+    case MATHSolverTagOperator:   return @"kMATHSolverTagOperatorKey";
+    case MATHSolverTagExpression: return @"kMATHSolverTagExpressionKey";
     case MATHSolverTagOriginal:   return @"kMATHSolverTagOriginalKey";
     default:
       XPCLogAssrt1(NO, @"[UNKNOWN] MATHSolverTag(%d)", (int)tag);
@@ -425,7 +425,7 @@ NSString *MATHSolverDebugDescriptionForError(MATHCalculationError error) {
 
 @end
 
-@implementation NSDecimalNumber (Soulver)
+@implementation NSDecimalNumber (MathEdit)
 
 -(BOOL)MATH_isNotANumber;
 {

@@ -63,7 +63,7 @@ typedef XP_ENUM(XPInteger, MATHSolverTag) {
   // Stores NSString of the range of the bracket
   // NSStringFromRange (use NSRangeFromString to extract)
   MATHSolverTagBracket,
-  // Stores NSNumber containing the MATHSoulverOperator
+  // Stores NSNumber containing the MATHSolverOperator
   MATHSolverTagOperator,
   // Stores NSString of the range of the bracket - (Minus the Equal Sign)
   // NSStringFromRange (use NSRangeFromString to extract)
@@ -149,7 +149,7 @@ NSString             *MATHSolverDebugDescriptionForError(MATHCalculationError er
                                rightOperand:(NSDecimalNumber*)rightOperand;
 @end
 
-@interface NSDecimalNumber (Soulver)
+@interface NSDecimalNumber (MathEdit)
 
 /// In OpenStep, NaN comparisons are weird, so this uses a string comparison
 -(BOOL)MATH_isNotANumber;
