@@ -19,31 +19,31 @@
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
 
-extern NSString * const SVRThemeDidChangeNotificationName;
+extern NSString * const MATHThemeDidChangeNotificationName;
 
-typedef XP_ENUM(XPInteger, SVRSettingSelection) {
-  SVRSettingSelectionGeneral = 0,
-  SVRSettingSelectionColors = 1,
-  SVRSettingSelectionFonts = 2,
+typedef XP_ENUM(XPInteger, MATHSettingSelection) {
+  MATHSettingSelectionGeneral = 0,
+  MATHSettingSelectionColors = 1,
+  MATHSettingSelectionFonts = 2,
 };
 
-typedef XP_ENUM(XPInteger, SVRThemeColor) {
-  SVRThemeColorOperandText = 0,
-  SVRThemeColorOperatorText = 1,
-  SVRThemeColor_UNUSED_ = 2,
-  SVRThemeColorSolution = 3,
-  SVRThemeColorSolutionSecondary = 4,
-  SVRThemeColorErrorText = 5,
-  SVRThemeColorOtherText = 6,
-  SVRThemeColorBackground = 7,
-  SVRThemeColorInsertionPoint = 8
+typedef XP_ENUM(XPInteger, MATHThemeColor) {
+  MATHThemeColorOperandText = 0,
+  MATHThemeColorOperatorText = 1,
+  MATHThemeColor_UNUSED_ = 2,
+  MATHThemeColorSolution = 3,
+  MATHThemeColorSolutionSecondary = 4,
+  MATHThemeColorErrorText = 5,
+  MATHThemeColorOtherText = 6,
+  MATHThemeColorBackground = 7,
+  MATHThemeColorInsertionPoint = 8
 };
 
-typedef XP_ENUM(XPInteger, SVRThemeFont) {
-  SVRThemeFontUnknown = 0,
-  SVRThemeFontMath = 1,
-  SVRThemeFontOther = 2,
-  SVRThemeFontError = 3
+typedef XP_ENUM(XPInteger, MATHThemeFont) {
+  MATHThemeFontUnknown = 0,
+  MATHThemeFontMath = 1,
+  MATHThemeFontOther = 2,
+  MATHThemeFontError = 3
 };
 
 @interface NSUserDefaults (Soulver)
@@ -55,8 +55,8 @@ typedef XP_ENUM(XPInteger, SVRThemeFont) {
 -(BOOL)MATH_setWaitTimeForRendering:(NSTimeInterval)newValue;
 
 // MARK: Accessory Window Visibility
--(SVRSettingSelection)MATH_settingsSelection;
--(BOOL)MATH_setSettingsSelection:(SVRSettingSelection)newValue;
+-(MATHSettingSelection)MATH_settingsSelection;
+-(BOOL)MATH_setSettingsSelection:(MATHSettingSelection)newValue;
 -(BOOL)MATH_visibilityForWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
 -(BOOL)MATH_setVisibility:(BOOL)isVisible forWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
 
@@ -67,18 +67,18 @@ typedef XP_ENUM(XPInteger, SVRThemeFont) {
 -(BOOL)MATH_setUserInterfaceStyleSetting:(XPUserInterfaceStyle)style;
 /// Returns the apparant user interface style
 -(XPUserInterfaceStyle)MATH_userInterfaceStyle;
--(NSColor*)MATH_colorForTheme:(SVRThemeColor)theme;
--(NSColor*)MATH_colorForTheme:(SVRThemeColor)theme
+-(NSColor*)MATH_colorForTheme:(MATHThemeColor)theme;
+-(NSColor*)MATH_colorForTheme:(MATHThemeColor)theme
                     withStyle:(XPUserInterfaceStyle)style;
 -(BOOL)MATH_setColor:(NSColor*)color
-            forTheme:(SVRThemeColor)theme
+            forTheme:(MATHThemeColor)theme
            withStyle:(XPUserInterfaceStyle)style;
--(NSFont*)MATH_fontForTheme:(SVRThemeFont)theme;
+-(NSFont*)MATH_fontForTheme:(MATHThemeFont)theme;
 -(BOOL)MATH_setFont:(NSFont*)font
-           forTheme:(SVRThemeFont)theme;
--(NSString*)__MATH_keyForThemeColor:(SVRThemeColor)theme
+           forTheme:(MATHThemeFont)theme;
+-(NSString*)__MATH_keyForThemeColor:(MATHThemeColor)theme
                           withStyle:(XPUserInterfaceStyle)style;
--(NSString*)__MATH_keyForThemeFont:(SVRThemeFont)theme;
+-(NSString*)__MATH_keyForThemeFont:(MATHThemeFont)theme;
 
 // MARK: Configuration
 -(void)MATH_configure;

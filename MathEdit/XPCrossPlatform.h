@@ -541,11 +541,11 @@ NSArray* XPRunOpenPanel(NSString *extension);
 #define XPLogAlwys2(_formatString, _one, _two)                __XPLogBase2(@"ALWYS", _formatString, _one, _two)
 #define XPLogAlwys3(_formatString, _one, _two, _three)        __XPLogBase3(@"ALWYS", _formatString, _one, _two, _three)
 #define XPLogAlwys4(_formatString, _one, _two, _three, _four) __XPLogBase4(@"ALWYS", _formatString, _one, _two, _three, _four)
-#define XPLogRaise(_formatString)                             __XPLogBase (@"RAISE", _formatString); [NSException raise:@"SVRException" format:_formatString]
-#define XPLogRaise1(_formatString, _one)                      __XPLogBase1(@"RAISE", _formatString, _one); [NSException raise:@"SVRException" format:_formatString, _one]
-#define XPLogRaise2(_formatString, _one, _two)                __XPLogBase2(@"RAISE", _formatString, _one, _two); [NSException raise:@"SVRException" format:_formatString, _one, _two]
-#define XPLogRaise3(_formatString, _one, _two, _three)        __XPLogBase3(@"RAISE", _formatString, _one, _two, _three); [NSException raise:@"SVRException" format:_formatString, _one, _two, _three]
-#define XPLogRaise4(_formatString, _one, _two, _three, _four) __XPLogBase4(@"RAISE", _formatString, _one, _two, _three, _four); [NSException raise:@"SVRException" format:_formatString, _one, _two, _three, _four]
+#define XPLogRaise(_formatString)                             __XPLogBase (@"RAISE", _formatString); [NSException raise:@"MATHException" format:_formatString]
+#define XPLogRaise1(_formatString, _one)                      __XPLogBase1(@"RAISE", _formatString, _one); [NSException raise:@"MATHException" format:_formatString, _one]
+#define XPLogRaise2(_formatString, _one, _two)                __XPLogBase2(@"RAISE", _formatString, _one, _two); [NSException raise:@"MATHException" format:_formatString, _one, _two]
+#define XPLogRaise3(_formatString, _one, _two, _three)        __XPLogBase3(@"RAISE", _formatString, _one, _two, _three); [NSException raise:@"MATHException" format:_formatString, _one, _two, _three]
+#define XPLogRaise4(_formatString, _one, _two, _three, _four) __XPLogBase4(@"RAISE", _formatString, _one, _two, _three, _four); [NSException raise:@"MATHException" format:_formatString, _one, _two, _three, _four]
 
 #ifdef DEBUG
 #define XPLogAssrt(_condition, _formatString)                              if (!(_condition)) { __XPLogBase (@"ASSRT", _formatString); } NSAssert(_condition, _formatString)

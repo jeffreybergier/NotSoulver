@@ -19,27 +19,27 @@
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
 
-extern NSString *const SVRDocumentModelExtension;
+extern NSString *const MATHDocumentModelExtension;
 /// A version of the data for saving to the disk
 /// This version is plain text and unsolved
 /// Data format is UTF8 String
-extern NSString *const SVRDocumentModelRepDisk;
+extern NSString *const MATHDocumentModelRepDisk;
 /// A version of the data that is displayed in the NSTextView
 /// This version is styled and has NSTextAttachments for solutions
 /// Data format is RTF
-extern NSString *const SVRDocumentModelRepDisplay;
+extern NSString *const MATHDocumentModelRepDisplay;
 /// A version that is used for the pasteboard
 /// This version is styled and remove the NSTextAttachments and replaces them with normal text that shows the solutions
 /// Data format is RTF
-extern NSString *const SVRDocumentModelRepSolved;
+extern NSString *const MATHDocumentModelRepSolved;
 /// A version that is used for the pasteboard when the user chooses a custom copy command
 /// This version is styled and unsolved
 /// Data format is RTF
-extern NSString *const SVRDocumentModelRepUnsolved;
+extern NSString *const MATHDocumentModelRepUnsolved;
 
-typedef NSString* SVRDocumentModelRep;
+typedef NSString* MATHDocumentModelRep;
 
-@interface SVRDocumentModelController: NSObject
+@interface MATHDocumentModelController: NSObject
 {
   mm_new NSTextStorage       *_model;
   mm_new NSTimer             *_waitTimer;
@@ -62,10 +62,10 @@ typedef NSString* SVRDocumentModelRep;
 -(void)replaceCharactersInRange:(NSRange)range withString:(NSString *)string;
 
 // MARK: NSDocument Support
--(NSData*)dataRepresentationOfType:(SVRDocumentModelRep)type;
--(NSData*)dataRepresentationOfType:(SVRDocumentModelRep)type withRange:(NSRange)range;
-/// This method ignores of type parameter and always assumes `SVRDocumentModelRepDisk`
--(BOOL)loadDataRepresentation:(NSData*)data ofType:(SVRDocumentModelRep)type;
+-(NSData*)dataRepresentationOfType:(MATHDocumentModelRep)type;
+-(NSData*)dataRepresentationOfType:(MATHDocumentModelRep)type withRange:(NSRange)range;
+/// This method ignores of type parameter and always assumes `MATHDocumentModelRepDisk`
+-(BOOL)loadDataRepresentation:(NSData*)data ofType:(MATHDocumentModelRep)type;
 
 // MARK: Private
 -(NSData*)__dataRepresentationOfDiskTypeWithRange:(NSRange)range;
@@ -77,9 +77,9 @@ typedef NSString* SVRDocumentModelRep;
 @end
 
 #ifdef MAC_OS_X_VERSION_10_6
-@interface SVRDocumentModelController (TextDelegate) <NSTextViewDelegate>
+@interface MATHDocumentModelController (TextDelegate) <NSTextViewDelegate>
 #else
-@interface SVRDocumentModelController (TextDelegate)
+@interface MATHDocumentModelController (TextDelegate)
 #endif
 
 -(void)textDidChange:(NSNotification*)aNotification;

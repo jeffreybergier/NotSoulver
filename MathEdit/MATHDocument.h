@@ -22,18 +22,18 @@
 #import "MATHDocumentViewController.h"
 
 #if XPSupportsNSDocument >= 1
-@interface SVRDocument: NSDocument
+@interface MATHDocument: NSDocument
 #else
-@interface SVRDocument: NSDocumentLegacyImplementation
+@interface MATHDocument: NSDocumentLegacyImplementation
 #endif
 {
-  mm_new   SVRDocumentModelController *_modelController;
-  mm_retain SVRDocumentViewController *_viewController;
+  mm_new   MATHDocumentModelController *_modelController;
+  mm_retain MATHDocumentViewController *_viewController;
 }
 
 // MARK: Properties
--(SVRDocumentViewController*)viewController;
--(SVRDocumentModelController*)modelController;
+-(MATHDocumentViewController*)viewController;
+-(MATHDocumentModelController*)modelController;
 
 // Create everything without Nibs
 -(void)makeWindowControllers;
@@ -47,7 +47,7 @@
 
 @end
 
-@interface SVRDocument (StateRestoration)
+@interface MATHDocument (StateRestoration)
 +(BOOL)autosavesInPlace;
 +(BOOL)canConcurrentlyReadDocumentsOfType:(NSString*)typeName;
 -(BOOL)canAsynchronouslyWriteToURL:(XPURL*)url
@@ -55,6 +55,6 @@
                   forSaveOperation:(XPSaveOperationType)saveOperation;
 @end
 
-@interface SVRDocument (DarkMode)
+@interface MATHDocument (DarkMode)
 -(void)overrideWindowAppearance;
 @end

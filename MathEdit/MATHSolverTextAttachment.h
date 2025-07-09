@@ -20,7 +20,7 @@
 #import "MATHSolver.h"
 #import "XPCrossPlatform.h"
 
-@interface SVRSolverTextAttachment: NSTextAttachment
+@interface MATHSolverTextAttachment: NSTextAttachment
 {
   mm_retain NSString *_string;
   mm_retain NSDictionary *_configuration;
@@ -33,29 +33,29 @@
 -(NSColor*)foregroundColor;
 -(NSColor*)backgroundColor;
 -(NSColor*)mixColor;
--(SVRSolverTextAttachmentBackground)background;
+-(MATHSolverTextAttachmentBackground)background;
 
--(id)initWithString:(NSString*)stringToDraw styles:(SVRSolverTextAttachmentStyles)styles;
-+(id)attachmentWithSolution:(NSDecimalNumber*)solution styles:(SVRSolverTextAttachmentStyles)styles;
+-(id)initWithString:(NSString*)stringToDraw styles:(MATHSolverTextAttachmentStyles)styles;
++(id)attachmentWithSolution:(NSDecimalNumber*)solution styles:(MATHSolverTextAttachmentStyles)styles;
 +(id)attachmentWithPreviousSolution:(NSDecimalNumber*)previousSolution
-                           operator:(SVRSolverOperator)operator
-                             styles:(SVRSolverTextAttachmentStyles)styles;
-+(id)attachmentWithError:(SVRCalculationError)error
-                  styles:(SVRSolverTextAttachmentStyles)styles;
+                           operator:(MATHSolverOperator)operator
+                             styles:(MATHSolverTextAttachmentStyles)styles;
++(id)attachmentWithError:(MATHCalculationError)error
+                  styles:(MATHSolverTextAttachmentStyles)styles;
 
 @end
 
-@interface SVRSolverTextAttachmentCell: NSTextAttachmentCell
+@interface MATHSolverTextAttachmentCell: NSTextAttachmentCell
 {
   NSSize _cellSize;
 }
 
 // MARK: Properties
--(SVRSolverTextAttachment*)MATH_attachment;
+-(MATHSolverTextAttachment*)MATH_attachment;
 
 // MARK: Init
--(id)initWithAttachment:(SVRSolverTextAttachment*)attachment;
-+(id)cellWithAttachment:(SVRSolverTextAttachment*)attachment;
+-(id)initWithAttachment:(MATHSolverTextAttachment*)attachment;
++(id)cellWithAttachment:(MATHSolverTextAttachment*)attachment;
 
 // MARK: Custom Drawing
 +(NSDictionary*)attributesWithFont:(NSFont*)font
@@ -76,16 +76,16 @@
 
 @end
 
-@interface SVRSolverTextAttachment (NSCoding) <XPSecureCoding>
+@interface MATHSolverTextAttachment (NSCoding) <XPSecureCoding>
 +(BOOL)supportsSecureCoding;
--(BOOL)isEqual:(SVRSolverTextAttachment*)rhs;
+-(BOOL)isEqual:(MATHSolverTextAttachment*)rhs;
 -(id)initWithCoder:(NSCoder *)coder;
 -(void)encodeWithCoder:(NSCoder*)coder;
 @end
 
-@interface SVRSolverTextAttachmentCell (NSCoding) <XPSecureCoding>
+@interface MATHSolverTextAttachmentCell (NSCoding) <XPSecureCoding>
 +(BOOL)supportsSecureCoding;
--(BOOL)isEqual:(SVRSolverTextAttachmentCell*)rhs;
+-(BOOL)isEqual:(MATHSolverTextAttachmentCell*)rhs;
 -(id)initWithCoder:(NSCoder *)coder;
 -(void)encodeWithCoder:(NSCoder*)coder;
 @end

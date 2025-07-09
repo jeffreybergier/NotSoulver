@@ -22,79 +22,79 @@
 
 // MARK: View Enumerations
 
-typedef XP_ENUM(XPInteger, SVRColorWellKind) {
-  SVRColorWellKindUnknown,
-  SVRColorWellKindOperandLight,
-  SVRColorWellKindOperandDark,
-  SVRColorWellKindOperatorLight,
-  SVRColorWellKindOperatorDark,
-  SVRColorWellKindSolutionLight,
-  SVRColorWellKindSolutionDark,
-  SVRColorWellKindSolutionSecondaryLight,
-  SVRColorWellKindSolutionSecondaryDark,
-  SVRColorWellKindOtherTextLight,
-  SVRColorWellKindOtherTextDark,
-  SVRColorWellKindErrorTextLight,
-  SVRColorWellKindErrorTextDark,
-  SVRColorWellKindInsertionPointLight,
-  SVRColorWellKindInsertionPointDark,
-  SVRColorWellKindBackgroundLight,
-  SVRColorWellKindBackgroundDark,
+typedef XP_ENUM(XPInteger, MATHColorWellKind) {
+  MATHColorWellKindUnknown,
+  MATHColorWellKindOperandLight,
+  MATHColorWellKindOperandDark,
+  MATHColorWellKindOperatorLight,
+  MATHColorWellKindOperatorDark,
+  MATHColorWellKindSolutionLight,
+  MATHColorWellKindSolutionDark,
+  MATHColorWellKindSolutionSecondaryLight,
+  MATHColorWellKindSolutionSecondaryDark,
+  MATHColorWellKindOtherTextLight,
+  MATHColorWellKindOtherTextDark,
+  MATHColorWellKindErrorTextLight,
+  MATHColorWellKindErrorTextDark,
+  MATHColorWellKindInsertionPointLight,
+  MATHColorWellKindInsertionPointDark,
+  MATHColorWellKindBackgroundLight,
+  MATHColorWellKindBackgroundDark,
 };
 
-typedef XP_ENUM(XPInteger, SVRResetButtonKind) {
-  SVRResetButtonKindUnknown,
-  SVRResetButtonKindUIStyle,
-  SVRResetButtonKindWaitTime,
-  SVRResetButtonKindMathFont,
-  SVRResetButtonKindOtherFont,
-  SVRResetButtonKindErrorFont,
-  SVRResetButtonKindOperandColor,
-  SVRResetButtonKindOperatorColor,
-  SVRResetButtonKindSolutionColor,
-  SVRResetButtonKindPreviousSolutionColor,
-  SVRResetButtonKindOtherTextColor,
-  SVRResetButtonKindErrorTextColor,
-  SVRResetButtonKindInsertionPointColor,
-  SVRResetButtonKindBackgroundColor
+typedef XP_ENUM(XPInteger, MATHResetButtonKind) {
+  MATHResetButtonKindUnknown,
+  MATHResetButtonKindUIStyle,
+  MATHResetButtonKindWaitTime,
+  MATHResetButtonKindMathFont,
+  MATHResetButtonKindOtherFont,
+  MATHResetButtonKindErrorFont,
+  MATHResetButtonKindOperandColor,
+  MATHResetButtonKindOperatorColor,
+  MATHResetButtonKindSolutionColor,
+  MATHResetButtonKindPreviousSolutionColor,
+  MATHResetButtonKindOtherTextColor,
+  MATHResetButtonKindErrorTextColor,
+  MATHResetButtonKindInsertionPointColor,
+  MATHResetButtonKindBackgroundColor
 };
 
-typedef XP_ENUM(XPInteger, SVRKeypadButtonKind) {
-  SVRKeypadButtonKindUnknown,
-  SVRKeypadButtonKind1,
-  SVRKeypadButtonKind2,
-  SVRKeypadButtonKind3,
-  SVRKeypadButtonKind4,
-  SVRKeypadButtonKind5,
-  SVRKeypadButtonKind6,
-  SVRKeypadButtonKind7,
-  SVRKeypadButtonKind8,
-  SVRKeypadButtonKind9,
-  SVRKeypadButtonKind0,
-  SVRKeypadButtonKindNegative,
-  SVRKeypadButtonKindDecimal,
-  SVRKeypadButtonKindDelete,
-  SVRKeypadButtonKindEqual,
-  SVRKeypadButtonKindAdd,
-  SVRKeypadButtonKindSubtract,
-  SVRKeypadButtonKindBRight,
-  SVRKeypadButtonKindMultiply,
-  SVRKeypadButtonKindDivide,
-  SVRKeypadButtonKindBLeft,
-  SVRKeypadButtonKindPower,
-  SVRKeypadButtonKindRoot,
-  SVRKeypadButtonKindLog
+typedef XP_ENUM(XPInteger, MATHKeypadButtonKind) {
+  MATHKeypadButtonKindUnknown,
+  MATHKeypadButtonKind1,
+  MATHKeypadButtonKind2,
+  MATHKeypadButtonKind3,
+  MATHKeypadButtonKind4,
+  MATHKeypadButtonKind5,
+  MATHKeypadButtonKind6,
+  MATHKeypadButtonKind7,
+  MATHKeypadButtonKind8,
+  MATHKeypadButtonKind9,
+  MATHKeypadButtonKind0,
+  MATHKeypadButtonKindNegative,
+  MATHKeypadButtonKindDecimal,
+  MATHKeypadButtonKindDelete,
+  MATHKeypadButtonKindEqual,
+  MATHKeypadButtonKindAdd,
+  MATHKeypadButtonKindSubtract,
+  MATHKeypadButtonKindBRight,
+  MATHKeypadButtonKindMultiply,
+  MATHKeypadButtonKindDivide,
+  MATHKeypadButtonKindBLeft,
+  MATHKeypadButtonKindPower,
+  MATHKeypadButtonKindRoot,
+  MATHKeypadButtonKindLog
 };
 
-static const XPFloat SVRAccessoryWindowKeypadWindowPadding        = 6;
-static const NSSize  SVRAccessoryWindowKeypadWindowButtonSize     = {40, 32};
-static const XPFloat SVRAccessoryWindowKeypadWindowGroupSpacing   = 8;
-static const XPFloat SVRAccessoryWindowKeypadWindowButtonVPadding = 4;
-static const XPFloat SVRAccessoryWindowKeypadWindowButtonHPadding = 4;
+static const XPFloat MATHAccessoryWindowKeypadWindowPadding        = 6;
+static const NSSize  MATHAccessoryWindowKeypadWindowButtonSize     = {40, 32};
+static const XPFloat MATHAccessoryWindowKeypadWindowGroupSpacing   = 8;
+static const XPFloat MATHAccessoryWindowKeypadWindowButtonVPadding = 4;
+static const XPFloat MATHAccessoryWindowKeypadWindowButtonHPadding = 4;
 
-// MARK: SVRAccessoryWindowKeypadView
+// MARK: MATHAccessoryWindowKeypadView
 
-@interface SVRAccessoryWindowKeypadView: NSView
+@interface MATHAccessoryWindowKeypadView: NSView
 {
   mm_unretain NSButton *_equalButton;
 }
@@ -102,9 +102,9 @@ static const XPFloat SVRAccessoryWindowKeypadWindowButtonHPadding = 4;
 -(NSButton*)equalButton;
 @end
 
-// MARK: SVRAccessoryWindowAboutView
+// MARK: MATHAccessoryWindowAboutView
 
-@interface SVRAccessoryWindowAboutView: NSView
+@interface MATHAccessoryWindowAboutView: NSView
 {
   mm_unretain NSTextView *_textView;
   mm_unretain NSButton   *_viewSourceButton;
@@ -119,11 +119,11 @@ static const XPFloat SVRAccessoryWindowKeypadWindowButtonHPadding = 4;
                              imageNamed:(NSString*)imageName;
 @end
 
-// MARK: SVRAccessoryWindowSettingsView
+// MARK: MATHAccessoryWindowSettingsView
 
 @class XPSegmentedControl;
 
-@interface SVRAccessoryWindowsSettingsGeneralView: NSView
+@interface MATHAccessoryWindowsSettingsGeneralView: NSView
 {
   mm_unretain XPSegmentedControl *_selectorControl;
   mm_unretain NSTextField *_delayLabel;
@@ -135,24 +135,24 @@ static const XPFloat SVRAccessoryWindowKeypadWindowButtonHPadding = 4;
 -(NSSlider*)delaySlider;
 @end
 
-@interface SVRAccessoryWindowsSettingsColorsView: NSView
+@interface MATHAccessoryWindowsSettingsColorsView: NSView
 {
   mm_new NSMutableDictionary *_colorWells;
 }
 -(id)initWithFrame:(NSRect)frameRect;
--(NSColorWell*)colorWellOfKind:(SVRColorWellKind)kind;
+-(NSColorWell*)colorWellOfKind:(MATHColorWellKind)kind;
 -(void)setColorWell:(NSColorWell*)colorWell
-            forKind:(SVRColorWellKind)kind;
+            forKind:(MATHColorWellKind)kind;
 @end
 
-@interface SVRAccessoryWindowsSettingsFontsView: NSView
+@interface MATHAccessoryWindowsSettingsFontsView: NSView
 {
   mm_new NSMutableDictionary *_textFields;
 }
 -(id)initWithFrame:(NSRect)frameRect;
--(NSTextField*)textFieldOfKind:(SVRThemeFont)kind;
+-(NSTextField*)textFieldOfKind:(MATHThemeFont)kind;
 -(void)setTextField:(NSTextField*)textField
-            forKind:(SVRThemeFont)kind;
+            forKind:(MATHThemeFont)kind;
 @end
 
 @interface XPSegmentedControl: NSControl
@@ -177,14 +177,14 @@ static const XPFloat SVRAccessoryWindowKeypadWindowButtonHPadding = 4;
 -(void)__recalculateFrames;
 @end
 
-@interface NSControl (SVRAccessoryWindows)
-+(NSButton*)MATH_keypadButtonOfKind:(SVRKeypadButtonKind)kind;
+@interface NSControl (MATHAccessoryWindows)
++(NSButton*)MATH_keypadButtonOfKind:(MATHKeypadButtonKind)kind;
 +(NSButton*)MATH_settingsButtonWithFrame:(NSRect)frame
                                    title:(NSString*)title
                                   action:(SEL)action
                                      tag:(XPInteger)tag;
 +(NSColorWell*)MATH_colorWellWithFrame:(NSRect)frame
-                                  kind:(SVRColorWellKind)kind;
+                                  kind:(MATHColorWellKind)kind;
 +(NSTextField*)MATH_labelWithFrame:(NSRect)frame;
 +(NSTextField*)MATH_textFieldWithFrame:(NSRect)frame
                                 target:(id)target
@@ -195,12 +195,12 @@ static const XPFloat SVRAccessoryWindowKeypadWindowButtonHPadding = 4;
                alignment:(NSTextAlignment)alignment;
 @end
 
-@interface NSView (SVRAccessoryWindows)
+@interface NSView (MATHAccessoryWindows)
 +(NSBox*)MATH_lineWithFrame:(NSRect)frame;
 -(id)MATH_setAutoresizingMask:(XPUInteger)mask;
 @end
 
-@interface NSImageView (SVRAccessoryWindows)
+@interface NSImageView (MATHAccessoryWindows)
 +(NSImageView*)MATH_imageViewWithOrigin:(NSPoint)origin
                    sizedToFitImageNamed:(NSString*)imageName;
 +(NSImageView*)MATH_imageViewWithFrame:(NSRect)frame
@@ -208,7 +208,7 @@ static const XPFloat SVRAccessoryWindowKeypadWindowButtonHPadding = 4;
 -(NSImageView*)MATH_setImageFrameStyle:(NSImageFrameStyle)imageFrameStyle;
 @end
 
-@interface NSImage (SVRAccessoryWindows)
+@interface NSImage (MATHAccessoryWindows)
 -(NSImage*)MATH_setTemplate:(BOOL)flag;
 @end
 
@@ -216,16 +216,16 @@ static const XPFloat SVRAccessoryWindowKeypadWindowButtonHPadding = 4;
 -(void)XP_setSendsActionOnEndEditing:(BOOL)sendsAction;
 @end
 
-NSRect MATH_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind);
+NSRect MATH_rectForKeypadButtonOfKind(MATHKeypadButtonKind kind);
 NSRect MATH_rectByAdjustingAquaButtonRect(NSRect rect);
-NSString *MATH_titleForKeypadButtonOfKind(SVRKeypadButtonKind kind);
-NSString *MATH_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind);
-NSString *MATH_localizedStringForKind(SVRResetButtonKind kind);
-SVRResetButtonKind MATH_resetButtonKindForColorWellKind(SVRColorWellKind kind);
-SVRResetButtonKind MATH_resetButtonKindForFontSettingKind(SVRThemeFont kind);
+NSString *MATH_titleForKeypadButtonOfKind(MATHKeypadButtonKind kind);
+NSString *MATH_keyForKeypadButtonOfKind(MATHKeypadButtonKind kind);
+NSString *MATH_localizedStringForKind(MATHResetButtonKind kind);
+MATHResetButtonKind MATH_resetButtonKindForColorWellKind(MATHColorWellKind kind);
+MATHResetButtonKind MATH_resetButtonKindForFontSettingKind(MATHThemeFont kind);
 
 // These are not implemented, but silence compiler warnings
-@interface NSResponder (SVRIBActions)
+@interface NSResponder (MATHIBActions)
 -(IBAction)openSourceRepository:(id)sender;
 -(IBAction)presentFontPanel:(id)sender;
 -(IBAction)writeUserInterfaceStyle:(id)sender;

@@ -19,22 +19,22 @@
 #import <Foundation/Foundation.h>
 #import "XPCrossPlatform.h"
 
-typedef NSDictionary* SVRSolverTextAttachmentStyles;
-typedef NSDictionary* SVRSolverTextStyles;
+typedef NSDictionary* MATHSolverTextAttachmentStyles;
+typedef NSDictionary* MATHSolverTextStyles;
 
-// MARK: SVRSolver
+// MARK: MATHSolver
 
-@interface SVRSolver: NSObject
+@interface MATHSolver: NSObject
 
 // MARK: Configure Constants
 +(void)initialize;
 
 // MARK: Business Logic
 +(void)solveAttributedString:(NSMutableAttributedString*)input
-              solutionStyles:(SVRSolverTextAttachmentStyles)solutionStyles
-      previousSolutionStyles:(SVRSolverTextAttachmentStyles)previousSolutionStyles
-                 errorStyles:(SVRSolverTextAttachmentStyles)errorStyles
-                  textStyles:(SVRSolverTextStyles)textStyles;
+              solutionStyles:(MATHSolverTextAttachmentStyles)solutionStyles
+      previousSolutionStyles:(MATHSolverTextAttachmentStyles)previousSolutionStyles
+                 errorStyles:(MATHSolverTextAttachmentStyles)errorStyles
+                  textStyles:(MATHSolverTextStyles)textStyles;
 
 // Returns mutable string to avoid making an immutable copy, but it is still a copy of the original string
 +(NSAttributedString*)replacingAttachmentsWithOriginalCharacters:(NSAttributedString*)input;
@@ -46,105 +46,105 @@ typedef NSDictionary* SVRSolverTextStyles;
 +(void)__step2_removeAllTags:(NSMutableAttributedString*)input;
 +(void)__step3_scanAndTag:(NSMutableAttributedString*)input;
 +(void)__step4_solveAndTag:(NSMutableAttributedString*)input
-            solutionStyles:(SVRSolverTextAttachmentStyles)solutionStyles
-    previousSolutionStyles:(SVRSolverTextAttachmentStyles)previousSolutionStyles
-               errorStyles:(SVRSolverTextAttachmentStyles)errorStyles;
+            solutionStyles:(MATHSolverTextAttachmentStyles)solutionStyles
+    previousSolutionStyles:(MATHSolverTextAttachmentStyles)previousSolutionStyles
+               errorStyles:(MATHSolverTextAttachmentStyles)errorStyles;
 +(void)__step5_styleAndTag:(NSMutableAttributedString*)input
-                    styles:(SVRSolverTextStyles)styles;
+                    styles:(MATHSolverTextStyles)styles;
 
 
 @end
 
 // MARK: Enumerations
 
-typedef XP_ENUM(XPInteger, SVRSolverTag) {
+typedef XP_ENUM(XPInteger, MATHSolverTag) {
   // Stores NSDecimalNumber
-  SVRSolverTagNumber,
+  MATHSolverTagNumber,
   // Stores NSString of the range of the bracket
   // NSStringFromRange (use NSRangeFromString to extract)
-  SVRSolverTagBracket,
-  // Stores NSNumber containing the SVRSoulverOperator
-  SVRSolverTagOperator,
+  MATHSolverTagBracket,
+  // Stores NSNumber containing the MATHSoulverOperator
+  MATHSolverTagOperator,
   // Stores NSString of the range of the bracket - (Minus the Equal Sign)
   // NSStringFromRange (use NSRangeFromString to extract)
-  SVRSolverTagExpression,
+  MATHSolverTagExpression,
   // Stores NSString with the original value
   // before it was replaced with NSTextAttachment
-  SVRSolverTagOriginal
+  MATHSolverTagOriginal
 };
 
-typedef XP_ENUM(XPInteger, SVRSolverOperator) {
-  SVRSolverOperatorExponent,
-  SVRSolverOperatorDivide,
-  SVRSolverOperatorMultiply,
-  SVRSolverOperatorSubtract,
-  SVRSolverOperatorAdd,
-  SVRSolverOperatorRoot,
-  SVRSolverOperatorLog,
-  SVRSolverOperatorUnknown
+typedef XP_ENUM(XPInteger, MATHSolverOperator) {
+  MATHSolverOperatorExponent,
+  MATHSolverOperatorDivide,
+  MATHSolverOperatorMultiply,
+  MATHSolverOperatorSubtract,
+  MATHSolverOperatorAdd,
+  MATHSolverOperatorRoot,
+  MATHSolverOperatorLog,
+  MATHSolverOperatorUnknown
 };
 
-typedef XP_ENUM(XPInteger, SVRCalculationError) {
-  SVRCalculationNoError            = NSCalculationNoError,
-  SVRCalculationLossOfPrecision    = NSCalculationLossOfPrecision,
-  SVRCalculationUnderflow          = NSCalculationUnderflow,
-  SVRCalculationOverflow           = NSCalculationOverflow,
-  SVRCalculationDivideByZero       = NSCalculationDivideByZero,
-  SVRCalculationInvalidCharacter   = 105,
-  SVRCalculationMismatchedBrackets = 106,
-  SVRCalculationMissingOperand     = 107,
-  SVRCalculationResultNaN          = 108,
-  SVRCalculationResultInfinite     = 109,
-  SVRCalculationResultImaginary    = 110,
-  SVRCalculationRootByZero         = 111,
-  SVRCalculationArgumentNegative   = 112,
-  SVRCalculationBaseNegative       = 113,
-  SVRCalculationBaseOne            = 114,
+typedef XP_ENUM(XPInteger, MATHCalculationError) {
+  MATHCalculationNoError            = NSCalculationNoError,
+  MATHCalculationLossOfPrecision    = NSCalculationLossOfPrecision,
+  MATHCalculationUnderflow          = NSCalculationUnderflow,
+  MATHCalculationOverflow           = NSCalculationOverflow,
+  MATHCalculationDivideByZero       = NSCalculationDivideByZero,
+  MATHCalculationInvalidCharacter   = 105,
+  MATHCalculationMismatchedBrackets = 106,
+  MATHCalculationMissingOperand     = 107,
+  MATHCalculationResultNaN          = 108,
+  MATHCalculationResultInfinite     = 109,
+  MATHCalculationResultImaginary    = 110,
+  MATHCalculationRootByZero         = 111,
+  MATHCalculationArgumentNegative   = 112,
+  MATHCalculationBaseNegative       = 113,
+  MATHCalculationBaseOne            = 114,
 };
 
-typedef SVRCalculationError* SVRCalculationErrorPointer;
+typedef MATHCalculationError* MATHCalculationErrorPointer;
 
-// MARK: SVRSolverTextAttachment Input
+// MARK: MATHSolverTextAttachment Input
 
-typedef XP_ENUM(XPInteger, SVRSolverTextAttachmentBackground) {
-  SVRSolverTextAttachmentBackgroundCapsuleFill,
-  SVRSolverTextAttachmentBackgroundCapsuleStroke,
-  SVRSolverTextAttachmentBackgroundLegacyBoxStroke
+typedef XP_ENUM(XPInteger, MATHSolverTextAttachmentBackground) {
+  MATHSolverTextAttachmentBackgroundCapsuleFill,
+  MATHSolverTextAttachmentBackgroundCapsuleStroke,
+  MATHSolverTextAttachmentBackgroundLegacyBoxStroke
 };
 
-extern NSString *const SVRSolverTextAttachmentBackgroundKey;
-extern NSString *const SVRSolverTextAttachmentMixColorKey;
+extern NSString *const MATHSolverTextAttachmentBackgroundKey;
+extern NSString *const MATHSolverTextAttachmentMixColorKey;
 
-extern NSString *const SVRSolverTextStyleMathFont;
-extern NSString *const SVRSolverTextStyleOtherFont;
-extern NSString *const SVRSolverTextStyleOtherColor;
-extern NSString *const SVRSolverTextStyleOperandColor;
-extern NSString *const SVRSolverTextStyleOperatorColor;
-extern NSString *const SVRSolverTextStyleBracketColor;
+extern NSString *const MATHSolverTextStyleMathFont;
+extern NSString *const MATHSolverTextStyleOtherFont;
+extern NSString *const MATHSolverTextStyleOtherColor;
+extern NSString *const MATHSolverTextStyleOperandColor;
+extern NSString *const MATHSolverTextStyleOperatorColor;
+extern NSString *const MATHSolverTextStyleBracketColor;
 
 // MARK: Enumeration Helper Functions
 
-XPAttributedStringKey XPAttributedStringKeyForTag(SVRSolverTag tag);
-SVRSolverTag          SVRSolverTagForKey(XPAttributedStringKey string);
-NSNumber             *NSNumberForOperator(SVRSolverOperator operator);
-SVRSolverOperator     SVRSolverOperatorForNumber(NSNumber *number);
-SVRSolverOperator     SVRSolverOperatorForRawString(NSString *string);
-NSString             *RawStringForOperator(SVRSolverOperator operator);
-NSString             *SVRSolverDescriptionForError(SVRCalculationError error);
-NSString             *SVRSolverDebugDescriptionForError(SVRCalculationError error);
+XPAttributedStringKey XPAttributedStringKeyForTag(MATHSolverTag tag);
+MATHSolverTag         MATHSolverTagForKey(XPAttributedStringKey string);
+NSNumber             *NSNumberForOperator(MATHSolverOperator operator);
+MATHSolverOperator    MATHSolverOperatorForNumber(NSNumber *number);
+MATHSolverOperator    MATHSolverOperatorForRawString(NSString *string);
+NSString             *RawStringForOperator(MATHSolverOperator operator);
+NSString             *MATHSolverDescriptionForError(MATHCalculationError error);
+NSString             *MATHSolverDebugDescriptionForError(MATHCalculationError error);
 
 // MARK: NSDecimalNumber Helper Methods
 
-@interface SVRSolverDecimalBehavior: NSObject <NSDecimalNumberBehaviors>
+@interface MATHSolverDecimalBehavior: NSObject <NSDecimalNumberBehaviors>
 {
-  SVRCalculationErrorPointer _errorPtr;
+  MATHCalculationErrorPointer _errorPtr;
 }
--(id)initWithErrorPtr:(SVRCalculationErrorPointer)errorPtr;
-+(id)behaviorWithErrorPtr:(SVRCalculationErrorPointer)errorPtr;
+-(id)initWithErrorPtr:(MATHCalculationErrorPointer)errorPtr;
++(id)behaviorWithErrorPtr:(MATHCalculationErrorPointer)errorPtr;
 -(NSRoundingMode)roundingMode;
 -(short)scale;
 -(NSDecimalNumber*)exceptionDuringOperation:(SEL)operation
-                                      error:(SVRCalculationError)error
+                                      error:(MATHCalculationError)error
                                 leftOperand:(NSDecimalNumber*)leftOperand
                                rightOperand:(NSDecimalNumber*)rightOperand;
 @end
@@ -155,38 +155,38 @@ NSString             *SVRSolverDebugDescriptionForError(SVRCalculationError erro
 -(BOOL)MATH_isNotANumber;
 
 -(NSDecimalNumber*)MATH_decimalNumberByRaisingWithExponent:(NSDecimalNumber*)exponent
-                                              withBehavior:(SVRSolverDecimalBehavior*)behavior;
+                                              withBehavior:(MATHSolverDecimalBehavior*)behavior;
 -(NSDecimalNumber*)MATH_decimalNumberByRootingWithExponent:(NSDecimalNumber*)exponent
-                                              withBehavior:(SVRSolverDecimalBehavior*)behavior;
+                                              withBehavior:(MATHSolverDecimalBehavior*)behavior;
 /// 10L100=2 10=base 100=argument (self)
 -(NSDecimalNumber*)MATH_decimalNumberByLogarithmWithBase:(NSDecimalNumber*)base
-                                            withBehavior:(SVRSolverDecimalBehavior*)behavior;
+                                            withBehavior:(MATHSolverDecimalBehavior*)behavior;
 @end
 
 // MARK: NSUserDefaults Helper Methods
 
-@interface NSUserDefaults (SVRSolverTextAttachmentStyles)
+@interface NSUserDefaults (MATHSolverTextAttachmentStyles)
 
--(SVRSolverTextAttachmentStyles)MATH_stylesForSolution;
--(SVRSolverTextAttachmentStyles)MATH_stylesForPreviousSolution;
--(SVRSolverTextAttachmentStyles)MATH_stylesForError;
--(SVRSolverTextStyles)MATH_stylesForText;
+-(MATHSolverTextAttachmentStyles)MATH_stylesForSolution;
+-(MATHSolverTextAttachmentStyles)MATH_stylesForPreviousSolution;
+-(MATHSolverTextAttachmentStyles)MATH_stylesForError;
+-(MATHSolverTextStyles)MATH_stylesForText;
 
 @end
 
-@interface NSDictionary (SVRSolverTextAttachmentStyles)
+@interface NSDictionary (MATHSolverTextAttachmentStyles)
 
-+(SVRSolverTextAttachmentStyles)__MATH_stylesWithFont:(NSFont*)font
-                                      foregroundColor:(NSColor*)foregroundColor
-                                      backgroundColor:(NSColor*)backgroundColor
-                                             mixColor:(NSColor*)mixColor
-                                           background:(SVRSolverTextAttachmentBackground)purpose;
++(MATHSolverTextAttachmentStyles)__MATH_stylesWithFont:(NSFont*)font
+                                       foregroundColor:(NSColor*)foregroundColor
+                                       backgroundColor:(NSColor*)backgroundColor
+                                              mixColor:(NSColor*)mixColor
+                                            background:(MATHSolverTextAttachmentBackground)purpose;
 
-+(SVRSolverTextAttachmentStyles)__MATH_stylesWithMathFont:(NSFont*)mathFont
-                                             neighborFont:(NSFont*)otherTextFont
-                                           otherTextColor:(NSColor*)otherTextColor
-                                             operandColor:(NSColor*)operandColor
-                                            operatorColor:(NSColor*)operatorColor
-                                            previousColor:(NSColor*)previousColor;
++(MATHSolverTextAttachmentStyles)__MATH_stylesWithMathFont:(NSFont*)mathFont
+                                              neighborFont:(NSFont*)otherTextFont
+                                            otherTextColor:(NSColor*)otherTextColor
+                                              operandColor:(NSColor*)operandColor
+                                             operatorColor:(NSColor*)operatorColor
+                                             previousColor:(NSColor*)previousColor;
 
 @end

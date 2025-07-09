@@ -47,7 +47,7 @@ int main(int argc, const char *argv[]) {
   TestsIntegrationExecute();
   
   // 4. Load NSApplication
-  [app setDelegate:[SVRAppDelegate sharedDelegate]];
+  [app setDelegate:[MATHAppDelegate sharedDelegate]];
 #ifdef AFF_MainMenuFailsNSApplicationMain
   [app run];
   [pool release];

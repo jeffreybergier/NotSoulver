@@ -21,30 +21,30 @@
 #import "MATHDocumentModelController.h"
 #import "XPCrossPlatform.h"
 
-@interface SVRDocumentViewController: XPViewController
+@interface MATHDocumentViewController: XPViewController
 {
   mm_new NSView *_view_42; // Used only in OpenStep
-  mm_new SVRDocumentModelController *_modelController;
+  mm_new MATHDocumentModelController *_modelController;
   mm_unretain NSTextView *_textView;
 }
 
 // MARK: Init
--(id)initWithModelController:(SVRDocumentModelController*)modelController;
+-(id)initWithModelController:(MATHDocumentModelController*)modelController;
 -(void)loadView;
 
 // MARK: Properties
 -(NSTextView*)textView;
--(SVRDocumentModelController*)modelController;
+-(MATHDocumentModelController*)modelController;
 
 // MARK: Private
 -(void)viewWillLayout;
 -(void)__themeDidChangeNotification:(NSNotification*)aNotification;
--(NSString*)__stringValueForKeypadKeyKind:(SVRKeypadButtonKind)tag;
+-(NSString*)__stringValueForKeypadKeyKind:(MATHKeypadButtonKind)tag;
 -(NSDictionary*)__typingAttributes;
 
 @end
 
-@interface SVRDocumentViewController (IBActions)
+@interface MATHDocumentViewController (IBActions)
 
 -(IBAction)keypadAppend:(NSButton*)sender;
 -(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
@@ -63,7 +63,7 @@
 @end
 
 #ifndef XPSupportsNSViewController
-@interface SVRDocumentViewController (CrossPlatform)
+@interface MATHDocumentViewController (CrossPlatform)
 -(NSView*)view;
 -(void)setView:(NSView*)view;
 @end

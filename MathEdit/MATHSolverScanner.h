@@ -19,7 +19,7 @@
 #import <Foundation/Foundation.h>
 #import "XPRegularExpression.h"
 
-@interface SVRSolverScanner: NSObject
+@interface MATHSolverScanner: NSObject
 {
   mm_copy NSString *_string;
   mm_new  NSSet    *_numbers;

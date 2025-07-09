@@ -18,28 +18,28 @@
 
 #import "MATHAccessoryWindowsOwner.h"
 
-NSString * const SVRAccessoryWindowFrameAutosaveNameSettings = @"kSVRAccessoryWindowFrameAutosaveNameSettings";
-NSString * const SVRAccessoryWindowFrameAutosaveNameAbout    = @"kSVRAccessoryWindowFrameAutosaveNameAbout";
-NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad   = @"kSVRAccessoryWindowFrameAutosaveNameKeypad";
-static NSRect SVRAccessoryWindowKeypadWindowRect   = {{0, 0}, {0, 0}}; // Configured in Initialize
-static NSRect SVRAccessoryWindowAboutWindowRect    = {{0, 0}, {480, 320}};
-static NSSize SVRAccessoryWindowAboutWindowMaxSize = {480*1.5, 320*1.5};
-static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Configured in Initialize
+NSString * const MATHAccessoryWindowFrameAutosaveNameSettings = @"kMATHAccessoryWindowFrameAutosaveNameSettings";
+NSString * const MATHAccessoryWindowFrameAutosaveNameAbout    = @"kMATHAccessoryWindowFrameAutosaveNameAbout";
+NSString * const MATHAccessoryWindowFrameAutosaveNameKeypad   = @"kMATHAccessoryWindowFrameAutosaveNameKeypad";
+static NSRect MATHAccessoryWindowKeypadWindowRect   = {{0, 0}, {0, 0}}; // Configured in Initialize
+static NSRect MATHAccessoryWindowAboutWindowRect    = {{0, 0}, {480, 320}};
+static NSSize MATHAccessoryWindowAboutWindowMaxSize = {480*1.5, 320*1.5};
+static NSRect MATHAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Configured in Initialize
 
-@implementation SVRFontManager
+@implementation MATHFontManager
 
--(SVRThemeFont)themeFont;
+-(MATHThemeFont)themeFont;
 {
   return _themeFont;
 }
--(void)setThemeFont:(SVRThemeFont)themeFont;
+-(void)setThemeFont:(MATHThemeFont)themeFont;
 {
   _themeFont = themeFont;
 }
 
 @end
 
-@implementation SVRAccessoryWindowsOwner
+@implementation MATHAccessoryWindowsOwner
 
 // MARK: IBOutlets
 -(NSPanel *)keypadPanel;
@@ -79,9 +79,9 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 
 +(void)initialize;
 {
-  SVRAccessoryWindowKeypadWindowRect = NSMakeRect(0,0,
-   (SVRAccessoryWindowKeypadWindowPadding * 2) + (SVRAccessoryWindowKeypadWindowButtonSize.width  * 3) + (SVRAccessoryWindowKeypadWindowButtonHPadding * 2),
-   (SVRAccessoryWindowKeypadWindowPadding * 2) + (SVRAccessoryWindowKeypadWindowButtonSize.height * 8) + (SVRAccessoryWindowKeypadWindowButtonVPadding * 7) + (SVRAccessoryWindowKeypadWindowGroupSpacing * 2));
+  MATHAccessoryWindowKeypadWindowRect = NSMakeRect(0,0,
+   (MATHAccessoryWindowKeypadWindowPadding * 2) + (MATHAccessoryWindowKeypadWindowButtonSize.width  * 3) + (MATHAccessoryWindowKeypadWindowButtonHPadding * 2),
+   (MATHAccessoryWindowKeypadWindowPadding * 2) + (MATHAccessoryWindowKeypadWindowButtonSize.height * 8) + (MATHAccessoryWindowKeypadWindowButtonVPadding * 7) + (MATHAccessoryWindowKeypadWindowGroupSpacing * 2));
 }
 
 -(id)init;
@@ -101,24 +101,24 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
   NSWindow *window = nil;
   
-  // MARK: SVRAccessoryWindowKeypad
+  // MARK: MATHAccessoryWindowKeypad
   
-  window = [[NSPanel alloc] initWithContentRect:SVRAccessoryWindowKeypadWindowRect
+  window = [[NSPanel alloc] initWithContentRect:MATHAccessoryWindowKeypadWindowRect
                                       styleMask:MATH_windowMaskForKeypadWindow()
                                         backing:NSBackingStoreBuffered
                                           defer:YES];
   _keypadPanel = (NSPanel*)window;
   [window center];
   [window setTitle:[Localized titleKeypad]];
-  [window setContentView:[[[SVRAccessoryWindowKeypadView alloc] initWithFrame:SVRAccessoryWindowKeypadWindowRect] autorelease]];
+  [window setContentView:[[[MATHAccessoryWindowKeypadView alloc] initWithFrame:MATHAccessoryWindowKeypadWindowRect] autorelease]];
   [window setInitialFirstResponder:[[window contentView] equalButton]];
-  [window setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameKeypad];
-  [window XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameKeypad];
+  [window setFrameAutosaveName:MATHAccessoryWindowFrameAutosaveNameKeypad];
+  [window XP_setIdentifier:MATHAccessoryWindowFrameAutosaveNameKeypad];
   [window XP_setRestorationClass:appDelegateClass];
   
-  // MARK: SVRAccessoryWindowAbout
+  // MARK: MATHAccessoryWindowAbout
   
-  window = [[NSWindow alloc] initWithContentRect:SVRAccessoryWindowAboutWindowRect
+  window = [[NSWindow alloc] initWithContentRect:MATHAccessoryWindowAboutWindowRect
                                        styleMask:MATH_windowMaskForAboutWindow()
                                          backing:NSBackingStoreBuffered
                                            defer:YES];
@@ -128,33 +128,33 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   [window center];
   [window setTitle:[Localized titleAbout]];
   [window setReleasedWhenClosed:NO];
-  [window setMinSize:[NSWindow frameRectForContentRect:SVRAccessoryWindowAboutWindowRect
+  [window setMinSize:[NSWindow frameRectForContentRect:MATHAccessoryWindowAboutWindowRect
                                              styleMask:MATH_windowMaskForAboutWindow()].size];
-  [window setMaxSize:SVRAccessoryWindowAboutWindowMaxSize];
+  [window setMaxSize:MATHAccessoryWindowAboutWindowMaxSize];
   [window XP_setCollectionBehavior:XPWindowCollectionBehaviorFullScreenNone];
-  [window setContentView:[[[SVRAccessoryWindowAboutView alloc] initWithFrame:SVRAccessoryWindowAboutWindowRect] autorelease]];
-  [window setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameAbout];
-  [window XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameAbout];
+  [window setContentView:[[[MATHAccessoryWindowAboutView alloc] initWithFrame:MATHAccessoryWindowAboutWindowRect] autorelease]];
+  [window setFrameAutosaveName:MATHAccessoryWindowFrameAutosaveNameAbout];
+  [window XP_setIdentifier:MATHAccessoryWindowFrameAutosaveNameAbout];
   [window XP_setRestorationClass:appDelegateClass];
   [window setInitialFirstResponder:[[window contentView] viewSourceButton]];
   [[[window contentView] textView] setString:[Localized phraseAboutParagraph]];
   [[[window contentView] viewSourceButton] setAction:@selector(openSourceRepository:)];
   
-  // MARK: SVRAccessoryWindowSettings
+  // MARK: MATHAccessoryWindowSettings
   
-  window = [[NSWindow alloc] initWithContentRect:SVRAccessoryWindowSettingsWindowRect
+  window = [[NSWindow alloc] initWithContentRect:MATHAccessoryWindowSettingsWindowRect
                                        styleMask:MATH_windowMaskForSettingsWindow()
                                          backing:NSBackingStoreBuffered
                                            defer:YES];
   
   _settingsWindow = window;
-  _settingsViewController = [[SVRAccessoryWindowsSettingsViewController alloc] init];
+  _settingsViewController = [[MATHAccessoryWindowsSettingsViewController alloc] init];
 
   [window center];
   [window setTitle:[Localized titleSettings]];
   [window setReleasedWhenClosed:NO];
-  [window setFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameSettings];
-  [window XP_setIdentifier:SVRAccessoryWindowFrameAutosaveNameSettings];
+  [window setFrameAutosaveName:MATHAccessoryWindowFrameAutosaveNameSettings];
+  [window XP_setIdentifier:MATHAccessoryWindowFrameAutosaveNameSettings];
   [window XP_setRestorationClass:appDelegateClass];
   [window XP_setContentViewController:_settingsViewController];
   
@@ -178,7 +178,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
            object:nil];
   [nc addObserver:self
          selector:@selector(overrideWindowAppearance)
-             name:SVRThemeDidChangeNotificationName
+             name:MATHThemeDidChangeNotificationName
            object:nil];
   
   // Set appearance
@@ -216,7 +216,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 -(void)legacy_restoreWindowVisibility;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  BOOL keypadVisible = [ud MATH_visibilityForWindowWithFrameAutosaveName:SVRAccessoryWindowFrameAutosaveNameKeypad];
+  BOOL keypadVisible = [ud MATH_visibilityForWindowWithFrameAutosaveName:MATHAccessoryWindowFrameAutosaveNameKeypad];
   if (keypadVisible) { 
     [self toggleKeypadPanel:ud];
 	}
@@ -260,7 +260,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 
 @end
 
-@implementation SVRAccessoryWindowsOwner (DarkMode)
+@implementation MATHAccessoryWindowsOwner (DarkMode)
 -(void)overrideWindowAppearance;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
@@ -271,17 +271,17 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 }
 @end
 
-@implementation SVRAccessoryWindowsOwner (StateRestoration)
+@implementation MATHAccessoryWindowsOwner (StateRestoration)
 -(void)__restoreWindowWithIdentifier:(NSString*)identifier
                                state:(NSCoder*)state
                    completionHandler:(XPWindowRestoreCompletionHandler)completionHandler;
 {
   XPLogAssrt1(completionHandler, @"Completion Handler missing for identifier(%@)", identifier);
-  if (       [identifier isEqualToString:SVRAccessoryWindowFrameAutosaveNameAbout   ]) {
+  if (       [identifier isEqualToString:MATHAccessoryWindowFrameAutosaveNameAbout   ]) {
     completionHandler([self aboutWindow],    nil);
-  } else if ([identifier isEqualToString:SVRAccessoryWindowFrameAutosaveNameKeypad  ]) {
+  } else if ([identifier isEqualToString:MATHAccessoryWindowFrameAutosaveNameKeypad  ]) {
     completionHandler([self keypadPanel],    nil);
-  } else if ([identifier isEqualToString:SVRAccessoryWindowFrameAutosaveNameSettings]) {
+  } else if ([identifier isEqualToString:MATHAccessoryWindowFrameAutosaveNameSettings]) {
     completionHandler([self settingsWindow], nil);
   } else {
     completionHandler(nil, nil);
@@ -290,14 +290,14 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 }
 @end
 
-@implementation SVRAccessoryWindowsSettingsViewController
+@implementation MATHAccessoryWindowsSettingsViewController
 
 // MARK: Init
 -(void)loadView;
 {
   XPFloat kWindowPadding  = 8;
   XPFloat kSelectorHeight = 26;
-  NSRect  kContentFrame   = SVRAccessoryWindowSettingsWindowRect;
+  NSRect  kContentFrame   = MATHAccessoryWindowSettingsWindowRect;
   NSRect  kSelectorFrame  = NSMakeRect(kWindowPadding,
                                        kContentFrame.size.height-kWindowPadding-kSelectorHeight,
                                        kContentFrame.size.width-kWindowPadding*2,
@@ -307,13 +307,13 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
                                 kContentFrame.size.width-kWindowPadding*2,
                                 kContentFrame.size.height-kSelectorFrame.size.height-kWindowPadding*2.5);
   NSRect settingViewFrame = NSZeroRect;
-  SVRSettingSelection selectionKind = -1;
+  MATHSettingSelection selectionKind = -1;
   
   NSView *contentView = [[[NSView alloc] initWithFrame:kContentFrame] autorelease];
   
   _settingsBoxSelector = [[[NSPopUpButton alloc] initWithFrame:kSelectorFrame pullsDown:NO] autorelease];
-  for (selectionKind=SVRSettingSelectionGeneral;
-       selectionKind<=SVRSettingSelectionFonts;
+  for (selectionKind =MATHSettingSelectionGeneral;
+       selectionKind<=MATHSettingSelectionFonts;
        selectionKind++)
   {
     [_settingsBoxSelector addItemWithTitle:MATH_localizedStringForSettingsSelection(selectionKind)];
@@ -328,9 +328,9 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   
   // These get added to the view in -settingsBoxSelectionChanged:
   settingViewFrame = [[_settingsBoxParent contentView] bounds];
-  _generalView = [[SVRAccessoryWindowsSettingsGeneralView alloc] initWithFrame:settingViewFrame];
-  _colorsView  = [[SVRAccessoryWindowsSettingsColorsView  alloc] initWithFrame:settingViewFrame];
-  _fontsView   = [[SVRAccessoryWindowsSettingsFontsView   alloc] initWithFrame:settingViewFrame];
+  _generalView = [[MATHAccessoryWindowsSettingsGeneralView alloc] initWithFrame:settingViewFrame];
+  _colorsView  = [[MATHAccessoryWindowsSettingsColorsView  alloc] initWithFrame:settingViewFrame];
+  _fontsView   = [[MATHAccessoryWindowsSettingsFontsView   alloc] initWithFrame:settingViewFrame];
    
   XPParameterRaise(_settingsBoxSelector);
   XPParameterRaise(_settingsBoxParent);
@@ -340,7 +340,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(themeDidChangeNotification:)
-                                               name:SVRThemeDidChangeNotificationName
+                                               name:MATHThemeDidChangeNotificationName
                                              object:nil];
   
   [self setView:contentView];
@@ -353,20 +353,20 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 -(void)readSettingsSelection;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  SVRSettingSelection selectionKind = [ud MATH_settingsSelection];
+  MATHSettingSelection selectionKind = [ud MATH_settingsSelection];
   XPParameterRaise(_settingsBoxParent);
   switch (selectionKind) {
-    case SVRSettingSelectionGeneral:
+    case MATHSettingSelectionGeneral:
       [_settingsBoxParent setContentView:_generalView];
       break;
-    case SVRSettingSelectionColors:
+    case MATHSettingSelectionColors:
       [_settingsBoxParent setContentView:_colorsView];
       break;
-    case SVRSettingSelectionFonts:
+    case MATHSettingSelectionFonts:
       [_settingsBoxParent setContentView:_fontsView];
       break;
     default:
-      XPLogAssrt1(NO, @"[UNKNOWN] SVRSettingSelection(%d)", (int)selectionKind);
+      XPLogAssrt1(NO, @"[UNKNOWN] MATHSettingSelection(%d)", (int)selectionKind);
   }
   [_settingsBoxSelector selectItemAtIndex:selectionKind];
 }
@@ -391,79 +391,79 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 {
   NSUserDefaults  *ud = [NSUserDefaults standardUserDefaults];
   NSColorWell     *well = nil;
-  SVRColorWellKind kind = SVRColorWellKindUnknown;
-  for (kind =SVRColorWellKindOperandLight;
-       kind<=SVRColorWellKindBackgroundDark;
+  MATHColorWellKind kind = MATHColorWellKindUnknown;
+  for (kind =MATHColorWellKindOperandLight;
+       kind<=MATHColorWellKindBackgroundDark;
        kind++)
   {
     well = [_colorsView colorWellOfKind:kind];
     switch (kind) {
-      case SVRColorWellKindOperandLight:
-        [well setColor:[ud MATH_colorForTheme:SVRThemeColorOperandText
+      case MATHColorWellKindOperandLight:
+        [well setColor:[ud MATH_colorForTheme:MATHThemeColorOperandText
                                     withStyle:XPUserInterfaceStyleLight]];
         break;
-      case SVRColorWellKindOperandDark:
-        [well setColor:[ud MATH_colorForTheme:SVRThemeColorOperandText
+      case MATHColorWellKindOperandDark:
+        [well setColor:[ud MATH_colorForTheme:MATHThemeColorOperandText
                                     withStyle:XPUserInterfaceStyleDark]];
         break;
-      case SVRColorWellKindOperatorLight:
-        [well setColor:[ud MATH_colorForTheme:SVRThemeColorOperatorText
+      case MATHColorWellKindOperatorLight:
+        [well setColor:[ud MATH_colorForTheme:MATHThemeColorOperatorText
                                     withStyle:XPUserInterfaceStyleLight]];
         break;
-      case SVRColorWellKindOperatorDark:
-        [well setColor:[ud MATH_colorForTheme:SVRThemeColorOperatorText
+      case MATHColorWellKindOperatorDark:
+        [well setColor:[ud MATH_colorForTheme:MATHThemeColorOperatorText
                                     withStyle:XPUserInterfaceStyleDark]];
         break;
-      case SVRColorWellKindSolutionLight:
-        [well setColor:[ud MATH_colorForTheme:SVRThemeColorSolution
+      case MATHColorWellKindSolutionLight:
+        [well setColor:[ud MATH_colorForTheme:MATHThemeColorSolution
                                     withStyle:XPUserInterfaceStyleLight]];
         break;
-      case SVRColorWellKindSolutionDark:
-        [well setColor:[ud MATH_colorForTheme:SVRThemeColorSolution
+      case MATHColorWellKindSolutionDark:
+        [well setColor:[ud MATH_colorForTheme:MATHThemeColorSolution
                                     withStyle:XPUserInterfaceStyleDark]];
         break;
-      case SVRColorWellKindSolutionSecondaryLight:
-        [well setColor:[ud MATH_colorForTheme:SVRThemeColorSolutionSecondary
+      case MATHColorWellKindSolutionSecondaryLight:
+        [well setColor:[ud MATH_colorForTheme:MATHThemeColorSolutionSecondary
                                     withStyle:XPUserInterfaceStyleLight]];
         break;
-      case SVRColorWellKindSolutionSecondaryDark:
-        [well setColor:[ud MATH_colorForTheme:SVRThemeColorSolutionSecondary
+      case MATHColorWellKindSolutionSecondaryDark:
+        [well setColor:[ud MATH_colorForTheme:MATHThemeColorSolutionSecondary
                                     withStyle:XPUserInterfaceStyleDark]];
         break;
-      case SVRColorWellKindOtherTextLight:
-        [well setColor:[ud MATH_colorForTheme:SVRThemeColorOtherText
+      case MATHColorWellKindOtherTextLight:
+        [well setColor:[ud MATH_colorForTheme:MATHThemeColorOtherText
                                     withStyle:XPUserInterfaceStyleLight]];
         break;
-      case SVRColorWellKindOtherTextDark:
-        [well setColor:[ud MATH_colorForTheme:SVRThemeColorOtherText
+      case MATHColorWellKindOtherTextDark:
+        [well setColor:[ud MATH_colorForTheme:MATHThemeColorOtherText
                                     withStyle:XPUserInterfaceStyleDark]];
         break;
-      case SVRColorWellKindErrorTextLight:
-        [well setColor:[ud MATH_colorForTheme:SVRThemeColorErrorText
+      case MATHColorWellKindErrorTextLight:
+        [well setColor:[ud MATH_colorForTheme:MATHThemeColorErrorText
                                     withStyle:XPUserInterfaceStyleLight]];
         break;
-      case SVRColorWellKindErrorTextDark:
-        [well setColor:[ud MATH_colorForTheme:SVRThemeColorErrorText
+      case MATHColorWellKindErrorTextDark:
+        [well setColor:[ud MATH_colorForTheme:MATHThemeColorErrorText
                                     withStyle:XPUserInterfaceStyleDark]];
         break;
-      case SVRColorWellKindInsertionPointLight:
-        [well setColor:[ud MATH_colorForTheme:SVRThemeColorInsertionPoint
+      case MATHColorWellKindInsertionPointLight:
+        [well setColor:[ud MATH_colorForTheme:MATHThemeColorInsertionPoint
                                     withStyle:XPUserInterfaceStyleLight]];
         break;
-      case SVRColorWellKindInsertionPointDark:
-        [well setColor:[ud MATH_colorForTheme:SVRThemeColorInsertionPoint
+      case MATHColorWellKindInsertionPointDark:
+        [well setColor:[ud MATH_colorForTheme:MATHThemeColorInsertionPoint
                                     withStyle:XPUserInterfaceStyleDark]];
         break;
-      case SVRColorWellKindBackgroundLight:
-        [well setColor:[ud MATH_colorForTheme:SVRThemeColorBackground
+      case MATHColorWellKindBackgroundLight:
+        [well setColor:[ud MATH_colorForTheme:MATHThemeColorBackground
                                     withStyle:XPUserInterfaceStyleLight]];
         break;
-      case SVRColorWellKindBackgroundDark:
-        [well setColor:[ud MATH_colorForTheme:SVRThemeColorBackground
+      case MATHColorWellKindBackgroundDark:
+        [well setColor:[ud MATH_colorForTheme:MATHThemeColorBackground
                                     withStyle:XPUserInterfaceStyleDark]];
         break;
       default:
-        XPLogAssrt1(NO, @"[UNKNOWN] SVRColorWellKind(%d)", (int)kind);
+        XPLogAssrt1(NO, @"[UNKNOWN] MATHColorWellKind(%d)", (int)kind);
         break;
     }
   }
@@ -474,11 +474,11 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
   NSTextField *field = nil;
   NSFont *font = nil;
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  SVRAccessoryWindowsSettingsFontsView *box = _fontsView;
-  SVRThemeFont kind = SVRThemeFontUnknown;
+  MATHAccessoryWindowsSettingsFontsView *box = _fontsView;
+  MATHThemeFont kind = MATHThemeFontUnknown;
   
-  for (kind =SVRThemeFontMath;
-       kind<=SVRThemeFontError;
+  for (kind =MATHThemeFontMath;
+       kind<=MATHThemeFontError;
        kind++)
   {
     field = [box textFieldOfKind:kind];
@@ -493,15 +493,15 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 -(IBAction)writeSettingsSelection:(NSPopUpButton*)sender;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  SVRSettingSelection newSelection = [sender indexOfSelectedItem];
+  MATHSettingSelection newSelection = [sender indexOfSelectedItem];
   switch (newSelection) {
-    case SVRSettingSelectionGeneral:
-    case SVRSettingSelectionColors:
-    case SVRSettingSelectionFonts:
+    case MATHSettingSelectionGeneral:
+    case MATHSettingSelectionColors:
+    case MATHSettingSelectionFonts:
       [ud MATH_setSettingsSelection:newSelection];
       break;
     default:
-      XPLogAssrt1(NO, @"[UNKNOWN] SVRSettingSelection(%d)", (int)newSelection);
+      XPLogAssrt1(NO, @"[UNKNOWN] MATHSettingSelection(%d)", (int)newSelection);
       break;
   }
   [self readSettingsSelection];
@@ -535,102 +535,102 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 -(IBAction)writeColor:(NSColorWell*)sender;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  SVRColorWellKind kind = SVRColorWellKindUnknown;
+  MATHColorWellKind kind = MATHColorWellKindUnknown;
   XPParameterRaise(sender);
   kind = [sender tag];
   switch (kind) {
-    case SVRColorWellKindOperandLight:
+    case MATHColorWellKindOperandLight:
       [ud MATH_setColor:[sender color]
-               forTheme:SVRThemeColorOperandText
+               forTheme:MATHThemeColorOperandText
               withStyle:XPUserInterfaceStyleLight];
       break;
-    case SVRColorWellKindOperandDark:
+    case MATHColorWellKindOperandDark:
       [ud MATH_setColor:[sender color]
-               forTheme:SVRThemeColorOperandText
+               forTheme:MATHThemeColorOperandText
               withStyle:XPUserInterfaceStyleDark];
       break;
-    case SVRColorWellKindOperatorLight:
+    case MATHColorWellKindOperatorLight:
       [ud MATH_setColor:[sender color]
-               forTheme:SVRThemeColorOperatorText
+               forTheme:MATHThemeColorOperatorText
               withStyle:XPUserInterfaceStyleLight];
       break;
-    case SVRColorWellKindOperatorDark:
+    case MATHColorWellKindOperatorDark:
       [ud MATH_setColor:[sender color]
-               forTheme:SVRThemeColorOperatorText
+               forTheme:MATHThemeColorOperatorText
               withStyle:XPUserInterfaceStyleDark];
       break;
-    case SVRColorWellKindSolutionLight:
+    case MATHColorWellKindSolutionLight:
       [ud MATH_setColor:[sender color]
-               forTheme:SVRThemeColorSolution
+               forTheme:MATHThemeColorSolution
               withStyle:XPUserInterfaceStyleLight];
       break;
-    case SVRColorWellKindSolutionDark:
+    case MATHColorWellKindSolutionDark:
       [ud MATH_setColor:[sender color]
-               forTheme:SVRThemeColorSolution
+               forTheme:MATHThemeColorSolution
               withStyle:XPUserInterfaceStyleDark];
       break;
-    case SVRColorWellKindSolutionSecondaryLight:
+    case MATHColorWellKindSolutionSecondaryLight:
       [ud MATH_setColor:[sender color]
-               forTheme:SVRThemeColorSolutionSecondary
+               forTheme:MATHThemeColorSolutionSecondary
               withStyle:XPUserInterfaceStyleLight];
       break;
-    case SVRColorWellKindSolutionSecondaryDark:
+    case MATHColorWellKindSolutionSecondaryDark:
       [ud MATH_setColor:[sender color]
-               forTheme:SVRThemeColorSolutionSecondary
+               forTheme:MATHThemeColorSolutionSecondary
               withStyle:XPUserInterfaceStyleDark];
       break;
-    case SVRColorWellKindOtherTextLight:
+    case MATHColorWellKindOtherTextLight:
       [ud MATH_setColor:[sender color]
-               forTheme:SVRThemeColorOtherText
+               forTheme:MATHThemeColorOtherText
               withStyle:XPUserInterfaceStyleLight];
       break;
-    case SVRColorWellKindOtherTextDark:
+    case MATHColorWellKindOtherTextDark:
       [ud MATH_setColor:[sender color]
-               forTheme:SVRThemeColorOtherText
+               forTheme:MATHThemeColorOtherText
               withStyle:XPUserInterfaceStyleDark];
       break;
-    case SVRColorWellKindErrorTextLight:
+    case MATHColorWellKindErrorTextLight:
       [ud MATH_setColor:[sender color]
-               forTheme:SVRThemeColorErrorText
+               forTheme:MATHThemeColorErrorText
               withStyle:XPUserInterfaceStyleLight];
       break;
-    case SVRColorWellKindErrorTextDark:
+    case MATHColorWellKindErrorTextDark:
       [ud MATH_setColor:[sender color]
-               forTheme:SVRThemeColorErrorText
+               forTheme:MATHThemeColorErrorText
               withStyle:XPUserInterfaceStyleDark];
       break;
-    case SVRColorWellKindInsertionPointLight:
+    case MATHColorWellKindInsertionPointLight:
       [ud MATH_setColor:[sender color]
-               forTheme:SVRThemeColorInsertionPoint
+               forTheme:MATHThemeColorInsertionPoint
               withStyle:XPUserInterfaceStyleLight];
       break;
-    case SVRColorWellKindInsertionPointDark:
+    case MATHColorWellKindInsertionPointDark:
       [ud MATH_setColor:[sender color]
-               forTheme:SVRThemeColorInsertionPoint
+               forTheme:MATHThemeColorInsertionPoint
               withStyle:XPUserInterfaceStyleDark];
       break;
-    case SVRColorWellKindBackgroundLight:
+    case MATHColorWellKindBackgroundLight:
       [ud MATH_setColor:[sender color]
-               forTheme:SVRThemeColorBackground
+               forTheme:MATHThemeColorBackground
               withStyle:XPUserInterfaceStyleLight];
       break;
-    case SVRColorWellKindBackgroundDark:
+    case MATHColorWellKindBackgroundDark:
       [ud MATH_setColor:[sender color]
-               forTheme:SVRThemeColorBackground
+               forTheme:MATHThemeColorBackground
               withStyle:XPUserInterfaceStyleDark];
       break;
     default:
-      XPLogAssrt1(NO, @"[UNKNOWN] SVRColorWellKind(%d)", (int)kind);
+      XPLogAssrt1(NO, @"[UNKNOWN] MATHColorWellKind(%d)", (int)kind);
       break;
   }
 }
 
 -(IBAction)presentFontPanel:(NSButton*)sender;
 {
-  SVRThemeFont theme = [sender tag];
+  MATHThemeFont theme = [sender tag];
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  SVRFontManager *fm = (SVRFontManager*)[NSFontManager sharedFontManager];
-  XPLogAssrt1([fm isKindOfClass:[SVRFontManager class]], @"%@ is not SVRFontManager", fm);
+  MATHFontManager *fm = (MATHFontManager*)[NSFontManager sharedFontManager];
+  XPLogAssrt1([fm isKindOfClass:[MATHFontManager class]], @"%@ is not MATHFontManager", fm);
   [fm setSelectedFont:[ud MATH_fontForTheme:theme] isMultiple:NO];
   [fm setThemeFont:theme];
   [fm orderFrontFontPanel:sender];
@@ -639,11 +639,11 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 -(IBAction)changeFont:(NSFontManager*)sender;
 {
   NSFont *font = nil;
-  SVRThemeFont theme = -1;
+  MATHThemeFont theme = -1;
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  XPLogAssrt1([sender isKindOfClass:[SVRFontManager class]], @"[UNKNOWN] %@", sender);
+  XPLogAssrt1([sender isKindOfClass:[MATHFontManager class]], @"[UNKNOWN] %@", sender);
   font = [sender convertFont:[sender selectedFont]];
-  theme = [(SVRFontManager*)sender themeFont];
+  theme = [(MATHFontManager*)sender themeFont];
   [ud MATH_setFont:font forTheme:theme];
   [self readFonts];
   XPLogDebug(@"[SUCCESS]");
@@ -652,92 +652,92 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 -(IBAction)reset:(NSButton*)sender;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  SVRResetButtonKind kind = -1;
+  MATHResetButtonKind kind = -1;
   XPParameterRaise(sender);
   kind = [sender tag];
   switch (kind) {
-    case   SVRResetButtonKindUIStyle:
+    case MATHResetButtonKindUIStyle:
       [ud MATH_setUserInterfaceStyleSetting:XPUserInterfaceStyleUnspecified];
       break;
-    case SVRResetButtonKindWaitTime:
+    case MATHResetButtonKindWaitTime:
       [ud MATH_setWaitTimeForRendering:-1];
       [self readWaitTime];
       break;
-    case SVRResetButtonKindMathFont:
-      [ud MATH_setFont:nil forTheme:SVRThemeFontMath];
+    case MATHResetButtonKindMathFont:
+      [ud MATH_setFont:nil forTheme:MATHThemeFontMath];
       break;
-    case SVRResetButtonKindOtherFont:
-      [ud MATH_setFont:nil forTheme:SVRThemeFontOther];
+    case MATHResetButtonKindOtherFont:
+      [ud MATH_setFont:nil forTheme:MATHThemeFontOther];
       break;
-    case SVRResetButtonKindErrorFont:
-      [ud MATH_setFont:nil forTheme:SVRThemeFontError];
+    case MATHResetButtonKindErrorFont:
+      [ud MATH_setFont:nil forTheme:MATHThemeFontError];
       break;
-    case SVRResetButtonKindOperandColor:
+    case MATHResetButtonKindOperandColor:
       [ud MATH_setColor:nil
-               forTheme:SVRThemeColorOperandText
+               forTheme:MATHThemeColorOperandText
               withStyle:XPUserInterfaceStyleLight];
       [ud MATH_setColor:nil
-               forTheme:SVRThemeColorOperandText
+               forTheme:MATHThemeColorOperandText
               withStyle:XPUserInterfaceStyleDark];
       break;
-    case SVRResetButtonKindOperatorColor:
+    case MATHResetButtonKindOperatorColor:
       [ud MATH_setColor:nil
-               forTheme:SVRThemeColorOperatorText
+               forTheme:MATHThemeColorOperatorText
               withStyle:XPUserInterfaceStyleLight];
       [ud MATH_setColor:nil
-               forTheme:SVRThemeColorOperatorText
+               forTheme:MATHThemeColorOperatorText
               withStyle:XPUserInterfaceStyleDark];
       break;
-    case SVRResetButtonKindSolutionColor:
+    case MATHResetButtonKindSolutionColor:
       [ud MATH_setColor:nil
-               forTheme:SVRThemeColorSolution
+               forTheme:MATHThemeColorSolution
               withStyle:XPUserInterfaceStyleLight];
       [ud MATH_setColor:nil
-               forTheme:SVRThemeColorSolution
+               forTheme:MATHThemeColorSolution
               withStyle:XPUserInterfaceStyleDark];
       break;
-    case SVRResetButtonKindPreviousSolutionColor:
+    case MATHResetButtonKindPreviousSolutionColor:
       [ud MATH_setColor:nil
-               forTheme:SVRThemeColorSolutionSecondary
+               forTheme:MATHThemeColorSolutionSecondary
               withStyle:XPUserInterfaceStyleLight];
       [ud MATH_setColor:nil
-               forTheme:SVRThemeColorSolutionSecondary
+               forTheme:MATHThemeColorSolutionSecondary
               withStyle:XPUserInterfaceStyleDark];
       break;
-    case SVRResetButtonKindOtherTextColor:
+    case MATHResetButtonKindOtherTextColor:
       [ud MATH_setColor:nil
-               forTheme:SVRThemeColorOtherText
+               forTheme:MATHThemeColorOtherText
               withStyle:XPUserInterfaceStyleLight];
       [ud MATH_setColor:nil
-               forTheme:SVRThemeColorOtherText
+               forTheme:MATHThemeColorOtherText
               withStyle:XPUserInterfaceStyleDark];
       break;
-    case SVRResetButtonKindErrorTextColor:
+    case MATHResetButtonKindErrorTextColor:
       [ud MATH_setColor:nil
-               forTheme:SVRThemeColorErrorText
+               forTheme:MATHThemeColorErrorText
               withStyle:XPUserInterfaceStyleLight];
       [ud MATH_setColor:nil
-               forTheme:SVRThemeColorErrorText
+               forTheme:MATHThemeColorErrorText
               withStyle:XPUserInterfaceStyleDark];
       break;
-    case SVRResetButtonKindInsertionPointColor:
+    case MATHResetButtonKindInsertionPointColor:
       [ud MATH_setColor:nil
-               forTheme:SVRThemeColorInsertionPoint
+               forTheme:MATHThemeColorInsertionPoint
               withStyle:XPUserInterfaceStyleLight];
       [ud MATH_setColor:nil
-               forTheme:SVRThemeColorInsertionPoint
+               forTheme:MATHThemeColorInsertionPoint
               withStyle:XPUserInterfaceStyleDark];
       break;
-    case SVRResetButtonKindBackgroundColor:
+    case MATHResetButtonKindBackgroundColor:
       [ud MATH_setColor:nil
-               forTheme:SVRThemeColorBackground
+               forTheme:MATHThemeColorBackground
               withStyle:XPUserInterfaceStyleLight];
       [ud MATH_setColor:nil
-               forTheme:SVRThemeColorBackground
+               forTheme:MATHThemeColorBackground
               withStyle:XPUserInterfaceStyleDark];
       break;
     default:
-      XPLogAssrt1(NO, @"[UNKNOWN] SVRResetButtonKind(%d)", (int)kind);
+      XPLogAssrt1(NO, @"[UNKNOWN] MATHResetButtonKind(%d)", (int)kind);
       break;
   }
 }
@@ -771,7 +771,7 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 @end
 
 #ifndef XPSupportsNSViewController
-@implementation SVRAccessoryWindowsSettingsViewController (CrossPlatform)
+@implementation MATHAccessoryWindowsSettingsViewController (CrossPlatform)
 -(NSView*)view;
 {
   if (!_view_42) {
@@ -790,17 +790,17 @@ static NSRect SVRAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // Co
 @end
 #endif
 
-NSString *MATH_localizedStringForSettingsSelection(SVRSettingSelection selection)
+NSString *MATH_localizedStringForSettingsSelection(MATHSettingSelection selection)
 {
   switch (selection) {
-    case SVRSettingSelectionGeneral:
+    case MATHSettingSelectionGeneral:
       return [Localized titleGeneral];
-    case SVRSettingSelectionColors:
+    case MATHSettingSelectionColors:
       return [Localized titleColors];
-    case SVRSettingSelectionFonts:
+    case MATHSettingSelectionFonts:
       return [Localized titleFonts];
     default:
-      XPCLogAssrt1(NO, @"[UNKNOWN] SVRSettingSelection(%d)", (int)selection);
+      XPCLogAssrt1(NO, @"[UNKNOWN] MATHSettingSelection(%d)", (int)selection);
       return nil;
   }
 }

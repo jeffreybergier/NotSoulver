@@ -23,7 +23,7 @@ void TestsUnitExecute(void)
 #if TESTING==1
   [XPLog executeTests];
   [XPRegularExpression executeTests];
-  [SVRSolverScanner executeTests];
+  [MATHSolverScanner executeTests];
 #ifdef MAC_OS_X_VERSION_10_4
   // TODO: Change to Antifeature flat
 //[NSBezierPath saveTestFiles];
@@ -293,7 +293,7 @@ void TestsUnitExecute(void)
   XPTestInt([match numberOfRanges], 1);
   // Known issue where negative number is detected
   // even though its next to bracket (meaning its a minus operator)
-  // this is corrected in -[SVRSolverScanner populateNumbers:]
+  // this is corrected in -[MATHSolverScanner populateNumbers:]
   XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"-33.44");
   match = [matches objectAtIndex:5];
   XPTestInt([match numberOfRanges], 1);
@@ -316,7 +316,7 @@ void TestsUnitExecute(void)
 
 @end
 
-@implementation SVRSolverScanner (TestsUnit)
+@implementation MATHSolverScanner (TestsUnit)
 
 +(void)executeTests;
 {
@@ -328,7 +328,7 @@ void TestsUnitExecute(void)
                      @"2r64=\n"    // purposefully wrong operators
                      @"10L1000=\n"
                      @"(2R64)=\n";
-  SVRSolverScanner *scanner = [SVRSolverScanner scannerWithString:string];
+  MATHSolverScanner *scanner = [MATHSolverScanner scannerWithString:string];
   NSArray *ranges = nil;
   
   NSLog(@"%@ Unit Tests: STARTING", self);

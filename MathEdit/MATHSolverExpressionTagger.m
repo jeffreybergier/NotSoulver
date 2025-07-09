@@ -20,19 +20,19 @@
 #import "MATHSolver.h"
 #import "MATHSolverExpressionTagger.h"
 
-@implementation SVRSolverExpressionTagger
+@implementation MATHSolverExpressionTagger
 
 +(void)step1_tagOperatorsAtRanges:(NSSet*)ranges
                inAttributedString:(NSMutableAttributedString*)string;
 {
-  SVRSolverOperator operator = -1;
+  MATHSolverOperator operator = -1;
   NSValue *next = nil;
   NSRange range = XPNotFoundRange;
   NSEnumerator *e = [ranges objectEnumerator];
   while ((next = [e nextObject])) {
     range = [next XP_rangeValue];
-    operator = SVRSolverOperatorForRawString([[string string] substringWithRange:range]);
-    [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagOperator)
+    operator = MATHSolverOperatorForRawString([[string string] substringWithRange:range]);
+    [string addAttribute:XPAttributedStringKeyForTag(MATHSolverTagOperator)
                    value:NSNumberForOperator(operator)
                    range:range];
   }
@@ -50,10 +50,10 @@
     range = [next XP_rangeValue];
     numberString = [[string string] substringWithRange:range];
     number = [NSDecimalNumber decimalNumberWithString:numberString];
-    XPLogAssrt1(![number MATH_isNotANumber], @"SVRSolverExpressionTagger: step2: `%@` is NaN", numberString);
-    [string removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagOperator)
+    XPLogAssrt1(![number MATH_isNotANumber], @"MATHSolverExpressionTagger: step2: `%@` is NaN", numberString);
+    [string removeAttribute:XPAttributedStringKeyForTag(MATHSolverTagOperator)
                       range:range];
-    [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagNumber)
+    [string addAttribute:XPAttributedStringKeyForTag(MATHSolverTagNumber)
                    value:number
                    range:range];
   }
@@ -65,7 +65,7 @@
   NSValue *next = nil;
   NSEnumerator *e = [ranges objectEnumerator];
   while ((next = [e nextObject])) {
-    [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagBracket)
+    [string addAttribute:XPAttributedStringKeyForTag(MATHSolverTagBracket)
                    value:NSStringFromRange([next XP_rangeValue])
                    range:[next XP_rangeValue]];
   }
@@ -77,7 +77,7 @@
   NSValue *next = nil;
   NSEnumerator *e = [ranges objectEnumerator];
   while ((next = [e nextObject])) {
-    [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagExpression)
+    [string addAttribute:XPAttributedStringKeyForTag(MATHSolverTagExpression)
                    value:NSStringFromRange([next XP_rangeValue])
                    range:[next XP_rangeValue]];
   }

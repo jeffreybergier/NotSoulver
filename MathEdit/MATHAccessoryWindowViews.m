@@ -18,23 +18,23 @@
 
 #import "MATHAccessoryWindowViews.h"
 
-// MARK: SVRAccessoryWindowKeypadView
+// MARK: MATHAccessoryWindowKeypadView
 
-@implementation SVRAccessoryWindowKeypadView: NSView
+@implementation MATHAccessoryWindowKeypadView: NSView
 
 -(id)initWithFrame:(NSRect)frameRect;
 {
-  SVRKeypadButtonKind kind = SVRKeypadButtonKindUnknown;
+  MATHKeypadButtonKind kind = MATHKeypadButtonKindUnknown;
   NSButton *button = nil;
   
   self = [super initWithFrame:frameRect];
   XPParameterRaise(self);
   _equalButton = nil;
   
-  for (kind=SVRKeypadButtonKind1; kind<=SVRKeypadButtonKindLog; kind++) {
+  for (kind=MATHKeypadButtonKind1; kind<=MATHKeypadButtonKindLog; kind++) {
     button = [NSButton MATH_keypadButtonOfKind:kind];
     [self addSubview:button];
-    if (kind == SVRKeypadButtonKindEqual) {
+    if (kind == MATHKeypadButtonKindEqual) {
       _equalButton = button;
     }
   }
@@ -50,9 +50,9 @@
 
 @end
 
-// MARK: SVRAccessoryWindowAboutView
+// MARK: MATHAccessoryWindowAboutView
 
-@implementation SVRAccessoryWindowAboutView
+@implementation MATHAccessoryWindowAboutView
 
 -(id)initWithFrame:(NSRect)frameRect;
 {
@@ -201,9 +201,9 @@
 
 @end
 
-// MARK: SVRAccessoryWindowSettingsView
+// MARK: MATHAccessoryWindowSettingsView
 
-@implementation SVRAccessoryWindowsSettingsGeneralView
+@implementation MATHAccessoryWindowsSettingsGeneralView
 
 -(id)initWithFrame:(NSRect)frameRect;
 {
@@ -215,13 +215,13 @@
   NSRect slidrRect = NSMakeRect(frameRect.origin.x,      kBotY,           delayRect.origin.x-4, kSlidrH);
   NSRect sgmntRect = NSMakeRect(frameRect.origin.x,      kTopY,           frameRect.size.width, kSgmntH);
   NSRect labelRect = NSMakeRect(frameRect.origin.x,      kTopY+kSgmntH+4, frameRect.size.width,  0);
-  SVRResetButtonKind kind = SVRResetButtonKindUnknown;
+  MATHResetButtonKind kind = MATHResetButtonKindUnknown;
   
   self = [super initWithFrame:frameRect];
   XPParameterRaise(self);
   
   // User Interface Style Selector
-  kind = SVRResetButtonKindUIStyle;
+  kind = MATHResetButtonKindUIStyle;
   [self addSubview:[[[NSTextField MATH_labelWithFrame:labelRect]
                                   MATH_setObjectValue:MATH_localizedStringForKind(kind)
                                                 font:nil
@@ -240,7 +240,7 @@
   [self addSubview:_selectorControl];
   
   // Adjust frames
-  kind = SVRResetButtonKindWaitTime;
+  kind = MATHResetButtonKindWaitTime;
   labelRect.origin.y = slidrRect.origin.y+kSlidrH+4;
   
   // Wait Time Slider
@@ -289,7 +289,7 @@
 
 @end
 
-@implementation SVRAccessoryWindowsSettingsColorsView
+@implementation MATHAccessoryWindowsSettingsColorsView
 
 -(id)initWithFrame:(NSRect)frameRect;
 {
@@ -299,16 +299,16 @@
   NSRect darkkRect = NSMakeRect(resetRect.origin.x-50-4, kYOrigin,   50,                   30);
   NSRect lightRect = NSMakeRect(darkkRect.origin.x-50-4, kYOrigin,   50,                   30);
   NSRect labelRect = NSMakeRect(frameRect.origin.x,      kYOrigin+4, lightRect.origin.x-4,  0);
-  SVRColorWellKind colorKind = SVRColorWellKindUnknown;
-  SVRResetButtonKind resetKind = SVRResetButtonKindUnknown;
+  MATHColorWellKind colorKind = MATHColorWellKindUnknown;
+  MATHResetButtonKind resetKind = MATHResetButtonKindUnknown;
   NSColorWell *colorWell = nil;
   
   self = [super initWithFrame:frameRect];
   XPParameterRaise(self);
   _colorWells = [NSMutableDictionary new];
   
-  for (colorKind =SVRColorWellKindOperandLight;
-       colorKind<=SVRColorWellKindBackgroundDark;
+  for (colorKind =MATHColorWellKindOperandLight;
+       colorKind<=MATHColorWellKindBackgroundDark;
        colorKind++)
   {
     resetKind = MATH_resetButtonKindForColorWellKind(colorKind);
@@ -353,14 +353,14 @@
   return self;
 }
 
--(NSColorWell*)colorWellOfKind:(SVRColorWellKind)kind;
+-(NSColorWell*)colorWellOfKind:(MATHColorWellKind)kind;
 {
   NSColorWell *colorWell = [_colorWells objectForKey:[NSNumber XP_numberWithInteger:kind]];
   XPParameterRaise(colorWell);
   return colorWell;
 }
 -(void)setColorWell:(NSColorWell*)colorWell
-            forKind:(SVRColorWellKind)kind;
+            forKind:(MATHColorWellKind)kind;
 {
   XPParameterRaise(colorWell);
   [_colorWells setObject:colorWell forKey:[NSNumber XP_numberWithInteger:kind]];
@@ -375,7 +375,7 @@
 
 @end
 
-@implementation SVRAccessoryWindowsSettingsFontsView
+@implementation MATHAccessoryWindowsSettingsFontsView
 -(id)initWithFrame:(NSRect)frameRect;
 {
   XPFloat kLabelYOffset = 32;
@@ -385,16 +385,16 @@
   NSRect setttRect = NSMakeRect(resetRect.origin.x-50-4, kYOrigin,               50,                   30);
   NSRect fieldRect = NSMakeRect(frameRect.origin.x,      kYOrigin,               setttRect.origin.x-4, 30);
   NSRect labelRect = NSMakeRect(frameRect.origin.x,      kYOrigin+kLabelYOffset, setttRect.origin.x-4,  0);
-  SVRThemeFont fontKind = SVRThemeFontUnknown;
-  SVRResetButtonKind resetKind = SVRResetButtonKindUnknown;
+  MATHThemeFont fontKind = MATHThemeFontUnknown;
+  MATHResetButtonKind resetKind = MATHResetButtonKindUnknown;
   NSTextField *textField = nil;
   
   self = [super initWithFrame:frameRect];
   XPParameterRaise(self);
   _textFields = [NSMutableDictionary new];
   
-  for (fontKind =SVRThemeFontMath;
-       fontKind<=SVRThemeFontError;
+  for (fontKind =MATHThemeFontMath;
+       fontKind<=MATHThemeFontError;
        fontKind++)
   {
     resetKind = MATH_resetButtonKindForFontSettingKind(fontKind);
@@ -433,7 +433,7 @@
   return self;
 }
 
--(NSTextField*)textFieldOfKind:(SVRThemeFont)kind;
+-(NSTextField*)textFieldOfKind:(MATHThemeFont)kind;
 {
   NSTextField *textField = [_textFields objectForKey:[NSNumber XP_numberWithInteger:kind]];
   XPParameterRaise(textField);
@@ -441,7 +441,7 @@
 }
 
 -(void)setTextField:(NSTextField*)textField
-            forKind:(SVRThemeFont)kind;
+            forKind:(MATHThemeFont)kind;
 {
   XPParameterRaise(textField);
   [_textFields setObject:textField forKey:[NSNumber XP_numberWithInteger:kind]];
@@ -577,9 +577,9 @@
 
 @end
 
-@implementation NSControl (SVRAccessoryWindows)
+@implementation NSControl (MATHAccessoryWindows)
 
-+(NSButton*)MATH_keypadButtonOfKind:(SVRKeypadButtonKind)kind;
++(NSButton*)MATH_keypadButtonOfKind:(MATHKeypadButtonKind)kind;
 {
   NSButton *button = [[[NSButton alloc] initWithFrame:MATH_rectForKeypadButtonOfKind(kind)] autorelease];
   [button setTitle:MATH_titleForKeypadButtonOfKind(kind)];
@@ -591,9 +591,9 @@
 }
 
 +(NSButton*)MATH_settingsButtonWithFrame:(NSRect)frame
-                                  title:(NSString*)title
-                                 action:(SEL)action
-                                    tag:(XPInteger)tag;
+                                   title:(NSString*)title
+                                  action:(SEL)action
+                                     tag:(XPInteger)tag;
 {
   NSButton *button = [[[NSButton alloc] initWithFrame:frame] autorelease];
   [button setTitle:title];
@@ -604,7 +604,7 @@
 }
 
 +(NSColorWell*)MATH_colorWellWithFrame:(NSRect)frame
-                                 kind:(SVRColorWellKind)kind;
+                                  kind:(MATHColorWellKind)kind;
 {
   NSColorWell *well = [[[NSColorWell alloc] initWithFrame:frame] autorelease];
   [well setTag:kind];
@@ -623,8 +623,8 @@
 }
 
 +(NSTextField*)MATH_textFieldWithFrame:(NSRect)frame
-                               target:(id)target
-                               action:(SEL)action;
+                                target:(id)target
+                                action:(SEL)action;
 {
   NSTextField *textField = [[[NSTextField alloc] initWithFrame:frame] autorelease];
   BOOL isEditable = target != nil || action != NULL;
@@ -669,7 +669,7 @@
 
 @end
 
-@implementation NSView (SVRAccessoryWindows)
+@implementation NSView (MATHAccessoryWindows)
 
 +(NSBox*)MATH_lineWithFrame:(NSRect)frame;
 {
@@ -687,10 +687,10 @@
 
 @end
 
-@implementation NSImageView (SVRAccessoryWindows)
+@implementation NSImageView (MATHAccessoryWindows)
 
 +(NSImageView*)MATH_imageViewWithOrigin:(NSPoint)origin
-                  sizedToFitImageNamed:(NSString*)imageName;
+                   sizedToFitImageNamed:(NSString*)imageName;
 {
   NSImage     *image = [NSImage imageNamed:imageName];
   NSRect       frame = NSMakeRect(origin.x, origin.y, [image size].width, [image size].height);
@@ -701,7 +701,7 @@
 }
 
 +(NSImageView*)MATH_imageViewWithFrame:(NSRect)frame
-                           imageNamed:(NSString*)imageName;
+                            imageNamed:(NSString*)imageName;
 {
   NSImage     *image = [NSImage imageNamed:imageName];
   NSImageView *view  = [[[NSImageView alloc] initWithFrame:frame] autorelease];
@@ -718,7 +718,7 @@
 
 @end
 
-@implementation NSImage (SVRAccessoryWindows)
+@implementation NSImage (MATHAccessoryWindows)
 -(NSImage*)MATH_setTemplate:(BOOL)flag;
 {
 #ifdef XPSupportsTemplateImage
@@ -728,13 +728,13 @@
 }
 @end
 
-NSRect MATH_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind)
+NSRect MATH_rectForKeypadButtonOfKind(MATHKeypadButtonKind kind)
 {
-  XPFloat kWinPad  = SVRAccessoryWindowKeypadWindowPadding;
-  XPFloat kBtnVPad = SVRAccessoryWindowKeypadWindowButtonVPadding;
-  XPFloat kBtnHPad = SVRAccessoryWindowKeypadWindowButtonHPadding;
-  XPFloat kGrpVPad = SVRAccessoryWindowKeypadWindowGroupSpacing;
-  NSSize  kBtnSize = SVRAccessoryWindowKeypadWindowButtonSize;
+  XPFloat kWinPad  = MATHAccessoryWindowKeypadWindowPadding;
+  XPFloat kBtnVPad = MATHAccessoryWindowKeypadWindowButtonVPadding;
+  XPFloat kBtnHPad = MATHAccessoryWindowKeypadWindowButtonHPadding;
+  XPFloat kGrpVPad = MATHAccessoryWindowKeypadWindowGroupSpacing;
+  NSSize  kBtnSize = MATHAccessoryWindowKeypadWindowButtonSize;
   
   XPInteger column     = -1;
   XPInteger row        = -1;
@@ -742,82 +742,82 @@ NSRect MATH_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   NSRect    output     = NSZeroRect;
   
   switch (kind) {
-    case SVRKeypadButtonKind1:
-    case SVRKeypadButtonKindNegative:
-    case SVRKeypadButtonKind4:
-    case SVRKeypadButtonKind7:
-    case SVRKeypadButtonKindAdd:
-    case SVRKeypadButtonKindMultiply:
-    case SVRKeypadButtonKindPower:
-    case SVRKeypadButtonKindDelete:
+    case MATHKeypadButtonKind1:
+    case MATHKeypadButtonKindNegative:
+    case MATHKeypadButtonKind4:
+    case MATHKeypadButtonKind7:
+    case MATHKeypadButtonKindAdd:
+    case MATHKeypadButtonKindMultiply:
+    case MATHKeypadButtonKindPower:
+    case MATHKeypadButtonKindDelete:
       column = 0;
       break;
-    case SVRKeypadButtonKindEqual:
-    case SVRKeypadButtonKind0:
-    case SVRKeypadButtonKind2:
-    case SVRKeypadButtonKind5:
-    case SVRKeypadButtonKind8:
-    case SVRKeypadButtonKindSubtract:
-    case SVRKeypadButtonKindDivide:
-    case SVRKeypadButtonKindRoot:
+    case MATHKeypadButtonKindEqual:
+    case MATHKeypadButtonKind0:
+    case MATHKeypadButtonKind2:
+    case MATHKeypadButtonKind5:
+    case MATHKeypadButtonKind8:
+    case MATHKeypadButtonKindSubtract:
+    case MATHKeypadButtonKindDivide:
+    case MATHKeypadButtonKindRoot:
       column = 1;
       break;
-    case SVRKeypadButtonKindDecimal:
-    case SVRKeypadButtonKind3:
-    case SVRKeypadButtonKind6:
-    case SVRKeypadButtonKind9:
-    case SVRKeypadButtonKindBRight:
-    case SVRKeypadButtonKindBLeft:
-    case SVRKeypadButtonKindLog:
+    case MATHKeypadButtonKindDecimal:
+    case MATHKeypadButtonKind3:
+    case MATHKeypadButtonKind6:
+    case MATHKeypadButtonKind9:
+    case MATHKeypadButtonKindBRight:
+    case MATHKeypadButtonKindBLeft:
+    case MATHKeypadButtonKindLog:
       column = 2;
       break;
     default:
-      XPCLogAssrt1(NO, @"[UNKNOWN] SVRAccessoryWindowKeypadViewKind(%d)", (int)kind);
+      XPCLogAssrt1(NO, @"[UNKNOWN] MATHAccessoryWindowKeypadViewKind(%d)", (int)kind);
       break;
   }
   
   switch (kind) {
-    case SVRKeypadButtonKindDelete:
-    case SVRKeypadButtonKindEqual:
+    case MATHKeypadButtonKindDelete:
+    case MATHKeypadButtonKindEqual:
       row = 0;
       break;
-    case SVRKeypadButtonKindNegative:
-    case SVRKeypadButtonKind0:
-    case SVRKeypadButtonKindDecimal:
+    case MATHKeypadButtonKindNegative:
+    case MATHKeypadButtonKind0:
+    case MATHKeypadButtonKindDecimal:
       row = 1;
       break;
-    case SVRKeypadButtonKind1:
-    case SVRKeypadButtonKind2:
-    case SVRKeypadButtonKind3:
+    case MATHKeypadButtonKind1:
+    case MATHKeypadButtonKind2:
+    case MATHKeypadButtonKind3:
       row = 2;
       break;
-    case SVRKeypadButtonKind4:
-    case SVRKeypadButtonKind5:
-    case SVRKeypadButtonKind6:
+    case MATHKeypadButtonKind4:
+    case MATHKeypadButtonKind5:
+    case MATHKeypadButtonKind6:
       row = 3;
       break;
-    case SVRKeypadButtonKind7:
-    case SVRKeypadButtonKind8:
-    case SVRKeypadButtonKind9:
+    case MATHKeypadButtonKind7:
+    case MATHKeypadButtonKind8:
+    case MATHKeypadButtonKind9:
       row = 4;
       break;
-    case SVRKeypadButtonKindAdd:
-    case SVRKeypadButtonKindSubtract:
-    case SVRKeypadButtonKindBRight:
+    case MATHKeypadButtonKindAdd:
+    case MATHKeypadButtonKindSubtract:
+    case MATHKeypadButtonKindBRight:
       row = 5;
       break;
-    case SVRKeypadButtonKindMultiply:
-    case SVRKeypadButtonKindDivide:
-    case SVRKeypadButtonKindBLeft:
+    case MATHKeypadButtonKindMultiply:
+    case MATHKeypadButtonKindDivide:
+    case MATHKeypadButtonKindBLeft:
       row = 6;
       break;
-    case SVRKeypadButtonKindPower:
-    case SVRKeypadButtonKindRoot:
-    case SVRKeypadButtonKindLog:
+    case MATHKeypadButtonKindPower:
+    case MATHKeypadButtonKindRoot:
+    case MATHKeypadButtonKindLog:
       row = 7;
       break;
     default:
-      XPCLogAssrt1(NO, @"[UNKNOWN] SVRAccessoryWindowKeypadViewKind(%d)", (int)kind);
+      XPCLogAssrt1(NO, @"[UNKNOWN] MATHAccessoryWindowKeypadViewKind(%d)", (int)kind);
       break;
   }
   
@@ -830,9 +830,9 @@ NSRect MATH_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   
   output.origin = NSMakePoint(((kBtnHPad + kBtnSize.width ) * column) + kWinPad,
                               ((kBtnVPad + kBtnSize.height) * row   ) + kWinPad + rowPadding);
-  output.size = kind == SVRKeypadButtonKindEqual
-                      ? NSMakeSize((kBtnSize.width * 2) + kBtnHPad, kBtnSize.height)
-                      : kBtnSize;
+  output.size = kind == MATHKeypadButtonKindEqual
+              ? NSMakeSize((kBtnSize.width * 2) + kBtnHPad, kBtnSize.height)
+              : kBtnSize;
   return MATH_rectByAdjustingAquaButtonRect(output);
 }
 
@@ -850,152 +850,152 @@ NSRect MATH_rectByAdjustingAquaButtonRect(NSRect rect)
 #endif
 }
 
-NSString *MATH_titleForKeypadButtonOfKind(SVRKeypadButtonKind kind)
+NSString *MATH_titleForKeypadButtonOfKind(MATHKeypadButtonKind kind)
 {
   switch (kind) {
-    case SVRKeypadButtonKind1:
-    case SVRKeypadButtonKind2:
-    case SVRKeypadButtonKind3:
-    case SVRKeypadButtonKind4:
-    case SVRKeypadButtonKind5:
-    case SVRKeypadButtonKind6:
-    case SVRKeypadButtonKind7:
-    case SVRKeypadButtonKind8:
-    case SVRKeypadButtonKind9:
+    case MATHKeypadButtonKind1:
+    case MATHKeypadButtonKind2:
+    case MATHKeypadButtonKind3:
+    case MATHKeypadButtonKind4:
+    case MATHKeypadButtonKind5:
+    case MATHKeypadButtonKind6:
+    case MATHKeypadButtonKind7:
+    case MATHKeypadButtonKind8:
+    case MATHKeypadButtonKind9:
       return [NSString stringWithFormat:@"%d", (int)kind];
-    case SVRKeypadButtonKind0:
+    case MATHKeypadButtonKind0:
       return @"0";
-    case SVRKeypadButtonKindNegative:
+    case MATHKeypadButtonKindNegative:
       return @"-";
-    case SVRKeypadButtonKindDecimal:
+    case MATHKeypadButtonKindDecimal:
       return @".";
-    case SVRKeypadButtonKindDelete:
+    case MATHKeypadButtonKindDelete:
 #ifdef XPSupportsUnicodeUI
       return [NSString stringWithFormat:@"%C", 0x2190];
 #else
       return @"<-";
 #endif
-    case SVRKeypadButtonKindEqual:
+    case MATHKeypadButtonKindEqual:
       return @"=";
-    case SVRKeypadButtonKindAdd:
+    case MATHKeypadButtonKindAdd:
       return @"+";
-    case SVRKeypadButtonKindSubtract:
+    case MATHKeypadButtonKindSubtract:
       return @"-";
-    case SVRKeypadButtonKindBRight:
+    case MATHKeypadButtonKindBRight:
       return @")";
-    case SVRKeypadButtonKindMultiply:
+    case MATHKeypadButtonKindMultiply:
       return @"*";
-    case SVRKeypadButtonKindDivide:
+    case MATHKeypadButtonKindDivide:
       return @"/";
-    case SVRKeypadButtonKindBLeft:
+    case MATHKeypadButtonKindBLeft:
       return @"(";
-    case SVRKeypadButtonKindPower:
+    case MATHKeypadButtonKindPower:
       return @"^";
-    case SVRKeypadButtonKindRoot:
+    case MATHKeypadButtonKindRoot:
 #ifdef XPSupportsUnicodeUI
       return [NSString stringWithFormat:@"%C", 0x221A];
 #else
       return @"root";
 #endif
-    case SVRKeypadButtonKindLog:
+    case MATHKeypadButtonKindLog:
       return @"log";
     default:
-      XPCLogAssrt1(NO, @"[UNKNOWN] SVRAccessoryWindowKeypadViewKind(%d)", (int)kind);
+      XPCLogAssrt1(NO, @"[UNKNOWN] MATHAccessoryWindowKeypadViewKind(%d)", (int)kind);
       return [NSString stringWithFormat:@"%d", (int)kind];
   }
 }
 
-NSString *MATH_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
+NSString *MATH_keyForKeypadButtonOfKind(MATHKeypadButtonKind kind)
 {
   switch (kind) {
-    case SVRKeypadButtonKindDelete:
+    case MATHKeypadButtonKindDelete:
       return @"\b";
-    case SVRKeypadButtonKindRoot:
+    case MATHKeypadButtonKindRoot:
       return @"r";
-    case SVRKeypadButtonKindLog:
+    case MATHKeypadButtonKindLog:
       return @"l";
     default:
       return MATH_titleForKeypadButtonOfKind(kind);
   }
 }
 
-NSString *MATH_localizedStringForKind(SVRResetButtonKind kind)
+NSString *MATH_localizedStringForKind(MATHResetButtonKind kind)
 {
   switch (kind) {
-    case SVRResetButtonKindUIStyle:
+    case MATHResetButtonKindUIStyle:
       return [Localized titleTheme];
-    case SVRResetButtonKindWaitTime:
+    case MATHResetButtonKindWaitTime:
       return [Localized titleSolvingDelay];
-    case SVRResetButtonKindMathFont:
+    case MATHResetButtonKindMathFont:
       return [Localized titleMathText];
-    case SVRResetButtonKindOtherFont:
-    case SVRResetButtonKindOtherTextColor:
+    case MATHResetButtonKindOtherFont:
+    case MATHResetButtonKindOtherTextColor:
       return [Localized titleNormalText];
-    case SVRResetButtonKindErrorFont:
-    case SVRResetButtonKindErrorTextColor:
+    case MATHResetButtonKindErrorFont:
+    case MATHResetButtonKindErrorTextColor:
       return [Localized titleErrorText];
-    case SVRResetButtonKindOperandColor:
+    case MATHResetButtonKindOperandColor:
       return [Localized titleOperand];
-    case SVRResetButtonKindOperatorColor:
+    case MATHResetButtonKindOperatorColor:
       return [Localized titleOperator];
-    case SVRResetButtonKindSolutionColor:
+    case MATHResetButtonKindSolutionColor:
       return [Localized titleSolution];
-    case SVRResetButtonKindPreviousSolutionColor:
+    case MATHResetButtonKindPreviousSolutionColor:
       return [Localized  titleCarryover];
-    case SVRResetButtonKindInsertionPointColor:
+    case MATHResetButtonKindInsertionPointColor:
       return [Localized titleInsertionPoint];
-    case SVRResetButtonKindBackgroundColor:
+    case MATHResetButtonKindBackgroundColor:
       return [Localized titleBackground];
     default:
-      XPCLogAssrt1(NO, @"[UNKNOWN] SVRResetButtonKind(%d)", (int)kind);
+      XPCLogAssrt1(NO, @"[UNKNOWN] MATHResetButtonKind(%d)", (int)kind);
       return @"Unknown";
   }
 }
 
-SVRResetButtonKind MATH_resetButtonKindForColorWellKind(SVRColorWellKind kind)
+MATHResetButtonKind MATH_resetButtonKindForColorWellKind(MATHColorWellKind kind)
 {
   switch (kind) {
-    case SVRColorWellKindOperandLight:
-    case SVRColorWellKindOperandDark:
-      return SVRResetButtonKindOperandColor;
-    case SVRColorWellKindOperatorLight:
-    case SVRColorWellKindOperatorDark:
-      return SVRResetButtonKindOperatorColor;
-    case SVRColorWellKindSolutionLight:
-    case SVRColorWellKindSolutionDark:
-      return SVRResetButtonKindSolutionColor;
-    case SVRColorWellKindSolutionSecondaryLight:
-    case SVRColorWellKindSolutionSecondaryDark:
-      return SVRResetButtonKindPreviousSolutionColor;
-    case SVRColorWellKindOtherTextLight:
-    case SVRColorWellKindOtherTextDark:
-      return SVRResetButtonKindOtherTextColor;
-    case SVRColorWellKindErrorTextLight:
-    case SVRColorWellKindErrorTextDark:
-      return SVRResetButtonKindErrorTextColor;
-    case SVRColorWellKindInsertionPointLight:
-    case SVRColorWellKindInsertionPointDark:
-      return SVRResetButtonKindInsertionPointColor;
-    case SVRColorWellKindBackgroundLight:
-    case SVRColorWellKindBackgroundDark:
-      return SVRResetButtonKindBackgroundColor;
+    case MATHColorWellKindOperandLight:
+    case MATHColorWellKindOperandDark:
+      return MATHResetButtonKindOperandColor;
+    case MATHColorWellKindOperatorLight:
+    case MATHColorWellKindOperatorDark:
+      return MATHResetButtonKindOperatorColor;
+    case MATHColorWellKindSolutionLight:
+    case MATHColorWellKindSolutionDark:
+      return MATHResetButtonKindSolutionColor;
+    case MATHColorWellKindSolutionSecondaryLight:
+    case MATHColorWellKindSolutionSecondaryDark:
+      return MATHResetButtonKindPreviousSolutionColor;
+    case MATHColorWellKindOtherTextLight:
+    case MATHColorWellKindOtherTextDark:
+      return MATHResetButtonKindOtherTextColor;
+    case MATHColorWellKindErrorTextLight:
+    case MATHColorWellKindErrorTextDark:
+      return MATHResetButtonKindErrorTextColor;
+    case MATHColorWellKindInsertionPointLight:
+    case MATHColorWellKindInsertionPointDark:
+      return MATHResetButtonKindInsertionPointColor;
+    case MATHColorWellKindBackgroundLight:
+    case MATHColorWellKindBackgroundDark:
+      return MATHResetButtonKindBackgroundColor;
     default:
-      XPCLogAssrt1(NO, @"[UNKNOWN] SVRColorWellKind(%d)", (int)kind);
-      return SVRResetButtonKindUnknown;
+      XPCLogAssrt1(NO, @"[UNKNOWN] MATHColorWellKind(%d)", (int)kind);
+      return MATHResetButtonKindUnknown;
   }
 }
 
-SVRResetButtonKind MATH_resetButtonKindForFontSettingKind(SVRThemeFont kind)
+MATHResetButtonKind MATH_resetButtonKindForFontSettingKind(MATHThemeFont kind)
 {
   switch (kind) {
-    case SVRThemeFontMath:
-      return SVRResetButtonKindMathFont;
-    case SVRThemeFontOther:
-      return SVRResetButtonKindOtherFont;
-    case SVRThemeFontError:
-      return SVRResetButtonKindErrorFont;
+    case MATHThemeFontMath:
+      return MATHResetButtonKindMathFont;
+    case MATHThemeFontOther:
+      return MATHResetButtonKindOtherFont;
+    case MATHThemeFontError:
+      return MATHResetButtonKindErrorFont;
     default:
-      XPCLogAssrt1(NO, @"[UNKNOWN] SVRThemeFont(%d)", (int)kind);
-      return SVRResetButtonKindUnknown;
+      XPCLogAssrt1(NO, @"[UNKNOWN] MATHThemeFont(%d)", (int)kind);
+      return MATHResetButtonKindUnknown;
   }
 }

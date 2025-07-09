@@ -21,21 +21,21 @@
 #import "MATHSolverSolutionTagger.h"
 #import "MATHSolver.h"
 
-@implementation SVRSolverStyler
+@implementation MATHSolverStyler
 
 +(void)styleTaggedExpression:(NSMutableAttributedString*)input
-                      styles:(SVRSolverTextAttachmentStyles)styles;
+                      styles:(MATHSolverTextAttachmentStyles)styles;
 {
   XPUInteger index = 0;
   NSRange checkRange = XPNotFoundRange;
   id check = nil;
   
-  NSFont  *mathFont       = [styles objectForKey:SVRSolverTextStyleMathFont];
-  NSFont  *otherTextFont  = [styles objectForKey:SVRSolverTextStyleOtherFont];
-  NSColor *otherTextColor = [styles objectForKey:SVRSolverTextStyleOtherColor];
-  NSColor *operandColor   = [styles objectForKey:SVRSolverTextStyleOperandColor];
-  NSColor *operatorColor  = [styles objectForKey:SVRSolverTextStyleOperatorColor];
-
+  NSFont  *mathFont       = [styles objectForKey:MATHSolverTextStyleMathFont];
+  NSFont  *otherTextFont  = [styles objectForKey:MATHSolverTextStyleOtherFont];
+  NSColor *otherTextColor = [styles objectForKey:MATHSolverTextStyleOtherColor];
+  NSColor *operandColor   = [styles objectForKey:MATHSolverTextStyleOperandColor];
+  NSColor *operatorColor  = [styles objectForKey:MATHSolverTextStyleOperatorColor];
+  
   XPParameterRaise(mathFont);
   XPParameterRaise(otherTextFont);
   XPParameterRaise(otherTextColor);
@@ -51,7 +51,7 @@
                 range:NSMakeRange(0, [input length])];
   
   while (index < [input length]) {
-    check = [input attribute:XPAttributedStringKeyForTag(SVRSolverTagNumber)
+    check = [input attribute:XPAttributedStringKeyForTag(MATHSolverTagNumber)
                      atIndex:index
               effectiveRange:&checkRange];
     if (check) {
@@ -62,7 +62,7 @@
                     value:operandColor
                     range:checkRange];
     } else {
-      check = [input attribute:XPAttributedStringKeyForTag(SVRSolverTagBracket)
+      check = [input attribute:XPAttributedStringKeyForTag(MATHSolverTagBracket)
                        atIndex:index
                 effectiveRange:&checkRange];
       if (check) {
@@ -73,7 +73,7 @@
                       value:operatorColor
                       range:checkRange];
       } else {
-        check = [input attribute:XPAttributedStringKeyForTag(SVRSolverTagOperator)
+        check = [input attribute:XPAttributedStringKeyForTag(MATHSolverTagOperator)
                          atIndex:index
                   effectiveRange:&checkRange];
         if (check) {

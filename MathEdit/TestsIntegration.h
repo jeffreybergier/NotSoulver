@@ -23,13 +23,13 @@ void TestsIntegrationExecute(void);
 #import "MATHDocumentModelController.h"
 #import "MATHSolver.h"
 
-@interface SVRDocumentModelController (TestsIntegration)
+@interface MATHDocumentModelController (TestsIntegration)
 +(void)executeTests;
 +(void)saveTestFiles;
-+(SVRSolverTextAttachmentStyles)stylesForSolution;
-+(SVRSolverTextAttachmentStyles)stylesForPreviousSolution;
-+(SVRSolverTextAttachmentStyles)stylesForError;
-+(SVRSolverTextStyles)stylesForText;
++(MATHSolverTextAttachmentStyles)stylesForSolution;
++(MATHSolverTextAttachmentStyles)stylesForPreviousSolution;
++(MATHSolverTextAttachmentStyles)stylesForError;
++(MATHSolverTextStyles)stylesForText;
 @end
 
 #endif

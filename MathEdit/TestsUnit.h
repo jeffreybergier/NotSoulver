@@ -32,7 +32,7 @@ void TestsUnitExecute(void);
 +(void)executeTests;
 @end
 
-@interface SVRSolverScanner (TestsUnit)
+@interface MATHSolverScanner (TestsUnit)
 +(void)executeTests;
 @end
 

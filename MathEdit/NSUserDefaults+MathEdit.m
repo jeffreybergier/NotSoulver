@@ -19,39 +19,39 @@
 #import "NSUserDefaults+MathEdit.h"
 
 // Implementation in AccessoryWindowsOwner.m
-extern NSString * const SVRAccessoryWindowFrameAutosaveNameKeypad;
+extern NSString * const MATHAccessoryWindowFrameAutosaveNameKeypad;
 
-NSString * const SVRThemeDidChangeNotificationName = @"kSVRThemeDidChangeNotificationNameKey";
+NSString * const MATHThemeDidChangeNotificationName = @"kMATHThemeDidChangeNotificationNameKey";
 
-NSString *XPUserDefaultsSavePanelLastDirectory    = @"kSavePanelLastDirectory";
-NSString *XPUserDefaultsWaitTimeForRendering      = @"kWaitTimeForRendering";
+NSString *XPUserDefaultsSavePanelLastDirectory      = @"kSavePanelLastDirectory";
+NSString *XPUserDefaultsWaitTimeForRendering        = @"kWaitTimeForRendering";
 
-NSString *SVRThemeLightOperandTextColor           = @"kSVRThemeLightOperandTextColor";
-NSString *SVRThemeLightOperatorTextColor          = @"kSVRThemeLightOperatorTextColor";
-NSString *SVRThemeLight_UNUSED_                   = @"kSVRThemeLight_UNUSED_";
-NSString *SVRThemeLightSolutionColor              = @"kSVRThemeLightSolutionColorKey";
-NSString *SVRThemeLightSolutionSecondaryColor     = @"kSVRThemeLightSolutionSecondaryColorKey";
-NSString *SVRThemeLightErrorTextColor             = @"kSVRThemeLightErrorTextColorKey";
-NSString *SVRThemeLightOtherTextColor             = @"kSVRThemeLightOtherTextColorKey";
-NSString *SVRThemeLightBackgroundColor            = @"kSVRThemeLightBackgroundColorKey";
-NSString *SVRThemeLightInsertionPoint             = @"kSVRThemeLightInsertionPointKey";
+NSString *MATHThemeLightOperandTextColor            = @"kMATHThemeLightOperandTextColor";
+NSString *MATHThemeLightOperatorTextColor           = @"kMATHThemeLightOperatorTextColor";
+NSString *MATHThemeLight_UNUSED_                    = @"kMATHThemeLight_UNUSED_";
+NSString *MATHThemeLightSolutionColor               = @"kMATHThemeLightSolutionColorKey";
+NSString *MATHThemeLightSolutionSecondaryColor      = @"kMATHThemeLightSolutionSecondaryColorKey";
+NSString *MATHThemeLightErrorTextColor              = @"kMATHThemeLightErrorTextColorKey";
+NSString *MATHThemeLightOtherTextColor              = @"kMATHThemeLightOtherTextColorKey";
+NSString *MATHThemeLightBackgroundColor             = @"kMATHThemeLightBackgroundColorKey";
+NSString *MATHThemeLightInsertionPoint              = @"kMATHThemeLightInsertionPointKey";
 
-NSString *SVRThemeDarkOperandTextColor            = @"kSVRThemeDarkOperandTextColor";
-NSString *SVRThemeDarkOperatorTextColor           = @"kSVRThemeDarkOperatorTextColor";
-NSString *SVRThemeDark_UNUSED_                    = @"kSVRThemeDark_UNUSED_";
-NSString *SVRThemeDarkSolutionColor               = @"kSVRThemeDarkSolutionColorKey";
-NSString *SVRThemeDarkSolutionSecondaryColor      = @"kSVRThemeDarkSolutionSecondaryColorKey";
-NSString *SVRThemeDarkErrorTextColor              = @"kSVRThemeDarkErrorTextColorKey";
-NSString *SVRThemeDarkOtherTextColor              = @"kSVRThemeDarkOtherTextColorKey";
-NSString *SVRThemeDarkBackgroundColor             = @"kSVRThemeDarkBackgroundColorKey";
-NSString *SVRThemeDarkInsertionPoint              = @"kSVRThemeDarkInsertionPointKey";
+NSString *MATHThemeDarkOperandTextColor             = @"kMATHThemeDarkOperandTextColor";
+NSString *MATHThemeDarkOperatorTextColor            = @"kMATHThemeDarkOperatorTextColor";
+NSString *MATHThemeDark_UNUSED_                     = @"kMATHThemeDark_UNUSED_";
+NSString *MATHThemeDarkSolutionColor                = @"kMATHThemeDarkSolutionColorKey";
+NSString *MATHThemeDarkSolutionSecondaryColor       = @"kMATHThemeDarkSolutionSecondaryColorKey";
+NSString *MATHThemeDarkErrorTextColor               = @"kMATHThemeDarkErrorTextColorKey";
+NSString *MATHThemeDarkOtherTextColor               = @"kMATHThemeDarkOtherTextColorKey";
+NSString *MATHThemeDarkBackgroundColor              = @"kMATHThemeDarkBackgroundColorKey";
+NSString *MATHThemeDarkInsertionPoint               = @"kMATHThemeDarkInsertionPointKey";
 
-NSString *SVRThemeOtherFontKey                    = @"kSVRThemeOtherFontKey";
-NSString *SVRThemeMathFontKey                     = @"kSVRThemeMathFontKey";
-NSString *SVRThemeErrorFontKey                    = @"kSVRThemeErrorFontKey";
+NSString *MATHThemeOtherFontKey                     = @"kMATHThemeOtherFontKey";
+NSString *MATHThemeMathFontKey                      = @"kMATHThemeMathFontKey";
+NSString *MATHThemeErrorFontKey                     = @"kMATHThemeErrorFontKey";
 
-NSString *SVRThemeUserInterfaceStyle              = @"kSVRThemeUserInterfaceStyleKey";
-NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
+NSString *MATHThemeUserInterfaceStyle               = @"kMATHThemeUserInterfaceStyleKey";
+NSString *MATHSettingsSelection                     = @"kMATHSettingsSelectionKey";
 
 @implementation NSUserDefaults (Soulver)
 
@@ -88,14 +88,14 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
 
 // MARK: Accessory Window Visibility
 
--(SVRSettingSelection)MATH_settingsSelection;
+-(MATHSettingSelection)MATH_settingsSelection;
 {
-  return (SVRSettingSelection)[self integerForKey:SVRSettingsSelection];
+  return (MATHSettingSelection)[self integerForKey:MATHSettingsSelection];
 }
 
--(BOOL)MATH_setSettingsSelection:(SVRSettingSelection)newValue;
+-(BOOL)MATH_setSettingsSelection:(MATHSettingSelection)newValue;
 {
-  [self setInteger:newValue forKey:SVRSettingsSelection];
+  [self setInteger:newValue forKey:MATHSettingsSelection];
   return [self synchronize];
 }
 
@@ -125,7 +125,7 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
 -(void)__postChangeNotification;
 {
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-  [nc postNotificationName:SVRThemeDidChangeNotificationName
+  [nc postNotificationName:MATHThemeDidChangeNotificationName
                     object:self];
 }
 
@@ -168,7 +168,7 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
 
 -(XPUserInterfaceStyle)MATH_userInterfaceStyleSetting;
 {
-  return (XPUserInterfaceStyle)[self integerForKey:SVRThemeUserInterfaceStyle];
+  return (XPUserInterfaceStyle)[self integerForKey:MATHThemeUserInterfaceStyle];
 }
 
 -(BOOL)MATH_setUserInterfaceStyleSetting:(XPUserInterfaceStyle)style;
@@ -176,19 +176,19 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
   BOOL success = NO;
   XPUserInterfaceStyle oldStyle = [self MATH_userInterfaceStyleSetting];
   if (oldStyle == style) { return YES; }
-  [self setInteger:style forKey:SVRThemeUserInterfaceStyle];
+  [self setInteger:style forKey:MATHThemeUserInterfaceStyle];
   success = [self synchronize];
   XPLogAssrt(success, @"[FAIL]");
   [self __postChangeNotification];
   return success;
 }
 
--(NSColor*)MATH_colorForTheme:(SVRThemeColor)theme;
+-(NSColor*)MATH_colorForTheme:(MATHThemeColor)theme;
 {
   return [self MATH_colorForTheme:theme withStyle:[self MATH_userInterfaceStyle]];
 }
 
--(NSColor*)MATH_colorForTheme:(SVRThemeColor)theme
+-(NSColor*)MATH_colorForTheme:(MATHThemeColor)theme
                    withStyle:(XPUserInterfaceStyle)style;
 {
   NSData *data = [self objectForKey:[self __MATH_keyForThemeColor:theme withStyle:style]];
@@ -198,7 +198,7 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
 }
 
 -(BOOL)MATH_setColor:(NSColor*)color
-           forTheme:(SVRThemeColor)theme
+           forTheme:(MATHThemeColor)theme
           withStyle:(XPUserInterfaceStyle)style;
 {
   BOOL success = NO;
@@ -216,7 +216,7 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
   return success;
 }
 
--(NSFont*)MATH_fontForTheme:(SVRThemeFont)theme;
+-(NSFont*)MATH_fontForTheme:(MATHThemeFont)theme;
 {
   NSData *data = [self dataForKey:[self __MATH_keyForThemeFont:theme]];
   NSFont *font = [NSFont XP_fontWithData:data];
@@ -225,7 +225,7 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
 }
 
 -(BOOL)MATH_setFont:(NSFont*)font
-          forTheme:(SVRThemeFont)theme;
+           forTheme:(MATHThemeFont)theme;
 {
   BOOL success = NO;
   NSString *key = [self __MATH_keyForThemeFont:theme];
@@ -240,34 +240,34 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
   return success;
 }
 
--(NSString*)__MATH_keyForThemeColor:(SVRThemeColor)theme
-                         withStyle:(XPUserInterfaceStyle)style;
+-(NSString*)__MATH_keyForThemeColor:(MATHThemeColor)theme
+                          withStyle:(XPUserInterfaceStyle)style;
 {
   switch (style) {
     case XPUserInterfaceStyleDark:
       switch (theme) {
-        case SVRThemeColorOperandText:       return SVRThemeDarkOperandTextColor;
-        case SVRThemeColorOperatorText:      return SVRThemeDarkOperatorTextColor;
-        case SVRThemeColor_UNUSED_:          return SVRThemeDark_UNUSED_;
-        case SVRThemeColorSolution:          return SVRThemeDarkSolutionColor;
-        case SVRThemeColorSolutionSecondary: return SVRThemeDarkSolutionSecondaryColor;
-        case SVRThemeColorErrorText:         return SVRThemeDarkErrorTextColor;
-        case SVRThemeColorOtherText:         return SVRThemeDarkOtherTextColor;
-        case SVRThemeColorBackground:        return SVRThemeDarkBackgroundColor;
-        case SVRThemeColorInsertionPoint:    return SVRThemeDarkInsertionPoint;
+        case MATHThemeColorOperandText:       return MATHThemeDarkOperandTextColor;
+        case MATHThemeColorOperatorText:      return MATHThemeDarkOperatorTextColor;
+        case MATHThemeColor_UNUSED_:          return MATHThemeDark_UNUSED_;
+        case MATHThemeColorSolution:          return MATHThemeDarkSolutionColor;
+        case MATHThemeColorSolutionSecondary: return MATHThemeDarkSolutionSecondaryColor;
+        case MATHThemeColorErrorText:         return MATHThemeDarkErrorTextColor;
+        case MATHThemeColorOtherText:         return MATHThemeDarkOtherTextColor;
+        case MATHThemeColorBackground:        return MATHThemeDarkBackgroundColor;
+        case MATHThemeColorInsertionPoint:    return MATHThemeDarkInsertionPoint;
       }
     case XPUserInterfaceStyleLight:
     default:
       switch (theme) {
-        case SVRThemeColorOperandText:       return SVRThemeLightOperandTextColor;
-        case SVRThemeColorOperatorText:      return SVRThemeLightOperatorTextColor;
-        case SVRThemeColor_UNUSED_:          return SVRThemeLight_UNUSED_;
-        case SVRThemeColorSolution:          return SVRThemeLightSolutionColor;
-        case SVRThemeColorSolutionSecondary: return SVRThemeLightSolutionSecondaryColor;
-        case SVRThemeColorErrorText:         return SVRThemeLightErrorTextColor;
-        case SVRThemeColorOtherText:         return SVRThemeLightOtherTextColor;
-        case SVRThemeColorBackground:        return SVRThemeLightBackgroundColor;
-        case SVRThemeColorInsertionPoint:    return SVRThemeLightInsertionPoint;
+        case MATHThemeColorOperandText:       return MATHThemeLightOperandTextColor;
+        case MATHThemeColorOperatorText:      return MATHThemeLightOperatorTextColor;
+        case MATHThemeColor_UNUSED_:          return MATHThemeLight_UNUSED_;
+        case MATHThemeColorSolution:          return MATHThemeLightSolutionColor;
+        case MATHThemeColorSolutionSecondary: return MATHThemeLightSolutionSecondaryColor;
+        case MATHThemeColorErrorText:         return MATHThemeLightErrorTextColor;
+        case MATHThemeColorOtherText:         return MATHThemeLightOtherTextColor;
+        case MATHThemeColorBackground:        return MATHThemeLightBackgroundColor;
+        case MATHThemeColorInsertionPoint:    return MATHThemeLightInsertionPoint;
       }
     case XPUserInterfaceStyleUnspecified:
       XPLogAssrt1(NO, @"[FAIL] XPUserInterfaceStyleUnspecified(%d)", (int)style);
@@ -275,14 +275,14 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
   return nil;
 }
 
--(NSString*)__MATH_keyForThemeFont:(SVRThemeFont)theme;
+-(NSString*)__MATH_keyForThemeFont:(MATHThemeFont)theme;
 {
   switch (theme) {
-    case SVRThemeFontMath:  return SVRThemeMathFontKey;
-    case SVRThemeFontError: return SVRThemeErrorFontKey;
-    case SVRThemeFontOther: return SVRThemeOtherFontKey;
+    case MATHThemeFontMath:  return MATHThemeMathFontKey;
+    case MATHThemeFontError: return MATHThemeErrorFontKey;
+    case MATHThemeFontOther: return MATHThemeOtherFontKey;
     default:
-      XPCLogAssrt1(NO, @"[UNKNOWN] SVRThemeFont(%d)", (int)theme);
+      XPCLogAssrt1(NO, @"[UNKNOWN] MATHThemeFont(%d)", (int)theme);
       return nil;
   }
   return nil;
@@ -302,66 +302,66 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
   
   keys = [NSArray arrayWithObjects:
           // Light Theme
-          SVRThemeLightOperandTextColor,
-          SVRThemeLightOperatorTextColor,
-          SVRThemeLight_UNUSED_,
-          SVRThemeLightSolutionColor,
-          SVRThemeLightSolutionSecondaryColor,
-          SVRThemeLightErrorTextColor,
-          SVRThemeLightOtherTextColor,
-          SVRThemeLightBackgroundColor,
-          SVRThemeLightInsertionPoint,
+          MATHThemeLightOperandTextColor,
+          MATHThemeLightOperatorTextColor,
+          MATHThemeLight_UNUSED_,
+          MATHThemeLightSolutionColor,
+          MATHThemeLightSolutionSecondaryColor,
+          MATHThemeLightErrorTextColor,
+          MATHThemeLightOtherTextColor,
+          MATHThemeLightBackgroundColor,
+          MATHThemeLightInsertionPoint,
           // Dark Theme
-          SVRThemeDarkOperandTextColor,
-          SVRThemeDarkOperatorTextColor,
-          SVRThemeDark_UNUSED_,
-          SVRThemeDarkSolutionColor,
-          SVRThemeDarkSolutionSecondaryColor,
-          SVRThemeDarkErrorTextColor,
-          SVRThemeDarkOtherTextColor,
-          SVRThemeDarkBackgroundColor,
-          SVRThemeDarkInsertionPoint,
+          MATHThemeDarkOperandTextColor,
+          MATHThemeDarkOperatorTextColor,
+          MATHThemeDark_UNUSED_,
+          MATHThemeDarkSolutionColor,
+          MATHThemeDarkSolutionSecondaryColor,
+          MATHThemeDarkErrorTextColor,
+          MATHThemeDarkOtherTextColor,
+          MATHThemeDarkBackgroundColor,
+          MATHThemeDarkInsertionPoint,
           // Fonts
-          SVRThemeOtherFontKey,
-          SVRThemeMathFontKey,
-          SVRThemeErrorFontKey,
+          MATHThemeOtherFontKey,
+          MATHThemeMathFontKey,
+          MATHThemeErrorFontKey,
           // Other
           XPUserDefaultsSavePanelLastDirectory,
-          SVRThemeUserInterfaceStyle,
-          SVRSettingsSelection,
-          SVRAccessoryWindowFrameAutosaveNameKeypad,
+          MATHThemeUserInterfaceStyle,
+          MATHSettingsSelection,
+          MATHAccessoryWindowFrameAutosaveNameKeypad,
           XPUserDefaultsWaitTimeForRendering,
           nil];
   vals = [NSArray arrayWithObjects:
           // Light Theme
-          [[NSColor colorWithCalibratedRed:  0/255.0 green:  0/255.0 blue:  0/255.0 alpha:1.0] XP_data], // SVRThemeLightOperandColor
-          [[NSColor colorWithCalibratedRed:  0/255.0 green:  0/255.0 blue:255/255.0 alpha:1.0] XP_data], // SVRThemeLightOperatorColor
-          [[NSColor colorWithCalibratedRed:255/255.0 green:255/255.0 blue:102/255.0 alpha:1.0] XP_data], // SVRThemeLightBracketColor
-          [[NSColor colorWithCalibratedRed:166/255.0 green:218/255.0 blue:255/255.0 alpha:1.0] XP_data], // SVRThemeLightSolutionColor
-          [[NSColor colorWithCalibratedRed: 45/255.0 green:122/255.0 blue:186/255.0 alpha:1.0] XP_data], // SVRThemeLightSolutionSecondaryColor
-          [[NSColor colorWithCalibratedRed:128/255.0 green:  0/255.0 blue:  0/255.0 alpha:1.0] XP_data], // SVRThemeLightErrorTextColor
-          [[NSColor colorWithCalibratedRed: 51/255.0 green: 51/255.0 blue: 51/255.0 alpha:1.0] XP_data], // SVRThemeLightOtherTextColor
-          [[NSColor colorWithCalibratedRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0] XP_data], // SVRThemeLightBackgroundColor
-          [[NSColor colorWithCalibratedRed:  0/255.0 green:  0/255.0 blue:  0/255.0 alpha:1.0] XP_data], // SVRThemeLightInsertionPoint
+          [[NSColor colorWithCalibratedRed:  0/255.0 green:  0/255.0 blue:  0/255.0 alpha:1.0] XP_data], // MATHThemeLightOperandColor
+          [[NSColor colorWithCalibratedRed:  0/255.0 green:  0/255.0 blue:255/255.0 alpha:1.0] XP_data], // MATHThemeLightOperatorColor
+          [[NSColor colorWithCalibratedRed:255/255.0 green:255/255.0 blue:102/255.0 alpha:1.0] XP_data], // MATHThemeLightBracketColor
+          [[NSColor colorWithCalibratedRed:166/255.0 green:218/255.0 blue:255/255.0 alpha:1.0] XP_data], // MATHThemeLightSolutionColor
+          [[NSColor colorWithCalibratedRed: 45/255.0 green:122/255.0 blue:186/255.0 alpha:1.0] XP_data], // MATHThemeLightSolutionSecondaryColor
+          [[NSColor colorWithCalibratedRed:128/255.0 green:  0/255.0 blue:  0/255.0 alpha:1.0] XP_data], // MATHThemeLightErrorTextColor
+          [[NSColor colorWithCalibratedRed: 51/255.0 green: 51/255.0 blue: 51/255.0 alpha:1.0] XP_data], // MATHThemeLightOtherTextColor
+          [[NSColor colorWithCalibratedRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0] XP_data], // MATHThemeLightBackgroundColor
+          [[NSColor colorWithCalibratedRed:  0/255.0 green:  0/255.0 blue:  0/255.0 alpha:1.0] XP_data], // MATHThemeLightInsertionPoint
           // Dark Theme
-          [[NSColor colorWithCalibratedRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0] XP_data], // SVRThemeDarkOperandColor
-          [[NSColor colorWithCalibratedRed:255/255.0 green:  0/255.0 blue:255/255.0 alpha:1.0] XP_data], // SVRThemeDarkOperatorColor
-          [[NSColor colorWithCalibratedRed:255/255.0 green:255/255.0 blue:102/255.0 alpha:1.0] XP_data], // SVRThemeDarkBracketColor
-          [[NSColor colorWithCalibratedRed:161/255.0 green: 64/255.0 blue:161/255.0 alpha:1.0] XP_data], // SVRThemeDarkSolutionColor
-          [[NSColor colorWithCalibratedRed:219/255.0 green: 89/255.0 blue:161/255.0 alpha:1.0] XP_data], // SVRThemeDarkSolutionSecondaryColor
-          [[NSColor colorWithCalibratedRed:144/255.0 green:  0/255.0 blue:  2/255.0 alpha:1.0] XP_data], // SVRThemeDarkErrorTextColor
-          [[NSColor colorWithCalibratedRed:230/255.0 green:230/255.0 blue:230/255.0 alpha:1.0] XP_data], // SVRThemeDarkOtherTextColor
-          [[NSColor colorWithCalibratedRed:  0/255.0 green:  0/255.0 blue:  0/255.0 alpha:1.0] XP_data], // SVRThemeDarkBackgroundColor
-          [[NSColor colorWithCalibratedRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0] XP_data], // SVRThemeDarkInsertionPoint
+          [[NSColor colorWithCalibratedRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0] XP_data], // MATHThemeDarkOperandColor
+          [[NSColor colorWithCalibratedRed:255/255.0 green:  0/255.0 blue:255/255.0 alpha:1.0] XP_data], // MATHThemeDarkOperatorColor
+          [[NSColor colorWithCalibratedRed:255/255.0 green:255/255.0 blue:102/255.0 alpha:1.0] XP_data], // MATHThemeDarkBracketColor
+          [[NSColor colorWithCalibratedRed:161/255.0 green: 64/255.0 blue:161/255.0 alpha:1.0] XP_data], // MATHThemeDarkSolutionColor
+          [[NSColor colorWithCalibratedRed:219/255.0 green: 89/255.0 blue:161/255.0 alpha:1.0] XP_data], // MATHThemeDarkSolutionSecondaryColor
+          [[NSColor colorWithCalibratedRed:144/255.0 green:  0/255.0 blue:  2/255.0 alpha:1.0] XP_data], // MATHThemeDarkErrorTextColor
+          [[NSColor colorWithCalibratedRed:230/255.0 green:230/255.0 blue:230/255.0 alpha:1.0] XP_data], // MATHThemeDarkOtherTextColor
+          [[NSColor colorWithCalibratedRed:  0/255.0 green:  0/255.0 blue:  0/255.0 alpha:1.0] XP_data], // MATHThemeDarkBackgroundColor
+          [[NSColor colorWithCalibratedRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0] XP_data], // MATHThemeDarkInsertionPoint
           // Fonts
-          [[NSFont userFontOfSize:14] XP_data],           // SVRThemeOtherFont
-          [[NSFont userFixedPitchFontOfSize:14] XP_data], // SVRThemeMathFont
-          [[NSFont userFontOfSize:14] XP_data],           // SVRThemeErrorFont
+          [[NSFont userFontOfSize:14] XP_data],           // MATHThemeOtherFont
+          [[NSFont userFixedPitchFontOfSize:14] XP_data], // MATHThemeMathFont
+          [[NSFont userFontOfSize:14] XP_data],           // MATHThemeErrorFont
           // Other
           NSHomeDirectory(), // XPUserDefaultsSavePanelLastDirectory
-          @"0",   // SVRThemeUserInterfaceStyle
-          @"0",   // SVRSettingsSelection
-          @"YES", // SVRAccessoryWindowKeypadVisibility
+          @"0",   // MATHThemeUserInterfaceStyle
+          @"0",   // MATHSettingsSelection
+          @"YES", // MATHAccessoryWindowKeypadVisibility
           @"2.0", // XPUserDefaultsWaitTimeForRendering
           nil];
   

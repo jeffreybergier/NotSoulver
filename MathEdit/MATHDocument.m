@@ -19,22 +19,22 @@
 #import "MATHDocument.h"
 #import "NSUserDefaults+MathEdit.h"
 
-@implementation SVRDocument
+@implementation MATHDocument
 
 // MARK: Properties
 
--(SVRDocumentViewController*)viewController;
+-(MATHDocumentViewController*)viewController;
 {
   if (!_viewController) {
-    _viewController = [[SVRDocumentViewController alloc] initWithModelController:[self modelController]];
+    _viewController = [[MATHDocumentViewController alloc] initWithModelController:[self modelController]];
   }
   return [[_viewController retain] autorelease];
 }
 
--(SVRDocumentModelController*)modelController;
+-(MATHDocumentModelController*)modelController;
 {
   if (!_modelController) {
-    _modelController = [[SVRDocumentModelController alloc] init];
+    _modelController = [[MATHDocumentModelController alloc] init];
   }
   return [[_modelController retain] autorelease];
 }
@@ -43,7 +43,7 @@
 
 -(void)makeWindowControllers;
 {
-  static NSPoint SVRDocumentPointForCascading = { 0.0, 0.0 };
+  static NSPoint MATHDocumentPointForCascading = { 0.0, 0.0 };
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
   XPWindowStyleMask windowStyle = (XPWindowStyleMaskTitled
                                  | XPWindowStyleMaskClosable
@@ -51,8 +51,8 @@
                                  | XPWindowStyleMaskResizable);
   NSRect rect = NSMakeRect(0, 0, 500, 500);
   NSString *autosaveName = [self XP_nameForFrameAutosave];
-  SVRDocumentModelController *modelController = [self modelController];
-  SVRDocumentViewController  *viewController  = [self viewController];
+  MATHDocumentModelController *modelController = [self modelController];
+  MATHDocumentViewController  *viewController  = [self viewController];
   NSWindow *aWindow = [[[NSWindow alloc] initWithContentRect:rect
                                                    styleMask:windowStyle
                                                      backing:NSBackingStoreBuffered
@@ -74,7 +74,7 @@
            object:[modelController model]];
   [nc addObserver:self
          selector:@selector(overrideWindowAppearance)
-             name:SVRThemeDidChangeNotificationName
+             name:MATHThemeDidChangeNotificationName
            object:nil];
   
   // This is a bit fiddly, so let me explain.
@@ -90,7 +90,7 @@
   }
   if (NSEqualRects(rect, [aWindow frame])) {
     [aWindow center];
-    SVRDocumentPointForCascading = [aWindow cascadeTopLeftFromPoint:SVRDocumentPointForCascading];
+    MATHDocumentPointForCascading = [aWindow cascadeTopLeftFromPoint:MATHDocumentPointForCascading];
   }
   
   // Configure Views/Responder Chains
@@ -118,7 +118,7 @@
 
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
 {
-  SVRDocumentModelController *modelController = [self modelController];
+  MATHDocumentModelController *modelController = [self modelController];
   XPParameterRaise(modelController);
   return [modelController loadDataRepresentation:data ofType:type];
 }
@@ -156,7 +156,7 @@
 
 @end
 
-@implementation SVRDocument (StateRestoration)
+@implementation MATHDocument (StateRestoration)
 
 +(BOOL)autosavesInPlace;
 {
@@ -185,7 +185,7 @@
 
 @end
 
-@implementation SVRDocument (DarkMode)
+@implementation MATHDocument (DarkMode)
 -(void)overrideWindowAppearance;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];

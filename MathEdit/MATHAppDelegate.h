@@ -21,9 +21,9 @@
 #import "MATHAccessoryWindowsOwner.h"
 
 #ifdef XPSupportsFormalProtocols
-@interface SVRAppDelegate: NSObject <NSApplicationDelegate>
+@interface MATHAppDelegate: NSObject <NSApplicationDelegate>
 #else
-@interface SVRAppDelegate: NSObject
+@interface MATHAppDelegate: NSObject
 #endif
 {
   // This menus array is because OpenStep does not retain
@@ -32,7 +32,7 @@
   // memory mangement before. So this will replace that.
   mm_new NSMutableArray *_menus;
   mm_new NSMutableSet *_openDocuments;
-  mm_new SVRAccessoryWindowsOwner *_accessoryWindowsOwner;
+  mm_new MATHAccessoryWindowsOwner *_accessoryWindowsOwner;
 }
 
 // MARK: Init
@@ -41,7 +41,7 @@
 -(id)init;
 
 // MARK: Properties
--(SVRAccessoryWindowsOwner*)accessoryWindowsOwner;
+-(MATHAccessoryWindowsOwner*)accessoryWindowsOwner;
 
 // MARK: IBActions
 -(IBAction)toggleKeypadPanel:(id)sender;
@@ -50,13 +50,13 @@
 -(IBAction)openSourceRepository:(id)sender;
 @end
 
-@interface SVRAppDelegate (NSApplicationDelegate)
+@interface MATHAppDelegate (NSApplicationDelegate)
 -(void)applicationWillFinishLaunching:(NSNotification*)aNotification;
 -(void)applicationDidFinishLaunching:(NSNotification*)notification;
 -(void)applicationWillTerminate:(NSNotification*)aNotification;
 @end
 
-@interface SVRAppDelegate (PreDocument)
+@interface MATHAppDelegate (PreDocument)
 
 // MARK: Properties
 -(NSMutableSet*)openDocuments;
@@ -83,7 +83,7 @@
 
 @end
 
-@interface SVRAppDelegate (DarkModeObserving)
+@interface MATHAppDelegate (DarkModeObserving)
 -(void)beginObservingEffectiveAppearance:(NSApplication*)app;
 -(void)endObservingEffectiveAppearance:(NSApplication*)app;
 -(void)observeValueForKeyPath:(NSString*)keyPath
@@ -93,9 +93,9 @@
 @end
 
 #ifdef XPSupportsStateRestoration
-@interface SVRAppDelegate (StateRestoration) <NSWindowRestoration>
+@interface MATHAppDelegate (StateRestoration) <NSWindowRestoration>
 #else
-@interface SVRAppDelegate (StateRestoration)
+@interface MATHAppDelegate (StateRestoration)
 #endif
 -(void)applicationDidFinishRestoringWindows:(NSNotification*)aNotification;
 -(BOOL)applicationSupportsSecureRestorableState:(NSApplication*)app;
@@ -127,6 +127,6 @@
 -(void)XP_addSeparatorItem;
 @end
 
-@interface NSString (SVRMainMenu)
+@interface NSString (MATHMainMenu)
 -(NSString*)MATH_stringByAppendingEllipsis;
 @end

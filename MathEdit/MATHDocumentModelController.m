@@ -20,13 +20,13 @@
 #import "MATHSolver.h"
 #import "MATHDocumentModelController.h"
 
-NSString *const SVRDocumentModelExtension   = @"mtxt";
-NSString *const SVRDocumentModelRepDisk     = @"com.saturdayapps.mathedit.plain";
-NSString *const SVRDocumentModelRepDisplay  = @"com.saturdayapps.mathedit.display";
-NSString *const SVRDocumentModelRepSolved   = @"com.saturdayapps.mathedit.solved";
-NSString *const SVRDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsolved";
+NSString *const MATHDocumentModelExtension   = @"mtxt";
+NSString *const MATHDocumentModelRepDisk     = @"com.saturdayapps.mathedit.plain";
+NSString *const MATHDocumentModelRepDisplay  = @"com.saturdayapps.mathedit.display";
+NSString *const MATHDocumentModelRepSolved   = @"com.saturdayapps.mathedit.solved";
+NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsolved";
 
-@implementation SVRDocumentModelController
+@implementation MATHDocumentModelController
 
 // MARK: Properties
 -(NSTextStorage*)model;
@@ -68,34 +68,34 @@ NSString *const SVRDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsolv
 }
 
 // MARK: NSDocument Support
--(NSData*)dataRepresentationOfType:(SVRDocumentModelRep)type withRange:(NSRange)range;
+-(NSData*)dataRepresentationOfType:(MATHDocumentModelRep)type withRange:(NSRange)range;
 {
   XPParameterRaise(type);
-  if ([type isEqualToString:SVRDocumentModelRepDisk]) {
+  if        ([type isEqualToString:MATHDocumentModelRepDisk]) {
     return [self __dataRepresentationOfDiskTypeWithRange:range];
-  } else if ([type isEqualToString:SVRDocumentModelRepDisplay]) {
+  } else if ([type isEqualToString:MATHDocumentModelRepDisplay]) {
     return [self __dataRepresentationOfDisplayTypeWithRange:range];
-  } else if ([type isEqualToString:SVRDocumentModelRepSolved]) {
+  } else if ([type isEqualToString:MATHDocumentModelRepSolved]) {
     return [self __dataRepresentationOfSolvedTypeWithRange:range];
-  } else if ([type isEqualToString:SVRDocumentModelRepUnsolved]) {
+  } else if ([type isEqualToString:MATHDocumentModelRepUnsolved]) {
     return [self __dataRepresentationOfUnsolvedTypeWithRange:range];
   } else {
-    XPLogAssrt1(NO, @"[UNKNOWN] SVRDocumentModelRep(%@)", type);
+    XPLogAssrt1(NO, @"[UNKNOWN] MATHDocumentModelRep(%@)", type);
     return nil;
   }
 }
 
--(NSData*)dataRepresentationOfType:(SVRDocumentModelRep)type;
+-(NSData*)dataRepresentationOfType:(MATHDocumentModelRep)type;
 {
   return [self dataRepresentationOfType:type withRange:XPNotFoundRange];
 }
 
--(BOOL)loadDataRepresentation:(NSData*)data ofType:(SVRDocumentModelRep)type;
+-(BOOL)loadDataRepresentation:(NSData*)data ofType:(MATHDocumentModelRep)type;
 {
-  if ([type isEqualToString:SVRDocumentModelRepDisk]) {
+  if ([type isEqualToString:MATHDocumentModelRepDisk]) {
     return [self __loadDataRepresentationOfDiskType:data];
   } else {
-    XPLogAssrt1(NO, @"[UNKNOWN] SVRDocumentModelRep(%@)", type);
+    XPLogAssrt1(NO, @"[UNKNOWN] MATHDocumentModelRep(%@)", type);
     return NO;
   }
 }
@@ -121,12 +121,12 @@ NSString *const SVRDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsolv
       [dataCache removeAllObjects];
     }
     XPLogExtra(@"Cache Miss");
-    output = [[[SVRSolver replacingAttachmentsWithOriginalCharacters:[self model]] string] dataUsingEncoding:NSUTF8StringEncoding];
+    output = [[[MATHSolver replacingAttachmentsWithOriginalCharacters:[self model]] string] dataUsingEncoding:NSUTF8StringEncoding];
     [dataCache setObject:output forKey:key];
     return output;
   } else {
     // If a range is provided, do the work slowly with no caching
-    output = [[[SVRSolver replacingAttachmentsWithOriginalCharacters:[[self model] attributedSubstringFromRange:range]] string] dataUsingEncoding:NSUTF8StringEncoding];
+    output = [[[MATHSolver replacingAttachmentsWithOriginalCharacters:[[self model] attributedSubstringFromRange:range]] string] dataUsingEncoding:NSUTF8StringEncoding];
     XPLogAssrt(output, @"output was NIL");
     return output;
   }
@@ -148,7 +148,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsolv
                 ? NSMakeRange(0, [[self model] length])
                 : _range;
   NSAttributedString *original = [[self model] attributedSubstringFromRange:range];
-  NSAttributedString *solved = [SVRSolver replacingAttachmentsWithStringValue:original];
+  NSAttributedString *solved = [MATHSolver replacingAttachmentsWithStringValue:original];
   NSData *output = [solved RTFFromRange:NSMakeRange(0, [solved length])
                      documentAttributes:XPRTFDocumentAttributes];
   XPLogAssrt(output, @"output was NIL");
@@ -161,7 +161,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsolv
                 ? NSMakeRange(0, [[self model] length])
                 : _range;
   NSAttributedString *original = [[self model] attributedSubstringFromRange:range];
-  NSAttributedString *unsolved = [SVRSolver replacingAttachmentsWithOriginalCharacters:original];
+  NSAttributedString *unsolved = [MATHSolver replacingAttachmentsWithOriginalCharacters:original];
   NSData *output = [unsolved RTFFromRange:NSMakeRange(0, [unsolved length])
                        documentAttributes:XPRTFDocumentAttributes];
   XPLogAssrt(output, @"output was NIL");
@@ -180,11 +180,11 @@ NSString *const SVRDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsolv
     XPLogDebug(@"Rendering");
     [model beginEditing];
     [[model mutableString] setString:string];
-    [SVRSolver solveAttributedString:model
-                      solutionStyles:__TESTING_stylesForSolution         ? __TESTING_stylesForSolution         : [ud MATH_stylesForSolution        ]
-              previousSolutionStyles:__TESTING_stylesForPreviousSolution ? __TESTING_stylesForPreviousSolution : [ud MATH_stylesForPreviousSolution]
-                         errorStyles:__TESTING_stylesForError            ? __TESTING_stylesForError            : [ud MATH_stylesForError           ]
-                          textStyles:__TESTING_stylesForText             ? __TESTING_stylesForText             : [ud MATH_stylesForText            ]];
+    [MATHSolver solveAttributedString:model
+                       solutionStyles:__TESTING_stylesForSolution         ? __TESTING_stylesForSolution         : [ud MATH_stylesForSolution        ]
+               previousSolutionStyles:__TESTING_stylesForPreviousSolution ? __TESTING_stylesForPreviousSolution : [ud MATH_stylesForPreviousSolution]
+                          errorStyles:__TESTING_stylesForError            ? __TESTING_stylesForError            : [ud MATH_stylesForError           ]
+                           textStyles:__TESTING_stylesForText             ? __TESTING_stylesForText             : [ud MATH_stylesForText            ]];
     [model endEditing];
     success = YES;
   }
@@ -207,7 +207,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsolv
 @end
 
 
-@implementation SVRDocumentModelController (TextDelegate)
+@implementation MATHDocumentModelController (TextDelegate)
 
 -(void)textDidChange:(NSNotification*)aNotification;
 {
@@ -229,11 +229,11 @@ NSString *const SVRDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsolv
   
   // Solve the string
   [model beginEditing];
-  [SVRSolver solveAttributedString:model
-                    solutionStyles:__TESTING_stylesForSolution         ? __TESTING_stylesForSolution         : [ud MATH_stylesForSolution        ]
-            previousSolutionStyles:__TESTING_stylesForPreviousSolution ? __TESTING_stylesForPreviousSolution : [ud MATH_stylesForPreviousSolution]
-                       errorStyles:__TESTING_stylesForError            ? __TESTING_stylesForError            : [ud MATH_stylesForError           ]
-                        textStyles:__TESTING_stylesForText             ? __TESTING_stylesForText             : [ud MATH_stylesForText            ]];
+  [MATHSolver solveAttributedString:model
+                     solutionStyles:__TESTING_stylesForSolution         ? __TESTING_stylesForSolution         : [ud MATH_stylesForSolution        ]
+             previousSolutionStyles:__TESTING_stylesForPreviousSolution ? __TESTING_stylesForPreviousSolution : [ud MATH_stylesForPreviousSolution]
+                        errorStyles:__TESTING_stylesForError            ? __TESTING_stylesForError            : [ud MATH_stylesForError           ]
+                         textStyles:__TESTING_stylesForText             ? __TESTING_stylesForText             : [ud MATH_stylesForText            ]];
   [model endEditing];
   
   // Restore selection

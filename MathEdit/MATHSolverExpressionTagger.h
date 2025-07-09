@@ -18,7 +18,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SVRSolverExpressionTagger: NSObject
+@interface MATHSolverExpressionTagger: NSObject
 
 +(void)step1_tagOperatorsAtRanges:(NSSet*)ranges
                inAttributedString:(NSMutableAttributedString*)string;

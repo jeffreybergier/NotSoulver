@@ -19,9 +19,9 @@
 #import <Foundation/Foundation.h>
 #import "MATHSolver.h"
 
-@interface SVRSolverStyler: NSObject
+@interface MATHSolverStyler: NSObject
 
 +(void)styleTaggedExpression:(NSMutableAttributedString*)input
-                      styles:(SVRSolverTextAttachmentStyles)styles;
+                      styles:(MATHSolverTextAttachmentStyles)styles;
 
 @end

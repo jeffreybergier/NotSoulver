@@ -18,7 +18,7 @@
 
 #import "MATHSolverTextAttachment.h"
 
-@implementation SVRSolverTextAttachment
+@implementation MATHSolverTextAttachment
 
 +(NSSize)textPadding;
 {
@@ -51,16 +51,16 @@
 
 -(NSColor*)mixColor;
 {
-  return [_configuration objectForKey:SVRSolverTextAttachmentMixColorKey];
+  return [_configuration objectForKey:MATHSolverTextAttachmentMixColorKey];
 }
 
--(SVRSolverTextAttachmentBackground)background;
+-(MATHSolverTextAttachmentBackground)background;
 {
-  return (SVRSolverTextAttachmentBackground)[[_configuration objectForKey:SVRSolverTextAttachmentBackgroundKey] XP_integerValue];
+  return (MATHSolverTextAttachmentBackground)[[_configuration objectForKey:MATHSolverTextAttachmentBackgroundKey] XP_integerValue];
 }
 
 -(id)initWithString:(NSString*)string
-             styles:(SVRSolverTextAttachmentStyles)styles;
+             styles:(MATHSolverTextAttachmentStyles)styles;
 {
   NSFileWrapper *wrapper = [[[NSFileWrapper alloc] init] autorelease];
   
@@ -71,41 +71,41 @@
   XPParameterRaise([styles objectForKey:NSFontAttributeName]);
   XPParameterRaise([styles objectForKey:NSForegroundColorAttributeName]);
   XPParameterRaise([styles objectForKey:NSBackgroundColorAttributeName]);
-  XPParameterRaise([styles objectForKey:SVRSolverTextAttachmentMixColorKey]);
-  XPParameterRaise([styles objectForKey:SVRSolverTextAttachmentBackgroundKey]);
+  XPParameterRaise([styles objectForKey:MATHSolverTextAttachmentMixColorKey]);
+  XPParameterRaise([styles objectForKey:MATHSolverTextAttachmentBackgroundKey]);
 
   _string = [string retain];
   _configuration = [styles retain];
   
   [wrapper setPreferredFilename:string];
-  [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
+  [self setAttachmentCell:[MATHSolverTextAttachmentCell cellWithAttachment:self]];
   
   return self;
 }
 
 +(id)attachmentWithSolution:(NSDecimalNumber*)solution
-                     styles:(SVRSolverTextAttachmentStyles)styles;
+                     styles:(MATHSolverTextAttachmentStyles)styles;
 {
   NSString *toDrawString = [@"=" stringByAppendingString:[solution description]];
-  return [[[SVRSolverTextAttachment alloc] initWithString:toDrawString
-                                                   styles:styles] autorelease];
+  return [[[MATHSolverTextAttachment alloc] initWithString:toDrawString
+                                                    styles:styles] autorelease];
 }
 
 +(id)attachmentWithPreviousSolution:(NSDecimalNumber*)previousSolution
-                           operator:(SVRSolverOperator)operator
-                             styles:(SVRSolverTextAttachmentStyles)styles;
+                           operator:(MATHSolverOperator)operator
+                             styles:(MATHSolverTextAttachmentStyles)styles;
 {
   NSString *toDrawString = [[previousSolution description] stringByAppendingString:RawStringForOperator(operator)];
-  return [[[SVRSolverTextAttachment alloc] initWithString:toDrawString
-                                                   styles:styles] autorelease];
+  return [[[MATHSolverTextAttachment alloc] initWithString:toDrawString
+                                                    styles:styles] autorelease];
 }
 
-+(id)attachmentWithError:(SVRCalculationError)error
-                  styles:(SVRSolverTextAttachmentStyles)styles;
++(id)attachmentWithError:(MATHCalculationError)error
+                  styles:(MATHSolverTextAttachmentStyles)styles;
 {
-  NSString *toDrawString = [@"=" stringByAppendingString:SVRSolverDescriptionForError(error)];
-  return [[[SVRSolverTextAttachment alloc] initWithString:toDrawString
-                                                   styles:styles] autorelease];
+  NSString *toDrawString = [@"=" stringByAppendingString:MATHSolverDescriptionForError(error)];
+  return [[[MATHSolverTextAttachment alloc] initWithString:toDrawString
+                                                    styles:styles] autorelease];
 }
 
 // MARK: Dealloc
@@ -122,18 +122,18 @@
 
 @end
 
-@implementation SVRSolverTextAttachmentCell
+@implementation MATHSolverTextAttachmentCell
 
 // MARK: Properties
 
--(SVRSolverTextAttachment*)MATH_attachment;
+-(MATHSolverTextAttachment*)MATH_attachment;
 {
-  return (SVRSolverTextAttachment*)[self attachment];
+  return (MATHSolverTextAttachment*)[self attachment];
 }
 
 // MARK: Init
 
--(id)initWithAttachment:(SVRSolverTextAttachment*)attachment;
+-(id)initWithAttachment:(MATHSolverTextAttachment*)attachment;
 {
   self = [super init];
   XPParameterRaise(self);
@@ -144,9 +144,9 @@
   return self;
 }
 
-+(id)cellWithAttachment:(SVRSolverTextAttachment*)attachment;
++(id)cellWithAttachment:(MATHSolverTextAttachment*)attachment;
 {
-  return [[[SVRSolverTextAttachmentCell alloc] initWithAttachment:attachment] autorelease];
+  return [[[MATHSolverTextAttachmentCell alloc] initWithAttachment:attachment] autorelease];
 }
 
 // MARK: Custom Drawing
@@ -179,20 +179,20 @@
   NSDictionary *attributes = [[self class] attributesWithFont:[[self MATH_attachment] font]
                                                         color:[[self MATH_attachment] foregroundColor]];
   NSSize padding = [[[self MATH_attachment] class] textPadding];
-  SVRSolverTextAttachmentBackground background = [[self MATH_attachment] background];
+  MATHSolverTextAttachmentBackground background = [[self MATH_attachment] background];
   switch (background) {
-    case SVRSolverTextAttachmentBackgroundCapsuleFill:
+    case MATHSolverTextAttachmentBackgroundCapsuleFill:
       [self __drawBackgroundCapsuleFillInRect:cellFrame];
       break;
-    case SVRSolverTextAttachmentBackgroundCapsuleStroke:
+    case MATHSolverTextAttachmentBackgroundCapsuleStroke:
       [self __drawBackgroundCapsuleStrokeInRect:cellFrame];
       break;
-    case SVRSolverTextAttachmentBackgroundLegacyBoxStroke:
+    case MATHSolverTextAttachmentBackgroundLegacyBoxStroke:
       [[[self MATH_attachment] backgroundColor] set];
       NSFrameRect(cellFrame);
       break;
     default:
-      XPLogAssrt1(NO, @"SVRSolverTextAttachmentBackground(%d) unknown case", (int)background);
+      XPLogAssrt1(NO, @"MATHSolverTextAttachmentBackground(%d) unknown case", (int)background);
       break;
   }
   cellFrame.origin.y += padding.height / 2.0;
@@ -259,7 +259,7 @@
 
 -(NSSize)__calculateCellSize;
 {
-  SVRSolverTextAttachment *attachment = [self MATH_attachment];
+  MATHSolverTextAttachment *attachment = [self MATH_attachment];
   NSDictionary *attributes = [[self class] attributesWithFont:[attachment font]
                                                         color:[attachment foregroundColor]];
   NSSize size = [[attachment string] sizeWithAttributes:attributes];
@@ -300,22 +300,22 @@
 
 @end
 
-@implementation SVRSolverTextAttachment (NSCoding)
+@implementation MATHSolverTextAttachment (NSCoding)
 
 +(BOOL)supportsSecureCoding;
 {
   return YES;
 }
 
--(BOOL)isEqual:(SVRSolverTextAttachment*)rhs;
+-(BOOL)isEqual:(MATHSolverTextAttachment*)rhs;
 {
-  if ([rhs class] != [SVRSolverTextAttachment class]) { return NO; }
-  return [[self string]  isEqualToString:[rhs string]]
-      && [[self font           ] isEqual:[rhs font]]
-      && [[self mixColor       ] isEqual:[rhs mixColor]]
+  if ([rhs class] != [MATHSolverTextAttachment class]) { return NO; }
+  return [[self string]  isEqualToString:[rhs string         ]]
+      && [[self font           ] isEqual:[rhs font           ]]
+      && [[self mixColor       ] isEqual:[rhs mixColor       ]]
       && [[self foregroundColor] isEqual:[rhs foregroundColor]]
       && [[self backgroundColor] isEqual:[rhs backgroundColor]]
-      && [ self background     ] == [rhs background];
+      && [ self background     ] == [rhs background           ];
 }
 
 -(id)initWithCoder:(NSCoder *)coder;
@@ -332,7 +332,7 @@
   XPParameterRaise(_configuration);
   
   [wrapper setPreferredFilename:_string];
-  [self setAttachmentCell:[SVRSolverTextAttachmentCell cellWithAttachment:self]];
+  [self setAttachmentCell:[MATHSolverTextAttachmentCell cellWithAttachment:self]];
   
   return self;
 }
@@ -346,15 +346,15 @@
 
 @end
 
-@implementation SVRSolverTextAttachmentCell (NSCoding)
+@implementation MATHSolverTextAttachmentCell (NSCoding)
 +(BOOL)supportsSecureCoding;
 {
   return YES;
 }
 
--(BOOL)isEqual:(SVRSolverTextAttachmentCell*)rhs;
+-(BOOL)isEqual:(MATHSolverTextAttachmentCell*)rhs;
 {
-  if ([rhs class] != [SVRSolverTextAttachmentCell class]) { return NO; }
+  if ([rhs class] != [MATHSolverTextAttachmentCell class]) { return NO; }
   return [[self attachment] isEqual:[rhs attachment]];
 }
 

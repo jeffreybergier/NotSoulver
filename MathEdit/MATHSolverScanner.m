@@ -19,14 +19,14 @@
 #import "MATHSolver.h"
 #import "MATHSolverScanner.h"
 
-NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
+NSSet *MATHSolverScannerNegativeNumberPrefixSet = nil;
 
-@implementation SVRSolverScanner
+@implementation MATHSolverScanner
 
 // MARK: Load
 +(void)initialize;
 {
-  SVRSolverScannerNegativeNumberPrefixSet = [[NSSet alloc] initWithObjects:@"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @")", nil];
+  MATHSolverScannerNegativeNumberPrefixSet = [[NSSet alloc] initWithObjects:@"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @")", nil];
 }
 
 // MARK: Initialization
@@ -45,7 +45,7 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
 
 +(id)scannerWithString:(NSString*)string;
 {
-  return [[[SVRSolverScanner alloc] initWithString:string] autorelease];
+  return [[[MATHSolverScanner alloc] initWithString:string] autorelease];
 }
 
 -(NSSet*)expressionRanges;
@@ -114,7 +114,7 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
 
 -(void)__populateNumbers;
 {
-  NSSet *negativeNumberPrefixSet = SVRSolverScannerNegativeNumberPrefixSet;
+  NSSet *negativeNumberPrefixSet = MATHSolverScannerNegativeNumberPrefixSet;
   NSMutableSet *output = [NSMutableSet new];
   XPRegularExpression *regex = [XPRegularExpression MATH_regexForNumbers];
   NSEnumerator *matches = nil;

@@ -20,19 +20,19 @@
 #import "MATHDocument.h"
 #import "NSUserDefaults+MathEdit.h"
 
-@implementation SVRAppDelegate
+@implementation MATHAppDelegate
 
 +(id)sharedDelegate;
 {
-  static SVRAppDelegate *sharedInstance = nil;
+  static MATHAppDelegate *sharedInstance = nil;
 #ifdef AFF_ObjCNoDispatch
   if (sharedInstance == nil) {
-    sharedInstance = [[SVRAppDelegate alloc] init];
+    sharedInstance = [[MATHAppDelegate alloc] init];
   }
 #else
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    sharedInstance = [[SVRAppDelegate alloc] init];
+    sharedInstance = [[MATHAppDelegate alloc] init];
   });
 #endif
   XPParameterRaise(sharedInstance);
@@ -53,7 +53,7 @@
   return self;
 }
 
--(SVRAccessoryWindowsOwner*)accessoryWindowsOwner;
+-(MATHAccessoryWindowsOwner*)accessoryWindowsOwner;
 {
   return [[_accessoryWindowsOwner retain] autorelease];
 }
@@ -114,7 +114,7 @@
 @end
 
 
-@implementation SVRAppDelegate (NSApplicationDelegate)
+@implementation MATHAppDelegate (NSApplicationDelegate)
 
 -(void)applicationWillFinishLaunching:(NSNotification*)aNotification;
 {
@@ -124,9 +124,9 @@
   // Prepare UserDefaults
   [[NSUserDefaults standardUserDefaults] MATH_configure];
   // Prepare FontManager
-  [NSFontManager setFontManagerFactory:[SVRFontManager class]];
+  [NSFontManager setFontManagerFactory:[MATHFontManager class]];
   // Load Accessory Windows Nib
-  _accessoryWindowsOwner = [[SVRAccessoryWindowsOwner alloc] init];
+  _accessoryWindowsOwner = [[MATHAccessoryWindowsOwner alloc] init];
   XPParameterRaise(_accessoryWindowsOwner);
   // Announce
   XPLogDebug(@"");
@@ -163,7 +163,7 @@
 
 @end
 
-@implementation SVRAppDelegate (PreDocument)
+@implementation MATHAppDelegate (PreDocument)
 
 -(NSMutableSet*)openDocuments;
 {
@@ -172,9 +172,9 @@
 
 -(IBAction)__newDocument:(id)sender
 {
-  XPDocument document = [[[SVRDocument alloc] init] autorelease];
-  [document XP_setFileType:SVRDocumentModelRepDisk];
-  [document XP_setFileExtension:SVRDocumentModelExtension];
+  XPDocument document = [[[MATHDocument alloc] init] autorelease];
+  [document XP_setFileType:MATHDocumentModelRepDisk];
+  [document XP_setFileExtension:MATHDocumentModelExtension];
   [document XP_showWindows];
   [[self openDocuments] addObject:document];
 }
@@ -186,15 +186,15 @@
   XPURL *nextF = nil;
   XPDocument nextC = nil;
 
-  filenames = XPRunOpenPanel(SVRDocumentModelExtension);
+  filenames = XPRunOpenPanel(MATHDocumentModelExtension);
   if ([filenames count] == 0) { XPLogDebug(@"Open Cancelled"); return; }
   e = [filenames objectEnumerator];
   while ((nextF = [e nextObject])) {
     nextC = [[self openDocuments] member:nextF];
     if (!nextC) {
-      nextC = [[[SVRDocument alloc] initWithContentsOfURL:nextF
-                                                   ofType:SVRDocumentModelRepDisk
-                                                    error:NULL] autorelease];
+      nextC = [[[MATHDocument alloc] initWithContentsOfURL:nextF
+                                                    ofType:MATHDocumentModelRepDisk
+                                                     error:NULL] autorelease];
       [[self openDocuments] addObject:nextC];
     }
     [nextC XP_showWindows];
@@ -253,11 +253,11 @@
 
 -(BOOL)__application:(NSApplication *)sender openFile:(NSString*)filename;
 {
-  SVRDocument *document = [[self openDocuments] member:filename];
+  MATHDocument *document = [[self openDocuments] member:filename];
   if (!document) {
-    document = [[[SVRDocument alloc] initWithContentsOfURL:(XPURL*)filename
-                                                    ofType:SVRDocumentModelRepDisk
-                                                     error:NULL] autorelease];
+    document = [[[MATHDocument alloc] initWithContentsOfURL:(XPURL*)filename
+                                                     ofType:MATHDocumentModelRepDisk
+                                                      error:NULL] autorelease];
     [[self openDocuments] addObject:document];
   }
   [[document XP_windowForSheet] makeKeyAndOrderFront:sender];
@@ -309,15 +309,15 @@
 
 @end
 
-NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearance";
+NSString * const MATHApplicationEffectiveAppearanceKeyPath = @"effectiveAppearance";
 
-@implementation SVRAppDelegate (DarkModeObserving)
+@implementation MATHAppDelegate (DarkModeObserving)
 
 -(void)beginObservingEffectiveAppearance:(NSApplication*)app;
 {
 #ifdef XPSupportsDarkMode
   [app addObserver:self 
-        forKeyPath:SVRApplicationEffectiveAppearanceKeyPath
+        forKeyPath:MATHApplicationEffectiveAppearanceKeyPath
            options:NSKeyValueObservingOptionNew
            context:NULL];
 #else
@@ -329,7 +329,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 {
 #ifdef XPSupportsDarkMode
   [app removeObserver:self
-           forKeyPath:SVRApplicationEffectiveAppearanceKeyPath];
+           forKeyPath:MATHApplicationEffectiveAppearanceKeyPath];
 #endif
 }
 
@@ -339,9 +339,9 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
                       context:(void*)context;
 {
 #ifdef XPSupportsDarkMode
-  if ([keyPath isEqualToString:SVRApplicationEffectiveAppearanceKeyPath]) {
+  if ([keyPath isEqualToString:MATHApplicationEffectiveAppearanceKeyPath]) {
     XPLogDebug(@"effectiveAppearance: Changed");
-    [[NSNotificationCenter defaultCenter] postNotificationName:SVRThemeDidChangeNotificationName
+    [[NSNotificationCenter defaultCenter] postNotificationName:MATHThemeDidChangeNotificationName
                                                         object:[NSUserDefaults standardUserDefaults]];
   } else {
     [super observeValueForKeyPath:keyPath
@@ -354,7 +354,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 
 @end
 
-@implementation SVRAppDelegate (StateRestoration)
+@implementation MATHAppDelegate (StateRestoration)
 
 -(void)applicationDidFinishRestoringWindows:(NSNotification*)aNotification;
 {
@@ -389,8 +389,8 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
                              state:(NSCoder*)state
                  completionHandler:(XPWindowRestoreCompletionHandler)completionHandler;
 {
-  SVRAppDelegate *delegate = (SVRAppDelegate*)[[NSApplication sharedApplication] delegate];
-  SVRAccessoryWindowsOwner *owner = [delegate accessoryWindowsOwner];
+  MATHAppDelegate *delegate = (MATHAppDelegate*)[[NSApplication sharedApplication] delegate];
+  MATHAccessoryWindowsOwner *owner = [delegate accessoryWindowsOwner];
   XPParameterRaise(owner);
   [owner __restoreWindowWithIdentifier:identifier
                                  state:state
@@ -680,7 +680,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 }
 @end
 
-@implementation NSString (SVRMainMenu)
+@implementation NSString (MATHMainMenu)
 -(NSString*)MATH_stringByAppendingEllipsis;
 {
 #ifdef XPSupportsUnicodeUI

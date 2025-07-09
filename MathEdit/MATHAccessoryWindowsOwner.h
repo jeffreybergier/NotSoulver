@@ -21,14 +21,14 @@
 #import "NSUserDefaults+MathEdit.h"
 #import "MATHAccessoryWindowViews.h"
 
-@class SVRAccessoryWindowsSettingsViewController;
+@class MATHAccessoryWindowsSettingsViewController;
 
-@interface SVRAccessoryWindowsOwner: NSObject
+@interface MATHAccessoryWindowsOwner: NSObject
 {
   mm_new NSPanel  *_keypadPanel;
   mm_new NSWindow *_aboutWindow;
   mm_new NSWindow *_settingsWindow;
-  mm_new SVRAccessoryWindowsSettingsViewController *_settingsViewController;
+  mm_new MATHAccessoryWindowsSettingsViewController *_settingsViewController;
 }
 
 // MARK: Lazy-Loading Properties
@@ -61,32 +61,32 @@
 
 @end
 
-@interface SVRAccessoryWindowsOwner (DarkMode)
+@interface MATHAccessoryWindowsOwner (DarkMode)
 -(void)overrideWindowAppearance;
 @end
 
-@interface SVRAccessoryWindowsOwner (StateRestoration)
+@interface MATHAccessoryWindowsOwner (StateRestoration)
 -(void)__restoreWindowWithIdentifier:(NSString*)identifier
                                state:(NSCoder*)state
                    completionHandler:(XPWindowRestoreCompletionHandler)completionHandler;
 @end
 
-@interface SVRFontManager: NSFontManager
+@interface MATHFontManager: NSFontManager
 {
-  SVRThemeFont _themeFont;
+  MATHThemeFont _themeFont;
 }
 
--(SVRThemeFont)themeFont;
--(void)setThemeFont:(SVRThemeFont)themeFont;
+-(MATHThemeFont)themeFont;
+-(void)setThemeFont:(MATHThemeFont)themeFont;
 
 @end
 
-@interface SVRAccessoryWindowsSettingsViewController: XPViewController
+@interface MATHAccessoryWindowsSettingsViewController: XPViewController
 {
   mm_new NSView *_view_42; // Used only in OpenStep
-  mm_retain SVRAccessoryWindowsSettingsGeneralView *_generalView;
-  mm_retain SVRAccessoryWindowsSettingsColorsView  *_colorsView;
-  mm_retain SVRAccessoryWindowsSettingsFontsView   *_fontsView;
+  mm_retain MATHAccessoryWindowsSettingsGeneralView *_generalView;
+  mm_retain MATHAccessoryWindowsSettingsColorsView  *_colorsView;
+  mm_retain MATHAccessoryWindowsSettingsFontsView   *_fontsView;
   mm_unretain NSPopUpButton *_settingsBoxSelector;
   mm_unretain NSBox *_settingsBoxParent;
 }
@@ -115,13 +115,13 @@
 @end
 
 #ifndef XPSupportsNSViewController
-@interface SVRAccessoryWindowsSettingsViewController (CrossPlatform)
+@interface MATHAccessoryWindowsSettingsViewController (CrossPlatform)
 -(NSView*)view;
 -(void)setView:(NSView*)view;
 @end
 #endif
 
-NSString *MATH_localizedStringForSettingsSelection(SVRSettingSelection selection);
+NSString *MATH_localizedStringForSettingsSelection(MATHSettingSelection selection);
 XPWindowStyleMask MATH_windowMaskForKeypadWindow(void);
 XPWindowStyleMask MATH_windowMaskForSettingsWindow(void);
 XPWindowStyleMask MATH_windowMaskForAboutWindow(void);

@@ -20,34 +20,34 @@
 #import "MATHSolver.h"
 #import "XPCrossPlatform.h"
 
-@interface SVRSolverSolutionTagger: NSObject
+@interface MATHSolverSolutionTagger: NSObject
 
 // MARK: Configure constants
 +(void)initialize;
 
 // MARK: Business Logic
 +(void)tagSolutionsInAttributedString:(NSMutableAttributedString*)string
-                       solutionStyles:(SVRSolverTextAttachmentStyles)solutionStyles
-               previousSolutionStyles:(SVRSolverTextAttachmentStyles)previousSolutionStyles
-                          errorStyles:(SVRSolverTextAttachmentStyles)errorStyles;
+                       solutionStyles:(MATHSolverTextAttachmentStyles)solutionStyles
+               previousSolutionStyles:(MATHSolverTextAttachmentStyles)previousSolutionStyles
+                          errorStyles:(MATHSolverTextAttachmentStyles)errorStyles;
 
 
 // MARK: Private
 +(BOOL)__prepareExpression:(NSMutableAttributedString*)input
       withPreviousSolution:(NSDecimalNumber*)previousSolution
-           operatorPointer:(SVRSolverOperator*)operatorPointer;
+           operatorPointer:(MATHSolverOperator*)operatorPointer;
 +(NSDecimalNumber*)__solutionForExpression:(NSAttributedString*)string
-                                     error:(SVRCalculationErrorPointer)errorPtr;
+                                     error:(MATHCalculationErrorPointer)errorPtr;
 +(NSValue*)__rangeOfNextBracketsInExpression:(NSAttributedString*)input
-                                       error:(SVRCalculationErrorPointer)errorPtr;
+                                       error:(MATHCalculationErrorPointer)errorPtr;
 +(NSDecimalNumber*)__nextSolutionInExpression:(NSAttributedString*)expression
                             forOperatorsInSet:(NSSet*)operators
                                    patchRange:(XPRangePointer)rangePtr
-                                        error:(SVRCalculationErrorPointer)errorPtr;
+                                        error:(MATHCalculationErrorPointer)errorPtr;
 +(NSAttributedString*)__taggedStringWithNumber:(NSDecimalNumber*)number;
-+(NSDecimalNumber*)__solveWithOperator:(SVRSolverOperator)operator
++(NSDecimalNumber*)__solveWithOperator:(MATHSolverOperator)operator
                             leftNumber:(NSDecimalNumber*)lhs
                            rightNumber:(NSDecimalNumber*)rhs
-                                 error:(SVRCalculationErrorPointer)errorPtr;
+                                 error:(MATHCalculationErrorPointer)errorPtr;
 
 @end

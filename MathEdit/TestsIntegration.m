@@ -22,24 +22,24 @@
 void TestsIntegrationExecute(void)
 {
 #if TESTING==1
-  // SVRFontManager is configured in applicationWillFinishLaunching
+  // MATHFontManager is configured in applicationWillFinishLaunching
   // However, the RTF implementation calls the sharedFontManager
   // so the configuration is ineffective if tests are run.
-  [NSFontManager setFontManagerFactory:[SVRFontManager class]];
-  [SVRDocumentModelController executeTests];
-//[SVRDocumentModelController saveTestFiles];
+  [NSFontManager setFontManagerFactory:[MATHFontManager class]];
+  [MATHDocumentModelController executeTests];
+//[MATHDocumentModelController saveTestFiles];
 #endif
 }
 
 #if TESTING==1
 
-@implementation SVRDocumentModelController (TestsIntegration)
+@implementation MATHDocumentModelController (TestsIntegration)
 
 +(void)executeTests;
 {
   /**
    // MARK: Strategy - There are 4 representations of any given file that
-   are managed by SVRDocumentModelController. The testing strategy to is to bundle 4 files
+   are managed by MATHDocumentModelController. The testing strategy to is to bundle 4 files
    and then compare the code paths to the bundled version.
    
    1) Disk: The "data" version that is saved on disk - [controller dataRepresentationOfType:@"solv"]
@@ -64,7 +64,7 @@ void TestsIntegrationExecute(void)
    */
 
   
-  SVRDocumentModelController *controller = [[[SVRDocumentModelController alloc] init] autorelease];
+  MATHDocumentModelController *controller = [[[MATHDocumentModelController alloc] init] autorelease];
   NSData *repDiskLHSData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestsIntegration-DiskRep" ofType:@"txt"]];
   NSString *repDiskLHS   = [[[NSString alloc] initWithData:repDiskLHSData encoding:NSUTF8StringEncoding] autorelease];
   NSString *repDiskRHS   = nil;
@@ -90,13 +90,13 @@ void TestsIntegrationExecute(void)
   controller->__TESTING_stylesForText             = [self stylesForText];
   
   // Configure the controller
-  [controller loadDataRepresentation:repDiskLHSData ofType:SVRDocumentModelRepDisk];
+  [controller loadDataRepresentation:repDiskLHSData ofType:MATHDocumentModelRepDisk];
   
   // Load all of the representations
-  repDiskRHS     = [[[NSString alloc] initWithData:[controller dataRepresentationOfType:SVRDocumentModelRepDisk] encoding:NSUTF8StringEncoding] autorelease];
-  repDisplayRHS  = [[[NSAttributedString alloc] initWithRTF:[controller dataRepresentationOfType:SVRDocumentModelRepDisplay ] documentAttributes:NULL] autorelease];
-  repSolvedRHS   = [[[NSAttributedString alloc] initWithRTF:[controller dataRepresentationOfType:SVRDocumentModelRepSolved  ] documentAttributes:NULL] autorelease];
-  repUnsolvedRHS = [[[NSAttributedString alloc] initWithRTF:[controller dataRepresentationOfType:SVRDocumentModelRepUnsolved] documentAttributes:NULL] autorelease];
+  repDiskRHS     = [[[NSString alloc] initWithData:[controller dataRepresentationOfType:MATHDocumentModelRepDisk] encoding:NSUTF8StringEncoding] autorelease];
+  repDisplayRHS  = [[[NSAttributedString alloc] initWithRTF:[controller dataRepresentationOfType:MATHDocumentModelRepDisplay ] documentAttributes:NULL] autorelease];
+  repSolvedRHS   = [[[NSAttributedString alloc] initWithRTF:[controller dataRepresentationOfType:MATHDocumentModelRepSolved  ] documentAttributes:NULL] autorelease];
+  repUnsolvedRHS = [[[NSAttributedString alloc] initWithRTF:[controller dataRepresentationOfType:MATHDocumentModelRepUnsolved] documentAttributes:NULL] autorelease];
   
   XPTestNotNIL(repDiskRHS);
   XPTestNotNIL(repDisplayRHS);
@@ -132,7 +132,7 @@ void TestsIntegrationExecute(void)
 +(void)saveTestFiles;
 {
   NSWorkspace *ws = [NSWorkspace sharedWorkspace];
-  SVRDocumentModelController *controller = [[[SVRDocumentModelController alloc] init] autorelease];
+  MATHDocumentModelController *controller = [[[MATHDocumentModelController alloc] init] autorelease];
   NSString *destDir          = NSTemporaryDirectory();
   NSString *repDisplayPath   = [destDir stringByAppendingPathComponent:@"TestsIntegration-DisplayRep.rtf"];
   NSString *repSolvedPath    = [destDir stringByAppendingPathComponent:@"TestsIntegration-SolvedRep.rtf"];
@@ -152,12 +152,12 @@ void TestsIntegrationExecute(void)
   controller->__TESTING_stylesForPreviousSolution = [self stylesForPreviousSolution];
   controller->__TESTING_stylesForError            = [self stylesForError];
   controller->__TESTING_stylesForText             = [self stylesForText];
-  [controller loadDataRepresentation:repDisk ofType:SVRDocumentModelRepDisk];
+  [controller loadDataRepresentation:repDisk ofType:MATHDocumentModelRepDisk];
   
   // Load all of the representations
-  repDisplay  = [controller dataRepresentationOfType:SVRDocumentModelRepDisplay];
-  repSolved   = [controller dataRepresentationOfType:SVRDocumentModelRepSolved];
-  repUnsolved = [controller dataRepresentationOfType:SVRDocumentModelRepUnsolved];
+  repDisplay  = [controller dataRepresentationOfType:MATHDocumentModelRepDisplay];
+  repSolved   = [controller dataRepresentationOfType:MATHDocumentModelRepSolved];
+  repUnsolved = [controller dataRepresentationOfType:MATHDocumentModelRepUnsolved];
   
   XPTestNotNIL(repDisplay);
   XPTestNotNIL(repSolved);
@@ -170,12 +170,12 @@ void TestsIntegrationExecute(void)
   [ws selectFile:repDisplayPath inFileViewerRootedAtPath:destDir];
 }
 
-+(SVRSolverTextAttachmentStyles)stylesForSolution;
++(MATHSolverTextAttachmentStyles)stylesForSolution;
 {
   NSFont *font = [NSFont fontWithName:@"Courier" size:12];
   NSColor *foregroundColor = [NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:1];
   NSColor *backgroundColor = [NSColor colorWithCalibratedRed:0 green:0 blue:0.7 alpha:1];
-  SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
+  MATHSolverTextAttachmentBackground background = MATHSolverTextAttachmentBackgroundLegacyBoxStroke;
   return [NSDictionary __MATH_stylesWithFont:font
                              foregroundColor:foregroundColor
                              backgroundColor:backgroundColor
@@ -183,31 +183,31 @@ void TestsIntegrationExecute(void)
                                   background:background];
 }
 
-+(SVRSolverTextAttachmentStyles)stylesForPreviousSolution;
++(MATHSolverTextAttachmentStyles)stylesForPreviousSolution;
 {
   NSFont *font = [NSFont fontWithName:@"Courier" size:14];
   NSColor *foregroundColor = [NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:1];
   NSColor *backgroundColor = [NSColor colorWithCalibratedRed:0.7 green:0.7 blue:0 alpha:1];
-  SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
+  MATHSolverTextAttachmentBackground background = MATHSolverTextAttachmentBackgroundLegacyBoxStroke;
   return [NSDictionary __MATH_stylesWithFont:font
                              foregroundColor:foregroundColor
                              backgroundColor:backgroundColor
                                     mixColor:[NSColor blackColor]
                                   background:background];
 }
-+(SVRSolverTextAttachmentStyles)stylesForError;
++(MATHSolverTextAttachmentStyles)stylesForError;
 {
   NSFont *font = [NSFont fontWithName:@"Helvetica" size:10];
   NSColor *foregroundColor = [NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:1];
   NSColor *backgroundColor = [NSColor colorWithCalibratedRed:0.7 green:0 blue:0 alpha:1];
-  SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
+  MATHSolverTextAttachmentBackground background = MATHSolverTextAttachmentBackgroundLegacyBoxStroke;
   return [NSDictionary __MATH_stylesWithFont:font
                              foregroundColor:foregroundColor
                              backgroundColor:backgroundColor
                                     mixColor:[NSColor blackColor]
                                   background:background];
 }
-+(SVRSolverTextStyles)stylesForText;
++(MATHSolverTextStyles)stylesForText;
 {
   NSFont  *mathFont       = [NSFont fontWithName:@"Courier"   size:14];
   NSFont  *otherTextFont  = [NSFont fontWithName:@"Helvetica" size:12];

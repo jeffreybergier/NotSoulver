@@ -19,12 +19,12 @@
 #import "MATHSolver.h"
 #import "MATHDocumentViewController.h"
 
-NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.notsoulver.unsolved";
+NSString *MATHDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.notsoulver.unsolved";
 
-@implementation SVRDocumentViewController
+@implementation MATHDocumentViewController
 
 // MARK: Init
--(id)initWithModelController:(SVRDocumentModelController*)modelController;
+-(id)initWithModelController:(MATHDocumentModelController*)modelController;
 {
   self = [super init];
   XPParameterRaise(self);
@@ -41,7 +41,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   NSTextContainer *textContainer = [[[NSTextContainer alloc] initWithContainerSize:NSMakeSize(FLT_MAX, FLT_MAX)]   autorelease];
   NSTextView      *textView      = [[[NSTextView      alloc] initWithFrame:NSZeroRect textContainer:textContainer] autorelease];
   NSScrollView    *scrollView    = [[[NSScrollView    alloc] initWithFrame:NSZeroRect]                             autorelease];
-  SVRDocumentModelController *modelController = [self modelController];
+  MATHDocumentModelController *modelController = [self modelController];
   
   XPParameterRaise(layoutManager);
   XPParameterRaise(textContainer);
@@ -93,7 +93,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   [self __themeDidChangeNotification:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(__themeDidChangeNotification:)
-                                               name:SVRThemeDidChangeNotificationName
+                                               name:MATHThemeDidChangeNotificationName
                                              object:nil];
   
   XPParameterRaise(_textView);
@@ -107,7 +107,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   return [[_textView retain] autorelease];
 }
 
--(SVRDocumentModelController*)modelController;
+-(MATHDocumentModelController*)modelController;
 {
   return [[_modelController retain] autorelease];
 }
@@ -143,8 +143,8 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   NSTextView *textView = [self textView];
   [textView setTypingAttributes:[self __typingAttributes]];
-  [textView setBackgroundColor:[ud MATH_colorForTheme:SVRThemeColorBackground]];
-  [textView setInsertionPointColor:[ud MATH_colorForTheme:SVRThemeColorInsertionPoint]];
+  [textView setBackgroundColor:[ud MATH_colorForTheme:MATHThemeColorBackground]];
+  [textView setInsertionPointColor:[ud MATH_colorForTheme:MATHThemeColorInsertionPoint]];
   if (aNotification){
     [[self modelController] renderPreservingSelectionInTextView:textView];
   }
@@ -153,34 +153,34 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 
 // Returns NIL if backspace
 // Exception if unknown tag
--(NSString*)__stringValueForKeypadKeyKind:(SVRKeypadButtonKind)kind;
+-(NSString*)__stringValueForKeypadKeyKind:(MATHKeypadButtonKind)kind;
 {
   switch (kind) {
-    case SVRKeypadButtonKind1:
-    case SVRKeypadButtonKind2:
-    case SVRKeypadButtonKind3:
-    case SVRKeypadButtonKind4:
-    case SVRKeypadButtonKind5:
-    case SVRKeypadButtonKind6:
-    case SVRKeypadButtonKind7:
-    case SVRKeypadButtonKind8:
-    case SVRKeypadButtonKind9:        return [NSString stringWithFormat:@"%d", (int)kind];
-    case SVRKeypadButtonKind0:        return @"0";
-    case SVRKeypadButtonKindNegative: return @"-";
-    case SVRKeypadButtonKindDecimal:  return @".";
-    case SVRKeypadButtonKindDelete:   return nil;
-    case SVRKeypadButtonKindEqual:    return @"=\n";
-    case SVRKeypadButtonKindAdd:      return @"+";
-    case SVRKeypadButtonKindSubtract: return @"-";
-    case SVRKeypadButtonKindBRight:   return @")";
-    case SVRKeypadButtonKindMultiply: return @"*";
-    case SVRKeypadButtonKindDivide:   return @"/";
-    case SVRKeypadButtonKindBLeft:    return @"(";
-    case SVRKeypadButtonKindPower:    return @"^";
-    case SVRKeypadButtonKindRoot:     return [@"2"  stringByAppendingString:[NSString MATH_rootRawString]];
-    case SVRKeypadButtonKindLog:      return [@"10" stringByAppendingString:[NSString MATH_logRawString]];
+    case MATHKeypadButtonKind1:
+    case MATHKeypadButtonKind2:
+    case MATHKeypadButtonKind3:
+    case MATHKeypadButtonKind4:
+    case MATHKeypadButtonKind5:
+    case MATHKeypadButtonKind6:
+    case MATHKeypadButtonKind7:
+    case MATHKeypadButtonKind8:
+    case MATHKeypadButtonKind9:        return [NSString stringWithFormat:@"%d", (int)kind];
+    case MATHKeypadButtonKind0:        return @"0";
+    case MATHKeypadButtonKindNegative: return @"-";
+    case MATHKeypadButtonKindDecimal:  return @".";
+    case MATHKeypadButtonKindDelete:   return nil;
+    case MATHKeypadButtonKindEqual:    return @"=\n";
+    case MATHKeypadButtonKindAdd:      return @"+";
+    case MATHKeypadButtonKindSubtract: return @"-";
+    case MATHKeypadButtonKindBRight:   return @")";
+    case MATHKeypadButtonKindMultiply: return @"*";
+    case MATHKeypadButtonKindDivide:   return @"/";
+    case MATHKeypadButtonKindBLeft:    return @"(";
+    case MATHKeypadButtonKindPower:    return @"^";
+    case MATHKeypadButtonKindRoot:     return [@"2"  stringByAppendingString:[NSString MATH_rootRawString]];
+    case MATHKeypadButtonKindLog:      return [@"10" stringByAppendingString:[NSString MATH_logRawString]];
     default:
-      XPLogAssrt1(NO, @"[UNKNOWN] SVRKeypadButtonKind(%d)", (int)kind);
+      XPLogAssrt1(NO, @"[UNKNOWN] MATHKeypadButtonKind(%d)", (int)kind);
       return @"";
   }
 }
@@ -197,8 +197,8 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
           NSForegroundColorAttributeName,
           nil];
   vals = [NSArray arrayWithObjects:
-          [ud MATH_fontForTheme:SVRThemeFontOther],
-          [ud MATH_colorForTheme:SVRThemeColorOtherText],
+          [ud MATH_fontForTheme:MATHThemeFontOther],
+          [ud MATH_colorForTheme:MATHThemeColorOtherText],
           nil];
   return [NSDictionary dictionaryWithObjects:vals forKeys:keys];
 }
@@ -216,7 +216,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 
 @end
 
-@implementation SVRDocumentViewController (IBActions)
+@implementation MATHDocumentViewController (IBActions)
 
 -(IBAction)keypadAppend:(NSButton*)sender;
 {
@@ -313,9 +313,9 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 {
   BOOL success = NO;
   NSRange range = [[self textView] selectedRange];
-  NSData *rtfData = [[self modelController] dataRepresentationOfType:SVRDocumentModelRepUnsolved
+  NSData *rtfData = [[self modelController] dataRepresentationOfType:MATHDocumentModelRepUnsolved
                                                            withRange:range];
-  NSData *diskRepData = [[self modelController] dataRepresentationOfType:SVRDocumentModelRepDisk
+  NSData *diskRepData = [[self modelController] dataRepresentationOfType:MATHDocumentModelRepDisk
                                                                withRange:range];
   success = [self __universalCopyRTFData:rtfData diskRepData:diskRepData];
   XPLogAssrt(success, @"FAIL");
@@ -325,9 +325,9 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 {
   BOOL success = NO;
   NSRange range = [[self textView] selectedRange];
-  NSData *rtfData = [[self modelController] dataRepresentationOfType:SVRDocumentModelRepSolved
+  NSData *rtfData = [[self modelController] dataRepresentationOfType:MATHDocumentModelRepSolved
                                                            withRange:range];
-  NSData *diskRepData = [[self modelController] dataRepresentationOfType:SVRDocumentModelRepDisk
+  NSData *diskRepData = [[self modelController] dataRepresentationOfType:MATHDocumentModelRepDisk
                                                                withRange:range];
   success = [self __universalCopyRTFData:rtfData diskRepData:diskRepData];
   XPLogAssrt(success, @"FAIL");
@@ -337,7 +337,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 {
   NSPasteboard *pb = [NSPasteboard generalPasteboard];
   NSTextView *textView = [self textView];
-  NSString *specialType = SVRDocumentViewControllerUnsolvedPasteboardType;
+  NSString *specialType = MATHDocumentViewControllerUnsolvedPasteboardType;
   NSString *diskRepString = nil;
   NSData *diskRepData = nil;
   
@@ -373,7 +373,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   BOOL successRTF = NO;
   BOOL successPlain = NO;
   BOOL successSpecial = NO;
-  NSString *specialType = SVRDocumentViewControllerUnsolvedPasteboardType;
+  NSString *specialType = MATHDocumentViewControllerUnsolvedPasteboardType;
   NSString *plainString = [[[[NSAttributedString alloc] initWithRTF:rtfData
                                                  documentAttributes:NULL] autorelease] string];
   
@@ -388,8 +388,8 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
                     nil]
              owner:nil];
   
-  successRTF     = [pb setData:rtfData       forType:XPPasteboardTypeRTF];
-  successSpecial = [pb setData:diskRepData   forType:specialType];
+  successRTF     = [pb setData:rtfData       forType:XPPasteboardTypeRTF   ];
+  successSpecial = [pb setData:diskRepData   forType:specialType           ];
   successPlain   = [pb setString:plainString forType:XPPasteboardTypeString];
   
   return successRTF && successPlain && successSpecial;
@@ -398,7 +398,7 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
 @end
 
 #ifndef XPSupportsNSViewController
-@implementation SVRDocumentViewController (CrossPlatform)
+@implementation MATHDocumentViewController (CrossPlatform)
 -(NSView*)view;
 {
   if (!_view_42) {

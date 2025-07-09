@@ -19,47 +19,47 @@
 #import "MATHSolverSolutionTagger.h"
 #import "MATHSolverTextAttachment.h"
 
-NSSet *SVRSolverSolutionTaggerSetExponent = nil;
-NSSet *SVRSolverSolutionTaggerSetMultDiv  = nil;
-NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
+NSSet *MATHSolverSolutionTaggerSetExponent = nil;
+NSSet *MATHSolverSolutionTaggerSetMultDiv  = nil;
+NSSet *MATHSolverSolutionTaggerSetAddSub   = nil;
 
-@implementation SVRSolverSolutionTagger
+@implementation MATHSolverSolutionTagger
 
 +(void)initialize;
 {
-  SVRSolverSolutionTaggerSetExponent = [[NSSet alloc] initWithObjects:
-                                        NSNumberForOperator(SVRSolverOperatorExponent),
-                                        NSNumberForOperator(SVRSolverOperatorRoot),
-                                        NSNumberForOperator(SVRSolverOperatorLog),
-                                        nil];
-  SVRSolverSolutionTaggerSetMultDiv  = [[NSSet alloc] initWithObjects:
-                                        NSNumberForOperator(SVRSolverOperatorMultiply),
-                                        NSNumberForOperator(SVRSolverOperatorDivide),
-                                        nil];
-  SVRSolverSolutionTaggerSetAddSub   = [[NSSet alloc] initWithObjects:
-                                        NSNumberForOperator(SVRSolverOperatorSubtract),
-                                        NSNumberForOperator(SVRSolverOperatorAdd),
-                                        nil];
+  MATHSolverSolutionTaggerSetExponent = [[NSSet alloc] initWithObjects:
+                                         NSNumberForOperator(MATHSolverOperatorExponent),
+                                         NSNumberForOperator(MATHSolverOperatorRoot),
+                                         NSNumberForOperator(MATHSolverOperatorLog),
+                                         nil];
+  MATHSolverSolutionTaggerSetMultDiv  = [[NSSet alloc] initWithObjects:
+                                         NSNumberForOperator(MATHSolverOperatorMultiply),
+                                         NSNumberForOperator(MATHSolverOperatorDivide),
+                                         nil];
+  MATHSolverSolutionTaggerSetAddSub   = [[NSSet alloc] initWithObjects:
+                                         NSNumberForOperator(MATHSolverOperatorSubtract),
+                                         NSNumberForOperator(MATHSolverOperatorAdd),
+                                         nil];
 }
 
 // MARK: Business Logic
 +(void)tagSolutionsInAttributedString:(NSMutableAttributedString*)output
-                       solutionStyles:(SVRSolverTextAttachmentStyles)solutionStyles
-               previousSolutionStyles:(SVRSolverTextAttachmentStyles)previousSolutionStyles
-                          errorStyles:(SVRSolverTextAttachmentStyles)errorStyles;
+                       solutionStyles:(MATHSolverTextAttachmentStyles)solutionStyles
+               previousSolutionStyles:(MATHSolverTextAttachmentStyles)previousSolutionStyles
+                          errorStyles:(MATHSolverTextAttachmentStyles)errorStyles;
 {
-  SVRCalculationError error = SVRCalculationNoError;
+  MATHCalculationError error = MATHCalculationNoError;
   NSMutableAttributedString *expressionToSolve = nil;
   NSDecimalNumber *solution = nil;
   NSAttributedString *solutionString = nil;
-  SVRSolverOperator previousSolutionOperator = SVRSolverOperatorUnknown;
+  MATHSolverOperator previousSolutionOperator = MATHSolverOperatorUnknown;
   BOOL didInsertPreviousSolution = NO;
   NSRange solutionRange = XPNotFoundRange; // range of the equal sign
   NSEnumerator *e = nil;
   NSString *next = nil;
   NSRange nextRange = XPNotFoundRange;
-
-  e = [output MATH_enumeratorForAttribute:XPAttributedStringKeyForTag(SVRSolverTagExpression)
+  
+  e = [output MATH_enumeratorForAttribute:XPAttributedStringKeyForTag(MATHSolverTagExpression)
                usingLongestEffectiveRange:YES];
   while ((next = [e nextObject])) {
     nextRange = NSRangeFromString(next);
@@ -73,14 +73,14 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
       // Step 2: If the previous solution is used, create a text attachment
       solutionString = [
         NSAttributedString attributedStringWithAttachment:
-          [SVRSolverTextAttachment attachmentWithPreviousSolution:solution
-                                                         operator:previousSolutionOperator
-                                                           styles:previousSolutionStyles]
+          [MATHSolverTextAttachment attachmentWithPreviousSolution:solution
+                                                          operator:previousSolutionOperator
+                                                            styles:previousSolutionStyles]
       ];
       // Step 3: Insert the previous solution text attachment
       [output replaceCharactersInRange:NSMakeRange(nextRange.location, 1)
                   withAttributedString:solutionString];
-      [output addAttribute:XPAttributedStringKeyForTag(SVRSolverTagOriginal)
+      [output addAttribute:XPAttributedStringKeyForTag(MATHSolverTagOriginal)
                      value:RawStringForOperator(previousSolutionOperator)
                      range:NSMakeRange(nextRange.location, 1)];
     }
@@ -90,24 +90,24 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     if (solution) {
       solutionString = [
         NSAttributedString attributedStringWithAttachment:
-          [SVRSolverTextAttachment attachmentWithSolution:solution
-                                                   styles:solutionStyles]
+          [MATHSolverTextAttachment attachmentWithSolution:solution
+                                                    styles:solutionStyles]
       ];
     } else {
       solutionString = [
         NSAttributedString attributedStringWithAttachment:
-          [SVRSolverTextAttachment attachmentWithError:error
-                                                styles:errorStyles]
+          [MATHSolverTextAttachment attachmentWithError:error
+                                                 styles:errorStyles]
       ];
     }
     XPLogExtra2(@"%@<-%@", [[output string] MATH_descriptionHighlightingRange:solutionRange], solution);
     // Step 6: Insert the text attachment for the solution or error
     [output replaceCharactersInRange:solutionRange
                 withAttributedString:solutionString];
-    [output addAttribute:XPAttributedStringKeyForTag(SVRSolverTagOriginal)
+    [output addAttribute:XPAttributedStringKeyForTag(MATHSolverTagOriginal)
                    value:@"="
                    range:solutionRange];
-    error = SVRCalculationNoError;
+    error = MATHCalculationNoError;
   }
 }
 
@@ -115,15 +115,15 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
 
 +(BOOL)__prepareExpression:(NSMutableAttributedString*)input
       withPreviousSolution:(NSDecimalNumber*)previousSolution
-           operatorPointer:(SVRSolverOperator*)operatorPointer;
+           operatorPointer:(MATHSolverOperator*)operatorPointer;
 {
   NSNumber *operatorNumber = nil;
-  SVRSolverOperator operator = SVRSolverOperatorUnknown;
+  MATHSolverOperator operator = MATHSolverOperatorUnknown;
   NSAttributedString *toInsert = nil;
   NSDictionary *attribs = nil;
   
   // Remove the expression attribute as we already used that
-  [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagExpression)
+  [input removeAttribute:XPAttributedStringKeyForTag(MATHSolverTagExpression)
                    range:NSMakeRange(0, [input length])];
   
   // Do basic sanity checks
@@ -132,30 +132,30 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
   if (operatorPointer == NULL) { return NO; }
   
   // Find the operator
-  operatorNumber = [input attribute:XPAttributedStringKeyForTag(SVRSolverTagOperator)
-                         atIndex:0
-                  effectiveRange:NULL];
+  operatorNumber = [input attribute:XPAttributedStringKeyForTag(MATHSolverTagOperator)
+                            atIndex:0
+                     effectiveRange:NULL];
   if (operatorNumber == nil) { return NO; }
-  operator = SVRSolverOperatorForNumber(operatorNumber);
+  operator = MATHSolverOperatorForNumber(operatorNumber);
   switch (operator) {
-    case SVRSolverOperatorExponent:
-    case SVRSolverOperatorDivide:
-    case SVRSolverOperatorMultiply:
-    case SVRSolverOperatorAdd:
-    case SVRSolverOperatorRoot:
-    case SVRSolverOperatorLog:
+    case MATHSolverOperatorExponent:
+    case MATHSolverOperatorDivide:
+    case MATHSolverOperatorMultiply:
+    case MATHSolverOperatorAdd:
+    case MATHSolverOperatorRoot:
+    case MATHSolverOperatorLog:
       // Insert the previous solution
       attribs = [NSDictionary dictionaryWithObject:previousSolution
-                                            forKey:XPAttributedStringKeyForTag(SVRSolverTagNumber)];
+                                            forKey:XPAttributedStringKeyForTag(MATHSolverTagNumber)];
       toInsert = [[[NSAttributedString alloc] initWithString:[previousSolution description]
                                                   attributes:attribs] autorelease];
       [input insertAttributedString:toInsert atIndex:0];
       *operatorPointer = operator;
       return YES;
-    case SVRSolverOperatorSubtract:
+    case MATHSolverOperatorSubtract:
       // We can't distinguish between operator and negative number in this case.
       // Just remove the operator key so its treated as a negative number.
-      [input removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagOperator)
+      [input removeAttribute:XPAttributedStringKeyForTag(MATHSolverTagOperator)
                        range:NSMakeRange(0, 1)];
       return NO;
     default:
@@ -165,11 +165,11 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
 }
 
 +(NSDecimalNumber*)__solutionForExpression:(NSAttributedString*)input
-                                     error:(SVRCalculationErrorPointer)errorPtr;
+                                     error:(MATHCalculationErrorPointer)errorPtr;
 {
-  NSSet *setExponent = SVRSolverSolutionTaggerSetExponent;
-  NSSet *setMultDiv  = SVRSolverSolutionTaggerSetMultDiv;
-  NSSet *setAddSub   = SVRSolverSolutionTaggerSetAddSub;
+  NSSet *setExponent = MATHSolverSolutionTaggerSetExponent;
+  NSSet *setMultDiv  = MATHSolverSolutionTaggerSetMultDiv;
+  NSSet *setAddSub   = MATHSolverSolutionTaggerSetAddSub;
   
   NSRange patchRange = XPNotFoundRange;
   NSValue *bracketRange = nil;
@@ -200,7 +200,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     }
   }
   
-  if (errorPtr != NULL && *errorPtr != SVRCalculationNoError) {
+  if (errorPtr != NULL && *errorPtr != MATHCalculationNoError) {
     return nil;
   }
   
@@ -215,7 +215,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
   }
   
-  if (errorPtr != NULL && *errorPtr != SVRCalculationNoError) {
+  if (errorPtr != NULL && *errorPtr != MATHCalculationNoError) {
     return nil;
   }
   
@@ -230,7 +230,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
   }
   
-  if (errorPtr != NULL && *errorPtr != SVRCalculationNoError) {
+  if (errorPtr != NULL && *errorPtr != MATHCalculationNoError) {
     return nil;
   }
   
@@ -245,25 +245,25 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
   }
   
-  if (errorPtr != NULL && *errorPtr != SVRCalculationNoError) {
+  if (errorPtr != NULL && *errorPtr != MATHCalculationNoError) {
     return nil;
   }
   
   output = [NSDecimalNumber decimalNumberWithString:[expression string]];
   if ([output MATH_isNotANumber]) {
-    if (errorPtr != NULL) { *errorPtr = SVRCalculationInvalidCharacter; }
+    if (errorPtr != NULL) { *errorPtr = MATHCalculationInvalidCharacter; }
     return nil;
   }
   return output;
 }
 
 +(NSValue*)__rangeOfNextBracketsInExpression:(NSAttributedString*)input
-                                       error:(SVRCalculationErrorPointer)errorPtr;
+                                       error:(MATHCalculationErrorPointer)errorPtr;
 {
   NSRange range = XPNotFoundRange;
   NSValue *lhs = nil;
   NSValue *rhs = nil;
-  XPAttributeEnumerator *e = [input MATH_enumeratorForAttribute:XPAttributedStringKeyForTag(SVRSolverTagBracket)];
+  XPAttributeEnumerator *e = [input MATH_enumeratorForAttribute:XPAttributedStringKeyForTag(MATHSolverTagBracket)];
   while ([e nextObjectEffectiveRange:&range]) {
     if (!lhs) {
       lhs = [NSValue XP_valueWithRange:range];
@@ -277,7 +277,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     }
   }
   if (lhs && errorPtr != NULL) {
-    *errorPtr = SVRCalculationMismatchedBrackets;
+    *errorPtr = MATHCalculationMismatchedBrackets;
   }
   return nil;
 }
@@ -285,7 +285,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
 +(NSDecimalNumber*)__nextSolutionInExpression:(NSAttributedString*)expression
                             forOperatorsInSet:(NSSet*)operators
                                    patchRange:(XPRangePointer)rangePtr
-                                        error:(SVRCalculationErrorPointer)errorPtr;
+                                        error:(MATHCalculationErrorPointer)errorPtr;
 {
   NSRange operatorRange = NSMakeRange(0, 1);
   NSRange lhsRange = XPNotFoundRange;
@@ -296,7 +296,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
   
   // Find the first matching operator
   while (NSMaxRange(operatorRange) < [expression length]) {
-    operator = [expression attribute:XPAttributedStringKeyForTag(SVRSolverTagOperator)
+    operator = [expression attribute:XPAttributedStringKeyForTag(MATHSolverTagOperator)
                              atIndex:operatorRange.location
                       effectiveRange:&operatorRange];
     if ([operators member:operator]) { break; }
@@ -311,34 +311,34 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
   }
 
   if (operatorRange.location == 0) {
-    if (errorPtr != NULL) { *errorPtr = SVRCalculationMissingOperand; }
+    if (errorPtr != NULL) { *errorPtr = MATHCalculationMissingOperand; }
     return nil;
   }
   
   lhsRange = NSMakeRange(operatorRange.location - 1, 1);
-  lhs = [expression attribute:XPAttributedStringKeyForTag(SVRSolverTagNumber)
+  lhs = [expression attribute:XPAttributedStringKeyForTag(MATHSolverTagNumber)
                       atIndex:lhsRange.location
                effectiveRange:&lhsRange];
   if (lhs == nil) {
-    if (errorPtr != NULL) { *errorPtr = SVRCalculationMissingOperand; }
+    if (errorPtr != NULL) { *errorPtr = MATHCalculationMissingOperand; }
     return nil;
   }
   
   rhsRange = NSMakeRange(NSMaxRange(operatorRange), 1);
   if (rhsRange.location + rhsRange.length <= [expression length]) {
-    rhs = [expression attribute:XPAttributedStringKeyForTag(SVRSolverTagNumber)
+    rhs = [expression attribute:XPAttributedStringKeyForTag(MATHSolverTagNumber)
                         atIndex:rhsRange.location
                  effectiveRange:&rhsRange];
   }
   if (rhs == nil) {
-    if (errorPtr != NULL) { *errorPtr = SVRCalculationMissingOperand; }
+    if (errorPtr != NULL) { *errorPtr = MATHCalculationMissingOperand; }
     return nil;
   }
   
   rangePtr->location = lhsRange.location;
   rangePtr->length   = lhsRange.length + operatorRange.length + rhsRange.length;
   
-  return [self __solveWithOperator:SVRSolverOperatorForNumber(operator)
+  return [self __solveWithOperator:MATHSolverOperatorForNumber(operator)
                         leftNumber:lhs
                        rightNumber:rhs
                              error:errorPtr];
@@ -347,34 +347,34 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
 +(NSAttributedString*)__taggedStringWithNumber:(NSDecimalNumber*)number;
 {
   NSDictionary *attributes = [NSDictionary dictionaryWithObject:number
-                                                         forKey:XPAttributedStringKeyForTag(SVRSolverTagNumber)];
+                                                         forKey:XPAttributedStringKeyForTag(MATHSolverTagNumber)];
   return [[[NSAttributedString alloc] initWithString:[number description]
                                           attributes:attributes] autorelease];
 }
 
-+(NSDecimalNumber*)__solveWithOperator:(SVRSolverOperator)operator
++(NSDecimalNumber*)__solveWithOperator:(MATHSolverOperator)operator
                             leftNumber:(NSDecimalNumber*)lhs
                            rightNumber:(NSDecimalNumber*)rhs
-                                 error:(SVRCalculationErrorPointer)errorPtr;
+                                 error:(MATHCalculationErrorPointer)errorPtr;
 {
-  SVRSolverDecimalBehavior *ohBehave = [SVRSolverDecimalBehavior behaviorWithErrorPtr:errorPtr];
+  MATHSolverDecimalBehavior *ohBehave = [MATHSolverDecimalBehavior behaviorWithErrorPtr:errorPtr];
   switch (operator) {
-    case SVRSolverOperatorExponent:
+    case MATHSolverOperatorExponent:
       return [lhs MATH_decimalNumberByRaisingWithExponent:rhs withBehavior:ohBehave];
-    case SVRSolverOperatorDivide:
+    case MATHSolverOperatorDivide:
       return [lhs decimalNumberByDividingBy:rhs withBehavior:ohBehave];
-    case SVRSolverOperatorMultiply:
+    case MATHSolverOperatorMultiply:
       return [lhs decimalNumberByMultiplyingBy:rhs withBehavior:ohBehave];
-    case SVRSolverOperatorSubtract:
+    case MATHSolverOperatorSubtract:
       return [lhs decimalNumberBySubtracting:rhs withBehavior:ohBehave];
-    case SVRSolverOperatorAdd:
+    case MATHSolverOperatorAdd:
       return [lhs decimalNumberByAdding:rhs withBehavior:ohBehave];
-    case SVRSolverOperatorRoot:
+    case MATHSolverOperatorRoot:
       return [rhs MATH_decimalNumberByRootingWithExponent:lhs withBehavior:ohBehave];
-    case SVRSolverOperatorLog:
+    case MATHSolverOperatorLog:
       return [rhs MATH_decimalNumberByLogarithmWithBase:lhs withBehavior:ohBehave];
     default:
-      XPLogAssrt1(NO, @"[UNKNOWN] SVRSolverOperator(%d)", (int)operator);
+      XPLogAssrt1(NO, @"[UNKNOWN] MATHSolverOperator(%d)", (int)operator);
       return nil;
   }
 }
