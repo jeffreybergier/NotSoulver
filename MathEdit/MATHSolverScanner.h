@@ -55,9 +55,9 @@
 
 @interface XPRegularExpression (Soulver)
 
-+(id)SVR_regexForNumbers;
-+(id)SVR_regexForOperators;
-+(id)SVR_regexForExpressions;
-+(id)SVR_regexForBrackets;
++(id)MATH_regexForNumbers;
++(id)MATH_regexForOperators;
++(id)MATH_regexForExpressions;
++(id)MATH_regexForBrackets;
 
 @end

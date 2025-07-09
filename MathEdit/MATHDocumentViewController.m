@@ -143,8 +143,8 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   NSTextView *textView = [self textView];
   [textView setTypingAttributes:[self __typingAttributes]];
-  [textView setBackgroundColor:[ud SVR_colorForTheme:SVRThemeColorBackground]];
-  [textView setInsertionPointColor:[ud SVR_colorForTheme:SVRThemeColorInsertionPoint]];
+  [textView setBackgroundColor:[ud MATH_colorForTheme:SVRThemeColorBackground]];
+  [textView setInsertionPointColor:[ud MATH_colorForTheme:SVRThemeColorInsertionPoint]];
   if (aNotification){
     [[self modelController] renderPreservingSelectionInTextView:textView];
   }
@@ -177,8 +177,8 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
     case SVRKeypadButtonKindDivide:   return @"/";
     case SVRKeypadButtonKindBLeft:    return @"(";
     case SVRKeypadButtonKindPower:    return @"^";
-    case SVRKeypadButtonKindRoot:     return [@"2" stringByAppendingString:[NSString SVR_rootRawString]];
-    case SVRKeypadButtonKindLog:      return [@"10" stringByAppendingString:[NSString SVR_logRawString]];
+    case SVRKeypadButtonKindRoot:     return [@"2"  stringByAppendingString:[NSString MATH_rootRawString]];
+    case SVRKeypadButtonKindLog:      return [@"10" stringByAppendingString:[NSString MATH_logRawString]];
     default:
       XPLogAssrt1(NO, @"[UNKNOWN] SVRKeypadButtonKind(%d)", (int)kind);
       return @"";
@@ -197,8 +197,8 @@ NSString *SVRDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.n
           NSForegroundColorAttributeName,
           nil];
   vals = [NSArray arrayWithObjects:
-          [ud SVR_fontForTheme:SVRThemeFontOther],
-          [ud SVR_colorForTheme:SVRThemeColorOtherText],
+          [ud MATH_fontForTheme:SVRThemeFontOther],
+          [ud MATH_colorForTheme:SVRThemeColorOtherText],
           nil];
   return [NSDictionary dictionaryWithObjects:vals forKeys:keys];
 }

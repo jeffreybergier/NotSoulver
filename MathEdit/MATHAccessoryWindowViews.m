@@ -32,7 +32,7 @@
   _equalButton = nil;
   
   for (kind=SVRKeypadButtonKind1; kind<=SVRKeypadButtonKindLog; kind++) {
-    button = [NSButton SVR_keypadButtonOfKind:kind];
+    button = [NSButton MATH_keypadButtonOfKind:kind];
     [self addSubview:button];
     if (kind == SVRKeypadButtonKindEqual) {
       _equalButton = button;
@@ -75,50 +75,50 @@
   _viewSourceButton = nil;
   
   // NeXT Tagline Image
-  [self addSubview:[NSImageView SVR_imageViewWithOrigin:kTagLineOrigin
+  [self addSubview:[NSImageView MATH_imageViewWithOrigin:kTagLineOrigin
                                    sizedToFitImageNamed:[Localized imageNeXTTagline]]];
   
   // Dedication Text
-  [self addSubview:[[NSTextField SVR_labelWithFrame:kDedicationTextFrame]
-                                 SVR_setObjectValue:[Localized phraseAboutDedication]
+  [self addSubview:[[NSTextField MATH_labelWithFrame:kDedicationTextFrame]
+                                 MATH_setObjectValue:[Localized phraseAboutDedication]
                                                font:[NSFont systemFontOfSize:10]
                                           alignment:XPTextAlignmentLeft]];
   
   // View Source Button
-  _viewSourceButton = [[[self class] __viewSourceButtonWithFrame:SVR_rectByAdjustingAquaButtonRect(kViewSourceButtonFrame)
+  _viewSourceButton = [[[self class] __viewSourceButtonWithFrame:MATH_rectByAdjustingAquaButtonRect(kViewSourceButtonFrame)
                                                            title:[Localized verbViewSource]
                                                       imageNamed:[Localized imageNeXTLogo]]
-                                         SVR_setAutoresizingMask:NSViewMinXMargin];
+                                         MATH_setAutoresizingMask:NSViewMinXMargin];
   [self addSubview:_viewSourceButton];
   
   // Separator Line
-  [self addSubview:[[NSBox SVR_lineWithFrame:kSeparatorRect]
-                     SVR_setAutoresizingMask:NSViewWidthSizable]];
+  [self addSubview:[[NSBox MATH_lineWithFrame:kSeparatorRect]
+                     MATH_setAutoresizingMask:NSViewWidthSizable]];
   
   // Large TextField
   [self addSubview:[[[self class] __scrollViewWithFrame:kTextViewRect
                                                textView:&_textView]
-                                SVR_setAutoresizingMask:NSViewHeightSizable | NSViewWidthSizable]];
+                                MATH_setAutoresizingMask:NSViewHeightSizable | NSViewWidthSizable]];
   
   // Add Subtitle Label
-  [self addSubview:[[[NSTextField SVR_labelWithFrame:kSubtitleTextFrame]
-                                  SVR_setObjectValue:[Localized phraseAboutTagline]
+  [self addSubview:[[[NSTextField MATH_labelWithFrame:kSubtitleTextFrame]
+                                  MATH_setObjectValue:[Localized phraseAboutTagline]
                                                 font:[NSFont systemFontOfSize:16]
                                            alignment:XPTextAlignmentCenter]
-                             SVR_setAutoresizingMask:NSViewMinYMargin | NSViewWidthSizable]];
+                             MATH_setAutoresizingMask:NSViewMinYMargin | NSViewWidthSizable]];
   
   // Add Title Label
-  [self addSubview:[[[NSTextField SVR_labelWithFrame:kTitleTextFrame]
-                                  SVR_setObjectValue:[Localized titleAppName]
+  [self addSubview:[[[NSTextField MATH_labelWithFrame:kTitleTextFrame]
+                                  MATH_setObjectValue:[Localized titleAppName]
                                                 font:[NSFont boldSystemFontOfSize:36]
                                            alignment:XPTextAlignmentCenter]
-                             SVR_setAutoresizingMask:NSViewMinYMargin | NSViewWidthSizable]];
+                             MATH_setAutoresizingMask:NSViewMinYMargin | NSViewWidthSizable]];
   
   // Add Portrait Image View
-  [self addSubview:[[[NSImageView SVR_imageViewWithFrame:kPortraitImageView
+  [self addSubview:[[[NSImageView MATH_imageViewWithFrame:kPortraitImageView
                                               imageNamed:[Localized imageAboutPortrait]]
-                                  SVR_setImageFrameStyle:NSImageFrameGroove]
-                                 SVR_setAutoresizingMask:NSViewMinYMargin | NSViewMinXMargin]];
+                                  MATH_setImageFrameStyle:NSImageFrameGroove]
+                                 MATH_setAutoresizingMask:NSViewMinYMargin | NSViewMinXMargin]];
   
   XPParameterRaise(_textView);
   XPParameterRaise(_viewSourceButton);
@@ -222,20 +222,20 @@
   
   // User Interface Style Selector
   kind = SVRResetButtonKindUIStyle;
-  [self addSubview:[[[NSTextField SVR_labelWithFrame:labelRect]
-                                  SVR_setObjectValue:SVR_localizedStringForKind(kind)
+  [self addSubview:[[[NSTextField MATH_labelWithFrame:labelRect]
+                                  MATH_setObjectValue:MATH_localizedStringForKind(kind)
                                                 font:nil
                                            alignment:XPTextAlignmentLeft]
-                             SVR_sizeToFitVertically]];
+                             MATH_sizeToFitVertically]];
   
   _selectorControl = [[[XPSegmentedControl alloc] initWithFrame:sgmntRect] autorelease];
   [_selectorControl setSegmentCount:3];
   [_selectorControl setLabel:[Localized titleAutomatic] forSegment:0];
   [_selectorControl setLabel:[Localized titleLight    ] forSegment:1];
   [_selectorControl setLabel:[Localized titleDark     ] forSegment:2];
-  [_selectorControl setImage:[[NSImage imageNamed:[Localized imageThemeAuto ]] SVR_setTemplate:YES] forSegment:0];
-  [_selectorControl setImage:[[NSImage imageNamed:[Localized imageThemeLight]] SVR_setTemplate:YES] forSegment:1];
-  [_selectorControl setImage:[[NSImage imageNamed:[Localized imageThemeDark ]] SVR_setTemplate:YES] forSegment:2];
+  [_selectorControl setImage:[[NSImage imageNamed:[Localized imageThemeAuto ]] MATH_setTemplate:YES] forSegment:0];
+  [_selectorControl setImage:[[NSImage imageNamed:[Localized imageThemeLight]] MATH_setTemplate:YES] forSegment:1];
+  [_selectorControl setImage:[[NSImage imageNamed:[Localized imageThemeDark ]] MATH_setTemplate:YES] forSegment:2];
   [_selectorControl setAction:@selector(writeUserInterfaceStyle:)];
   [self addSubview:_selectorControl];
   
@@ -244,13 +244,13 @@
   labelRect.origin.y = slidrRect.origin.y+kSlidrH+4;
   
   // Wait Time Slider
-  [self addSubview:[[[NSTextField SVR_labelWithFrame:labelRect]
-                                  SVR_setObjectValue:SVR_localizedStringForKind(kind)
+  [self addSubview:[[[NSTextField MATH_labelWithFrame:labelRect]
+                                  MATH_setObjectValue:MATH_localizedStringForKind(kind)
                                                 font:nil
                                            alignment:XPTextAlignmentLeft]
-                             SVR_sizeToFitVertically]];
+                             MATH_sizeToFitVertically]];
   
-  _delayLabel = [NSTextField SVR_textFieldWithFrame:delayRect
+  _delayLabel = [NSTextField MATH_textFieldWithFrame:delayRect
                                              target:nil
                                              action:NULL];
   [_delayLabel setAlignment:XPTextAlignmentCenter];
@@ -311,23 +311,23 @@
        colorKind<=SVRColorWellKindBackgroundDark;
        colorKind++)
   {
-    resetKind = SVR_resetButtonKindForColorWellKind(colorKind);
+    resetKind = MATH_resetButtonKindForColorWellKind(colorKind);
     if (colorKind % 2) {
-      [self addSubview:[[[NSTextField SVR_labelWithFrame:labelRect]
-                                      SVR_setObjectValue:SVR_localizedStringForKind(resetKind)
+      [self addSubview:[[[NSTextField MATH_labelWithFrame:labelRect]
+                                      MATH_setObjectValue:MATH_localizedStringForKind(resetKind)
                                                     font:nil
                                                alignment:XPTextAlignmentRight]
-                                 SVR_sizeToFitVertically]];
-      colorWell = [NSColorWell SVR_colorWellWithFrame:lightRect kind:colorKind];
+                                 MATH_sizeToFitVertically]];
+      colorWell = [NSColorWell MATH_colorWellWithFrame:lightRect kind:colorKind];
       [self addSubview:colorWell];
       labelRect.origin.y -= kVPad;
       lightRect.origin.y -= kVPad;
     } else {
-      [self addSubview:[NSButton SVR_settingsButtonWithFrame:SVR_rectByAdjustingAquaButtonRect(resetRect)
+      [self addSubview:[NSButton MATH_settingsButtonWithFrame:MATH_rectByAdjustingAquaButtonRect(resetRect)
                                                        title:[Localized verbReset]
                                                       action:@selector(reset:)
                                                          tag:resetKind]];
-      colorWell = [NSColorWell SVR_colorWellWithFrame:darkkRect kind:colorKind];
+      colorWell = [NSColorWell MATH_colorWellWithFrame:darkkRect kind:colorKind];
       [self addSubview:colorWell];
       darkkRect.origin.y -= kVPad;
       resetRect.origin.y -= kVPad;
@@ -339,16 +339,16 @@
   lightRect.origin.y = kYOrigin + kVPad;
   darkkRect.origin.y = kYOrigin + kVPad;
   
-  [self addSubview:[[[NSTextField SVR_labelWithFrame:lightRect]
-                                  SVR_setObjectValue:[Localized titleLight]
+  [self addSubview:[[[NSTextField MATH_labelWithFrame:lightRect]
+                                  MATH_setObjectValue:[Localized titleLight]
                                                 font:[NSFont systemFontOfSize:10]
                                            alignment:XPTextAlignmentCenter]
-                             SVR_sizeToFitVertically]];
-  [self addSubview:[[[NSTextField SVR_labelWithFrame:darkkRect]
-                                  SVR_setObjectValue:[Localized titleDark]
+                             MATH_sizeToFitVertically]];
+  [self addSubview:[[[NSTextField MATH_labelWithFrame:darkkRect]
+                                  MATH_setObjectValue:[Localized titleDark]
                                                 font:[NSFont systemFontOfSize:10]
                                            alignment:XPTextAlignmentCenter]
-                             SVR_sizeToFitVertically]];
+                             MATH_sizeToFitVertically]];
   
   return self;
 }
@@ -397,28 +397,28 @@
        fontKind<=SVRThemeFontError;
        fontKind++)
   {
-    resetKind = SVR_resetButtonKindForFontSettingKind(fontKind);
+    resetKind = MATH_resetButtonKindForFontSettingKind(fontKind);
     
     // Label
-    [self addSubview:[[[NSTextField SVR_labelWithFrame:labelRect]
-                                    SVR_setObjectValue:SVR_localizedStringForKind(resetKind)
+    [self addSubview:[[[NSTextField MATH_labelWithFrame:labelRect]
+                                    MATH_setObjectValue:MATH_localizedStringForKind(resetKind)
                                                   font:nil
                                              alignment:XPTextAlignmentLeft]
-                               SVR_sizeToFitVertically]];
+                               MATH_sizeToFitVertically]];
     
     // TextField
-    textField = [NSTextField SVR_textFieldWithFrame:fieldRect
+    textField = [NSTextField MATH_textFieldWithFrame:fieldRect
                                              target:nil
                                              action:NULL];
     [self setTextField:textField forKind:fontKind];
     [self addSubview:textField];
     
     // Buttons
-    [self addSubview:[NSButton SVR_settingsButtonWithFrame:SVR_rectByAdjustingAquaButtonRect(setttRect)
+    [self addSubview:[NSButton MATH_settingsButtonWithFrame:MATH_rectByAdjustingAquaButtonRect(setttRect)
                                                      title:[Localized verbSet]
                                                     action:@selector(presentFontPanel:)
                                                        tag:fontKind]];
-    [self addSubview:[NSButton SVR_settingsButtonWithFrame:SVR_rectByAdjustingAquaButtonRect(resetRect)
+    [self addSubview:[NSButton MATH_settingsButtonWithFrame:MATH_rectByAdjustingAquaButtonRect(resetRect)
                                                      title:[Localized verbReset]
                                                     action:@selector(reset:)
                                                        tag:resetKind]];
@@ -564,7 +564,7 @@
   buttonFrame.size.width = floor(myBounds.size.width/count) - (kPad/2);
   for (index=0; index<count; index++) {
     buttonFrame.origin.x = (buttonFrame.size.width*index) + (kPad*index);
-    [[_buttons objectAtIndex:index] setFrame:SVR_rectByAdjustingAquaButtonRect(buttonFrame)];
+    [[_buttons objectAtIndex:index] setFrame:MATH_rectByAdjustingAquaButtonRect(buttonFrame)];
   }
 }
 
@@ -579,18 +579,18 @@
 
 @implementation NSControl (SVRAccessoryWindows)
 
-+(NSButton*)SVR_keypadButtonOfKind:(SVRKeypadButtonKind)kind;
++(NSButton*)MATH_keypadButtonOfKind:(SVRKeypadButtonKind)kind;
 {
-  NSButton *button = [[[NSButton alloc] initWithFrame:SVR_rectForKeypadButtonOfKind(kind)] autorelease];
-  [button setTitle:SVR_titleForKeypadButtonOfKind(kind)];
-  [button setKeyEquivalent:SVR_keyForKeypadButtonOfKind(kind)];
+  NSButton *button = [[[NSButton alloc] initWithFrame:MATH_rectForKeypadButtonOfKind(kind)] autorelease];
+  [button setTitle:MATH_titleForKeypadButtonOfKind(kind)];
+  [button setKeyEquivalent:MATH_keyForKeypadButtonOfKind(kind)];
   [button setTag:kind];
   [button setAction:@selector(keypadAppend:)];
   [button XP_setBezelStyle:XPBezelStyleFlexiblePush];
   return button;
 }
 
-+(NSButton*)SVR_settingsButtonWithFrame:(NSRect)frame
++(NSButton*)MATH_settingsButtonWithFrame:(NSRect)frame
                                   title:(NSString*)title
                                  action:(SEL)action
                                     tag:(XPInteger)tag;
@@ -603,7 +603,7 @@
   return button;
 }
 
-+(NSColorWell*)SVR_colorWellWithFrame:(NSRect)frame
++(NSColorWell*)MATH_colorWellWithFrame:(NSRect)frame
                                  kind:(SVRColorWellKind)kind;
 {
   NSColorWell *well = [[[NSColorWell alloc] initWithFrame:frame] autorelease];
@@ -612,7 +612,7 @@
   return well;
 }
 
-+(NSTextField*)SVR_labelWithFrame:(NSRect)frame;
++(NSTextField*)MATH_labelWithFrame:(NSRect)frame;
 {
   NSTextField *label = [[[NSTextField alloc] initWithFrame:frame] autorelease];
   [label setBezeled:NO];
@@ -622,7 +622,7 @@
   return label;
 }
 
-+(NSTextField*)SVR_textFieldWithFrame:(NSRect)frame
++(NSTextField*)MATH_textFieldWithFrame:(NSRect)frame
                                target:(id)target
                                action:(SEL)action;
 {
@@ -642,7 +642,7 @@
   return textField;
 }
 
--(id)SVR_sizeToFitVertically;
+-(id)MATH_sizeToFitVertically;
 {
   NSRect original = [self frame];
   NSRect new = NSZeroRect;
@@ -653,7 +653,7 @@
   return self;
 }
 
--(id)SVR_setObjectValue:(id)objectValue
+-(id)MATH_setObjectValue:(id)objectValue
                    font:(NSFont*)font
               alignment:(NSTextAlignment)alignment;
 {
@@ -671,7 +671,7 @@
 
 @implementation NSView (SVRAccessoryWindows)
 
-+(NSBox*)SVR_lineWithFrame:(NSRect)frame;
++(NSBox*)MATH_lineWithFrame:(NSRect)frame;
 {
   NSBox *view = [[[NSBox alloc] initWithFrame:frame] autorelease];
   [view XP_setBoxType:XPBoxSeparator];
@@ -679,7 +679,7 @@
   return view;
 }
 
--(id)SVR_setAutoresizingMask:(XPUInteger)mask;
+-(id)MATH_setAutoresizingMask:(XPUInteger)mask;
 {
   [self setAutoresizingMask:mask];
   return self;
@@ -689,7 +689,7 @@
 
 @implementation NSImageView (SVRAccessoryWindows)
 
-+(NSImageView*)SVR_imageViewWithOrigin:(NSPoint)origin
++(NSImageView*)MATH_imageViewWithOrigin:(NSPoint)origin
                   sizedToFitImageNamed:(NSString*)imageName;
 {
   NSImage     *image = [NSImage imageNamed:imageName];
@@ -700,7 +700,7 @@
   return view;
 }
 
-+(NSImageView*)SVR_imageViewWithFrame:(NSRect)frame
++(NSImageView*)MATH_imageViewWithFrame:(NSRect)frame
                            imageNamed:(NSString*)imageName;
 {
   NSImage     *image = [NSImage imageNamed:imageName];
@@ -710,7 +710,7 @@
   return view;
 }
 
--(NSImageView*)SVR_setImageFrameStyle:(NSImageFrameStyle)imageFrameStyle;
+-(NSImageView*)MATH_setImageFrameStyle:(NSImageFrameStyle)imageFrameStyle;
 {
   [self setImageFrameStyle:imageFrameStyle];
   return self;
@@ -719,7 +719,7 @@
 @end
 
 @implementation NSImage (SVRAccessoryWindows)
--(NSImage*)SVR_setTemplate:(BOOL)flag;
+-(NSImage*)MATH_setTemplate:(BOOL)flag;
 {
 #ifdef XPSupportsTemplateImage
   [self setTemplate:flag];
@@ -728,7 +728,7 @@
 }
 @end
 
-NSRect SVR_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind)
+NSRect MATH_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 {
   XPFloat kWinPad  = SVRAccessoryWindowKeypadWindowPadding;
   XPFloat kBtnVPad = SVRAccessoryWindowKeypadWindowButtonVPadding;
@@ -833,10 +833,10 @@ NSRect SVR_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   output.size = kind == SVRKeypadButtonKindEqual
                       ? NSMakeSize((kBtnSize.width * 2) + kBtnHPad, kBtnSize.height)
                       : kBtnSize;
-  return SVR_rectByAdjustingAquaButtonRect(output);
+  return MATH_rectByAdjustingAquaButtonRect(output);
 }
 
-NSRect SVR_rectByAdjustingAquaButtonRect(NSRect rect)
+NSRect MATH_rectByAdjustingAquaButtonRect(NSRect rect)
 {
 #if XPUserInterface == XPUserInterfaceAqua
   XPFloat xPad = 2;
@@ -850,7 +850,7 @@ NSRect SVR_rectByAdjustingAquaButtonRect(NSRect rect)
 #endif
 }
 
-NSString *SVR_titleForKeypadButtonOfKind(SVRKeypadButtonKind kind)
+NSString *MATH_titleForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 {
   switch (kind) {
     case SVRKeypadButtonKind1:
@@ -905,7 +905,7 @@ NSString *SVR_titleForKeypadButtonOfKind(SVRKeypadButtonKind kind)
   }
 }
 
-NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
+NSString *MATH_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
 {
   switch (kind) {
     case SVRKeypadButtonKindDelete:
@@ -915,11 +915,11 @@ NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind)
     case SVRKeypadButtonKindLog:
       return @"l";
     default:
-      return SVR_titleForKeypadButtonOfKind(kind);
+      return MATH_titleForKeypadButtonOfKind(kind);
   }
 }
 
-NSString *SVR_localizedStringForKind(SVRResetButtonKind kind)
+NSString *MATH_localizedStringForKind(SVRResetButtonKind kind)
 {
   switch (kind) {
     case SVRResetButtonKindUIStyle:
@@ -952,7 +952,7 @@ NSString *SVR_localizedStringForKind(SVRResetButtonKind kind)
   }
 }
 
-SVRResetButtonKind SVR_resetButtonKindForColorWellKind(SVRColorWellKind kind)
+SVRResetButtonKind MATH_resetButtonKindForColorWellKind(SVRColorWellKind kind)
 {
   switch (kind) {
     case SVRColorWellKindOperandLight:
@@ -985,7 +985,7 @@ SVRResetButtonKind SVR_resetButtonKindForColorWellKind(SVRColorWellKind kind)
   }
 }
 
-SVRResetButtonKind SVR_resetButtonKindForFontSettingKind(SVRThemeFont kind)
+SVRResetButtonKind MATH_resetButtonKindForFontSettingKind(SVRThemeFont kind)
 {
   switch (kind) {
     case SVRThemeFontMath:

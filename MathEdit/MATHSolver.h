@@ -152,41 +152,41 @@ NSString             *SVRSolverDebugDescriptionForError(SVRCalculationError erro
 @interface NSDecimalNumber (Soulver)
 
 /// In OpenStep, NaN comparisons are weird, so this uses a string comparison
--(BOOL)SVR_isNotANumber;
+-(BOOL)MATH_isNotANumber;
 
--(NSDecimalNumber*)SVR_decimalNumberByRaisingWithExponent:(NSDecimalNumber*)exponent
-                                             withBehavior:(SVRSolverDecimalBehavior*)behavior;
--(NSDecimalNumber*)SVR_decimalNumberByRootingWithExponent:(NSDecimalNumber*)exponent
-                                             withBehavior:(SVRSolverDecimalBehavior*)behavior;
+-(NSDecimalNumber*)MATH_decimalNumberByRaisingWithExponent:(NSDecimalNumber*)exponent
+                                              withBehavior:(SVRSolverDecimalBehavior*)behavior;
+-(NSDecimalNumber*)MATH_decimalNumberByRootingWithExponent:(NSDecimalNumber*)exponent
+                                              withBehavior:(SVRSolverDecimalBehavior*)behavior;
 /// 10L100=2 10=base 100=argument (self)
--(NSDecimalNumber*)SVR_decimalNumberByLogarithmWithBase:(NSDecimalNumber*)base
-                                           withBehavior:(SVRSolverDecimalBehavior*)behavior;
+-(NSDecimalNumber*)MATH_decimalNumberByLogarithmWithBase:(NSDecimalNumber*)base
+                                            withBehavior:(SVRSolverDecimalBehavior*)behavior;
 @end
 
 // MARK: NSUserDefaults Helper Methods
 
 @interface NSUserDefaults (SVRSolverTextAttachmentStyles)
 
--(SVRSolverTextAttachmentStyles)SVR_stylesForSolution;
--(SVRSolverTextAttachmentStyles)SVR_stylesForPreviousSolution;
--(SVRSolverTextAttachmentStyles)SVR_stylesForError;
--(SVRSolverTextStyles)SVR_stylesForText;
+-(SVRSolverTextAttachmentStyles)MATH_stylesForSolution;
+-(SVRSolverTextAttachmentStyles)MATH_stylesForPreviousSolution;
+-(SVRSolverTextAttachmentStyles)MATH_stylesForError;
+-(SVRSolverTextStyles)MATH_stylesForText;
 
 @end
 
 @interface NSDictionary (SVRSolverTextAttachmentStyles)
 
-+(SVRSolverTextAttachmentStyles)__SVR_stylesWithFont:(NSFont*)font
-                                     foregroundColor:(NSColor*)foregroundColor
-                                     backgroundColor:(NSColor*)backgroundColor
-                                            mixColor:(NSColor*)mixColor
-                                          background:(SVRSolverTextAttachmentBackground)purpose;
++(SVRSolverTextAttachmentStyles)__MATH_stylesWithFont:(NSFont*)font
+                                      foregroundColor:(NSColor*)foregroundColor
+                                      backgroundColor:(NSColor*)backgroundColor
+                                             mixColor:(NSColor*)mixColor
+                                           background:(SVRSolverTextAttachmentBackground)purpose;
 
-+(SVRSolverTextAttachmentStyles)__SVR_stylesWithMathFont:(NSFont*)mathFont
-                                            neighborFont:(NSFont*)otherTextFont
-                                          otherTextColor:(NSColor*)otherTextColor
-                                            operandColor:(NSColor*)operandColor
-                                           operatorColor:(NSColor*)operatorColor
++(SVRSolverTextAttachmentStyles)__MATH_stylesWithMathFont:(NSFont*)mathFont
+                                             neighborFont:(NSFont*)otherTextFont
+                                           otherTextColor:(NSColor*)otherTextColor
+                                             operandColor:(NSColor*)operandColor
+                                            operatorColor:(NSColor*)operatorColor
                                             previousColor:(NSColor*)previousColor;
 
 @end

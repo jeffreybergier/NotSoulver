@@ -176,11 +176,11 @@ void TestsIntegrationExecute(void)
   NSColor *foregroundColor = [NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:1];
   NSColor *backgroundColor = [NSColor colorWithCalibratedRed:0 green:0 blue:0.7 alpha:1];
   SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
-  return [NSDictionary __SVR_stylesWithFont:font
-                            foregroundColor:foregroundColor
-                            backgroundColor:backgroundColor
-                                   mixColor:[NSColor blackColor]
-                                 background:background];
+  return [NSDictionary __MATH_stylesWithFont:font
+                             foregroundColor:foregroundColor
+                             backgroundColor:backgroundColor
+                                    mixColor:[NSColor blackColor]
+                                  background:background];
 }
 
 +(SVRSolverTextAttachmentStyles)stylesForPreviousSolution;
@@ -189,11 +189,11 @@ void TestsIntegrationExecute(void)
   NSColor *foregroundColor = [NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:1];
   NSColor *backgroundColor = [NSColor colorWithCalibratedRed:0.7 green:0.7 blue:0 alpha:1];
   SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
-  return [NSDictionary __SVR_stylesWithFont:font
-                            foregroundColor:foregroundColor
-                            backgroundColor:backgroundColor
-                                   mixColor:[NSColor blackColor]
-                                 background:background];
+  return [NSDictionary __MATH_stylesWithFont:font
+                             foregroundColor:foregroundColor
+                             backgroundColor:backgroundColor
+                                    mixColor:[NSColor blackColor]
+                                  background:background];
 }
 +(SVRSolverTextAttachmentStyles)stylesForError;
 {
@@ -201,11 +201,11 @@ void TestsIntegrationExecute(void)
   NSColor *foregroundColor = [NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:1];
   NSColor *backgroundColor = [NSColor colorWithCalibratedRed:0.7 green:0 blue:0 alpha:1];
   SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
-  return [NSDictionary __SVR_stylesWithFont:font
-                            foregroundColor:foregroundColor
-                            backgroundColor:backgroundColor
-                                   mixColor:[NSColor blackColor]
-                                 background:background];
+  return [NSDictionary __MATH_stylesWithFont:font
+                             foregroundColor:foregroundColor
+                             backgroundColor:backgroundColor
+                                    mixColor:[NSColor blackColor]
+                                  background:background];
 }
 +(SVRSolverTextStyles)stylesForText;
 {
@@ -216,12 +216,12 @@ void TestsIntegrationExecute(void)
   NSColor *operatorColor  = [NSColor colorWithCalibratedRed:0 green:0.7 blue:0.7 alpha:1];
   NSColor *previousColor  = [NSColor colorWithCalibratedRed:0.7 green:0.7 blue:0 alpha:1];
   
-  return [NSDictionary __SVR_stylesWithMathFont:mathFont
-                                   neighborFont:otherTextFont
-                                 otherTextColor:otherTextColor
-                                   operandColor:operandColor
-                                  operatorColor:operatorColor
-                                  previousColor:previousColor];
+  return [NSDictionary __MATH_stylesWithMathFont:mathFont
+                                    neighborFont:otherTextFont
+                                  otherTextColor:otherTextColor
+                                    operandColor:operandColor
+                                   operatorColor:operatorColor
+                                   previousColor:previousColor];
 }
 
 @end

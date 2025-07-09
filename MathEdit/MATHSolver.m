@@ -251,9 +251,9 @@ SVRSolverOperator SVRSolverOperatorForRawString(NSString *string)
     return SVRSolverOperatorSubtract;
   } else if ([string isEqualToString:@"+"]) {
     return SVRSolverOperatorAdd;
-  } else if ([string isEqualToString:[NSString SVR_rootRawString]]) {
+  } else if ([string isEqualToString:[NSString MATH_rootRawString]]) {
     return SVRSolverOperatorRoot;
-  } else if ([string isEqualToString:[NSString SVR_logRawString]]) {
+  } else if ([string isEqualToString:[NSString MATH_logRawString]]) {
     return SVRSolverOperatorLog;
   } else {
     XPCLogAssrt1(NO, @"[UNKNOWN] SVRSolverOperator(%@)", string);
@@ -269,8 +269,8 @@ NSString *RawStringForOperator(SVRSolverOperator operator)
     case SVRSolverOperatorMultiply: return @"*";
     case SVRSolverOperatorSubtract: return @"-";
     case SVRSolverOperatorAdd:      return @"+";
-    case SVRSolverOperatorRoot:     return [NSString SVR_rootRawString];
-    case SVRSolverOperatorLog:      return [NSString SVR_logRawString];
+    case SVRSolverOperatorRoot:     return [NSString MATH_rootRawString];
+    case SVRSolverOperatorLog:      return [NSString MATH_logRawString];
     case SVRSolverOperatorUnknown:
     default:
       XPCLogAssrt1(NO, @"[UNKNOWN] SVRSolverOperator(%d)", (int)operator);
@@ -427,15 +427,15 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
 
 @implementation NSDecimalNumber (Soulver)
 
--(BOOL)SVR_isNotANumber;
+-(BOOL)MATH_isNotANumber;
 {
   NSString *lhsDescription = [self description];
   NSString *rhsDescription = [[NSDecimalNumber notANumber] description];
   return [lhsDescription isEqualToString:rhsDescription];
 }
 
--(NSDecimalNumber*)SVR_decimalNumberByRaisingWithExponent:(NSDecimalNumber*)exponent
-                                             withBehavior:(SVRSolverDecimalBehavior*)behavior;
+-(NSDecimalNumber*)MATH_decimalNumberByRaisingWithExponent:(NSDecimalNumber*)exponent
+                                              withBehavior:(SVRSolverDecimalBehavior*)behavior;
 {
   double baseRaw     = [self doubleValue];
   double exponentRaw = [exponent doubleValue];
@@ -453,8 +453,8 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
 
   if (exponentRaw > -1 && exponentRaw < 1) {
     // This is actually a root calculation not a power calculation
-    return [self SVR_decimalNumberByRootingWithExponent:[[NSDecimalNumber one] decimalNumberByDividingBy:exponent]
-                                           withBehavior:behavior];
+    return [self MATH_decimalNumberByRootingWithExponent:[[NSDecimalNumber one] decimalNumberByDividingBy:exponent]
+                                            withBehavior:behavior];
   }
   
   if (error == SVRCalculationNoError) {
@@ -472,14 +472,14 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
       return [NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%f", resultRaw]];
     default:
       NSParameterAssert(behavior);
-      return [behavior exceptionDuringOperation:@selector(SVR_decimalNumberByRaisingWithExponent:withBehavior:)
+      return [behavior exceptionDuringOperation:@selector(MATH_decimalNumberByRaisingWithExponent:withBehavior:)
                                           error:error
                                     leftOperand:self
                                    rightOperand:exponent];
   }
 }
 
--(NSDecimalNumber*)SVR_decimalNumberByRootingWithExponent:(NSDecimalNumber*)exponent
+-(NSDecimalNumber*)MATH_decimalNumberByRootingWithExponent:(NSDecimalNumber*)exponent
                                              withBehavior:(SVRSolverDecimalBehavior*)behavior;
 {
   double baseRaw     = [self doubleValue];
@@ -515,15 +515,15 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
       return [NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%f", resultRaw]];
     default:
       NSParameterAssert(behavior);
-      return [behavior exceptionDuringOperation:@selector(SVR_decimalNumberByRaisingWithExponent:withBehavior:)
+      return [behavior exceptionDuringOperation:@selector(MATH_decimalNumberByRaisingWithExponent:withBehavior:)
                                           error:error
                                     leftOperand:exponent
                                    rightOperand:self];
   }
 }
 
--(NSDecimalNumber*)SVR_decimalNumberByLogarithmWithBase:(NSDecimalNumber*)base
-                                           withBehavior:(SVRSolverDecimalBehavior*)behavior;
+-(NSDecimalNumber*)MATH_decimalNumberByLogarithmWithBase:(NSDecimalNumber*)base
+                                            withBehavior:(SVRSolverDecimalBehavior*)behavior;
 {
   double argumentRaw = [self doubleValue];
   double baseRaw     = [base doubleValue];
@@ -557,7 +557,7 @@ NSString *SVRSolverDebugDescriptionForError(SVRCalculationError error) {
       return [NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%f", resultRaw]];
     default:
       NSParameterAssert(behavior);
-      return [behavior exceptionDuringOperation:@selector(SVR_decimalNumberByRaisingWithExponent:withBehavior:)
+      return [behavior exceptionDuringOperation:@selector(MATH_decimalNumberByRaisingWithExponent:withBehavior:)
                                           error:error
                                     leftOperand:base
                                    rightOperand:self];
@@ -582,71 +582,71 @@ NSString *const SVRSolverTextStylePreviousColor = @"SVRSolverTextStylePreviousCo
 
 @implementation NSUserDefaults (SVRSolverTextAttachmentStyles)
 
--(SVRSolverTextAttachmentStyles)SVR_stylesForSolution;
+-(SVRSolverTextAttachmentStyles)MATH_stylesForSolution;
 {
 #ifdef XPSupportsNSBezierPath
   SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundCapsuleFill;
 #else
   SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
 #endif
-  NSColor *mixColor = [self SVR_userInterfaceStyle] == XPUserInterfaceStyleDark
+  NSColor *mixColor = [self MATH_userInterfaceStyle] == XPUserInterfaceStyleDark
                       ? [NSColor whiteColor]
                       : [NSColor blackColor];
-  return [NSDictionary __SVR_stylesWithFont:[self SVR_fontForTheme:SVRThemeFontMath]
-                            foregroundColor:[self SVR_colorForTheme:SVRThemeColorOperandText]
-                            backgroundColor:[self SVR_colorForTheme:SVRThemeColorSolution]
-                                   mixColor:mixColor
-                                 background:background];
+  return [NSDictionary __MATH_stylesWithFont:[self MATH_fontForTheme:SVRThemeFontMath]
+                             foregroundColor:[self MATH_colorForTheme:SVRThemeColorOperandText]
+                             backgroundColor:[self MATH_colorForTheme:SVRThemeColorSolution]
+                                    mixColor:mixColor
+                                  background:background];
 }
 
--(SVRSolverTextAttachmentStyles)SVR_stylesForPreviousSolution;
+-(SVRSolverTextAttachmentStyles)MATH_stylesForPreviousSolution;
 {
 #ifdef XPSupportsNSBezierPath
   SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundCapsuleStroke;
 #else
   SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
 #endif
-  NSColor *mixColor = [self SVR_userInterfaceStyle] == XPUserInterfaceStyleDark
+  NSColor *mixColor = [self MATH_userInterfaceStyle] == XPUserInterfaceStyleDark
                       ? [NSColor whiteColor]
                       : [NSColor blackColor];
-  return [NSDictionary __SVR_stylesWithFont:[self SVR_fontForTheme:SVRThemeFontMath]
-                            foregroundColor:[self SVR_colorForTheme:SVRThemeColorOperandText]
-                            backgroundColor:[self SVR_colorForTheme:SVRThemeColorSolutionSecondary]
-                                   mixColor:mixColor
-                                 background:background];
+  return [NSDictionary __MATH_stylesWithFont:[self MATH_fontForTheme:SVRThemeFontMath]
+                             foregroundColor:[self MATH_colorForTheme:SVRThemeColorOperandText]
+                             backgroundColor:[self MATH_colorForTheme:SVRThemeColorSolutionSecondary]
+                                    mixColor:mixColor
+                                  background:background];
 }
 
--(SVRSolverTextAttachmentStyles)SVR_stylesForError;
+-(SVRSolverTextAttachmentStyles)MATH_stylesForError;
 {
 #ifdef XPSupportsNSBezierPath
   SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundCapsuleStroke;
 #else
   SVRSolverTextAttachmentBackground background = SVRSolverTextAttachmentBackgroundLegacyBoxStroke;
 #endif
-  NSColor *mixColor = [self SVR_userInterfaceStyle] == XPUserInterfaceStyleDark
+  NSColor *mixColor = [self MATH_userInterfaceStyle] == XPUserInterfaceStyleDark
                       ? [NSColor whiteColor]
                       : [NSColor blackColor];
-  return [NSDictionary __SVR_stylesWithFont:[self SVR_fontForTheme:SVRThemeFontError]
-                            foregroundColor:[self SVR_colorForTheme:SVRThemeColorOperandText]
-                            backgroundColor:[self SVR_colorForTheme:SVRThemeColorErrorText]
-                                   mixColor:mixColor
-                                 background:background];
+  return [NSDictionary __MATH_stylesWithFont:[self MATH_fontForTheme:SVRThemeFontError]
+                             foregroundColor:[self MATH_colorForTheme:SVRThemeColorOperandText]
+                             backgroundColor:[self MATH_colorForTheme:SVRThemeColorErrorText]
+                                    mixColor:mixColor
+                                  background:background];
 }
 
--(SVRSolverTextStyles)SVR_stylesForText;
+-(SVRSolverTextStyles)MATH_stylesForText;
 {
-  NSFont  *mathFont       = [self SVR_fontForTheme:SVRThemeFontMath];
-  NSFont  *otherTextFont  = [self SVR_fontForTheme:SVRThemeFontOther];
-  NSColor *otherTextColor = [self SVR_colorForTheme:SVRThemeColorOtherText];
-  NSColor *operandColor   = [self SVR_colorForTheme:SVRThemeColorOperandText];
-  NSColor *operatorColor  = [self SVR_colorForTheme:SVRThemeColorOperatorText];
-  NSColor *previousColor  = [self SVR_colorForTheme:SVRThemeColorSolutionSecondary];
+  NSFont  *mathFont       = [self MATH_fontForTheme:SVRThemeFontMath];
+  NSFont  *otherTextFont  = [self MATH_fontForTheme:SVRThemeFontOther];
+  NSColor *otherTextColor = [self MATH_colorForTheme:SVRThemeColorOtherText];
+  NSColor *operandColor   = [self MATH_colorForTheme:SVRThemeColorOperandText];
+  NSColor *operatorColor  = [self MATH_colorForTheme:SVRThemeColorOperatorText];
+  NSColor *previousColor  = [self MATH_colorForTheme:SVRThemeColorSolutionSecondary];
   
-  return [NSDictionary __SVR_stylesWithMathFont:mathFont
-                                   neighborFont:otherTextFont
-                                 otherTextColor:otherTextColor
-                                   operandColor:operandColor
-                                  operatorColor:operatorColor
+  return [NSDictionary __MATH_stylesWithMathFont:mathFont
+                                    neighborFont:otherTextFont
+                                  otherTextColor:otherTextColor
+                                    operandColor:operandColor
+                                   operatorColor:operatorColor
                                    previousColor:previousColor];
 }
 
@@ -654,11 +654,11 @@ NSString *const SVRSolverTextStylePreviousColor = @"SVRSolverTextStylePreviousCo
 
 @implementation NSDictionary (SVRSolverTextAttachmentStyles)
 
-+(SVRSolverTextAttachmentStyles)__SVR_stylesWithFont:(NSFont*)font
-                                     foregroundColor:(NSColor*)foregroundColor
-                                     backgroundColor:(NSColor*)backgroundColor
-                                            mixColor:(NSColor*)mixColor
-                                          background:(SVRSolverTextAttachmentBackground)purpose;
++(SVRSolverTextAttachmentStyles)__MATH_stylesWithFont:(NSFont*)font
+                                      foregroundColor:(NSColor*)foregroundColor
+                                      backgroundColor:(NSColor*)backgroundColor
+                                             mixColor:(NSColor*)mixColor
+                                           background:(SVRSolverTextAttachmentBackground)purpose;
 {
   NSArray *values;
   NSArray *keys;
@@ -687,12 +687,12 @@ NSString *const SVRSolverTextStylePreviousColor = @"SVRSolverTextStylePreviousCo
   return [NSDictionary dictionaryWithObjects:values forKeys:keys];
 }
 
-+(SVRSolverTextAttachmentStyles)__SVR_stylesWithMathFont:(NSFont*)mathFont
-                                            neighborFont:(NSFont*)otherTextFont
-                                          otherTextColor:(NSColor*)otherTextColor
-                                            operandColor:(NSColor*)operandColor
-                                           operatorColor:(NSColor*)operatorColor
-                                           previousColor:(NSColor*)previousColor;
++(SVRSolverTextAttachmentStyles)__MATH_stylesWithMathFont:(NSFont*)mathFont
+                                             neighborFont:(NSFont*)otherTextFont
+                                           otherTextColor:(NSColor*)otherTextColor
+                                             operandColor:(NSColor*)operandColor
+                                            operatorColor:(NSColor*)operatorColor
+                                            previousColor:(NSColor*)previousColor;
 {
   NSArray *keys;
   NSArray *values;

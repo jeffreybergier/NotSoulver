@@ -49,40 +49,40 @@ typedef XP_ENUM(XPInteger, SVRThemeFont) {
 @interface NSUserDefaults (Soulver)
 
 // MARK: Basics
--(NSString*)SVR_savePanelLastDirectory;
--(BOOL)SVR_setSavePanelLastDirectory:(NSString*)newValue;
--(NSTimeInterval)SVR_waitTimeForRendering;
--(BOOL)SVR_setWaitTimeForRendering:(NSTimeInterval)newValue;
+-(NSString*)MATH_savePanelLastDirectory;
+-(BOOL)MATH_setSavePanelLastDirectory:(NSString*)newValue;
+-(NSTimeInterval)MATH_waitTimeForRendering;
+-(BOOL)MATH_setWaitTimeForRendering:(NSTimeInterval)newValue;
 
 // MARK: Accessory Window Visibility
--(SVRSettingSelection)SVR_settingsSelection;
--(BOOL)SVR_setSettingsSelection:(SVRSettingSelection)newValue;
--(BOOL)SVR_visibilityForWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
--(BOOL)SVR_setVisibility:(BOOL)isVisible forWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
+-(SVRSettingSelection)MATH_settingsSelection;
+-(BOOL)MATH_setSettingsSelection:(SVRSettingSelection)newValue;
+-(BOOL)MATH_visibilityForWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
+-(BOOL)MATH_setVisibility:(BOOL)isVisible forWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
 
 // MARK: Theming
 -(void)__postChangeNotification;
 /// Returns the preference for user interface style (this should only be used by the settings window)
--(XPUserInterfaceStyle)SVR_userInterfaceStyleSetting;
--(BOOL)SVR_setUserInterfaceStyleSetting:(XPUserInterfaceStyle)style;
+-(XPUserInterfaceStyle)MATH_userInterfaceStyleSetting;
+-(BOOL)MATH_setUserInterfaceStyleSetting:(XPUserInterfaceStyle)style;
 /// Returns the apparant user interface style
--(XPUserInterfaceStyle)SVR_userInterfaceStyle;
--(NSColor*)SVR_colorForTheme:(SVRThemeColor)theme;
--(NSColor*)SVR_colorForTheme:(SVRThemeColor)theme
-                   withStyle:(XPUserInterfaceStyle)style;
--(BOOL)SVR_setColor:(NSColor*)color
-           forTheme:(SVRThemeColor)theme
-          withStyle:(XPUserInterfaceStyle)style;
--(NSFont*)SVR_fontForTheme:(SVRThemeFont)theme;
--(BOOL)SVR_setFont:(NSFont*)font
-          forTheme:(SVRThemeFont)theme;
--(NSString*)__SVR_keyForThemeColor:(SVRThemeColor)theme
-                         withStyle:(XPUserInterfaceStyle)style;
--(NSString*)__SVR_keyForThemeFont:(SVRThemeFont)theme;
+-(XPUserInterfaceStyle)MATH_userInterfaceStyle;
+-(NSColor*)MATH_colorForTheme:(SVRThemeColor)theme;
+-(NSColor*)MATH_colorForTheme:(SVRThemeColor)theme
+                    withStyle:(XPUserInterfaceStyle)style;
+-(BOOL)MATH_setColor:(NSColor*)color
+            forTheme:(SVRThemeColor)theme
+           withStyle:(XPUserInterfaceStyle)style;
+-(NSFont*)MATH_fontForTheme:(SVRThemeFont)theme;
+-(BOOL)MATH_setFont:(NSFont*)font
+           forTheme:(SVRThemeFont)theme;
+-(NSString*)__MATH_keyForThemeColor:(SVRThemeColor)theme
+                          withStyle:(XPUserInterfaceStyle)style;
+-(NSString*)__MATH_keyForThemeFont:(SVRThemeFont)theme;
 
 // MARK: Configuration
--(void)SVR_configure;
-+(NSDictionary*)__SVR_standardDictionary;
+-(void)MATH_configure;
++(NSDictionary*)__MATH_standardDictionary;
 @end
 
 #ifdef AFF_ObjCNSMethodSignatureUndocumentedClassMethod

@@ -356,8 +356,8 @@ NSArray* XPRunOpenPanel(NSString *extension);
 @end
 
 @interface NSAttributedString (CrossPlatform)
--(XPAttributeEnumerator*)SVR_enumeratorForAttribute:(XPAttributedStringKey)key;
--(XPAttributeEnumerator*)SVR_enumeratorForAttribute:(XPAttributedStringKey)key
+-(XPAttributeEnumerator*)MATH_enumeratorForAttribute:(XPAttributedStringKey)key;
+-(XPAttributeEnumerator*)MATH_enumeratorForAttribute:(XPAttributedStringKey)key
                          usingLongestEffectiveRange:(BOOL)useLongest;
 @end
 
@@ -378,11 +378,11 @@ NSArray* XPRunOpenPanel(NSString *extension);
 @end
 
 @interface NSString (CrossPlatform)
-+(NSString*)SVR_rootRawString;
-+(NSString*)SVR_rootDisplayString;
-+(NSString*)SVR_logRawString;
-+(NSString*)SVR_logDisplayString;
--(NSString*)SVR_descriptionHighlightingRange:(NSRange)range;
++(NSString*)MATH_rootRawString;
++(NSString*)MATH_rootDisplayString;
++(NSString*)MATH_logRawString;
++(NSString*)MATH_logDisplayString;
+-(NSString*)MATH_descriptionHighlightingRange:(NSRange)range;
 -(const char*)XP_UTF8String;
 -(NSEnumerator*)XP_enumeratorForCharactersInSet:(NSCharacterSet*)aSet;
 -(NSEnumerator*)XP_enumeratorForCharactersInSet:(NSCharacterSet*)aSet

@@ -51,7 +51,7 @@
 }
 
 // MARK: Properties
--(SVRSolverTextAttachment*)SVR_attachment;
+-(SVRSolverTextAttachment*)MATH_attachment;
 
 // MARK: Init
 -(id)initWithAttachment:(SVRSolverTextAttachment*)attachment;

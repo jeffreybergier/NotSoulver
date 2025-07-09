@@ -181,10 +181,10 @@ NSString *const SVRDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsolv
     [model beginEditing];
     [[model mutableString] setString:string];
     [SVRSolver solveAttributedString:model
-                      solutionStyles:__TESTING_stylesForSolution         ? __TESTING_stylesForSolution         : [ud SVR_stylesForSolution]
-              previousSolutionStyles:__TESTING_stylesForPreviousSolution ? __TESTING_stylesForPreviousSolution : [ud SVR_stylesForPreviousSolution]
-                         errorStyles:__TESTING_stylesForError            ? __TESTING_stylesForError            : [ud SVR_stylesForError]
-                          textStyles:__TESTING_stylesForText             ? __TESTING_stylesForText             : [ud SVR_stylesForText]];
+                      solutionStyles:__TESTING_stylesForSolution         ? __TESTING_stylesForSolution         : [ud MATH_stylesForSolution        ]
+              previousSolutionStyles:__TESTING_stylesForPreviousSolution ? __TESTING_stylesForPreviousSolution : [ud MATH_stylesForPreviousSolution]
+                         errorStyles:__TESTING_stylesForError            ? __TESTING_stylesForError            : [ud MATH_stylesForError           ]
+                          textStyles:__TESTING_stylesForText             ? __TESTING_stylesForText             : [ud MATH_stylesForText            ]];
     [model endEditing];
     success = YES;
   }
@@ -230,10 +230,10 @@ NSString *const SVRDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsolv
   // Solve the string
   [model beginEditing];
   [SVRSolver solveAttributedString:model
-                    solutionStyles:__TESTING_stylesForSolution         ? __TESTING_stylesForSolution         : [ud SVR_stylesForSolution]
-            previousSolutionStyles:__TESTING_stylesForPreviousSolution ? __TESTING_stylesForPreviousSolution : [ud SVR_stylesForPreviousSolution]
-                       errorStyles:__TESTING_stylesForError            ? __TESTING_stylesForError            : [ud SVR_stylesForError]
-                        textStyles:__TESTING_stylesForText             ? __TESTING_stylesForText             : [ud SVR_stylesForText]];
+                    solutionStyles:__TESTING_stylesForSolution         ? __TESTING_stylesForSolution         : [ud MATH_stylesForSolution        ]
+            previousSolutionStyles:__TESTING_stylesForPreviousSolution ? __TESTING_stylesForPreviousSolution : [ud MATH_stylesForPreviousSolution]
+                       errorStyles:__TESTING_stylesForError            ? __TESTING_stylesForError            : [ud MATH_stylesForError           ]
+                        textStyles:__TESTING_stylesForText             ? __TESTING_stylesForText             : [ud MATH_stylesForText            ]];
   [model endEditing];
   
   // Restore selection
@@ -245,7 +245,7 @@ NSString *const SVRDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsolv
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   [_waitTimer invalidate];
   [_waitTimer release];
-  _waitTimer = [NSTimer scheduledTimerWithTimeInterval:[ud SVR_waitTimeForRendering]
+  _waitTimer = [NSTimer scheduledTimerWithTimeInterval:[ud MATH_waitTimeForRendering]
                                                 target:self
                                               selector:@selector(__waitTimerFired:)
                                               userInfo:[NSDictionary dictionaryWithObject:sender forKey:@"TextView"]

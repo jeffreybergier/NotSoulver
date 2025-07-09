@@ -301,7 +301,7 @@
 -(BOOL)__prepareSavePanel:(NSSavePanel*)savePanel;
 {
   [savePanel setRequiredFileType:[self __fileExtension]];
-  [savePanel setDirectory:[[NSUserDefaults standardUserDefaults] SVR_savePanelLastDirectory]];
+  [savePanel setDirectory:[[NSUserDefaults standardUserDefaults] MATH_savePanelLastDirectory]];
   return YES;
 }
 
@@ -323,7 +323,7 @@
       XPLogAssrt1(NO, @"NSModalResponse(%d) INVALID", (int)okCancel);
       break;
   }
-  [[NSUserDefaults standardUserDefaults] SVR_setSavePanelLastDirectory:[savePanel directory]];
+  [[NSUserDefaults standardUserDefaults] MATH_setSavePanelLastDirectory:[savePanel directory]];
   return okCancel;
 }
 

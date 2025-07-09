@@ -121,7 +121,7 @@
 @end
 #endif
 
-NSString *SVR_localizedStringForSettingsSelection(SVRSettingSelection selection);
-XPWindowStyleMask SVR_windowMaskForKeypadWindow(void);
-XPWindowStyleMask SVR_windowMaskForSettingsWindow(void);
-XPWindowStyleMask SVR_windowMaskForAboutWindow(void);
+NSString *MATH_localizedStringForSettingsSelection(SVRSettingSelection selection);
+XPWindowStyleMask MATH_windowMaskForKeypadWindow(void);
+XPWindowStyleMask MATH_windowMaskForSettingsWindow(void);
+XPWindowStyleMask MATH_windowMaskForAboutWindow(void);

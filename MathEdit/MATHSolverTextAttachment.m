@@ -126,7 +126,7 @@
 
 // MARK: Properties
 
--(SVRSolverTextAttachment*)SVR_attachment;
+-(SVRSolverTextAttachment*)MATH_attachment;
 {
   return (SVRSolverTextAttachment*)[self attachment];
 }
@@ -176,10 +176,10 @@
 
 -(void)drawWithFrame:(NSRect)cellFrame inView:(NSView*)controlView;
 {
-  NSDictionary *attributes = [[self class] attributesWithFont:[[self SVR_attachment] font]
-                                                        color:[[self SVR_attachment] foregroundColor]];
-  NSSize padding = [[[self SVR_attachment] class] textPadding];
-  SVRSolverTextAttachmentBackground background = [[self SVR_attachment] background];
+  NSDictionary *attributes = [[self class] attributesWithFont:[[self MATH_attachment] font]
+                                                        color:[[self MATH_attachment] foregroundColor]];
+  NSSize padding = [[[self MATH_attachment] class] textPadding];
+  SVRSolverTextAttachmentBackground background = [[self MATH_attachment] background];
   switch (background) {
     case SVRSolverTextAttachmentBackgroundCapsuleFill:
       [self __drawBackgroundCapsuleFillInRect:cellFrame];
@@ -188,7 +188,7 @@
       [self __drawBackgroundCapsuleStrokeInRect:cellFrame];
       break;
     case SVRSolverTextAttachmentBackgroundLegacyBoxStroke:
-      [[[self SVR_attachment] backgroundColor] set];
+      [[[self MATH_attachment] backgroundColor] set];
       NSFrameRect(cellFrame);
       break;
     default:
@@ -196,8 +196,8 @@
       break;
   }
   cellFrame.origin.y += padding.height / 2.0;
-  [[[self SVR_attachment] string] drawInRect:cellFrame withAttributes:attributes];
-  XPLogExtra2(@"drawString:`%@` withFrame:%@", [[self SVR_attachment] string], NSStringFromRect(cellFrame));
+  [[[self MATH_attachment] string] drawInRect:cellFrame withAttributes:attributes];
+  XPLogExtra2(@"drawString:`%@` withFrame:%@", [[self MATH_attachment] string], NSStringFromRect(cellFrame));
 }
 
 -(void)__drawBackgroundCapsuleFillInRect:(NSRect)_rect;
@@ -206,8 +206,8 @@
   XPFloat stroke = 1.0;
   NSRect  rect = NSInsetRect(_rect, stroke, stroke);
   XPFloat radius = NSHeight(rect) / 2.0;
-  NSColor *mixColor = [[self SVR_attachment] mixColor];
-  NSColor *backgroundColor = [[self SVR_attachment] backgroundColor];
+  NSColor *mixColor = [[self MATH_attachment] mixColor];
+  NSColor *backgroundColor = [[self MATH_attachment] backgroundColor];
   NSColor *strokeColor = [backgroundColor blendedColorWithFraction:0.5 ofColor:mixColor];
   NSBezierPath *path = [NSBezierPath XP_bezierPathWithRoundedRect:rect
                                                           xRadius:radius
@@ -234,7 +234,7 @@
   XPFloat stroke = 2.0;
   NSRect  rect   = NSInsetRect(_rect, stroke, stroke);
   XPFloat radius = NSHeight(rect) / 2.0;
-  NSColor *strokeColor = [[self SVR_attachment] backgroundColor];
+  NSColor *strokeColor = [[self MATH_attachment] backgroundColor];
   NSBezierPath *path   = [NSBezierPath XP_bezierPathWithRoundedRect:rect
                                                             xRadius:radius
                                                             yRadius:radius];
@@ -259,7 +259,7 @@
 
 -(NSSize)__calculateCellSize;
 {
-  SVRSolverTextAttachment *attachment = [self SVR_attachment];
+  SVRSolverTextAttachment *attachment = [self MATH_attachment];
   NSDictionary *attributes = [[self class] attributesWithFont:[attachment font]
                                                         color:[attachment foregroundColor]];
   NSSize size = [[attachment string] sizeWithAttributes:attributes];
@@ -273,7 +273,7 @@
 {
   NSPoint output = [super cellBaselineOffset];
 
-  XPFloat capHeight    = [[[self SVR_attachment] font] capHeight];
+  XPFloat capHeight    = [[[self MATH_attachment] font] capHeight];
   XPFloat attachHeight = [self cellSize].height;
   XPFloat offset       = (capHeight - attachHeight) / 2.0;
   

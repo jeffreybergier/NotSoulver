@@ -189,7 +189,7 @@
 -(void)overrideWindowAppearance;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-  XPUserInterfaceStyle style = [ud SVR_userInterfaceStyle];
+  XPUserInterfaceStyle style = [ud MATH_userInterfaceStyle];
   NSWindow *myWindow = [self XP_windowForSheet];
   XPParameterRaise(myWindow);
   [myWindow XP_setAppearanceWithUserInterfaceStyle:style];

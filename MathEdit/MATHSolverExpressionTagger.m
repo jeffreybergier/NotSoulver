@@ -50,7 +50,7 @@
     range = [next XP_rangeValue];
     numberString = [[string string] substringWithRange:range];
     number = [NSDecimalNumber decimalNumberWithString:numberString];
-    XPLogAssrt1(![number SVR_isNotANumber], @"SVRSolverExpressionTagger: step2: `%@` is NaN", numberString);
+    XPLogAssrt1(![number MATH_isNotANumber], @"SVRSolverExpressionTagger: step2: `%@` is NaN", numberString);
     [string removeAttribute:XPAttributedStringKeyForTag(SVRSolverTagOperator)
                       range:range];
     [string addAttribute:XPAttributedStringKeyForTag(SVRSolverTagNumber)

@@ -116,7 +116,7 @@
     for (capIdx = 0; capIdx<_numCaps; capIdx++) {
       capRanges[capIdx] = NSMakeRange((XPUInteger)(caps[capIdx].ptr - maxBuffer),
                                       (XPUInteger)caps[capIdx].len);
-      XPLogExtra1(@"%@", [string SVR_descriptionHighlightingRange:capRanges[capIdx]]);
+      XPLogExtra1(@"%@", [string MATH_descriptionHighlightingRange:capRanges[capIdx]]);
     }
     [output addObject:[XPTextCheckingResult regularExpressionCheckingResultWithRanges:capRanges
                                                                                 count:(XPUInteger)_numCaps

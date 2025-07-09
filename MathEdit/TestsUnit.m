@@ -81,9 +81,9 @@ void TestsUnitExecute(void)
   
   NSLog(@"%@ Unit Tests: STARTING", self);
   
-  // MARK: SVR_regexForNumbers
+  // MARK: MATH_regexForNumbers
   string = @"this isA1,B2,C3,D1.1,E2.2,F3.3,g10.10,h20.20JI30.30,O-1, -2, -3,M-1.1, -2.2, -3.3, -10.10, -20.20, -30.30END";
-  regex = [XPRegularExpression SVR_regexForNumbers];
+  regex = [XPRegularExpression MATH_regexForNumbers];
   matches = [regex matchesInString:string options:0 range:NSMakeRange(3, [string length] - 3)];
   XPTestInt([matches count], 18);
   match = [matches objectAtIndex:0];
@@ -141,17 +141,17 @@ void TestsUnitExecute(void)
   XPTestInt([match numberOfRanges], 1);
   XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"-30.30");
   
-  // MARK: SVR_regexForOperators - MegaSimple
+  // MARK: MATH_regexForOperators - MegaSimple
   string = @"a2+2=";
-  regex = [XPRegularExpression SVR_regexForOperators];
+  regex = [XPRegularExpression MATH_regexForOperators];
   matches = [regex matchesInString:string options:0 range:NSMakeRange(1, [string length]-2)];
   XPTestInt([matches count], 1);
   match = [matches objectAtIndex:0];
   XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"+");
   
-  // MARK: SVR_regexForOperators
+  // MARK: MATH_regexForOperators
   string = @"___15+15 and 40-400 and 6.3*6.0 and 7/07 and 8^8 and 9R9 and 9r9 and 10l10 and 10L100_______";
-  regex = [XPRegularExpression SVR_regexForOperators];
+  regex = [XPRegularExpression MATH_regexForOperators];
   matches = [regex matchesInString:string options:0 range:NSMakeRange(3, [string length]-6)];
   XPTestInt([matches count], 7);
   match = [matches objectAtIndex:0];
@@ -176,17 +176,17 @@ void TestsUnitExecute(void)
   XPTestInt([match numberOfRanges], 1);
   XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"L");
   
-  // MARK: SVR_regexForExpressions - MegaSimple
+  // MARK: MATH_regexForExpressions - MegaSimple
   string = @"2+2=";
-  regex = [XPRegularExpression SVR_regexForExpressions];
+  regex = [XPRegularExpression MATH_regexForExpressions];
   matches = [regex matchesInString:string];
   XPTestInt([matches count], 1);
   match = [matches objectAtIndex:0];
   XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"2+2=");
   
-  // MARK: SVR_regexForExpressions
+  // MARK: MATH_regexForExpressions
   string = @"abc12.32+333RL()222=OR7r7=OR8l8=AND7*7.3-66+22*(((45-67)=2+2-3*8/7(0.123--30.0)+7=PPPPPPP";
-  regex = [XPRegularExpression SVR_regexForExpressions];
+  regex = [XPRegularExpression MATH_regexForExpressions];
   matches = [regex matchesInString:string options:0 range:NSMakeRange(2, [string length]-4)];
   XPTestInt([matches count], 5);
   match = [matches objectAtIndex:0];
@@ -205,8 +205,8 @@ void TestsUnitExecute(void)
   XPTestInt([match numberOfRanges], 1);
   XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"2+2-3*8/7(0.123--30.0)+7=");
   
-  // MARK: SVR_regexForBrackets
-  regex = [XPRegularExpression SVR_regexForBrackets];
+  // MARK: MATH_regexForBrackets
+  regex = [XPRegularExpression MATH_regexForBrackets];
   matches = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
   XPTestInt([matches count], 8);
   match = [matches objectAtIndex:0];
@@ -243,7 +243,7 @@ void TestsUnitExecute(void)
   XPTestString([string substringWithRange:[match rangeAtIndex:0]], @")");
   
   // MARK: Legacy SLRE Operator Finding Tests
-  regex = [XPRegularExpression SVR_regexForOperators];
+  regex = [XPRegularExpression MATH_regexForOperators];
   string = @"and (1+2)^(6*7)-3*4*(7) and 9-(4) and";
   matches = [regex matchesInString:string];
   XPTestInt([matches count], 7);
@@ -273,7 +273,7 @@ void TestsUnitExecute(void)
   XPTestString([string substringWithRange:[match rangeAtIndex:0]], @"-");
   
   // MARK: Legacy SLRE Number Finding Tests
-  regex = [XPRegularExpression SVR_regexForNumbers];
+  regex = [XPRegularExpression MATH_regexForNumbers];
   string = @"and (-102.34+243.333)^(666*-700)-33.44*-4.444*(7...888) and -9-(400) and";
   matches = [regex matchesInString:string];
   XPTestInt([matches count], 10);

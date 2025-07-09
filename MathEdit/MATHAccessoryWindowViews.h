@@ -178,51 +178,51 @@ static const XPFloat SVRAccessoryWindowKeypadWindowButtonHPadding = 4;
 @end
 
 @interface NSControl (SVRAccessoryWindows)
-+(NSButton*)SVR_keypadButtonOfKind:(SVRKeypadButtonKind)kind;
-+(NSButton*)SVR_settingsButtonWithFrame:(NSRect)frame
-                                  title:(NSString*)title
-                                 action:(SEL)action
-                                    tag:(XPInteger)tag;
-+(NSColorWell*)SVR_colorWellWithFrame:(NSRect)frame
-                                 kind:(SVRColorWellKind)kind;
-+(NSTextField*)SVR_labelWithFrame:(NSRect)frame;
-+(NSTextField*)SVR_textFieldWithFrame:(NSRect)frame
-                               target:(id)target
-                               action:(SEL)action;
--(id)SVR_sizeToFitVertically;
--(id)SVR_setObjectValue:(id)objectValue
-                   font:(NSFont*)font
-              alignment:(NSTextAlignment)alignment;
++(NSButton*)MATH_keypadButtonOfKind:(SVRKeypadButtonKind)kind;
++(NSButton*)MATH_settingsButtonWithFrame:(NSRect)frame
+                                   title:(NSString*)title
+                                  action:(SEL)action
+                                     tag:(XPInteger)tag;
++(NSColorWell*)MATH_colorWellWithFrame:(NSRect)frame
+                                  kind:(SVRColorWellKind)kind;
++(NSTextField*)MATH_labelWithFrame:(NSRect)frame;
++(NSTextField*)MATH_textFieldWithFrame:(NSRect)frame
+                                target:(id)target
+                                action:(SEL)action;
+-(id)MATH_sizeToFitVertically;
+-(id)MATH_setObjectValue:(id)objectValue
+                    font:(NSFont*)font
+               alignment:(NSTextAlignment)alignment;
 @end
 
 @interface NSView (SVRAccessoryWindows)
-+(NSBox*)SVR_lineWithFrame:(NSRect)frame;
--(id)SVR_setAutoresizingMask:(XPUInteger)mask;
++(NSBox*)MATH_lineWithFrame:(NSRect)frame;
+-(id)MATH_setAutoresizingMask:(XPUInteger)mask;
 @end
 
 @interface NSImageView (SVRAccessoryWindows)
-+(NSImageView*)SVR_imageViewWithOrigin:(NSPoint)origin
-                  sizedToFitImageNamed:(NSString*)imageName;
-+(NSImageView*)SVR_imageViewWithFrame:(NSRect)frame
-                           imageNamed:(NSString*)imageName;
--(NSImageView*)SVR_setImageFrameStyle:(NSImageFrameStyle)imageFrameStyle;
++(NSImageView*)MATH_imageViewWithOrigin:(NSPoint)origin
+                   sizedToFitImageNamed:(NSString*)imageName;
++(NSImageView*)MATH_imageViewWithFrame:(NSRect)frame
+                            imageNamed:(NSString*)imageName;
+-(NSImageView*)MATH_setImageFrameStyle:(NSImageFrameStyle)imageFrameStyle;
 @end
 
 @interface NSImage (SVRAccessoryWindows)
--(NSImage*)SVR_setTemplate:(BOOL)flag;
+-(NSImage*)MATH_setTemplate:(BOOL)flag;
 @end
 
 @interface NSCell (CrossPlatform)
 -(void)XP_setSendsActionOnEndEditing:(BOOL)sendsAction;
 @end
 
-NSRect SVR_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind);
-NSRect SVR_rectByAdjustingAquaButtonRect(NSRect rect);
-NSString *SVR_titleForKeypadButtonOfKind(SVRKeypadButtonKind kind);
-NSString *SVR_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind);
-NSString *SVR_localizedStringForKind(SVRResetButtonKind kind);
-SVRResetButtonKind SVR_resetButtonKindForColorWellKind(SVRColorWellKind kind);
-SVRResetButtonKind SVR_resetButtonKindForFontSettingKind(SVRThemeFont kind);
+NSRect MATH_rectForKeypadButtonOfKind(SVRKeypadButtonKind kind);
+NSRect MATH_rectByAdjustingAquaButtonRect(NSRect rect);
+NSString *MATH_titleForKeypadButtonOfKind(SVRKeypadButtonKind kind);
+NSString *MATH_keyForKeypadButtonOfKind(SVRKeypadButtonKind kind);
+NSString *MATH_localizedStringForKind(SVRResetButtonKind kind);
+SVRResetButtonKind MATH_resetButtonKindForColorWellKind(SVRColorWellKind kind);
+SVRResetButtonKind MATH_resetButtonKindForFontSettingKind(SVRThemeFont kind);
 
 // These are not implemented, but silence compiler warnings
 @interface NSResponder (SVRIBActions)

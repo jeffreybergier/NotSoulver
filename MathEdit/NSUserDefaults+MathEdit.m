@@ -57,23 +57,23 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
 
 // MARK: Basics
 
--(NSString*)SVR_savePanelLastDirectory;
+-(NSString*)MATH_savePanelLastDirectory;
 {
   return [self objectForKey:XPUserDefaultsSavePanelLastDirectory];
 }
 
--(BOOL)SVR_setSavePanelLastDirectory:(NSString*)newValue;
+-(BOOL)MATH_setSavePanelLastDirectory:(NSString*)newValue;
 {
   [self setObject:newValue forKey:XPUserDefaultsSavePanelLastDirectory];
   return [self synchronize];
 }
 
--(NSTimeInterval)SVR_waitTimeForRendering;
+-(NSTimeInterval)MATH_waitTimeForRendering;
 {
   return (NSTimeInterval)[self floatForKey:XPUserDefaultsWaitTimeForRendering];
 }
 
--(BOOL)SVR_setWaitTimeForRendering:(NSTimeInterval)newValue;
+-(BOOL)MATH_setWaitTimeForRendering:(NSTimeInterval)newValue;
 {
   BOOL success = NO;
   if (newValue < 0) {
@@ -88,18 +88,18 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
 
 // MARK: Accessory Window Visibility
 
--(SVRSettingSelection)SVR_settingsSelection;
+-(SVRSettingSelection)MATH_settingsSelection;
 {
   return (SVRSettingSelection)[self integerForKey:SVRSettingsSelection];
 }
 
--(BOOL)SVR_setSettingsSelection:(SVRSettingSelection)newValue;
+-(BOOL)MATH_setSettingsSelection:(SVRSettingSelection)newValue;
 {
   [self setInteger:newValue forKey:SVRSettingsSelection];
   return [self synchronize];
 }
 
--(BOOL)SVR_visibilityForWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
+-(BOOL)MATH_visibilityForWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
 {
 #ifdef XPSupportsStateRestoration
   XPLogDebug(@"[IGNORE] System supports state restoration");
@@ -109,7 +109,7 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
 #endif
 }
 
--(BOOL)SVR_setVisibility:(BOOL)isVisible forWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
+-(BOOL)MATH_setVisibility:(BOOL)isVisible forWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
 {
 #ifdef XPSupportsStateRestoration
   XPLogDebug(@"[IGNORE] System supports state restoration");
@@ -129,13 +129,13 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
                     object:self];
 }
 
--(XPUserInterfaceStyle)SVR_userInterfaceStyle;
+-(XPUserInterfaceStyle)MATH_userInterfaceStyle;
 {
 #ifdef XPSupportsDarkMode
   NSAppearance *appearance = [[NSApplication sharedApplication] effectiveAppearance];
   NSArray *names = [NSArray arrayWithObjects:NSAppearanceNameAqua, NSAppearanceNameDarkAqua, nil];
   NSAppearanceName bestMatch = [appearance bestMatchFromAppearancesWithNames:names];
-  XPUserInterfaceStyle setting = [self SVR_userInterfaceStyleSetting];
+  XPUserInterfaceStyle setting = [self MATH_userInterfaceStyleSetting];
   switch (setting) {
     case XPUserInterfaceStyleUnspecified:
       if ([bestMatch isEqualToString:NSAppearanceNameDarkAqua]) {
@@ -152,7 +152,7 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
       return -1;
   }
 #else
-  XPUserInterfaceStyle setting = [self SVR_userInterfaceStyleSetting];
+  XPUserInterfaceStyle setting = [self MATH_userInterfaceStyleSetting];
   switch (setting) {
     case XPUserInterfaceStyleDark:
       return XPUserInterfaceStyleDark;
@@ -166,15 +166,15 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
 #endif
 }
 
--(XPUserInterfaceStyle)SVR_userInterfaceStyleSetting;
+-(XPUserInterfaceStyle)MATH_userInterfaceStyleSetting;
 {
   return (XPUserInterfaceStyle)[self integerForKey:SVRThemeUserInterfaceStyle];
 }
 
--(BOOL)SVR_setUserInterfaceStyleSetting:(XPUserInterfaceStyle)style;
+-(BOOL)MATH_setUserInterfaceStyleSetting:(XPUserInterfaceStyle)style;
 {
   BOOL success = NO;
-  XPUserInterfaceStyle oldStyle = [self SVR_userInterfaceStyleSetting];
+  XPUserInterfaceStyle oldStyle = [self MATH_userInterfaceStyleSetting];
   if (oldStyle == style) { return YES; }
   [self setInteger:style forKey:SVRThemeUserInterfaceStyle];
   success = [self synchronize];
@@ -183,27 +183,27 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
   return success;
 }
 
--(NSColor*)SVR_colorForTheme:(SVRThemeColor)theme;
+-(NSColor*)MATH_colorForTheme:(SVRThemeColor)theme;
 {
-  return [self SVR_colorForTheme:theme withStyle:[self SVR_userInterfaceStyle]];
+  return [self MATH_colorForTheme:theme withStyle:[self MATH_userInterfaceStyle]];
 }
 
--(NSColor*)SVR_colorForTheme:(SVRThemeColor)theme
+-(NSColor*)MATH_colorForTheme:(SVRThemeColor)theme
                    withStyle:(XPUserInterfaceStyle)style;
 {
-  NSData *data = [self objectForKey:[self __SVR_keyForThemeColor:theme withStyle:style]];
+  NSData *data = [self objectForKey:[self __MATH_keyForThemeColor:theme withStyle:style]];
   NSColor *output = [NSColor XP_colorWithData:data];
   XPLogAssrt(output, @"Color was NIL");
   return output;
 }
 
--(BOOL)SVR_setColor:(NSColor*)color
+-(BOOL)MATH_setColor:(NSColor*)color
            forTheme:(SVRThemeColor)theme
           withStyle:(XPUserInterfaceStyle)style;
 {
   BOOL success = NO;
-  NSString *key = [self __SVR_keyForThemeColor:theme withStyle:style];
-  NSColor *oldColor = [self SVR_colorForTheme:theme withStyle:style];
+  NSString *key = [self __MATH_keyForThemeColor:theme withStyle:style];
+  NSColor *oldColor = [self MATH_colorForTheme:theme withStyle:style];
   if ([oldColor isEqual:color]) { return YES; }
   if (color) {
     [self setObject:[color XP_data] forKey:key];
@@ -216,19 +216,19 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
   return success;
 }
 
--(NSFont*)SVR_fontForTheme:(SVRThemeFont)theme;
+-(NSFont*)MATH_fontForTheme:(SVRThemeFont)theme;
 {
-  NSData *data = [self dataForKey:[self __SVR_keyForThemeFont:theme]];
+  NSData *data = [self dataForKey:[self __MATH_keyForThemeFont:theme]];
   NSFont *font = [NSFont XP_fontWithData:data];
   XPLogAssrt(font, @"Font was NIL");
   return font;
 }
 
--(BOOL)SVR_setFont:(NSFont*)font
+-(BOOL)MATH_setFont:(NSFont*)font
           forTheme:(SVRThemeFont)theme;
 {
   BOOL success = NO;
-  NSString *key = [self __SVR_keyForThemeFont:theme];
+  NSString *key = [self __MATH_keyForThemeFont:theme];
   if (font) {
     [self setObject:[font XP_data] forKey:key];
   } else {
@@ -240,7 +240,7 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
   return success;
 }
 
--(NSString*)__SVR_keyForThemeColor:(SVRThemeColor)theme
+-(NSString*)__MATH_keyForThemeColor:(SVRThemeColor)theme
                          withStyle:(XPUserInterfaceStyle)style;
 {
   switch (style) {
@@ -275,7 +275,7 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
   return nil;
 }
 
--(NSString*)__SVR_keyForThemeFont:(SVRThemeFont)theme;
+-(NSString*)__MATH_keyForThemeFont:(SVRThemeFont)theme;
 {
   switch (theme) {
     case SVRThemeFontMath:  return SVRThemeMathFontKey;
@@ -290,12 +290,12 @@ NSString *SVRSettingsSelection                    = @"kSVRSettingsSelectionKey";
 
 // MARK: Configuration
 
--(void)SVR_configure;
+-(void)MATH_configure;
 {
-  [self registerDefaults:[NSUserDefaults __SVR_standardDictionary]];
+  [self registerDefaults:[NSUserDefaults __MATH_standardDictionary]];
 }
 
-+(NSDictionary*)__SVR_standardDictionary;
++(NSDictionary*)__MATH_standardDictionary;
 {
   NSArray *keys;
   NSArray *vals;

@@ -105,8 +105,8 @@
 @end
 
 @interface NSMenu (AppDelegate)
-+(NSMenu*)SVR_mainMenuWithApp:(NSApplication*)app
-                      storage:(NSMutableArray*)storage;
++(NSMenu*)MATH_mainMenuWithApp:(NSApplication*)app
+                       storage:(NSMutableArray*)storage;
 +(void)__buildAppMenuInMainMenu:(NSMenu*)mainMenu
                     application:(NSApplication*)app
                         storage:(NSMutableArray*)storage;
@@ -128,5 +128,5 @@
 @end
 
 @interface NSString (SVRMainMenu)
--(NSString*)SVR_stringByAppendingEllipsis;
+-(NSString*)MATH_stringByAppendingEllipsis;
 @end

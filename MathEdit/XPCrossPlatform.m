@@ -99,7 +99,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 {
   // This method was occasionally causing a crash with NSOpenPanel,
   // thus I added the additional memory management.
-  // I think the reason was just passing [ud SVR_savePanelLastDirectory]
+  // I think the reason was just passing [ud MATH_savePanelLastDirectory]
   // directly into the open panel. But I added memory
   // protection around everything just in case.
   XPModalResponse result;
@@ -107,13 +107,13 @@ NSArray* XPRunOpenPanel(NSString *extension)
   
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   NSOpenPanel *panel = [[NSOpenPanel openPanel] retain];
-  NSString *lastDirectory = [[ud SVR_savePanelLastDirectory] retain];
+  NSString *lastDirectory = [[ud MATH_savePanelLastDirectory] retain];
   
   [panel setAllowsMultipleSelection:YES];
   result = [panel runModalForDirectory:lastDirectory
                                   file:nil
                                  types:[NSArray arrayWithObject:extension]];
-  [ud SVR_setSavePanelLastDirectory:[panel directory]];
+  [ud MATH_setSavePanelLastDirectory:[panel directory]];
   
   switch (result) {
     case XPModalResponseOK:
@@ -205,13 +205,13 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 @implementation NSAttributedString (CrossPlatform)
 
--(XPAttributeEnumerator*)SVR_enumeratorForAttribute:(XPAttributedStringKey)key;
+-(XPAttributeEnumerator*)MATH_enumeratorForAttribute:(XPAttributedStringKey)key;
 {
-  return [self SVR_enumeratorForAttribute:key usingLongestEffectiveRange:NO];
+  return [self MATH_enumeratorForAttribute:key usingLongestEffectiveRange:NO];
 }
 
--(XPAttributeEnumerator*)SVR_enumeratorForAttribute:(XPAttributedStringKey)key
-                         usingLongestEffectiveRange:(BOOL)usesLongest;
+-(XPAttributeEnumerator*)MATH_enumeratorForAttribute:(XPAttributedStringKey)key
+                          usingLongestEffectiveRange:(BOOL)usesLongest;
 {
   return [XPAttributeEnumerator enumeratorWithAttributedString:self
                                                forAttributeKey:key
@@ -263,29 +263,29 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 @implementation NSString (CrossPlatform)
 
-+(NSString*)SVR_rootDisplayString;
++(NSString*)MATH_rootDisplayString;
 {
   // This breaks the regex engine because its shit
   unichar sqrtChar = 0x221A;
   return [NSString stringWithCharacters:&sqrtChar length:1];
 }
 
-+(NSString*)SVR_rootRawString;
++(NSString*)MATH_rootRawString;
 {
   return @"R";
 }
 
-+(NSString*)SVR_logRawString;
++(NSString*)MATH_logRawString;
 {
   return @"L";
 }
 
-+(NSString*)SVR_logDisplayString;
++(NSString*)MATH_logDisplayString;
 {
   return @"log";
 }
 
--(NSString*)SVR_descriptionHighlightingRange:(NSRange)range;
+-(NSString*)MATH_descriptionHighlightingRange:(NSRange)range;
 {
   NSString *leading  = @">>";
   NSString *trailing = @"<<";

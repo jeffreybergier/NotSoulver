@@ -120,9 +120,9 @@
 {
   NSApplication *app = [aNotification object];
   // Build the menu
-  [app setMainMenu:[NSMenu SVR_mainMenuWithApp:app storage:_menus]];
+  [app setMainMenu:[NSMenu MATH_mainMenuWithApp:app storage:_menus]];
   // Prepare UserDefaults
-  [[NSUserDefaults standardUserDefaults] SVR_configure];
+  [[NSUserDefaults standardUserDefaults] MATH_configure];
   // Prepare FontManager
   [NSFontManager setFontManagerFactory:[SVRFontManager class]];
   // Load Accessory Windows Nib
@@ -400,8 +400,8 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 @end
 
 @implementation NSMenu (AppDelegate)
-+(NSMenu*)SVR_mainMenuWithApp:(NSApplication*)app
-                      storage:(NSMutableArray*)storage;
++(NSMenu*)MATH_mainMenuWithApp:(NSApplication*)app
+                       storage:(NSMutableArray*)storage;
 {
   NSMenu *mainMenu = [[[NSMenu alloc] initWithTitle:[Localized titleAppName]] autorelease];
   [storage addObject:mainMenu];
@@ -454,7 +454,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 
   [menu addItemWithTitle:[Localized menuAppAbout] action:@selector(showAboutWindow:) keyEquivalent:@""];
   [menu XP_addSeparatorItem];
-  [menu addItemWithTitle:[[Localized menuAppSettings] SVR_stringByAppendingEllipsis] action:@selector(showSettingsWindow:) keyEquivalent:@","];
+  [menu addItemWithTitle:[[Localized menuAppSettings] MATH_stringByAppendingEllipsis] action:@selector(showSettingsWindow:) keyEquivalent:@","];
   [menu XP_addSeparatorItem];
   
   // Services submenu
@@ -483,9 +483,9 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   [mainMenu setSubmenu:menu forItem:item];
   [storage addObject:menu];
 
-  [menu addItemWithTitle:[[Localized menuAppInfoLegacy] SVR_stringByAppendingEllipsis] action:@selector(showAboutWindow:) keyEquivalent:@""];
-  [menu addItemWithTitle:[[Localized menuAppSettings] SVR_stringByAppendingEllipsis] action:@selector(showSettingsWindow:) keyEquivalent:@","];
-  [menu addItemWithTitle:[[Localized menuHelp] SVR_stringByAppendingEllipsis] action:@selector(openSourceRepository:) keyEquivalent:@"?"];
+  [menu addItemWithTitle:[[Localized menuAppInfoLegacy] MATH_stringByAppendingEllipsis] action:@selector(showAboutWindow:) keyEquivalent:@""];
+  [menu addItemWithTitle:[[Localized menuAppSettings] MATH_stringByAppendingEllipsis] action:@selector(showSettingsWindow:) keyEquivalent:@","];
+  [menu addItemWithTitle:[[Localized menuHelp] MATH_stringByAppendingEllipsis] action:@selector(openSourceRepository:) keyEquivalent:@"?"];
 }
 
 +(void)__buildFileMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
@@ -500,23 +500,23 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   [storage addObject:menu];
   
   [menu addItemWithTitle:[Localized menuFileNew] action:@selector(newDocument:) keyEquivalent:@"n"];
-  [menu addItemWithTitle:[[Localized menuFileOpen] SVR_stringByAppendingEllipsis] action:@selector(openDocument:) keyEquivalent:@"o"];
+  [menu addItemWithTitle:[[Localized menuFileOpen] MATH_stringByAppendingEllipsis] action:@selector(openDocument:) keyEquivalent:@"o"];
   [menu XP_addSeparatorItem];
   [menu addItemWithTitle:[Localized menuFileClose] action:@selector(performClose:) keyEquivalent:@"w"];
-  [menu addItemWithTitle:[[Localized menuFileSave] SVR_stringByAppendingEllipsis] action:@selector(saveDocument:) keyEquivalent:@"s"];
-  [menu addItemWithTitle:[[Localized menuFileSaveAll] SVR_stringByAppendingEllipsis] action:@selector(saveAllDocuments:) keyEquivalent:@""];
-  item = [menu addItemWithTitle:[[Localized menuFileSaveAs] SVR_stringByAppendingEllipsis] action:@selector(saveDocumentAs:) keyEquivalent:@"s"];
+  [menu addItemWithTitle:[[Localized menuFileSave] MATH_stringByAppendingEllipsis] action:@selector(saveDocument:) keyEquivalent:@"s"];
+  [menu addItemWithTitle:[[Localized menuFileSaveAll] MATH_stringByAppendingEllipsis] action:@selector(saveAllDocuments:) keyEquivalent:@""];
+  item = [menu addItemWithTitle:[[Localized menuFileSaveAs] MATH_stringByAppendingEllipsis] action:@selector(saveDocumentAs:) keyEquivalent:@"s"];
   [item setKeyEquivalentModifierMask:XPEventModifierFlagShift|XPEventModifierFlagCommand|XPEventModifierFlagOption];
-  item = [menu addItemWithTitle:[[Localized menuFileDuplicate] SVR_stringByAppendingEllipsis] action:@selector(duplicateDocument:) keyEquivalent:@"s"];
+  item = [menu addItemWithTitle:[[Localized menuFileDuplicate] MATH_stringByAppendingEllipsis] action:@selector(duplicateDocument:) keyEquivalent:@"s"];
   [item setKeyEquivalentModifierMask:XPEventModifierFlagShift|XPEventModifierFlagCommand];
-  [menu addItemWithTitle:[[Localized menuFileRename] SVR_stringByAppendingEllipsis] action:@selector(renameDocument:) keyEquivalent:@""];
-  [menu addItemWithTitle:[[Localized menuFileMoveTo] SVR_stringByAppendingEllipsis] action:@selector(moveDocument:) keyEquivalent:@""];
+  [menu addItemWithTitle:[[Localized menuFileRename] MATH_stringByAppendingEllipsis] action:@selector(renameDocument:) keyEquivalent:@""];
+  [menu addItemWithTitle:[[Localized menuFileMoveTo] MATH_stringByAppendingEllipsis] action:@selector(moveDocument:) keyEquivalent:@""];
   item = [menu addItemWithTitle:[Localized menuFileRevertTo] action:NULL keyEquivalent:@""];
   submenu = [[[NSMenu alloc] initWithTitle:[Localized menuFileRevertTo]] autorelease];
   [menu setSubmenu:submenu forItem:item];
   [storage addObject:submenu];
   [submenu addItemWithTitle:[Localized menuFileLastSavedVersion] action:@selector(revertDocumentToSaved:) keyEquivalent:@""];
-  [submenu addItemWithTitle:[[Localized menuFileBrowseAllVersions] SVR_stringByAppendingEllipsis] action:@selector(browseDocumentVersions:) keyEquivalent:@""];
+  [submenu addItemWithTitle:[[Localized menuFileBrowseAllVersions] MATH_stringByAppendingEllipsis] action:@selector(browseDocumentVersions:) keyEquivalent:@""];
 }
 
 +(void)__buildEditMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
@@ -551,7 +551,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   submenu = [[[NSMenu alloc] initWithTitle:[Localized menuEditFind]] autorelease];
   [menu setSubmenu:submenu forItem:item];
   [storage addObject:submenu];
-  item = [submenu addItemWithTitle:[[Localized menuEditFind] SVR_stringByAppendingEllipsis] action:@selector(performFindPanelAction:) keyEquivalent:@"f"];
+  item = [submenu addItemWithTitle:[[Localized menuEditFind] MATH_stringByAppendingEllipsis] action:@selector(performFindPanelAction:) keyEquivalent:@"f"];
   [item setTag:NSFindPanelActionShowFindPanel];
   item = [submenu addItemWithTitle:[Localized menuEditFindNext] action:@selector(performFindPanelAction:) keyEquivalent:@"g"];
   [item setTag:NSFindPanelActionNext];
@@ -649,7 +649,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
   menu = [[[NSMenu alloc] initWithTitle:[Localized menuHelp]] autorelease];
   [mainMenu setSubmenu:menu forItem:item];
   [storage addObject:menu];
-  [menu addItemWithTitle:[[Localized menuHelp] SVR_stringByAppendingEllipsis] action:@selector(openSourceRepository:) keyEquivalent:@"?"];
+  [menu addItemWithTitle:[[Localized menuHelp] MATH_stringByAppendingEllipsis] action:@selector(openSourceRepository:) keyEquivalent:@"?"];
 }
 
 +(void)__buildTrailingMenuInMainMenu:(NSMenu*)mainMenu
@@ -681,7 +681,7 @@ NSString * const SVRApplicationEffectiveAppearanceKeyPath = @"effectiveAppearanc
 @end
 
 @implementation NSString (SVRMainMenu)
--(NSString*)SVR_stringByAppendingEllipsis;
+-(NSString*)MATH_stringByAppendingEllipsis;
 {
 #ifdef XPSupportsUnicodeUI
   return [self stringByAppendingFormat:@"%C", 0x2026];

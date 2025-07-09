@@ -59,8 +59,8 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
   NSString *next = nil;
   NSRange nextRange = XPNotFoundRange;
 
-  e = [output SVR_enumeratorForAttribute:XPAttributedStringKeyForTag(SVRSolverTagExpression)
-              usingLongestEffectiveRange:YES];
+  e = [output MATH_enumeratorForAttribute:XPAttributedStringKeyForTag(SVRSolverTagExpression)
+               usingLongestEffectiveRange:YES];
   while ((next = [e nextObject])) {
     nextRange = NSRangeFromString(next);
     solutionRange = NSMakeRange(NSMaxRange(nextRange), 1);
@@ -100,7 +100,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
                                                 styles:errorStyles]
       ];
     }
-    XPLogExtra2(@"%@<-%@", [[output string] SVR_descriptionHighlightingRange:solutionRange], solution);
+    XPLogExtra2(@"%@<-%@", [[output string] MATH_descriptionHighlightingRange:solutionRange], solution);
     // Step 6: Insert the text attachment for the solution or error
     [output replaceCharactersInRange:solutionRange
                 withAttributedString:solutionString];
@@ -190,12 +190,12 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     // Revert patch back to subexpression with brackets
     patchRange = [bracketRange XP_rangeValue];
     if (output) {
-      XPLogExtra2(@"(): %@<-%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output);
+      XPLogExtra2(@"(): %@<-%@", [[expression string] MATH_descriptionHighlightingRange:patchRange], output);
       patchString = [self __taggedStringWithNumber:output];
       [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
       output = nil;
     } else {
-      XPLogExtra1(@"(): %@<-Deleted", [[expression string] SVR_descriptionHighlightingRange:patchRange]);
+      XPLogExtra1(@"(): %@<-Deleted", [[expression string] MATH_descriptionHighlightingRange:patchRange]);
       [expression deleteCharactersInRange:patchRange];
     }
   }
@@ -210,7 +210,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
                                          patchRange:&patchRange
                                               error:errorPtr]))
   {
-    XPLogExtra2(@"Op^: %@<-%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output);
+    XPLogExtra2(@"Op^: %@<-%@", [[expression string] MATH_descriptionHighlightingRange:patchRange], output);
     patchString = [self __taggedStringWithNumber:output];
     [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
   }
@@ -225,7 +225,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
                                          patchRange:&patchRange
                                               error:errorPtr]))
   {
-    XPLogExtra2(@"Op*: %@<-%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output);
+    XPLogExtra2(@"Op*: %@<-%@", [[expression string] MATH_descriptionHighlightingRange:patchRange], output);
     patchString = [self __taggedStringWithNumber:output];
     [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
   }
@@ -240,7 +240,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
                                          patchRange:&patchRange
                                               error:errorPtr]))
   {
-    XPLogExtra2(@"Op+: %@<-%@", [[expression string] SVR_descriptionHighlightingRange:patchRange], output);
+    XPLogExtra2(@"Op+: %@<-%@", [[expression string] MATH_descriptionHighlightingRange:patchRange], output);
     patchString = [self __taggedStringWithNumber:output];
     [expression replaceCharactersInRange:patchRange withAttributedString:patchString];
   }
@@ -250,7 +250,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
   }
   
   output = [NSDecimalNumber decimalNumberWithString:[expression string]];
-  if ([output SVR_isNotANumber]) {
+  if ([output MATH_isNotANumber]) {
     if (errorPtr != NULL) { *errorPtr = SVRCalculationInvalidCharacter; }
     return nil;
   }
@@ -263,7 +263,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
   NSRange range = XPNotFoundRange;
   NSValue *lhs = nil;
   NSValue *rhs = nil;
-  XPAttributeEnumerator *e = [input SVR_enumeratorForAttribute:XPAttributedStringKeyForTag(SVRSolverTagBracket)];
+  XPAttributeEnumerator *e = [input MATH_enumeratorForAttribute:XPAttributedStringKeyForTag(SVRSolverTagBracket)];
   while ([e nextObjectEffectiveRange:&range]) {
     if (!lhs) {
       lhs = [NSValue XP_valueWithRange:range];
@@ -360,7 +360,7 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
   SVRSolverDecimalBehavior *ohBehave = [SVRSolverDecimalBehavior behaviorWithErrorPtr:errorPtr];
   switch (operator) {
     case SVRSolverOperatorExponent:
-      return [lhs SVR_decimalNumberByRaisingWithExponent:rhs withBehavior:ohBehave];
+      return [lhs MATH_decimalNumberByRaisingWithExponent:rhs withBehavior:ohBehave];
     case SVRSolverOperatorDivide:
       return [lhs decimalNumberByDividingBy:rhs withBehavior:ohBehave];
     case SVRSolverOperatorMultiply:
@@ -370,9 +370,9 @@ NSSet *SVRSolverSolutionTaggerSetAddSub   = nil;
     case SVRSolverOperatorAdd:
       return [lhs decimalNumberByAdding:rhs withBehavior:ohBehave];
     case SVRSolverOperatorRoot:
-      return [rhs SVR_decimalNumberByRootingWithExponent:lhs withBehavior:ohBehave];
+      return [rhs MATH_decimalNumberByRootingWithExponent:lhs withBehavior:ohBehave];
     case SVRSolverOperatorLog:
-      return [rhs SVR_decimalNumberByLogarithmWithBase:lhs withBehavior:ohBehave];
+      return [rhs MATH_decimalNumberByLogarithmWithBase:lhs withBehavior:ohBehave];
     default:
       XPLogAssrt1(NO, @"[UNKNOWN] SVRSolverOperator(%d)", (int)operator);
       return nil;

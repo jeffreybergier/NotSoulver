@@ -94,7 +94,7 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
 
 -(void)__populateExpressions;
 {
-  NSEnumerator *matches = [[[XPRegularExpression SVR_regexForExpressions]
+  NSEnumerator *matches = [[[XPRegularExpression MATH_regexForExpressions]
                             matchesInString:_string]
                             objectEnumerator];
   XPTextCheckingResult *match = nil;
@@ -106,7 +106,7 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
     range = [match range];
     // Trim the = sign off
     range.length -= 1;
-    XPLogExtra1(@"= %@", [_string SVR_descriptionHighlightingRange:range]);
+    XPLogExtra1(@"= %@", [_string MATH_descriptionHighlightingRange:range]);
     [output addObject:[NSValue XP_valueWithRange:range]];
   }
   _expressions = output; // should make immutable copy but avoiding
@@ -116,7 +116,7 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
 {
   NSSet *negativeNumberPrefixSet = SVRSolverScannerNegativeNumberPrefixSet;
   NSMutableSet *output = [NSMutableSet new];
-  XPRegularExpression *regex = [XPRegularExpression SVR_regexForNumbers];
+  XPRegularExpression *regex = [XPRegularExpression MATH_regexForNumbers];
   NSEnumerator *matches = nil;
   XPTextCheckingResult *match = nil;
   NSEnumerator *expressions = [[self expressionRanges] objectEnumerator];
@@ -133,7 +133,7 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
     while ((match = [matches nextObject])) {
       range = [match range];
       matchedNumber = [NSDecimalNumber decimalNumberWithString:[_string substringWithRange:range]];
-      XPLogAssrt(![matchedNumber SVR_isNotANumber], @"matchedNumber: NaN");
+      XPLogAssrt(![matchedNumber MATH_isNotANumber], @"matchedNumber: NaN");
       if (range.location > 0
           && [matchedNumber compare:[NSDecimalNumber zero]] == NSOrderedAscending
           && [negativeNumberPrefixSet member:[_string substringWithRange:NSMakeRange(range.location-1, 1)]] != nil)
@@ -144,7 +144,7 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
         range.length -= 1;
         XPLogExtra2(@"`%@`->`%@`", matchedNumber, [_string substringWithRange:range]);
       }
-      XPLogExtra1(@"%@", [_string SVR_descriptionHighlightingRange:range]);
+      XPLogExtra1(@"%@", [_string MATH_descriptionHighlightingRange:range]);
       [output addObject:[NSValue XP_valueWithRange:range]];
     }
   }
@@ -155,7 +155,7 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
  -(void)__populateOperators;
  {
    NSMutableSet *output = [NSMutableSet new];
-   XPRegularExpression *regex = [XPRegularExpression SVR_regexForOperators];
+   XPRegularExpression *regex = [XPRegularExpression MATH_regexForOperators];
    NSEnumerator *matches = nil;
    XPTextCheckingResult *match = nil;
    NSEnumerator *expressions = [[self expressionRanges] objectEnumerator];
@@ -170,7 +170,7 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
                 objectEnumerator];
      while ((match = [matches nextObject])) {
        range = [match rangeAtIndex:0];
-       XPLogExtra1(@"%@", [_string SVR_descriptionHighlightingRange:range]);
+       XPLogExtra1(@"%@", [_string MATH_descriptionHighlightingRange:range]);
        [output addObject:[NSValue XP_valueWithRange:range]];
      }
    }
@@ -180,7 +180,7 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
 -(void)__populateBrackets;
 {
   NSMutableSet *output = [NSMutableSet new];
-  XPRegularExpression *regex = [XPRegularExpression SVR_regexForBrackets];
+  XPRegularExpression *regex = [XPRegularExpression MATH_regexForBrackets];
   NSEnumerator *matches = nil;
   XPTextCheckingResult *match = nil;
   NSEnumerator *expressions = [[self expressionRanges] objectEnumerator];
@@ -195,7 +195,7 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
                objectEnumerator];
     while ((match = [matches nextObject])) {
       range = [match range];
-      XPLogExtra1(@"%@", [_string SVR_descriptionHighlightingRange:range]);
+      XPLogExtra1(@"%@", [_string MATH_descriptionHighlightingRange:range]);
       [output addObject:[NSValue XP_valueWithRange:range]];
     }
   }
@@ -224,21 +224,21 @@ NSSet *SVRSolverScannerNegativeNumberPrefixSet = nil;
 
 @implementation XPRegularExpression (Soulver)
 
-+(id)SVR_regexForNumbers;
++(id)MATH_regexForNumbers;
 {
   return [self regularExpressionWithPattern:@"(-?\\d+\\.\\d+|-?\\d+)" options:0 error:NULL];
 }
-+(id)SVR_regexForOperators;
++(id)MATH_regexForOperators;
 {
   return [self regularExpressionWithPattern:@"(L|R|\\+|-|/|\\*|\\^)[-\\(\\d]" options:0 error:NULL];
 }
 
-+(id)SVR_regexForExpressions;
++(id)MATH_regexForExpressions;
 {
   return [self regularExpressionWithPattern:@"[\\dLR\\.\\^\\*-\\+/\\(\\)]+=" options:0 error:NULL];
 }
 
-+(id)SVR_regexForBrackets;
++(id)MATH_regexForBrackets;
 {
   return [self regularExpressionWithPattern:@"[\\(\\)]" options:0 error:NULL];
 }
