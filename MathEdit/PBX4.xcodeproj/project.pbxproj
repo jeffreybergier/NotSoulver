@@ -63,6 +63,7 @@
 		8C5E58412DC346F200A1648E /* XPRegularExpression.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E802D91DCE00000020F /* XPRegularExpression.m */; };
 		8C5E58422DC346F200A1648E /* slre.c in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62EB32D91DDEB0000020F /* slre.c */; };
 		8C5E58442DC346F200A1648E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
+		8CE737032E0B83880046366A /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 8CE737022E0B83880046366A /* AppIcon.icns */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,18 +73,18 @@
 		8C0A6D102DC7CFD3001DC2A9 /* about-image-512.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "about-image-512.tiff"; path = "Images/about-image-512.tiff"; sourceTree = SOURCE_ROOT; };
 		8C0A6D122DC7CFD3001DC2A9 /* NeXTLogoMed.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = NeXTLogoMed.tiff; path = Images/NeXTLogoMed.tiff; sourceTree = SOURCE_ROOT; };
 		8C0A6D132DC7CFD3001DC2A9 /* TagLine.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = TagLine.tiff; path = Images/TagLine.tiff; sourceTree = SOURCE_ROOT; };
-		8C0BE7F82DEB536600DD3D85 /* MATHAccessoryWindowViews.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = MATHAccessoryWindowViews.h; path = /Net/Developer/SaturdayApps/NotSoulver/Soulver/MATHAccessoryWindowViews.h; sourceTree = "<absolute>"; };
-		8C0BE7F92DEB536600DD3D85 /* MATHAccessoryWindowViews.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = MATHAccessoryWindowViews.m; path = /Net/Developer/SaturdayApps/NotSoulver/Soulver/MATHAccessoryWindowViews.m; sourceTree = "<absolute>"; };
-		8C0E088F2E05AC5F00D0FBC0 /* ThemeAuto.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeAuto.tiff; path = /Net/Developer/SaturdayApps/NotSoulver/Soulver/Images/ThemeAuto.tiff; sourceTree = "<absolute>"; };
-		8C0E08902E05AC5F00D0FBC0 /* ThemeAuto@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeAuto@2x.tiff"; path = "/Net/Developer/SaturdayApps/NotSoulver/Soulver/Images/ThemeAuto@2x.tiff"; sourceTree = "<absolute>"; };
-		8C0E08912E05AC5F00D0FBC0 /* ThemeDark.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeDark.tiff; path = /Net/Developer/SaturdayApps/NotSoulver/Soulver/Images/ThemeDark.tiff; sourceTree = "<absolute>"; };
-		8C0E08922E05AC5F00D0FBC0 /* ThemeDark@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeDark@2x.tiff"; path = "/Net/Developer/SaturdayApps/NotSoulver/Soulver/Images/ThemeDark@2x.tiff"; sourceTree = "<absolute>"; };
-		8C0E08932E05AC5F00D0FBC0 /* ThemeLight.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeLight.tiff; path = /Net/Developer/SaturdayApps/NotSoulver/Soulver/Images/ThemeLight.tiff; sourceTree = "<absolute>"; };
-		8C0E08942E05AC5F00D0FBC0 /* ThemeLight@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeLight@2x.tiff"; path = "/Net/Developer/SaturdayApps/NotSoulver/Soulver/Images/ThemeLight@2x.tiff"; sourceTree = "<absolute>"; };
-		8C2A01752E0B60A90062F033 /* PBRelease.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = PBRelease.xcconfig; path = /Net/Developer/SaturdayApps/NotSoulver/Soulver/PB.xcconfig/PBRelease.xcconfig; sourceTree = "<absolute>"; };
-		8C2A01762E0B60A90062F033 /* PBDebug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = PBDebug.xcconfig; path = /Net/Developer/SaturdayApps/NotSoulver/Soulver/PB.xcconfig/PBDebug.xcconfig; sourceTree = "<absolute>"; };
-		8C2A01772E0B60A90062F033 /* PBBase.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = PBBase.xcconfig; path = /Net/Developer/SaturdayApps/NotSoulver/Soulver/PB.xcconfig/PBBase.xcconfig; sourceTree = "<absolute>"; };
-		8C2A01782E0B60A90062F033 /* PB.entitlements */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = PB.entitlements; path = /Net/Developer/SaturdayApps/NotSoulver/Soulver/PB.xcconfig/PB.entitlements; sourceTree = "<absolute>"; };
+		8C0BE7F82DEB536600DD3D85 /* MATHAccessoryWindowViews.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MATHAccessoryWindowViews.h; sourceTree = "<group>"; };
+		8C0BE7F92DEB536600DD3D85 /* MATHAccessoryWindowViews.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MATHAccessoryWindowViews.m; sourceTree = "<group>"; };
+		8C0E088F2E05AC5F00D0FBC0 /* ThemeAuto.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeAuto.tiff; path = Images/ThemeAuto.tiff; sourceTree = "<group>"; };
+		8C0E08902E05AC5F00D0FBC0 /* ThemeAuto@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeAuto@2x.tiff"; path = "Images/ThemeAuto@2x.tiff"; sourceTree = "<group>"; };
+		8C0E08912E05AC5F00D0FBC0 /* ThemeDark.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeDark.tiff; path = Images/ThemeDark.tiff; sourceTree = "<group>"; };
+		8C0E08922E05AC5F00D0FBC0 /* ThemeDark@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeDark@2x.tiff"; path = "Images/ThemeDark@2x.tiff"; sourceTree = "<group>"; };
+		8C0E08932E05AC5F00D0FBC0 /* ThemeLight.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeLight.tiff; path = Images/ThemeLight.tiff; sourceTree = "<group>"; };
+		8C0E08942E05AC5F00D0FBC0 /* ThemeLight@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeLight@2x.tiff"; path = "Images/ThemeLight@2x.tiff"; sourceTree = "<group>"; };
+		8C2A01752E0B60A90062F033 /* PBRelease.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = PBRelease.xcconfig; path = PB.xcconfig/PBRelease.xcconfig; sourceTree = "<group>"; };
+		8C2A01762E0B60A90062F033 /* PBDebug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = PBDebug.xcconfig; path = PB.xcconfig/PBDebug.xcconfig; sourceTree = "<group>"; };
+		8C2A01772E0B60A90062F033 /* PBBase.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = PBBase.xcconfig; path = PB.xcconfig/PBBase.xcconfig; sourceTree = "<group>"; };
+		8C2A01782E0B60A90062F033 /* PB.entitlements */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = PB.entitlements; path = PB.xcconfig/PB.entitlements; sourceTree = "<group>"; };
 		8C5B4ECA2DC10C7B002C87B3 /* TestUnitBezierPath-MANUAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "TestUnitBezierPath-MANUAL.tiff"; sourceTree = SOURCE_ROOT; };
 		8C5B4ECB2DC10C7B002C87B3 /* TestUnitBezierPath-REAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "TestUnitBezierPath-REAL.tiff"; sourceTree = SOURCE_ROOT; };
 		8C5E58492DC346F200A1648E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Info.plist; path = PB.xcconfig/Info.plist; sourceTree = "<group>"; };
@@ -137,6 +138,7 @@
 		8CD62EC12D91DF730000020F /* English */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8CD62ED82D91EBA60000020F /* MathEdit.iconheader */ = {isa = PBXFileReference; lastKnownFileType = text; path = MathEdit.iconheader; sourceTree = "<group>"; };
 		8CD632692D91FF0F0000020F /* .gdbinit */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = .gdbinit; sourceTree = "<group>"; };
+		8CE737022E0B83880046366A /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = AppIcon.icns; path = Images/AppIcon.icns; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -273,6 +275,7 @@
 		8CD62EAE2D91DCFD0000020F /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				8CE737022E0B83880046366A /* AppIcon.icns */,
 				8C0A6D102DC7CFD3001DC2A9 /* about-image-512.tiff */,
 				8C0A6D122DC7CFD3001DC2A9 /* NeXTLogoMed.tiff */,
 				8C0A6D132DC7CFD3001DC2A9 /* TagLine.tiff */,
@@ -404,6 +407,7 @@
 				8C0E08982E05AC5F00D0FBC0 /* ThemeDark@2x.tiff in Resources */,
 				8C0E08992E05AC5F00D0FBC0 /* ThemeLight.tiff in Resources */,
 				8C0E089A2E05AC5F00D0FBC0 /* ThemeLight@2x.tiff in Resources */,
+				8CE737032E0B83880046366A /* AppIcon.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
