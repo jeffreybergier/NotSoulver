@@ -52,7 +52,6 @@
 		8C5E58412DC346F200A1648E /* XPRegularExpression.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E802D91DCE00000020F /* XPRegularExpression.m */; };
 		8C5E58422DC346F200A1648E /* slre.c in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62EB32D91DDEB0000020F /* slre.c */; };
 		8C5E58442DC346F200A1648E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
-		8C6F13DC2E05669500EB7DEC /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 8C6F13D72E05669500EB7DEC /* AppIcon.icns */; };
 		8C6F13DD2E05669500EB7DEC /* about-image-512.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C6F13D62E05669500EB7DEC /* about-image-512.tiff */; };
 		8C6F13DE2E05669500EB7DEC /* TagLine.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C6F13D92E05669500EB7DEC /* TagLine.tiff */; };
 		8C6F13DF2E05669500EB7DEC /* ThemeDark.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C6F13DA2E05669500EB7DEC /* ThemeDark.tiff */; };
@@ -64,6 +63,7 @@
 		8C6F13E92E056C2800EB7DEC /* ThemeAuto@2x.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C6F13E32E056C2800EB7DEC /* ThemeAuto@2x.tiff */; };
 		8C979F662DEAC95E00A82647 /* MATHAccessoryWindowViews.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C979F652DEAC95E00A82647 /* MATHAccessoryWindowViews.m */; };
 		8C979F672DEAC95E00A82647 /* MATHAccessoryWindowViews.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C979F642DEAC95E00A82647 /* MATHAccessoryWindowViews.h */; };
+		8CBA25AC2E209C5000441F98 /* AppIcon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8CBA25AB2E209C5000441F98 /* AppIcon.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -89,6 +89,7 @@
 		8C8D51D12DD97A31003A8684 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = PB.xcconfig/Info.plist; sourceTree = "<group>"; };
 		8C979F642DEAC95E00A82647 /* MATHAccessoryWindowViews.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MATHAccessoryWindowViews.h; sourceTree = "<group>"; };
 		8C979F652DEAC95E00A82647 /* MATHAccessoryWindowViews.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MATHAccessoryWindowViews.m; sourceTree = "<group>"; };
+		8CBA25AB2E209C5000441F98 /* AppIcon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = AppIcon.xcassets; path = Images/AppIcon.xcassets; sourceTree = "<group>"; };
 		8CD62E502D91DB730000020F /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8CD62E552D91DCDF0000020F /* Import Log.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "Import Log.rtf"; sourceTree = "<group>"; };
 		8CD62E562D91DCDF0000020F /* Makefile */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -275,8 +276,9 @@
 		8CD62EAE2D91DCFD0000020F /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				8C6F13D62E05669500EB7DEC /* about-image-512.tiff */,
+				8CBA25AB2E209C5000441F98 /* AppIcon.xcassets */,
 				8C6F13D72E05669500EB7DEC /* AppIcon.icns */,
+				8C6F13D62E05669500EB7DEC /* about-image-512.tiff */,
 				8C6F13D82E05669500EB7DEC /* NeXTLogoMed.tiff */,
 				8C6F13D92E05669500EB7DEC /* TagLine.tiff */,
 				8C6F13E22E056C2800EB7DEC /* ThemeAuto.tiff */,
@@ -413,11 +415,11 @@
 			files = (
 				8C5E58232DC346F200A1648E /* TestsIntegration-DiskRep.txt in Resources */,
 				8C5E58242DC346F200A1648E /* TestsIntegration-DisplayRep.rtf in Resources */,
+				8CBA25AC2E209C5000441F98 /* AppIcon.xcassets in Resources */,
 				8C5E58252DC346F200A1648E /* TestsIntegration-SolvedRep.rtf in Resources */,
 				8C5E58262DC346F200A1648E /* TestsIntegration-UnsolvedRep.rtf in Resources */,
 				8C5E582A2DC346F200A1648E /* Localizable.strings in Resources */,
 				8C5E582C2DC346F200A1648E /* TestUnitBezierPath-MANUAL.tiff in Resources */,
-				8C6F13DC2E05669500EB7DEC /* AppIcon.icns in Resources */,
 				8C6F13DD2E05669500EB7DEC /* about-image-512.tiff in Resources */,
 				8C6F13DE2E05669500EB7DEC /* TagLine.tiff in Resources */,
 				8C6F13E62E056C2800EB7DEC /* ThemeLight.tiff in Resources */,

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		8C4D1E002DC7D1F80060CFBA /* about-image-512.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C4D1DFA2DC7D1F80060CFBA /* about-image-512.tiff */; };
-		8C4D1E012DC7D1F80060CFBA /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 8C4D1DFB2DC7D1F80060CFBA /* AppIcon.icns */; };
 		8C4D1E032DC7D1F80060CFBA /* NeXTLogoMed.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C4D1DFD2DC7D1F80060CFBA /* NeXTLogoMed.tiff */; };
 		8C4D1E042DC7D1F80060CFBA /* TagLine.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C4D1DFE2DC7D1F80060CFBA /* TagLine.tiff */; };
 		8C5E580C2DC346F200A1648E /* NSUserDefaults+MathEdit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E592D91DCDF0000020F /* NSUserDefaults+MathEdit.h */; };
@@ -64,6 +63,7 @@
 		8C9AD7D12E06488400DE8B5A /* ThemeLight@2x.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C9AD7CB2E06488400DE8B5A /* ThemeLight@2x.tiff */; };
 		8CB5C5122DED604600CDE1DF /* MATHAccessoryWindowViews.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CB5C5102DED604600CDE1DF /* MATHAccessoryWindowViews.h */; };
 		8CB5C5132DED604600CDE1DF /* MATHAccessoryWindowViews.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CB5C5112DED604600CDE1DF /* MATHAccessoryWindowViews.m */; };
+		8CBA25AA2E209B4E00441F98 /* AppIcon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8CBA25A92E209B4E00441F98 /* AppIcon.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -89,6 +89,7 @@
 		8C9AD7CB2E06488400DE8B5A /* ThemeLight@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeLight@2x.tiff"; path = "Images/ThemeLight@2x.tiff"; sourceTree = "<group>"; };
 		8CB5C5102DED604600CDE1DF /* MATHAccessoryWindowViews.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MATHAccessoryWindowViews.h; sourceTree = "<group>"; };
 		8CB5C5112DED604600CDE1DF /* MATHAccessoryWindowViews.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MATHAccessoryWindowViews.m; sourceTree = "<group>"; };
+		8CBA25A92E209B4E00441F98 /* AppIcon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = AppIcon.xcassets; path = Images/AppIcon.xcassets; sourceTree = "<group>"; };
 		8CD62E502D91DB730000020F /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8CD62E552D91DCDF0000020F /* Import Log.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "Import Log.rtf"; sourceTree = "<group>"; };
 		8CD62E562D91DCDF0000020F /* Makefile */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -275,8 +276,9 @@
 		8CD62EAE2D91DCFD0000020F /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				8C4D1DFA2DC7D1F80060CFBA /* about-image-512.tiff */,
+				8CBA25A92E209B4E00441F98 /* AppIcon.xcassets */,
 				8C4D1DFB2DC7D1F80060CFBA /* AppIcon.icns */,
+				8C4D1DFA2DC7D1F80060CFBA /* about-image-512.tiff */,
 				8C4D1DFD2DC7D1F80060CFBA /* NeXTLogoMed.tiff */,
 				8C4D1DFE2DC7D1F80060CFBA /* TagLine.tiff */,
 				8C9AD7C62E06488400DE8B5A /* ThemeAuto.tiff */,
@@ -412,13 +414,13 @@
 			files = (
 				8C5E58232DC346F200A1648E /* TestsIntegration-DiskRep.txt in Resources */,
 				8C5E58242DC346F200A1648E /* TestsIntegration-DisplayRep.rtf in Resources */,
+				8CBA25AA2E209B4E00441F98 /* AppIcon.xcassets in Resources */,
 				8C5E58252DC346F200A1648E /* TestsIntegration-SolvedRep.rtf in Resources */,
 				8C5E58262DC346F200A1648E /* TestsIntegration-UnsolvedRep.rtf in Resources */,
 				8C5E582A2DC346F200A1648E /* Localizable.strings in Resources */,
 				8C5E582C2DC346F200A1648E /* TestUnitBezierPath-MANUAL.tiff in Resources */,
 				8C5E582D2DC346F200A1648E /* TestUnitBezierPath-REAL.tiff in Resources */,
 				8C4D1E002DC7D1F80060CFBA /* about-image-512.tiff in Resources */,
-				8C4D1E012DC7D1F80060CFBA /* AppIcon.icns in Resources */,
 				8C4D1E032DC7D1F80060CFBA /* NeXTLogoMed.tiff in Resources */,
 				8C4D1E042DC7D1F80060CFBA /* TagLine.tiff in Resources */,
 				8C9AD7CC2E06488400DE8B5A /* ThemeAuto.tiff in Resources */,
