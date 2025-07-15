@@ -379,7 +379,8 @@
 		2A37F4A9FDCFA73011CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1240;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 0;
 				TargetAttributes = {
 					8C5E58092DC346F200A1648E = {
 						SystemCapabilities = {
