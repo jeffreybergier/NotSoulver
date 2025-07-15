@@ -118,7 +118,7 @@
 
 @end
 
-#if XPSupportsNSDocument >= 1
+#ifndef AFF_NSDocumentNone
 @interface NSDocument (CrossPlatform) <XPDocumentProtocol>
 -(BOOL)XP_isDocumentEdited;
 -(XPURL*)XP_fileURL;

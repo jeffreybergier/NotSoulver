@@ -98,9 +98,17 @@ typedef float XPFloat;
 #define AFF_NSWindowNoFullScreen
 #define AFF_ObjCNoDispatch
 #define AFF_ObjCNSMethodSignatureUndocumentedClassMethod
+#define AFF_NSDocumentNone     // OpenStep did not include NSDocument
+#define AFF_NSDocumentNoURL    // NSDocument works but URL's API's dont work for some reason
+#define AFF_NSDocumentNoiCloud // NSDocument does not yet support duplicate and other modern iCloud features
 
 #ifdef MAC_OS_X_VERSION_10_2
 #undef AFF_MainMenuNotRetainedBySystem
+#undef AFF_NSDocumentNone
+#endif
+
+#ifdef MAC_OS_X_VERSION_10_4
+#undef AFF_NSDocumentNoURL
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_6
@@ -112,6 +120,7 @@ typedef float XPFloat;
 #undef AFF_MainMenuFailsNSApplicationMain
 #undef AFF_ScrollViewNoMagnification
 #undef AFF_ObjCNoDispatch
+#undef AFF_NSDocumentNoiCloud
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_15
@@ -121,17 +130,6 @@ typedef float XPFloat;
 // MARK: NSDocument
 
 #define XPDocument id<XPDocumentProtocol>
-
-#ifdef MAC_OS_X_VERSION_10_4
-// TODO: Figure out why this breaks if I change it to 0
-// I want to be able to use all the legacy api on modern os x
-#define XPSupportsNSDocument 2 // Supports NSURL APIs
-#elif defined(MAC_OS_X_VERSION_10_2)
-#define XPSupportsNSDocument 1 // NSDocument exists but URL API's appear not to work properly
-#else
-#define XPSupportsNSDocument 0 // NSDocument does not exist
-#endif
-
 #define XPSupportsTextFindNone 0
 #define XPSupportsTextFindPanel 1
 #define XPSupportsTextFinder 2
@@ -156,24 +154,24 @@ typedef float XPFloat;
 #define XPUserInterface XPUserInterfaceNone
 #endif
 
-#if XPSupportsNSDocument >= 2
-#define XPURL NSURL
-#else
+#ifdef AFF_NSDocumentNoURL
 #define XPURL NSString
+#else
+#define XPURL NSURL
 #endif
 
-#if XPSupportsNSDocument >= 1
-typedef NSDocumentChangeType XPDocumentChangeType;
-#define XPWindowController NSWindowController
-#define XPChangeDone NSChangeDone
-#define XPChangeCleared NSChangeCleared
-#define XPNewWindowController(_window) [[NSWindowController alloc] initWithWindow:_window]
-#else
+#ifdef AFF_NSDocumentNone
 typedef XPUInteger XPDocumentChangeType;
 #define XPWindowController NSResponder // Using typedef here cause build error in OpenStep
 #define XPChangeDone 0
 #define XPChangeCleared 2
 #define XPNewWindowController(_window) nil
+#else
+typedef NSDocumentChangeType XPDocumentChangeType;
+#define XPWindowController NSWindowController
+#define XPChangeDone NSChangeDone
+#define XPChangeCleared NSChangeCleared
+#define XPNewWindowController(_window) [[NSWindowController alloc] initWithWindow:_window]
 #endif
 
 // MARK: Deprecated Constants and Types

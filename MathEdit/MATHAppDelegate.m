@@ -137,7 +137,7 @@
   NSApplication *app = [aNotification object];
   // Observe Dark Mode
   [self beginObservingEffectiveAppearance:app];
-#if XPSupportsNSDocument == 0
+#ifdef AFF_NSDocumentNone
     // Register for Notifications
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(__windowWillCloseNotification:)
@@ -281,8 +281,8 @@
   }
 }
 
-// MARK: Pre-NSDocument Stubs
-#if XPSupportsNSDocument == 0
+// MARK: Pre-NSDocument AppDelegate Methods
+#ifdef AFF_NSDocumentNone
 -(IBAction)newDocument:(id)sender;
 {
   [self __newDocument:sender];

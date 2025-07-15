@@ -21,10 +21,10 @@
 #import "XPDocument.h"
 #import "MATHDocumentViewController.h"
 
-#if XPSupportsNSDocument >= 1
-@interface MATHDocument: NSDocument
-#else
+#ifdef AFF_NSDocumentNone
 @interface MATHDocument: NSDocumentLegacyImplementation
+#else
+@interface MATHDocument: NSDocument
 #endif
 {
   mm_new   MATHDocumentModelController *_modelController;

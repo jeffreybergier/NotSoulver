@@ -376,10 +376,10 @@
 @end
 #pragma clang diagnostic pop
 
-#if XPSupportsNSDocument >= 1
-@implementation NSDocument (CrossPlatform)
-#else
+#ifdef AFF_NSDocumentNone
 @implementation NSDocumentLegacyImplementation (CrossPlatform)
+#else
+@implementation NSDocument (CrossPlatform)
 #endif
 -(BOOL)XP_isDocumentEdited;
 {
@@ -388,7 +388,7 @@
 
 -(XPURL*)XP_fileURL;
 {
-#if XPSupportsNSDocument == 1
+#ifdef AFF_NSDocumentNoURL
   return [self fileName];
 #else
   return [self fileURL];
@@ -404,7 +404,7 @@
 
 -(NSWindow*)XP_windowForSheet;
 {
-#if XPSupportsNSDocument == 1
+#ifdef AFF_NSDocumentNoURL
   NSWindow *window = [[[self windowControllers] lastObject] window];
   XPParameterRaise(window);
   return window;
@@ -420,7 +420,7 @@
 
 -(void)XP_setWindow:(NSWindow*)aWindow;
 {
-#if XPSupportsNSDocument == 0
+#ifdef AFF_NSDocumentNone
   XPParameterRaise(aWindow);
   [_window_42 release];
   _window_42 = [aWindow retain];
@@ -436,7 +436,7 @@
 
 -(void)XP_setFileExtension:(NSString*)type;
 {
-#if XPSupportsNSDocument == 0
+#ifdef AFF_NSDocumentNone
   [self __setFileExtension:type];
 #else
   XPLogDebug(@"[IGNORE]");
@@ -445,7 +445,7 @@
 
 -(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
 {
-#if XPSupportsNSDocument == 1
+#ifdef AFF_NSDocumentNoURL
   return [self readFromFile:fileURL ofType:fileType];
 #else
   return [self readFromURL:fileURL ofType:fileType error:outError];
@@ -454,11 +454,11 @@
 
 -(void)XP_addWindowController:(id)windowController;
 {
-#if XPSupportsNSDocument >= 1
+#ifdef AFF_NSDocumentNoURL
+  XPLogDebug(@"[IGNORE]");
+#else
   XPParameterRaise(windowController);
   [self addWindowController:windowController];
-#else
-  XPLogDebug(@"[IGNORE]");
 #endif
 }
 @end

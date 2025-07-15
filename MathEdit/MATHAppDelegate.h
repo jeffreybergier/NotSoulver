@@ -72,8 +72,8 @@
 -(BOOL)__applicationOpenUntitledFile:(NSApplication*)sender;
 -(void)__windowWillCloseNotification:(NSNotification*)aNotification;
 
-// MARK: Pre-NSDocument Stubs
-#if XPSupportsNSDocument == 0
+// MARK: Pre-NSDocument AppDelegate Methods
+#ifdef AFF_NSDocumentNone
 -(IBAction)newDocument:(id)sender;
 -(IBAction)openDocument:(id)sender;
 -(BOOL)applicationShouldTerminate:(NSApplication *)sender;

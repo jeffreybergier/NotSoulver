@@ -570,7 +570,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 -(void)XP_setAllowsUndo:(BOOL)flag;
 {
-#if XPSupportsNSDocument >= 1
+#ifndef AFF_NSDocumentNone
   [self setAllowsUndo:flag];
 #endif
 }
@@ -645,12 +645,12 @@ NSArray* XPRunOpenPanel(NSString *extension)
 {
   // Because this returns a BOOL, it is not safe to use performSelector
   // so have to use ifdefs to prevent all warnings
-#if XPSupportsNSDocument >= 2
-  XPLogAssrt1([self isKindOfClass:NSClassFromString(@"NSURL")], @"%@ is not NSURL", self);
-  return [self isFileURL];
-#else
+#ifdef AFF_NSDocumentNoURL
   XPLogAssrt1([self isKindOfClass:[NSString class]], @"%@ is not NSString", self);
   return [self isAbsolutePath];
+#else
+  XPLogAssrt1([self isKindOfClass:NSClassFromString(@"NSURL")], @"%@ is not NSURL", self);
+  return [self isFileURL];
 #endif
 }
 
@@ -685,19 +685,19 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 +(NSData*)XP_dataWithContentsOfURL:(XPURL*)url error:(XPErrorPointer)errorPtr;
 {
-#if XPSupportsNSDocument >= 2
-  return [self dataWithContentsOfURL:url options:0 error:errorPtr];
-#else
+#ifdef AFF_NSDocumentNoURL
   return [self dataWithContentsOfFile:url];
+#else
+  return [self dataWithContentsOfURL:url options:0 error:errorPtr];
 #endif
 }
 
 -(BOOL)XP_writeToURL:(XPURL*)url error:(XPErrorPointer)errorPtr;
 {
-#if XPSupportsNSDocument >= 2
-  return [self writeToURL:url options:XPDataWritingAtomic error:errorPtr];
-#else
+#ifdef AFF_NSDocumentNoURL
   return [self writeToFile:url atomically:YES];
+#else
+  return [self writeToURL:url options:XPDataWritingAtomic error:errorPtr];
 #endif
 }
 
