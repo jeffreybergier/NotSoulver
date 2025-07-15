@@ -494,6 +494,13 @@ NSArray* XPRunOpenPanel(NSString *extension);
 @interface NSResponder (XPFirstResponder)
 -(IBAction)undo:(id)sender;
 -(IBAction)redo:(id)sender;
+#ifdef AFF_NSDocumentNoiCloud
+-(IBAction)duplicateDocument:(id)sender;
+-(IBAction)renameDocument:(id)sender;
+-(IBAction)moveDocument:(id)sender;
+-(IBAction)browseDocumentVersions:(id)sender;
+-(void)setContentViewController:(id)aVC;
+#endif
 @end
 
 // MARK: XPLogging
