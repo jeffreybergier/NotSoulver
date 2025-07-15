@@ -57,9 +57,6 @@
 		8C5E58442DC346F200A1648E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		8C93A10E2DEC2FC900D8FDBA /* MATHAccessoryWindowViews.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C93A10C2DEC2FC900D8FDBA /* MATHAccessoryWindowViews.h */; };
 		8C93A10F2DEC2FC900D8FDBA /* MATHAccessoryWindowViews.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C93A10D2DEC2FC900D8FDBA /* MATHAccessoryWindowViews.m */; };
-		8CAE45A42E1A7A44007B136C /* PBBase.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 8CAE45A12E1A7A44007B136C /* PBBase.xcconfig */; };
-		8CAE45A52E1A7A44007B136C /* PBDebug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 8CAE45A22E1A7A44007B136C /* PBDebug.xcconfig */; };
-		8CAE45A62E1A7A44007B136C /* PBRelease.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 8CAE45A32E1A7A44007B136C /* PBRelease.xcconfig */; };
 		8CD3A2362E0652A300A24178 /* ThemeAuto.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8CD3A2302E0652A300A24178 /* ThemeAuto.tiff */; };
 		8CD3A2372E0652A300A24178 /* ThemeAuto@2x.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8CD3A2312E0652A300A24178 /* ThemeAuto@2x.tiff */; };
 		8CD3A2382E0652A300A24178 /* ThemeDark.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8CD3A2322E0652A300A24178 /* ThemeDark.tiff */; };
@@ -382,7 +379,7 @@
 		2A37F4A9FDCFA73011CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0;
 				TargetAttributes = {
 					8C5E58092DC346F200A1648E = {
 						SystemCapabilities = {
@@ -422,16 +419,13 @@
 				8C5E58252DC346F200A1648E /* TestsIntegration-SolvedRep.rtf in Resources */,
 				8CD3A2392E0652A300A24178 /* ThemeDark@2x.tiff in Resources */,
 				8C5E58262DC346F200A1648E /* TestsIntegration-UnsolvedRep.rtf in Resources */,
-				8CAE45A52E1A7A44007B136C /* PBDebug.xcconfig in Resources */,
 				8CD3A2362E0652A300A24178 /* ThemeAuto.tiff in Resources */,
 				8C5E582A2DC346F200A1648E /* Localizable.strings in Resources */,
 				8C5E582C2DC346F200A1648E /* TestUnitBezierPath-MANUAL.tiff in Resources */,
 				8CEA6D522E20986900D19766 /* AppIcon.xcassets in Resources */,
 				8C5E582D2DC346F200A1648E /* TestUnitBezierPath-REAL.tiff in Resources */,
-				8CAE45A62E1A7A44007B136C /* PBRelease.xcconfig in Resources */,
 				8CD3A2382E0652A300A24178 /* ThemeDark.tiff in Resources */,
 				8CD3A23A2E0652A300A24178 /* ThemeLight.tiff in Resources */,
-				8CAE45A42E1A7A44007B136C /* PBBase.xcconfig in Resources */,
 				8C4D1E002DC7D1F80060CFBA /* about-image-512.tiff in Resources */,
 				8C4D1E032DC7D1F80060CFBA /* NeXTLogoMed.tiff in Resources */,
 				8C4D1E042DC7D1F80060CFBA /* TagLine.tiff in Resources */,
