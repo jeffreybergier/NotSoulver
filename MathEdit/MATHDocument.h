@@ -22,6 +22,14 @@
 #import "MATHDocumentViewController.h"
 
 #ifdef AFF_NSDocumentNone
+@interface NSDocumentLegacyImplementation (MATHDocument)
+#else
+@interface NSDocument (MATHDocument)
+#endif
+-(NSString*)MATH_nameForFrameAutosave;
+@end
+
+#ifdef AFF_NSDocumentNone
 @interface MATHDocument: NSDocumentLegacyImplementation
 #else
 @interface MATHDocument: NSDocument

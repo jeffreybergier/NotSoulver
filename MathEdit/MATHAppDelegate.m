@@ -172,10 +172,10 @@
 
 -(IBAction)__newDocument:(id)sender
 {
-  XPDocument document = [[[MATHDocument alloc] init] autorelease];
-  [document XP_setFileType:MATHDocumentModelRepDisk];
-  [document XP_setFileExtension:MATHDocumentModelExtension];
-  [document XP_showWindows];
+  XPDocument *document = [[[MATHDocument alloc] init] autorelease];
+  [document setFileType:MATHDocumentModelRepDisk];
+  [document __setFileExtension:MATHDocumentModelExtension];
+  [document showWindows];
   [[self openDocuments] addObject:document];
 }
 
@@ -184,7 +184,7 @@
   NSArray *filenames = nil;
   NSEnumerator *e = nil;
   XPURL *nextF = nil;
-  XPDocument nextC = nil;
+  XPDocument *nextC = nil;
 
   filenames = XPRunOpenPanel(MATHDocumentModelExtension);
   if ([filenames count] == 0) { XPLogDebug(@"Open Cancelled"); return; }
@@ -192,12 +192,10 @@
   while ((nextF = [e nextObject])) {
     nextC = [[self openDocuments] member:nextF];
     if (!nextC) {
-      nextC = [[[MATHDocument alloc] initWithContentsOfURL:nextF
-                                                    ofType:MATHDocumentModelRepDisk
-                                                     error:NULL] autorelease];
+      nextC = [[[MATHDocument alloc] initWithContentsOfFile:nextF ofType:MATHDocumentModelRepDisk] autorelease];
       [[self openDocuments] addObject:nextC];
     }
-    [nextC XP_showWindows];
+    [nextC showWindows];
   }
 }
 
@@ -206,12 +204,12 @@
   XPAlertReturn alertResult = NSNotFound;
   BOOL aDocumentNeedsSaving = NO;
   NSEnumerator *e = nil;
-  XPDocument next = nil;
+  XPDocument *next = nil;
 
   // Check all documents
   e = [[self openDocuments] objectEnumerator];
   while ((next = [e nextObject])) {
-    aDocumentNeedsSaving = [next XP_isDocumentEdited];
+    aDocumentNeedsSaving = [next isDocumentEdited];
     if (aDocumentNeedsSaving) { break; }
   }
 
@@ -232,17 +230,17 @@
 -(BOOL)__applicationShouldTerminateAfterReviewingAllDocuments:(NSApplication*)sender;
 {
   NSEnumerator *e = [[self openDocuments] objectEnumerator];
-  XPDocument next = nil;
+  XPDocument *next = nil;
 
   // Try to close all documents (asking the user to save them)
   while ((next = [e nextObject])) {
-    [[next XP_windowForSheet] performClose:sender];
+    [[next windowForSheet] performClose:sender];
   }
 
   // Iterate again and check if are unsaved changes
   e = [[self openDocuments] objectEnumerator];
   while ((next = [e nextObject])) {
-    if ([next XP_isDocumentEdited]) {
+    if ([next isDocumentEdited]) {
       return NO;
     }
   }
@@ -255,12 +253,10 @@
 {
   MATHDocument *document = [[self openDocuments] member:filename];
   if (!document) {
-    document = [[[MATHDocument alloc] initWithContentsOfURL:(XPURL*)filename
-                                                     ofType:MATHDocumentModelRepDisk
-                                                      error:NULL] autorelease];
+    document = [[[MATHDocument alloc] initWithContentsOfFile:filename ofType:MATHDocumentModelRepDisk] autorelease];
     [[self openDocuments] addObject:document];
   }
-  [[document XP_windowForSheet] makeKeyAndOrderFront:sender];
+  [[document windowForSheet] makeKeyAndOrderFront:sender];
   return YES;
 }
 

@@ -19,6 +19,20 @@
 #import "MATHDocument.h"
 #import "NSUserDefaults+MathEdit.h"
 
+#ifdef AFF_NSDocumentNone
+@implementation NSDocumentLegacyImplementation (MATHDocument)
+#else
+@implementation NSDocument (MATHDocument)
+#endif
+-(NSString*)MATH_nameForFrameAutosave;
+{
+  NSString *fileName = [self fileName];
+  if (!fileName) { return nil; }
+  XPLogAssrt1([fileName isAbsolutePath], @"[INVALID] fileName(%@)", fileName);
+  return fileName;
+}
+@end
+
 @implementation MATHDocument
 
 // MARK: Properties
@@ -50,7 +64,7 @@
                                  | XPWindowStyleMaskMiniaturizable
                                  | XPWindowStyleMaskResizable);
   NSRect rect = NSMakeRect(0, 0, 500, 500);
-  NSString *autosaveName = [self XP_nameForFrameAutosave];
+  NSString *autosaveName = [self MATH_nameForFrameAutosave];
   MATHDocumentModelController *modelController = [self modelController];
   MATHDocumentViewController  *viewController  = [self viewController];
   NSWindow *aWindow = [[[NSWindow alloc] initWithContentRect:rect
@@ -60,8 +74,8 @@
   XPWindowController *windowController = [XPNewWindowController(aWindow) autorelease];
   
   // Configure basic properties
-  [self XP_setWindow:aWindow];
-  [self XP_addWindowController:windowController];
+  [self setWindow:aWindow];
+  [self addWindowController:windowController];
   [self overrideWindowAppearance];
   [aWindow setMinSize:NSMakeSize(200, 200)];
   [aWindow setContentView:[viewController view]];
@@ -105,7 +119,7 @@
   if ([self isKindOfClass:[NSResponder class]]) {
     [viewController setNextResponder:(NSResponder*)self];
     [super makeWindowControllers];
-    [self XP_readFromURL:[self XP_fileURL] ofType:[self fileType] error:NULL];
+    [self readFromFile:[self fileName] ofType:[self fileType]];
   }
 }
 
@@ -129,10 +143,10 @@
   BOOL isEdited = YES;
   NSData *diskData = nil;
   NSData *documentData = [self dataRepresentationOfType:[self fileType]];
-  XPURL *fileURL = [self XP_fileURL];
-  if ([fileURL XP_isFileURL]) {
+  NSString *fileName = [self fileName];
+  if (fileName) {
     // TODO: Consider adding error handling here
-    diskData = [NSData XP_dataWithContentsOfURL:fileURL error:NULL];
+    diskData = [NSData dataWithContentsOfFile:fileName];
     isEdited = ![diskData isEqualToData:documentData];
   } else if (documentData == nil || [documentData length] == 0) {
     isEdited = NO;
@@ -190,7 +204,7 @@
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   XPUserInterfaceStyle style = [ud MATH_userInterfaceStyle];
-  NSWindow *myWindow = [self XP_windowForSheet];
+  NSWindow *myWindow = [self windowForSheet];
   XPParameterRaise(myWindow);
   [myWindow XP_setAppearanceWithUserInterfaceStyle:style];
 }

@@ -639,69 +639,69 @@ NSArray* XPRunOpenPanel(NSString *extension)
 }
 @end
 
-@implementation XPURL (CrossPlatformURL)
+//@implementation XPURL (CrossPlatformURL)
+//
+//-(BOOL)XP_isFileURL;
+//{
+//  // Because this returns a BOOL, it is not safe to use performSelector
+//  // so have to use ifdefs to prevent all warnings
+//#ifdef AFF_NSDocumentNoURL
+//  XPLogAssrt1([self isKindOfClass:[NSString class]], @"%@ is not NSString", self);
+//  return [self isAbsolutePath];
+//#else
+//  XPLogAssrt1([self isKindOfClass:NSClassFromString(@"NSURL")], @"%@ is not NSURL", self);
+//  return [self isFileURL];
+//#endif
+//}
+//
+//-(NSString*)XP_path;
+//{
+//  SEL selector = @selector(path);
+//  if ([self respondsToSelector:selector]) {
+//    return [self performSelector:selector];
+//  } else {
+//    XPLogAssrt1([self isKindOfClass:[NSString class]], @"%@ is not NSString", self);
+//    return (NSString*)self;
+//  }
+//}
+//
+//-(NSString*)XP_lastPathComponent;
+//{
+//  // This is an interesting one where both NSURL and NSString
+//  // have the 'lastPathComponent' method... but it turns out
+//  // there was a brief period of time in early Mac OS X history
+//  // where NSURL did not have the 'lastPathComponent' method
+//  SEL selector = @selector(lastPathComponent);
+//  if ([self respondsToSelector:selector]) {
+//    return [self performSelector:selector];
+//  } else {
+//    return [[self XP_path] lastPathComponent];
+//  }
+//}
+//
+//@end
 
--(BOOL)XP_isFileURL;
-{
-  // Because this returns a BOOL, it is not safe to use performSelector
-  // so have to use ifdefs to prevent all warnings
-#ifdef AFF_NSDocumentNoURL
-  XPLogAssrt1([self isKindOfClass:[NSString class]], @"%@ is not NSString", self);
-  return [self isAbsolutePath];
-#else
-  XPLogAssrt1([self isKindOfClass:NSClassFromString(@"NSURL")], @"%@ is not NSURL", self);
-  return [self isFileURL];
-#endif
-}
-
--(NSString*)XP_path;
-{
-  SEL selector = @selector(path);
-  if ([self respondsToSelector:selector]) {
-    return [self performSelector:selector];
-  } else {
-    XPLogAssrt1([self isKindOfClass:[NSString class]], @"%@ is not NSString", self);
-    return (NSString*)self;
-  }
-}
-
--(NSString*)XP_lastPathComponent;
-{
-  // This is an interesting one where both NSURL and NSString
-  // have the 'lastPathComponent' method... but it turns out
-  // there was a brief period of time in early Mac OS X history
-  // where NSURL did not have the 'lastPathComponent' method
-  SEL selector = @selector(lastPathComponent);
-  if ([self respondsToSelector:selector]) {
-    return [self performSelector:selector];
-  } else {
-    return [[self XP_path] lastPathComponent];
-  }
-}
-
-@end
-
-@implementation NSData (CrossPlatform)
-
-+(NSData*)XP_dataWithContentsOfURL:(XPURL*)url error:(XPErrorPointer)errorPtr;
-{
-#ifdef AFF_NSDocumentNoURL
-  return [self dataWithContentsOfFile:url];
-#else
-  return [self dataWithContentsOfURL:url options:0 error:errorPtr];
-#endif
-}
-
--(BOOL)XP_writeToURL:(XPURL*)url error:(XPErrorPointer)errorPtr;
-{
-#ifdef AFF_NSDocumentNoURL
-  return [self writeToFile:url atomically:YES];
-#else
-  return [self writeToURL:url options:XPDataWritingAtomic error:errorPtr];
-#endif
-}
-
-@end
+//@implementation NSData (CrossPlatform)
+//
+//+(NSData*)XP_dataWithContentsOfURL:(XPURL*)url error:(XPErrorPointer)errorPtr;
+//{
+//#ifdef AFF_NSDocumentNoURL
+//  return [self dataWithContentsOfFile:url];
+//#else
+//  return [self dataWithContentsOfURL:url options:0 error:errorPtr];
+//#endif
+//}
+//
+//-(BOOL)XP_writeToURL:(XPURL*)url error:(XPErrorPointer)errorPtr;
+//{
+//#ifdef AFF_NSDocumentNoURL
+//  return [self writeToFile:url atomically:YES];
+//#else
+//  return [self writeToURL:url options:XPDataWritingAtomic error:errorPtr];
+//#endif
+//}
+//
+//@end
 
 @implementation NSWindow (CrossPlatform)
 

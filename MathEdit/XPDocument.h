@@ -19,20 +19,23 @@
 #import <AppKit/AppKit.h>
 #import "XPCrossPlatform.h"
 
-@protocol XPDocumentProtocol <NSObject>
+@class NSDocumentLegacyImplementation;
 
--(BOOL)XP_isDocumentEdited;
--(XPURL*)XP_fileURL;
--(NSString*)XP_nameForFrameAutosave;
--(NSWindow*)XP_windowForSheet;
--(void)XP_showWindows;
--(void)XP_setWindow:(NSWindow*)aWindow;
--(void)XP_setFileType:(NSString*)type;
--(void)XP_setFileExtension:(NSString*)type;
--(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(XPErrorPointer)outError;
--(void)XP_addWindowController:(XPWindowController*)windowController;
+#ifdef AFF_NSDocumentNone
+#define XPDocument NSDocumentLegacyImplementation
+// typedef NSDocumentLegacyImplementation XPDocument;
+#else
+#define XPDocument NSDocument
+// typedef NSDocument XPDocument;
+#endif
 
-@end
+#ifdef AFF_NSDocumentNoURL
+#define XPURL NSString
+// typedef NSString XPURL;
+#else
+#define XPURL NSURL
+// typedef NSURL XPURL;
+#endif
 
 // This is a best effort implementation of NSDocument only for use in OpenStep.
 // Its insanely minimal because it won't be used once Mac OS X Ships
@@ -42,7 +45,7 @@
 @interface NSDocumentLegacyImplementation: NSResponder
 #endif
 {
-  mm_copy XPURL    *_fileURL;
+  mm_copy NSString *_fileName;
   mm_copy NSString *_fileType;
   mm_copy NSString *_fileExtension;
   mm_retain NSWindow *_window_42; // Only used in OpenStep
@@ -53,45 +56,43 @@
 
 /// Designated Initializer.  Inits an "empty" document.
 -(id)init;
--(id)initWithContentsOfURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
+-(id)initWithContentsOfFile:(NSString*)fileName ofType:(NSString*)fileType;
 
 // MARK: Window Management
 
-/// Loads the NIB if needed and shows the window
--(void)showWindows;
-/// _window should be set as IBOutlet
--(NSWindow*)windowForSheet;
-
-// MARK: One-Time Setup
 -(void)makeWindowControllers;
+-(void)showWindows;
+-(NSWindow*)windowForSheet;
+// TODO: Implement
+-(void)setWindow:(NSWindow *)window;
 
 // MARK: Document Properties
 
-/// For display in the window title. If NIL, "Untitled" shown
--(NSString*)displayName;
 /// Default implementation reads file on disk and compares with _rawData property
--(BOOL)isDocumentEdited;
 /// supported values are NSChangeDone (0) and NSChangeCleared (2)
 -(void)updateChangeCount:(XPDocumentChangeType)change;
--(XPURL*)fileURL;
--(void)setFileURL:(XPURL*)fileURL;
+-(BOOL)isDocumentEdited;
+
+-(NSString*)fileName;
+-(void)setFileName:(NSString*)fileName;
 -(NSString*)fileType;
 -(void)setFileType:(NSString*)type;
+-(NSString*)displayName;
 
 // MARK: NSObject basics
 
 -(XPUInteger)hash;
 -(BOOL)isEqual:(id)object;
 
-// MARK: Data reading and writing
+// MARK: MUST IMPLEMENT loading methods
 // Override to provide data for saving
 -(NSData*)dataRepresentationOfType:(NSString*)type;
 // Override to convert your model when loading
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
 
-// No need to override, uses above 2 methods to read and write data
--(BOOL)writeToURL:( XPURL*)fileURL ofType:(NSString*)fileType error:(XPErrorPointer)outError;
--(BOOL)readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(XPErrorPointer)outError;
+// MARK: Data reading and writing
+-(BOOL)writeToFile:(NSString*)fileName ofType:(NSString*)type;
+-(BOOL)readFromFile:(NSString*)fileName ofType:(NSString*)type;
 
 // MARK: Menu Handling
 
@@ -104,6 +105,7 @@
 // MARK: Customizations
 
 -(NSString*)__fileExtension;
+// TODO: Change this to a method -__fileExtension: for the subclass to implement
 -(void)__setFileExtension:(NSString*)type;
 -(BOOL)windowShouldClose:(id)sender;
 -(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
@@ -116,32 +118,4 @@
 -(XPAlertReturn)__runUnsavedChangesAlert;
 -(XPAlertReturn)__runRevertToSavedAlert;
 
-@end
-
-#ifndef AFF_NSDocumentNone
-@interface NSDocument (CrossPlatform) <XPDocumentProtocol>
--(BOOL)XP_isDocumentEdited;
--(XPURL*)XP_fileURL;
--(NSString*)XP_nameForFrameAutosave;
--(NSWindow*)XP_windowForSheet;
--(void)XP_showWindows;
--(void)XP_setWindow:(NSWindow*)aWindow;
--(void)XP_setFileType:(NSString*)type;
--(void)XP_setFileExtension:(NSString*)type;
--(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
--(void)XP_addWindowController:(id)windowController;
-@end
-#endif
-
-@interface NSDocumentLegacyImplementation (CrossPlatform) <XPDocumentProtocol>
--(BOOL)XP_isDocumentEdited;
--(XPURL*)XP_fileURL;
--(NSString*)XP_nameForFrameAutosave;
--(NSWindow*)XP_windowForSheet;
--(void)XP_showWindows;
--(void)XP_setWindow:(NSWindow*)aWindow;
--(void)XP_setFileType:(NSString*)type;
--(void)XP_setFileExtension:(NSString*)type;
--(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
--(void)XP_addWindowController:(id)windowController;
 @end

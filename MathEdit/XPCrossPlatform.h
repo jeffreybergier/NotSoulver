@@ -129,7 +129,6 @@ typedef float XPFloat;
 
 // MARK: NSDocument
 
-#define XPDocument id<XPDocumentProtocol>
 #define XPSupportsTextFindNone 0
 #define XPSupportsTextFindPanel 1
 #define XPSupportsTextFinder 2
@@ -152,12 +151,6 @@ typedef float XPFloat;
 #define XPUserInterface XPUserInterfaceAqua
 #else
 #define XPUserInterface XPUserInterfaceNone
-#endif
-
-#ifdef AFF_NSDocumentNoURL
-#define XPURL NSString
-#else
-#define XPURL NSURL
 #endif
 
 #ifdef AFF_NSDocumentNone
@@ -464,16 +457,16 @@ NSArray* XPRunOpenPanel(NSString *extension);
 // NSURL does not exist on OpenStep
 // so this category attempts to unify the API
 // between NSString and NSURL
-@interface XPURL (CrossPlatformURL)
--(BOOL)XP_isFileURL;
--(NSString*)XP_path;
--(NSString*)XP_lastPathComponent;
-@end
+//@interface XPURL (CrossPlatformURL)
+//-(BOOL)XP_isFileURL;
+//-(NSString*)XP_path;
+//-(NSString*)XP_lastPathComponent;
+//@end
 
-@interface NSData (CrossPlatform)
-+(NSData*)XP_dataWithContentsOfURL:(XPURL*)url error:(XPErrorPointer)errorPtr;
--(BOOL)XP_writeToURL:(XPURL*)url error:(XPErrorPointer)errorPtr;
-@end
+//@interface NSData (CrossPlatform)
+//+(NSData*)XP_dataWithContentsOfURL:(XPURL*)url error:(XPErrorPointer)errorPtr;
+//-(BOOL)XP_writeToURL:(XPURL*)url error:(XPErrorPointer)errorPtr;
+//@end
 
 @interface NSWindow (CrossPlatform)
 -(void)XP_setRestorationClass:(Class)aClass;

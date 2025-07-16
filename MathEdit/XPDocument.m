@@ -33,22 +33,22 @@
 {
   self = [super init];
   XPParameterRaise(self);
-  _fileURL = nil;
+  _fileName = nil;
   _fileType = nil;
   _isEdited = NO;
   [self makeWindowControllers];
   return self;
 }
 
--(id)initWithContentsOfURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
+-(id)initWithContentsOfFile:(NSString*)fileName ofType:(NSString*)fileType;
 {
   self = [self init];
   
   XPParameterRaise(self);
-  XPParameterRaise(fileURL);
+  XPParameterRaise(fileName);
   XPParameterRaise(fileType);
   
-  _fileURL  = [fileURL copy];
+  _fileName  =[fileName copy];
   _fileType = [fileType copy];
   [self makeWindowControllers];
   
@@ -56,19 +56,6 @@
 }
 
 // MARK: Window Management
-
--(void)showWindows;
-{
-  [[self windowForSheet] makeKeyAndOrderFront:self];
-}
-
--(NSWindow*)windowForSheet;
-{
-  XPParameterRaise(_window_42);
-  return [[_window_42 retain] autorelease];
-}
-
-// MARK: One Time Setup
 
 -(void)makeWindowControllers;
 {
@@ -84,13 +71,33 @@
   XPLogDebug(@"");
 }
 
+-(void)showWindows;
+{
+  [[self windowForSheet] makeKeyAndOrderFront:self];
+}
+
+-(NSWindow*)windowForSheet;
+{
+  XPParameterRaise(_window_42);
+  return [[_window_42 retain] autorelease];
+}
+
 // MARK: Document Properties
 
-/// For display in the window title. If NIL, "Untitled" shown
--(NSString*)displayName;
+-(void)updateChangeCount:(XPDocumentChangeType)change;
 {
-  NSString *lastPathComponent = [[self fileURL] XP_lastPathComponent];
-  return (lastPathComponent) ? lastPathComponent : [Localized titleUntitled];
+  NSWindow *myWindow  = [self windowForSheet];
+  NSString *fileName  = [self fileName];
+
+  _isEdited = (change == XPChangeCleared) ? NO : YES;
+
+  if ([fileName isAbsolutePath]) {
+    [myWindow setRepresentedFilename:fileName];
+  } else {
+    [myWindow setRepresentedFilename:@""];
+  }
+  [myWindow setTitle:[self displayName]];
+  [myWindow setDocumentEdited:[self isDocumentEdited]];
 }
 
 /// Override to update window status
@@ -99,32 +106,17 @@
   return _isEdited;
 }
 
--(void)updateChangeCount:(XPDocumentChangeType)change;
+-(NSString*)fileName;
 {
-  NSWindow *myWindow = [self windowForSheet];
-  XPURL    *fileURL  = [self fileURL];
-
-  _isEdited = (change == XPChangeCleared) ? NO : YES;
-
-  if ([fileURL XP_isFileURL]) {
-    [myWindow setRepresentedFilename:[fileURL XP_path]];
-  } else {
-    [myWindow setRepresentedFilename:@""];
-  }
-  [myWindow setTitle:[self displayName]];
-  [myWindow setDocumentEdited:[self isDocumentEdited]];
+  return [[_fileName retain] autorelease];
 }
 
--(XPURL*)fileURL;
+-(void)setFileName:(NSString*)fileName;
 {
-  return [[_fileURL retain] autorelease];
-}
-
--(void)setFileURL:(XPURL*)fileURL;
-{
-  if ([fileURL isEqual:_fileURL]) { return; }
-  [_fileURL release];
-  _fileURL = [fileURL copy];
+  XPLogAssrt1([fileName isAbsolutePath], @"[INVALID] fileName(%@)", fileName);
+  if ([fileName isEqual:_fileName]) { return; }
+  [_fileName release];
+  _fileName = [fileName copy];
 }
 
 -(NSString*)fileType;
@@ -134,18 +126,25 @@
 
 -(void)setFileType:(NSString*)type;
 {
+  XPLogAssrt1([type isKindOfClass:[NSString class]], @"[INVALID] type(%@)", type);
   if ([type isEqualToString:_fileType]) { return; }
   [_fileType release];
   _fileType = [type copy];
+}
+
+-(NSString*)displayName;
+{
+  NSString *lastPathComponent = [[self fileName] lastPathComponent];
+  return (lastPathComponent) ? lastPathComponent : [Localized titleUntitled];
 }
 
 // MARK: NSObject basics
 
 -(XPUInteger)hash;
 {
-  XPURL *fileURL = [self fileURL];
-  if (fileURL) {
-    return [fileURL hash];
+  NSString *fileName = [self fileName];
+  if (fileName) {
+    return [fileName hash];
   } else {
     return [super hash];
   }
@@ -153,15 +152,16 @@
 
 -(BOOL)isEqual:(id)object;
 {
-  XPURL *fileURL = [self fileURL];
-  if (fileURL && [object isKindOfClass:[XPURL class]]) {
-    return [fileURL isEqual:object];
+  NSString *fileName = [self fileName];
+  if (fileName && [object isKindOfClass:[NSString class]]) {
+    return [fileName isEqual:object];
   } else {
     return [super isEqual:object];
   }
 }
 
-// MARK: Data reading and writing
+// MARK: MUST IMPLEMENT loading methods
+
 -(NSData*)dataRepresentationOfType:(NSString*)type;
 {
   XPLogRaise(@"Unimplemented");
@@ -174,25 +174,27 @@
   return NO;
 }
 
--(BOOL)writeToURL:(XPURL*)__fileURL ofType:(NSString*)__fileType error:(XPErrorPointer)outError;
+// MARK: Data reading and writing
+
+-(BOOL)writeToFile:(NSString*)__fileName ofType:(NSString*)__type;
 {
-  XPURL    *fileURL  = (__fileURL ) ? __fileURL  : [self fileURL ];
-  NSString *fileType = (__fileType) ? __fileType : [self fileType];
+  NSString *fileName = (__fileName) ? __fileName : [self fileName];
+  NSString *fileType = (__type)     ? __type     : [self fileType];
   NSData *forWriting = [self dataRepresentationOfType:fileType];
-  if (fileURL && fileType && forWriting) {
-    return [forWriting XP_writeToURL:fileURL error:outError];
+  if (fileName && fileType && forWriting) {
+    return [forWriting writeToFile:fileName atomically:YES];
   }
   return NO;
 }
 
--(BOOL)readFromURL:(XPURL*)__fileURL ofType:(NSString*)__fileType error:(XPErrorPointer)outError;
+-(BOOL)readFromFile:(NSString*)__fileName ofType:(NSString*)__type;
 {
   NSData   *data = nil;
-  XPURL    *fileURL  = (__fileURL ) ? __fileURL  : [self fileURL ];
-  NSString *fileType = (__fileType) ? __fileType : [self fileType];
-  if (!fileURL) { return NO; }
+  NSString *fileName = (__fileName) ? __fileName : [self fileName];
+  NSString *fileType = (__type)     ? __type     : [self fileType];
+  if (!fileName) { return NO; }
   
-  data = [NSData XP_dataWithContentsOfURL:fileURL error:outError];
+  data = [NSData dataWithContentsOfFile:fileName];
   if (!data) { return NO; }
 
   return [self loadDataRepresentation:data ofType:fileType];
@@ -202,9 +204,9 @@
 
 -(IBAction)saveDocument:(id)sender;
 {
-  XPURL *fileURL = [self fileURL];
-  if (fileURL) {
-    [self writeToURL:nil ofType:nil error:NULL];
+  NSString *fileName = [self fileName];
+  if (fileName) {
+    [self writeToFile:nil ofType:nil];
   } else {
     [self __runModalSavePanelAndSetFileURL];
   }
@@ -227,7 +229,7 @@
   XPAlertReturn result = [self __runRevertToSavedAlert];
   switch (result) {
     case XPAlertReturnDefault:
-      [self readFromURL:nil ofType:nil error:NULL];
+      [self readFromFile:nil ofType:nil];
       break;
     case XPAlertReturnAlternate:
       XPLogDebug(@"User Cancelled");
@@ -263,7 +265,7 @@
   alertResult = [self __runUnsavedChangesAlert];
   switch (alertResult) {
     case XPAlertReturnDefault:
-      if ([[self fileURL] XP_isFileURL]) {
+      if ([[self fileName] isAbsolutePath]) {
         [self saveDocument:sender];
         return YES;
       } else {
@@ -283,15 +285,15 @@
 -(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
 {
   SEL menuAction = [menuItem action];
-  XPURL *fileURL = [self fileURL];
+  NSString *fileName = [self fileName];
   if        (menuAction == @selector(saveDocument:)) {
-    return fileURL == nil || [self isDocumentEdited];
+    return fileName == nil || [self isDocumentEdited];
   } else if (menuAction == @selector(saveDocumentAs:)) {
-    return fileURL != nil;
+    return fileName != nil;
   } else if (menuAction == @selector(saveDocumentTo:)) {
-    return fileURL != nil;
+    return fileName != nil;
   } else if (menuAction == @selector(revertDocumentToSaved:)) {
-    return fileURL != nil && [self isDocumentEdited];
+    return fileName != nil && [self isDocumentEdited];
   }
   return NO;
 }
@@ -314,7 +316,7 @@
   okCancel = [savePanel runModal];
   switch (okCancel) {
     case XPModalResponseOK:
-      [self writeToURL:(XPURL*)[savePanel filename] ofType:nil error:NULL];
+      [self writeToFile:[savePanel filename] ofType:nil];
       break;
     case XPModalResponseCancel:
       XPLogDebug(@"User Cancelled");
@@ -333,7 +335,7 @@
   NSSavePanel *savePanel = [NSSavePanel savePanel];
   result = [self __runModalSavePanel:savePanel];
   if (result == XPModalResponseOK) {
-    [self setFileURL:(XPURL*)[savePanel filename]];
+    [self setFileName:[savePanel filename]];
   }
   return result;
 }
@@ -363,11 +365,11 @@
 {
   XPLogExtra1(@"<%@>", XPPointerString(self));
   // Skipping release for window because it releases itself when closed
-  [_fileURL   release];
+  [_fileName  release];
   [_fileType  release];
   [_fileExtension release];
   _window_42 = nil;
-  _fileURL   = nil;
+  _fileName  = nil;
   _fileType  = nil;
   _fileExtension = nil;
   [super dealloc];
@@ -375,91 +377,3 @@
 
 @end
 #pragma clang diagnostic pop
-
-#ifdef AFF_NSDocumentNone
-@implementation NSDocumentLegacyImplementation (CrossPlatform)
-#else
-@implementation NSDocument (CrossPlatform)
-#endif
--(BOOL)XP_isDocumentEdited;
-{
-  return [self isDocumentEdited];
-}
-
--(XPURL*)XP_fileURL;
-{
-#ifdef AFF_NSDocumentNoURL
-  return [self fileName];
-#else
-  return [self fileURL];
-#endif
-}
-
--(NSString*)XP_nameForFrameAutosave;
-{
-  XPURL *fileURL = [self XP_fileURL];
-  if (![fileURL XP_isFileURL]) { return nil; }
-  return [fileURL XP_path];
-}
-
--(NSWindow*)XP_windowForSheet;
-{
-#ifdef AFF_NSDocumentNoURL
-  NSWindow *window = [[[self windowControllers] lastObject] window];
-  XPParameterRaise(window);
-  return window;
-#else
-  return [self windowForSheet];
-#endif
-}
-
--(void)XP_showWindows;
-{
-  [self showWindows];
-}
-
--(void)XP_setWindow:(NSWindow*)aWindow;
-{
-#ifdef AFF_NSDocumentNone
-  XPParameterRaise(aWindow);
-  [_window_42 release];
-  _window_42 = [aWindow retain];
-#else
-  XPLogDebug(@"[IGNORE]");
-#endif
-}
-
--(void)XP_setFileType:(NSString*)type;
-{
-  [self setFileType:type];
-}
-
--(void)XP_setFileExtension:(NSString*)type;
-{
-#ifdef AFF_NSDocumentNone
-  [self __setFileExtension:type];
-#else
-  XPLogDebug(@"[IGNORE]");
-#endif
-}
-
--(BOOL)XP_readFromURL:(XPURL*)fileURL ofType:(NSString*)fileType error:(id*)outError;
-{
-#ifdef AFF_NSDocumentNoURL
-  return [self readFromFile:fileURL ofType:fileType];
-#else
-  return [self readFromURL:fileURL ofType:fileType error:outError];
-#endif
-}
-
--(void)XP_addWindowController:(id)windowController;
-{
-#ifdef AFF_NSDocumentNoURL
-  XPLogDebug(@"[IGNORE]");
-#else
-  XPParameterRaise(windowController);
-  [self addWindowController:windowController];
-#endif
-}
-@end
-
