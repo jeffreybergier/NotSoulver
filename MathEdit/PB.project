@@ -49,11 +49,8 @@
             Images/NeXTLogoMed.tiff, 
             Images/TagLine.tiff, 
             Images/ThemeAuto.tiff, 
-            "Images/ThemeAuto@2x.tiff", 
             Images/ThemeDark.tiff, 
-            "Images/ThemeDark@2x.tiff", 
-            Images/ThemeLight.tiff, 
-            "Images/ThemeLight@2x.tiff"
+            Images/ThemeLight.tiff
         ); 
         INTERFACES = (); 
         OTHER_LINKED = (slre.c, main.m); 

@@ -21,9 +21,8 @@ LOCAL_RESOURCES = Localizable.strings
 
 GLOBAL_RESOURCES = Images/about-image-512.tiff Images/NeXTLogoMed.tiff\
                    Images/TagLine.tiff Images/ThemeAuto.tiff\
-                   Images/ThemeAuto@2x.tiff Images/ThemeDark.tiff\
-                   Images/ThemeDark@2x.tiff Images/ThemeLight.tiff\
-                   Images/ThemeLight@2x.tiff TestsIntegration-DiskRep.txt\
+                   Images/ThemeDark.tiff Images/ThemeLight.tiff\
+                   TestsIntegration-DiskRep.txt\
                    TestsIntegration-DisplayRep.rtf\
                    TestsIntegration-SolvedRep.rtf\
                    TestsIntegration-UnsolvedRep.rtf
