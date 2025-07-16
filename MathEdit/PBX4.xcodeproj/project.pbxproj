@@ -13,11 +13,8 @@
 		8C0BE7FA2DEB536600DD3D85 /* MATHAccessoryWindowViews.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C0BE7F82DEB536600DD3D85 /* MATHAccessoryWindowViews.h */; };
 		8C0BE7FB2DEB536600DD3D85 /* MATHAccessoryWindowViews.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C0BE7F92DEB536600DD3D85 /* MATHAccessoryWindowViews.m */; };
 		8C0E08952E05AC5F00D0FBC0 /* ThemeAuto.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C0E088F2E05AC5F00D0FBC0 /* ThemeAuto.tiff */; };
-		8C0E08962E05AC5F00D0FBC0 /* ThemeAuto@2x.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C0E08902E05AC5F00D0FBC0 /* ThemeAuto@2x.tiff */; };
 		8C0E08972E05AC5F00D0FBC0 /* ThemeDark.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C0E08912E05AC5F00D0FBC0 /* ThemeDark.tiff */; };
-		8C0E08982E05AC5F00D0FBC0 /* ThemeDark@2x.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C0E08922E05AC5F00D0FBC0 /* ThemeDark@2x.tiff */; };
 		8C0E08992E05AC5F00D0FBC0 /* ThemeLight.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C0E08932E05AC5F00D0FBC0 /* ThemeLight.tiff */; };
-		8C0E089A2E05AC5F00D0FBC0 /* ThemeLight@2x.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C0E08942E05AC5F00D0FBC0 /* ThemeLight@2x.tiff */; };
 		8C5E580C2DC346F200A1648E /* NSUserDefaults+MathEdit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E592D91DCDF0000020F /* NSUserDefaults+MathEdit.h */; };
 		8C5E580D2DC346F200A1648E /* MATHAccessoryWindowsOwner.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E5B2D91DCDF0000020F /* MATHAccessoryWindowsOwner.h */; };
 		8C5E580E2DC346F200A1648E /* MATHAppDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E5D2D91DCDF0000020F /* MATHAppDelegate.h */; };
@@ -76,11 +73,8 @@
 		8C0BE7F82DEB536600DD3D85 /* MATHAccessoryWindowViews.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MATHAccessoryWindowViews.h; sourceTree = "<group>"; };
 		8C0BE7F92DEB536600DD3D85 /* MATHAccessoryWindowViews.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = MATHAccessoryWindowViews.m; sourceTree = "<group>"; };
 		8C0E088F2E05AC5F00D0FBC0 /* ThemeAuto.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeAuto.tiff; path = Images/ThemeAuto.tiff; sourceTree = "<group>"; };
-		8C0E08902E05AC5F00D0FBC0 /* ThemeAuto@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeAuto@2x.tiff"; path = "Images/ThemeAuto@2x.tiff"; sourceTree = "<group>"; };
 		8C0E08912E05AC5F00D0FBC0 /* ThemeDark.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeDark.tiff; path = Images/ThemeDark.tiff; sourceTree = "<group>"; };
-		8C0E08922E05AC5F00D0FBC0 /* ThemeDark@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeDark@2x.tiff"; path = "Images/ThemeDark@2x.tiff"; sourceTree = "<group>"; };
 		8C0E08932E05AC5F00D0FBC0 /* ThemeLight.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeLight.tiff; path = Images/ThemeLight.tiff; sourceTree = "<group>"; };
-		8C0E08942E05AC5F00D0FBC0 /* ThemeLight@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeLight@2x.tiff"; path = "Images/ThemeLight@2x.tiff"; sourceTree = "<group>"; };
 		8C2A01752E0B60A90062F033 /* PBRelease.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = PBRelease.xcconfig; path = PB.xcconfig/PBRelease.xcconfig; sourceTree = "<group>"; };
 		8C2A01762E0B60A90062F033 /* PBDebug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = PBDebug.xcconfig; path = PB.xcconfig/PBDebug.xcconfig; sourceTree = "<group>"; };
 		8C2A01772E0B60A90062F033 /* PBBase.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = PBBase.xcconfig; path = PB.xcconfig/PBBase.xcconfig; sourceTree = "<group>"; };
@@ -280,11 +274,8 @@
 				8C0A6D122DC7CFD3001DC2A9 /* NeXTLogoMed.tiff */,
 				8C0A6D132DC7CFD3001DC2A9 /* TagLine.tiff */,
 				8C0E088F2E05AC5F00D0FBC0 /* ThemeAuto.tiff */,
-				8C0E08902E05AC5F00D0FBC0 /* ThemeAuto@2x.tiff */,
 				8C0E08912E05AC5F00D0FBC0 /* ThemeDark.tiff */,
-				8C0E08922E05AC5F00D0FBC0 /* ThemeDark@2x.tiff */,
 				8C0E08932E05AC5F00D0FBC0 /* ThemeLight.tiff */,
-				8C0E08942E05AC5F00D0FBC0 /* ThemeLight@2x.tiff */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -402,11 +393,8 @@
 				8C0A6D172DC7CFD3001DC2A9 /* NeXTLogoMed.tiff in Resources */,
 				8C0A6D182DC7CFD3001DC2A9 /* TagLine.tiff in Resources */,
 				8C0E08952E05AC5F00D0FBC0 /* ThemeAuto.tiff in Resources */,
-				8C0E08962E05AC5F00D0FBC0 /* ThemeAuto@2x.tiff in Resources */,
 				8C0E08972E05AC5F00D0FBC0 /* ThemeDark.tiff in Resources */,
-				8C0E08982E05AC5F00D0FBC0 /* ThemeDark@2x.tiff in Resources */,
 				8C0E08992E05AC5F00D0FBC0 /* ThemeLight.tiff in Resources */,
-				8C0E089A2E05AC5F00D0FBC0 /* ThemeLight@2x.tiff in Resources */,
 				8CE737032E0B83880046366A /* AppIcon.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
