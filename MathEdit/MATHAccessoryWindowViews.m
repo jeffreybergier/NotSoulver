@@ -295,10 +295,11 @@
 {
   XPFloat kVPad = 32;
   XPFloat kYOrigin = frameRect.size.height-48;
-  NSRect resetRect = NSMakeRect(frameRect.size.width-50, kYOrigin,   50,                   30);
-  NSRect darkkRect = NSMakeRect(resetRect.origin.x-50-4, kYOrigin,   50,                   30);
-  NSRect lightRect = NSMakeRect(darkkRect.origin.x-50-4, kYOrigin,   50,                   30);
-  NSRect labelRect = NSMakeRect(frameRect.origin.x,      kYOrigin+4, lightRect.origin.x-4,  0);
+  XPFloat buttonWidth = 52;
+  NSRect resetRect = NSMakeRect(frameRect.size.width-buttonWidth, kYOrigin,   buttonWidth,          30);
+  NSRect darkkRect = NSMakeRect(resetRect.origin.x-buttonWidth-4, kYOrigin,   buttonWidth,          30);
+  NSRect lightRect = NSMakeRect(darkkRect.origin.x-buttonWidth-4, kYOrigin,   buttonWidth,          30);
+  NSRect labelRect = NSMakeRect(frameRect.origin.x,               kYOrigin+4, lightRect.origin.x-4,  0);
   MATHColorWellKind colorKind = MATHColorWellKindUnknown;
   MATHResetButtonKind resetKind = MATHResetButtonKindUnknown;
   NSColorWell *colorWell = nil;
@@ -381,10 +382,11 @@
   XPFloat kLabelYOffset = 32;
   XPFloat kYOrigin = frameRect.size.height-kLabelYOffset-16;
   XPFloat kVPad = kLabelYOffset + 22;
-  NSRect resetRect = NSMakeRect(frameRect.size.width-50, kYOrigin,               50,                   30);
-  NSRect setttRect = NSMakeRect(resetRect.origin.x-50-4, kYOrigin,               50,                   30);
-  NSRect fieldRect = NSMakeRect(frameRect.origin.x,      kYOrigin,               setttRect.origin.x-4, 30);
-  NSRect labelRect = NSMakeRect(frameRect.origin.x,      kYOrigin+kLabelYOffset, setttRect.origin.x-4,  0);
+  XPFloat buttonWidth = 52;
+  NSRect resetRect = NSMakeRect(frameRect.size.width-buttonWidth, kYOrigin,               buttonWidth,          30);
+  NSRect setttRect = NSMakeRect(resetRect.origin.x-buttonWidth-4, kYOrigin,               buttonWidth,          30);
+  NSRect fieldRect = NSMakeRect(frameRect.origin.x,               kYOrigin,               setttRect.origin.x-4, 30);
+  NSRect labelRect = NSMakeRect(frameRect.origin.x,               kYOrigin+kLabelYOffset, setttRect.origin.x-4,  0);
   MATHThemeFont fontKind = MATHThemeFontUnknown;
   MATHResetButtonKind resetKind = MATHResetButtonKindUnknown;
   NSTextField *textField = nil;
