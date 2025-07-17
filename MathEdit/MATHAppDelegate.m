@@ -174,7 +174,7 @@
 {
   XPDocument *document = [[[MATHDocument alloc] init] autorelease];
   [document setFileType:MATHDocumentModelRepDisk];
-  [document __setFileExtension:MATHDocumentModelExtension];
+  [document MATH_setRequiredFileType:MATHDocumentModelExtension];
   [document showWindows];
   [[self openDocuments] addObject:document];
 }
@@ -183,7 +183,7 @@
 {
   NSArray *filenames = nil;
   NSEnumerator *e = nil;
-  XPURL *nextF = nil;
+  id nextF = nil;
   XPDocument *nextC = nil;
 
   filenames = XPRunOpenPanel(MATHDocumentModelExtension);
@@ -192,7 +192,9 @@
   while ((nextF = [e nextObject])) {
     nextC = [[self openDocuments] member:nextF];
     if (!nextC) {
-      nextC = [[[MATHDocument alloc] initWithContentsOfFile:nextF ofType:MATHDocumentModelRepDisk] autorelease];
+      nextC = [[[MATHDocument alloc] MATH_initWithContentsOfFileObject:nextF
+                                                                ofType:MATHDocumentModelRepDisk
+                                                                 error:NULL] autorelease];
       [[self openDocuments] addObject:nextC];
     }
     [nextC showWindows];
@@ -234,7 +236,7 @@
 
   // Try to close all documents (asking the user to save them)
   while ((next = [e nextObject])) {
-    [[next windowForSheet] performClose:sender];
+    [[next MATH_windowForSheet] performClose:sender];
   }
 
   // Iterate again and check if are unsaved changes
@@ -253,10 +255,12 @@
 {
   MATHDocument *document = [[self openDocuments] member:filename];
   if (!document) {
-    document = [[[MATHDocument alloc] initWithContentsOfFile:filename ofType:MATHDocumentModelRepDisk] autorelease];
+    document = [[[MATHDocument alloc] MATH_initWithContentsOfFileObject:filename
+                                                                 ofType:MATHDocumentModelRepDisk
+                                                                  error:NULL] autorelease];
     [[self openDocuments] addObject:document];
   }
-  [[document windowForSheet] makeKeyAndOrderFront:sender];
+  [[document MATH_windowForSheet] makeKeyAndOrderFront:sender];
   return YES;
 }
 

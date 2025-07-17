@@ -29,14 +29,6 @@
 // typedef NSDocument XPDocument;
 #endif
 
-#ifdef AFF_NSDocumentNoURL
-#define XPURL NSString
-// typedef NSString XPURL;
-#else
-#define XPURL NSURL
-// typedef NSURL XPURL;
-#endif
-
 // This is a best effort implementation of NSDocument only for use in OpenStep.
 // Its insanely minimal because it won't be used once Mac OS X Ships
 #ifdef XPSupportsFormalProtocols
@@ -47,7 +39,7 @@
 {
   mm_copy NSString *_fileName;
   mm_copy NSString *_fileType;
-  mm_copy NSString *_fileExtension;
+  mm_copy NSString *_requiredFileType;
   mm_retain NSWindow *_window_42; // Only used in OpenStep
   BOOL _isEdited;
 }
@@ -63,7 +55,6 @@
 -(void)makeWindowControllers;
 -(void)showWindows;
 -(NSWindow*)windowForSheet;
-// TODO: Implement
 -(void)setWindow:(NSWindow *)window;
 
 // MARK: Document Properties
@@ -104,9 +95,9 @@
 
 // MARK: Customizations
 
--(NSString*)__fileExtension;
+-(NSString*)__requiredFileType;
 // TODO: Change this to a method -__fileExtension: for the subclass to implement
--(void)__setFileExtension:(NSString*)type;
+-(void)__setRequiredFileType:(NSString*)type;
 -(BOOL)windowShouldClose:(id)sender;
 -(BOOL)validateMenuItem:(NSMenuItem*)menuItem;
 

@@ -82,6 +82,13 @@
   return [[_window_42 retain] autorelease];
 }
 
+-(void)setWindow:(NSWindow *)window;
+{
+  XPParameterRaise(window);
+  [_window_42 release];
+  _window_42 = [window retain];
+}
+
 // MARK: Document Properties
 
 -(void)updateChangeCount:(XPDocumentChangeType)change;
@@ -244,18 +251,18 @@
 
 // MARK: Customizations
 
--(NSString*)__fileExtension;
+-(NSString*)__requiredFileType;
 {
-  XPParameterRaise(_fileExtension);
-  return [[_fileExtension retain] autorelease];
+  XPParameterRaise(_requiredFileType);
+  return [[_requiredFileType retain] autorelease];
 }
 
--(void)__setFileExtension:(NSString*)type;
+-(void)__setRequiredFileType:(NSString*)type;
 {
   XPParameterRaise(type);
-  if ([type isEqualToString:_fileExtension]) { return; }
-  [_fileExtension release];
-  _fileExtension = [type copy];
+  if ([type isEqualToString:_requiredFileType]) { return; }
+  [_requiredFileType release];
+  _requiredFileType = [type copy];
 }
 
 -(BOOL)windowShouldClose:(id)sender;
@@ -302,7 +309,7 @@
 
 -(BOOL)__prepareSavePanel:(NSSavePanel*)savePanel;
 {
-  [savePanel setRequiredFileType:[self __fileExtension]];
+  [savePanel setRequiredFileType:[self __requiredFileType]];
   [savePanel setDirectory:[[NSUserDefaults standardUserDefaults] MATH_savePanelLastDirectory]];
   return YES;
 }
@@ -367,11 +374,11 @@
   // Skipping release for window because it releases itself when closed
   [_fileName  release];
   [_fileType  release];
-  [_fileExtension release];
+  [_requiredFileType release];
   _window_42 = nil;
   _fileName  = nil;
   _fileType  = nil;
-  _fileExtension = nil;
+  _requiredFileType = nil;
   [super dealloc];
 }
 

@@ -454,20 +454,6 @@ NSArray* XPRunOpenPanel(NSString *extension);
 -(void)XP_setBoxType:(XPBoxType)type;
 @end
 
-// NSURL does not exist on OpenStep
-// so this category attempts to unify the API
-// between NSString and NSURL
-//@interface XPURL (CrossPlatformURL)
-//-(BOOL)XP_isFileURL;
-//-(NSString*)XP_path;
-//-(NSString*)XP_lastPathComponent;
-//@end
-
-//@interface NSData (CrossPlatform)
-//+(NSData*)XP_dataWithContentsOfURL:(XPURL*)url error:(XPErrorPointer)errorPtr;
-//-(BOOL)XP_writeToURL:(XPURL*)url error:(XPErrorPointer)errorPtr;
-//@end
-
 @interface NSWindow (CrossPlatform)
 -(void)XP_setRestorationClass:(Class)aClass;
 -(void)XP_setIdentifier:(NSString*)anIdentifier;

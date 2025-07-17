@@ -22,14 +22,6 @@
 #import "MATHDocumentViewController.h"
 
 #ifdef AFF_NSDocumentNone
-@interface NSDocumentLegacyImplementation (MATHDocument)
-#else
-@interface NSDocument (MATHDocument)
-#endif
--(NSString*)MATH_nameForFrameAutosave;
-@end
-
-#ifdef AFF_NSDocumentNone
 @interface MATHDocument: NSDocumentLegacyImplementation
 #else
 @interface MATHDocument: NSDocument
@@ -58,11 +50,29 @@
 @interface MATHDocument (StateRestoration)
 +(BOOL)autosavesInPlace;
 +(BOOL)canConcurrentlyReadDocumentsOfType:(NSString*)typeName;
--(BOOL)canAsynchronouslyWriteToURL:(XPURL*)url
+-(BOOL)canAsynchronouslyWriteToURL:(id)url
                             ofType:(NSString*)typeName
                   forSaveOperation:(XPSaveOperationType)saveOperation;
 @end
 
 @interface MATHDocument (DarkMode)
 -(void)overrideWindowAppearance;
+@end
+
+// MARK: XPDocument Compatibility Category
+
+#ifdef AFF_NSDocumentNone
+@interface NSDocumentLegacyImplementation (MATHDocument)
+#else
+@interface NSDocument (MATHDocument)
+#endif
+-(id)MATH_initWithContentsOfFileObject:(id)fileObject
+                                ofType:(NSString*)typeName
+                                 error:(XPErrorPointer)outError;
+-(id)MATH_fileObject;
+-(NSString*)MATH_nameForFrameAutosave;
+-(NSString*)MATH_requiredFileType;
+-(NSWindow*)MATH_windowForSheet;
+-(void)MATH_addWindowController:(XPWindowController*)aWindowController;
+-(void)MATH_setRequiredFileType:(NSString*)type;
 @end
