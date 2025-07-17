@@ -71,7 +71,9 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
 -(NSData*)dataRepresentationOfType:(MATHDocumentModelRep)type withRange:(NSRange)range;
 {
   XPParameterRaise(type);
-  if        ([type isEqualToString:MATHDocumentModelRepDisk]) {
+  if ([type isEqualToString:@"public.text"]) {
+    return [self __dataRepresentationOfDiskTypeWithRange:range];
+  } else if ([type isEqualToString:MATHDocumentModelRepDisk]) {
     return [self __dataRepresentationOfDiskTypeWithRange:range];
   } else if ([type isEqualToString:MATHDocumentModelRepDisplay]) {
     return [self __dataRepresentationOfDisplayTypeWithRange:range];

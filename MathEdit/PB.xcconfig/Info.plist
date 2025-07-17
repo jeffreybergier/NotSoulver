@@ -27,7 +27,7 @@
 				<string>text/plain</string>
 			</array>
 			<key>CFBundleTypeName</key>
-			<string>com.saturdayapps.mathedit.plain</string>
+			<string>MathEdit Plain Text Document</string>
 			<key>CFBundleTypeOSTypes</key>
 			<array>
 				<string>TEXT</string>
