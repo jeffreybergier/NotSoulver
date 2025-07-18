@@ -76,19 +76,19 @@
   
   // NeXT Tagline Image
   [self addSubview:[NSImageView MATH_imageViewWithOrigin:kTagLineOrigin
-                                   sizedToFitImageNamed:[Localized imageNeXTTagline]]];
+                                    sizedToFitImageNamed:[Localized imageNeXTTagline]]];
   
   // Dedication Text
   [self addSubview:[[NSTextField MATH_labelWithFrame:kDedicationTextFrame]
                                  MATH_setObjectValue:[Localized phraseAboutDedication]
-                                               font:[NSFont systemFontOfSize:10]
-                                          alignment:XPTextAlignmentLeft]];
+                                                font:[NSFont systemFontOfSize:10]
+                                           alignment:XPTextAlignmentLeft]];
   
   // View Source Button
   _viewSourceButton = [[[self class] __viewSourceButtonWithFrame:MATH_rectByAdjustingAquaButtonRect(kViewSourceButtonFrame)
                                                            title:[Localized verbViewSource]
                                                       imageNamed:[Localized imageNeXTLogo]]
-                                         MATH_setAutoresizingMask:NSViewMinXMargin];
+                                        MATH_setAutoresizingMask:NSViewMinXMargin];
   [self addSubview:_viewSourceButton];
   
   // Separator Line
@@ -98,25 +98,25 @@
   // Large TextField
   [self addSubview:[[[self class] __scrollViewWithFrame:kTextViewRect
                                                textView:&_textView]
-                                MATH_setAutoresizingMask:NSViewHeightSizable | NSViewWidthSizable]];
+                               MATH_setAutoresizingMask:NSViewHeightSizable | NSViewWidthSizable]];
   
   // Add Subtitle Label
   [self addSubview:[[[NSTextField MATH_labelWithFrame:kSubtitleTextFrame]
                                   MATH_setObjectValue:[Localized phraseAboutTagline]
-                                                font:[NSFont systemFontOfSize:16]
-                                           alignment:XPTextAlignmentCenter]
+                                                 font:[NSFont systemFontOfSize:16]
+                                            alignment:XPTextAlignmentCenter]
                              MATH_setAutoresizingMask:NSViewMinYMargin | NSViewWidthSizable]];
   
   // Add Title Label
   [self addSubview:[[[NSTextField MATH_labelWithFrame:kTitleTextFrame]
                                   MATH_setObjectValue:[Localized titleAppName]
-                                                font:[NSFont boldSystemFontOfSize:36]
-                                           alignment:XPTextAlignmentCenter]
+                                                 font:[NSFont boldSystemFontOfSize:36]
+                                            alignment:XPTextAlignmentCenter]
                              MATH_setAutoresizingMask:NSViewMinYMargin | NSViewWidthSizable]];
   
   // Add Portrait Image View
   [self addSubview:[[[NSImageView MATH_imageViewWithFrame:kPortraitImageView
-                                              imageNamed:[Localized imageAboutPortrait]]
+                                               imageNamed:[Localized imageAboutPortrait]]
                                   MATH_setImageFrameStyle:NSImageFrameGroove]
                                  MATH_setAutoresizingMask:NSViewMinYMargin | NSViewMinXMargin]];
   
@@ -224,8 +224,8 @@
   kind = MATHResetButtonKindUIStyle;
   [self addSubview:[[[NSTextField MATH_labelWithFrame:labelRect]
                                   MATH_setObjectValue:MATH_localizedStringForKind(kind)
-                                                font:nil
-                                           alignment:XPTextAlignmentLeft]
+                                                 font:nil
+                                            alignment:XPTextAlignmentLeft]
                              MATH_sizeToFitVertically]];
   
   _selectorControl = [[[XPSegmentedControl alloc] initWithFrame:sgmntRect] autorelease];
@@ -246,13 +246,13 @@
   // Wait Time Slider
   [self addSubview:[[[NSTextField MATH_labelWithFrame:labelRect]
                                   MATH_setObjectValue:MATH_localizedStringForKind(kind)
-                                                font:nil
-                                           alignment:XPTextAlignmentLeft]
+                                                 font:nil
+                                            alignment:XPTextAlignmentLeft]
                              MATH_sizeToFitVertically]];
   
   _delayLabel = [NSTextField MATH_textFieldWithFrame:delayRect
-                                             target:nil
-                                             action:NULL];
+                                              target:nil
+                                              action:NULL];
   [_delayLabel setAlignment:XPTextAlignmentCenter];
   [self addSubview:_delayLabel];
   
@@ -316,8 +316,8 @@
     if (colorKind % 2) {
       [self addSubview:[[[NSTextField MATH_labelWithFrame:labelRect]
                                       MATH_setObjectValue:MATH_localizedStringForKind(resetKind)
-                                                    font:nil
-                                               alignment:XPTextAlignmentRight]
+                                                     font:nil
+                                                alignment:XPTextAlignmentRight]
                                  MATH_sizeToFitVertically]];
       colorWell = [NSColorWell MATH_colorWellWithFrame:lightRect kind:colorKind];
       [self addSubview:colorWell];
@@ -325,9 +325,9 @@
       lightRect.origin.y -= kVPad;
     } else {
       [self addSubview:[NSButton MATH_settingsButtonWithFrame:MATH_rectByAdjustingAquaButtonRect(resetRect)
-                                                       title:[Localized verbReset]
-                                                      action:@selector(reset:)
-                                                         tag:resetKind]];
+                                                        title:[Localized verbReset]
+                                                       action:@selector(reset:)
+                                                          tag:resetKind]];
       colorWell = [NSColorWell MATH_colorWellWithFrame:darkkRect kind:colorKind];
       [self addSubview:colorWell];
       darkkRect.origin.y -= kVPad;
@@ -342,13 +342,13 @@
   
   [self addSubview:[[[NSTextField MATH_labelWithFrame:lightRect]
                                   MATH_setObjectValue:[Localized titleLight]
-                                                font:[NSFont systemFontOfSize:10]
-                                           alignment:XPTextAlignmentCenter]
+                                                 font:[NSFont systemFontOfSize:10]
+                                            alignment:XPTextAlignmentCenter]
                              MATH_sizeToFitVertically]];
   [self addSubview:[[[NSTextField MATH_labelWithFrame:darkkRect]
                                   MATH_setObjectValue:[Localized titleDark]
-                                                font:[NSFont systemFontOfSize:10]
-                                           alignment:XPTextAlignmentCenter]
+                                                 font:[NSFont systemFontOfSize:10]
+                                            alignment:XPTextAlignmentCenter]
                              MATH_sizeToFitVertically]];
   
   return self;
@@ -404,26 +404,26 @@
     // Label
     [self addSubview:[[[NSTextField MATH_labelWithFrame:labelRect]
                                     MATH_setObjectValue:MATH_localizedStringForKind(resetKind)
-                                                  font:nil
-                                             alignment:XPTextAlignmentLeft]
+                                                   font:nil
+                                              alignment:XPTextAlignmentLeft]
                                MATH_sizeToFitVertically]];
     
     // TextField
     textField = [NSTextField MATH_textFieldWithFrame:fieldRect
-                                             target:nil
-                                             action:NULL];
+                                              target:nil
+                                              action:NULL];
     [self setTextField:textField forKind:fontKind];
     [self addSubview:textField];
     
     // Buttons
     [self addSubview:[NSButton MATH_settingsButtonWithFrame:MATH_rectByAdjustingAquaButtonRect(setttRect)
-                                                     title:[Localized verbSet]
-                                                    action:@selector(presentFontPanel:)
-                                                       tag:fontKind]];
+                                                      title:[Localized verbSet]
+                                                     action:@selector(presentFontPanel:)
+                                                        tag:fontKind]];
     [self addSubview:[NSButton MATH_settingsButtonWithFrame:MATH_rectByAdjustingAquaButtonRect(resetRect)
-                                                     title:[Localized verbReset]
-                                                    action:@selector(reset:)
-                                                       tag:resetKind]];
+                                                      title:[Localized verbReset]
+                                                     action:@selector(reset:)
+                                                        tag:resetKind]];
     
     // Adjust frames
     labelRect.origin.y -= kVPad;
