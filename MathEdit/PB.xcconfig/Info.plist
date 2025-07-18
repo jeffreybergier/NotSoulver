@@ -29,8 +29,6 @@
 			<string>Owner</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>public.text</string>
-				<string>public.plain-text</string>
 				<string>com.saturdayapps.mathedit.plain</string>
 			</array>
 			<key>NSDocumentClass</key>

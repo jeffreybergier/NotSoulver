@@ -71,17 +71,15 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
 -(NSData*)dataRepresentationOfType:(MATHDocumentModelRep)type withRange:(NSRange)range;
 {
   XPParameterRaise(type);
-  if ([type isEqualToString:@"public.text"]) {
+  if        ([type isEqualToString:MATHDocumentModelRepDisk])       {
     return [self __dataRepresentationOfDiskTypeWithRange:range];
-  } else if ([type isEqualToString:MATHDocumentModelRepDisk]) {
-    return [self __dataRepresentationOfDiskTypeWithRange:range];
-  } else if ([type isEqualToString:MATHDocumentModelRepDisplay]) {
+  } else if ([type isEqualToString:MATHDocumentModelRepDisplay])    {
     return [self __dataRepresentationOfDisplayTypeWithRange:range];
-  } else if ([type isEqualToString:MATHDocumentModelRepSolved]) {
+  } else if ([type isEqualToString:MATHDocumentModelRepSolved])     {
     return [self __dataRepresentationOfSolvedTypeWithRange:range];
-  } else if ([type isEqualToString:MATHDocumentModelRepUnsolved]) {
+  } else if ([type isEqualToString:MATHDocumentModelRepUnsolved])   {
     return [self __dataRepresentationOfUnsolvedTypeWithRange:range];
-  } else {
+  } else                                                            {
     XPLogAssrt1(NO, @"[UNKNOWN] MATHDocumentModelRep(%@)", type);
     return nil;
   }

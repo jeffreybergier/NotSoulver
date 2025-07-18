@@ -160,6 +160,7 @@
 		};
 		2A37F4B8FDCFA73011CA2CEA = {
 			children = (
+				8C9622B92E2A860000A80066,
 				8CD62EC02D91DF730000020F,
 			);
 			isa = PBXGroup;
@@ -267,13 +268,21 @@
 			</array>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.saturdayapps.mathedit.plain</string>
+			</array>
 			<key>NSDocumentClass</key>
-			<string>SVRDocument</string>
+			<string>MATHDocument</string>
 			<key>NSExportableAs</key>
 			<array>
 				<string>NSRTFDPboardType</string>
 				<string>NSStringPboardType</string>
 			</array>
+			<key>NSUbiquitousDocumentUserActivityType</key>
+			<string>com.saturdayapps.mathedit.plain</string>
 		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
@@ -294,6 +303,29 @@
 	<string>1.0.0</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.content</string>
+				<string>public.text</string>
+				<string>public.plain-text</string>
+			</array>
+			<key>UTTypeIdentifier</key>
+			<string>com.saturdayapps.mathedit.plain</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>mtxt</string>
+					<string>txt</string>
+				</array>
+				<key>public.mime-type</key>
+				<string>application/mathedit</string>
+			</dict>
+		</dict>
+	</array>
 </dict>
 </plist>
 ";
@@ -341,6 +373,7 @@
 				8C973EB32E06515E00A80066,
 				8C973EB42E06515E00A80066,
 				8C973EB52E06515E00A80066,
+				8C9622BB2E2A860000A80066,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -421,6 +454,28 @@
 //8C2
 //8C3
 //8C4
+		8C9622B92E2A860000A80066 = {
+			children = (
+				8C9622BA2E2A860000A80066,
+			);
+			isa = PBXVariantGroup;
+			name = InfoPlist.strings;
+			path = "";
+			refType = 4;
+		};
+		8C9622BA2E2A860000A80066 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			name = English;
+			path = English.lproj/InfoPlist.strings;
+			refType = 4;
+		};
+		8C9622BB2E2A860000A80066 = {
+			fileRef = 8C9622B92E2A860000A80066;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		8C962DC52E1C031800A80066 = {
 			children = (
 				8C962DC62E1C040400A80066,
