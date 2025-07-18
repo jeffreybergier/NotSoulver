@@ -16,5 +16,6 @@
 // along with MathEdit. If not, see <https://www.gnu.org/licenses/>.
 //
 
-CFBundleTypeName = "MathEdit Plain Text Document";
-UTTypeDescription = "MathEdit Plain Text Document";
+// This InfoPlist.strings file is needed to localized CFBundleTypeName
+// which is the document identifier below used by NSDocument
+"com.saturdayapps.mathedit.plain" = "MathEdit Plain Text Document";
