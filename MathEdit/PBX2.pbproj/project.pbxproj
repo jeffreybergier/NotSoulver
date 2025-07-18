@@ -290,7 +290,7 @@
 	<key>CFBundleGetInfoString</key>
 	<string>MathEdit for OpenStep</string>
 	<key>CFBundleIconFile</key>
-	<string></string>
+	<string>AppIcon-X2</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -368,12 +368,10 @@
 				8C9C62922DC7C9F600A80066,
 				8C9C62932DC7C9F600A80066,
 				8C973EB02E06515E00A80066,
-				8C973EB12E06515E00A80066,
 				8C973EB22E06515E00A80066,
-				8C973EB32E06515E00A80066,
 				8C973EB42E06515E00A80066,
-				8C973EB52E06515E00A80066,
 				8C9622BB2E2A860000A80066,
+				8C965C422E2B0E6700A80066,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -523,16 +521,22 @@
 			path = PB.xcconfig/PBRelease.xcconfig;
 			refType = 4;
 		};
+		8C965C412E2B0E6700A80066 = {
+			isa = PBXFileReference;
+			name = "AppIcon-X2.icns";
+			path = "Images/AppIcon-X2.icns";
+			refType = 4;
+		};
+		8C965C422E2B0E6700A80066 = {
+			fileRef = 8C965C412E2B0E6700A80066;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		8C973EAA2E06515E00A80066 = {
 			isa = PBXFileReference;
 			name = ThemeAuto.tiff;
 			path = Images/ThemeAuto.tiff;
-			refType = 4;
-		};
-		8C973EAB2E06515E00A80066 = {
-			isa = PBXFileReference;
-			name = "ThemeAuto@2x.tiff";
-			path = "Images/ThemeAuto@2x.tiff";
 			refType = 4;
 		};
 		8C973EAC2E06515E00A80066 = {
@@ -541,32 +545,14 @@
 			path = Images/ThemeDark.tiff;
 			refType = 4;
 		};
-		8C973EAD2E06515E00A80066 = {
-			isa = PBXFileReference;
-			name = "ThemeDark@2x.tiff";
-			path = "Images/ThemeDark@2x.tiff";
-			refType = 4;
-		};
 		8C973EAE2E06515E00A80066 = {
 			isa = PBXFileReference;
 			name = ThemeLight.tiff;
 			path = Images/ThemeLight.tiff;
 			refType = 4;
 		};
-		8C973EAF2E06515E00A80066 = {
-			isa = PBXFileReference;
-			name = "ThemeLight@2x.tiff";
-			path = "Images/ThemeLight@2x.tiff";
-			refType = 4;
-		};
 		8C973EB02E06515E00A80066 = {
 			fileRef = 8C973EAA2E06515E00A80066;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		8C973EB12E06515E00A80066 = {
-			fileRef = 8C973EAB2E06515E00A80066;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -577,20 +563,8 @@
 			settings = {
 			};
 		};
-		8C973EB32E06515E00A80066 = {
-			fileRef = 8C973EAD2E06515E00A80066;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
 		8C973EB42E06515E00A80066 = {
 			fileRef = 8C973EAE2E06515E00A80066;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		8C973EB52E06515E00A80066 = {
-			fileRef = 8C973EAF2E06515E00A80066;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -1145,15 +1119,13 @@
 		};
 		8CD62EAE2D91DCFD0000020F = {
 			children = (
+				8C965C412E2B0E6700A80066,
 				8C9C628B2DC7C9F600A80066,
 				8C9C628D2DC7C9F600A80066,
 				8C9C628E2DC7C9F600A80066,
 				8C973EAA2E06515E00A80066,
-				8C973EAB2E06515E00A80066,
 				8C973EAC2E06515E00A80066,
-				8C973EAD2E06515E00A80066,
 				8C973EAE2E06515E00A80066,
-				8C973EAF2E06515E00A80066,
 			);
 			isa = PBXGroup;
 			name = Images;
