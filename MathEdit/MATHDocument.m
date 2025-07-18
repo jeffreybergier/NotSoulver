@@ -19,6 +19,60 @@
 #import "MATHDocument.h"
 #import "NSUserDefaults+MathEdit.h"
 
+// MARK: Private Categories
+
+@interface NSObject (MATHDocument)
+-(NSString*)MATH_URLPath;
+@end
+
+@interface NSData (MATHDocument)
++(NSData*)MATH_dataWithContentsFileObject:(id)fileObject error:(XPErrorPointer)errorPtr;
+-(BOOL)MATH_writeToFileObject:(id)fileObject error:(XPErrorPointer)errorPtr;
+@end
+
+@implementation NSObject (MATHDocument)
+-(NSString*)MATH_URLPath;
+{
+  Class URLClass = NSClassFromString(@"NSURL");
+  if (URLClass && [self isKindOfClass:URLClass]) {
+    return [self performSelector:@selector(path)];
+  } else if ([self isKindOfClass:[NSString class]]) {
+    return (NSString*)self;
+  } else {
+    XPLogRaise1(@"[UNKNOWN] object(%@)", self);
+    return nil;
+  }
+}
+@end
+
+@implementation NSData (MATHDocument)
+
++(NSData*)MATH_dataWithContentsFileObject:(id)fileObject error:(XPErrorPointer)errorPtr;
+{
+#ifdef AFF_NSDocumentNoURL
+  XPLogAssrt1([fileObject isKindOfClass:[NSString class]], @"[Not a String] fileObject(%@)", fileObject);
+  return [self dataWithContentsOfFile:fileObject];
+#else
+  XPLogAssrt1([fileObject isKindOfClass:[NSURL class]], @"[Not a URL] fileObject(%@)", fileObject);
+  return [self dataWithContentsOfURL:fileObject options:0 error:errorPtr];
+#endif
+}
+
+-(BOOL)MATH_writeToFileObject:(id)fileObject error:(XPErrorPointer)errorPtr;
+{
+#ifdef AFF_NSDocumentNoURL
+  XPLogAssrt1([fileObject isKindOfClass:[NSString class]], @"[Not a String] fileObject(%@)", fileObject);
+  return [self writeToFile:fileObject atomically:YES];
+#else
+  XPLogAssrt1([fileObject isKindOfClass:[NSURL class]], @"[Not a URL] fileObject(%@)", fileObject);
+  return [self writeToURL:fileObject options:XPDataWritingAtomic error:errorPtr];
+#endif
+}
+
+@end
+
+// MARK: MathDocument Implementation
+
 @implementation MATHDocument
 
 // MARK: Properties
@@ -50,7 +104,7 @@
                                  | XPWindowStyleMaskMiniaturizable
                                  | XPWindowStyleMaskResizable);
   NSRect rect = NSMakeRect(0, 0, 500, 500);
-  NSString *autosaveName = [self XP_nameForFrameAutosave];
+  NSString *autosaveName = [self MATH_nameForFrameAutosave];
   MATHDocumentModelController *modelController = [self modelController];
   MATHDocumentViewController  *viewController  = [self viewController];
   NSWindow *aWindow = [[[NSWindow alloc] initWithContentRect:rect
@@ -60,8 +114,8 @@
   XPWindowController *windowController = [XPNewWindowController(aWindow) autorelease];
   
   // Configure basic properties
-  [self XP_setWindow:aWindow];
-  [self XP_addWindowController:windowController];
+  [self setWindow:aWindow];
+  [self MATH_addWindowController:windowController];
   [self overrideWindowAppearance];
   [aWindow setMinSize:NSMakeSize(200, 200)];
   [aWindow setContentView:[viewController view]];
@@ -102,11 +156,11 @@
   }
   
   // Configure legacy XPDocument support
-  if ([self isKindOfClass:[NSResponder class]]) {
-    [viewController setNextResponder:(NSResponder*)self];
-    [super makeWindowControllers];
-    [self XP_readFromURL:[self XP_fileURL] ofType:[self fileType] error:NULL];
-  }
+#ifdef AFF_NSDocumentNone
+  [viewController setNextResponder:self];
+  [super makeWindowControllers];
+  [self readFromFile:[self MATH_fileObject] ofType:[self fileType]];
+#endif
 }
 
 // MARK: NSDocument subclass
@@ -129,10 +183,10 @@
   BOOL isEdited = YES;
   NSData *diskData = nil;
   NSData *documentData = [self dataRepresentationOfType:[self fileType]];
-  XPURL *fileURL = [self XP_fileURL];
-  if ([fileURL XP_isFileURL]) {
+  id fileObject = [self MATH_fileObject];
+  if (fileObject) {
     // TODO: Consider adding error handling here
-    diskData = [NSData XP_dataWithContentsOfURL:fileURL error:NULL];
+    diskData = [NSData MATH_dataWithContentsFileObject:fileObject error:NULL];
     isEdited = ![diskData isEqualToData:documentData];
   } else if (documentData == nil || [documentData length] == 0) {
     isEdited = NO;
@@ -173,7 +227,7 @@
   return NO;
 }
 
--(BOOL)canAsynchronouslyWriteToURL:(XPURL*)url
+-(BOOL)canAsynchronouslyWriteToURL:(id)url
                             ofType:(NSString*)typeName
                   forSaveOperation:(XPSaveOperationType)saveOperation;
 {
@@ -185,13 +239,100 @@
 
 @end
 
+// MARK: XPDocument Compatibility Category
+
 @implementation MATHDocument (DarkMode)
 -(void)overrideWindowAppearance;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   XPUserInterfaceStyle style = [ud MATH_userInterfaceStyle];
-  NSWindow *myWindow = [self XP_windowForSheet];
+  // TODO: Implement window for sheet for older versions of mac os x
+  NSWindow *myWindow = [self MATH_windowForSheet];
   XPParameterRaise(myWindow);
   [myWindow XP_setAppearanceWithUserInterfaceStyle:style];
 }
+@end
+
+#ifdef AFF_NSDocumentNone
+@interface NSDocumentLegacyImplementation (OpenStepSilenceWarning)
+-(id)windowControllers;
+@end
+#endif
+
+#ifdef AFF_NSDocumentNone
+@implementation NSDocumentLegacyImplementation (MATHDocument)
+#else
+@implementation NSDocument (MATHDocument)
+#endif
+
+-(id)MATH_initWithContentsOfFileObject:(id)fileObject
+                                ofType:(NSString*)typeName
+                                 error:(XPErrorPointer)outError;
+{
+#ifdef AFF_NSDocumentNoURL
+  return [self initWithContentsOfFile:fileObject ofType:typeName];
+#else
+  return [self initWithContentsOfURL:fileObject ofType:typeName error:outError];
+#endif
+}
+
+-(id)MATH_fileObject;
+{
+#ifdef AFF_NSDocumentNoURL
+  NSString *output = [self fileName];
+  if (!output) { return nil; }
+  XPLogAssrt1([output isAbsolutePath], @"[INVALID] fileName(%@)", output);
+  return [self fileName];
+#else
+  NSURL *output = [self fileURL];
+  if (!output) { return nil; }
+  XPLogAssrt1([output isFileURL], @"[INVALID] fileURL(%@)", output);
+  return [self fileURL];
+#endif
+}
+
+-(NSString*)MATH_nameForFrameAutosave;
+{
+  id fileName = [self MATH_fileObject];
+  if (!fileName) { return nil; }
+  return [fileName MATH_URLPath];
+}
+
+-(NSString*)MATH_requiredFileType;
+{
+#ifdef AFF_NSDocumentNone
+  return [self __requiredFileType];
+#else
+  return nil;
+#endif
+}
+
+-(NSWindow*)MATH_windowForSheet;
+{
+  // In Jaguar this method did not exist
+  SEL windowForSheet = @selector(windowForSheet);
+  NSWindow *output = nil;
+  if ([self respondsToSelector:windowForSheet]) {
+    output = [self performSelector:windowForSheet];
+  } else {
+    output = [[[self windowControllers] lastObject] window];
+  }
+  XPParameterRaise(output);
+  return output;
+}
+
+-(void)MATH_addWindowController:(XPWindowController*)aWindowController;
+{
+#ifndef AFF_NSDocumentNone
+  [self addWindowController:aWindowController];
+#endif
+}
+
+-(void)MATH_setRequiredFileType:(NSString*)type;
+{
+#ifdef AFF_NSDocumentNone
+  [self __setRequiredFileType:type];
+#endif
+}
+
 @end
