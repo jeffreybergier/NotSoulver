@@ -1,0 +1,90 @@
+//
+// GPLv3 License Notice
+//
+// Copyright (c) 2025 Jeffrey Bergier
+//
+// This file is part of MathEdit.
+// MathEdit is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published
+// by the Free Software Foundation, either version 3 of the License,
+// or (at your option) any later version.
+// MathEdit is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+// See the GNU General Public License for more details.
+// You should have received a copy of the GNU General Public License
+// along with MathEdit. If not, see <https://www.gnu.org/licenses/>.
+//
+
+#import <AppKit/AppKit.h>
+#import "XPCrossPlatform.h"
+
+extern NSString *const MATHDocumentModelExtension;
+/// A version of the data for saving to the disk
+/// This version is plain text and unsolved
+/// Data format is UTF8 String
+extern NSString *const MATHDocumentModelRepDisk;
+/// A version of the data that is displayed in the NSTextView
+/// This version is styled and has NSTextAttachments for solutions
+/// Data format is RTF
+extern NSString *const MATHDocumentModelRepDisplay;
+/// A version that is used for the pasteboard
+/// This version is styled and remove the NSTextAttachments and replaces them with normal text that shows the solutions
+/// Data format is RTF
+extern NSString *const MATHDocumentModelRepSolved;
+/// A version that is used for the pasteboard when the user chooses a custom copy command
+/// This version is styled and unsolved
+/// Data format is RTF
+extern NSString *const MATHDocumentModelRepUnsolved;
+
+typedef NSString* MATHDocumentModelRep;
+
+@interface MATHDocumentModelController: NSObject
+{
+  mm_new NSTextStorage       *_model;
+  mm_new NSTimer             *_waitTimer;
+  mm_new NSMutableDictionary *_dataCache;
+  
+  mm_unretain NSDictionary *__TESTING_stylesForSolution;
+  mm_unretain NSDictionary *__TESTING_stylesForPreviousSolution;
+  mm_unretain NSDictionary *__TESTING_stylesForError;
+  mm_unretain NSDictionary *__TESTING_stylesForText;
+}
+
+// MARK: Properties
+-(NSTextStorage*)model;
+-(NSMutableDictionary*)dataCache;
+
+// MARK: Init
+-(id)init;
+
+// MARK: NSTextView Wrapping
+-(void)replaceCharactersInRange:(NSRange)range withString:(NSString *)string;
+
+// MARK: NSDocument Support
+-(NSData*)dataRepresentationOfType:(MATHDocumentModelRep)type;
+-(NSData*)dataRepresentationOfType:(MATHDocumentModelRep)type withRange:(NSRange)range;
+/// This method ignores of type parameter and always assumes `MATHDocumentModelRepDisk`
+-(BOOL)loadDataRepresentation:(NSData*)data ofType:(MATHDocumentModelRep)type;
+
+// MARK: Private
+-(NSData*)__dataRepresentationOfDiskTypeWithRange:(NSRange)range;
+-(NSData*)__dataRepresentationOfDisplayTypeWithRange:(NSRange)range;
+-(NSData*)__dataRepresentationOfSolvedTypeWithRange:(NSRange)range;
+-(NSData*)__dataRepresentationOfUnsolvedTypeWithRange:(NSRange)range;
+-(BOOL)__loadDataRepresentationOfDiskType:(NSData*)data;
+
+@end
+
+#ifdef MAC_OS_X_VERSION_10_6
+@interface MATHDocumentModelController (TextDelegate) <NSTextViewDelegate>
+#else
+@interface MATHDocumentModelController (TextDelegate)
+#endif
+
+-(void)textDidChange:(NSNotification*)aNotification;
+-(void)renderPreservingSelectionInTextView:(NSTextView*)textView;
+-(void)__resetWaitTimer:(NSTextView*)sender;
+-(void)__waitTimerFired:(NSTimer*)timer;
+
+@end
