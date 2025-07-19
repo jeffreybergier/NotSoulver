@@ -239,7 +239,7 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
   [self __resetWaitTimer:textView];
 }
 
--(void)renderPreservingSelectionInTextView:(NSTextView*)textView
+-(BOOL)renderPreservingSelectionInTextView:(NSTextView*)textView
                                      error:(XPErrorPointer)outError;
 {
   NSTextStorage *model = [self model];
@@ -250,7 +250,7 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
   if ([textView hasMarkedText]) {
     if (outError != NULL) { /* TODO: Populate Error Pointer */ }
     XPLogAlwys(@"[PRECONDITION] NSTextView hasMarkedText: Abandoning render");
-    return;
+    return NO;
   }
   
   // Get current selection
@@ -263,6 +263,7 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
   
   // Restore selection
   [textView setSelectedRange:selection];
+  return YES;
 }
 
 -(void)__resetWaitTimer:(NSTextView*)sender;
