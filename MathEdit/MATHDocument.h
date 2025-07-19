@@ -39,8 +39,10 @@
 -(void)makeWindowControllers;
 
 // MARK: NSDocument subclass
--(NSData*)dataRepresentationOfType:(NSString*)type;
--(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
+-(NSData*)dataOfType:(NSString*)typeName error:(XPErrorPointer)outError;
+-(NSData*)dataRepresentationOfType:(NSString*)type; // Legacy for X2
+-(BOOL)readFromData:(NSData*)data ofType:(NSString*)typeName error:(XPErrorPointer)outError;
+-(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type; // Legacy for X2
 
 // MARK: Model Changed Notification
 -(void)modelDidProcessEditingNotification:(NSNotification*)aNotification;

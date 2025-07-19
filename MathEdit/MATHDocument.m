@@ -165,16 +165,26 @@
 
 // MARK: NSDocument subclass
 
--(NSData*)dataRepresentationOfType:(NSString*)type;
+-(NSData*)dataOfType:(NSString*)typeName error:(XPErrorPointer)outError;
 {
-  return [[self modelController] dataRepresentationOfType:type];
+  XPLogDebug1(@"[WARN] Error Handling Not Implemented: ErrorPointer NULL(%d)", outError==NULL);
+  return [[self modelController] dataOfType:typeName error:outError];
 }
 
--(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
+-(NSData*)dataRepresentationOfType:(NSString*)typeName;
 {
-  MATHDocumentModelController *modelController = [self modelController];
-  XPParameterRaise(modelController);
-  return [modelController loadDataRepresentation:data ofType:type];
+  return [self dataOfType:typeName error:NULL];
+}
+
+-(BOOL)readFromData:(NSData*)data ofType:(NSString*)typeName error:(XPErrorPointer)outError;
+{
+  XPLogDebug1(@"[WARN] Error Handling Not Implemented: ErrorPointer NULL(%d)", outError==NULL);
+  return [[self modelController] readFromData:data ofType:typeName error:outError];
+}
+
+-(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)typeName;
+{
+  return [self readFromData:data ofType:typeName error:NULL];
 }
 
 // MARK: Model Changed Notifications

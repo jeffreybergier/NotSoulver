@@ -68,41 +68,42 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
 }
 
 // MARK: NSDocument Support
--(NSData*)dataRepresentationOfType:(MATHDocumentModelRep)type withRange:(NSRange)range;
+
+-(NSData*)dataOfType:(NSString*)typeName error:(XPErrorPointer)outError;
 {
-  XPParameterRaise(type);
-  if        ([type isEqualToString:MATHDocumentModelRepDisk])       {
-    return [self __dataRepresentationOfDiskTypeWithRange:range];
-  } else if ([type isEqualToString:MATHDocumentModelRepDisplay])    {
-    return [self __dataRepresentationOfDisplayTypeWithRange:range];
-  } else if ([type isEqualToString:MATHDocumentModelRepSolved])     {
-    return [self __dataRepresentationOfSolvedTypeWithRange:range];
-  } else if ([type isEqualToString:MATHDocumentModelRepUnsolved])   {
-    return [self __dataRepresentationOfUnsolvedTypeWithRange:range];
-  } else                                                            {
-    XPLogAssrt1(NO, @"[UNKNOWN] MATHDocumentModelRep(%@)", type);
+  return [self dataOfType:typeName range:XPNotFoundRange error:outError];
+}
+
+-(NSData*)dataOfType:(NSString*)typeName range:(NSRange)range error:(XPErrorPointer)outError;
+{
+  XPParameterRaise(typeName);
+  if        ([typeName isEqualToString:MATHDocumentModelRepDisk])       {
+    return [self __dataOfDiskRepWithRange:range error:outError];
+  } else if ([typeName isEqualToString:MATHDocumentModelRepDisplay])    {
+    return [self __dataOfDisplayRepWithRange:range error:outError];
+  } else if ([typeName isEqualToString:MATHDocumentModelRepSolved])     {
+    return [self __dataOfModelRepSolvedWithRange:range error:outError];
+  } else if ([typeName isEqualToString:MATHDocumentModelRepUnsolved])   {
+    return [self __dataOfModelRepUnsolvedWithRange:range error:outError];
+  } else                                                                {
+    XPLogAssrt1(NO, @"[UNKNOWN] MATHDocumentModelRep(%@)", typeName);
     return nil;
   }
 }
 
--(NSData*)dataRepresentationOfType:(MATHDocumentModelRep)type;
+-(BOOL)readFromData:(NSData*)data ofType:(NSString*)typeName error:(XPErrorPointer)outError;
 {
-  return [self dataRepresentationOfType:type withRange:XPNotFoundRange];
-}
-
--(BOOL)loadDataRepresentation:(NSData*)data ofType:(MATHDocumentModelRep)type;
-{
-  if ([type isEqualToString:MATHDocumentModelRepDisk]) {
-    return [self __loadDataRepresentationOfDiskType:data];
+  if ([typeName isEqualToString:MATHDocumentModelRepDisk]) {
+    return [self __readFromData:data ofType:typeName error:outError];
   } else {
-    XPLogAssrt1(NO, @"[UNKNOWN] MATHDocumentModelRep(%@)", type);
+    XPLogAssrt1(NO, @"[UNKNOWN] MATHDocumentModelRep(%@)", typeName);
     return NO;
   }
 }
 
 // MARK: Private
 
--(NSData*)__dataRepresentationOfDiskTypeWithRange:(NSRange)range;
+-(NSData*)__dataOfDiskRepWithRange:(NSRange)range error:(XPErrorPointer)outError;
 {
   NSMutableDictionary *dataCache = nil;
   NSString *key = nil;
@@ -132,7 +133,7 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
   }
 }
 
--(NSData*)__dataRepresentationOfDisplayTypeWithRange:(NSRange)_range;
+-(NSData*)__dataOfDisplayRepWithRange:(NSRange)_range error:(XPErrorPointer)outError;
 {
   NSRange range = XPIsNotFoundRange(_range)
                 ? NSMakeRange(0, [[self model] length])
@@ -142,7 +143,7 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
   return output;
 }
 
--(NSData*)__dataRepresentationOfSolvedTypeWithRange:(NSRange)_range;
+-(NSData*)__dataOfModelRepSolvedWithRange:(NSRange)_range error:(XPErrorPointer)outError;
 {
   NSRange range = XPIsNotFoundRange(_range)
                 ? NSMakeRange(0, [[self model] length])
@@ -155,7 +156,7 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
   return output;
 }
 
--(NSData*)__dataRepresentationOfUnsolvedTypeWithRange:(NSRange)_range;
+-(NSData*)__dataOfModelRepUnsolvedWithRange:(NSRange)_range error:(XPErrorPointer)outError;
 {
   NSRange range = XPIsNotFoundRange(_range)
                 ? NSMakeRange(0, [[self model] length])
@@ -168,7 +169,7 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
   return output;
 }
 
--(BOOL)__loadDataRepresentationOfDiskType:(NSData*)data;
+-(BOOL)__readFromData:(NSData*)data ofType:(NSString*)typeName error:(XPErrorPointer)outError;
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   BOOL success = NO;

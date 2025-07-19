@@ -62,17 +62,16 @@ typedef NSString* MATHDocumentModelRep;
 -(void)replaceCharactersInRange:(NSRange)range withString:(NSString *)string;
 
 // MARK: NSDocument Support
--(NSData*)dataRepresentationOfType:(MATHDocumentModelRep)type;
--(NSData*)dataRepresentationOfType:(MATHDocumentModelRep)type withRange:(NSRange)range;
-/// This method ignores of type parameter and always assumes `MATHDocumentModelRepDisk`
--(BOOL)loadDataRepresentation:(NSData*)data ofType:(MATHDocumentModelRep)type;
+-(NSData*)dataOfType:(NSString*)typeName error:(XPErrorPointer)outError;
+-(NSData*)dataOfType:(NSString*)typeName range:(NSRange)range error:(XPErrorPointer)outError;
+-(BOOL)readFromData:(NSData*)data ofType:(MATHDocumentModelRep)typeName error:(XPErrorPointer)outError;
 
 // MARK: Private
--(NSData*)__dataRepresentationOfDiskTypeWithRange:(NSRange)range;
--(NSData*)__dataRepresentationOfDisplayTypeWithRange:(NSRange)range;
--(NSData*)__dataRepresentationOfSolvedTypeWithRange:(NSRange)range;
--(NSData*)__dataRepresentationOfUnsolvedTypeWithRange:(NSRange)range;
--(BOOL)__loadDataRepresentationOfDiskType:(NSData*)data;
+-(NSData*)__dataOfDiskRepWithRange:(NSRange)range error:(XPErrorPointer)outError;
+-(NSData*)__dataOfDisplayRepWithRange:(NSRange)range error:(XPErrorPointer)outError;
+-(NSData*)__dataOfModelRepSolvedWithRange:(NSRange)range error:(XPErrorPointer)outError;
+-(NSData*)__dataOfModelRepUnsolvedWithRange:(NSRange)range error:(XPErrorPointer)outError;
+-(BOOL)__readFromData:(NSData*)data ofType:(NSString*)typeName error:(XPErrorPointer)outError;
 
 @end
 
