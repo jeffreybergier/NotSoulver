@@ -188,6 +188,12 @@
 // MARK: Model Changed Notifications
 -(void)modelDidProcessEditingNotification:(NSNotification*)aNotification;
 {
+  [self updateChangeCount:XPChangeDone];
+  /*
+   
+   // Can use thorough Change Detection
+   // But its slow and overkill
+   
   BOOL isEdited = YES;
   NSData *diskData = nil;
   NSData *documentData = [self dataRepresentationOfType:[self fileType]];
@@ -203,6 +209,7 @@
   }
   [self updateChangeCount:isEdited ? XPChangeDone
                                    : XPChangeCleared];
+   */
 }
 
 -(void)dealloc;
