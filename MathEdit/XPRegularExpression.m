@@ -47,7 +47,7 @@
   
   // Need to test as SLRE no longer compiles the pattern ahead of time
   testCaps = malloc(sizeof(struct slre_cap) * (unsigned long)capCount);
-  testStatus = slre_match([pattern XP_UTF8String], [testString XP_UTF8String],
+  testStatus = slre_match([pattern XP_cString], [testString XP_cString],
                           (int)[testString length], testCaps, (int)capCount, 0);
   free(testCaps);
   if (testStatus < -1) {
@@ -96,7 +96,7 @@
   NSMutableArray *output = [[NSMutableArray new] autorelease];
   
   NSRange     maxRange  = NSMakeRange(0, [string length]);
-  const char *maxBuffer = [string XP_UTF8String];
+  const char *maxBuffer = [string XP_cString];
   const char *buffer    = maxBuffer + range.location;
   
   XPRangePointer  capRanges = NULL;
@@ -108,7 +108,7 @@
   
   while (status >= 0) {
     buffer += status;
-    status = slre_match([_pattern XP_UTF8String], buffer,
+    status = slre_match([_pattern XP_cString], buffer,
                         (int)NSMaxRange(range)-(int)(buffer-maxBuffer),
                         caps, _numCaps, 0);
     if (status < 0) { break; }

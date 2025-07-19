@@ -295,13 +295,34 @@ NSArray* XPRunOpenPanel(NSString *extension)
   return [[output copy] autorelease];
 }
 
--(const char*)XP_UTF8String;
+-(const char*)XP_cString;
 {
 #ifdef MAC_OS_X_VERSION_10_2
   return [self UTF8String];
 #else
-  return [self cString];
+  if ([self canBeConvertedToEncoding:NSASCIIStringEncoding]) {
+    return [self cString];
+  }
+  XPLogAssrt1(NO, @"[NON-ASCII] %@", self);
+  return NULL;
 #endif
+}
+
+-(XPUInteger)XP_cStringLength;
+{
+#ifdef MAC_OS_X_VERSION_10_4
+  return [self lengthOfBytesUsingEncoding:NSASCIIStringEncoding];
+#else
+  if ([self canBeConvertedToEncoding:NSASCIIStringEncoding]) {
+    return [self cStringLength];
+  }
+  return 0;
+#endif
+}
+
+-(BOOL)XP_containsNonASCIICharacters;
+{
+  return [self length] != [self XP_cStringLength];
 }
 
 -(NSEnumerator*)XP_enumeratorForCharactersInSet:(NSCharacterSet*)aSet;

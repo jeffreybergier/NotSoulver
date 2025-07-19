@@ -26,19 +26,6 @@ NSString *const MATHDocumentModelRepDisplay  = @"com.saturdayapps.mathedit.displ
 NSString *const MATHDocumentModelRepSolved   = @"com.saturdayapps.mathedit.solved";
 NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsolved";
 
-@interface NSString (MATHDocumentModelController)
--(BOOL)MATH_containsNonASCIICharacters;
-@end
-
-@implementation NSString (MATHDocumentModelController)
--(BOOL)MATH_containsNonASCIICharacters;
-{
-  XPUInteger appleLength = [self length];
-  XPUInteger cLength = strlen([self XP_UTF8String]);
-  return appleLength != cLength;
-}
-@end
-
 @implementation MATHDocumentModelController
 
 // MARK: Properties
@@ -219,19 +206,12 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
   XPLogDebug(@"Rendering");
   XPLogDebug1(@"[XPUNIMPLEMENTED] ErrorPointer(%@)", XPStringFromErrorPointer(outError));
   
-#ifdef AFF_NSRegularExpressionNone
-  if ([[model string] MATH_containsNonASCIICharacters]) {
-    if (outError != NULL) { /* TODO: Populate Error Pointer */ }
-    XPLogAlwys(@"[PRECONDITION] Model String contained non-ascii characters");
-    return NO;
-  }
-#endif
-  
   [MATHSolver solveAttributedString:model
                      solutionStyles:__TESTING_stylesForSolution         ? __TESTING_stylesForSolution         : [ud MATH_stylesForSolution        ]
              previousSolutionStyles:__TESTING_stylesForPreviousSolution ? __TESTING_stylesForPreviousSolution : [ud MATH_stylesForPreviousSolution]
                         errorStyles:__TESTING_stylesForError            ? __TESTING_stylesForError            : [ud MATH_stylesForError           ]
-                         textStyles:__TESTING_stylesForText             ? __TESTING_stylesForText             : [ud MATH_stylesForText            ]];
+                         textStyles:__TESTING_stylesForText             ? __TESTING_stylesForText             : [ud MATH_stylesForText            ]
+                              error:outError];
   return YES;
 }
 

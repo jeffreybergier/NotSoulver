@@ -50,16 +50,26 @@ NSCharacterSet *MATHSolverTextAttachmentCharacterSet = nil;
 
 // MARK: Business Logic
 
-+(void)solveAttributedString:(NSMutableAttributedString*)input
++(BOOL)solveAttributedString:(NSMutableAttributedString*)input
               solutionStyles:(MATHSolverTextAttachmentStyles)solutionStyles
       previousSolutionStyles:(MATHSolverTextAttachmentStyles)previousSolutionStyles
                  errorStyles:(MATHSolverTextAttachmentStyles)errorStyles
-                  textStyles:(MATHSolverTextStyles)textStyles;
+                  textStyles:(MATHSolverTextStyles)textStyles
+                       error:(XPErrorPointer)outError;
 {
   XPUInteger inputLength = [[input string] length];
   XPUInteger outputLength;
   [input retain];
   [self __step1_restoreOriginals:input];
+  
+#ifdef AFF_NSRegularExpressionNone
+  if ([[input string] XP_containsNonASCIICharacters]) {
+    if (outError != NULL) { /* TODO: Populate Error Pointer */ }
+    XPLogAlwys(@"[PRECONDITION] Model String contained non-ascii characters");
+    return NO;
+  }
+#endif
+  
   [self __step2_removeAllTags:input];
   [self __step3_scanAndTag:input];
   [self __step4_solveAndTag:input
@@ -71,6 +81,7 @@ NSCharacterSet *MATHSolverTextAttachmentCharacterSet = nil;
   XPLogAssrt2(inputLength == outputLength, @"String changed length: %d->%d",
               (int)inputLength, (int)outputLength);
   [input autorelease];
+  return YES;
 }
 
 +(NSAttributedString*)replacingAttachmentsWithOriginalCharacters:(NSAttributedString*)input;

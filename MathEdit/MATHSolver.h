@@ -30,11 +30,12 @@ typedef NSDictionary* MATHSolverTextStyles;
 +(void)initialize;
 
 // MARK: Business Logic
-+(void)solveAttributedString:(NSMutableAttributedString*)input
++(BOOL)solveAttributedString:(NSMutableAttributedString*)input
               solutionStyles:(MATHSolverTextAttachmentStyles)solutionStyles
       previousSolutionStyles:(MATHSolverTextAttachmentStyles)previousSolutionStyles
                  errorStyles:(MATHSolverTextAttachmentStyles)errorStyles
-                  textStyles:(MATHSolverTextStyles)textStyles;
+                  textStyles:(MATHSolverTextStyles)textStyles
+                       error:(XPErrorPointer)outError;
 
 // Returns mutable string to avoid making an immutable copy, but it is still a copy of the original string
 +(NSAttributedString*)replacingAttachmentsWithOriginalCharacters:(NSAttributedString*)input;

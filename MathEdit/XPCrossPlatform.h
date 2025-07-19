@@ -375,7 +375,9 @@ NSArray* XPRunOpenPanel(NSString *extension);
 +(NSString*)MATH_logRawString;
 +(NSString*)MATH_logDisplayString;
 -(NSString*)MATH_descriptionHighlightingRange:(NSRange)range;
--(const char*)XP_UTF8String;
+-(const char*)XP_cString;
+-(XPUInteger)XP_cStringLength;
+-(BOOL)XP_containsNonASCIICharacters;
 -(NSEnumerator*)XP_enumeratorForCharactersInSet:(NSCharacterSet*)aSet;
 -(NSEnumerator*)XP_enumeratorForCharactersInSet:(NSCharacterSet*)aSet
                                         options:(XPStringCompareOptions)mask;
