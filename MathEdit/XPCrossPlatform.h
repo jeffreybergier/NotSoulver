@@ -101,6 +101,7 @@ typedef float XPFloat;
 #define AFF_NSDocumentNone     // OpenStep did not include NSDocument
 #define AFF_NSDocumentNoURL    // NSDocument works but URL's API's dont work for some reason
 #define AFF_NSDocumentNoiCloud // NSDocument does not yet support duplicate and other modern iCloud features
+#define AFF_NSRegularExpressionNone // SLRE cannot handle non-ascii characters
 
 #ifdef MAC_OS_X_VERSION_10_2
 #undef AFF_MainMenuNotRetainedBySystem

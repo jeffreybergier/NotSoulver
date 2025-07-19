@@ -74,6 +74,7 @@ typedef NSString* MATHDocumentModelRep;
 -(NSData*)__dataOfModelRepSolvedWithRange:(NSRange)range error:(XPErrorPointer)outError;
 -(NSData*)__dataOfModelRepUnsolvedWithRange:(NSRange)range error:(XPErrorPointer)outError;
 -(BOOL)__readFromData:(NSData*)data ofType:(NSString*)typeName error:(XPErrorPointer)outError;
+-(BOOL)__solveEditingModelInPlace:(NSTextStorage*)model error:(XPErrorPointer)outError;
 
 @end
 
@@ -84,7 +85,8 @@ typedef NSString* MATHDocumentModelRep;
 #endif
 
 -(void)textDidChange:(NSNotification*)aNotification;
--(void)renderPreservingSelectionInTextView:(NSTextView*)textView;
+-(void)renderPreservingSelectionInTextView:(NSTextView*)textView
+                                     error:(XPErrorPointer)outError;
 -(void)__resetWaitTimer:(NSTextView*)sender;
 -(void)__waitTimerFired:(NSTimer*)timer;
 

@@ -26,6 +26,19 @@ NSString *const MATHDocumentModelRepDisplay  = @"com.saturdayapps.mathedit.displ
 NSString *const MATHDocumentModelRepSolved   = @"com.saturdayapps.mathedit.solved";
 NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsolved";
 
+@interface NSString (MATHDocumentModelController)
+-(BOOL)MATH_containsNonASCIICharacters;
+@end
+
+@implementation NSString (MATHDocumentModelController)
+-(BOOL)MATH_containsNonASCIICharacters;
+{
+  XPUInteger appleLength = [self length];
+  XPUInteger cLength = strlen([self XP_UTF8String]);
+  return appleLength != cLength;
+}
+@end
+
 @implementation MATHDocumentModelController
 
 // MARK: Properties
@@ -183,7 +196,6 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
 
 -(BOOL)__readFromData:(NSData*)data ofType:(NSString*)typeName error:(XPErrorPointer)outError;
 {
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   BOOL success = NO;
   NSTextStorage *model = [self model];
   NSString *string = [[[NSString alloc] initWithData:data
@@ -191,19 +203,36 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
   
   if (string) {
     // TODO: Figure out how I can combine this with waitTimerFired:
-    XPLogDebug(@"Rendering");
     [model beginEditing];
     [[model mutableString] setString:string];
-    [MATHSolver solveAttributedString:model
-                       solutionStyles:__TESTING_stylesForSolution         ? __TESTING_stylesForSolution         : [ud MATH_stylesForSolution        ]
-               previousSolutionStyles:__TESTING_stylesForPreviousSolution ? __TESTING_stylesForPreviousSolution : [ud MATH_stylesForPreviousSolution]
-                          errorStyles:__TESTING_stylesForError            ? __TESTING_stylesForError            : [ud MATH_stylesForError           ]
-                           textStyles:__TESTING_stylesForText             ? __TESTING_stylesForText             : [ud MATH_stylesForText            ]];
+    [self __solveEditingModelInPlace:model error:outError];
     [model endEditing];
     success = YES;
   }
   XPLogExtra1(@"[XPUNIMPLEMENTED] ErrorPointer(%@)", XPStringFromErrorPointer(outError));
   return success;
+}
+
+-(BOOL)__solveEditingModelInPlace:(NSTextStorage*)model error:(XPErrorPointer)outError;
+{
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  XPLogDebug(@"Rendering");
+  XPLogDebug1(@"[XPUNIMPLEMENTED] ErrorPointer(%@)", XPStringFromErrorPointer(outError));
+  
+#ifdef AFF_NSRegularExpressionNone
+  if ([[model string] MATH_containsNonASCIICharacters]) {
+    if (outError != NULL) { /* TODO: Populate Error Pointer */ }
+    XPLogAlwys(@"[PRECONDITION] Model String contained non-ascii characters");
+    return NO;
+  }
+#endif
+  
+  [MATHSolver solveAttributedString:model
+                     solutionStyles:__TESTING_stylesForSolution         ? __TESTING_stylesForSolution         : [ud MATH_stylesForSolution        ]
+             previousSolutionStyles:__TESTING_stylesForPreviousSolution ? __TESTING_stylesForPreviousSolution : [ud MATH_stylesForPreviousSolution]
+                        errorStyles:__TESTING_stylesForError            ? __TESTING_stylesForError            : [ud MATH_stylesForError           ]
+                         textStyles:__TESTING_stylesForText             ? __TESTING_stylesForText             : [ud MATH_stylesForText            ]];
+  return YES;
 }
 
 -(void)dealloc;
@@ -230,15 +259,16 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
   [self __resetWaitTimer:textView];
 }
 
--(void)renderPreservingSelectionInTextView:(NSTextView*)textView;
+-(void)renderPreservingSelectionInTextView:(NSTextView*)textView
+                                     error:(XPErrorPointer)outError;
 {
-  NSUserDefaults *ud   = [NSUserDefaults standardUserDefaults];
   NSTextStorage *model = [self model];
   NSRange selection = XPNotFoundRange;
   
   XPParameterRaise(textView);
   
   if ([textView hasMarkedText]) {
+    if (outError != NULL) { /* TODO: Populate Error Pointer */ }
     XPLogAlwys(@"[PRECONDITION] NSTextView hasMarkedText: Abandoning render");
     return;
   }
@@ -248,11 +278,7 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
   
   // Solve the string
   [model beginEditing];
-  [MATHSolver solveAttributedString:model
-                     solutionStyles:__TESTING_stylesForSolution         ? __TESTING_stylesForSolution         : [ud MATH_stylesForSolution        ]
-             previousSolutionStyles:__TESTING_stylesForPreviousSolution ? __TESTING_stylesForPreviousSolution : [ud MATH_stylesForPreviousSolution]
-                        errorStyles:__TESTING_stylesForError            ? __TESTING_stylesForError            : [ud MATH_stylesForError           ]
-                         textStyles:__TESTING_stylesForText             ? __TESTING_stylesForText             : [ud MATH_stylesForText            ]];
+  [self __solveEditingModelInPlace:model error:outError];
   [model endEditing];
   
   // Restore selection
@@ -277,7 +303,7 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
 
   NSTextView *textView = [[timer userInfo] objectForKey:@"TextView"];
   XPLogAssrt1([textView isKindOfClass:[NSTextView class]], @"%@ not a text view", textView);
-  [self renderPreservingSelectionInTextView:textView];
+  [self renderPreservingSelectionInTextView:textView error:NULL];
   [timer invalidate];
 }
 

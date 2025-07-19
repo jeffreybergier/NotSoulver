@@ -142,11 +142,12 @@ NSString *MATHDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   NSTextView *textView = [self textView];
+  MATHDocumentModelController *mc = [self modelController];
   [textView setTypingAttributes:[self __typingAttributes]];
   [textView setBackgroundColor:[ud MATH_colorForTheme:MATHThemeColorBackground]];
   [textView setInsertionPointColor:[ud MATH_colorForTheme:MATHThemeColorInsertionPoint]];
   if (aNotification){
-    [[self modelController] renderPreservingSelectionInTextView:textView];
+    [mc renderPreservingSelectionInTextView:textView error:NULL];
   }
   [textView setNeedsDisplay:YES];
 }
