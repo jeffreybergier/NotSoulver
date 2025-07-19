@@ -167,7 +167,6 @@
 
 -(NSData*)dataOfType:(NSString*)typeName error:(XPErrorPointer)outError;
 {
-  XPLogDebug1(@"[WARN] Error Handling Not Implemented: ErrorPointer NULL(%d)", outError==NULL);
   return [[self modelController] dataOfType:typeName error:outError];
 }
 
@@ -178,7 +177,6 @@
 
 -(BOOL)readFromData:(NSData*)data ofType:(NSString*)typeName error:(XPErrorPointer)outError;
 {
-  XPLogDebug1(@"[WARN] Error Handling Not Implemented: ErrorPointer NULL(%d)", outError==NULL);
   return [[self modelController] readFromData:data ofType:typeName error:outError];
 }
 

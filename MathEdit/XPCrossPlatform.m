@@ -801,3 +801,14 @@ NSArray* XPRunOpenPanel(NSString *extension)
 }
 
 @end
+
+NSString *XPStringFromErrorPointer(XPErrorPointer ptr)
+{
+  if (ptr == NULL) {
+    return @"NULL";
+  } else if (*ptr == nil) {
+    return @"nil";
+  } else {
+    return [NSString stringWithFormat:@"%@", *ptr];
+  }
+}

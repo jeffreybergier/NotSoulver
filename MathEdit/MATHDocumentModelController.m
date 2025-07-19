@@ -114,6 +114,9 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
   NSMutableDictionary *dataCache = nil;
   NSString *key = nil;
   NSData *output = nil;
+  
+  XPLogExtra1(@"[XPUNIMPLEMENTED] ErrorPointer(%@)", XPStringFromErrorPointer(outError));
+
   if (XPIsNotFoundRange(range)) {
     // If no range provided, use fast path with caching
     dataCache = [self dataCache];
@@ -134,7 +137,7 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
   } else {
     // If a range is provided, do the work slowly with no caching
     output = [[[MATHSolver replacingAttachmentsWithOriginalCharacters:[[self model] attributedSubstringFromRange:range]] string] dataUsingEncoding:NSUTF8StringEncoding];
-    XPLogAssrt(output, @"output was NIL");
+    XPParameterRaise(output);
     return output;
   }
 }
@@ -145,7 +148,8 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
                 ? NSMakeRange(0, [[self model] length])
                 : _range;
   NSData *output = [[self model] RTFFromRange:range documentAttributes:XPRTFDocumentAttributes];
-  XPLogAssrt(output, @"output was NIL");
+  XPParameterRaise(output);
+  XPLogExtra1(@"[XPUNIMPLEMENTED] ErrorPointer(%@)", XPStringFromErrorPointer(outError));
   return output;
 }
 
@@ -158,7 +162,8 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
   NSAttributedString *solved = [MATHSolver replacingAttachmentsWithStringValue:original];
   NSData *output = [solved RTFFromRange:NSMakeRange(0, [solved length])
                      documentAttributes:XPRTFDocumentAttributes];
-  XPLogAssrt(output, @"output was NIL");
+  XPParameterRaise(output);
+  XPLogExtra1(@"[XPUNIMPLEMENTED] ErrorPointer(%@)", XPStringFromErrorPointer(outError));
   return output;
 }
 
@@ -171,7 +176,8 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
   NSAttributedString *unsolved = [MATHSolver replacingAttachmentsWithOriginalCharacters:original];
   NSData *output = [unsolved RTFFromRange:NSMakeRange(0, [unsolved length])
                        documentAttributes:XPRTFDocumentAttributes];
-  XPLogAssrt(output, @"output was NIL");
+  XPParameterRaise(output);
+  XPLogExtra1(@"[XPUNIMPLEMENTED] ErrorPointer(%@)", XPStringFromErrorPointer(outError));
   return output;
 }
 
@@ -182,6 +188,7 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
   NSTextStorage *model = [self model];
   NSString *string = [[[NSString alloc] initWithData:data
                                             encoding:NSUTF8StringEncoding] autorelease];
+  
   if (string) {
     // TODO: Figure out how I can combine this with waitTimerFired:
     XPLogDebug(@"Rendering");
@@ -195,6 +202,7 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
     [model endEditing];
     success = YES;
   }
+  XPLogExtra1(@"[XPUNIMPLEMENTED] ErrorPointer(%@)", XPStringFromErrorPointer(outError));
   return success;
 }
 
@@ -229,6 +237,11 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
   NSRange selection = XPNotFoundRange;
   
   XPParameterRaise(textView);
+  
+  if ([textView hasMarkedText]) {
+    XPLogAlwys(@"[PRECONDITION] NSTextView hasMarkedText: Abandoning render");
+    return;
+  }
   
   // Get current selection
   selection = [textView selectedRange];

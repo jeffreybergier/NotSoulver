@@ -488,6 +488,8 @@ NSArray* XPRunOpenPanel(NSString *extension);
 +(void)logCheckedPoundDefines;
 @end
 
+NSString *XPStringFromErrorPointer(XPErrorPointer ptr);
+
 // OpenStep does not understand the %p format string so this works around that
 #ifdef MAC_OS_X_VERSION_10_2
 #define XPPointerString(_self) ([NSString stringWithFormat:@"%p", (void*)_self])
