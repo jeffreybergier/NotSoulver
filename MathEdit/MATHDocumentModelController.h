@@ -85,7 +85,7 @@ typedef NSString* MATHDocumentModelRep;
 #endif
 
 -(void)textDidChange:(NSNotification*)aNotification;
--(void)renderPreservingSelectionInTextView:(NSTextView*)textView
+-(BOOL)renderPreservingSelectionInTextView:(NSTextView*)textView
                                      error:(XPErrorPointer)outError;
 -(void)__resetWaitTimer:(NSTextView*)sender;
 -(void)__waitTimerFired:(NSTimer*)timer;

@@ -198,8 +198,8 @@ typedef NSRangePointer XPRangePointer;
 #else
 #define XPRTFDocumentAttributes nil
 #define XPError NSNumber
-typedef NSRange* XPRangePointer;
 typedef NSNumber** XPErrorPointer;
+typedef NSRange* XPRangePointer;
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_6

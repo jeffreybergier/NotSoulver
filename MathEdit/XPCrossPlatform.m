@@ -825,11 +825,17 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 NSString *XPStringFromErrorPointer(XPErrorPointer ptr)
 {
-  if (ptr == NULL) {
+  id error = nil;
+  if (!ptr) {
     return @"NULL";
-  } else if (*ptr == nil) {
-    return @"nil";
-  } else {
-    return [NSString stringWithFormat:@"%@", *ptr];
   }
+  error = *ptr;
+#ifdef MAC_OS_X_VERSION_10_15
+  // TODO: This sometimes crashes on older systems
+  // Maybe I am doing it wrong?
+  if (error) {
+    return [error description];
+  }
+#endif
+  return @"nil";
 }
