@@ -58,13 +58,19 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
 }
 
 // MARK: NSTextView Wrapping
--(void)replaceCharactersInRange:(NSRange)range withString:(NSString *)string;
+-(void)replaceCharactersInRange:(NSRange)range
+                     withString:(NSString*)string
+  preservingSelectionInTextView:(NSTextView*)textView;
 {
   NSTextStorage *model = [self model];
+  
+  XPParameterRaise(string);
+  XPParameterRaise(textView);
+  
   [model beginEditing];
   [model replaceCharactersInRange:range withString:string];
   [model endEditing];
-  [self textDidChange:nil];
+  [self textDidChange:[NSNotification notificationWithName:NSTextDidChangeNotification object:textView]];
 }
 
 // MARK: NSDocument Support
@@ -206,7 +212,6 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
 }
 
 @end
-
 
 @implementation MATHDocumentModelController (TextDelegate)
 

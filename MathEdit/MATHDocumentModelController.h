@@ -59,7 +59,9 @@ typedef NSString* MATHDocumentModelRep;
 -(id)init;
 
 // MARK: NSTextView Wrapping
--(void)replaceCharactersInRange:(NSRange)range withString:(NSString *)string;
+-(void)replaceCharactersInRange:(NSRange)range
+                     withString:(NSString *)string
+  preservingSelectionInTextView:(NSTextView*)textView;
 
 // MARK: NSDocument Support
 -(NSData*)dataOfType:(NSString*)typeName error:(XPErrorPointer)outError;

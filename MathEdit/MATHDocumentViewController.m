@@ -354,7 +354,8 @@ NSString *MATHDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.
     // Do Universal Paste
     XPLogDebug(@"Universal Paste");
     [[self modelController] replaceCharactersInRange:[textView selectedRange]
-                                          withString:diskRepString];
+                                          withString:diskRepString
+                       preservingSelectionInTextView:textView];
   } else {
     // Fail universal paste and forward the message to the textview
     XPLogDebug(@"NOT Universal Paste");

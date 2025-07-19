@@ -540,7 +540,7 @@ NSString * const MATHApplicationEffectiveAppearanceKeyPath = @"effectiveAppearan
   [item setKeyEquivalentModifierMask:XPEventModifierFlagShift|XPEventModifierFlagCommand];
   item = [menu addItemWithTitle:[Localized menuEditCopyUnsolved] action:@selector(copyUnsolved:) keyEquivalent:@"c"];
   [item setKeyEquivalentModifierMask:XPEventModifierFlagShift|XPEventModifierFlagCommand];
-  [menu addItemWithTitle:[Localized menuEditPaste] action:@selector(paste:) keyEquivalent:@"v"];
+  [menu addItemWithTitle:[Localized menuEditPaste] action:@selector(pasteUniversal:) keyEquivalent:@"v"];
   [menu addItemWithTitle:[Localized menuEditDelete] action:@selector(delete:) keyEquivalent:@""];
   [menu addItemWithTitle:[Localized menuEditSelectAll] action:@selector(selectAll:) keyEquivalent:@"a"];
   [menu XP_addSeparatorItem];
