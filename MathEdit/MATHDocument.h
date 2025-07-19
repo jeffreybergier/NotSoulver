@@ -44,8 +44,8 @@
 -(BOOL)readFromData:(NSData*)data ofType:(NSString*)typeName error:(XPErrorPointer)outError;
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type; // Legacy for X2
 
-// MARK: Model Changed Notification
--(void)modelDidProcessEditingNotification:(NSNotification*)aNotification;
+// MARK: isDocumentEdited
+-(void)textViewDidBeginEditingNotification:(NSNotification*)aNotification;
 
 @end
 

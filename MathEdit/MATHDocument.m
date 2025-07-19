@@ -105,7 +105,6 @@
                                  | XPWindowStyleMaskResizable);
   NSRect rect = NSMakeRect(0, 0, 500, 500);
   NSString *autosaveName = [self MATH_nameForFrameAutosave];
-  MATHDocumentModelController *modelController = [self modelController];
   MATHDocumentViewController  *viewController  = [self viewController];
   NSWindow *aWindow = [[[NSWindow alloc] initWithContentRect:rect
                                                    styleMask:windowStyle
@@ -123,9 +122,9 @@
   
   // Subscribe to theme and model updates
   [nc addObserver:self
-         selector:@selector(modelDidProcessEditingNotification:)
-             name:NSTextStorageDidProcessEditingNotification
-           object:[modelController model]];
+         selector:@selector(textViewDidBeginEditingNotification:)
+             name:NSTextDidBeginEditingNotification
+           object:[viewController textView]];
   [nc addObserver:self
          selector:@selector(overrideWindowAppearance)
              name:MATHThemeDidChangeNotificationName
@@ -185,31 +184,10 @@
   return [self readFromData:data ofType:typeName error:NULL];
 }
 
-// MARK: Model Changed Notifications
--(void)modelDidProcessEditingNotification:(NSNotification*)aNotification;
+// MARK: isDocumentEdited
+-(void)textViewDidBeginEditingNotification:(NSNotification*)aNotification;
 {
   [self updateChangeCount:XPChangeDone];
-  /*
-   
-   // Can use thorough Change Detection
-   // But its slow and overkill
-   
-  BOOL isEdited = YES;
-  NSData *diskData = nil;
-  NSData *documentData = [self dataRepresentationOfType:[self fileType]];
-  id fileObject = [self MATH_fileObject];
-  if (fileObject) {
-    // TODO: Consider adding error handling here
-    diskData = [NSData MATH_dataWithContentsFileObject:fileObject error:NULL];
-    isEdited = ![diskData isEqualToData:documentData];
-  } else if (documentData == nil || [documentData length] == 0) {
-    isEdited = NO;
-  } else {
-    isEdited = YES;
-  }
-  [self updateChangeCount:isEdited ? XPChangeDone
-                                   : XPChangeCleared];
-   */
 }
 
 -(void)dealloc;
