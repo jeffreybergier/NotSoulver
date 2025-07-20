@@ -20,10 +20,10 @@
 #import "MATHDocument.h"
 #import "MATHAccessoryWindowsOwner.h"
 
-#ifdef XPSupportsFormalProtocols
-@interface MATHAppDelegate: NSObject <NSApplicationDelegate>
-#else
+#ifdef AFF_FormalProtocolsNone
 @interface MATHAppDelegate: NSObject
+#else
+@interface MATHAppDelegate: NSObject <NSApplicationDelegate>
 #endif
 {
   // This menus array is because OpenStep does not retain

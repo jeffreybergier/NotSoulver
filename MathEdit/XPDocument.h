@@ -31,10 +31,10 @@
 
 // This is a best effort implementation of NSDocument only for use in OpenStep.
 // Its insanely minimal because it won't be used once Mac OS X Ships
-#ifdef XPSupportsFormalProtocols
-@interface NSDocumentLegacyImplementation: NSResponder <NSWindowDelegate>
-#else
+#ifdef AFF_FormalProtocolsNone
 @interface NSDocumentLegacyImplementation: NSResponder
+#else
+@interface NSDocumentLegacyImplementation: NSResponder <NSWindowDelegate>
 #endif
 {
   mm_copy NSString *_fileName;

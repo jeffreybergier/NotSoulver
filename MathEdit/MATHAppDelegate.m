@@ -545,7 +545,7 @@ NSString * const MATHApplicationEffectiveAppearanceKeyPath = @"effectiveAppearan
   [menu addItemWithTitle:[Localized menuEditSelectAll] action:@selector(selectAll:) keyEquivalent:@"a"];
   [menu XP_addSeparatorItem];
   // TODO: Add Insert, Attach Files, Add Link
-#ifndef AFF_TextFindNone
+#ifndef AFF_NSTextViewFindNone
   // Find Submenu
   item = [menu addItemWithTitle:[Localized menuEditFind] action:NULL keyEquivalent:@""];
   submenu = [[[NSMenu alloc] initWithTitle:[Localized menuEditFind]] autorelease];
@@ -570,12 +570,12 @@ NSString * const MATHApplicationEffectiveAppearanceKeyPath = @"effectiveAppearan
   [submenu addItemWithTitle:[Localized menuEditSpellingCheckNow] action:@selector(checkSpelling:) keyEquivalent:@";"];
   [submenu XP_addSeparatorItem];
   [submenu addItemWithTitle:[Localized menuEditSpellingCheckWhileTyping] action:@selector(toggleContinuousSpellChecking:) keyEquivalent:@""];
-#ifndef AFF_TextGrammarNone
+#ifndef AFF_NSTextViewGrammarNone
   [submenu addItemWithTitle:[Localized menuEditSpellingCheckGrammar] action:@selector(toggleGrammarChecking:) keyEquivalent:@""];
 #endif
   [submenu addItemWithTitle:[Localized menuEditSpellingAutoCorrect] action:@selector(toggleAutomaticSpellingCorrection:) keyEquivalent:@""];
   
-#ifndef AFF_TextFindNone
+#ifndef AFF_NSTextViewFindNone
   // Substitutions Submenu
   item = [menu addItemWithTitle:[Localized menuEditSubstitutions] action:NULL keyEquivalent:@""];
   submenu = [[[NSMenu alloc] initWithTitle:[Localized menuEditSubstitutions]] autorelease];

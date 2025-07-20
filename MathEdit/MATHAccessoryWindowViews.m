@@ -723,7 +723,7 @@
 @implementation NSImage (MATHAccessoryWindows)
 -(NSImage*)MATH_setTemplate:(BOOL)flag;
 {
-#ifdef XPSupportsTemplateImage
+#ifndef AFF_NSImageTemplateNone
   [self setTemplate:flag];
 #endif
   return self;

@@ -95,6 +95,7 @@ typedef float XPFloat;
 #define AFF_MainMenuNotRetainedBySystem
 #define AFF_MainMenuRequiresSetAppleMenu
 #define AFF_MainMenuNoApplication
+#define AFF_UIStyleAquaNone
 #define AFF_ScrollViewNoMagnification
 #define AFF_NSWindowNoFullScreen
 #define AFF_ObjCNoDispatch
@@ -107,16 +108,18 @@ typedef float XPFloat;
 #define AFF_NSKeyedArchiverNone
 #define AFF_NSSecureCodingNone
 #define AFF_UnicodeUINone
-#define AFF_UnicodeDocumentNone
-#define AFF_TextFindNone
-#define AFF_TextFindNoInline
-#define AFF_TextGrammarNone
-#define AFF_ButtonStylesNone
-#define AFF_WindowStyleTexturedNone
-#define AFF_WindowStyleUtilityNone
-#define AFF_UIStyleAquaNone
+#define AFF_UnicodeDocumentNone // TODO: Not used yet
+#define AFF_NSTextViewFindNone
+#define AFF_NSTextViewFindNoInline
+#define AFF_NSTextViewGrammarNone
+#define AFF_NSButtonStylesNone
+#define AFF_NSWindowStyleTexturedNone
+#define AFF_NSWindowStyleUtilityNone
+#define AFF_NSWindowCollectionStyleNone
 #define AFF_NSWindowControllerNone
 #define AFF_NSViewControllerNone
+#define AFF_FormalProtocolsNone
+#define AFF_NSImageTemplateNone
 
 #ifdef MAC_OS_X_VERSION_10_0
 #undef AFF_MainMenuNotRetainedBySystem
@@ -129,22 +132,24 @@ typedef float XPFloat;
 #undef AFF_NSBezierPathNone
 #undef AFF_NSKeyedArchiverNone
 #undef AFF_UnicodeUINone
-#undef AFF_ButtonStylesNone
-#undef AFF_WindowStyleTexturedNone
-#undef AFF_WindowStyleUtilityNone
+#undef AFF_NSButtonStylesNone
+#undef AFF_NSWindowStyleTexturedNone
+#undef AFF_NSWindowStyleUtilityNone
 #undef AFF_NSWindowControllerNone
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_4
 #undef AFF_NSDocumentNoURL
-#undef AFF_TextFindNone
+#undef AFF_NSTextViewFindNone
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_6
 #undef AFF_ObjCNSMethodSignatureUndocumentedClassMethod
 #undef AFF_MainMenuRequiresSetAppleMenu
-#undef AFF_TextGrammarNone
+#undef AFF_NSTextViewGrammarNone
 #undef AFF_NSViewControllerNone
+#undef AFF_FormalProtocolsNone
+#undef AFF_NSImageTemplateNone
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_8
@@ -152,8 +157,8 @@ typedef float XPFloat;
 #undef AFF_ScrollViewNoMagnification
 #undef AFF_ObjCNoDispatch
 #undef AFF_NSDocumentNoiCloud
-#undef AFF_TextFindNoInline
-#define AFF_WindowStyleTexturedNone
+#undef AFF_NSTextViewFindNoInline
+#define AFF_NSWindowStyleTexturedNone
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_15
@@ -183,7 +188,7 @@ typedef float XPFloat;
 
 // MARK: UI Styles
 
-#ifdef AFF_ButtonStylesNone
+#ifdef AFF_NSButtonStylesNone
 typedef XPUInteger XPBezelStyle;
 typedef XPUInteger XPBoxType;
 #define XPBoxSeparator 0
@@ -239,8 +244,6 @@ typedef NSRange* XPRangePointer;
 #define XPPasteboardTypeRTF NSPasteboardTypeRTF
 #define XPPasteboardTypeString NSPasteboardTypeString
 #define XPWindowCollectionBehavior NSWindowCollectionBehavior
-#define XPSupportsFormalProtocols // Protocols like NSWindowDelegate were formally added
-#define XPSupportsTemplateImage
 #else
 typedef XPUInteger XPStringCompareOptions;
 #define XPPasteboardTypeRTF NSRTFPboardType
@@ -253,7 +256,6 @@ typedef XPUInteger XPStringCompareOptions;
 typedef void (^XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *error);
 #define XPSaveOperationType NSSaveOperationType
 #define XPDataWritingAtomic NSDataWritingAtomic
-#define XPSupportsUnicodeDocument // TODO: Update to NSRegularExpression
 #else
 typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *error);
 #define XPSaveOperationType XPUInteger

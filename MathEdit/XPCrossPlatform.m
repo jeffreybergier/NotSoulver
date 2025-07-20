@@ -598,35 +598,35 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 -(void)XP_setUsesFindPanel:(BOOL)flag;
 {
-#ifndef AFF_TextFindNone
+#ifndef AFF_NSTextViewFindNone
   [self setUsesFindPanel:flag];
 #endif
 }
 
 -(void)XP_setUsesFindBar:(BOOL)flag;
 {
-#ifndef AFF_TextFindNoInline
+#ifndef AFF_NSTextViewFindNoInline
   [self setUsesFindBar:flag];
 #endif
 }
 
 -(void)XP_setContinuousSpellCheckingEnabled:(BOOL)flag;
 {
-#ifndef AFF_TextGrammarNone
+#ifndef AFF_NSTextViewGrammarNone
   [self setContinuousSpellCheckingEnabled:flag];
 #endif
 }
 
 -(void)XP_setGrammarCheckingEnabled:(BOOL)flag;
 {
-#ifndef AFF_TextGrammarNone
+#ifndef AFF_NSTextViewGrammarNone
   [self setGrammarCheckingEnabled:flag];
 #endif
 }
 
 -(void)XP_setAutomaticSpellingCorrectionEnabled:(BOOL)flag;
 {
-#ifndef AFF_TextGrammarNone
+#ifndef AFF_NSTextViewGrammarNone
   [self setAutomaticSpellingCorrectionEnabled:flag];
 #endif
 }
@@ -636,7 +636,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 @implementation NSTextField (CrossPlatform)
 -(void)XP_setBezelStyle:(XPTextFieldBezelStyle)style;
 {
-#ifndef AFF_ButtonStylesNone
+#ifndef AFF_NSButtonStylesNone
   [self setBezelStyle:style];
 #endif
 }
@@ -645,7 +645,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 @implementation NSButton (CrossPlatform)
 -(void)XP_setBezelStyle:(XPBezelStyle)style;
 {
-#ifndef AFF_ButtonStylesNone
+#ifndef AFF_NSButtonStylesNone
   [self setBezelStyle:style];
 #endif
 }
@@ -654,7 +654,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 @implementation NSBox (CrossPlatform)
 -(void)XP_setBoxType:(XPBoxType)type;
 {
-#ifndef AFF_ButtonStylesNone
+#ifndef AFF_NSButtonStylesNone
   [self setBoxType:type];
 #endif
 }
