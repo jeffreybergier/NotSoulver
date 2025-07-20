@@ -106,10 +106,8 @@ void TestsIntegrationExecute(void)
   // Test On-Disk Versions for breaking changes
   XPTestString(repDiskLHS, repDiskRHS);
   
-  // TODO: These tests pass in macOS 15, 10.15, 10.12, 10.2, and OpenStep
-  // TODO: Revalidate tests
-  // but fail in 10.4 & 10.6, 10.8, 10.10 very strange
-  #if !defined(MAC_OS_X_VERSION_10_4) || defined(MAC_OS_X_VERSION_10_12)
+  // TODO: These tests pass in on all Non-Intel Machines and on Intel 10.12 and later
+  #ifndef TMP_AFF_TEST_NSAttributedStringIsEqualBroken
   XPTestAttrString(repDisplayLHS, repDisplayRHS);
   XPTestAttrString(repSolvedLHS, repSolvedRHS);
   XPTestAttrString(repUnsolvedLHS, repUnsolvedRHS);

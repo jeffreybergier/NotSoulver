@@ -120,6 +120,11 @@
 #define AFF_APIPasteboardRenameNone
 #define AFF_APIUpdatedForSwiftNone
 #define AFF_TEST_CoreGraphicsRequiresWindow
+#define TMP_AFF_TEST_NSAttributedStringIsEqualBroken
+
+#if defined(__m68k__) || defined(__ppc__) || defined (MAC_OS_X_VERSION_10_12)
+#undef TMP_AFF_TEST_NSAttributedStringIsEqualBroken
+#endif
 
 #ifdef MAC_OS_X_VERSION_10_0
 #undef AFF_MainMenuNotRetainedBySystem
