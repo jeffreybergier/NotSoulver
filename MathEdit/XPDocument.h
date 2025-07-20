@@ -110,3 +110,12 @@
 -(XPAlertReturn)__runRevertToSavedAlert;
 
 @end
+
+// These are methods added so that IF I want to use this legacy
+// implementation in modern macOS, NSDocument won't read my
+// subclass out of the info.plist and then try to read
+// these methods off of it and crash at launch
+@interface NSDocumentLegacyImplementation (NSDocumentWontCrash)
++(BOOL)_autosavesInPlace;
++(NSArray*)readableTypes;
+@end

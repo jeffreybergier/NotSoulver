@@ -69,7 +69,7 @@
 
 // MARK: Antifeature Flags
 
-#define AFF_MainMenuFailsNSApplicationMain
+#define AFF_NSApplicationMainRequiresNIB
 #define AFF_MainMenuNotRetainedBySystem
 #define AFF_MainMenuRequiresSetAppleMenu
 #define AFF_MainMenuNoApplicationMenu
@@ -106,6 +106,7 @@
 #define AFF_NSWindowStyleUtilityNone
 #define AFF_NSWindowCollectionBehaviorNone
 #define AFF_NSWindowControllerNone
+#define AFF_NSWindowContentViewControllerNone
 #define AFF_NSViewControllerNone
 #define AFF_FormalProtocolsNone
 #define AFF_NSImageTemplateNone
@@ -122,31 +123,10 @@
 #define AFF_TEST_CoreGraphicsRequiresWindow
 #define TMP_AFF_TEST_NSAttributedStringIsEqualBroken
 
+// MARK: Don't Disable These Platform Features
+
 #if defined(__m68k__) || defined(__ppc__) || defined (MAC_OS_X_VERSION_10_12)
 #undef TMP_AFF_TEST_NSAttributedStringIsEqualBroken
-#endif
-
-#ifdef MAC_OS_X_VERSION_10_0
-#undef AFF_MainMenuNotRetainedBySystem
-#undef AFF_MainMenuNoApplicationMenu
-#undef AFF_UIStyleAquaNone
-#undef AFF_C_isnan_isinf_None
-#undef AFF_C_percentP_None
-#endif
-
-#ifdef MAC_OS_X_VERSION_10_2
-#undef AFF_NSDocumentNone
-#undef AFF_NSBezierPathNone
-#undef AFF_NSKeyedArchiverNone
-#undef AFF_UnicodeUINone
-#undef AFF_NSButtonStylesNone
-#undef AFF_NSWindowStyleTexturedNone
-#undef AFF_NSWindowStyleUtilityNone
-#undef AFF_NSWindowControllerNone
-#undef AFF_APINSValueNSRangeNone
-#undef AFF_NSStringUTF8StringNone
-#undef AFF_NSWorkspaceWebURLNone
-#undef AFF_NSScrollViewDrawsBackgroundNone
 #endif
 
 #ifdef NSIntegerMax
@@ -161,13 +141,45 @@
 #undef AFF_ObjCNSEnumNone
 #endif
 
+#ifdef MAC_OS_X_VERSION_10_2
+#undef AFF_MainMenuNotRetainedBySystem
+#undef AFF_MainMenuNoApplicationMenu
+#undef AFF_NSKeyedArchiverNone
+#undef AFF_C_isnan_isinf_None
+#undef AFF_C_percentP_None
+#endif
+
+#ifdef MAC_OS_X_VERSION_10_4
+#undef AFF_C__FILE__FUNCTION__Legacy
+#undef AFF_NSFontDescriptorNone
+#endif
+
+#ifdef MAC_OS_X_VERSION_10_15
+#undef AFF_NSSecureCodingNone
+#endif
+
+// MARK: Can Comment Out Up To Here
+
+#ifdef MAC_OS_X_VERSION_10_2
+#undef AFF_UIStyleAquaNone
+#undef AFF_NSDocumentNone
+#undef AFF_NSBezierPathNone
+#undef AFF_UnicodeUINone
+#undef AFF_NSButtonStylesNone
+#undef AFF_NSWindowStyleTexturedNone
+#undef AFF_NSWindowStyleUtilityNone
+#undef AFF_NSWindowControllerNone
+#undef AFF_APINSValueNSRangeNone
+#undef AFF_NSStringUTF8StringNone
+#undef AFF_NSWorkspaceWebURLNone
+#undef AFF_NSScrollViewDrawsBackgroundNone
+#endif
+
 #ifdef MAC_OS_X_VERSION_10_4
 #undef AFF_NSDocumentNoURL
 #undef AFF_NSTextViewFindNone
 #undef AFF_NSErrorNone
-#undef AFF_C__FILE__FUNCTION__Legacy
 #undef AFF_NSStringLengthOfBytesNone
-#undef AFF_NSFontDescriptorNone
 #undef AFF_TEST_CoreGraphicsRequiresWindow
 #endif
 
@@ -185,7 +197,7 @@
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_8
-#undef AFF_MainMenuFailsNSApplicationMain
+#undef AFF_NSApplicationMainRequiresNIB
 #undef AFF_NSScrollViewMagnificationNone
 #undef AFF_ObjCNoDispatch
 #undef AFF_NSDocumentNoiCloud
@@ -197,7 +209,7 @@
 
 #ifdef MAC_OS_X_VERSION_10_15
 #undef AFF_NSWindowNoFullScreen
-#undef AFF_NSSecureCodingNone
+#undef AFF_NSWindowContentViewControllerNone
 #undef AFF_NSTextFieldRoundedStyleUgly
 #undef AFF_UIStyleDarkModeNone
 #undef AFF_APIUpdatedForSwiftNone

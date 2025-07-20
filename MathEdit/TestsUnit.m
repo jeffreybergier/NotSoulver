@@ -408,13 +408,13 @@ void TestsUnitExecute(void)
 +(void)executeTests;
 {
   // TODO: Revalidate tests
-  #if __MAC_OS_X_VERSION_MAX_ALLOWED >= 120000
   // Prepare variables
   NSData  *dataRHS = nil;
   NSData  *dataLHS = nil;
 
   NSLog(@"%@ Unit Tests: STARTING", self);
   
+#ifndef AFF_NSBezierPathRoundRectNone
   // Compare REAL BezierPath
   dataRHS = [self createTIFFWithSelector:@selector(__REAL_bezierPathWithRoundedRect:xRadius:yRadius:)];
   dataLHS = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestUnitBezierPath-REAL"
@@ -422,6 +422,7 @@ void TestsUnitExecute(void)
   XPTestNotNIL(dataRHS);
   XPTestNotNIL(dataLHS);
   XPTestObject(dataLHS, dataRHS);
+#endif
   
   // Compare Manual BezierPath
   dataRHS = [self createTIFFWithSelector:@selector(__MANUAL_bezierPathWithRoundedRect:xRadius:yRadius:)];
@@ -432,9 +433,6 @@ void TestsUnitExecute(void)
   XPTestObject(dataLHS, dataRHS);
   
   NSLog(@"%@ Unit Tests: PASSED", self);
-  #else
-	NSLog(@"%@ Unit Tests: Skipped due to unsupported system", self);
-  #endif
 }
 
 +(void)saveTestFiles;
