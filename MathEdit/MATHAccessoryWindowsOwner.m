@@ -808,10 +808,10 @@ NSString *MATH_localizedStringForSettingsSelection(MATHSettingSelection selectio
 XPWindowStyleMask MATH_windowMaskForKeypadWindow(void)
 {
   XPWindowStyleMask mask = XPWindowStyleMaskTitled | XPWindowStyleMaskClosable;
-#ifdef XPSupportsTexturedWindows
+#ifndef AFF_WindowStyleTexturedNone
   mask |= NSTexturedBackgroundWindowMask;
 #endif
-#ifdef XPSupportsUtilityWindows
+#ifndef AFF_WindowStyleUtilityNone
   mask |= XPWindowStyleMaskUtilityWindow;
 #endif
   return mask;

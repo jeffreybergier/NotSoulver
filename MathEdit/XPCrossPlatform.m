@@ -636,7 +636,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 @implementation NSTextField (CrossPlatform)
 -(void)XP_setBezelStyle:(XPTextFieldBezelStyle)style;
 {
-#ifdef XPSupportsButtonStyles
+#ifndef AFF_ButtonStylesNone
   [self setBezelStyle:style];
 #endif
 }
@@ -645,7 +645,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 @implementation NSButton (CrossPlatform)
 -(void)XP_setBezelStyle:(XPBezelStyle)style;
 {
-#ifdef XPSupportsButtonStyles
+#ifndef AFF_ButtonStylesNone
   [self setBezelStyle:style];
 #endif
 }
@@ -654,7 +654,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 @implementation NSBox (CrossPlatform)
 -(void)XP_setBoxType:(XPBoxType)type;
 {
-#ifdef XPSupportsButtonStyles
+#ifndef AFF_ButtonStylesNone
   [self setBoxType:type];
 #endif
 }

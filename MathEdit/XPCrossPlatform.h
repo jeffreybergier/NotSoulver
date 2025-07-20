@@ -111,10 +111,15 @@ typedef float XPFloat;
 #define AFF_TextFindNone
 #define AFF_TextFindNoInline
 #define AFF_TextGrammarNone
+#define AFF_ButtonStylesNone
+#define AFF_WindowStyleTexturedNone
+#define AFF_WindowStyleUtilityNone
+#define AFF_UIStyleAquaNone
 
 #ifdef MAC_OS_X_VERSION_10_0
 #undef AFF_MainMenuNotRetainedBySystem
 #undef AFF_MainMenuNoApplication
+#undef AFF_UIStyleAquaNone
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_2
@@ -122,6 +127,9 @@ typedef float XPFloat;
 #undef AFF_NSBezierPathNone
 #undef AFF_NSKeyedArchiverNone
 #undef AFF_UnicodeUINone
+#undef AFF_ButtonStylesNone
+#undef AFF_WindowStyleTexturedNone
+#undef AFF_WindowStyleUtilityNone
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_4
@@ -141,11 +149,16 @@ typedef float XPFloat;
 #undef AFF_ObjCNoDispatch
 #undef AFF_NSDocumentNoiCloud
 #undef AFF_TextFindNoInline
+#define AFF_WindowStyleTexturedNone
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_15
 #undef AFF_NSWindowNoFullScreen
 #undef AFF_NSSecureCodingNone
+#endif
+
+#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 260000
+#define AFF_UIStyleAquaNone
 #endif
 
 // MARK: Archiver
@@ -164,20 +177,19 @@ typedef float XPFloat;
 #define XPSecureCoding NSSecureCoding
 #endif
 
+// MARK: UI Styles
+
+#ifdef AFF_ButtonStylesNone
+typedef XPUInteger XPBezelStyle;
+typedef XPUInteger XPBoxType;
+#define XPBoxSeparator 0
+#else
+typedef NSBezelStyle XPBezelStyle;
+typedef NSBoxType XPBoxType;
+#define XPBoxSeparator NSBoxSeparator
+#endif
 
 // MARK: NSDocument
-
-#define XPUserInterfaceGlass 2
-#define XPUserInterfaceAqua 1
-#define XPUserInterfaceNone 0
-
-#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 260000
-#define XPUserInterface XPUserInterfaceGlass
-#elif defined(MAC_OS_X_VERSION_10_2)
-#define XPUserInterface XPUserInterfaceAqua
-#else
-#define XPUserInterface XPUserInterfaceNone
-#endif
 
 #ifdef AFF_NSDocumentNone
 typedef XPUInteger XPDocumentChangeType;
@@ -194,19 +206,6 @@ typedef NSDocumentChangeType XPDocumentChangeType;
 #endif
 
 // MARK: Deprecated Constants and Types
-
-#ifdef MAC_OS_X_VERSION_10_2
-typedef NSBezelStyle XPBezelStyle;
-#define XPBoxType NSBoxType
-#define XPBoxSeparator NSBoxSeparator
-#define XPSupportsTexturedWindows
-#define XPSupportsUtilityWindows
-#define XPSupportsButtonStyles
-#else
-typedef XPUInteger XPBezelStyle;
-#define XPBoxType XPUInteger
-#define XPBoxSeparator 0
-#endif
 
 #ifdef MAC_OS_X_VERSION_10_4
 #define XPRTFDocumentAttributes [NSDictionary dictionaryWithObject:NSRTFTextDocumentType forKey:NSDocumentTypeDocumentAttribute]
@@ -243,7 +242,6 @@ typedef void (^XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 #define XPSaveOperationType NSSaveOperationType
 #define XPDataWritingAtomic NSDataWritingAtomic
 #define XPSupportsUnicodeDocument // TODO: Update to NSRegularExpression
-#undef  XPSupportsTexturedWindows
 #else
 typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *error);
 #define XPSaveOperationType XPUInteger

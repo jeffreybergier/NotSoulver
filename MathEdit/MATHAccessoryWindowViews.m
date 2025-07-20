@@ -840,7 +840,7 @@ NSRect MATH_rectForKeypadButtonOfKind(MATHKeypadButtonKind kind)
 
 NSRect MATH_rectByAdjustingAquaButtonRect(NSRect rect)
 {
-#if XPUserInterface == XPUserInterfaceAqua
+#ifndef AFF_UIStyleAquaNone
   XPFloat xPad = 2;
   XPFloat yPad = 2;
   return NSMakeRect(rect.origin.x-xPad,
