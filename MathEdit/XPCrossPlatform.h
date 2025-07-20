@@ -102,10 +102,12 @@ typedef float XPFloat;
 #define AFF_NSDocumentNoURL    // NSDocument works but URL's API's dont work for some reason
 #define AFF_NSDocumentNoiCloud // NSDocument does not yet support duplicate and other modern iCloud features
 #define AFF_NSRegularExpressionNone // SLRE cannot handle non-ascii characters
+#define AFF_NSBezierPathNone
 
 #ifdef MAC_OS_X_VERSION_10_2
 #undef AFF_MainMenuNotRetainedBySystem
 #undef AFF_NSDocumentNone
+#undef AFF_NSBezierPathNone
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_4
@@ -176,7 +178,6 @@ typedef NSBezelStyle XPBezelStyle;
 #define XPKeyedUnarchiver NSKeyedUnarchiver
 #define XPBoxType NSBoxType
 #define XPBoxSeparator NSBoxSeparator
-#define XPSupportsNSBezierPath
 #define XPSupportsUnicodeUI
 #define XPSupportsTexturedWindows
 #define XPSupportsUtilityWindows
@@ -418,7 +419,7 @@ NSArray* XPRunOpenPanel(NSString *extension);
 -(BOOL)XP_openWebURL:(NSString*)webURL;
 @end
 
-#ifdef XPSupportsNSBezierPath
+#ifndef AFF_NSBezierPathNone
 @interface NSBezierPath (CrossPlatform)
 
 +(id)XP_bezierPathWithRoundedRect:(NSRect)rect

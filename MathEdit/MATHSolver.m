@@ -595,10 +595,10 @@ NSString *const MATHSolverTextStylePreviousColor = @"MATHSolverTextStylePrevious
 
 -(MATHSolverTextAttachmentStyles)MATH_stylesForSolution;
 {
-#ifdef XPSupportsNSBezierPath
-  MATHSolverTextAttachmentBackground background = MATHSolverTextAttachmentBackgroundCapsuleFill;
-#else
+#ifdef AFF_NSBezierPathNone
   MATHSolverTextAttachmentBackground background = MATHSolverTextAttachmentBackgroundLegacyBoxStroke;
+#else
+  MATHSolverTextAttachmentBackground background = MATHSolverTextAttachmentBackgroundCapsuleFill;
 #endif
   NSColor *mixColor = [self MATH_userInterfaceStyle] == XPUserInterfaceStyleDark
                       ? [NSColor whiteColor]
@@ -612,10 +612,10 @@ NSString *const MATHSolverTextStylePreviousColor = @"MATHSolverTextStylePrevious
 
 -(MATHSolverTextAttachmentStyles)MATH_stylesForPreviousSolution;
 {
-#ifdef XPSupportsNSBezierPath
-  MATHSolverTextAttachmentBackground background = MATHSolverTextAttachmentBackgroundCapsuleStroke;
-#else
+#ifdef AFF_NSBezierPathNone
   MATHSolverTextAttachmentBackground background = MATHSolverTextAttachmentBackgroundLegacyBoxStroke;
+#else
+  MATHSolverTextAttachmentBackground background = MATHSolverTextAttachmentBackgroundCapsuleStroke;
 #endif
   NSColor *mixColor = [self MATH_userInterfaceStyle] == XPUserInterfaceStyleDark
                       ? [NSColor whiteColor]
@@ -629,10 +629,10 @@ NSString *const MATHSolverTextStylePreviousColor = @"MATHSolverTextStylePrevious
 
 -(MATHSolverTextAttachmentStyles)MATH_stylesForError;
 {
-#ifdef XPSupportsNSBezierPath
-  MATHSolverTextAttachmentBackground background = MATHSolverTextAttachmentBackgroundCapsuleStroke;
-#else
+#ifdef AFF_NSBezierPathNone
   MATHSolverTextAttachmentBackground background = MATHSolverTextAttachmentBackgroundLegacyBoxStroke;
+#else
+  MATHSolverTextAttachmentBackground background = MATHSolverTextAttachmentBackgroundCapsuleStroke;
 #endif
   NSColor *mixColor = [self MATH_userInterfaceStyle] == XPUserInterfaceStyleDark
                       ? [NSColor whiteColor]

@@ -461,7 +461,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 }
 @end
 
-#ifdef XPSupportsNSBezierPath
+#ifndef AFF_NSBezierPathNone
 @implementation NSBezierPath (CrossPlatform)
 
 +(id)XP_bezierPathWithRoundedRect:(NSRect)rect
