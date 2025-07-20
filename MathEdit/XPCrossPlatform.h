@@ -94,6 +94,7 @@ typedef float XPFloat;
 #define AFF_MainMenuFailsNSApplicationMain
 #define AFF_MainMenuNotRetainedBySystem
 #define AFF_MainMenuRequiresSetAppleMenu
+#define AFF_MainMenuNoApplication
 #define AFF_ScrollViewNoMagnification
 #define AFF_NSWindowNoFullScreen
 #define AFF_ObjCNoDispatch
@@ -104,8 +105,12 @@ typedef float XPFloat;
 #define AFF_NSRegularExpressionNone // SLRE cannot handle non-ascii characters
 #define AFF_NSBezierPathNone
 
-#ifdef MAC_OS_X_VERSION_10_2
+#ifdef MAC_OS_X_VERSION_10_0
 #undef AFF_MainMenuNotRetainedBySystem
+#undef AFF_MainMenuNoApplication
+#endif
+
+#ifdef MAC_OS_X_VERSION_10_2
 #undef AFF_NSDocumentNone
 #undef AFF_NSBezierPathNone
 #endif
@@ -182,7 +187,6 @@ typedef NSBezelStyle XPBezelStyle;
 #define XPSupportsTexturedWindows
 #define XPSupportsUtilityWindows
 #define XPSupportsButtonStyles
-#define XPSupportsApplicationMenu
 #else
 typedef XPUInteger XPBezelStyle;
 #define XPKeyedArchiver NSArchiver

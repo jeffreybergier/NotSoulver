@@ -406,12 +406,12 @@ NSString * const MATHApplicationEffectiveAppearanceKeyPath = @"effectiveAppearan
   NSMenu *mainMenu = [[[NSMenu alloc] initWithTitle:[Localized titleAppName]] autorelease];
   [storage addObject:mainMenu];
   
-#ifdef XPSupportsApplicationMenu
-  [self __buildAppMenuInMainMenu:mainMenu 
+#ifdef AFF_MainMenuNoApplication
+  [self __buildInfoMenuInMainMenu:mainMenu storage:storage];
+#else
+  [self __buildAppMenuInMainMenu:mainMenu
                      application:app
                          storage:storage];
-#else
-  [self __buildInfoMenuInMainMenu:mainMenu storage:storage];
 #endif
   
   [self __buildFileMenuInMainMenu:mainMenu storage:storage];
@@ -421,12 +421,12 @@ NSString * const MATHApplicationEffectiveAppearanceKeyPath = @"effectiveAppearan
                                  app:app
                              storage:storage];
   
-#ifdef XPSupportsApplicationMenu
-  [self __buildHelpMenuInMainMenu:mainMenu storage:storage];
-#else
-  [self __buildTrailingMenuInMainMenu:mainMenu 
+#ifdef AFF_MainMenuNoApplication
+  [self __buildTrailingMenuInMainMenu:mainMenu
                                   app:app
                               storage:storage];
+#else
+  [self __buildHelpMenuInMainMenu:mainMenu storage:storage];
 #endif
     
   return mainMenu;
