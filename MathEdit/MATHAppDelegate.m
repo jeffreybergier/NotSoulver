@@ -315,19 +315,17 @@ NSString * const MATHApplicationEffectiveAppearanceKeyPath = @"effectiveAppearan
 
 -(void)beginObservingEffectiveAppearance:(NSApplication*)app;
 {
-#ifdef XPSupportsDarkMode
-  [app addObserver:self 
+#ifndef AFF_UIStyleDarkModeNone
+  [app addObserver:self
         forKeyPath:MATHApplicationEffectiveAppearanceKeyPath
            options:NSKeyValueObservingOptionNew
            context:NULL];
-#else
-  XPLogDebug(@"System does not support dark mode");
 #endif
 }
 
 -(void)endObservingEffectiveAppearance:(NSApplication*)app;
 {
-#ifdef XPSupportsDarkMode
+#ifndef AFF_UIStyleDarkModeNone
   [app removeObserver:self
            forKeyPath:MATHApplicationEffectiveAppearanceKeyPath];
 #endif
@@ -338,7 +336,7 @@ NSString * const MATHApplicationEffectiveAppearanceKeyPath = @"effectiveAppearan
                        change:(NSDictionary*)change
                       context:(void*)context;
 {
-#ifdef XPSupportsDarkMode
+#ifndef AFF_UIStyleDarkModeNone
   if ([keyPath isEqualToString:MATHApplicationEffectiveAppearanceKeyPath]) {
     XPLogDebug(@"effectiveAppearance: Changed");
     [[NSNotificationCenter defaultCenter] postNotificationName:MATHThemeDidChangeNotificationName

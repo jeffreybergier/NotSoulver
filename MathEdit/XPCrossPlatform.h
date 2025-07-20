@@ -96,6 +96,7 @@ typedef float XPFloat;
 #define AFF_MainMenuRequiresSetAppleMenu
 #define AFF_MainMenuNoApplication
 #define AFF_UIStyleAquaNone
+#define AFF_UIStyleDarkModeNone
 #define AFF_ScrollViewNoMagnification
 #define AFF_NSWindowNoFullScreen
 #define AFF_ObjCNoDispatch
@@ -169,6 +170,7 @@ typedef float XPFloat;
 #undef AFF_NSWindowNoFullScreen
 #undef AFF_NSSecureCodingNone
 #undef AFF_NSTextFieldRoundedStyleUgly
+#undef AFF_UIStyleDarkModeNone
 #endif
 
 #if __MAC_OS_X_VERSION_MAX_ALLOWED >= 260000
@@ -285,14 +287,8 @@ typedef XPUInteger XPStringCompareOptions;
 #define XPDataWritingAtomic NSAtomicWrite
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_14
-#define XPSupportsDarkMode
-typedef NSAttributedStringKey XPAttributedStringKey;
-#else
-typedef NSString* XPAttributedStringKey;
-#endif
-
 #ifdef MAC_OS_X_VERSION_10_15
+typedef NSAttributedStringKey XPAttributedStringKey;
 #define XPTextAlignmentCenter NSTextAlignmentCenter
 #define XPTextAlignmentLeft NSTextAlignmentLeft
 #define XPTextAlignmentRight NSTextAlignmentRight
@@ -313,6 +309,7 @@ typedef NSTextFieldBezelStyle XPTextFieldBezelStyle;
 #define XPEventModifierFlagCommand NSEventModifierFlagCommand
 #define XPEventModifierFlagShift NSEventModifierFlagShift
 #else
+typedef NSString* XPAttributedStringKey;
 #define XPTextAlignmentCenter NSCenterTextAlignment
 #define XPTextAlignmentLeft NSLeftTextAlignment
 #define XPTextAlignmentRight NSRightTextAlignment

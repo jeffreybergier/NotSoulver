@@ -678,7 +678,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 -(void)XP_setAppearanceWithUserInterfaceStyle:(XPUserInterfaceStyle)aStyle;
 {
-#ifdef XPSupportsDarkMode
+#ifndef AFF_UIStyleDarkModeNone
   switch (aStyle) {
     case XPUserInterfaceStyleLight:
       [self setAppearance:[NSAppearance appearanceNamed:NSAppearanceNameAqua]];
@@ -689,8 +689,6 @@ NSArray* XPRunOpenPanel(NSString *extension)
     default:
       XPLogAssrt1(NO, @"[UNKNOWN] XPUserInterfaceStyle(%d)", (int)aStyle);
   }
-#else
-  XPLogDebug(@"[IGNORE]");
 #endif
 }
 

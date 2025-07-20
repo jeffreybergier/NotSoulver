@@ -129,7 +129,19 @@ NSString *MATHSettingsSelection                     = @"kMATHSettingsSelectionKe
 
 -(XPUserInterfaceStyle)MATH_userInterfaceStyle;
 {
-#ifdef XPSupportsDarkMode
+#ifdef AFF_UIStyleDarkModeNone
+  XPUserInterfaceStyle setting = [self MATH_userInterfaceStyleSetting];
+  switch (setting) {
+    case XPUserInterfaceStyleDark:
+      return XPUserInterfaceStyleDark;
+    case XPUserInterfaceStyleUnspecified:
+    case XPUserInterfaceStyleLight:
+      return XPUserInterfaceStyleLight;
+    default:
+      XPLogAssrt1(NO, @"INVALID XPUserInterfaceStyle(%d)", (int)setting);
+      return -1;
+  }
+#else
   NSAppearance *appearance = [[NSApplication sharedApplication] effectiveAppearance];
   NSArray *names = [NSArray arrayWithObjects:NSAppearanceNameAqua, NSAppearanceNameDarkAqua, nil];
   NSAppearanceName bestMatch = [appearance bestMatchFromAppearancesWithNames:names];
@@ -145,18 +157,6 @@ NSString *MATHSettingsSelection                     = @"kMATHSettingsSelectionKe
       return XPUserInterfaceStyleLight;
     case XPUserInterfaceStyleDark:
       return XPUserInterfaceStyleDark;
-    default:
-      XPLogAssrt1(NO, @"INVALID XPUserInterfaceStyle(%d)", (int)setting);
-      return -1;
-  }
-#else
-  XPUserInterfaceStyle setting = [self MATH_userInterfaceStyleSetting];
-  switch (setting) {
-    case XPUserInterfaceStyleDark:
-      return XPUserInterfaceStyleDark;
-    case XPUserInterfaceStyleUnspecified:
-    case XPUserInterfaceStyleLight:
-      return XPUserInterfaceStyleLight;
     default:
       XPLogAssrt1(NO, @"INVALID XPUserInterfaceStyle(%d)", (int)setting);
       return -1;
