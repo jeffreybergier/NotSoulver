@@ -770,7 +770,7 @@ static NSRect MATHAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // C
 
 @end
 
-#ifndef XPSupportsNSViewController
+#ifdef AFF_NSViewControllerNone
 @implementation MATHAccessoryWindowsSettingsViewController (CrossPlatform)
 -(NSView*)view;
 {

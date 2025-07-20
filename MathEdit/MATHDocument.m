@@ -110,7 +110,7 @@
                                                    styleMask:windowStyle
                                                      backing:NSBackingStoreBuffered
                                                        defer:YES] autorelease];
-  XPWindowController *windowController = [XPNewWindowController(aWindow) autorelease];
+  XPWindowController windowController = [XPNewWindowController(aWindow) autorelease];
   
   // Configure basic properties
   [self setWindow:aWindow];
@@ -314,7 +314,7 @@
   return output;
 }
 
--(void)MATH_addWindowController:(XPWindowController*)aWindowController;
+-(void)MATH_addWindowController:(XPWindowController)aWindowController;
 {
 #ifndef AFF_NSDocumentNone
   [self addWindowController:aWindowController];

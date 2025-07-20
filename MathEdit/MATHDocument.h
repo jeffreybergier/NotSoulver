@@ -75,6 +75,6 @@
 -(NSString*)MATH_nameForFrameAutosave;
 -(NSString*)MATH_requiredFileType;
 -(NSWindow*)MATH_windowForSheet;
--(void)MATH_addWindowController:(XPWindowController*)aWindowController;
+-(void)MATH_addWindowController:(XPWindowController)aWindowController;
 -(void)MATH_setRequiredFileType:(NSString*)type;
 @end

@@ -405,7 +405,7 @@ NSString *MATHDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.
 
 @end
 
-#ifndef XPSupportsNSViewController
+#ifdef AFF_NSViewControllerNone
 @implementation MATHDocumentViewController (CrossPlatform)
 -(NSView*)view;
 {

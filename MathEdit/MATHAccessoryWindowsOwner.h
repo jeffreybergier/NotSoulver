@@ -81,7 +81,11 @@
 
 @end
 
-@interface MATHAccessoryWindowsSettingsViewController: XPViewController
+#ifdef AFF_NSViewControllerNone
+@interface MATHAccessoryWindowsSettingsViewController: NSResponder
+#else
+@interface MATHAccessoryWindowsSettingsViewController: NSViewController
+#endif
 {
   mm_new NSView *_view_42; // Used only in OpenStep
   mm_retain MATHAccessoryWindowsSettingsGeneralView *_generalView;
@@ -114,7 +118,7 @@
 
 @end
 
-#ifndef XPSupportsNSViewController
+#ifdef AFF_NSViewControllerNone
 @interface MATHAccessoryWindowsSettingsViewController (CrossPlatform)
 -(NSView*)view;
 -(void)setView:(NSView*)view;

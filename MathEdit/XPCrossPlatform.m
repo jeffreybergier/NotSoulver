@@ -705,7 +705,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 #endif
 }
 
--(void)XP_setContentViewController:(XPViewController*)viewController;
+-(void)XP_setContentViewController:(XPViewController)viewController;
 {
   SEL toPerform = @selector(setContentViewController:);
   SEL getView   = @selector(view);

@@ -115,6 +115,8 @@ typedef float XPFloat;
 #define AFF_WindowStyleTexturedNone
 #define AFF_WindowStyleUtilityNone
 #define AFF_UIStyleAquaNone
+#define AFF_NSWindowControllerNone
+#define AFF_NSViewControllerNone
 
 #ifdef MAC_OS_X_VERSION_10_0
 #undef AFF_MainMenuNotRetainedBySystem
@@ -130,6 +132,7 @@ typedef float XPFloat;
 #undef AFF_ButtonStylesNone
 #undef AFF_WindowStyleTexturedNone
 #undef AFF_WindowStyleUtilityNone
+#undef AFF_NSWindowControllerNone
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_4
@@ -141,6 +144,7 @@ typedef float XPFloat;
 #undef AFF_ObjCNSMethodSignatureUndocumentedClassMethod
 #undef AFF_MainMenuRequiresSetAppleMenu
 #undef AFF_TextGrammarNone
+#undef AFF_NSViewControllerNone
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_8
@@ -189,20 +193,31 @@ typedef NSBoxType XPBoxType;
 #define XPBoxSeparator NSBoxSeparator
 #endif
 
+// MARK: ViewController / WindowController
+#ifdef AFF_NSWindowControllerNone
+typedef NSResponder *XPWindowController;
+#define XPNewWindowController(_window) nil
+#else
+typedef NSWindowController *XPWindowController;
+#define XPNewWindowController(_window) [[NSWindowController alloc] initWithWindow:_window]
+#endif
+
+#ifdef AFF_NSViewControllerNone
+typedef NSResponder *XPViewController;
+#else
+typedef NSViewController *XPViewController;
+#endif
+
 // MARK: NSDocument
 
 #ifdef AFF_NSDocumentNone
 typedef XPUInteger XPDocumentChangeType;
-#define XPWindowController NSResponder // Using typedef here cause build error in OpenStep
 #define XPChangeDone 0
 #define XPChangeCleared 2
-#define XPNewWindowController(_window) nil
 #else
 typedef NSDocumentChangeType XPDocumentChangeType;
-#define XPWindowController NSWindowController
 #define XPChangeDone NSChangeDone
 #define XPChangeCleared NSChangeCleared
-#define XPNewWindowController(_window) [[NSWindowController alloc] initWithWindow:_window]
 #endif
 
 // MARK: Deprecated Constants and Types
@@ -220,8 +235,6 @@ typedef NSRange* XPRangePointer;
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_6
-typedef NSViewController XPViewController;
-#define XPSupportsNSViewController
 #define XPStringCompareOptions NSStringCompareOptions
 #define XPPasteboardTypeRTF NSPasteboardTypeRTF
 #define XPPasteboardTypeString NSPasteboardTypeString
@@ -230,7 +243,6 @@ typedef NSViewController XPViewController;
 #define XPSupportsTemplateImage
 #else
 typedef XPUInteger XPStringCompareOptions;
-#define XPViewController NSResponder
 #define XPPasteboardTypeRTF NSRTFPboardType
 #define XPPasteboardTypeString NSStringPboardType
 #define XPWindowCollectionBehavior XPUInteger
@@ -474,7 +486,7 @@ NSArray* XPRunOpenPanel(NSString *extension);
 -(void)XP_setIdentifier:(NSString*)anIdentifier;
 -(void)XP_setAppearanceWithUserInterfaceStyle:(XPUserInterfaceStyle)aStyle;
 -(void)XP_setCollectionBehavior:(XPWindowCollectionBehavior)collectionBehavior;
--(void)XP_setContentViewController:(XPViewController*)viewController;
+-(void)XP_setContentViewController:(XPViewController)viewController;
 @end
 
 @interface NSScrollView (CrossPlatform)
