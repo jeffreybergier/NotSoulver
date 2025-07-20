@@ -776,6 +776,26 @@ NSArray* XPRunOpenPanel(NSString *extension)
 #else
   NSLog(@"NSIntegerMax...........(ND)");
 #endif
+#ifdef __MACH__
+  NSLog(@"__MACH__...............(%d)", __MACH__);
+#else
+  NSLog(@"__MACH__...............(ND)");
+#endif
+#ifdef __NEXT_RUNTIME__
+  NSLog(@"__NEXT_RUNTIME__.......(%d)", __NEXT_RUNTIME__);
+#else
+  NSLog(@"__NEXT_RUNTIME__.......(ND)");
+#endif
+#ifdef __NeXT__
+  NSLog(@"__NeXT__...............(%d)", __NeXT__);
+#else
+  NSLog(@"__NeXT__...............(ND)");
+#endif
+#ifdef NS_TARGET_MAJOR
+  NSLog(@"NS_TARGET..............(%d.%d)", NS_TARGET_MAJOR, NS_TARGET_MINOR);
+#else
+  NSLog(@"NS_TARGET..............(ND)");
+#endif
 #ifdef MAC_OS_X_VERSION_10_2
   NSLog(@"MAC_OS_X_VERSION_10_2..(%d)", MAC_OS_X_VERSION_10_2);
 #else
@@ -810,6 +830,31 @@ NSArray* XPRunOpenPanel(NSString *extension)
   NSLog(@"MAC_OS_X_VER_MAX_ALLOW.(%d)", __MAC_OS_X_VERSION_MAX_ALLOWED);
 #else
   NSLog(@"MAC_OS_X_VER_MAX_ALLOW.(ND)");
+#endif
+#ifdef __m68k__
+  NSLog(@"__m68k__...............(%d)", __m68k__);
+#else
+  NSLog(@"__m68k__...............(ND)");
+#endif
+#ifdef __ppc__
+  NSLog(@"__ppc__................(%d)", __ppc__);
+#else
+  NSLog(@"__ppc__................(ND)");
+#endif
+#ifdef __i386__
+  NSLog(@"__i386__...............(%d)", __i386__);
+#else
+  NSLog(@"__i386__...............(ND)");
+#endif
+#ifdef __x86_64__
+  NSLog(@"__x86_64__.............(%d)", __x86_64__);
+#else
+  NSLog(@"__x86_64__.............(ND)");
+#endif
+#ifdef __arm64__
+  NSLog(@"__arm64__..............(%d)", __arm64__);
+#else
+  NSLog(@"__arm64__..............(ND)");
 #endif
   NSLog(@"<XPLog> End: logCheckedPoundDefines");
   [pool release];

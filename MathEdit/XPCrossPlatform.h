@@ -85,6 +85,7 @@
 #define AFF_ObjCNSMethodSignatureUndocumentedClassMethod
 #define AFF_ObjCNSIntegerNone
 #define AFF_ObjCCGFloatNone
+#define AFF_ObjCNSEnumNone
 #define AFF_NSDocumentNone     // OpenStep did not include NSDocument
 #define AFF_NSDocumentNoURL    // NSDocument works but URL's API's dont work for some reason
 #define AFF_NSDocumentNoiCloud // NSDocument does not yet support duplicate and other modern iCloud features
@@ -151,6 +152,10 @@
 #undef AFF_ObjCCGFloatNone
 #endif
 
+#ifdef NS_ENUM
+#undef AFF_ObjCNSEnumNone
+#endif
+
 #ifdef MAC_OS_X_VERSION_10_4
 #undef AFF_NSDocumentNoURL
 #undef AFF_NSTextViewFindNone
@@ -195,6 +200,33 @@
 
 #if __MAC_OS_X_VERSION_MAX_ALLOWED >= 260000
 #define AFF_UIStyleAquaNone
+#endif
+
+// MARK: AFF_Basic Types
+
+#ifdef AFF_ObjCNSIntegerNone
+typedef int XPInteger;
+typedef unsigned int XPUInteger;
+#else
+typedef NSInteger XPInteger;
+typedef NSUInteger XPUInteger;
+#endif
+
+#ifdef AFF_ObjCCGFloatNone
+typedef float XPFloat;
+#else
+typedef CGFloat XPFloat;
+#endif
+
+typedef NSRange* XPRangePointer;
+extern const NSRange XPNotFoundRange;
+BOOL XPIsNotFoundRange(NSRange range);
+BOOL XPContainsRange(NSRange lhs, NSRange rhs);
+
+#ifdef AFF_ObjCNSEnumNone
+#define XP_ENUM(_type, _name) _type _name; enum
+#else
+#define XP_ENUM(_type, _name) NS_ENUM(_type, _name)
 #endif
 
 // MARK: AFF_Archiver
@@ -354,33 +386,6 @@ typedef NSTextFieldBezelStyle XPTextFieldBezelStyle;
 #define XPEventModifierFlagOption NSEventModifierFlagOption
 #define XPEventModifierFlagCommand NSEventModifierFlagCommand
 #define XPEventModifierFlagShift NSEventModifierFlagShift
-#endif
-
-// MARK: AFF_Basic Types
-
-#ifdef AFF_ObjCNSIntegerNone
-typedef int XPInteger;
-typedef unsigned int XPUInteger;
-#else
-typedef NSInteger XPInteger;
-typedef NSUInteger XPUInteger;
-#endif
-
-#ifdef AFF_ObjCCGFloatNone
-typedef float XPFloat;
-#else
-typedef CGFloat XPFloat;
-#endif
-
-typedef NSRange* XPRangePointer;
-extern const NSRange XPNotFoundRange;
-BOOL XPIsNotFoundRange(NSRange range);
-BOOL XPContainsRange(NSRange lhs, NSRange rhs);
-
-#ifdef NS_ENUM
-  #define XP_ENUM(_type, _name) NS_ENUM(_type, _name)
-#else
-  #define XP_ENUM(_type, _name) _type _name; enum
 #endif
 
 // MARK: Object Categories
