@@ -19,6 +19,8 @@
 #import "XPCrossPlatform.h"
 #import "NSUserDefaults+MathEdit.h"
 
+// MARK: Basic Types
+
 const NSRange XPNotFoundRange = {NSNotFound, 0};
 BOOL XPIsNotFoundRange(NSRange range)
 {
@@ -28,6 +30,8 @@ BOOL XPIsNotFoundRange(NSRange range)
 BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
   return (lhs.location <= rhs.location) && (NSMaxRange(lhs) >= NSMaxRange(rhs));
 }
+
+// MARK: Object Categories
 
 @implementation NSValue (CrossPlatform)
 +(id)XP_valueWithRange:(NSRange)range;

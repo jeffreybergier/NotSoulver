@@ -83,6 +83,11 @@ typedef CGFloat XPFloat;
 typedef float XPFloat;
 #endif
 
+typedef NSRange* XPRangePointer;
+extern const NSRange XPNotFoundRange;
+BOOL XPIsNotFoundRange(NSRange range);
+BOOL XPContainsRange(NSRange lhs, NSRange rhs);
+
 #ifdef NS_ENUM
   #define XP_ENUM(_type, _name) NS_ENUM(_type, _name)
 #else
@@ -124,6 +129,9 @@ typedef float XPFloat;
 #define AFF_NSImageTemplateNone
 #define AFF_StateRestorationNone
 #define AFF_NSErrorNone
+#define AFF_APIWritingRenameNone
+#define AFF_APIPasteboardRenameNone
+#define AFF_APIUpdatedForSwiftNone
 
 #ifdef MAC_OS_X_VERSION_10_0
 #undef AFF_MainMenuNotRetainedBySystem
@@ -156,6 +164,7 @@ typedef float XPFloat;
 #undef AFF_FormalProtocolsNone
 #undef AFF_NSImageTemplateNone
 #undef AFF_NSWindowCollectionBehaviorNone
+#undef AFF_APIPasteboardRenameNone
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_8
@@ -165,6 +174,7 @@ typedef float XPFloat;
 #undef AFF_NSDocumentNoiCloud
 #undef AFF_NSTextViewFindNoInline
 #undef AFF_StateRestorationNone
+#undef AFF_APIWritingRenameNone
 #define AFF_NSWindowStyleTexturedNone
 #endif
 
@@ -173,13 +183,14 @@ typedef float XPFloat;
 #undef AFF_NSSecureCodingNone
 #undef AFF_NSTextFieldRoundedStyleUgly
 #undef AFF_UIStyleDarkModeNone
+#undef AFF_APIUpdatedForSwiftNone
 #endif
 
 #if __MAC_OS_X_VERSION_MAX_ALLOWED >= 260000
 #define AFF_UIStyleAquaNone
 #endif
 
-// MARK: Archiver
+// MARK: AFF_Archiver
 
 #ifdef AFF_NSSecureCodingNone
 #define XPKeyedArchiver NSArchiver
@@ -195,7 +206,7 @@ typedef float XPFloat;
 #define XPSecureCoding NSSecureCoding
 #endif
 
-// MARK: UI Styles
+// MARK: AFF_UI Styles
 
 #ifdef AFF_NSButtonStylesNone
 typedef XPUInteger XPBezelStyle;
@@ -218,7 +229,8 @@ typedef NSBoxType XPBoxType;
 #define XPTextFieldRoundedBezel NSTextFieldRoundedBezel
 #endif
 
-// MARK: ViewController / WindowController
+// MARK: AFF_ViewController / WindowController
+
 #ifdef AFF_NSWindowControllerNone
 typedef NSResponder *XPWindowController;
 #define XPNewWindowController(_window) nil
@@ -245,7 +257,7 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, id error);
 typedef void (^XPWindowRestoreCompletionHandler)(NSWindow *window, id error);
 #endif
 
-// MARK: Error
+// MARK: AFF_Error
 
 #ifdef AFF_NSErrorNone
 typedef NSNumber *XPError;
@@ -255,7 +267,7 @@ typedef NSError *XPError;
 typedef NSError **XPErrorPointer;
 #endif
 
-// MARK: NSDocument
+// MARK: AFF_NSDocument
 
 #ifdef AFF_NSDocumentNone
 typedef XPUInteger XPDocumentChangeType;
@@ -267,56 +279,33 @@ typedef NSDocumentChangeType XPDocumentChangeType;
 #define XPChangeCleared NSChangeCleared
 #endif
 
-// MARK: Deprecated Constants and Types
-
-#ifdef MAC_OS_X_VERSION_10_4
-#define XPRTFDocumentAttributes [NSDictionary dictionaryWithObject:NSRTFTextDocumentType forKey:NSDocumentTypeDocumentAttribute]
-typedef NSRangePointer XPRangePointer;
-#else
+#ifdef AFF_NSDocumentNoURL
 #define XPRTFDocumentAttributes nil
-typedef NSRange* XPRangePointer;
+#else
+#define XPRTFDocumentAttributes [NSDictionary dictionaryWithObject:NSRTFTextDocumentType forKey:NSDocumentTypeDocumentAttribute]
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_6
-typedef NSStringCompareOptions XPStringCompareOptions;
-#define XPPasteboardTypeRTF NSPasteboardTypeRTF
-#define XPPasteboardTypeString NSPasteboardTypeString
-#else
+// MARK: AFF_API Renames
+
+#ifdef AFF_APIPasteboardRenameNone
 typedef XPUInteger XPStringCompareOptions;
 #define XPPasteboardTypeRTF NSRTFPboardType
 #define XPPasteboardTypeString NSStringPboardType
+#else
+typedef NSStringCompareOptions XPStringCompareOptions;
+#define XPPasteboardTypeRTF NSPasteboardTypeRTF
+#define XPPasteboardTypeString NSPasteboardTypeString
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_8
-#define XPSaveOperationType NSSaveOperationType
-#define XPDataWritingAtomic NSDataWritingAtomic
-#else
-#define XPSaveOperationType XPUInteger
+#ifdef AFF_APIWritingRenameNone
+typedef XPUInteger XPSaveOperationType;
 #define XPDataWritingAtomic NSAtomicWrite
+#else
+typedef NSSaveOperationType XPSaveOperationType;
+#define XPDataWritingAtomic NSDataWritingAtomic
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_15
-typedef NSAttributedStringKey XPAttributedStringKey;
-#define XPTextAlignmentCenter NSTextAlignmentCenter
-#define XPTextAlignmentLeft NSTextAlignmentLeft
-#define XPTextAlignmentRight NSTextAlignmentRight
-typedef NSModalResponse XPModalResponse;
-#define XPModalResponseOK NSModalResponseOK
-#define XPModalResponseCancel NSModalResponseCancel
-#define XPWindowCollectionBehaviorFullScreenNone NSWindowCollectionBehaviorFullScreenNone
-#define XPButtonTypePushOnPushOff NSButtonTypePushOnPushOff
-typedef NSWindowStyleMask XPWindowStyleMask;
-#define XPBitmapImageFileTypeTIFF NSBitmapImageFileTypeTIFF
-#define XPWindowStyleMaskTitled NSWindowStyleMaskTitled
-#define XPWindowStyleMaskClosable NSWindowStyleMaskClosable
-#define XPWindowStyleMaskMiniaturizable NSWindowStyleMaskMiniaturizable
-#define XPWindowStyleMaskResizable NSWindowStyleMaskResizable
-#define XPWindowStyleMaskUtilityWindow NSWindowStyleMaskUtilityWindow
-typedef NSTextFieldBezelStyle XPTextFieldBezelStyle;
-#define XPEventModifierFlagOption NSEventModifierFlagOption
-#define XPEventModifierFlagCommand NSEventModifierFlagCommand
-#define XPEventModifierFlagShift NSEventModifierFlagShift
-#else
+#ifdef AFF_APIUpdatedForSwiftNone
 typedef NSString* XPAttributedStringKey;
 #define XPTextAlignmentCenter NSCenterTextAlignment
 #define XPTextAlignmentLeft NSLeftTextAlignment
@@ -337,11 +326,30 @@ typedef XPBezelStyle XPTextFieldBezelStyle;
 #define XPEventModifierFlagOption NSAlternateKeyMask
 #define XPEventModifierFlagCommand NSCommandKeyMask
 #define XPEventModifierFlagShift NSShiftKeyMask
+#else
+typedef NSAttributedStringKey XPAttributedStringKey;
+#define XPTextAlignmentCenter NSTextAlignmentCenter
+#define XPTextAlignmentLeft NSTextAlignmentLeft
+#define XPTextAlignmentRight NSTextAlignmentRight
+typedef NSModalResponse XPModalResponse;
+#define XPModalResponseOK NSModalResponseOK
+#define XPModalResponseCancel NSModalResponseCancel
+#define XPWindowCollectionBehaviorFullScreenNone NSWindowCollectionBehaviorFullScreenNone
+#define XPButtonTypePushOnPushOff NSButtonTypePushOnPushOff
+typedef NSWindowStyleMask XPWindowStyleMask;
+#define XPBitmapImageFileTypeTIFF NSBitmapImageFileTypeTIFF
+#define XPWindowStyleMaskTitled NSWindowStyleMaskTitled
+#define XPWindowStyleMaskClosable NSWindowStyleMaskClosable
+#define XPWindowStyleMaskMiniaturizable NSWindowStyleMaskMiniaturizable
+#define XPWindowStyleMaskResizable NSWindowStyleMaskResizable
+#define XPWindowStyleMaskUtilityWindow NSWindowStyleMaskUtilityWindow
+typedef NSTextFieldBezelStyle XPTextFieldBezelStyle;
+#define XPEventModifierFlagOption NSEventModifierFlagOption
+#define XPEventModifierFlagCommand NSEventModifierFlagCommand
+#define XPEventModifierFlagShift NSEventModifierFlagShift
 #endif
 
-extern const NSRange XPNotFoundRange;
-BOOL XPIsNotFoundRange(NSRange range);
-BOOL XPContainsRange(NSRange lhs, NSRange rhs);
+// MARK: Object Categories
 
 @interface NSValue (CrossPlatform)
 +(id)XP_valueWithRange:(NSRange)range;
