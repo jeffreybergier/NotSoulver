@@ -251,7 +251,7 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs);
 
 // MARK: AFF_Archiver
 
-#ifdef AFF_NSSecureCodingNone
+#ifdef AFF_NSKeyedArchiverNone
 #define XPKeyedArchiver NSArchiver
 #define XPKeyedUnarchiver NSUnarchiver
 #else

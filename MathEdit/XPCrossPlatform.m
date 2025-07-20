@@ -702,9 +702,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 -(void)XP_setContentViewController:(XPViewController)viewController;
 {
 #ifdef AFF_NSWindowContentViewControllerNone
-  SEL getView = @selector(view);
-  XPLogAssrt1([viewController respondsToSelector:getView], @"%@ does not respond to -view", viewController);
-  [self setContentView:[viewController performSelector:getView]];
+  [self setContentView:[viewController view]];
   [self setNextResponder:viewController];
 #else
   [self setContentViewController:viewController];
