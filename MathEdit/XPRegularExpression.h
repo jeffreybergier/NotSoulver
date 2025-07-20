@@ -27,9 +27,8 @@
   int _numCaps;
 }
 
-// TODO: Update this to use XPErrorPtr
 /// Options and Error are ignored
--(id)initWithPattern:(NSString*)pattern options:(int)options error:(id*)error;
+-(id)initWithPattern:(NSString*)pattern options:(int)options error:(XPErrorPointer)outError;
 /// Options and Error are ignored
 +(XPRegularExpression*)regularExpressionWithPattern:(NSString*)pattern
                                             options:(int)options

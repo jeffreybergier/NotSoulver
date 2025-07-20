@@ -123,6 +123,7 @@ typedef float XPFloat;
 #define AFF_FormalProtocolsNone
 #define AFF_NSImageTemplateNone
 #define AFF_StateRestorationNone
+#define AFF_NSErrorNone
 
 #ifdef MAC_OS_X_VERSION_10_0
 #undef AFF_MainMenuNotRetainedBySystem
@@ -144,6 +145,7 @@ typedef float XPFloat;
 #ifdef MAC_OS_X_VERSION_10_4
 #undef AFF_NSDocumentNoURL
 #undef AFF_NSTextViewFindNone
+#undef AFF_NSErrorNone
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_6
@@ -243,6 +245,16 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, id error);
 typedef void (^XPWindowRestoreCompletionHandler)(NSWindow *window, id error);
 #endif
 
+// MARK: Error
+
+#ifdef AFF_NSErrorNone
+typedef NSNumber *XPError;
+typedef NSNumber **XPErrorPointer;
+#else
+typedef NSError *XPError;
+typedef NSError **XPErrorPointer;
+#endif
+
 // MARK: NSDocument
 
 #ifdef AFF_NSDocumentNone
@@ -259,13 +271,9 @@ typedef NSDocumentChangeType XPDocumentChangeType;
 
 #ifdef MAC_OS_X_VERSION_10_4
 #define XPRTFDocumentAttributes [NSDictionary dictionaryWithObject:NSRTFTextDocumentType forKey:NSDocumentTypeDocumentAttribute]
-#define XPError NSError
-typedef NSError** XPErrorPointer;
 typedef NSRangePointer XPRangePointer;
 #else
 #define XPRTFDocumentAttributes nil
-#define XPError NSNumber
-typedef NSNumber** XPErrorPointer;
 typedef NSRange* XPRangePointer;
 #endif
 
