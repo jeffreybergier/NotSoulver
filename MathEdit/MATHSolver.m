@@ -25,7 +25,7 @@
 #import "MATHSolverExpressionTagger.h"
 #import "MATHSolverTextAttachment.h"
 
-#ifndef MAC_OS_X_VERSION_10_2
+#ifdef AFF_C_isnan_isinf_None
 // Silences warning for these functions on OpenStep
 extern int isnan(double x);
 extern int isinf(double x);

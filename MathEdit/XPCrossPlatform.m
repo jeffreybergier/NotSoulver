@@ -37,20 +37,20 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
 +(id)XP_valueWithRange:(NSRange)range;
 {
   if (XPIsNotFoundRange(range)) { return nil; }
-#ifdef MAC_OS_X_VERSION_10_2
-  return [self valueWithRange:range];
-#else
+#ifdef AFF_APINSValueNSRangeNone
   return [self valueWithBytes:&range objCType:@encode(NSRange)];
+#else
+  return [self valueWithRange:range];
 #endif
 }
 -(NSRange)XP_rangeValue;
 {
-#ifdef MAC_OS_X_VERSION_10_2
-  return [self rangeValue];
-#else
+#ifdef AFF_APINSValueNSRangeNone
   NSRange range;
   [self getValue:&range];
   return range;
+#else
+  return [self rangeValue];
 #endif
 }
 @end
@@ -59,19 +59,19 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs) {
 
 +(NSNumber*)XP_numberWithInteger:(XPInteger)integer;
 {
-#ifdef NSIntegerMax
-  return [self numberWithInteger:integer];
-#else
+#ifdef AFF_ObjCNSIntegerNone
   return [self numberWithInt:integer];
+#else
+  return [self numberWithInteger:integer];
 #endif
 }
 
 -(XPInteger)XP_integerValue;
 {
-#ifdef NSIntegerMax
-  return [self integerValue];
-#else
+#ifdef AFF_ObjCNSIntegerNone
   return [self intValue];
+#else
+  return [self integerValue];
 #endif
 }
 
@@ -301,26 +301,24 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 -(const char*)XP_cString;
 {
-#ifdef MAC_OS_X_VERSION_10_2
-  return [self UTF8String];
-#else
+#ifdef AFF_NSStringUTF8StringNone
   if ([self canBeConvertedToEncoding:NSASCIIStringEncoding]) {
     return [self cString];
   }
   XPLogAssrt1(NO, @"[NON-ASCII] %@", self);
   return NULL;
+#else
+  return [self UTF8String];
 #endif
 }
 
 -(XPUInteger)XP_cStringLength;
 {
-#ifdef MAC_OS_X_VERSION_10_4
-  return [self lengthOfBytesUsingEncoding:NSASCIIStringEncoding];
+#ifdef AFF_NSStringLengthOfBytesNone
+  if (![self canBeConvertedToEncoding:NSASCIIStringEncoding]) { return 0; }
+  return [self cStringLength];
 #else
-  if ([self canBeConvertedToEncoding:NSASCIIStringEncoding]) {
-    return [self cStringLength];
-  }
-  return 0;
+  return [self lengthOfBytesUsingEncoding:NSASCIIStringEncoding];
 #endif
 }
 
@@ -350,23 +348,23 @@ NSArray* XPRunOpenPanel(NSString *extension)
 -(NSData*)XP_data;
 {
   id forArchiving = nil;
-#ifdef MAC_OS_X_VERSION_10_4
-  forArchiving = [self fontDescriptor];
-#else
+#ifdef AFF_NSFontDescriptorNone
   forArchiving = self;
+#else
+  forArchiving = [self fontDescriptor];
 #endif
   return [XPKeyedArchiver XP_archivedDataWithRootObject:forArchiving];
 }
 
 +(id)XP_fontWithData:(NSData*)data;
 {
-#ifdef MAC_OS_X_VERSION_10_4
+#ifdef AFF_NSFontDescriptorNone
+  return [XPKeyedUnarchiver XP_unarchivedObjectOfClass:[NSFont class]
+                                              fromData:data];
+#else
   id descriptor = [XPKeyedUnarchiver XP_unarchivedObjectOfClass:[NSFontDescriptor class]
                                                        fromData:data];
   return [self fontWithDescriptor:descriptor size:0];
-#else
-  return [XPKeyedUnarchiver XP_unarchivedObjectOfClass:[NSFont class]
-                                              fromData:data];
 #endif
 }
 
@@ -393,23 +391,21 @@ NSArray* XPRunOpenPanel(NSString *extension)
 @implementation NSCoder (CrossPlatform)
 -(id)XP_decodeObjectOfClass:(Class)aClass forKey:(NSString*)key;
 {
-#ifdef MAC_OS_X_VERSION_10_8
-  id output = [self decodeObjectOfClass:aClass forKey:key];
-  XPLogAssrt2(output, @"class:%@ key:%@", NSStringFromClass(aClass), key);
-  return output;
-#elif MAC_OS_X_VERSION_10_2
+#ifdef AFF_NSKeyedArchiverNone
+  return [self decodeObject];
+#elif defined(AFF_NSSecureCodingNone)
   return [self decodeObjectForKey:key];
 #else
-  return [self decodeObject];
+  return [self decodeObjectOfClass:aClass forKey:key];
 #endif
 }
 
 -(void)XP_encodeObject:(id)object forKey:(NSString*)key;
 {
-#if MAC_OS_X_VERSION_10_2
-  [self encodeObject:object forKey:key];
-#else
+#ifdef AFF_NSKeyedArchiverNone
   [self encodeObject:object];
+#else
+  [self encodeObject:object forKey:key];
 #endif
 }
 @end
@@ -456,11 +452,11 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 -(BOOL)XP_openWebURL:(NSString*)webURL;
 {
-#ifdef MAC_OS_X_VERSION_10_2
   XPParameterRaise(webURL);
-  return [self openURL:[NSURL URLWithString:webURL]];
-#else
+#ifdef AFF_NSWorkspaceWebURLNone
   return NO;
+#else
+  return [self openURL:[NSURL URLWithString:webURL]];
 #endif
 }
 @end
@@ -472,14 +468,14 @@ NSArray* XPRunOpenPanel(NSString *extension)
                           xRadius:(XPFloat)xRadius
                           yRadius:(XPFloat)yRadius;
 {
-#ifdef MAC_OS_X_VERSION_10_6
-  return [NSBezierPath __REAL_bezierPathWithRoundedRect:rect
-                                                xRadius:xRadius
-                                                yRadius:yRadius];
-#else
+#ifdef AFF_NSBezierPathRoundRectNone
   return [NSBezierPath __MANUAL_bezierPathWithRoundedRect:rect
                                                   xRadius:xRadius
                                                   yRadius:yRadius];
+#else
+  return [NSBezierPath __REAL_bezierPathWithRoundedRect:rect
+                                                xRadius:xRadius
+                                                yRadius:yRadius];
 #endif
 }
 
@@ -487,13 +483,13 @@ NSArray* XPRunOpenPanel(NSString *extension)
                               xRadius:(XPFloat)xRadius
                               yRadius:(XPFloat)yRadius;
 {
-#ifdef MAC_OS_X_VERSION_10_6
+#ifdef AFF_NSBezierPathRoundRectNone
+  XPLogRaise(@"System does not support NSBezierPath convenience initializer");
+  return nil;
+#else
   return [NSBezierPath bezierPathWithRoundedRect:rect
                                          xRadius:xRadius
                                          yRadius:yRadius];
-#else
-  XPLogRaise(@"System does not support NSBezierPath convenience initializer");
-  return nil;
 #endif
 }
 
@@ -586,10 +582,10 @@ NSArray* XPRunOpenPanel(NSString *extension)
 @implementation NSTextView (CrossPlatform)
 -(void)XP_insertText:(id)string;
 {
-#ifdef MAC_OS_X_VERSION_10_6
-  [self insertText:string replacementRange:[self selectedRange]];
-#else
+#ifdef AFF_NSTextViewInsertTextLegacy
   [self insertText:string];
+#else
+  [self insertText:string replacementRange:[self selectedRange]];
 #endif
 }
 
@@ -722,28 +718,28 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 -(void)XP_setDrawsBackground:(BOOL)drawsBackground;
 {
-#ifdef MAC_OS_X_VERSION_10_2
+#ifndef AFF_NSScrollViewDrawsBackgroundNone
   [self setDrawsBackground:drawsBackground];
 #endif
 }
 
 -(void)XP_setAllowsMagnification:(BOOL)flag;
 {
-#ifndef AFF_ScrollViewNoMagnification
+#ifndef AFF_NSScrollViewMagnificationNone
   [self setAllowsMagnification:flag];
 #endif
 }
 
 -(void)XP_setMagnification:(XPFloat)newValue;
 {
-#ifndef AFF_ScrollViewNoMagnification
+#ifndef AFF_NSScrollViewMagnificationNone
   [self setMagnification:newValue];
 #endif
 }
 
 -(XPFloat)XP_magnification;
 {
-#ifdef AFF_ScrollViewNoMagnification
+#ifdef AFF_NSScrollViewMagnificationNone
   return 1.0;
 #else
   return [self magnification];

@@ -67,54 +67,35 @@
 #define LOGLEVEL LOGLEVELALWYS
 #endif
 
-// MARK: Basic Types
-
-#ifdef NSIntegerMax
-typedef NSInteger XPInteger;
-typedef NSUInteger XPUInteger;
-#else
-typedef int XPInteger;
-typedef unsigned int XPUInteger;
-#endif
-
-#ifdef CGFLOAT_MAX
-typedef CGFloat XPFloat;
-#else
-typedef float XPFloat;
-#endif
-
-typedef NSRange* XPRangePointer;
-extern const NSRange XPNotFoundRange;
-BOOL XPIsNotFoundRange(NSRange range);
-BOOL XPContainsRange(NSRange lhs, NSRange rhs);
-
-#ifdef NS_ENUM
-  #define XP_ENUM(_type, _name) NS_ENUM(_type, _name)
-#else
-  #define XP_ENUM(_type, _name) _type _name; enum
-#endif
-
 // MARK: Antifeature Flags
 
 #define AFF_MainMenuFailsNSApplicationMain
 #define AFF_MainMenuNotRetainedBySystem
 #define AFF_MainMenuRequiresSetAppleMenu
-#define AFF_MainMenuNoApplication
+#define AFF_MainMenuNoApplicationMenu
 #define AFF_UIStyleAquaNone
 #define AFF_UIStyleDarkModeNone
-#define AFF_ScrollViewNoMagnification
+#define AFF_NSScrollViewDrawsBackgroundNone
+#define AFF_NSScrollViewMagnificationNone
 #define AFF_NSWindowNoFullScreen
+#define AFF_C_isnan_isinf_None
+#define AFF_C_percentP_None
+#define AFF_C__FILE__FUNCTION__Legacy
 #define AFF_ObjCNoDispatch
 #define AFF_ObjCNSMethodSignatureUndocumentedClassMethod
+#define AFF_ObjCNSIntegerNone
+#define AFF_ObjCCGFloatNone
 #define AFF_NSDocumentNone     // OpenStep did not include NSDocument
 #define AFF_NSDocumentNoURL    // NSDocument works but URL's API's dont work for some reason
 #define AFF_NSDocumentNoiCloud // NSDocument does not yet support duplicate and other modern iCloud features
 #define AFF_NSRegularExpressionNone // SLRE cannot handle non-ascii characters
 #define AFF_NSBezierPathNone
+#define AFF_NSBezierPathRoundRectNone
 #define AFF_NSKeyedArchiverNone
 #define AFF_NSSecureCodingNone
 #define AFF_UnicodeUINone
 #define AFF_UnicodeDocumentNone // TODO: Not used yet
+#define AFF_NSTextViewInsertTextLegacy
 #define AFF_NSTextViewFindNone
 #define AFF_NSTextViewFindNoInline
 #define AFF_NSTextViewGrammarNone
@@ -129,14 +110,22 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs);
 #define AFF_NSImageTemplateNone
 #define AFF_StateRestorationNone
 #define AFF_NSErrorNone
+#define AFF_NSStringUTF8StringNone
+#define AFF_NSStringLengthOfBytesNone
+#define AFF_NSFontDescriptorNone
+#define AFF_NSWorkspaceWebURLNone
+#define AFF_APINSValueNSRangeNone
 #define AFF_APIWritingRenameNone
 #define AFF_APIPasteboardRenameNone
 #define AFF_APIUpdatedForSwiftNone
+#define AFF_TEST_CoreGraphicsRequiresWindow
 
 #ifdef MAC_OS_X_VERSION_10_0
 #undef AFF_MainMenuNotRetainedBySystem
-#undef AFF_MainMenuNoApplication
+#undef AFF_MainMenuNoApplicationMenu
 #undef AFF_UIStyleAquaNone
+#undef AFF_C_isnan_isinf_None
+#undef AFF_C_percentP_None
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_2
@@ -148,28 +137,46 @@ BOOL XPContainsRange(NSRange lhs, NSRange rhs);
 #undef AFF_NSWindowStyleTexturedNone
 #undef AFF_NSWindowStyleUtilityNone
 #undef AFF_NSWindowControllerNone
+#undef AFF_APINSValueNSRangeNone
+#undef AFF_NSStringUTF8StringNone
+#undef AFF_NSWorkspaceWebURLNone
+#undef AFF_NSScrollViewDrawsBackgroundNone
+#endif
+
+#ifdef NSIntegerMax
+#undef AFF_ObjCNSIntegerNone
+#endif
+
+#ifdef CGFLOAT_MAX
+#undef AFF_ObjCCGFloatNone
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_4
 #undef AFF_NSDocumentNoURL
 #undef AFF_NSTextViewFindNone
 #undef AFF_NSErrorNone
+#undef AFF_C__FILE__FUNCTION__Legacy
+#undef AFF_NSStringLengthOfBytesNone
+#undef AFF_NSFontDescriptorNone
+#undef AFF_TEST_CoreGraphicsRequiresWindow
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_6
 #undef AFF_ObjCNSMethodSignatureUndocumentedClassMethod
 #undef AFF_MainMenuRequiresSetAppleMenu
+#undef AFF_NSTextViewInsertTextLegacy
 #undef AFF_NSTextViewGrammarNone
 #undef AFF_NSViewControllerNone
 #undef AFF_FormalProtocolsNone
 #undef AFF_NSImageTemplateNone
 #undef AFF_NSWindowCollectionBehaviorNone
 #undef AFF_APIPasteboardRenameNone
+#undef AFF_NSBezierPathRoundRectNone
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_8
 #undef AFF_MainMenuFailsNSApplicationMain
-#undef AFF_ScrollViewNoMagnification
+#undef AFF_NSScrollViewMagnificationNone
 #undef AFF_ObjCNoDispatch
 #undef AFF_NSDocumentNoiCloud
 #undef AFF_NSTextViewFindNoInline
@@ -347,6 +354,33 @@ typedef NSTextFieldBezelStyle XPTextFieldBezelStyle;
 #define XPEventModifierFlagOption NSEventModifierFlagOption
 #define XPEventModifierFlagCommand NSEventModifierFlagCommand
 #define XPEventModifierFlagShift NSEventModifierFlagShift
+#endif
+
+// MARK: AFF_Basic Types
+
+#ifdef AFF_ObjCNSIntegerNone
+typedef int XPInteger;
+typedef unsigned int XPUInteger;
+#else
+typedef NSInteger XPInteger;
+typedef NSUInteger XPUInteger;
+#endif
+
+#ifdef AFF_ObjCCGFloatNone
+typedef float XPFloat;
+#else
+typedef CGFloat XPFloat;
+#endif
+
+typedef NSRange* XPRangePointer;
+extern const NSRange XPNotFoundRange;
+BOOL XPIsNotFoundRange(NSRange range);
+BOOL XPContainsRange(NSRange lhs, NSRange rhs);
+
+#ifdef NS_ENUM
+  #define XP_ENUM(_type, _name) NS_ENUM(_type, _name)
+#else
+  #define XP_ENUM(_type, _name) _type _name; enum
 #endif
 
 // MARK: Object Categories
@@ -544,18 +578,18 @@ NSArray* XPRunOpenPanel(NSString *extension);
 NSString *XPStringFromErrorPointer(XPErrorPointer ptr);
 
 // OpenStep does not understand the %p format string so this works around that
-#ifdef MAC_OS_X_VERSION_10_2
-#define XPPointerString(_self) ([NSString stringWithFormat:@"%p", (void*)_self])
-#else
+#ifdef AFF_C_percentP_None
 #define XPPointerString(_self) ([NSString stringWithFormat:@"0x%08x", (unsigned int)(_self)])
+#else
+#define XPPointerString(_self) ([NSString stringWithFormat:@"%p", (void*)_self])
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_4
-#define XPLogFunc [NSString stringWithCString:__PRETTY_FUNCTION__ encoding:NSUTF8StringEncoding]
-#define XPLogFile [[[NSString stringWithCString:__FILE__ encoding:NSUTF8StringEncoding] componentsSeparatedByString:@"/"] lastObject]
-#else
+#ifdef AFF_C__FILE__FUNCTION__Legacy
 #define XPLogFunc [NSString stringWithCString:__PRETTY_FUNCTION__]
 #define XPLogFile [[[NSString stringWithCString:__FILE__] componentsSeparatedByString:@"/"] lastObject]
+#else
+#define XPLogFunc [NSString stringWithCString:__PRETTY_FUNCTION__ encoding:NSUTF8StringEncoding]
+#define XPLogFile [[[NSString stringWithCString:__FILE__ encoding:NSUTF8StringEncoding] componentsSeparatedByString:@"/"] lastObject]
 #endif
 
 #define __XPLogBase(_prefix, _formatString)                             NSLog(@"[%@] {%@:%d} %@ %@", _prefix, XPLogFile, __LINE__, XPLogFunc, _formatString)

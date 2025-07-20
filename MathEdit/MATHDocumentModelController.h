@@ -78,10 +78,10 @@ typedef NSString* MATHDocumentModelRep;
 
 @end
 
-#ifdef MAC_OS_X_VERSION_10_6
-@interface MATHDocumentModelController (TextDelegate) <NSTextViewDelegate>
-#else
+#ifdef AFF_FormalProtocolsNone
 @interface MATHDocumentModelController (TextDelegate)
+#else
+@interface MATHDocumentModelController (TextDelegate) <NSTextViewDelegate>
 #endif
 
 -(void)textDidChange:(NSNotification*)aNotification;

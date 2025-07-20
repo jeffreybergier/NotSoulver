@@ -24,7 +24,7 @@ void TestsUnitExecute(void)
   [XPLog executeTests];
   [XPRegularExpression executeTests];
   [MATHSolverScanner executeTests];
-#ifdef MAC_OS_X_VERSION_10_4
+#ifndef AFF_TEST_CoreGraphicsRequiresWindow
   // TODO: Change to Antifeature flat
 //[NSBezierPath saveTestFiles];
   [NSBezierPath executeTests];
@@ -402,7 +402,7 @@ void TestsUnitExecute(void)
 
 @end
 
-#ifdef MAC_OS_X_VERSION_10_4
+#ifndef AFF_TEST_CoreGraphicsRequiresWindow
 
 @implementation NSBezierPath (TestsUnit)
 +(void)executeTests;
@@ -439,7 +439,7 @@ void TestsUnitExecute(void)
 
 +(void)saveTestFiles;
 {
-  #ifdef MAC_OS_X_VERSION_10_6
+  #ifndef AFF_TEST_CoreGraphicsRequiresWindow
   NSWorkspace *ws = [NSWorkspace sharedWorkspace];
   NSString *destDir = NSTemporaryDirectory();
 	NSString *manualPath = nil;
