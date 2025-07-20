@@ -700,7 +700,7 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 -(void)XP_setCollectionBehavior:(XPWindowCollectionBehavior)collectionBehavior;
 {
-#ifdef MAC_OS_X_VERSION_10_6
+#ifndef AFF_NSWindowCollectionBehaviorNone
   [self setCollectionBehavior:collectionBehavior];
 #endif
 }

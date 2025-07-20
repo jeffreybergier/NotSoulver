@@ -115,7 +115,7 @@ typedef float XPFloat;
 #define AFF_NSButtonStylesNone
 #define AFF_NSWindowStyleTexturedNone
 #define AFF_NSWindowStyleUtilityNone
-#define AFF_NSWindowCollectionStyleNone
+#define AFF_NSWindowCollectionBehaviorNone
 #define AFF_NSWindowControllerNone
 #define AFF_NSViewControllerNone
 #define AFF_FormalProtocolsNone
@@ -150,6 +150,7 @@ typedef float XPFloat;
 #undef AFF_NSViewControllerNone
 #undef AFF_FormalProtocolsNone
 #undef AFF_NSImageTemplateNone
+#undef AFF_NSWindowCollectionBehaviorNone
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_8
@@ -213,6 +214,12 @@ typedef NSResponder *XPViewController;
 typedef NSViewController *XPViewController;
 #endif
 
+#ifdef AFF_NSWindowCollectionBehaviorNone
+typedef XPUInteger XPWindowCollectionBehavior;
+#else
+typedef NSWindowCollectionBehavior XPWindowCollectionBehavior;
+#endif
+
 // MARK: NSDocument
 
 #ifdef AFF_NSDocumentNone
@@ -243,12 +250,10 @@ typedef NSRange* XPRangePointer;
 #define XPStringCompareOptions NSStringCompareOptions
 #define XPPasteboardTypeRTF NSPasteboardTypeRTF
 #define XPPasteboardTypeString NSPasteboardTypeString
-#define XPWindowCollectionBehavior NSWindowCollectionBehavior
 #else
 typedef XPUInteger XPStringCompareOptions;
 #define XPPasteboardTypeRTF NSRTFPboardType
 #define XPPasteboardTypeString NSStringPboardType
-#define XPWindowCollectionBehavior XPUInteger
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_8
