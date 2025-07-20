@@ -64,6 +64,7 @@
 		8CB5C5122DED604600CDE1DF /* MATHAccessoryWindowViews.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CB5C5102DED604600CDE1DF /* MATHAccessoryWindowViews.h */; };
 		8CB5C5132DED604600CDE1DF /* MATHAccessoryWindowViews.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CB5C5112DED604600CDE1DF /* MATHAccessoryWindowViews.m */; };
 		8CBA25AA2E209B4E00441F98 /* AppIcon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8CBA25A92E209B4E00441F98 /* AppIcon.xcassets */; };
+		8CCD41B12E29F5C8005C0404 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8CCD41AF2E29F5C8005C0404 /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -73,6 +74,7 @@
 		8C0754132E1A5FFC0066D73A /* PBRelease.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = PBRelease.xcconfig; path = PB.xcconfig/PBRelease.xcconfig; sourceTree = "<group>"; };
 		8C0754142E1A5FFE0066D73A /* PBDebug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = PBDebug.xcconfig; path = PB.xcconfig/PBDebug.xcconfig; sourceTree = "<group>"; };
 		8C0754152E1A5FFE0066D73A /* PBBase.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = PBBase.xcconfig; path = PB.xcconfig/PBBase.xcconfig; sourceTree = "<group>"; };
+		8C2858A22E2A942E006AE59B /* AppIcon-X2.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = "AppIcon-X2.icns"; path = "Images/AppIcon-X2.icns"; sourceTree = "<group>"; };
 		8C4D1DFA2DC7D1F80060CFBA /* about-image-512.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "about-image-512.tiff"; path = "Images/about-image-512.tiff"; sourceTree = "<group>"; };
 		8C4D1DFB2DC7D1F80060CFBA /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = AppIcon.icns; path = Images/AppIcon.icns; sourceTree = "<group>"; };
 		8C4D1DFD2DC7D1F80060CFBA /* NeXTLogoMed.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = NeXTLogoMed.tiff; path = Images/NeXTLogoMed.tiff; sourceTree = "<group>"; };
@@ -90,6 +92,7 @@
 		8CB5C5102DED604600CDE1DF /* MATHAccessoryWindowViews.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MATHAccessoryWindowViews.h; sourceTree = "<group>"; };
 		8CB5C5112DED604600CDE1DF /* MATHAccessoryWindowViews.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MATHAccessoryWindowViews.m; sourceTree = "<group>"; };
 		8CBA25A92E209B4E00441F98 /* AppIcon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = AppIcon.xcassets; path = Images/AppIcon.xcassets; sourceTree = "<group>"; };
+		8CCD41B22E29F637005C0404 /* English */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8CD62E502D91DB730000020F /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8CD62E552D91DCDF0000020F /* Import Log.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "Import Log.rtf"; sourceTree = "<group>"; };
 		8CD62E562D91DCDF0000020F /* Makefile */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -248,6 +251,7 @@
 			isa = PBXGroup;
 			children = (
 				8CD62EC02D91DF730000020F /* Localizable.strings */,
+				8CCD41AF2E29F5C8005C0404 /* InfoPlist.strings */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -278,6 +282,7 @@
 			children = (
 				8CBA25A92E209B4E00441F98 /* AppIcon.xcassets */,
 				8C4D1DFB2DC7D1F80060CFBA /* AppIcon.icns */,
+				8C2858A22E2A942E006AE59B /* AppIcon-X2.icns */,
 				8C4D1DFA2DC7D1F80060CFBA /* about-image-512.tiff */,
 				8C4D1DFD2DC7D1F80060CFBA /* NeXTLogoMed.tiff */,
 				8C4D1DFE2DC7D1F80060CFBA /* TagLine.tiff */,
@@ -420,6 +425,7 @@
 				8C5E58262DC346F200A1648E /* TestsIntegration-UnsolvedRep.rtf in Resources */,
 				8C5E582A2DC346F200A1648E /* Localizable.strings in Resources */,
 				8C5E582C2DC346F200A1648E /* TestUnitBezierPath-MANUAL.tiff in Resources */,
+				8CCD41B12E29F5C8005C0404 /* InfoPlist.strings in Resources */,
 				8C5E582D2DC346F200A1648E /* TestUnitBezierPath-REAL.tiff in Resources */,
 				8C4D1E002DC7D1F80060CFBA /* about-image-512.tiff in Resources */,
 				8C4D1E032DC7D1F80060CFBA /* NeXTLogoMed.tiff in Resources */,
@@ -466,6 +472,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		8CCD41AF2E29F5C8005C0404 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8CCD41B22E29F637005C0404 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		8CD62EC02D91DF730000020F /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

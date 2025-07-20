@@ -13,15 +13,6 @@
 			<array>
 				<string>mtxt</string>
 			</array>
-			<key>UTTypeTagSpecification</key>
-			<dict>
-				<key>public.filename-extension</key>
-				<array>
-					<string>mtxt</string>
-				</array>
-				<key>public.mime-type</key>
-				<string>application/mathedit</string>
-			</dict>
 			<key>CFBundleTypeMIMETypes</key>
 			<array>
 				<string>text/plain</string>
@@ -38,7 +29,6 @@
 			<string>Owner</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>public.text</string>
 				<string>com.saturdayapps.mathedit.plain</string>
 			</array>
 			<key>NSDocumentClass</key>
@@ -57,17 +47,18 @@
 		<dict>
 			<key>UTTypeIdentifier</key>
 			<string>com.saturdayapps.mathedit.plain</string>
-			<key>UTTypeDescription</key>
-			<string>MathEdit Document</string>
 			<key>UTTypeConformsTo</key>
 			<array>
+				<string>public.content</string>
 				<string>public.text</string>
+				<string>public.plain-text</string>
 			</array>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
 				<array>
 					<string>mtxt</string>
+					<string>txt</string>
 				</array>
 				<key>public.mime-type</key>
 				<string>application/mathedit</string>

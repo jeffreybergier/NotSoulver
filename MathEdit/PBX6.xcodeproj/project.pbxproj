@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8C182DD92DEF1034004C47C3 /* MATHAccessoryWindowViews.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C182DD72DEF1034004C47C3 /* MATHAccessoryWindowViews.h */; };
 		8C182DDA2DEF1034004C47C3 /* MATHAccessoryWindowViews.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C182DD82DEF1034004C47C3 /* MATHAccessoryWindowViews.m */; };
+		8C2F9A692E2A7D8D004F5697 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8C2F9A672E2A7D8D004F5697 /* InfoPlist.strings */; };
 		8C4D1E002DC7D1F80060CFBA /* about-image-512.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C4D1DFA2DC7D1F80060CFBA /* about-image-512.tiff */; };
 		8C4D1E012DC7D1F80060CFBA /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 8C4D1DFB2DC7D1F80060CFBA /* AppIcon.icns */; };
 		8C4D1E032DC7D1F80060CFBA /* NeXTLogoMed.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C4D1DFD2DC7D1F80060CFBA /* NeXTLogoMed.tiff */; };
@@ -69,6 +70,7 @@
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8C182DD72DEF1034004C47C3 /* MATHAccessoryWindowViews.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MATHAccessoryWindowViews.h; sourceTree = "<group>"; };
 		8C182DD82DEF1034004C47C3 /* MATHAccessoryWindowViews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MATHAccessoryWindowViews.m; sourceTree = "<group>"; };
+		8C2F9A682E2A7D8D004F5697 /* English */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8C33535A2E1A81E6004752CA /* PB.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = PB.entitlements; path = PB.xcconfig/PB.entitlements; sourceTree = "<group>"; };
 		8C33535B2E1A81E6004752CA /* PBBase.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = PBBase.xcconfig; path = PB.xcconfig/PBBase.xcconfig; sourceTree = "<group>"; };
 		8C33535C2E1A81E6004752CA /* PBDebug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = PBDebug.xcconfig; path = PB.xcconfig/PBDebug.xcconfig; sourceTree = "<group>"; };
@@ -241,6 +243,7 @@
 			isa = PBXGroup;
 			children = (
 				8CD62EC02D91DF730000020F /* Localizable.strings */,
+				8C2F9A672E2A7D8D004F5697 /* InfoPlist.strings */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -406,6 +409,7 @@
 				8CB6F5E22E0651C90048C614 /* ThemeAuto.tiff in Resources */,
 				8CB6F5E42E0651C90048C614 /* ThemeDark.tiff in Resources */,
 				8CB6F5E62E0651C90048C614 /* ThemeLight.tiff in Resources */,
+				8C2F9A692E2A7D8D004F5697 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -442,6 +446,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		8C2F9A672E2A7D8D004F5697 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8C2F9A682E2A7D8D004F5697 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		8CD62EC02D91DF730000020F /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

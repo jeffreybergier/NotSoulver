@@ -39,22 +39,42 @@
 -(void)makeWindowControllers;
 
 // MARK: NSDocument subclass
--(NSData*)dataRepresentationOfType:(NSString*)type;
--(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type;
+-(NSData*)dataOfType:(NSString*)typeName error:(XPErrorPointer)outError;
+-(NSData*)dataRepresentationOfType:(NSString*)type; // Legacy for X2
+-(BOOL)readFromData:(NSData*)data ofType:(NSString*)typeName error:(XPErrorPointer)outError;
+-(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type; // Legacy for X2
 
-// MARK: Model Changed Notification
--(void)modelDidProcessEditingNotification:(NSNotification*)aNotification;
+// MARK: isDocumentEdited
+-(void)textViewDidBeginEditingNotification:(NSNotification*)aNotification;
 
 @end
 
 @interface MATHDocument (StateRestoration)
 +(BOOL)autosavesInPlace;
 +(BOOL)canConcurrentlyReadDocumentsOfType:(NSString*)typeName;
--(BOOL)canAsynchronouslyWriteToURL:(XPURL*)url
+-(BOOL)canAsynchronouslyWriteToURL:(id)url
                             ofType:(NSString*)typeName
                   forSaveOperation:(XPSaveOperationType)saveOperation;
 @end
 
 @interface MATHDocument (DarkMode)
 -(void)overrideWindowAppearance;
+@end
+
+// MARK: XPDocument Compatibility Category
+
+#ifdef AFF_NSDocumentNone
+@interface NSDocumentLegacyImplementation (MATHDocument)
+#else
+@interface NSDocument (MATHDocument)
+#endif
+-(id)MATH_initWithContentsOfFileObject:(id)fileObject
+                                ofType:(NSString*)typeName
+                                 error:(XPErrorPointer)outError;
+-(id)MATH_fileObject;
+-(NSString*)MATH_nameForFrameAutosave;
+-(NSString*)MATH_requiredFileType;
+-(NSWindow*)MATH_windowForSheet;
+-(void)MATH_addWindowController:(XPWindowController*)aWindowController;
+-(void)MATH_setRequiredFileType:(NSString*)type;
 @end

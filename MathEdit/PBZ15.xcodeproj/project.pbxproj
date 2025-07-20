@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C2858A02E2A798E006AE59B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8C28589E2E2A798E006AE59B /* InfoPlist.strings */; };
 		8C5E580C2DC346F200A1648E /* NSUserDefaults+MathEdit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E592D91DCDF0000020F /* NSUserDefaults+MathEdit.h */; };
 		8C5E580D2DC346F200A1648E /* MATHAccessoryWindowsOwner.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E5B2D91DCDF0000020F /* MATHAccessoryWindowsOwner.h */; };
 		8C5E580E2DC346F200A1648E /* MATHAppDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E5D2D91DCDF0000020F /* MATHAppDelegate.h */; };
@@ -70,6 +71,8 @@
 		1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		8C28589F2E2A798E006AE59B /* English */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		8C2858A12E2A93E6006AE59B /* AppIcon-X2.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = "AppIcon-X2.icns"; path = "Images/AppIcon-X2.icns"; sourceTree = "<group>"; };
 		8C4DA6212E1A1BA6006A3BE9 /* PBBase.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = PBBase.xcconfig; path = PB.xcconfig/PBBase.xcconfig; sourceTree = "<group>"; };
 		8C4DA6222E1A1BA6006A3BE9 /* PBDebug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = PBDebug.xcconfig; path = PB.xcconfig/PBDebug.xcconfig; sourceTree = "<group>"; };
 		8C4DA6232E1A1BA6006A3BE9 /* PBRelease.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = PBRelease.xcconfig; path = PB.xcconfig/PBRelease.xcconfig; sourceTree = "<group>"; };
@@ -248,6 +251,7 @@
 			isa = PBXGroup;
 			children = (
 				8CD62EC02D91DF730000020F /* Localizable.strings */,
+				8C28589E2E2A798E006AE59B /* InfoPlist.strings */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -278,6 +282,7 @@
 			children = (
 				8CBA25AB2E209C5000441F98 /* AppIcon.xcassets */,
 				8C6F13D72E05669500EB7DEC /* AppIcon.icns */,
+				8C2858A12E2A93E6006AE59B /* AppIcon-X2.icns */,
 				8C6F13D62E05669500EB7DEC /* about-image-512.tiff */,
 				8C6F13D82E05669500EB7DEC /* NeXTLogoMed.tiff */,
 				8C6F13D92E05669500EB7DEC /* TagLine.tiff */,
@@ -420,6 +425,7 @@
 				8C5E58262DC346F200A1648E /* TestsIntegration-UnsolvedRep.rtf in Resources */,
 				8C5E582A2DC346F200A1648E /* Localizable.strings in Resources */,
 				8C5E582C2DC346F200A1648E /* TestUnitBezierPath-MANUAL.tiff in Resources */,
+				8C2858A02E2A798E006AE59B /* InfoPlist.strings in Resources */,
 				8C6F13DD2E05669500EB7DEC /* about-image-512.tiff in Resources */,
 				8C6F13DE2E05669500EB7DEC /* TagLine.tiff in Resources */,
 				8C6F13E62E056C2800EB7DEC /* ThemeLight.tiff in Resources */,
@@ -466,6 +472,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		8C28589E2E2A798E006AE59B /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8C28589F2E2A798E006AE59B /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		8CD62EC02D91DF730000020F /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -481,10 +495,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8C4DA6212E1A1BA6006A3BE9 /* PBBase.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = V6ESYGU6CV;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = V6ESYGU6CV;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
@@ -493,10 +507,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8C4DA6212E1A1BA6006A3BE9 /* PBBase.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = V6ESYGU6CV;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = V6ESYGU6CV;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;

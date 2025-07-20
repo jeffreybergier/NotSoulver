@@ -58,55 +58,65 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
 }
 
 // MARK: NSTextView Wrapping
--(void)replaceCharactersInRange:(NSRange)range withString:(NSString *)string;
+-(void)replaceCharactersInRange:(NSRange)range
+                     withString:(NSString*)string
+  preservingSelectionInTextView:(NSTextView*)textView;
 {
   NSTextStorage *model = [self model];
+  
+  XPParameterRaise(string);
+  XPParameterRaise(textView);
+  
   [model beginEditing];
   [model replaceCharactersInRange:range withString:string];
   [model endEditing];
-  [self textDidChange:nil];
+  [self textDidChange:[NSNotification notificationWithName:NSTextDidChangeNotification object:textView]];
 }
 
 // MARK: NSDocument Support
--(NSData*)dataRepresentationOfType:(MATHDocumentModelRep)type withRange:(NSRange)range;
+
+-(NSData*)dataOfType:(NSString*)typeName error:(XPErrorPointer)outError;
 {
-  XPParameterRaise(type);
-  if        ([type isEqualToString:MATHDocumentModelRepDisk]) {
-    return [self __dataRepresentationOfDiskTypeWithRange:range];
-  } else if ([type isEqualToString:MATHDocumentModelRepDisplay]) {
-    return [self __dataRepresentationOfDisplayTypeWithRange:range];
-  } else if ([type isEqualToString:MATHDocumentModelRepSolved]) {
-    return [self __dataRepresentationOfSolvedTypeWithRange:range];
-  } else if ([type isEqualToString:MATHDocumentModelRepUnsolved]) {
-    return [self __dataRepresentationOfUnsolvedTypeWithRange:range];
-  } else {
-    XPLogAssrt1(NO, @"[UNKNOWN] MATHDocumentModelRep(%@)", type);
+  return [self dataOfType:typeName range:XPNotFoundRange error:outError];
+}
+
+-(NSData*)dataOfType:(NSString*)typeName range:(NSRange)range error:(XPErrorPointer)outError;
+{
+  XPParameterRaise(typeName);
+  if        ([typeName isEqualToString:MATHDocumentModelRepDisk])       {
+    return [self __dataOfDiskRepWithRange:range error:outError];
+  } else if ([typeName isEqualToString:MATHDocumentModelRepDisplay])    {
+    return [self __dataOfDisplayRepWithRange:range error:outError];
+  } else if ([typeName isEqualToString:MATHDocumentModelRepSolved])     {
+    return [self __dataOfModelRepSolvedWithRange:range error:outError];
+  } else if ([typeName isEqualToString:MATHDocumentModelRepUnsolved])   {
+    return [self __dataOfModelRepUnsolvedWithRange:range error:outError];
+  } else                                                                {
+    XPLogAssrt1(NO, @"[UNKNOWN] MATHDocumentModelRep(%@)", typeName);
     return nil;
   }
 }
 
--(NSData*)dataRepresentationOfType:(MATHDocumentModelRep)type;
+-(BOOL)readFromData:(NSData*)data ofType:(NSString*)typeName error:(XPErrorPointer)outError;
 {
-  return [self dataRepresentationOfType:type withRange:XPNotFoundRange];
-}
-
--(BOOL)loadDataRepresentation:(NSData*)data ofType:(MATHDocumentModelRep)type;
-{
-  if ([type isEqualToString:MATHDocumentModelRepDisk]) {
-    return [self __loadDataRepresentationOfDiskType:data];
+  if ([typeName isEqualToString:MATHDocumentModelRepDisk]) {
+    return [self __readFromData:data ofType:typeName error:outError];
   } else {
-    XPLogAssrt1(NO, @"[UNKNOWN] MATHDocumentModelRep(%@)", type);
+    XPLogAssrt1(NO, @"[UNKNOWN] MATHDocumentModelRep(%@)", typeName);
     return NO;
   }
 }
 
 // MARK: Private
 
--(NSData*)__dataRepresentationOfDiskTypeWithRange:(NSRange)range;
+-(NSData*)__dataOfDiskRepWithRange:(NSRange)range error:(XPErrorPointer)outError;
 {
   NSMutableDictionary *dataCache = nil;
   NSString *key = nil;
   NSData *output = nil;
+  
+  XPLogExtra1(@"[XPUNIMPLEMENTED] ErrorPointer(%@)", XPStringFromErrorPointer(outError));
+
   if (XPIsNotFoundRange(range)) {
     // If no range provided, use fast path with caching
     dataCache = [self dataCache];
@@ -127,22 +137,23 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
   } else {
     // If a range is provided, do the work slowly with no caching
     output = [[[MATHSolver replacingAttachmentsWithOriginalCharacters:[[self model] attributedSubstringFromRange:range]] string] dataUsingEncoding:NSUTF8StringEncoding];
-    XPLogAssrt(output, @"output was NIL");
+    XPParameterRaise(output);
     return output;
   }
 }
 
--(NSData*)__dataRepresentationOfDisplayTypeWithRange:(NSRange)_range;
+-(NSData*)__dataOfDisplayRepWithRange:(NSRange)_range error:(XPErrorPointer)outError;
 {
   NSRange range = XPIsNotFoundRange(_range)
                 ? NSMakeRange(0, [[self model] length])
                 : _range;
   NSData *output = [[self model] RTFFromRange:range documentAttributes:XPRTFDocumentAttributes];
-  XPLogAssrt(output, @"output was NIL");
+  XPParameterRaise(output);
+  XPLogExtra1(@"[XPUNIMPLEMENTED] ErrorPointer(%@)", XPStringFromErrorPointer(outError));
   return output;
 }
 
--(NSData*)__dataRepresentationOfSolvedTypeWithRange:(NSRange)_range;
+-(NSData*)__dataOfModelRepSolvedWithRange:(NSRange)_range error:(XPErrorPointer)outError;
 {
   NSRange range = XPIsNotFoundRange(_range)
                 ? NSMakeRange(0, [[self model] length])
@@ -151,11 +162,12 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
   NSAttributedString *solved = [MATHSolver replacingAttachmentsWithStringValue:original];
   NSData *output = [solved RTFFromRange:NSMakeRange(0, [solved length])
                      documentAttributes:XPRTFDocumentAttributes];
-  XPLogAssrt(output, @"output was NIL");
+  XPParameterRaise(output);
+  XPLogExtra1(@"[XPUNIMPLEMENTED] ErrorPointer(%@)", XPStringFromErrorPointer(outError));
   return output;
 }
 
--(NSData*)__dataRepresentationOfUnsolvedTypeWithRange:(NSRange)_range;
+-(NSData*)__dataOfModelRepUnsolvedWithRange:(NSRange)_range error:(XPErrorPointer)outError;
 {
   NSRange range = XPIsNotFoundRange(_range)
                 ? NSMakeRange(0, [[self model] length])
@@ -164,31 +176,43 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
   NSAttributedString *unsolved = [MATHSolver replacingAttachmentsWithOriginalCharacters:original];
   NSData *output = [unsolved RTFFromRange:NSMakeRange(0, [unsolved length])
                        documentAttributes:XPRTFDocumentAttributes];
-  XPLogAssrt(output, @"output was NIL");
+  XPParameterRaise(output);
+  XPLogExtra1(@"[XPUNIMPLEMENTED] ErrorPointer(%@)", XPStringFromErrorPointer(outError));
   return output;
 }
 
--(BOOL)__loadDataRepresentationOfDiskType:(NSData*)data;
+-(BOOL)__readFromData:(NSData*)data ofType:(NSString*)typeName error:(XPErrorPointer)outError;
 {
-  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   BOOL success = NO;
   NSTextStorage *model = [self model];
   NSString *string = [[[NSString alloc] initWithData:data
                                             encoding:NSUTF8StringEncoding] autorelease];
+  
   if (string) {
     // TODO: Figure out how I can combine this with waitTimerFired:
-    XPLogDebug(@"Rendering");
     [model beginEditing];
     [[model mutableString] setString:string];
-    [MATHSolver solveAttributedString:model
-                       solutionStyles:__TESTING_stylesForSolution         ? __TESTING_stylesForSolution         : [ud MATH_stylesForSolution        ]
-               previousSolutionStyles:__TESTING_stylesForPreviousSolution ? __TESTING_stylesForPreviousSolution : [ud MATH_stylesForPreviousSolution]
-                          errorStyles:__TESTING_stylesForError            ? __TESTING_stylesForError            : [ud MATH_stylesForError           ]
-                           textStyles:__TESTING_stylesForText             ? __TESTING_stylesForText             : [ud MATH_stylesForText            ]];
+    [self __solveEditingModelInPlace:model error:outError];
     [model endEditing];
     success = YES;
   }
+  XPLogExtra1(@"[XPUNIMPLEMENTED] ErrorPointer(%@)", XPStringFromErrorPointer(outError));
   return success;
+}
+
+-(BOOL)__solveEditingModelInPlace:(NSTextStorage*)model error:(XPErrorPointer)outError;
+{
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  XPLogDebug(@"Rendering");
+  XPLogDebug1(@"[XPUNIMPLEMENTED] ErrorPointer(%@)", XPStringFromErrorPointer(outError));
+  
+  [MATHSolver solveAttributedString:model
+                     solutionStyles:__TESTING_stylesForSolution         ? __TESTING_stylesForSolution         : [ud MATH_stylesForSolution        ]
+             previousSolutionStyles:__TESTING_stylesForPreviousSolution ? __TESTING_stylesForPreviousSolution : [ud MATH_stylesForPreviousSolution]
+                        errorStyles:__TESTING_stylesForError            ? __TESTING_stylesForError            : [ud MATH_stylesForError           ]
+                         textStyles:__TESTING_stylesForText             ? __TESTING_stylesForText             : [ud MATH_stylesForText            ]
+                              error:outError];
+  return YES;
 }
 
 -(void)dealloc;
@@ -206,7 +230,6 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
 
 @end
 
-
 @implementation MATHDocumentModelController (TextDelegate)
 
 -(void)textDidChange:(NSNotification*)aNotification;
@@ -216,28 +239,31 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
   [self __resetWaitTimer:textView];
 }
 
--(void)renderPreservingSelectionInTextView:(NSTextView*)textView;
+-(BOOL)renderPreservingSelectionInTextView:(NSTextView*)textView
+                                     error:(XPErrorPointer)outError;
 {
-  NSUserDefaults *ud   = [NSUserDefaults standardUserDefaults];
   NSTextStorage *model = [self model];
   NSRange selection = XPNotFoundRange;
   
   XPParameterRaise(textView);
+  
+  if ([textView hasMarkedText]) {
+    if (outError != NULL) { /* TODO: Populate Error Pointer */ }
+    XPLogAlwys(@"[PRECONDITION] NSTextView hasMarkedText: Abandoning render");
+    return NO;
+  }
   
   // Get current selection
   selection = [textView selectedRange];
   
   // Solve the string
   [model beginEditing];
-  [MATHSolver solveAttributedString:model
-                     solutionStyles:__TESTING_stylesForSolution         ? __TESTING_stylesForSolution         : [ud MATH_stylesForSolution        ]
-             previousSolutionStyles:__TESTING_stylesForPreviousSolution ? __TESTING_stylesForPreviousSolution : [ud MATH_stylesForPreviousSolution]
-                        errorStyles:__TESTING_stylesForError            ? __TESTING_stylesForError            : [ud MATH_stylesForError           ]
-                         textStyles:__TESTING_stylesForText             ? __TESTING_stylesForText             : [ud MATH_stylesForText            ]];
+  [self __solveEditingModelInPlace:model error:outError];
   [model endEditing];
   
   // Restore selection
   [textView setSelectedRange:selection];
+  return YES;
 }
 
 -(void)__resetWaitTimer:(NSTextView*)sender;
@@ -258,7 +284,7 @@ NSString *const MATHDocumentModelRepUnsolved = @"com.saturdayapps.mathedit.unsol
 
   NSTextView *textView = [[timer userInfo] objectForKey:@"TextView"];
   XPLogAssrt1([textView isKindOfClass:[NSTextView class]], @"%@ not a text view", textView);
-  [self renderPreservingSelectionInTextView:textView];
+  [self renderPreservingSelectionInTextView:textView error:NULL];
   [timer invalidate];
 }
 

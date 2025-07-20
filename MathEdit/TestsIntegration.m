@@ -90,13 +90,13 @@ void TestsIntegrationExecute(void)
   controller->__TESTING_stylesForText             = [self stylesForText];
   
   // Configure the controller
-  [controller loadDataRepresentation:repDiskLHSData ofType:MATHDocumentModelRepDisk];
+  [controller readFromData:repDiskLHSData ofType:MATHDocumentModelRepDisk error:NULL];
   
   // Load all of the representations
-  repDiskRHS     = [[[NSString alloc] initWithData:[controller dataRepresentationOfType:MATHDocumentModelRepDisk] encoding:NSUTF8StringEncoding] autorelease];
-  repDisplayRHS  = [[[NSAttributedString alloc] initWithRTF:[controller dataRepresentationOfType:MATHDocumentModelRepDisplay ] documentAttributes:NULL] autorelease];
-  repSolvedRHS   = [[[NSAttributedString alloc] initWithRTF:[controller dataRepresentationOfType:MATHDocumentModelRepSolved  ] documentAttributes:NULL] autorelease];
-  repUnsolvedRHS = [[[NSAttributedString alloc] initWithRTF:[controller dataRepresentationOfType:MATHDocumentModelRepUnsolved] documentAttributes:NULL] autorelease];
+  repDiskRHS     = [[[NSString alloc]          initWithData:[controller dataOfType:MATHDocumentModelRepDisk     error:NULL] encoding:NSUTF8StringEncoding] autorelease];
+  repDisplayRHS  = [[[NSAttributedString alloc] initWithRTF:[controller dataOfType:MATHDocumentModelRepDisplay  error:NULL] documentAttributes:NULL] autorelease];
+  repSolvedRHS   = [[[NSAttributedString alloc] initWithRTF:[controller dataOfType:MATHDocumentModelRepSolved   error:NULL] documentAttributes:NULL] autorelease];
+  repUnsolvedRHS = [[[NSAttributedString alloc] initWithRTF:[controller dataOfType:MATHDocumentModelRepUnsolved error:NULL] documentAttributes:NULL] autorelease];
   
   XPTestNotNIL(repDiskRHS);
   XPTestNotNIL(repDisplayRHS);
@@ -152,12 +152,12 @@ void TestsIntegrationExecute(void)
   controller->__TESTING_stylesForPreviousSolution = [self stylesForPreviousSolution];
   controller->__TESTING_stylesForError            = [self stylesForError];
   controller->__TESTING_stylesForText             = [self stylesForText];
-  [controller loadDataRepresentation:repDisk ofType:MATHDocumentModelRepDisk];
+  [controller readFromData:repDisk ofType:MATHDocumentModelRepDisk error:NULL];
   
   // Load all of the representations
-  repDisplay  = [controller dataRepresentationOfType:MATHDocumentModelRepDisplay];
-  repSolved   = [controller dataRepresentationOfType:MATHDocumentModelRepSolved];
-  repUnsolved = [controller dataRepresentationOfType:MATHDocumentModelRepUnsolved];
+  repDisplay  = [controller dataOfType:MATHDocumentModelRepDisplay  error:NULL];
+  repSolved   = [controller dataOfType:MATHDocumentModelRepSolved   error:NULL];
+  repUnsolved = [controller dataOfType:MATHDocumentModelRepUnsolved error:NULL];
   
   XPTestNotNIL(repDisplay);
   XPTestNotNIL(repSolved);

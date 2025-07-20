@@ -172,10 +172,10 @@
 
 -(IBAction)__newDocument:(id)sender
 {
-  XPDocument document = [[[MATHDocument alloc] init] autorelease];
-  [document XP_setFileType:MATHDocumentModelRepDisk];
-  [document XP_setFileExtension:MATHDocumentModelExtension];
-  [document XP_showWindows];
+  XPDocument *document = [[[MATHDocument alloc] init] autorelease];
+  [document setFileType:MATHDocumentModelRepDisk];
+  [document MATH_setRequiredFileType:MATHDocumentModelExtension];
+  [document showWindows];
   [[self openDocuments] addObject:document];
 }
 
@@ -183,8 +183,8 @@
 {
   NSArray *filenames = nil;
   NSEnumerator *e = nil;
-  XPURL *nextF = nil;
-  XPDocument nextC = nil;
+  id nextF = nil;
+  XPDocument *nextC = nil;
 
   filenames = XPRunOpenPanel(MATHDocumentModelExtension);
   if ([filenames count] == 0) { XPLogDebug(@"Open Cancelled"); return; }
@@ -192,12 +192,12 @@
   while ((nextF = [e nextObject])) {
     nextC = [[self openDocuments] member:nextF];
     if (!nextC) {
-      nextC = [[[MATHDocument alloc] initWithContentsOfURL:nextF
-                                                    ofType:MATHDocumentModelRepDisk
-                                                     error:NULL] autorelease];
+      nextC = [[[MATHDocument alloc] MATH_initWithContentsOfFileObject:nextF
+                                                                ofType:MATHDocumentModelRepDisk
+                                                                 error:NULL] autorelease];
       [[self openDocuments] addObject:nextC];
     }
-    [nextC XP_showWindows];
+    [nextC showWindows];
   }
 }
 
@@ -206,12 +206,12 @@
   XPAlertReturn alertResult = NSNotFound;
   BOOL aDocumentNeedsSaving = NO;
   NSEnumerator *e = nil;
-  XPDocument next = nil;
+  XPDocument *next = nil;
 
   // Check all documents
   e = [[self openDocuments] objectEnumerator];
   while ((next = [e nextObject])) {
-    aDocumentNeedsSaving = [next XP_isDocumentEdited];
+    aDocumentNeedsSaving = [next isDocumentEdited];
     if (aDocumentNeedsSaving) { break; }
   }
 
@@ -232,17 +232,17 @@
 -(BOOL)__applicationShouldTerminateAfterReviewingAllDocuments:(NSApplication*)sender;
 {
   NSEnumerator *e = [[self openDocuments] objectEnumerator];
-  XPDocument next = nil;
+  XPDocument *next = nil;
 
   // Try to close all documents (asking the user to save them)
   while ((next = [e nextObject])) {
-    [[next XP_windowForSheet] performClose:sender];
+    [[next MATH_windowForSheet] performClose:sender];
   }
 
   // Iterate again and check if are unsaved changes
   e = [[self openDocuments] objectEnumerator];
   while ((next = [e nextObject])) {
-    if ([next XP_isDocumentEdited]) {
+    if ([next isDocumentEdited]) {
       return NO;
     }
   }
@@ -255,12 +255,12 @@
 {
   MATHDocument *document = [[self openDocuments] member:filename];
   if (!document) {
-    document = [[[MATHDocument alloc] initWithContentsOfURL:(XPURL*)filename
-                                                     ofType:MATHDocumentModelRepDisk
-                                                      error:NULL] autorelease];
+    document = [[[MATHDocument alloc] MATH_initWithContentsOfFileObject:filename
+                                                                 ofType:MATHDocumentModelRepDisk
+                                                                  error:NULL] autorelease];
     [[self openDocuments] addObject:document];
   }
-  [[document XP_windowForSheet] makeKeyAndOrderFront:sender];
+  [[document MATH_windowForSheet] makeKeyAndOrderFront:sender];
   return YES;
 }
 
@@ -540,7 +540,7 @@ NSString * const MATHApplicationEffectiveAppearanceKeyPath = @"effectiveAppearan
   [item setKeyEquivalentModifierMask:XPEventModifierFlagShift|XPEventModifierFlagCommand];
   item = [menu addItemWithTitle:[Localized menuEditCopyUnsolved] action:@selector(copyUnsolved:) keyEquivalent:@"c"];
   [item setKeyEquivalentModifierMask:XPEventModifierFlagShift|XPEventModifierFlagCommand];
-  [menu addItemWithTitle:[Localized menuEditPaste] action:@selector(paste:) keyEquivalent:@"v"];
+  [menu addItemWithTitle:[Localized menuEditPaste] action:@selector(pasteUniversal:) keyEquivalent:@"v"];
   [menu addItemWithTitle:[Localized menuEditDelete] action:@selector(delete:) keyEquivalent:@""];
   [menu addItemWithTitle:[Localized menuEditSelectAll] action:@selector(selectAll:) keyEquivalent:@"a"];
   [menu XP_addSeparatorItem];

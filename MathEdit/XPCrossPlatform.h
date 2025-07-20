@@ -101,6 +101,7 @@ typedef float XPFloat;
 #define AFF_NSDocumentNone     // OpenStep did not include NSDocument
 #define AFF_NSDocumentNoURL    // NSDocument works but URL's API's dont work for some reason
 #define AFF_NSDocumentNoiCloud // NSDocument does not yet support duplicate and other modern iCloud features
+#define AFF_NSRegularExpressionNone // SLRE cannot handle non-ascii characters
 
 #ifdef MAC_OS_X_VERSION_10_2
 #undef AFF_MainMenuNotRetainedBySystem
@@ -129,7 +130,6 @@ typedef float XPFloat;
 
 // MARK: NSDocument
 
-#define XPDocument id<XPDocumentProtocol>
 #define XPSupportsTextFindNone 0
 #define XPSupportsTextFindPanel 1
 #define XPSupportsTextFinder 2
@@ -152,12 +152,6 @@ typedef float XPFloat;
 #define XPUserInterface XPUserInterfaceAqua
 #else
 #define XPUserInterface XPUserInterfaceNone
-#endif
-
-#ifdef AFF_NSDocumentNoURL
-#define XPURL NSString
-#else
-#define XPURL NSURL
 #endif
 
 #ifdef AFF_NSDocumentNone
@@ -204,8 +198,8 @@ typedef NSRangePointer XPRangePointer;
 #else
 #define XPRTFDocumentAttributes nil
 #define XPError NSNumber
-typedef NSRange* XPRangePointer;
 typedef NSNumber** XPErrorPointer;
+typedef NSRange* XPRangePointer;
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_6
@@ -381,7 +375,9 @@ NSArray* XPRunOpenPanel(NSString *extension);
 +(NSString*)MATH_logRawString;
 +(NSString*)MATH_logDisplayString;
 -(NSString*)MATH_descriptionHighlightingRange:(NSRange)range;
--(const char*)XP_UTF8String;
+-(const char*)XP_cString;
+-(XPUInteger)XP_cStringLength;
+-(BOOL)XP_containsNonASCIICharacters;
 -(NSEnumerator*)XP_enumeratorForCharactersInSet:(NSCharacterSet*)aSet;
 -(NSEnumerator*)XP_enumeratorForCharactersInSet:(NSCharacterSet*)aSet
                                         options:(XPStringCompareOptions)mask;
@@ -461,20 +457,6 @@ NSArray* XPRunOpenPanel(NSString *extension);
 -(void)XP_setBoxType:(XPBoxType)type;
 @end
 
-// NSURL does not exist on OpenStep
-// so this category attempts to unify the API
-// between NSString and NSURL
-@interface XPURL (CrossPlatformURL)
--(BOOL)XP_isFileURL;
--(NSString*)XP_path;
--(NSString*)XP_lastPathComponent;
-@end
-
-@interface NSData (CrossPlatform)
-+(NSData*)XP_dataWithContentsOfURL:(XPURL*)url error:(XPErrorPointer)errorPtr;
--(BOOL)XP_writeToURL:(XPURL*)url error:(XPErrorPointer)errorPtr;
-@end
-
 @interface NSWindow (CrossPlatform)
 -(void)XP_setRestorationClass:(Class)aClass;
 -(void)XP_setIdentifier:(NSString*)anIdentifier;
@@ -508,6 +490,8 @@ NSArray* XPRunOpenPanel(NSString *extension);
 @interface XPLog: NSObject
 +(void)logCheckedPoundDefines;
 @end
+
+NSString *XPStringFromErrorPointer(XPErrorPointer ptr);
 
 // OpenStep does not understand the %p format string so this works around that
 #ifdef MAC_OS_X_VERSION_10_2

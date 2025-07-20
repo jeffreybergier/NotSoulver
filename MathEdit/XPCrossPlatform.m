@@ -295,13 +295,34 @@ NSArray* XPRunOpenPanel(NSString *extension)
   return [[output copy] autorelease];
 }
 
--(const char*)XP_UTF8String;
+-(const char*)XP_cString;
 {
 #ifdef MAC_OS_X_VERSION_10_2
   return [self UTF8String];
 #else
-  return [self cString];
+  if ([self canBeConvertedToEncoding:NSASCIIStringEncoding]) {
+    return [self cString];
+  }
+  XPLogAssrt1(NO, @"[NON-ASCII] %@", self);
+  return NULL;
 #endif
+}
+
+-(XPUInteger)XP_cStringLength;
+{
+#ifdef MAC_OS_X_VERSION_10_4
+  return [self lengthOfBytesUsingEncoding:NSASCIIStringEncoding];
+#else
+  if ([self canBeConvertedToEncoding:NSASCIIStringEncoding]) {
+    return [self cStringLength];
+  }
+  return 0;
+#endif
+}
+
+-(BOOL)XP_containsNonASCIICharacters;
+{
+  return [self length] != [self XP_cStringLength];
 }
 
 -(NSEnumerator*)XP_enumeratorForCharactersInSet:(NSCharacterSet*)aSet;
@@ -639,70 +660,6 @@ NSArray* XPRunOpenPanel(NSString *extension)
 }
 @end
 
-@implementation XPURL (CrossPlatformURL)
-
--(BOOL)XP_isFileURL;
-{
-  // Because this returns a BOOL, it is not safe to use performSelector
-  // so have to use ifdefs to prevent all warnings
-#ifdef AFF_NSDocumentNoURL
-  XPLogAssrt1([self isKindOfClass:[NSString class]], @"%@ is not NSString", self);
-  return [self isAbsolutePath];
-#else
-  XPLogAssrt1([self isKindOfClass:NSClassFromString(@"NSURL")], @"%@ is not NSURL", self);
-  return [self isFileURL];
-#endif
-}
-
--(NSString*)XP_path;
-{
-  SEL selector = @selector(path);
-  if ([self respondsToSelector:selector]) {
-    return [self performSelector:selector];
-  } else {
-    XPLogAssrt1([self isKindOfClass:[NSString class]], @"%@ is not NSString", self);
-    return (NSString*)self;
-  }
-}
-
--(NSString*)XP_lastPathComponent;
-{
-  // This is an interesting one where both NSURL and NSString
-  // have the 'lastPathComponent' method... but it turns out
-  // there was a brief period of time in early Mac OS X history
-  // where NSURL did not have the 'lastPathComponent' method
-  SEL selector = @selector(lastPathComponent);
-  if ([self respondsToSelector:selector]) {
-    return [self performSelector:selector];
-  } else {
-    return [[self XP_path] lastPathComponent];
-  }
-}
-
-@end
-
-@implementation NSData (CrossPlatform)
-
-+(NSData*)XP_dataWithContentsOfURL:(XPURL*)url error:(XPErrorPointer)errorPtr;
-{
-#ifdef AFF_NSDocumentNoURL
-  return [self dataWithContentsOfFile:url];
-#else
-  return [self dataWithContentsOfURL:url options:0 error:errorPtr];
-#endif
-}
-
--(BOOL)XP_writeToURL:(XPURL*)url error:(XPErrorPointer)errorPtr;
-{
-#ifdef AFF_NSDocumentNoURL
-  return [self writeToFile:url atomically:YES];
-#else
-  return [self writeToURL:url options:XPDataWritingAtomic error:errorPtr];
-#endif
-}
-
-@end
-
 @implementation NSWindow (CrossPlatform)
 
 -(void)XP_setRestorationClass:(Class)aClass;
@@ -865,3 +822,20 @@ NSArray* XPRunOpenPanel(NSString *extension)
 }
 
 @end
+
+NSString *XPStringFromErrorPointer(XPErrorPointer ptr)
+{
+  id error = nil;
+  if (!ptr) {
+    return @"NULL";
+  }
+  error = *ptr;
+#ifdef MAC_OS_X_VERSION_10_15
+  // TODO: This sometimes crashes on older systems
+  // Maybe I am doing it wrong?
+  if (error) {
+    return [error description];
+  }
+#endif
+  return @"nil";
+}

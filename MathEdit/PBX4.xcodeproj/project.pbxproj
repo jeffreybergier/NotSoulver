@@ -61,6 +61,7 @@
 		8C5E58422DC346F200A1648E /* slre.c in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62EB32D91DDEB0000020F /* slre.c */; };
 		8C5E58442DC346F200A1648E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		8CE737032E0B83880046366A /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 8CE737022E0B83880046366A /* AppIcon.icns */; };
+		8CE983732E0B860800C9765F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8CE983712E0B860800C9765F /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -133,6 +134,7 @@
 		8CD62ED82D91EBA60000020F /* MathEdit.iconheader */ = {isa = PBXFileReference; lastKnownFileType = text; path = MathEdit.iconheader; sourceTree = "<group>"; };
 		8CD632692D91FF0F0000020F /* .gdbinit */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = .gdbinit; sourceTree = "<group>"; };
 		8CE737022E0B83880046366A /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = AppIcon.icns; path = Images/AppIcon.icns; sourceTree = "<group>"; };
+		8CE983722E0B860800C9765F /* English */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.strings; name = English; path = /Net/Developer/SaturdayApps/NotSoulver/MathEdit/English.lproj/InfoPlist.strings; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -241,6 +243,7 @@
 			isa = PBXGroup;
 			children = (
 				8CD62EC02D91DF730000020F /* Localizable.strings */,
+				8CE983712E0B860800C9765F /* InfoPlist.strings */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -396,6 +399,7 @@
 				8C0E08972E05AC5F00D0FBC0 /* ThemeDark.tiff in Resources */,
 				8C0E08992E05AC5F00D0FBC0 /* ThemeLight.tiff in Resources */,
 				8CE737032E0B83880046366A /* AppIcon.icns in Resources */,
+				8CE983732E0B860800C9765F /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,6 +442,14 @@
 				8CD62EC12D91DF730000020F /* English */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		8CE983712E0B860800C9765F /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8CE983722E0B860800C9765F /* English */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

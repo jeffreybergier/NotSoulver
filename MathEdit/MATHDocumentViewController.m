@@ -142,11 +142,12 @@ NSString *MATHDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.
 {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   NSTextView *textView = [self textView];
+  MATHDocumentModelController *mc = [self modelController];
   [textView setTypingAttributes:[self __typingAttributes]];
   [textView setBackgroundColor:[ud MATH_colorForTheme:MATHThemeColorBackground]];
   [textView setInsertionPointColor:[ud MATH_colorForTheme:MATHThemeColorInsertionPoint]];
   if (aNotification){
-    [[self modelController] renderPreservingSelectionInTextView:textView];
+    [mc renderPreservingSelectionInTextView:textView error:NULL];
   }
   [textView setNeedsDisplay:YES];
 }
@@ -313,10 +314,13 @@ NSString *MATHDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.
 {
   BOOL success = NO;
   NSRange range = [[self textView] selectedRange];
-  NSData *rtfData = [[self modelController] dataRepresentationOfType:MATHDocumentModelRepUnsolved
-                                                           withRange:range];
-  NSData *diskRepData = [[self modelController] dataRepresentationOfType:MATHDocumentModelRepDisk
-                                                               withRange:range];
+  MATHDocumentModelController *mc = [self modelController];
+  NSData *rtfData = [mc dataOfType:MATHDocumentModelRepUnsolved
+                             range:range
+                             error:NULL];
+  NSData *diskRepData = [mc dataOfType:MATHDocumentModelRepDisk
+                                 range:range
+                                 error:NULL];
   success = [self __universalCopyRTFData:rtfData diskRepData:diskRepData];
   XPLogAssrt(success, @"FAIL");
 }
@@ -325,10 +329,13 @@ NSString *MATHDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.
 {
   BOOL success = NO;
   NSRange range = [[self textView] selectedRange];
-  NSData *rtfData = [[self modelController] dataRepresentationOfType:MATHDocumentModelRepSolved
-                                                           withRange:range];
-  NSData *diskRepData = [[self modelController] dataRepresentationOfType:MATHDocumentModelRepDisk
-                                                               withRange:range];
+  MATHDocumentModelController *mc = [self modelController];
+  NSData *rtfData = [mc dataOfType:MATHDocumentModelRepSolved
+                             range:range
+                             error:NULL];
+  NSData *diskRepData = [mc dataOfType:MATHDocumentModelRepDisk
+                                 range:range
+                                 error:NULL];
   success = [self __universalCopyRTFData:rtfData diskRepData:diskRepData];
   XPLogAssrt(success, @"FAIL");
 }
@@ -348,7 +355,8 @@ NSString *MATHDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.
     // Do Universal Paste
     XPLogDebug(@"Universal Paste");
     [[self modelController] replaceCharactersInRange:[textView selectedRange]
-                                          withString:diskRepString];
+                                          withString:diskRepString
+                       preservingSelectionInTextView:textView];
   } else {
     // Fail universal paste and forward the message to the textview
     XPLogDebug(@"NOT Universal Paste");
