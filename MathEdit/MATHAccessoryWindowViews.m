@@ -872,10 +872,10 @@ NSString *MATH_titleForKeypadButtonOfKind(MATHKeypadButtonKind kind)
     case MATHKeypadButtonKindDecimal:
       return @".";
     case MATHKeypadButtonKindDelete:
-#ifdef XPSupportsUnicodeUI
-      return [NSString stringWithFormat:@"%C", 0x2190];
-#else
+#ifdef AFF_UnicodeUINone
       return @"<-";
+#else
+      return [NSString stringWithFormat:@"%C", 0x2190];
 #endif
     case MATHKeypadButtonKindEqual:
       return @"=";
@@ -894,10 +894,10 @@ NSString *MATH_titleForKeypadButtonOfKind(MATHKeypadButtonKind kind)
     case MATHKeypadButtonKindPower:
       return @"^";
     case MATHKeypadButtonKindRoot:
-#ifdef XPSupportsUnicodeUI
-      return [NSString stringWithFormat:@"%C", 0x221A];
-#else
+#ifdef AFF_UnicodeUINone
       return @"root";
+#else
+      return [NSString stringWithFormat:@"%C", 0x221A];
 #endif
     case MATHKeypadButtonKindLog:
       return @"log";

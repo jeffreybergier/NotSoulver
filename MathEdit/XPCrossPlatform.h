@@ -106,6 +106,8 @@ typedef float XPFloat;
 #define AFF_NSBezierPathNone
 #define AFF_NSKeyedArchiverNone
 #define AFF_NSSecureCodingNone
+#define AFF_UnicodeUINone
+#define AFF_UnicodeDocumentNone
 
 #ifdef MAC_OS_X_VERSION_10_0
 #undef AFF_MainMenuNotRetainedBySystem
@@ -116,6 +118,7 @@ typedef float XPFloat;
 #undef AFF_NSDocumentNone
 #undef AFF_NSBezierPathNone
 #undef AFF_NSKeyedArchiverNone
+#undef AFF_UnicodeUINone
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_4
@@ -202,7 +205,6 @@ typedef NSDocumentChangeType XPDocumentChangeType;
 typedef NSBezelStyle XPBezelStyle;
 #define XPBoxType NSBoxType
 #define XPBoxSeparator NSBoxSeparator
-#define XPSupportsUnicodeUI
 #define XPSupportsTexturedWindows
 #define XPSupportsUtilityWindows
 #define XPSupportsButtonStyles

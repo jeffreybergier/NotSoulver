@@ -683,10 +683,10 @@ NSString * const MATHApplicationEffectiveAppearanceKeyPath = @"effectiveAppearan
 @implementation NSString (MATHMainMenu)
 -(NSString*)MATH_stringByAppendingEllipsis;
 {
-#ifdef XPSupportsUnicodeUI
-  return [self stringByAppendingFormat:@"%C", 0x2026];
-#else
+#ifdef AFF_UnicodeUINone
   return [self stringByAppendingString:@"..."];
+#else
+  return [self stringByAppendingFormat:@"%C", 0x2026];
 #endif
 }
 @end

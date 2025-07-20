@@ -44,13 +44,14 @@ typedef NSDictionary* MATHSolverTextStyles;
 
 // MARK: Private
 +(void)__step1_restoreOriginals:(NSMutableAttributedString*)input;
-+(void)__step2_removeAllTags:(NSMutableAttributedString*)input;
-+(void)__step3_scanAndTag:(NSMutableAttributedString*)input;
-+(void)__step4_solveAndTag:(NSMutableAttributedString*)input
++(BOOL)__step2_checkForInvalidCharacters:(NSMutableAttributedString*)input error:(XPErrorPointer)outError;
++(void)__step3_removeAllTags:(NSMutableAttributedString*)input;
++(void)__step4_scanAndTag:(NSMutableAttributedString*)input;
++(void)__step5_solveAndTag:(NSMutableAttributedString*)input
             solutionStyles:(MATHSolverTextAttachmentStyles)solutionStyles
     previousSolutionStyles:(MATHSolverTextAttachmentStyles)previousSolutionStyles
                errorStyles:(MATHSolverTextAttachmentStyles)errorStyles;
-+(void)__step5_styleAndTag:(NSMutableAttributedString*)input
++(void)__step6_styleAndTag:(NSMutableAttributedString*)input
                     styles:(MATHSolverTextStyles)styles;
 
 

@@ -59,24 +59,18 @@ NSCharacterSet *MATHSolverTextAttachmentCharacterSet = nil;
 {
   XPUInteger inputLength = [[input string] length];
   XPUInteger outputLength;
+  BOOL success = NO;
   [input retain];
   [self __step1_restoreOriginals:input];
-  
-#ifdef AFF_NSRegularExpressionNone
-  if ([[input string] XP_containsNonASCIICharacters]) {
-    if (outError != NULL) { /* TODO: Populate Error Pointer */ }
-    XPLogAlwys(@"[PRECONDITION] Model String contained non-ascii characters");
-    return NO;
-  }
-#endif
-  
-  [self __step2_removeAllTags:input];
-  [self __step3_scanAndTag:input];
-  [self __step4_solveAndTag:input
+  success = [self __step2_checkForInvalidCharacters:input error:outError];
+  if (!success) { return NO; }
+  [self __step3_removeAllTags:input];
+  [self __step4_scanAndTag:input];
+  [self __step5_solveAndTag:input
              solutionStyles:solutionStyles
      previousSolutionStyles:previousSolutionStyles
                 errorStyles:errorStyles];
-  [self __step5_styleAndTag:input styles:textStyles];
+  [self __step6_styleAndTag:input styles:textStyles];
   outputLength = [[input string] length];
   XPLogAssrt2(inputLength == outputLength, @"String changed length: %d->%d",
               (int)inputLength, (int)outputLength);
@@ -157,7 +151,19 @@ NSCharacterSet *MATHSolverTextAttachmentCharacterSet = nil;
   }
 }
 
-+(void)__step2_removeAllTags:(NSMutableAttributedString*)input;
++(BOOL)__step2_checkForInvalidCharacters:(NSMutableAttributedString*)input error:(XPErrorPointer)outError;
+{
+#ifdef AFF_UnicodeDocumentNone
+  if ([[input string] XP_containsNonASCIICharacters]) {
+    if (outError != NULL) { /* TODO: Populate Error Pointer */ }
+    XPLogAlwys(@"[PRECONDITION] Model String contained non-ascii characters");
+    return NO;
+  }
+#endif
+  return YES;
+}
+
++(void)__step3_removeAllTags:(NSMutableAttributedString*)input;
 {
   NSRange range = NSMakeRange(0, [input length]);
   [input removeAttribute:XPAttributedStringKeyForTag(MATHSolverTagNumber)     range:range];
@@ -172,7 +178,7 @@ NSCharacterSet *MATHSolverTextAttachmentCharacterSet = nil;
   [input removeAttribute:NSBackgroundColorAttributeName range:range];
 }
 
-+(void)__step3_scanAndTag:(NSMutableAttributedString*)input;
++(void)__step4_scanAndTag:(NSMutableAttributedString*)input;
 {
   MATHSolverScanner *scanner = [MATHSolverScanner scannerWithString:[input string]];
   [MATHSolverExpressionTagger step1_tagOperatorsAtRanges:[scanner operatorRanges]
@@ -186,7 +192,7 @@ NSCharacterSet *MATHSolverTextAttachmentCharacterSet = nil;
   return;
 }
 
-+(void)__step4_solveAndTag:(NSMutableAttributedString*)input
++(void)__step5_solveAndTag:(NSMutableAttributedString*)input
             solutionStyles:(MATHSolverTextAttachmentStyles)solutionStyles
     previousSolutionStyles:(MATHSolverTextAttachmentStyles)previousSolutionStyles
                errorStyles:(MATHSolverTextAttachmentStyles)errorStyles;
@@ -197,7 +203,7 @@ NSCharacterSet *MATHSolverTextAttachmentCharacterSet = nil;
                                                errorStyles:errorStyles];
 }
 
-+(void)__step5_styleAndTag:(NSMutableAttributedString*)input
++(void)__step6_styleAndTag:(NSMutableAttributedString*)input
                     styles:(MATHSolverTextStyles)styles;
 {
   [MATHSolverStyler styleTaggedExpression:input styles:styles];
