@@ -113,6 +113,7 @@ typedef float XPFloat;
 #define AFF_NSTextViewFindNoInline
 #define AFF_NSTextViewGrammarNone
 #define AFF_NSButtonStylesNone
+#define AFF_NSTextFieldRoundedStyleUgly
 #define AFF_NSWindowStyleTexturedNone
 #define AFF_NSWindowStyleUtilityNone
 #define AFF_NSWindowCollectionBehaviorNone
@@ -167,6 +168,7 @@ typedef float XPFloat;
 #ifdef MAC_OS_X_VERSION_10_15
 #undef AFF_NSWindowNoFullScreen
 #undef AFF_NSSecureCodingNone
+#undef AFF_NSTextFieldRoundedStyleUgly
 #endif
 
 #if __MAC_OS_X_VERSION_MAX_ALLOWED >= 260000
@@ -199,6 +201,17 @@ typedef XPUInteger XPBoxType;
 typedef NSBezelStyle XPBezelStyle;
 typedef NSBoxType XPBoxType;
 #define XPBoxSeparator NSBoxSeparator
+#endif
+
+#ifdef AFF_NSButtonStylesNone
+#define XPBezelStyleFlexiblePush -1
+#define XPTextFieldRoundedBezel -1
+#elif defined(AFF_NSTextFieldRoundedStyleUgly)
+#define XPBezelStyleFlexiblePush NSRegularSquareBezelStyle
+#define XPTextFieldRoundedBezel NSRoundedBezelStyle
+#else
+#define XPBezelStyleFlexiblePush NSBezelStyleRegularSquare
+#define XPTextFieldRoundedBezel NSTextFieldRoundedBezel
 #endif
 
 // MARK: ViewController / WindowController
@@ -272,49 +285,6 @@ typedef XPUInteger XPStringCompareOptions;
 #define XPDataWritingAtomic NSAtomicWrite
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_15
-#define XPTextAlignmentCenter NSTextAlignmentCenter
-#define XPTextAlignmentLeft NSTextAlignmentLeft
-#define XPTextAlignmentRight NSTextAlignmentRight
-#define XPModalResponse NSModalResponse
-#define XPModalResponseOK NSModalResponseOK
-#define XPModalResponseCancel NSModalResponseCancel
-#define XPWindowCollectionBehaviorFullScreenNone NSWindowCollectionBehaviorFullScreenNone
-#define XPButtonTypePushOnPushOff NSButtonTypePushOnPushOff
-#define XPWindowStyleMask NSWindowStyleMask
-#define XPBitmapImageFileTypeTIFF NSBitmapImageFileTypeTIFF
-#define XPWindowStyleMaskTitled NSWindowStyleMaskTitled
-#define XPWindowStyleMaskClosable NSWindowStyleMaskClosable
-#define XPWindowStyleMaskMiniaturizable NSWindowStyleMaskMiniaturizable
-#define XPWindowStyleMaskResizable NSWindowStyleMaskResizable
-#define XPWindowStyleMaskUtilityWindow NSWindowStyleMaskUtilityWindow
-#define XPTextFieldBezelStyle NSTextFieldBezelStyle
-#define XPEventModifierFlagOption NSEventModifierFlagOption
-#define XPEventModifierFlagCommand NSEventModifierFlagCommand
-#define XPEventModifierFlagShift NSEventModifierFlagShift
-#define XPSupportsAttractiveRoundTextFields
-#else
-#define XPTextAlignmentCenter NSCenterTextAlignment
-#define XPTextAlignmentLeft NSLeftTextAlignment
-#define XPTextAlignmentRight NSRightTextAlignment
-#define XPModalResponse XPInteger
-#define XPModalResponseOK NSOKButton
-#define XPModalResponseCancel NSCancelButton
-#define XPWindowCollectionBehaviorFullScreenNone 0
-#define XPButtonTypePushOnPushOff NSPushOnPushOffButton
-#define XPWindowStyleMask XPUInteger
-#define XPBitmapImageFileTypeTIFF NSTIFFFileType
-#define XPWindowStyleMaskTitled NSTitledWindowMask
-#define XPWindowStyleMaskClosable NSClosableWindowMask
-#define XPWindowStyleMaskMiniaturizable NSMiniaturizableWindowMask
-#define XPWindowStyleMaskResizable NSResizableWindowMask
-#define XPWindowStyleMaskUtilityWindow NSUtilityWindowMask
-#define XPEventModifierFlagOption NSAlternateKeyMask
-#define XPEventModifierFlagCommand NSCommandKeyMask
-#define XPEventModifierFlagShift NSShiftKeyMask
-#define XPTextFieldBezelStyle XPBezelStyle
-#endif
-
 #ifdef MAC_OS_X_VERSION_10_14
 #define XPSupportsDarkMode
 typedef NSAttributedStringKey XPAttributedStringKey;
@@ -323,14 +293,45 @@ typedef NSString* XPAttributedStringKey;
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_15
-#define XPBezelStyleFlexiblePush NSBezelStyleRegularSquare
-#define XPTextFieldRoundedBezel NSTextFieldRoundedBezel
-#elif defined(MAC_OS_X_VERSION_10_2)
-#define XPBezelStyleFlexiblePush NSRegularSquareBezelStyle
-#define XPTextFieldRoundedBezel NSRoundedBezelStyle
+#define XPTextAlignmentCenter NSTextAlignmentCenter
+#define XPTextAlignmentLeft NSTextAlignmentLeft
+#define XPTextAlignmentRight NSTextAlignmentRight
+typedef NSModalResponse XPModalResponse;
+#define XPModalResponseOK NSModalResponseOK
+#define XPModalResponseCancel NSModalResponseCancel
+#define XPWindowCollectionBehaviorFullScreenNone NSWindowCollectionBehaviorFullScreenNone
+#define XPButtonTypePushOnPushOff NSButtonTypePushOnPushOff
+typedef NSWindowStyleMask XPWindowStyleMask;
+#define XPBitmapImageFileTypeTIFF NSBitmapImageFileTypeTIFF
+#define XPWindowStyleMaskTitled NSWindowStyleMaskTitled
+#define XPWindowStyleMaskClosable NSWindowStyleMaskClosable
+#define XPWindowStyleMaskMiniaturizable NSWindowStyleMaskMiniaturizable
+#define XPWindowStyleMaskResizable NSWindowStyleMaskResizable
+#define XPWindowStyleMaskUtilityWindow NSWindowStyleMaskUtilityWindow
+typedef NSTextFieldBezelStyle XPTextFieldBezelStyle;
+#define XPEventModifierFlagOption NSEventModifierFlagOption
+#define XPEventModifierFlagCommand NSEventModifierFlagCommand
+#define XPEventModifierFlagShift NSEventModifierFlagShift
 #else
-#define XPBezelStyleFlexiblePush -1
-#define XPTextFieldRoundedBezel -1
+#define XPTextAlignmentCenter NSCenterTextAlignment
+#define XPTextAlignmentLeft NSLeftTextAlignment
+#define XPTextAlignmentRight NSRightTextAlignment
+typedef XPInteger XPModalResponse;
+#define XPModalResponseOK NSOKButton
+#define XPModalResponseCancel NSCancelButton
+#define XPWindowCollectionBehaviorFullScreenNone 0
+#define XPButtonTypePushOnPushOff NSPushOnPushOffButton
+typedef XPUInteger XPWindowStyleMask;
+#define XPBitmapImageFileTypeTIFF NSTIFFFileType
+#define XPWindowStyleMaskTitled NSTitledWindowMask
+#define XPWindowStyleMaskClosable NSClosableWindowMask
+#define XPWindowStyleMaskMiniaturizable NSMiniaturizableWindowMask
+#define XPWindowStyleMaskResizable NSResizableWindowMask
+#define XPWindowStyleMaskUtilityWindow NSUtilityWindowMask
+typedef XPBezelStyle XPTextFieldBezelStyle;
+#define XPEventModifierFlagOption NSAlternateKeyMask
+#define XPEventModifierFlagCommand NSCommandKeyMask
+#define XPEventModifierFlagShift NSShiftKeyMask
 #endif
 
 extern const NSRange XPNotFoundRange;

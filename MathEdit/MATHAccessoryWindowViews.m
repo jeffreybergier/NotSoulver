@@ -637,7 +637,7 @@
     [textField setAction:action];
   }
   
-#ifdef XPSupportsAttractiveRoundTextFields
+#ifndef AFF_NSTextFieldRoundedStyleUgly
   [textField XP_setBezelStyle:XPTextFieldRoundedBezel];
 #endif
   
