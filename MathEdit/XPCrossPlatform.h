@@ -120,6 +120,7 @@ typedef float XPFloat;
 #define AFF_NSViewControllerNone
 #define AFF_FormalProtocolsNone
 #define AFF_NSImageTemplateNone
+#define AFF_StateRestorationNone
 
 #ifdef MAC_OS_X_VERSION_10_0
 #undef AFF_MainMenuNotRetainedBySystem
@@ -159,6 +160,7 @@ typedef float XPFloat;
 #undef AFF_ObjCNoDispatch
 #undef AFF_NSDocumentNoiCloud
 #undef AFF_NSTextViewFindNoInline
+#undef AFF_StateRestorationNone
 #define AFF_NSWindowStyleTexturedNone
 #endif
 
@@ -220,6 +222,12 @@ typedef XPUInteger XPWindowCollectionBehavior;
 typedef NSWindowCollectionBehavior XPWindowCollectionBehavior;
 #endif
 
+#ifdef AFF_StateRestorationNone
+typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, id error);
+#else
+typedef void (^XPWindowRestoreCompletionHandler)(NSWindow *window, id error);
+#endif
+
 // MARK: NSDocument
 
 #ifdef AFF_NSDocumentNone
@@ -247,7 +255,7 @@ typedef NSRange* XPRangePointer;
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_6
-#define XPStringCompareOptions NSStringCompareOptions
+typedef NSStringCompareOptions XPStringCompareOptions;
 #define XPPasteboardTypeRTF NSPasteboardTypeRTF
 #define XPPasteboardTypeString NSPasteboardTypeString
 #else
@@ -257,12 +265,9 @@ typedef XPUInteger XPStringCompareOptions;
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_8
-#define XPSupportsStateRestoration
-typedef void (^XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *error);
 #define XPSaveOperationType NSSaveOperationType
 #define XPDataWritingAtomic NSDataWritingAtomic
 #else
-typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *error);
 #define XPSaveOperationType XPUInteger
 #define XPDataWritingAtomic NSAtomicWrite
 #endif

@@ -144,7 +144,7 @@
                                                  name:NSWindowWillCloseNotification
                                                object:nil];
 #endif
-#ifdef XPSupportsStateRestoration
+#ifndef AFF_StateRestorationNone
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(applicationDidFinishRestoringWindows:)
                                                  name:NSApplicationDidFinishRestoringWindowsNotification

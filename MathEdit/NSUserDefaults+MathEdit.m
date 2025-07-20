@@ -101,22 +101,20 @@ NSString *MATHSettingsSelection                     = @"kMATHSettingsSelectionKe
 
 -(BOOL)MATH_visibilityForWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
 {
-#ifdef XPSupportsStateRestoration
-  XPLogDebug(@"[IGNORE] System supports state restoration");
-  return NO;
-#else
+#ifdef AFF_StateRestorationNone
   return [self boolForKey:frameAutosaveName];
+#else
+  return NO;
 #endif
 }
 
 -(BOOL)MATH_setVisibility:(BOOL)isVisible forWindowWithFrameAutosaveName:(NSString*)frameAutosaveName;
 {
-#ifdef XPSupportsStateRestoration
-  XPLogDebug(@"[IGNORE] System supports state restoration");
-  return YES;
-#else
+#ifdef AFF_StateRestorationNone
   [self setBool:isVisible forKey:frameAutosaveName];
   return [self synchronize];
+#else
+  return YES;
 #endif
 }
 

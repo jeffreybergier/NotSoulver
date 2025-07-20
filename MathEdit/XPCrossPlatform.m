@@ -664,19 +664,15 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 -(void)XP_setRestorationClass:(Class)aClass;
 {
-#ifdef XPSupportsStateRestoration
+#ifndef AFF_StateRestorationNone
   [self setRestorationClass:aClass];
-#else
-  XPLogDebug(@"[IGNORE]");
 #endif
 }
 
 -(void)XP_setIdentifier:(NSString*)anIdentifier;
 {
-#ifdef XPSupportsStateRestoration
+#ifndef AFF_StateRestorationNone
   [self setIdentifier:anIdentifier];
-#else
-  XPLogDebug(@"[IGNORE]");
 #endif
 }
 

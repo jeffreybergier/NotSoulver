@@ -92,10 +92,10 @@
                       context:(void*)context;
 @end
 
-#ifdef XPSupportsStateRestoration
-@interface MATHAppDelegate (StateRestoration) <NSWindowRestoration>
-#else
+#ifdef AFF_StateRestorationNone
 @interface MATHAppDelegate (StateRestoration)
+#else
+@interface MATHAppDelegate (StateRestoration) <NSWindowRestoration>
 #endif
 -(void)applicationDidFinishRestoringWindows:(NSNotification*)aNotification;
 -(BOOL)applicationSupportsSecureRestorableState:(NSApplication*)app;
