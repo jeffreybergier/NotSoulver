@@ -108,6 +108,9 @@ typedef float XPFloat;
 #define AFF_NSSecureCodingNone
 #define AFF_UnicodeUINone
 #define AFF_UnicodeDocumentNone
+#define AFF_TextFindNone
+#define AFF_TextFindNoInline
+#define AFF_TextGrammarNone
 
 #ifdef MAC_OS_X_VERSION_10_0
 #undef AFF_MainMenuNotRetainedBySystem
@@ -123,11 +126,13 @@ typedef float XPFloat;
 
 #ifdef MAC_OS_X_VERSION_10_4
 #undef AFF_NSDocumentNoURL
+#undef AFF_TextFindNone
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_6
 #undef AFF_ObjCNSMethodSignatureUndocumentedClassMethod
 #undef AFF_MainMenuRequiresSetAppleMenu
+#undef AFF_TextGrammarNone
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_8
@@ -135,6 +140,7 @@ typedef float XPFloat;
 #undef AFF_ScrollViewNoMagnification
 #undef AFF_ObjCNoDispatch
 #undef AFF_NSDocumentNoiCloud
+#undef AFF_TextFindNoInline
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_15
@@ -160,18 +166,6 @@ typedef float XPFloat;
 
 
 // MARK: NSDocument
-
-#define XPSupportsTextFindNone 0
-#define XPSupportsTextFindPanel 1
-#define XPSupportsTextFinder 2
-
-#ifdef MAC_OS_X_VERSION_10_8
-#define XPSupportsTextFind XPSupportsTextFinder
-#elif defined(MAC_OS_X_VERSION_10_4)
-#define XPSupportsTextFind XPSupportsTextFindPanel
-#else
-#define XPSupportsTextFind XPSupportsTextFindNone
-#endif
 
 #define XPUserInterfaceGlass 2
 #define XPUserInterfaceAqua 1
@@ -235,7 +229,6 @@ typedef NSViewController XPViewController;
 #define XPWindowCollectionBehavior NSWindowCollectionBehavior
 #define XPSupportsFormalProtocols // Protocols like NSWindowDelegate were formally added
 #define XPSupportsTemplateImage
-#define XPSupportsTextViewGrammarChecks
 #else
 typedef XPUInteger XPStringCompareOptions;
 #define XPViewController NSResponder

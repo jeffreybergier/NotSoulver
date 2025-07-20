@@ -598,35 +598,35 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 -(void)XP_setUsesFindPanel:(BOOL)flag;
 {
-#if XPSupportsTextFind >= XPSupportsTextFindPanel
+#ifndef AFF_TextFindNone
   [self setUsesFindPanel:flag];
 #endif
 }
 
 -(void)XP_setUsesFindBar:(BOOL)flag;
 {
-#if XPSupportsTextFind >= XPSupportsTextFinder
+#ifndef AFF_TextFindNoInline
   [self setUsesFindBar:flag];
 #endif
 }
 
 -(void)XP_setContinuousSpellCheckingEnabled:(BOOL)flag;
 {
-#ifdef XPSupportsTextViewGrammarChecks
+#ifndef AFF_TextGrammarNone
   [self setContinuousSpellCheckingEnabled:flag];
 #endif
 }
 
 -(void)XP_setGrammarCheckingEnabled:(BOOL)flag;
 {
-#ifdef XPSupportsTextViewGrammarChecks
+#ifndef AFF_TextGrammarNone
   [self setGrammarCheckingEnabled:flag];
 #endif
 }
 
 -(void)XP_setAutomaticSpellingCorrectionEnabled:(BOOL)flag;
 {
-#ifdef XPSupportsTextViewGrammarChecks
+#ifndef AFF_TextGrammarNone
   [self setAutomaticSpellingCorrectionEnabled:flag];
 #endif
 }
