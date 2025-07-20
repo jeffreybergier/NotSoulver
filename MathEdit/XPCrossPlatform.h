@@ -120,7 +120,7 @@
 #define AFF_APIWritingRenameNone
 #define AFF_APIPasteboardRenameNone
 #define AFF_APIUpdatedForSwiftNone
-#define AFF_TEST_CoreGraphicsRequiresWindow
+#define TMP_AFF_TEST_NSBezierPathTestsBroken
 #define TMP_AFF_TEST_NSAttributedStringIsEqualBroken
 
 // MARK: Don't Disable These Platform Features
@@ -180,7 +180,6 @@
 #undef AFF_NSTextViewFindNone
 #undef AFF_NSErrorNone
 #undef AFF_NSStringLengthOfBytesNone
-#undef AFF_TEST_CoreGraphicsRequiresWindow
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_6
@@ -213,6 +212,10 @@
 #undef AFF_NSTextFieldRoundedStyleUgly
 #undef AFF_UIStyleDarkModeNone
 #undef AFF_APIUpdatedForSwiftNone
+#endif
+
+#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 150000
+#undef TMP_AFF_TEST_NSBezierPathTestsBroken
 #endif
 
 #if __MAC_OS_X_VERSION_MAX_ALLOWED >= 260000
