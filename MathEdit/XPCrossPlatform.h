@@ -104,6 +104,8 @@ typedef float XPFloat;
 #define AFF_NSDocumentNoiCloud // NSDocument does not yet support duplicate and other modern iCloud features
 #define AFF_NSRegularExpressionNone // SLRE cannot handle non-ascii characters
 #define AFF_NSBezierPathNone
+#define AFF_NSKeyedArchiverNone
+#define AFF_NSSecureCodingNone
 
 #ifdef MAC_OS_X_VERSION_10_0
 #undef AFF_MainMenuNotRetainedBySystem
@@ -113,6 +115,7 @@ typedef float XPFloat;
 #ifdef MAC_OS_X_VERSION_10_2
 #undef AFF_NSDocumentNone
 #undef AFF_NSBezierPathNone
+#undef AFF_NSKeyedArchiverNone
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_4
@@ -133,7 +136,25 @@ typedef float XPFloat;
 
 #ifdef MAC_OS_X_VERSION_10_15
 #undef AFF_NSWindowNoFullScreen
+#undef AFF_NSSecureCodingNone
 #endif
+
+// MARK: Archiver
+
+#ifdef AFF_NSSecureCodingNone
+#define XPKeyedArchiver NSArchiver
+#define XPKeyedUnarchiver NSUnarchiver
+#else
+#define XPKeyedArchiver NSKeyedArchiver
+#define XPKeyedUnarchiver NSKeyedUnarchiver
+#endif
+
+#ifdef AFF_NSSecureCodingNone
+#define XPSecureCoding NSCoding
+#else
+#define XPSecureCoding NSSecureCoding
+#endif
+
 
 // MARK: NSDocument
 
@@ -179,8 +200,6 @@ typedef NSDocumentChangeType XPDocumentChangeType;
 
 #ifdef MAC_OS_X_VERSION_10_2
 typedef NSBezelStyle XPBezelStyle;
-#define XPKeyedArchiver NSKeyedArchiver
-#define XPKeyedUnarchiver NSKeyedUnarchiver
 #define XPBoxType NSBoxType
 #define XPBoxSeparator NSBoxSeparator
 #define XPSupportsUnicodeUI
@@ -189,8 +208,6 @@ typedef NSBezelStyle XPBezelStyle;
 #define XPSupportsButtonStyles
 #else
 typedef XPUInteger XPBezelStyle;
-#define XPKeyedArchiver NSArchiver
-#define XPKeyedUnarchiver NSUnarchiver
 #define XPBoxType XPUInteger
 #define XPBoxSeparator 0
 #endif
@@ -228,14 +245,12 @@ typedef XPUInteger XPStringCompareOptions;
 #ifdef MAC_OS_X_VERSION_10_8
 #define XPSupportsStateRestoration
 typedef void (^XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *error);
-#define XPSecureCoding NSSecureCoding
 #define XPSaveOperationType NSSaveOperationType
 #define XPDataWritingAtomic NSDataWritingAtomic
 #define XPSupportsUnicodeDocument // TODO: Update to NSRegularExpression
 #undef  XPSupportsTexturedWindows
 #else
 typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *error);
-#define XPSecureCoding NSCoding
 #define XPSaveOperationType XPUInteger
 #define XPDataWritingAtomic NSAtomicWrite
 #endif
@@ -285,7 +300,6 @@ typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *erro
 
 #ifdef MAC_OS_X_VERSION_10_14
 #define XPSupportsDarkMode
-#define XPSupportsNSSecureCoding
 typedef NSAttributedStringKey XPAttributedStringKey;
 #else
 typedef NSString* XPAttributedStringKey;

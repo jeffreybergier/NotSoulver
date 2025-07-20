@@ -413,15 +413,15 @@ NSArray* XPRunOpenPanel(NSString *extension)
 @implementation XPKeyedArchiver (CrossPlatform)
 +(NSData*)XP_archivedDataWithRootObject:(id)object;
 {
-#ifdef XPSupportsNSSecureCoding
+#ifdef AFF_NSSecureCodingNone
+  return [self archivedDataWithRootObject:object];
+#else
   NSError *error = nil;
   NSData *output = [self archivedDataWithRootObject:object
                               requiringSecureCoding:YES
                                               error:&error];
   XPLogAssrt1(!error, @"%@", error);
   return output;
-#else
-  return [self archivedDataWithRootObject:object];
 #endif
 }
 @end
@@ -431,19 +431,19 @@ NSArray* XPRunOpenPanel(NSString *extension)
 // and causes warning in OpenStep
 +(id)XP_unarchivedObjectOfClass:(Class)cls fromData:(NSData*)someData;
 {
-#ifdef XPSupportsNSSecureCoding
+#ifdef AFF_NSSecureCodingNone
+  id output = [self unarchiveObjectWithData:someData];
+  if (!output) { return nil; }
+  if ([output isKindOfClass:cls]) { return output; }
+  XPLogRaise2(@"[FAIL] [%@ isKindOfClass:%@]", output, cls);
+  return nil;
+#else
   NSError *error = nil;
   NSAttributedString *output = [self unarchivedObjectOfClass:cls
                                                     fromData:someData
                                                        error:&error];
   XPLogAssrt1(!error, @"%@", error);
   return output;
-#else
-  id output = [self unarchiveObjectWithData:someData];
-  if (!output) { return nil; }
-  if ([output isKindOfClass:cls]) { return output; }
-  XPLogRaise2(@"[FAIL] [%@ isKindOfClass:%@]", output, cls);
-  return nil;
 #endif
 }
 @end
