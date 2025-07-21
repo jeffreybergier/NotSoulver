@@ -142,6 +142,7 @@
 		8CD62EC12D91DF730000020F /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8CD62ED82D91EBA60000020F /* MathEdit.iconheader */ = {isa = PBXFileReference; lastKnownFileType = text; path = MathEdit.iconheader; sourceTree = "<group>"; };
 		8CD632692D91FF0F0000020F /* .gdbinit */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = .gdbinit; sourceTree = "<group>"; };
+		8CEF7FC02E2E093A00182521 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = SOURCE_ROOT; };
 		8CF1CCE52DD8792A0097573E /* PB.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = PB.entitlements; path = PB.xcconfig/PB.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -185,6 +186,7 @@
 		2A37F4AAFDCFA73011CA2CEA /* Soulver */ = {
 			isa = PBXGroup;
 			children = (
+				8CEF7FC02E2E093A00182521 /* README.md */,
 				2A37F4ABFDCFA73011CA2CEA /* Classes */,
 				8CD62EAF2D91DD0F0000020F /* Tests */,
 				2A37F4AFFDCFA73011CA2CEA /* Other Sources */,
