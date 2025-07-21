@@ -144,7 +144,7 @@
                                                  name:NSWindowWillCloseNotification
                                                object:nil];
 #endif
-#ifdef XPSupportsStateRestoration
+#ifndef AFF_StateRestorationNone
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(applicationDidFinishRestoringWindows:)
                                                  name:NSApplicationDidFinishRestoringWindowsNotification
@@ -315,19 +315,17 @@ NSString * const MATHApplicationEffectiveAppearanceKeyPath = @"effectiveAppearan
 
 -(void)beginObservingEffectiveAppearance:(NSApplication*)app;
 {
-#ifdef XPSupportsDarkMode
-  [app addObserver:self 
+#ifndef AFF_UIStyleDarkModeNone
+  [app addObserver:self
         forKeyPath:MATHApplicationEffectiveAppearanceKeyPath
            options:NSKeyValueObservingOptionNew
            context:NULL];
-#else
-  XPLogDebug(@"System does not support dark mode");
 #endif
 }
 
 -(void)endObservingEffectiveAppearance:(NSApplication*)app;
 {
-#ifdef XPSupportsDarkMode
+#ifndef AFF_UIStyleDarkModeNone
   [app removeObserver:self
            forKeyPath:MATHApplicationEffectiveAppearanceKeyPath];
 #endif
@@ -338,7 +336,7 @@ NSString * const MATHApplicationEffectiveAppearanceKeyPath = @"effectiveAppearan
                        change:(NSDictionary*)change
                       context:(void*)context;
 {
-#ifdef XPSupportsDarkMode
+#ifndef AFF_UIStyleDarkModeNone
   if ([keyPath isEqualToString:MATHApplicationEffectiveAppearanceKeyPath]) {
     XPLogDebug(@"effectiveAppearance: Changed");
     [[NSNotificationCenter defaultCenter] postNotificationName:MATHThemeDidChangeNotificationName
@@ -358,26 +356,6 @@ NSString * const MATHApplicationEffectiveAppearanceKeyPath = @"effectiveAppearan
 
 -(void)applicationDidFinishRestoringWindows:(NSNotification*)aNotification;
 {
-  // Overrides macOS behavior when restoring state where only
-  // 1 or even 0 windows appear in front of the previously active
-  // app window. I find this behavior very strange.
-  NSApplication *app = [aNotification object];
-  NSArray *windows = [app windows];
-  NSEnumerator *e = [windows objectEnumerator];
-  NSWindow *window = nil;
-  XPLogAssrt1([app isKindOfClass:[NSApplication class]], @"%@ was not NSApplication", app);
-  while ((window = [e nextObject])) {
-    if ([window isVisible]) {
-      // This behavior is different... for some reason.
-      // In 10.8 orderFrontRegardless is needed.
-      // In 10.15 15, orderFront: is needed.
-#ifndef MAC_OS_X_VERSION_10_14
-      [window orderFrontRegardless];
-#else
-      [window orderFront:app];
-#endif
-    }
-  }
 }
 
 -(BOOL)applicationSupportsSecureRestorableState:(NSApplication*)app;
@@ -406,12 +384,12 @@ NSString * const MATHApplicationEffectiveAppearanceKeyPath = @"effectiveAppearan
   NSMenu *mainMenu = [[[NSMenu alloc] initWithTitle:[Localized titleAppName]] autorelease];
   [storage addObject:mainMenu];
   
-#ifdef XPSupportsApplicationMenu
-  [self __buildAppMenuInMainMenu:mainMenu 
+#ifdef AFF_MainMenuNoApplicationMenu
+  [self __buildInfoMenuInMainMenu:mainMenu storage:storage];
+#else
+  [self __buildAppMenuInMainMenu:mainMenu
                      application:app
                          storage:storage];
-#else
-  [self __buildInfoMenuInMainMenu:mainMenu storage:storage];
 #endif
   
   [self __buildFileMenuInMainMenu:mainMenu storage:storage];
@@ -421,12 +399,12 @@ NSString * const MATHApplicationEffectiveAppearanceKeyPath = @"effectiveAppearan
                                  app:app
                              storage:storage];
   
-#ifdef XPSupportsApplicationMenu
-  [self __buildHelpMenuInMainMenu:mainMenu storage:storage];
-#else
-  [self __buildTrailingMenuInMainMenu:mainMenu 
+#ifdef AFF_MainMenuNoApplicationMenu
+  [self __buildTrailingMenuInMainMenu:mainMenu
                                   app:app
                               storage:storage];
+#else
+  [self __buildHelpMenuInMainMenu:mainMenu storage:storage];
 #endif
     
   return mainMenu;
@@ -545,7 +523,7 @@ NSString * const MATHApplicationEffectiveAppearanceKeyPath = @"effectiveAppearan
   [menu addItemWithTitle:[Localized menuEditSelectAll] action:@selector(selectAll:) keyEquivalent:@"a"];
   [menu XP_addSeparatorItem];
   // TODO: Add Insert, Attach Files, Add Link
-#if XPSupportsTextFind >= XPSupportsTextFindPanel
+#ifndef AFF_NSTextViewFindNone
   // Find Submenu
   item = [menu addItemWithTitle:[Localized menuEditFind] action:NULL keyEquivalent:@""];
   submenu = [[[NSMenu alloc] initWithTitle:[Localized menuEditFind]] autorelease];
@@ -570,10 +548,12 @@ NSString * const MATHApplicationEffectiveAppearanceKeyPath = @"effectiveAppearan
   [submenu addItemWithTitle:[Localized menuEditSpellingCheckNow] action:@selector(checkSpelling:) keyEquivalent:@";"];
   [submenu XP_addSeparatorItem];
   [submenu addItemWithTitle:[Localized menuEditSpellingCheckWhileTyping] action:@selector(toggleContinuousSpellChecking:) keyEquivalent:@""];
+#ifndef AFF_NSTextViewGrammarNone
   [submenu addItemWithTitle:[Localized menuEditSpellingCheckGrammar] action:@selector(toggleGrammarChecking:) keyEquivalent:@""];
+#endif
   [submenu addItemWithTitle:[Localized menuEditSpellingAutoCorrect] action:@selector(toggleAutomaticSpellingCorrection:) keyEquivalent:@""];
   
-#if XPSupportsTextFind >= XPSupportsTextFindPanel
+#ifndef AFF_NSTextViewFindNone
   // Substitutions Submenu
   item = [menu addItemWithTitle:[Localized menuEditSubstitutions] action:NULL keyEquivalent:@""];
   submenu = [[[NSMenu alloc] initWithTitle:[Localized menuEditSubstitutions]] autorelease];
@@ -674,7 +654,7 @@ NSString * const MATHApplicationEffectiveAppearanceKeyPath = @"effectiveAppearan
 @implementation NSMenu (CrossPlatform)
 -(void)XP_addSeparatorItem;
 {
-#ifdef MAC_OS_X_VERSION_10_2
+#ifndef AFF_MainMenuNoApplicationMenu
   [self addItem:[NSMenuItem separatorItem]];
 #endif
 }
@@ -683,10 +663,10 @@ NSString * const MATHApplicationEffectiveAppearanceKeyPath = @"effectiveAppearan
 @implementation NSString (MATHMainMenu)
 -(NSString*)MATH_stringByAppendingEllipsis;
 {
-#ifdef XPSupportsUnicodeUI
-  return [self stringByAppendingFormat:@"%C", 0x2026];
-#else
+#ifdef AFF_UnicodeUINone
   return [self stringByAppendingString:@"..."];
+#else
+  return [self stringByAppendingFormat:@"%C", 0x2026];
 #endif
 }
 @end

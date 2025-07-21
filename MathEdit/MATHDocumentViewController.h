@@ -21,7 +21,11 @@
 #import "MATHDocumentModelController.h"
 #import "XPCrossPlatform.h"
 
-@interface MATHDocumentViewController: XPViewController
+#ifdef AFF_NSViewControllerNone
+@interface MATHDocumentViewController: NSResponder
+#else
+@interface MATHDocumentViewController: NSViewController
+#endif
 {
   mm_new NSView *_view_42; // Used only in OpenStep
   mm_new MATHDocumentModelController *_modelController;
@@ -62,7 +66,7 @@
 
 @end
 
-#ifndef XPSupportsNSViewController
+#ifdef AFF_NSViewControllerNone
 @interface MATHDocumentViewController (CrossPlatform)
 -(NSView*)view;
 -(void)setView:(NSView*)view;

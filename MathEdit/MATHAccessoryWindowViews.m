@@ -637,7 +637,7 @@
     [textField setAction:action];
   }
   
-#ifdef XPSupportsAttractiveRoundTextFields
+#ifndef AFF_NSTextFieldRoundedStyleUgly
   [textField XP_setBezelStyle:XPTextFieldRoundedBezel];
 #endif
   
@@ -723,7 +723,7 @@
 @implementation NSImage (MATHAccessoryWindows)
 -(NSImage*)MATH_setTemplate:(BOOL)flag;
 {
-#ifdef XPSupportsTemplateImage
+#ifndef AFF_NSImageTemplateNone
   [self setTemplate:flag];
 #endif
   return self;
@@ -840,7 +840,7 @@ NSRect MATH_rectForKeypadButtonOfKind(MATHKeypadButtonKind kind)
 
 NSRect MATH_rectByAdjustingAquaButtonRect(NSRect rect)
 {
-#if XPUserInterface == XPUserInterfaceAqua
+#ifndef AFF_UIStyleAquaNone
   XPFloat xPad = 2;
   XPFloat yPad = 2;
   return NSMakeRect(rect.origin.x-xPad,
@@ -872,10 +872,10 @@ NSString *MATH_titleForKeypadButtonOfKind(MATHKeypadButtonKind kind)
     case MATHKeypadButtonKindDecimal:
       return @".";
     case MATHKeypadButtonKindDelete:
-#ifdef XPSupportsUnicodeUI
-      return [NSString stringWithFormat:@"%C", 0x2190];
-#else
+#ifdef AFF_UnicodeUINone
       return @"<-";
+#else
+      return [NSString stringWithFormat:@"%C", 0x2190];
 #endif
     case MATHKeypadButtonKindEqual:
       return @"=";
@@ -894,10 +894,10 @@ NSString *MATH_titleForKeypadButtonOfKind(MATHKeypadButtonKind kind)
     case MATHKeypadButtonKindPower:
       return @"^";
     case MATHKeypadButtonKindRoot:
-#ifdef XPSupportsUnicodeUI
-      return [NSString stringWithFormat:@"%C", 0x221A];
-#else
+#ifdef AFF_UnicodeUINone
       return @"root";
+#else
+      return [NSString stringWithFormat:@"%C", 0x221A];
 #endif
     case MATHKeypadButtonKindLog:
       return @"log";

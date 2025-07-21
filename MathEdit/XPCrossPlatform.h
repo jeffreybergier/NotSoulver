@@ -67,239 +67,348 @@
 #define LOGLEVEL LOGLEVELALWYS
 #endif
 
-// MARK: Basic Types
-
-#ifdef NSIntegerMax
-typedef NSInteger XPInteger;
-typedef NSUInteger XPUInteger;
-#else
-typedef int XPInteger;
-typedef unsigned int XPUInteger;
-#endif
-
-#ifdef CGFLOAT_MAX
-typedef CGFloat XPFloat;
-#else
-typedef float XPFloat;
-#endif
-
-#ifdef NS_ENUM
-  #define XP_ENUM(_type, _name) NS_ENUM(_type, _name)
-#else
-  #define XP_ENUM(_type, _name) _type _name; enum
-#endif
-
 // MARK: Antifeature Flags
 
-#define AFF_MainMenuFailsNSApplicationMain
+#define AFF_NSApplicationMainRequiresNIB
 #define AFF_MainMenuNotRetainedBySystem
 #define AFF_MainMenuRequiresSetAppleMenu
-#define AFF_ScrollViewNoMagnification
+#define AFF_MainMenuNoApplicationMenu
+#define AFF_UIStyleAquaNone
+#define AFF_UIStyleDarkModeNone
+#define AFF_NSScrollViewDrawsBackgroundNone
+#define AFF_NSScrollViewMagnificationNone
 #define AFF_NSWindowNoFullScreen
+#define AFF_C_isnan_isinf_None
+#define AFF_C_percentP_None
+#define AFF_C__FILE__FUNCTION__Legacy
 #define AFF_ObjCNoDispatch
 #define AFF_ObjCNSMethodSignatureUndocumentedClassMethod
+#define AFF_ObjCNSIntegerNone
+#define AFF_ObjCCGFloatNone
+#define AFF_ObjCNSEnumNone
 #define AFF_NSDocumentNone     // OpenStep did not include NSDocument
 #define AFF_NSDocumentNoURL    // NSDocument works but URL's API's dont work for some reason
 #define AFF_NSDocumentNoiCloud // NSDocument does not yet support duplicate and other modern iCloud features
 #define AFF_NSRegularExpressionNone // SLRE cannot handle non-ascii characters
+#define AFF_NSBezierPathNone
+#define AFF_NSBezierPathRoundRectNone
+#define AFF_NSKeyedArchiverNone
+#define AFF_NSSecureCodingNone
+#define AFF_UnicodeUINone
+#define AFF_UnicodeDocumentNone // TODO: Not used yet
+#define AFF_NSTextViewInsertTextLegacy
+#define AFF_NSTextViewFindNone
+#define AFF_NSTextViewFindNoInline
+#define AFF_NSTextViewGrammarNone
+#define AFF_NSButtonStylesNone
+#define AFF_NSTextFieldRoundedStyleUgly
+#define AFF_NSWindowStyleTexturedNone
+#define AFF_NSWindowStyleUtilityNone
+#define AFF_NSWindowCollectionBehaviorNone
+#define AFF_NSWindowControllerNone
+#define AFF_NSWindowContentViewControllerNone
+#define AFF_NSViewControllerNone
+#define AFF_FormalProtocolsNone
+#define AFF_NSImageTemplateNone
+#define AFF_StateRestorationNone
+#define AFF_NSErrorNone
+#define AFF_NSStringUTF8StringNone
+#define AFF_NSStringLengthOfBytesNone
+#define AFF_NSFontDescriptorNone
+#define AFF_NSWorkspaceWebURLNone
+#define AFF_APINSValueNSRangeNone
+#define AFF_APIWritingRenameNone
+#define AFF_APIPasteboardRenameNone
+#define AFF_APIUpdatedForSwiftNone
+#define TMP_AFF_TEST_NSBezierPathTestsBroken
+#define TMP_AFF_TEST_NSAttributedStringIsEqualBroken
+
+// MARK: Don't Disable These Platform Features
+
+#if defined(__m68k__) || defined(__ppc__) || defined (MAC_OS_X_VERSION_10_12)
+#undef TMP_AFF_TEST_NSAttributedStringIsEqualBroken
+#endif
+
+#ifdef NSIntegerMax
+#undef AFF_ObjCNSIntegerNone
+#endif
+
+#ifdef CGFLOAT_MAX
+#undef AFF_ObjCCGFloatNone
+#endif
+
+#ifdef NS_ENUM
+#undef AFF_ObjCNSEnumNone
+#endif
 
 #ifdef MAC_OS_X_VERSION_10_2
 #undef AFF_MainMenuNotRetainedBySystem
+#undef AFF_MainMenuNoApplicationMenu
+#undef AFF_NSKeyedArchiverNone
+#undef AFF_C_isnan_isinf_None
+#undef AFF_C_percentP_None
+#endif
+
+#ifdef MAC_OS_X_VERSION_10_4
+#undef AFF_C__FILE__FUNCTION__Legacy
+#undef AFF_NSFontDescriptorNone
+#endif
+
+#ifdef MAC_OS_X_VERSION_10_15
+#undef AFF_NSSecureCodingNone
+#endif
+
+// MARK: Can Comment Out Up To Here
+
+#ifdef MAC_OS_X_VERSION_10_2
+#undef AFF_UIStyleAquaNone
 #undef AFF_NSDocumentNone
+#undef AFF_NSBezierPathNone
+#undef AFF_UnicodeUINone
+#undef AFF_NSButtonStylesNone
+#undef AFF_NSWindowStyleTexturedNone
+#undef AFF_NSWindowStyleUtilityNone
+#undef AFF_NSWindowControllerNone
+#undef AFF_APINSValueNSRangeNone
+#undef AFF_NSStringUTF8StringNone
+#undef AFF_NSWorkspaceWebURLNone
+#undef AFF_NSScrollViewDrawsBackgroundNone
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_4
 #undef AFF_NSDocumentNoURL
+#undef AFF_NSTextViewFindNone
+#undef AFF_NSErrorNone
+#undef AFF_NSStringLengthOfBytesNone
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_6
 #undef AFF_ObjCNSMethodSignatureUndocumentedClassMethod
 #undef AFF_MainMenuRequiresSetAppleMenu
+#undef AFF_NSTextViewInsertTextLegacy
+#undef AFF_NSTextViewGrammarNone
+#undef AFF_NSViewControllerNone
+#undef AFF_FormalProtocolsNone
+#undef AFF_NSImageTemplateNone
+#undef AFF_NSWindowCollectionBehaviorNone
+#undef AFF_APIPasteboardRenameNone
+#undef AFF_NSBezierPathRoundRectNone
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_8
-#undef AFF_MainMenuFailsNSApplicationMain
-#undef AFF_ScrollViewNoMagnification
+#undef AFF_NSApplicationMainRequiresNIB
+#undef AFF_NSScrollViewMagnificationNone
 #undef AFF_ObjCNoDispatch
 #undef AFF_NSDocumentNoiCloud
+#undef AFF_NSTextViewFindNoInline
+#undef AFF_StateRestorationNone
+#undef AFF_APIWritingRenameNone
+#define AFF_NSWindowStyleTexturedNone
 #endif
 
 #ifdef MAC_OS_X_VERSION_10_15
 #undef AFF_NSWindowNoFullScreen
+#undef AFF_NSWindowContentViewControllerNone
+#undef AFF_NSTextFieldRoundedStyleUgly
+#undef AFF_UIStyleDarkModeNone
+#undef AFF_APIUpdatedForSwiftNone
 #endif
 
-// MARK: NSDocument
-
-#define XPSupportsTextFindNone 0
-#define XPSupportsTextFindPanel 1
-#define XPSupportsTextFinder 2
-
-#ifdef MAC_OS_X_VERSION_10_8
-#define XPSupportsTextFind XPSupportsTextFinder
-#elif defined(MAC_OS_X_VERSION_10_4)
-#define XPSupportsTextFind XPSupportsTextFindPanel
-#else
-#define XPSupportsTextFind XPSupportsTextFindNone
+#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 150000
+#undef TMP_AFF_TEST_NSBezierPathTestsBroken
 #endif
-
-#define XPUserInterfaceGlass 2
-#define XPUserInterfaceAqua 1
-#define XPUserInterfaceNone 0
 
 #if __MAC_OS_X_VERSION_MAX_ALLOWED >= 260000
-#define XPUserInterface XPUserInterfaceGlass
-#elif defined(MAC_OS_X_VERSION_10_2)
-#define XPUserInterface XPUserInterfaceAqua
-#else
-#define XPUserInterface XPUserInterfaceNone
+#define AFF_UIStyleAquaNone
 #endif
 
-#ifdef AFF_NSDocumentNone
-typedef XPUInteger XPDocumentChangeType;
-#define XPWindowController NSResponder // Using typedef here cause build error in OpenStep
-#define XPChangeDone 0
-#define XPChangeCleared 2
+// MARK: AFF_Basic Types
+
+#ifdef AFF_ObjCNSIntegerNone
+typedef int XPInteger;
+typedef unsigned int XPUInteger;
+#else
+typedef NSInteger XPInteger;
+typedef NSUInteger XPUInteger;
+#endif
+
+#ifdef AFF_ObjCCGFloatNone
+typedef float XPFloat;
+#else
+typedef CGFloat XPFloat;
+#endif
+
+typedef NSRange* XPRangePointer;
+extern const NSRange XPNotFoundRange;
+BOOL XPIsNotFoundRange(NSRange range);
+BOOL XPContainsRange(NSRange lhs, NSRange rhs);
+
+#ifdef AFF_ObjCNSEnumNone
+#define XP_ENUM(_type, _name) _type _name; enum
+#else
+#define XP_ENUM(_type, _name) NS_ENUM(_type, _name)
+#endif
+
+// MARK: AFF_Archiver
+
+#ifdef AFF_NSKeyedArchiverNone
+#define XPKeyedArchiver NSArchiver
+#define XPKeyedUnarchiver NSUnarchiver
+#else
+#define XPKeyedArchiver NSKeyedArchiver
+#define XPKeyedUnarchiver NSKeyedUnarchiver
+#endif
+
+#ifdef AFF_NSSecureCodingNone
+#define XPSecureCoding NSCoding
+#else
+#define XPSecureCoding NSSecureCoding
+#endif
+
+// MARK: AFF_UI Styles
+
+#ifdef AFF_NSButtonStylesNone
+typedef XPUInteger XPBezelStyle;
+typedef XPUInteger XPBoxType;
+#define XPBoxSeparator 0
+#else
+typedef NSBezelStyle XPBezelStyle;
+typedef NSBoxType XPBoxType;
+#define XPBoxSeparator NSBoxSeparator
+#endif
+
+#ifdef AFF_NSButtonStylesNone
+#define XPBezelStyleFlexiblePush -1
+#define XPTextFieldRoundedBezel -1
+#elif defined(AFF_NSTextFieldRoundedStyleUgly)
+#define XPBezelStyleFlexiblePush NSRegularSquareBezelStyle
+#define XPTextFieldRoundedBezel NSRoundedBezelStyle
+#else
+#define XPBezelStyleFlexiblePush NSBezelStyleRegularSquare
+#define XPTextFieldRoundedBezel NSTextFieldRoundedBezel
+#endif
+
+// MARK: AFF_ViewController / WindowController
+
+#ifdef AFF_NSWindowControllerNone
+typedef NSResponder *XPWindowController;
 #define XPNewWindowController(_window) nil
 #else
-typedef NSDocumentChangeType XPDocumentChangeType;
-#define XPWindowController NSWindowController
-#define XPChangeDone NSChangeDone
-#define XPChangeCleared NSChangeCleared
+typedef NSWindowController *XPWindowController;
 #define XPNewWindowController(_window) [[NSWindowController alloc] initWithWindow:_window]
 #endif
 
-// MARK: Deprecated Constants and Types
-
-#ifdef MAC_OS_X_VERSION_10_2
-typedef NSBezelStyle XPBezelStyle;
-#define XPKeyedArchiver NSKeyedArchiver
-#define XPKeyedUnarchiver NSKeyedUnarchiver
-#define XPBoxType NSBoxType
-#define XPBoxSeparator NSBoxSeparator
-#define XPSupportsNSBezierPath
-#define XPSupportsUnicodeUI
-#define XPSupportsTexturedWindows
-#define XPSupportsUtilityWindows
-#define XPSupportsButtonStyles
-#define XPSupportsApplicationMenu
+#ifdef AFF_NSViewControllerNone
+typedef NSResponder *XPViewController;
 #else
-typedef XPUInteger XPBezelStyle;
-#define XPKeyedArchiver NSArchiver
-#define XPKeyedUnarchiver NSUnarchiver
-#define XPBoxType XPUInteger
-#define XPBoxSeparator 0
+typedef NSViewController *XPViewController;
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_4
-#define XPRTFDocumentAttributes [NSDictionary dictionaryWithObject:NSRTFTextDocumentType forKey:NSDocumentTypeDocumentAttribute]
-#define XPError NSError
-typedef NSError** XPErrorPointer;
-typedef NSRangePointer XPRangePointer;
+#ifdef AFF_NSWindowCollectionBehaviorNone
+typedef XPUInteger XPWindowCollectionBehavior;
 #else
+typedef NSWindowCollectionBehavior XPWindowCollectionBehavior;
+#endif
+
+#ifdef AFF_StateRestorationNone
+typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, id error);
+#else
+typedef void (^XPWindowRestoreCompletionHandler)(NSWindow *window, id error);
+#endif
+
+// MARK: AFF_Error
+
+#ifdef AFF_NSErrorNone
+typedef NSNumber *XPError;
+typedef NSNumber **XPErrorPointer;
+#else
+typedef NSError *XPError;
+typedef NSError **XPErrorPointer;
+#endif
+
+// MARK: AFF_NSDocument
+
+#ifdef AFF_NSDocumentNone
+typedef XPUInteger XPDocumentChangeType;
+#define XPChangeDone 0
+#define XPChangeCleared 2
+#else
+typedef NSDocumentChangeType XPDocumentChangeType;
+#define XPChangeDone NSChangeDone
+#define XPChangeCleared NSChangeCleared
+#endif
+
+#ifdef AFF_NSDocumentNoURL
 #define XPRTFDocumentAttributes nil
-#define XPError NSNumber
-typedef NSNumber** XPErrorPointer;
-typedef NSRange* XPRangePointer;
+#else
+#define XPRTFDocumentAttributes [NSDictionary dictionaryWithObject:NSRTFTextDocumentType forKey:NSDocumentTypeDocumentAttribute]
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_6
-typedef NSViewController XPViewController;
-#define XPSupportsNSViewController
-#define XPStringCompareOptions NSStringCompareOptions
-#define XPPasteboardTypeRTF NSPasteboardTypeRTF
-#define XPPasteboardTypeString NSPasteboardTypeString
-#define XPWindowCollectionBehavior NSWindowCollectionBehavior
-#define XPSupportsFormalProtocols // Protocols like NSWindowDelegate were formally added
-#define XPSupportsTemplateImage
-#define XPSupportsTextViewGrammarChecks
-#else
+// MARK: AFF_API Renames
+
+#ifdef AFF_APIPasteboardRenameNone
 typedef XPUInteger XPStringCompareOptions;
-#define XPViewController NSResponder
 #define XPPasteboardTypeRTF NSRTFPboardType
 #define XPPasteboardTypeString NSStringPboardType
-#define XPWindowCollectionBehavior XPUInteger
+#else
+typedef NSStringCompareOptions XPStringCompareOptions;
+#define XPPasteboardTypeRTF NSPasteboardTypeRTF
+#define XPPasteboardTypeString NSPasteboardTypeString
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_8
-#define XPSupportsStateRestoration
-typedef void (^XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *error);
-#define XPSecureCoding NSSecureCoding
-#define XPSaveOperationType NSSaveOperationType
-#define XPDataWritingAtomic NSDataWritingAtomic
-#define XPSupportsUnicodeDocument // TODO: Update to NSRegularExpression
-#undef  XPSupportsTexturedWindows
-#else
-typedef void (*XPWindowRestoreCompletionHandler)(NSWindow *window, XPError *error);
-#define XPSecureCoding NSCoding
-#define XPSaveOperationType XPUInteger
+#ifdef AFF_APIWritingRenameNone
+typedef XPUInteger XPSaveOperationType;
 #define XPDataWritingAtomic NSAtomicWrite
+#else
+typedef NSSaveOperationType XPSaveOperationType;
+#define XPDataWritingAtomic NSDataWritingAtomic
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_15
-#define XPTextAlignmentCenter NSTextAlignmentCenter
-#define XPTextAlignmentLeft NSTextAlignmentLeft
-#define XPTextAlignmentRight NSTextAlignmentRight
-#define XPModalResponse NSModalResponse
-#define XPModalResponseOK NSModalResponseOK
-#define XPModalResponseCancel NSModalResponseCancel
-#define XPWindowCollectionBehaviorFullScreenNone NSWindowCollectionBehaviorFullScreenNone
-#define XPButtonTypePushOnPushOff NSButtonTypePushOnPushOff
-#define XPWindowStyleMask NSWindowStyleMask
-#define XPBitmapImageFileTypeTIFF NSBitmapImageFileTypeTIFF
-#define XPWindowStyleMaskTitled NSWindowStyleMaskTitled
-#define XPWindowStyleMaskClosable NSWindowStyleMaskClosable
-#define XPWindowStyleMaskMiniaturizable NSWindowStyleMaskMiniaturizable
-#define XPWindowStyleMaskResizable NSWindowStyleMaskResizable
-#define XPWindowStyleMaskUtilityWindow NSWindowStyleMaskUtilityWindow
-#define XPTextFieldBezelStyle NSTextFieldBezelStyle
-#define XPEventModifierFlagOption NSEventModifierFlagOption
-#define XPEventModifierFlagCommand NSEventModifierFlagCommand
-#define XPEventModifierFlagShift NSEventModifierFlagShift
-#define XPSupportsAttractiveRoundTextFields
-#else
+#ifdef AFF_APIUpdatedForSwiftNone
+typedef NSString* XPAttributedStringKey;
 #define XPTextAlignmentCenter NSCenterTextAlignment
 #define XPTextAlignmentLeft NSLeftTextAlignment
 #define XPTextAlignmentRight NSRightTextAlignment
-#define XPModalResponse XPInteger
+typedef XPInteger XPModalResponse;
 #define XPModalResponseOK NSOKButton
 #define XPModalResponseCancel NSCancelButton
 #define XPWindowCollectionBehaviorFullScreenNone 0
 #define XPButtonTypePushOnPushOff NSPushOnPushOffButton
-#define XPWindowStyleMask XPUInteger
+typedef XPUInteger XPWindowStyleMask;
 #define XPBitmapImageFileTypeTIFF NSTIFFFileType
 #define XPWindowStyleMaskTitled NSTitledWindowMask
 #define XPWindowStyleMaskClosable NSClosableWindowMask
 #define XPWindowStyleMaskMiniaturizable NSMiniaturizableWindowMask
 #define XPWindowStyleMaskResizable NSResizableWindowMask
 #define XPWindowStyleMaskUtilityWindow NSUtilityWindowMask
+typedef XPBezelStyle XPTextFieldBezelStyle;
 #define XPEventModifierFlagOption NSAlternateKeyMask
 #define XPEventModifierFlagCommand NSCommandKeyMask
 #define XPEventModifierFlagShift NSShiftKeyMask
-#define XPTextFieldBezelStyle XPBezelStyle
-#endif
-
-#ifdef MAC_OS_X_VERSION_10_14
-#define XPSupportsDarkMode
-#define XPSupportsNSSecureCoding
+#else
 typedef NSAttributedStringKey XPAttributedStringKey;
-#else
-typedef NSString* XPAttributedStringKey;
+#define XPTextAlignmentCenter NSTextAlignmentCenter
+#define XPTextAlignmentLeft NSTextAlignmentLeft
+#define XPTextAlignmentRight NSTextAlignmentRight
+typedef NSModalResponse XPModalResponse;
+#define XPModalResponseOK NSModalResponseOK
+#define XPModalResponseCancel NSModalResponseCancel
+#define XPWindowCollectionBehaviorFullScreenNone NSWindowCollectionBehaviorFullScreenNone
+#define XPButtonTypePushOnPushOff NSButtonTypePushOnPushOff
+typedef NSWindowStyleMask XPWindowStyleMask;
+#define XPBitmapImageFileTypeTIFF NSBitmapImageFileTypeTIFF
+#define XPWindowStyleMaskTitled NSWindowStyleMaskTitled
+#define XPWindowStyleMaskClosable NSWindowStyleMaskClosable
+#define XPWindowStyleMaskMiniaturizable NSWindowStyleMaskMiniaturizable
+#define XPWindowStyleMaskResizable NSWindowStyleMaskResizable
+#define XPWindowStyleMaskUtilityWindow NSWindowStyleMaskUtilityWindow
+typedef NSTextFieldBezelStyle XPTextFieldBezelStyle;
+#define XPEventModifierFlagOption NSEventModifierFlagOption
+#define XPEventModifierFlagCommand NSEventModifierFlagCommand
+#define XPEventModifierFlagShift NSEventModifierFlagShift
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_15
-#define XPBezelStyleFlexiblePush NSBezelStyleRegularSquare
-#define XPTextFieldRoundedBezel NSTextFieldRoundedBezel
-#elif defined(MAC_OS_X_VERSION_10_2)
-#define XPBezelStyleFlexiblePush NSRegularSquareBezelStyle
-#define XPTextFieldRoundedBezel NSRoundedBezelStyle
-#else
-#define XPBezelStyleFlexiblePush -1
-#define XPTextFieldRoundedBezel -1
-#endif
-
-extern const NSRange XPNotFoundRange;
-BOOL XPIsNotFoundRange(NSRange range);
-BOOL XPContainsRange(NSRange lhs, NSRange rhs);
+// MARK: Object Categories
 
 @interface NSValue (CrossPlatform)
 +(id)XP_valueWithRange:(NSRange)range;
@@ -418,7 +527,7 @@ NSArray* XPRunOpenPanel(NSString *extension);
 -(BOOL)XP_openWebURL:(NSString*)webURL;
 @end
 
-#ifdef XPSupportsNSBezierPath
+#ifndef AFF_NSBezierPathNone
 @interface NSBezierPath (CrossPlatform)
 
 +(id)XP_bezierPathWithRoundedRect:(NSRect)rect
@@ -462,7 +571,7 @@ NSArray* XPRunOpenPanel(NSString *extension);
 -(void)XP_setIdentifier:(NSString*)anIdentifier;
 -(void)XP_setAppearanceWithUserInterfaceStyle:(XPUserInterfaceStyle)aStyle;
 -(void)XP_setCollectionBehavior:(XPWindowCollectionBehavior)collectionBehavior;
--(void)XP_setContentViewController:(XPViewController*)viewController;
+-(void)XP_setContentViewController:(XPViewController)viewController;
 @end
 
 @interface NSScrollView (CrossPlatform)
@@ -494,18 +603,18 @@ NSArray* XPRunOpenPanel(NSString *extension);
 NSString *XPStringFromErrorPointer(XPErrorPointer ptr);
 
 // OpenStep does not understand the %p format string so this works around that
-#ifdef MAC_OS_X_VERSION_10_2
-#define XPPointerString(_self) ([NSString stringWithFormat:@"%p", (void*)_self])
-#else
+#ifdef AFF_C_percentP_None
 #define XPPointerString(_self) ([NSString stringWithFormat:@"0x%08x", (unsigned int)(_self)])
+#else
+#define XPPointerString(_self) ([NSString stringWithFormat:@"%p", (void*)_self])
 #endif
 
-#ifdef MAC_OS_X_VERSION_10_4
-#define XPLogFunc [NSString stringWithCString:__PRETTY_FUNCTION__ encoding:NSUTF8StringEncoding]
-#define XPLogFile [[[NSString stringWithCString:__FILE__ encoding:NSUTF8StringEncoding] componentsSeparatedByString:@"/"] lastObject]
-#else
+#ifdef AFF_C__FILE__FUNCTION__Legacy
 #define XPLogFunc [NSString stringWithCString:__PRETTY_FUNCTION__]
 #define XPLogFile [[[NSString stringWithCString:__FILE__] componentsSeparatedByString:@"/"] lastObject]
+#else
+#define XPLogFunc [NSString stringWithCString:__PRETTY_FUNCTION__ encoding:NSUTF8StringEncoding]
+#define XPLogFile [[[NSString stringWithCString:__FILE__ encoding:NSUTF8StringEncoding] componentsSeparatedByString:@"/"] lastObject]
 #endif
 
 #define __XPLogBase(_prefix, _formatString)                             NSLog(@"[%@] {%@:%d} %@ %@", _prefix, XPLogFile, __LINE__, XPLogFunc, _formatString)

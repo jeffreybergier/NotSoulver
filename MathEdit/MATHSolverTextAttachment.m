@@ -22,10 +22,10 @@
 
 +(NSSize)textPadding;
 {
-#ifdef XPSupportsNSBezierPath
-  return NSMakeSize(12, 4);
-#else
+#ifdef AFF_NSBezierPathNone
   return NSMakeSize(8, 2);
+#else
+  return NSMakeSize(12, 4);
 #endif
 }
 
@@ -202,7 +202,9 @@
 
 -(void)__drawBackgroundCapsuleFillInRect:(NSRect)_rect;
 {
-#ifdef XPSupportsNSBezierPath
+#ifdef AFF_NSBezierPathNone
+  XPLogRaise(@"System does not support NSBezierPath");
+#else
   XPFloat stroke = 1.0;
   NSRect  rect = NSInsetRect(_rect, stroke, stroke);
   XPFloat radius = NSHeight(rect) / 2.0;
@@ -223,14 +225,14 @@
   [path setLineWidth:stroke];
   [strokeColor set];
   [path stroke];
-#else
-  XPLogRaise(@"System does not support NSBezierPath");
 #endif
 }
 
 -(void)__drawBackgroundCapsuleStrokeInRect:(NSRect)_rect;
 {
-#ifdef XPSupportsNSBezierPath
+#ifdef AFF_NSBezierPathNone
+  XPLogRaise(@"System does not support NSBezierPath");
+#else
   XPFloat stroke = 2.0;
   NSRect  rect   = NSInsetRect(_rect, stroke, stroke);
   XPFloat radius = NSHeight(rect) / 2.0;
@@ -245,8 +247,6 @@
   [strokeColor set];
   [path setLineWidth:stroke];
   [path stroke];
-#else
-  XPLogRaise(@"System does not support NSBezierPath");
 #endif
 }
 

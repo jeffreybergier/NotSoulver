@@ -33,7 +33,7 @@ int main(int argc, const char *argv[]) {
   
   // MARK: Boot Sequence
   // 1. Get necessary references
-#ifdef AFF_MainMenuFailsNSApplicationMain
+#ifdef AFF_NSApplicationMainRequiresNIB
   NSAutoreleasePool *pool = [[NSAutoreleasePool allocWithZone:NULL] init];
 #endif
   NSApplication *app = [NSApplication sharedApplication];
@@ -48,7 +48,7 @@ int main(int argc, const char *argv[]) {
   
   // 4. Load NSApplication
   [app setDelegate:[MATHAppDelegate sharedDelegate]];
-#ifdef AFF_MainMenuFailsNSApplicationMain
+#ifdef AFF_NSApplicationMainRequiresNIB
   [app run];
   [pool release];
   return 0;

@@ -770,7 +770,7 @@ static NSRect MATHAccessoryWindowSettingsWindowRect = {{0, 0}, {320, 340}}; // C
 
 @end
 
-#ifndef XPSupportsNSViewController
+#ifdef AFF_NSViewControllerNone
 @implementation MATHAccessoryWindowsSettingsViewController (CrossPlatform)
 -(NSView*)view;
 {
@@ -808,10 +808,10 @@ NSString *MATH_localizedStringForSettingsSelection(MATHSettingSelection selectio
 XPWindowStyleMask MATH_windowMaskForKeypadWindow(void)
 {
   XPWindowStyleMask mask = XPWindowStyleMaskTitled | XPWindowStyleMaskClosable;
-#ifdef XPSupportsTexturedWindows
+#ifndef AFF_NSWindowStyleTexturedNone
   mask |= NSTexturedBackgroundWindowMask;
 #endif
-#ifdef XPSupportsUtilityWindows
+#ifndef AFF_NSWindowStyleUtilityNone
   mask |= XPWindowStyleMaskUtilityWindow;
 #endif
   return mask;

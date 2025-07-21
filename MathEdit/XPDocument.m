@@ -383,4 +383,19 @@
 }
 
 @end
+
+@implementation NSDocumentLegacyImplementation (NSDocumentWontCrash)
+
++(BOOL)_autosavesInPlace;
+{
+  return NO;
+}
+
++(NSArray*)readableTypes;
+{
+  return [[NSArray new] autorelease];
+}
+
+@end
+
 #pragma clang diagnostic pop

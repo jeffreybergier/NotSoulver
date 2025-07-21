@@ -36,7 +36,7 @@ void TestsUnitExecute(void);
 +(void)executeTests;
 @end
 
-#ifdef MAC_OS_X_VERSION_10_4
+#ifndef TMP_AFF_TEST_NSBezierPathTestsBroken
 // TODO: For fundamental Core Graphics reasons, 10.2 and OpenStep
 // cannot draw into a context without a window. It would be possible
 // to rewrite this test to run after NSApplicationMain

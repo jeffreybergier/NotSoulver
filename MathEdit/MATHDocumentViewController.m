@@ -57,7 +57,7 @@ NSString *MATHDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.
   [scrollView setHasVerticalScroller:YES];
   [scrollView XP_setAllowsMagnification:YES];
   [scrollView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-#ifdef AFF_ScrollViewNoMagnification
+#ifdef AFF_NSScrollViewMagnificationNone
   [scrollView setHasHorizontalScroller:NO];
 #else
   [scrollView setHasHorizontalScroller:YES];
@@ -367,7 +367,7 @@ NSString *MATHDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.
 
 -(BOOL)__canMagnify;
 {
-#ifdef AFF_ScrollViewNoMagnification
+#ifdef AFF_NSScrollViewMagnificationNone
   return NO;
 #else
   return YES;
@@ -405,7 +405,7 @@ NSString *MATHDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.
 
 @end
 
-#ifndef XPSupportsNSViewController
+#ifdef AFF_NSViewControllerNone
 @implementation MATHDocumentViewController (CrossPlatform)
 -(NSView*)view;
 {

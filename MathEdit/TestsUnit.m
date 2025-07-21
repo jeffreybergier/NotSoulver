@@ -24,7 +24,7 @@ void TestsUnitExecute(void)
   [XPLog executeTests];
   [XPRegularExpression executeTests];
   [MATHSolverScanner executeTests];
-#ifdef MAC_OS_X_VERSION_10_4
+#ifndef TMP_AFF_TEST_NSBezierPathTestsBroken
   // TODO: Change to Antifeature flat
 //[NSBezierPath saveTestFiles];
   [NSBezierPath executeTests];
@@ -402,19 +402,19 @@ void TestsUnitExecute(void)
 
 @end
 
-#ifdef MAC_OS_X_VERSION_10_4
+#ifndef TMP_AFF_TEST_NSBezierPathTestsBroken
 
 @implementation NSBezierPath (TestsUnit)
 +(void)executeTests;
 {
   // TODO: Revalidate tests
-  #if __MAC_OS_X_VERSION_MAX_ALLOWED >= 120000
   // Prepare variables
   NSData  *dataRHS = nil;
   NSData  *dataLHS = nil;
 
   NSLog(@"%@ Unit Tests: STARTING", self);
   
+#ifndef AFF_NSBezierPathRoundRectNone
   // Compare REAL BezierPath
   dataRHS = [self createTIFFWithSelector:@selector(__REAL_bezierPathWithRoundedRect:xRadius:yRadius:)];
   dataLHS = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TestUnitBezierPath-REAL"
@@ -422,6 +422,7 @@ void TestsUnitExecute(void)
   XPTestNotNIL(dataRHS);
   XPTestNotNIL(dataLHS);
   XPTestObject(dataLHS, dataRHS);
+#endif
   
   // Compare Manual BezierPath
   dataRHS = [self createTIFFWithSelector:@selector(__MANUAL_bezierPathWithRoundedRect:xRadius:yRadius:)];
@@ -432,14 +433,11 @@ void TestsUnitExecute(void)
   XPTestObject(dataLHS, dataRHS);
   
   NSLog(@"%@ Unit Tests: PASSED", self);
-  #else
-	NSLog(@"%@ Unit Tests: Skipped due to unsupported system", self);
-  #endif
 }
 
 +(void)saveTestFiles;
 {
-  #ifdef MAC_OS_X_VERSION_10_6
+  #ifndef TMP_AFF_TEST_NSBezierPathTestsBroken
   NSWorkspace *ws = [NSWorkspace sharedWorkspace];
   NSString *destDir = NSTemporaryDirectory();
 	NSString *manualPath = nil;

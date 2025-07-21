@@ -20,12 +20,12 @@
 
 @implementation XPRegularExpression
 
--(id)initWithPattern:(NSString *)aPattern options:(int)options error:(id*)error;
+-(id)initWithPattern:(NSString*)__pattern options:(int)options error:(XPErrorPointer)outError;
 {
   // Need to manually find cap count as SLRE no longer does this automatically
-  NSString *pattern   =  aPattern;
-  NSArray  *capFalse  = [aPattern componentsSeparatedByString:@"\\("];
-  NSArray  *capAll    = [aPattern componentsSeparatedByString:@"("];
+  NSString *pattern   =  __pattern;
+  NSArray  *capFalse  = [__pattern componentsSeparatedByString:@"\\("];
+  NSArray  *capAll    = [__pattern componentsSeparatedByString:@"("];
   XPUInteger capCount  = ([capAll count] - 1) - ([capFalse count] - 1);
   
   // Need to test as SLRE no longer compiles the pattern ahead of time
@@ -41,7 +41,7 @@
   // Need to add a capture if there is none in the pattern
   // SLRE used to give the results if no capture present
   if (capCount == 0) {
-    pattern = [[@"(" stringByAppendingString:aPattern] stringByAppendingString:@")"];
+    pattern = [[@"(" stringByAppendingString:__pattern] stringByAppendingString:@")"];
     capCount = 1;
   }
   
@@ -51,11 +51,7 @@
                           (int)[testString length], testCaps, (int)capCount, 0);
   free(testCaps);
   if (testStatus < -1) {
-    if (error != NULL) {
-      *error = [NSString stringWithFormat:@"SLRE Error: %d", testStatus];
-    } else {
-      XPLogRaise1(@"SLRE Error: %d", testStatus);
-    }
+    XPLogRaise1(@"SLRE Error: %d", testStatus);
     return nil;
   }
   
