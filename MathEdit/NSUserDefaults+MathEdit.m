@@ -360,6 +360,7 @@ NSString *MATHSettingsSelection                     = @"kMATHSettingsSelectionKe
           @"0",   // MATHThemeUserInterfaceStyle
           @"0",   // MATHSettingsSelection
           @"YES", // MATHAccessoryWindowKeypadVisibility
+          // TODO: Consider changing the default to 0 for "fast" systems
           @"2.0", // XPUserDefaultsWaitTimeForRendering
           nil];
   

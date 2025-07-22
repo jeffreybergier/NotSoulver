@@ -77,6 +77,12 @@ NSString *MATHDocumentViewControllerUnsolvedPasteboardType = @"com.saturdayapps.
   [textView XP_setGrammarCheckingEnabled:NO];
   [textView XP_setAutomaticSpellingCorrectionEnabled:YES];
   
+#ifdef AFF_NSRegularExpressionNone
+  [textView XP_setAutomaticQuoteSubstitutionEnabled:NO];
+  [textView XP_setAutomaticDashSubstitutionEnabled:NO];
+  [textView XP_setAutomaticTextReplacementEnabled:NO];
+#endif
+  
   // ModelController
   [[modelController model] addLayoutManager:layoutManager];
   [layoutManager addTextContainer:textContainer];

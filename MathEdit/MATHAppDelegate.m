@@ -548,7 +548,7 @@ NSString * const MATHApplicationEffectiveAppearanceKeyPath = @"effectiveAppearan
   [submenu addItemWithTitle:[Localized menuEditSpellingCheckNow] action:@selector(checkSpelling:) keyEquivalent:@";"];
   [submenu XP_addSeparatorItem];
   [submenu addItemWithTitle:[Localized menuEditSpellingCheckWhileTyping] action:@selector(toggleContinuousSpellChecking:) keyEquivalent:@""];
-#ifndef AFF_NSTextViewGrammarNone
+#ifndef AFF_NSTextViewSubstitutionsAndGrammarNone
   [submenu addItemWithTitle:[Localized menuEditSpellingCheckGrammar] action:@selector(toggleGrammarChecking:) keyEquivalent:@""];
 #endif
   [submenu addItemWithTitle:[Localized menuEditSpellingAutoCorrect] action:@selector(toggleAutomaticSpellingCorrection:) keyEquivalent:@""];

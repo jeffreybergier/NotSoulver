@@ -612,22 +612,43 @@ NSArray* XPRunOpenPanel(NSString *extension)
 
 -(void)XP_setContinuousSpellCheckingEnabled:(BOOL)flag;
 {
-#ifndef AFF_NSTextViewGrammarNone
+#ifndef AFF_NSTextViewSubstitutionsAndGrammarNone
   [self setContinuousSpellCheckingEnabled:flag];
 #endif
 }
 
 -(void)XP_setGrammarCheckingEnabled:(BOOL)flag;
 {
-#ifndef AFF_NSTextViewGrammarNone
+#ifndef AFF_NSTextViewSubstitutionsAndGrammarNone
   [self setGrammarCheckingEnabled:flag];
 #endif
 }
 
 -(void)XP_setAutomaticSpellingCorrectionEnabled:(BOOL)flag;
 {
-#ifndef AFF_NSTextViewGrammarNone
+#ifndef AFF_NSTextViewSubstitutionsAndGrammarNone
   [self setAutomaticSpellingCorrectionEnabled:flag];
+#endif
+}
+
+-(void)XP_setAutomaticQuoteSubstitutionEnabled:(BOOL)flag;
+{
+#ifndef AFF_NSTextViewSubstitutionsAndGrammarNone
+  [self setAutomaticQuoteSubstitutionEnabled:flag];
+#endif
+}
+
+-(void)XP_setAutomaticDashSubstitutionEnabled:(BOOL)flag;
+{
+#ifndef AFF_NSTextViewSubstitutionsAndGrammarNone
+  [self setAutomaticDashSubstitutionEnabled:flag];
+#endif
+}
+
+-(void)XP_setAutomaticTextReplacementEnabled:(BOOL)flag;
+{
+#ifndef AFF_NSTextViewSubstitutionsAndGrammarNone
+  [self setAutomaticTextReplacementEnabled:flag];
 #endif
 }
 
