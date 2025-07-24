@@ -45,7 +45,7 @@
 -(BOOL)loadDataRepresentation:(NSData*)data ofType:(NSString*)type; // Legacy for X2
 
 // MARK: isDocumentEdited
--(void)textViewDidBeginEditingNotification:(NSNotification*)aNotification;
+-(void)textDidChangeNotification:(NSNotification*)aNotification;
 
 @end
 
