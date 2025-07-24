@@ -652,6 +652,14 @@ NSArray* XPRunOpenPanel(NSString *extension)
 #endif
 }
 
+-(IBAction)XP_checkTextInDocument:(id)sender;
+{
+#ifndef AFF_NSTextViewSubstitutionsAndGrammarNone
+  // TODO: Figure out how to silence thread sanitizer warning
+  [self checkTextInDocument:sender];
+#endif
+}
+
 @end
 
 @implementation NSTextField (CrossPlatform)

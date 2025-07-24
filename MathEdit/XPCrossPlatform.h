@@ -555,6 +555,7 @@ NSArray* XPRunOpenPanel(NSString *extension);
 -(void)XP_setAutomaticQuoteSubstitutionEnabled:(BOOL)flag;
 -(void)XP_setAutomaticDashSubstitutionEnabled:(BOOL)flag;
 -(void)XP_setAutomaticTextReplacementEnabled:(BOOL)flag;
+-(IBAction)XP_checkTextInDocument:(id)sender;
 @end
 
 @interface NSTextField (CrossPlatform)
