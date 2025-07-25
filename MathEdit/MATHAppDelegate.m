@@ -96,6 +96,18 @@
   }
 }
 
+-(IBAction)openWelcomeDocument:(id)sender;
+{
+  NSString *fileName = [[NSBundle mainBundle] pathForResource:@"Welcome to MathEdit!" ofType:@"mtxt"];
+  XPLogAssrt(fileName, @"[MISSING] Welcome Document");
+#ifdef AFF_NSDocumentNone
+  [self application:[NSApplication sharedApplication] openFile:filename];
+#else
+  // TODO: Fix this deprecation
+  [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfFile:fileName display:YES];
+#endif
+}
+
 -(void)dealloc;
 {
   XPLogDebug1(@"<%@>", XPPointerString(self));
@@ -629,7 +641,8 @@ NSString * const MATHApplicationEffectiveAppearanceKeyPath = @"effectiveAppearan
   menu = [[[NSMenu alloc] initWithTitle:[Localized menuHelp]] autorelease];
   [mainMenu setSubmenu:menu forItem:item];
   [storage addObject:menu];
-  [menu addItemWithTitle:[[Localized menuHelp] MATH_stringByAppendingEllipsis] action:@selector(openSourceRepository:) keyEquivalent:@"?"];
+  [menu addItemWithTitle:[Localized menuHelpWelcomeDocument] action:@selector(openWelcomeDocument:) keyEquivalent:@"?"];
+  [menu addItemWithTitle:[Localized menuHelpMathEdit] action:@selector(openSourceRepository:) keyEquivalent:@"?"];
 }
 
 +(void)__buildTrailingMenuInMainMenu:(NSMenu*)mainMenu

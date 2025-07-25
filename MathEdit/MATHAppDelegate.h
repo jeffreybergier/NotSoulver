@@ -48,6 +48,8 @@
 -(IBAction)showSettingsWindow:(id)sender;
 -(IBAction)showAboutWindow:(id)sender;
 -(IBAction)openSourceRepository:(id)sender;
+-(IBAction)openWelcomeDocument:(id)sender;
+
 @end
 
 @interface MATHAppDelegate (NSApplicationDelegate)

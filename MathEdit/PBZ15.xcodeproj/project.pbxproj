@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C1E992B2E337CF9007D4EC2 /* Welcome to MathEdit!.mtxt in Resources */ = {isa = PBXBuildFile; fileRef = 8C1E99292E337CF9007D4EC2 /* Welcome to MathEdit!.mtxt */; };
 		8C2858A02E2A798E006AE59B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8C28589E2E2A798E006AE59B /* InfoPlist.strings */; };
 		8C5E580C2DC346F200A1648E /* NSUserDefaults+MathEdit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E592D91DCDF0000020F /* NSUserDefaults+MathEdit.h */; };
 		8C5E580D2DC346F200A1648E /* MATHAccessoryWindowsOwner.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E5B2D91DCDF0000020F /* MATHAccessoryWindowsOwner.h */; };
@@ -71,6 +72,7 @@
 		1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		8C1E992A2E337CF9007D4EC2 /* English */ = {isa = PBXFileReference; lastKnownFileType = text; name = English; path = "English.lproj/Welcome to MathEdit!.mtxt"; sourceTree = "<group>"; };
 		8C28589F2E2A798E006AE59B /* English */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8C2858A12E2A93E6006AE59B /* AppIcon-X2.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = "AppIcon-X2.icns"; path = "Images/AppIcon-X2.icns"; sourceTree = "<group>"; };
 		8C4DA6212E1A1BA6006A3BE9 /* PBBase.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = PBBase.xcconfig; path = PB.xcconfig/PBBase.xcconfig; sourceTree = "<group>"; };
@@ -252,6 +254,7 @@
 		2A37F4B8FDCFA73011CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8C1E99292E337CF9007D4EC2 /* Welcome to MathEdit!.mtxt */,
 				8CD62EC02D91DF730000020F /* Localizable.strings */,
 				8C28589E2E2A798E006AE59B /* InfoPlist.strings */,
 			);
@@ -438,6 +441,7 @@
 				8C6F13E02E05669500EB7DEC /* ThemeDark@2x.tiff in Resources */,
 				8C6F13E12E05669500EB7DEC /* NeXTLogoMed.tiff in Resources */,
 				8C5E582D2DC346F200A1648E /* TestUnitBezierPath-REAL.tiff in Resources */,
+				8C1E992B2E337CF9007D4EC2 /* Welcome to MathEdit!.mtxt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -474,6 +478,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		8C1E99292E337CF9007D4EC2 /* Welcome to MathEdit!.mtxt */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8C1E992A2E337CF9007D4EC2 /* English */,
+			);
+			name = "Welcome to MathEdit!.mtxt";
+			sourceTree = "<group>";
+		};
 		8C28589E2E2A798E006AE59B /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

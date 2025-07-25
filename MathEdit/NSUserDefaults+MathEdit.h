@@ -175,6 +175,8 @@ typedef XP_ENUM(XPInteger, MATHThemeFont) {
 -(NSString*)menuAppQuitLegacy;
 -(NSString*)menuAppInfoLegacy;
 -(NSString*)menuHelp;
+-(NSString*)menuHelpMathEdit;
+-(NSString*)menuHelpWelcomeDocument;
 -(NSString*)menuFile;
 -(NSString*)menuFileNew;
 -(NSString*)menuFileOpen;
