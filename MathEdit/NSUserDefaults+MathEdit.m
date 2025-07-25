@@ -21,41 +21,53 @@
 // Implementation in AccessoryWindowsOwner.m
 extern NSString * const MATHAccessoryWindowFrameAutosaveNameKeypad;
 
-NSString * const MATHThemeDidChangeNotificationName = @"kMATHThemeDidChangeNotificationNameKey";
+NSString *const MATHThemeDidChangeNotificationName   = @"kMATHThemeDidChangeNotificationNameKey";
 
-NSString *XPUserDefaultsSavePanelLastDirectory      = @"kSavePanelLastDirectory";
-NSString *XPUserDefaultsWaitTimeForRendering        = @"kWaitTimeForRendering";
+NSString *const XPUserDefaultsSavePanelLastDirectory = @"kSavePanelLastDirectory";
+NSString *const XPUserDefaultsWaitTimeForRendering   = @"kWaitTimeForRendering";
 
-NSString *MATHThemeLightOperandTextColor            = @"kMATHThemeLightOperandTextColor";
-NSString *MATHThemeLightOperatorTextColor           = @"kMATHThemeLightOperatorTextColor";
-NSString *MATHThemeLight_UNUSED_                    = @"kMATHThemeLight_UNUSED_";
-NSString *MATHThemeLightSolutionColor               = @"kMATHThemeLightSolutionColorKey";
-NSString *MATHThemeLightSolutionSecondaryColor      = @"kMATHThemeLightSolutionSecondaryColorKey";
-NSString *MATHThemeLightErrorTextColor              = @"kMATHThemeLightErrorTextColorKey";
-NSString *MATHThemeLightOtherTextColor              = @"kMATHThemeLightOtherTextColorKey";
-NSString *MATHThemeLightBackgroundColor             = @"kMATHThemeLightBackgroundColorKey";
-NSString *MATHThemeLightInsertionPoint              = @"kMATHThemeLightInsertionPointKey";
+NSString *const MATHIsFirstLaunch                    = @"MATHIsFirstLaunch";
+NSString *const MATHThemeLightOperandTextColor       = @"kMATHThemeLightOperandTextColor";
+NSString *const MATHThemeLightOperatorTextColor      = @"kMATHThemeLightOperatorTextColor";
+NSString *const MATHThemeLight_UNUSED_               = @"kMATHThemeLight_UNUSED_";
+NSString *const MATHThemeLightSolutionColor          = @"kMATHThemeLightSolutionColorKey";
+NSString *const MATHThemeLightSolutionSecondaryColor = @"kMATHThemeLightSolutionSecondaryColorKey";
+NSString *const MATHThemeLightErrorTextColor         = @"kMATHThemeLightErrorTextColorKey";
+NSString *const MATHThemeLightOtherTextColor         = @"kMATHThemeLightOtherTextColorKey";
+NSString *const MATHThemeLightBackgroundColor        = @"kMATHThemeLightBackgroundColorKey";
+NSString *const MATHThemeLightInsertionPoint         = @"kMATHThemeLightInsertionPointKey";
 
-NSString *MATHThemeDarkOperandTextColor             = @"kMATHThemeDarkOperandTextColor";
-NSString *MATHThemeDarkOperatorTextColor            = @"kMATHThemeDarkOperatorTextColor";
-NSString *MATHThemeDark_UNUSED_                     = @"kMATHThemeDark_UNUSED_";
-NSString *MATHThemeDarkSolutionColor                = @"kMATHThemeDarkSolutionColorKey";
-NSString *MATHThemeDarkSolutionSecondaryColor       = @"kMATHThemeDarkSolutionSecondaryColorKey";
-NSString *MATHThemeDarkErrorTextColor               = @"kMATHThemeDarkErrorTextColorKey";
-NSString *MATHThemeDarkOtherTextColor               = @"kMATHThemeDarkOtherTextColorKey";
-NSString *MATHThemeDarkBackgroundColor              = @"kMATHThemeDarkBackgroundColorKey";
-NSString *MATHThemeDarkInsertionPoint               = @"kMATHThemeDarkInsertionPointKey";
+NSString *const MATHThemeDarkOperandTextColor        = @"kMATHThemeDarkOperandTextColor";
+NSString *const MATHThemeDarkOperatorTextColor       = @"kMATHThemeDarkOperatorTextColor";
+NSString *const MATHThemeDark_UNUSED_                = @"kMATHThemeDark_UNUSED_";
+NSString *const MATHThemeDarkSolutionColor           = @"kMATHThemeDarkSolutionColorKey";
+NSString *const MATHThemeDarkSolutionSecondaryColor  = @"kMATHThemeDarkSolutionSecondaryColorKey";
+NSString *const MATHThemeDarkErrorTextColor          = @"kMATHThemeDarkErrorTextColorKey";
+NSString *const MATHThemeDarkOtherTextColor          = @"kMATHThemeDarkOtherTextColorKey";
+NSString *const MATHThemeDarkBackgroundColor         = @"kMATHThemeDarkBackgroundColorKey";
+NSString *const MATHThemeDarkInsertionPoint          = @"kMATHThemeDarkInsertionPointKey";
 
-NSString *MATHThemeOtherFontKey                     = @"kMATHThemeOtherFontKey";
-NSString *MATHThemeMathFontKey                      = @"kMATHThemeMathFontKey";
-NSString *MATHThemeErrorFontKey                     = @"kMATHThemeErrorFontKey";
+NSString *const MATHThemeOtherFontKey                = @"kMATHThemeOtherFontKey";
+NSString *const MATHThemeMathFontKey                 = @"kMATHThemeMathFontKey";
+NSString *const MATHThemeErrorFontKey                = @"kMATHThemeErrorFontKey";
 
-NSString *MATHThemeUserInterfaceStyle               = @"kMATHThemeUserInterfaceStyleKey";
-NSString *MATHSettingsSelection                     = @"kMATHSettingsSelectionKey";
+NSString *const MATHThemeUserInterfaceStyle          = @"kMATHThemeUserInterfaceStyleKey";
+NSString *const MATHSettingsSelection                = @"kMATHSettingsSelectionKey";
 
 @implementation NSUserDefaults (MathEdit)
 
 // MARK: Basics
+
+-(BOOL)MATH_isFirstLaunch;
+{
+  return [self boolForKey:MATHIsFirstLaunch];
+}
+
+-(BOOL)MATH_setIsFirstLaunch:(BOOL)newValue;
+{
+  [self setBool:newValue forKey:MATHIsFirstLaunch];
+  return [self synchronize];
+}
 
 -(NSString*)MATH_savePanelLastDirectory;
 {
@@ -325,6 +337,7 @@ NSString *MATHSettingsSelection                     = @"kMATHSettingsSelectionKe
           MATHThemeErrorFontKey,
           // Other
           XPUserDefaultsSavePanelLastDirectory,
+          MATHIsFirstLaunch,
           MATHThemeUserInterfaceStyle,
           MATHSettingsSelection,
           MATHAccessoryWindowFrameAutosaveNameKeypad,
@@ -357,6 +370,7 @@ NSString *MATHSettingsSelection                     = @"kMATHSettingsSelectionKe
           [[NSFont userFontOfSize:14] XP_data],           // MATHThemeErrorFont
           // Other
           NSHomeDirectory(), // XPUserDefaultsSavePanelLastDirectory
+          @"1",   // MATHIsFirstLaunch
           @"0",   // MATHThemeUserInterfaceStyle
           @"0",   // MATHSettingsSelection
           @"YES", // MATHAccessoryWindowKeypadVisibility

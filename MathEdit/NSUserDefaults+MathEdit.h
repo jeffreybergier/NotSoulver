@@ -49,6 +49,8 @@ typedef XP_ENUM(XPInteger, MATHThemeFont) {
 @interface NSUserDefaults (MathEdit)
 
 // MARK: Basics
+-(BOOL)MATH_isFirstLaunch;
+-(BOOL)MATH_setIsFirstLaunch:(BOOL)newValue;
 -(NSString*)MATH_savePanelLastDirectory;
 -(BOOL)MATH_setSavePanelLastDirectory:(NSString*)newValue;
 -(NSTimeInterval)MATH_waitTimeForRendering;

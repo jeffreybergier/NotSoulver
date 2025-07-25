@@ -140,17 +140,8 @@
   // Load Accessory Windows Nib
   _accessoryWindowsOwner = [[MATHAccessoryWindowsOwner alloc] init];
   XPParameterRaise(_accessoryWindowsOwner);
-  // Announce
-  XPLogDebug(@"");
-}
-
--(void)applicationDidFinishLaunching:(NSNotification*)aNotification;
-{
-  NSApplication *app = [aNotification object];
-  // Observe Dark Mode
-  [self beginObservingEffectiveAppearance:app];
+  // Register for Notifications
 #ifdef AFF_NSDocumentNone
-    // Register for Notifications
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(__windowWillCloseNotification:)
                                                  name:NSWindowWillCloseNotification
@@ -162,8 +153,23 @@
                                                  name:NSApplicationDidFinishRestoringWindowsNotification
                                                object:nil];
 #endif
+  // Announce
+  XPLogDebug(@"");
+}
+
+-(void)applicationDidFinishLaunching:(NSNotification*)aNotification;
+{
+  NSApplication *app = [aNotification object];
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  // Observe Dark Mode
+  [self beginObservingEffectiveAppearance:app];
   // Restore state on older systems
   [[self accessoryWindowsOwner] legacy_restoreWindowVisibility];
+  // Open the welcome document if first launch
+  if ([ud MATH_isFirstLaunch]) {
+    [self openWelcomeDocument:app];
+    [ud MATH_setIsFirstLaunch:NO];
+  }
   // Announce
   XPLogDebug(@"");
 }
