@@ -15,6 +15,7 @@
 		8C0E08952E05AC5F00D0FBC0 /* ThemeAuto.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C0E088F2E05AC5F00D0FBC0 /* ThemeAuto.tiff */; };
 		8C0E08972E05AC5F00D0FBC0 /* ThemeDark.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C0E08912E05AC5F00D0FBC0 /* ThemeDark.tiff */; };
 		8C0E08992E05AC5F00D0FBC0 /* ThemeLight.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C0E08932E05AC5F00D0FBC0 /* ThemeLight.tiff */; };
+		8C2828272E3489B300BD51A0 /* WelcometoMathEdit.mtxt in Resources */ = {isa = PBXBuildFile; fileRef = 8C2828252E3489B300BD51A0 /* WelcometoMathEdit.mtxt */; };
 		8C5E580C2DC346F200A1648E /* NSUserDefaults+MathEdit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E592D91DCDF0000020F /* NSUserDefaults+MathEdit.h */; };
 		8C5E580D2DC346F200A1648E /* MATHAccessoryWindowsOwner.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E5B2D91DCDF0000020F /* MATHAccessoryWindowsOwner.h */; };
 		8C5E580E2DC346F200A1648E /* MATHAppDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CD62E5D2D91DCDF0000020F /* MATHAppDelegate.h */; };
@@ -76,6 +77,8 @@
 		8C0E088F2E05AC5F00D0FBC0 /* ThemeAuto.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeAuto.tiff; path = Images/ThemeAuto.tiff; sourceTree = "<group>"; };
 		8C0E08912E05AC5F00D0FBC0 /* ThemeDark.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeDark.tiff; path = Images/ThemeDark.tiff; sourceTree = "<group>"; };
 		8C0E08932E05AC5F00D0FBC0 /* ThemeLight.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeLight.tiff; path = Images/ThemeLight.tiff; sourceTree = "<group>"; };
+		8C2828262E3489B300BD51A0 /* English */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; name = English; path = "/Net/Developer/SaturdayApps/MathEdit/MathEdit/English.lproj/WelcometoMathEdit.mtxt"; sourceTree = "<absolute>"; };
+		8C2828472E348B2600BD51A0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.md; path = /Net/Developer/SaturdayApps/MathEdit/README.md; sourceTree = "<absolute>"; };
 		8C2A01752E0B60A90062F033 /* PBRelease.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = PBRelease.xcconfig; path = PB.xcconfig/PBRelease.xcconfig; sourceTree = "<group>"; };
 		8C2A01762E0B60A90062F033 /* PBDebug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = PBDebug.xcconfig; path = PB.xcconfig/PBDebug.xcconfig; sourceTree = "<group>"; };
 		8C2A01772E0B60A90062F033 /* PBBase.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = PBBase.xcconfig; path = PB.xcconfig/PBBase.xcconfig; sourceTree = "<group>"; };
@@ -134,7 +137,7 @@
 		8CD62ED82D91EBA60000020F /* MathEdit.iconheader */ = {isa = PBXFileReference; lastKnownFileType = text; path = MathEdit.iconheader; sourceTree = "<group>"; };
 		8CD632692D91FF0F0000020F /* .gdbinit */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = .gdbinit; sourceTree = "<group>"; };
 		8CE737022E0B83880046366A /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = AppIcon.icns; path = Images/AppIcon.icns; sourceTree = "<group>"; };
-		8CE983722E0B860800C9765F /* English */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.strings; name = English; path = /Net/Developer/SaturdayApps/NotSoulver/MathEdit/English.lproj/InfoPlist.strings; sourceTree = "<absolute>"; };
+		8CE983722E0B860800C9765F /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +180,7 @@
 		2A37F4AAFDCFA73011CA2CEA /* Soulver */ = {
 			isa = PBXGroup;
 			children = (
+				8C2828472E348B2600BD51A0 /* README.md */,
 				2A37F4ABFDCFA73011CA2CEA /* Classes */,
 				8CD62EAF2D91DD0F0000020F /* Tests */,
 				2A37F4AFFDCFA73011CA2CEA /* Other Sources */,
@@ -242,6 +246,7 @@
 		2A37F4B8FDCFA73011CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8C2828252E3489B300BD51A0 /* WelcometoMathEdit.mtxt */,
 				8CD62EC02D91DF730000020F /* Localizable.strings */,
 				8CE983712E0B860800C9765F /* InfoPlist.strings */,
 			);
@@ -400,6 +405,7 @@
 				8C0E08992E05AC5F00D0FBC0 /* ThemeLight.tiff in Resources */,
 				8CE737032E0B83880046366A /* AppIcon.icns in Resources */,
 				8CE983732E0B860800C9765F /* InfoPlist.strings in Resources */,
+				8C2828272E3489B300BD51A0 /* WelcometoMathEdit.mtxt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -436,6 +442,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		8C2828252E3489B300BD51A0 /* WelcometoMathEdit.mtxt */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8C2828262E3489B300BD51A0 /* English */,
+			);
+			name = "WelcometoMathEdit.mtxt";
+			sourceTree = "<group>";
+		};
 		8CD62EC02D91DF730000020F /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -447,7 +461,7 @@
 		8CE983712E0B860800C9765F /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				8CE983722E0B860800C9765F /* English */,
+				8CE983722E0B860800C9765F /* InfoPlist.strings */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";

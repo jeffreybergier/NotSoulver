@@ -92,6 +92,7 @@
 		};
 		2A37F4AAFDCFA73011CA2CEA = {
 			children = (
+				8C96AE872E348BF900A80066,
 				2A37F4ABFDCFA73011CA2CEA,
 				8CD62EAF2D91DD0F0000020F,
 				2A37F4AFFDCFA73011CA2CEA,
@@ -160,6 +161,7 @@
 		};
 		2A37F4B8FDCFA73011CA2CEA = {
 			children = (
+				8C97262D2E34862800A80066,
 				8C9622B92E2A860000A80066,
 				8CD62EC02D91DF730000020F,
 			);
@@ -372,6 +374,7 @@
 				8C973EB42E06515E00A80066,
 				8C9622BB2E2A860000A80066,
 				8C965C422E2B0E6700A80066,
+				8C97262F2E34862800A80066,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -529,6 +532,35 @@
 		};
 		8C965C422E2B0E6700A80066 = {
 			fileRef = 8C965C412E2B0E6700A80066;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		8C96AE872E348BF900A80066 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			name = README.md;
+			path = /Net/Developer/SaturdayApps/MathEdit/README.md;
+			refType = 0;
+		};
+		8C97262D2E34862800A80066 = {
+			children = (
+				8C97262E2E34862800A80066,
+			);
+			isa = PBXVariantGroup;
+			name = "WelcometoMathEdit.mtxt";
+			path = "";
+			refType = 4;
+		};
+		8C97262E2E34862800A80066 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			name = English;
+			path = "English.lproj/WelcometoMathEdit.mtxt";
+			refType = 4;
+		};
+		8C97262F2E34862800A80066 = {
+			fileRef = 8C97262D2E34862800A80066;
 			isa = PBXBuildFile;
 			settings = {
 			};

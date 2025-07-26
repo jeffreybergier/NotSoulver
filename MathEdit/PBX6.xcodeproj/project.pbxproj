@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C132FC42E3484C0004FB37E /* WelcometoMathEdit.mtxt in Resources */ = {isa = PBXBuildFile; fileRef = 8C132FC22E3484C0004FB37E /* WelcometoMathEdit.mtxt */; };
 		8C182DD92DEF1034004C47C3 /* MATHAccessoryWindowViews.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C182DD72DEF1034004C47C3 /* MATHAccessoryWindowViews.h */; };
 		8C182DDA2DEF1034004C47C3 /* MATHAccessoryWindowViews.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C182DD82DEF1034004C47C3 /* MATHAccessoryWindowViews.m */; };
 		8C2F9A692E2A7D8D004F5697 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8C2F9A672E2A7D8D004F5697 /* InfoPlist.strings */; };
@@ -68,6 +69,8 @@
 		1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		8C132FC32E3484C0004FB37E /* English */ = {isa = PBXFileReference; lastKnownFileType = text; name = English; path = "English.lproj/WelcometoMathEdit.mtxt"; sourceTree = "<group>"; };
+		8C132FCA2E348BC0004FB37E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		8C182DD72DEF1034004C47C3 /* MATHAccessoryWindowViews.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MATHAccessoryWindowViews.h; sourceTree = "<group>"; };
 		8C182DD82DEF1034004C47C3 /* MATHAccessoryWindowViews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MATHAccessoryWindowViews.m; sourceTree = "<group>"; };
 		8C2F9A682E2A7D8D004F5697 /* English */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -177,6 +180,7 @@
 		2A37F4AAFDCFA73011CA2CEA /* Soulver */ = {
 			isa = PBXGroup;
 			children = (
+				8C132FCA2E348BC0004FB37E /* README.md */,
 				2A37F4ABFDCFA73011CA2CEA /* Classes */,
 				8CD62EAF2D91DD0F0000020F /* Tests */,
 				2A37F4AFFDCFA73011CA2CEA /* Other Sources */,
@@ -242,6 +246,7 @@
 		2A37F4B8FDCFA73011CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8C132FC22E3484C0004FB37E /* WelcometoMathEdit.mtxt */,
 				8CD62EC02D91DF730000020F /* Localizable.strings */,
 				8C2F9A672E2A7D8D004F5697 /* InfoPlist.strings */,
 			);
@@ -410,6 +415,7 @@
 				8CB6F5E42E0651C90048C614 /* ThemeDark.tiff in Resources */,
 				8CB6F5E62E0651C90048C614 /* ThemeLight.tiff in Resources */,
 				8C2F9A692E2A7D8D004F5697 /* InfoPlist.strings in Resources */,
+				8C132FC42E3484C0004FB37E /* WelcometoMathEdit.mtxt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -446,6 +452,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		8C132FC22E3484C0004FB37E /* WelcometoMathEdit.mtxt */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8C132FC32E3484C0004FB37E /* English */,
+			);
+			name = "WelcometoMathEdit.mtxt";
+			sourceTree = "<group>";
+		};
 		8C2F9A672E2A7D8D004F5697 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
