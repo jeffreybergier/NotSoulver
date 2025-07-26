@@ -55,6 +55,7 @@
 		8C5E58412DC346F200A1648E /* XPRegularExpression.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62E802D91DCE00000020F /* XPRegularExpression.m */; };
 		8C5E58422DC346F200A1648E /* slre.c in Sources */ = {isa = PBXBuildFile; fileRef = 8CD62EB32D91DDEB0000020F /* slre.c */; };
 		8C5E58442DC346F200A1648E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
+		8C81B8822E3483CA00568CBC /* WelcometoMathEdit.mtxt in Resources */ = {isa = PBXBuildFile; fileRef = 8C81B8802E3483CA00568CBC /* WelcometoMathEdit.mtxt */; };
 		8C9AD7CC2E06488400DE8B5A /* ThemeAuto.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C9AD7C62E06488400DE8B5A /* ThemeAuto.tiff */; };
 		8C9AD7CD2E06488400DE8B5A /* ThemeAuto@2x.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C9AD7C72E06488400DE8B5A /* ThemeAuto@2x.tiff */; };
 		8C9AD7CE2E06488400DE8B5A /* ThemeDark@2x.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C9AD7C92E06488400DE8B5A /* ThemeDark@2x.tiff */; };
@@ -82,6 +83,7 @@
 		8C5B4ECA2DC10C7B002C87B3 /* TestUnitBezierPath-MANUAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "TestUnitBezierPath-MANUAL.tiff"; sourceTree = SOURCE_ROOT; };
 		8C5B4ECB2DC10C7B002C87B3 /* TestUnitBezierPath-REAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "TestUnitBezierPath-REAL.tiff"; sourceTree = SOURCE_ROOT; };
 		8C5E584A2DC346F200A1648E /* MathEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MathEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C81B8812E3483CA00568CBC /* English */ = {isa = PBXFileReference; lastKnownFileType = text; name = English; path = "English.lproj/WelcometoMathEdit.mtxt"; sourceTree = "<group>"; };
 		8C8D51D12DD97A31003A8684 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = PB.xcconfig/Info.plist; sourceTree = "<group>"; };
 		8C9AD7C62E06488400DE8B5A /* ThemeAuto.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeAuto.tiff; path = Images/ThemeAuto.tiff; sourceTree = "<group>"; };
 		8C9AD7C72E06488400DE8B5A /* ThemeAuto@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "ThemeAuto@2x.tiff"; path = "Images/ThemeAuto@2x.tiff"; sourceTree = "<group>"; };
@@ -252,6 +254,7 @@
 		2A37F4B8FDCFA73011CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8C81B8802E3483CA00568CBC /* WelcometoMathEdit.mtxt */,
 				8CD62EC02D91DF730000020F /* Localizable.strings */,
 				8CCD41AF2E29F5C8005C0404 /* InfoPlist.strings */,
 			);
@@ -438,6 +441,7 @@
 				8C9AD7CF2E06488400DE8B5A /* ThemeLight.tiff in Resources */,
 				8C9AD7D02E06488400DE8B5A /* ThemeDark.tiff in Resources */,
 				8C9AD7D12E06488400DE8B5A /* ThemeLight@2x.tiff in Resources */,
+				8C81B8822E3483CA00568CBC /* WelcometoMathEdit.mtxt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -474,6 +478,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		8C81B8802E3483CA00568CBC /* WelcometoMathEdit.mtxt */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8C81B8812E3483CA00568CBC /* English */,
+			);
+			name = "WelcometoMathEdit.mtxt";
+			sourceTree = "<group>";
+		};
 		8CCD41AF2E29F5C8005C0404 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
