@@ -552,6 +552,8 @@ NSArray* XPRunOpenPanel(NSString *extension);
 -(void)XP_setContinuousSpellCheckingEnabled:(BOOL)flag;
 -(void)XP_setGrammarCheckingEnabled:(BOOL)flag;
 -(void)XP_setAutomaticSpellingCorrectionEnabled:(BOOL)flag;
+-(void)XP_setAutomaticLinkDetectionEnabled:(BOOL)flag;
+-(void)XP_setAutomaticDataDetectionEnabled:(BOOL)flag;
 -(void)XP_setAutomaticQuoteSubstitutionEnabled:(BOOL)flag;
 -(void)XP_setAutomaticDashSubstitutionEnabled:(BOOL)flag;
 -(void)XP_setAutomaticTextReplacementEnabled:(BOOL)flag;

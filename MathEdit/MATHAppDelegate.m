@@ -481,7 +481,8 @@ NSString * const MATHApplicationEffectiveAppearanceKeyPath = @"effectiveAppearan
 
   [menu addItemWithTitle:[[Localized menuAppInfoLegacy] MATH_stringByAppendingEllipsis] action:@selector(showAboutWindow:) keyEquivalent:@""];
   [menu addItemWithTitle:[[Localized menuAppSettings] MATH_stringByAppendingEllipsis] action:@selector(showSettingsWindow:) keyEquivalent:@","];
-  [menu addItemWithTitle:[[Localized menuHelp] MATH_stringByAppendingEllipsis] action:@selector(openSourceRepository:) keyEquivalent:@"?"];
+  [menu addItemWithTitle:[Localized menuHelpWelcomeDocument] action:@selector(openWelcomeDocument:) keyEquivalent:@""];
+  [menu addItemWithTitle:[Localized menuHelp] action:@selector(openSourceRepository:) keyEquivalent:@"?"];
 }
 
 +(void)__buildFileMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
@@ -647,7 +648,7 @@ NSString * const MATHApplicationEffectiveAppearanceKeyPath = @"effectiveAppearan
   menu = [[[NSMenu alloc] initWithTitle:[Localized menuHelp]] autorelease];
   [mainMenu setSubmenu:menu forItem:item];
   [storage addObject:menu];
-  [menu addItemWithTitle:[Localized menuHelpWelcomeDocument] action:@selector(openWelcomeDocument:) keyEquivalent:@"?"];
+  [menu addItemWithTitle:[Localized menuHelpWelcomeDocument] action:@selector(openWelcomeDocument:) keyEquivalent:@""];
   [menu addItemWithTitle:[Localized menuHelpMathEdit] action:@selector(openSourceRepository:) keyEquivalent:@"?"];
 }
 

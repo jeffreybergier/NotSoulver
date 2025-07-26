@@ -631,6 +631,19 @@ NSArray* XPRunOpenPanel(NSString *extension)
 #endif
 }
 
+-(void)XP_setAutomaticLinkDetectionEnabled:(BOOL)flag;
+{
+#ifndef AFF_NSTextViewSubstitutionsAndGrammarNone
+  [self setAutomaticLinkDetectionEnabled:flag];
+#endif
+}
+-(void)XP_setAutomaticDataDetectionEnabled:(BOOL)flag;
+{
+#ifndef AFF_NSTextViewSubstitutionsAndGrammarNone
+  [self setAutomaticDataDetectionEnabled:flag];
+#endif
+}
+
 -(void)XP_setAutomaticQuoteSubstitutionEnabled:(BOOL)flag;
 {
 #ifndef AFF_NSTextViewSubstitutionsAndGrammarNone
