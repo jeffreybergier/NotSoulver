@@ -548,7 +548,7 @@
 				8C97262E2E34862800A80066,
 			);
 			isa = PBXVariantGroup;
-			name = "WelcometoMathEdit.mtxt";
+			name = WelcometoMathEdit.mtxt;
 			path = "";
 			refType = 4;
 		};
@@ -556,7 +556,7 @@
 			fileEncoding = 30;
 			isa = PBXFileReference;
 			name = English;
-			path = "English.lproj/WelcometoMathEdit.mtxt";
+			path = English.lproj/WelcometoMathEdit.mtxt;
 			refType = 4;
 		};
 		8C97262F2E34862800A80066 = {
