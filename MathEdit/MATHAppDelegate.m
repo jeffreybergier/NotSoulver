@@ -98,10 +98,10 @@
 
 -(IBAction)openWelcomeDocument:(id)sender;
 {
-  NSString *fileName = [[NSBundle mainBundle] pathForResource:@"Welcome to MathEdit!" ofType:@"mtxt"];
+  NSString *fileName = [[NSBundle mainBundle] pathForResource:@"WelcometoMathEdit" ofType:@"mtxt"];
   XPLogAssrt(fileName, @"[MISSING] Welcome Document");
 #ifdef AFF_NSDocumentNone
-  [self application:[NSApplication sharedApplication] openFile:filename];
+  [self application:[NSApplication sharedApplication] openFile:fileName];
 #else
   // TODO: Fix this deprecation
   [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfFile:fileName display:YES];
