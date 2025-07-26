@@ -77,7 +77,7 @@
 		8C0E088F2E05AC5F00D0FBC0 /* ThemeAuto.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeAuto.tiff; path = Images/ThemeAuto.tiff; sourceTree = "<group>"; };
 		8C0E08912E05AC5F00D0FBC0 /* ThemeDark.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeDark.tiff; path = Images/ThemeDark.tiff; sourceTree = "<group>"; };
 		8C0E08932E05AC5F00D0FBC0 /* ThemeLight.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = ThemeLight.tiff; path = Images/ThemeLight.tiff; sourceTree = "<group>"; };
-		8C2828262E3489B300BD51A0 /* English */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; name = English; path = "/Net/Developer/SaturdayApps/MathEdit/MathEdit/English.lproj/WelcometoMathEdit.mtxt"; sourceTree = "<absolute>"; };
+		8C2828262E3489B300BD51A0 /* English */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; name = English; path = /Net/Developer/SaturdayApps/MathEdit/MathEdit/English.lproj/WelcometoMathEdit.mtxt; sourceTree = "<absolute>"; };
 		8C2828472E348B2600BD51A0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.md; path = /Net/Developer/SaturdayApps/MathEdit/README.md; sourceTree = "<absolute>"; };
 		8C2A01752E0B60A90062F033 /* PBRelease.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = PBRelease.xcconfig; path = PB.xcconfig/PBRelease.xcconfig; sourceTree = "<group>"; };
 		8C2A01762E0B60A90062F033 /* PBDebug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = PBDebug.xcconfig; path = PB.xcconfig/PBDebug.xcconfig; sourceTree = "<group>"; };
@@ -86,7 +86,7 @@
 		8C5B4ECA2DC10C7B002C87B3 /* TestUnitBezierPath-MANUAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "TestUnitBezierPath-MANUAL.tiff"; sourceTree = SOURCE_ROOT; };
 		8C5B4ECB2DC10C7B002C87B3 /* TestUnitBezierPath-REAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "TestUnitBezierPath-REAL.tiff"; sourceTree = SOURCE_ROOT; };
 		8C5E58492DC346F200A1648E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Info.plist; path = PB.xcconfig/Info.plist; sourceTree = "<group>"; };
-		8C5E584A2DC346F200A1648E /* MathEdit.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MathEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C5E584A2DC346F200A1648E /* MathEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MathEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CD62E502D91DB730000020F /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8CD62E552D91DCDF0000020F /* Import Log.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "Import Log.rtf"; sourceTree = "<group>"; };
 		8CD62E562D91DCDF0000020F /* Makefile */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -447,7 +447,7 @@
 			children = (
 				8C2828262E3489B300BD51A0 /* English */,
 			);
-			name = "WelcometoMathEdit.mtxt";
+			name = WelcometoMathEdit.mtxt;
 			sourceTree = "<group>";
 		};
 		8CD62EC02D91DF730000020F /* Localizable.strings */ = {
