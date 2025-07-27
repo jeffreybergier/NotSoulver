@@ -97,6 +97,8 @@
 "menuAppQuitLegacy" = "Quit";
 "menuAppInfoLegacy" = "Info";
 "menuHelp" = "Help";
+"menuHelpMathEdit" = "MathEdit Help";
+"menuHelpWelcomeDocument" = "Open Welcome Document";
 "menuFile" = "File";
 "menuFileNew" = "New";
 "menuFileOpen" = "Open";

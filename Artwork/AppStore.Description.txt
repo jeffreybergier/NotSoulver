@@ -1,0 +1,24 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~ MathEdit is a free and open source application available on Github.
+~~~ Please purchase on the Mac App Store if you wish to support its development.
+~~~ To download for free visit: https://github.com/jeffreybergier/MathEdit
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+MathEdit is a calculator app and text editor built into one. MathEdit intelligently looks for mathematical formulas in your text documents and solves them in-line. With MathEdit you will never need to open the calculator app to manually calculate the answer to a math problem to put into your note.
+
+Just type 3*14= and MathEdit will insert the 42 for you. As well, MathEdit will give special formatting to the answer as well as the rest of the formula. All features include:
+
+In-line math expression solving
+- In-line math expression solving
+- PEMDAS order of operations
+- Basic operators + - / * ^
+- Roots e.g. 4R256= (cube root of 256)
+- Logarithms e.g. 10L1000= (log base 10 of 1000)
+- Carries over previous solution
+- Syntax highlighting
+- Theme-able with customer fonts and colors
+- Dark Mode
+- Physical keyboard and Virtual Keypad
+- Autosave and Autoresume so data is never lost 
+
+If you got this far in the description, you might be interested to know that MathEdit was built as a learning exercise. It's an app that runs in every version of Mac OS X ever released, including OpenStep 4.2 which was the technical precursor to Mac OS X. If you are interested in retro-computing, visit the Github page for more information: https://github.com/jeffreybergier/MathEdit

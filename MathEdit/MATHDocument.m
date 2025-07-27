@@ -122,8 +122,8 @@
   
   // Subscribe to theme and model updates
   [nc addObserver:self
-         selector:@selector(textViewDidBeginEditingNotification:)
-             name:NSTextDidBeginEditingNotification
+         selector:@selector(textDidChangeNotification:)
+             name:NSTextDidChangeNotification
            object:[viewController textView]];
   [nc addObserver:self
          selector:@selector(overrideWindowAppearance)
@@ -185,7 +185,7 @@
 }
 
 // MARK: isDocumentEdited
--(void)textViewDidBeginEditingNotification:(NSNotification*)aNotification;
+-(void)textDidChangeNotification:(NSNotification*)aNotification;
 {
   [self updateChangeCount:XPChangeDone];
 }

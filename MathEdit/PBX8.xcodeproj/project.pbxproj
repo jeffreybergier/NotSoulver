@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C099AC22E348457000B8F5E /* WelcometoMathEdit.mtxt in Resources */ = {isa = PBXBuildFile; fileRef = 8C099AC02E348457000B8F5E /* WelcometoMathEdit.mtxt */; };
 		8C4D1E002DC7D1F80060CFBA /* about-image-512.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C4D1DFA2DC7D1F80060CFBA /* about-image-512.tiff */; };
 		8C4D1E032DC7D1F80060CFBA /* NeXTLogoMed.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C4D1DFD2DC7D1F80060CFBA /* NeXTLogoMed.tiff */; };
 		8C4D1E042DC7D1F80060CFBA /* TagLine.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8C4D1DFE2DC7D1F80060CFBA /* TagLine.tiff */; };
@@ -71,6 +72,7 @@
 		1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		8C099AC12E348457000B8F5E /* English */ = {isa = PBXFileReference; lastKnownFileType = text; name = English; path = "English.lproj/WelcometoMathEdit.mtxt"; sourceTree = "<group>"; };
 		8C4D1DFA2DC7D1F80060CFBA /* about-image-512.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "about-image-512.tiff"; path = "Images/about-image-512.tiff"; sourceTree = "<group>"; };
 		8C4D1DFB2DC7D1F80060CFBA /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = AppIcon.icns; path = Images/AppIcon.icns; sourceTree = "<group>"; };
 		8C4D1DFD2DC7D1F80060CFBA /* NeXTLogoMed.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = NeXTLogoMed.tiff; path = Images/NeXTLogoMed.tiff; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 		8C5B4ECB2DC10C7B002C87B3 /* TestUnitBezierPath-REAL.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "TestUnitBezierPath-REAL.tiff"; sourceTree = SOURCE_ROOT; };
 		8C5E58492DC346F200A1648E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = PB.xcconfig/Info.plist; sourceTree = "<group>"; };
 		8C5E584A2DC346F200A1648E /* MathEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MathEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C81447D2E348B9F000A60D1 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		8C93A10C2DEC2FC900D8FDBA /* MATHAccessoryWindowViews.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MATHAccessoryWindowViews.h; sourceTree = "<group>"; };
 		8C93A10D2DEC2FC900D8FDBA /* MATHAccessoryWindowViews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MATHAccessoryWindowViews.m; sourceTree = "<group>"; };
 		8CAE45A12E1A7A44007B136C /* PBBase.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = PBBase.xcconfig; path = PB.xcconfig/PBBase.xcconfig; sourceTree = "<group>"; };
@@ -184,6 +187,7 @@
 		2A37F4AAFDCFA73011CA2CEA /* Soulver */ = {
 			isa = PBXGroup;
 			children = (
+				8C81447D2E348B9F000A60D1 /* README.md */,
 				2A37F4ABFDCFA73011CA2CEA /* Classes */,
 				8CD62EAF2D91DD0F0000020F /* Tests */,
 				2A37F4AFFDCFA73011CA2CEA /* Other Sources */,
@@ -249,6 +253,7 @@
 		2A37F4B8FDCFA73011CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8C099AC02E348457000B8F5E /* WelcometoMathEdit.mtxt */,
 				8CD62EC02D91DF730000020F /* Localizable.strings */,
 				8CE7F7812E2A7E1500F2C688 /* InfoPlist.strings */,
 			);
@@ -433,6 +438,7 @@
 				8C4D1E002DC7D1F80060CFBA /* about-image-512.tiff in Resources */,
 				8C4D1E032DC7D1F80060CFBA /* NeXTLogoMed.tiff in Resources */,
 				8C4D1E042DC7D1F80060CFBA /* TagLine.tiff in Resources */,
+				8C099AC22E348457000B8F5E /* WelcometoMathEdit.mtxt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -469,6 +475,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		8C099AC02E348457000B8F5E /* WelcometoMathEdit.mtxt */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8C099AC12E348457000B8F5E /* English */,
+			);
+			name = "WelcometoMathEdit.mtxt";
+			sourceTree = "<group>";
+		};
 		8CD62EC02D91DF730000020F /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

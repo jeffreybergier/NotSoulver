@@ -96,6 +96,18 @@
   }
 }
 
+-(IBAction)openWelcomeDocument:(id)sender;
+{
+  NSString *fileName = [[NSBundle mainBundle] pathForResource:@"WelcometoMathEdit" ofType:@"mtxt"];
+  XPLogAssrt(fileName, @"[MISSING] Welcome Document");
+#ifdef AFF_NSDocumentNone
+  [self application:[NSApplication sharedApplication] openFile:fileName];
+#else
+  // TODO: Fix this deprecation
+  [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfFile:fileName display:YES];
+#endif
+}
+
 -(void)dealloc;
 {
   XPLogDebug1(@"<%@>", XPPointerString(self));
@@ -128,17 +140,8 @@
   // Load Accessory Windows Nib
   _accessoryWindowsOwner = [[MATHAccessoryWindowsOwner alloc] init];
   XPParameterRaise(_accessoryWindowsOwner);
-  // Announce
-  XPLogDebug(@"");
-}
-
--(void)applicationDidFinishLaunching:(NSNotification*)aNotification;
-{
-  NSApplication *app = [aNotification object];
-  // Observe Dark Mode
-  [self beginObservingEffectiveAppearance:app];
+  // Register for Notifications
 #ifdef AFF_NSDocumentNone
-    // Register for Notifications
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(__windowWillCloseNotification:)
                                                  name:NSWindowWillCloseNotification
@@ -150,8 +153,23 @@
                                                  name:NSApplicationDidFinishRestoringWindowsNotification
                                                object:nil];
 #endif
+  // Announce
+  XPLogDebug(@"");
+}
+
+-(void)applicationDidFinishLaunching:(NSNotification*)aNotification;
+{
+  NSApplication *app = [aNotification object];
+  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  // Observe Dark Mode
+  [self beginObservingEffectiveAppearance:app];
   // Restore state on older systems
   [[self accessoryWindowsOwner] legacy_restoreWindowVisibility];
+  // Open the welcome document if first launch
+  if ([ud MATH_isFirstLaunch]) {
+    [self openWelcomeDocument:app];
+    [ud MATH_setIsFirstLaunch:NO];
+  }
   // Announce
   XPLogDebug(@"");
 }
@@ -463,7 +481,8 @@ NSString * const MATHApplicationEffectiveAppearanceKeyPath = @"effectiveAppearan
 
   [menu addItemWithTitle:[[Localized menuAppInfoLegacy] MATH_stringByAppendingEllipsis] action:@selector(showAboutWindow:) keyEquivalent:@""];
   [menu addItemWithTitle:[[Localized menuAppSettings] MATH_stringByAppendingEllipsis] action:@selector(showSettingsWindow:) keyEquivalent:@","];
-  [menu addItemWithTitle:[[Localized menuHelp] MATH_stringByAppendingEllipsis] action:@selector(openSourceRepository:) keyEquivalent:@"?"];
+  [menu addItemWithTitle:[Localized menuHelpWelcomeDocument] action:@selector(openWelcomeDocument:) keyEquivalent:@""];
+  [menu addItemWithTitle:[Localized menuHelp] action:@selector(openSourceRepository:) keyEquivalent:@"?"];
 }
 
 +(void)__buildFileMenuInMainMenu:(NSMenu*)mainMenu storage:(NSMutableArray*)storage;
@@ -548,7 +567,7 @@ NSString * const MATHApplicationEffectiveAppearanceKeyPath = @"effectiveAppearan
   [submenu addItemWithTitle:[Localized menuEditSpellingCheckNow] action:@selector(checkSpelling:) keyEquivalent:@";"];
   [submenu XP_addSeparatorItem];
   [submenu addItemWithTitle:[Localized menuEditSpellingCheckWhileTyping] action:@selector(toggleContinuousSpellChecking:) keyEquivalent:@""];
-#ifndef AFF_NSTextViewGrammarNone
+#ifndef AFF_NSTextViewSubstitutionsAndGrammarNone
   [submenu addItemWithTitle:[Localized menuEditSpellingCheckGrammar] action:@selector(toggleGrammarChecking:) keyEquivalent:@""];
 #endif
   [submenu addItemWithTitle:[Localized menuEditSpellingAutoCorrect] action:@selector(toggleAutomaticSpellingCorrection:) keyEquivalent:@""];
@@ -629,7 +648,8 @@ NSString * const MATHApplicationEffectiveAppearanceKeyPath = @"effectiveAppearan
   menu = [[[NSMenu alloc] initWithTitle:[Localized menuHelp]] autorelease];
   [mainMenu setSubmenu:menu forItem:item];
   [storage addObject:menu];
-  [menu addItemWithTitle:[[Localized menuHelp] MATH_stringByAppendingEllipsis] action:@selector(openSourceRepository:) keyEquivalent:@"?"];
+  [menu addItemWithTitle:[Localized menuHelpWelcomeDocument] action:@selector(openWelcomeDocument:) keyEquivalent:@""];
+  [menu addItemWithTitle:[Localized menuHelpMathEdit] action:@selector(openSourceRepository:) keyEquivalent:@"?"];
 }
 
 +(void)__buildTrailingMenuInMainMenu:(NSMenu*)mainMenu

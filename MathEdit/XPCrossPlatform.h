@@ -99,7 +99,7 @@
 #define AFF_NSTextViewInsertTextLegacy
 #define AFF_NSTextViewFindNone
 #define AFF_NSTextViewFindNoInline
-#define AFF_NSTextViewGrammarNone
+#define AFF_NSTextViewSubstitutionsAndGrammarNone
 #define AFF_NSButtonStylesNone
 #define AFF_NSTextFieldRoundedStyleUgly
 #define AFF_NSWindowStyleTexturedNone
@@ -186,7 +186,7 @@
 #undef AFF_ObjCNSMethodSignatureUndocumentedClassMethod
 #undef AFF_MainMenuRequiresSetAppleMenu
 #undef AFF_NSTextViewInsertTextLegacy
-#undef AFF_NSTextViewGrammarNone
+#undef AFF_NSTextViewSubstitutionsAndGrammarNone
 #undef AFF_NSViewControllerNone
 #undef AFF_FormalProtocolsNone
 #undef AFF_NSImageTemplateNone
@@ -552,6 +552,12 @@ NSArray* XPRunOpenPanel(NSString *extension);
 -(void)XP_setContinuousSpellCheckingEnabled:(BOOL)flag;
 -(void)XP_setGrammarCheckingEnabled:(BOOL)flag;
 -(void)XP_setAutomaticSpellingCorrectionEnabled:(BOOL)flag;
+-(void)XP_setAutomaticLinkDetectionEnabled:(BOOL)flag;
+-(void)XP_setAutomaticDataDetectionEnabled:(BOOL)flag;
+-(void)XP_setAutomaticQuoteSubstitutionEnabled:(BOOL)flag;
+-(void)XP_setAutomaticDashSubstitutionEnabled:(BOOL)flag;
+-(void)XP_setAutomaticTextReplacementEnabled:(BOOL)flag;
+-(IBAction)XP_checkTextInDocument:(id)sender;
 @end
 
 @interface NSTextField (CrossPlatform)

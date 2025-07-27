@@ -1,0 +1,16 @@
+
+Welcome to MathEdit!
+
+MathEdit is an integrated text editor and calculator. MathEdit lets you take notes while solving math problems. For example, you can type 3*14= and MathEdit solves it in-line! But MathEdit also supports more complex expressions 2+2*16= and order of operations (2+2)*16=. MathEdit can also carry-over the previous solution /4=. MathEdit will also show errors 42/0=.
+
+To get started type 2 + 2 =
+
+MathEdit supports all of the basic operators like * / - + ^ and more. Use the keypad to view all of the available operators by choosing Show Keypad from the Window menu or using the shortcut Command + K. Also, in Settings, you can change the colors and fonts to suit your style.
+
+MathEdit is free and open source software available on Github. If you purchased it on the AppStore, thank you so much for supporting its development. If not, thank you so much for using MathEdit! 
+
+If you have questions or are interested in learning more about MathEdit, visit https://github.com/jeffreybergier/MathEdit
+
+Thanks so much for using MathEdit!
+- Jeff
+
