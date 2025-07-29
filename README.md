@@ -37,18 +37,25 @@ bring a single codebase through 30 years of Apple Operating System history.
    - ✅ Logarithms e.g. `10L1000=` (log base 10 of 1000)
    - ✅ Carries over previous solution
    - ✅ Syntax highlighting
-   - ✅ Theme-able with customer fonts and colors
+   - ✅ Theme-able with custom fonts and colors
    - ✅ Dark Mode
    - ✅ Physical keyboard and Virtual Keypad
    - ✅ Autosave and Autoresume so data is never lost
 
 ### How to Download
+
+#### Mac App Store
+If you want to support the development of MathEdit, **please buy it from the**
+[**Mac App Store.**](https://apps.apple.com/us/app/mathedit/id6747867773?mt=12)
+Your support is greatly appreciated.
+
+#### Download App Manually
 The app is a normal Mac app saved in ZIP format. The [builds](Builds/) folder
 contains builds for each version of Mac OS X sorted by date the build was made.
 Use the newest date in the newest operating system possible.
 
-- [Z15 - Sequoia](Builds/Z15%20-%20Sequoia/): **Notarized Universal Apple Silicon and Intel builds** that run on macOS 10.14 and up
-   - **This is the recommended build to run on any modern Mac**
+- [Z15 - Sequoia](Builds/Z15%20-%20Sequoia/): Notarized Universal Apple Silicon and Intel builds that run on macOS 10.14 and up
+   - **☝️☝️☝️This is the recommended build to run on any modern Mac**
 - [X15 - Catalina](Builds/X15%20-%20Catalina/): Universal Apple Silicon and Intel 64 bit builds that run on macOS 10.14 and up
 - [X8 - Mountain Lion](Builds/X8%20-%20Mountain%20Lion/): Intel 64 bit builds that run on Mac OS X 10.7 and up
 - [X6 - Snow Leopard](Builds/X6%20-%20Snow%20Leopard/): Intel 64 and 32 bit builds that run on Mac OS X 10.6 and up
@@ -58,8 +65,17 @@ Use the newest date in the newest operating system possible.
 - [42 - OpenStep](Builds/42%20-%20OpenStep/) Universal Intel 32 bit and Motorola 68K 32 bit builds that run on OpenStep 4.2
 
 ## For Developers
+
 ### Watch My Try! Swift Tokyo 2025 Talk
 [![Youtube: I Built an App for NeXTSTEP or:](https://img.youtube.com/vi/dwpsVqsQG5s/0.jpg)](https://www.youtube.com/watch?v=dwpsVqsQG5s)
+
+### Follow The Journey on Mastodon
+No Account required, I use the [\#OpenStep](https://jeffburg.social/tags/OpenStep) 
+tag to flag all posts related to MathEdit. You can follow along or scroll back 
+in time to see how MathEdit evolved over time.
+
+[https://jeffburg.social/tags/OpenStep](https://jeffburg.social/tags/OpenStep)
+
 ### Features
 Because MathEdit for OpenStep uses Cocoa and Objective-C API's from 1996 it
 doesn't use any modern features at all:
@@ -67,11 +83,11 @@ doesn't use any modern features at all:
    - ❌ No Autolayout
    - ❌ No Automatic Reference Counting
    - ❌ No Property Syntax
-   - ❌ No Blocks Syntax ([thank goodness](https://fuckingblocksyntax.com))
    - ❌ No Dot Syntax
    - ❌ No Fast Enumeration
    - ❌ No Collection Literals
-   - ❌ No Dispatch Queues
+   - ❌ No Blocks Syntax ([thank goodness](https://fuckingblocksyntax.com))
+   - ❌ No Grand Central Dispatch
 
 ### Guide to the Builds
 The app is a normal Mac app saved in ZIP format. The [builds](Builds/) folder
@@ -80,7 +96,7 @@ Use the newest date in the newest operating system possible.
 
 | Folder                                                | Build OS        | Build IDE             | Build SDK      | Minimum OS   | Maximum OS  | Architecture   |
 |-------------------------------------------------------|-----------------|-----------------------|----------------|--------------|------------ |----------------|
-| [Z15 - Sequoia](Builds/15%20-%20Sequoia/)             | macOS 15.5      | Xcode 16.4            | MacOSX15.5.sdk | macOS 11     |macOS 15     |`x86_64` `arm64`|
+| [Z15 - Sequoia](Builds/15%20-%20Sequoia/)             | macOS 15.5      | Xcode 16.4            | MacOSX15.5.sdk | macOS 10.14  |macOS 15     |`x86_64` `arm64`|
 | [X15 - Catalina](Builds/X15%20-%20Catalina/)          | macOS 10.15.7   | Xcode 12.4            | MacOSX11.1.sdk | macOS 10.14  |macOS 15     |`x86_64` `arm64`|
 | [X8 - Mountain Lion](Builds/X8%20-%20Mountain%20Lion/)| OS X 10.8.5     | Xcode 5.1.1           | MacOSX10.9.sdk | Mac OS X 10.7|macOS 15     |`x86_64`        |
 | [X6 - Snow Leopard](Builds/X6%20-%20Snow%20Leopard/)  | Mac OS X 10.6.8 | Xcode 4.2             | MacOSX10.6.sdk | Mac OS X 10.6|macOS 15     |`x86_64` `i386` |
